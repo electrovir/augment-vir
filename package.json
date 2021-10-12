@@ -24,11 +24,11 @@
         "test:full": "npm test && npm run spellcheck && virmator format check"
     },
     "dependencies": {
-        "@types/fs-extra": "^9.0.13",
         "fs-extra": "^10.0.0"
     },
     "devDependencies": {
+        "@types/fs-extra": "^9.0.13",
         "@types/node": "^16.10.3",
-        "virmator": "^1.1.15"
+        "virmator": "^1.2.0"
     }
 }
