@@ -1,8 +1,7 @@
 import {join} from 'path';
 import {testGroup} from 'test-vir';
 import {runBashCommand} from './bash';
-import {getRepoRootDir} from './path';
-import {interpolationSafeWindowsPath, toPosixPath} from './string';
+import {getRepoRootDir, interpolationSafeWindowsPath, toPosixPath} from './path';
 
 testGroup({
     description: runBashCommand.name,

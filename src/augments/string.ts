@@ -1,15 +1,3 @@
-export function toPosixPath(maybeWindowsPath: string): string {
-    return maybeWindowsPath
-        .replace(/^(.+?)\:\\+/, (match, captureGroup) => {
-            return `/${captureGroup.toLowerCase()}/`;
-        })
-        .replace(/\\+/g, '/');
-}
-
-export function interpolationSafeWindowsPath(input: string): string {
-    return input.replace(/\\/g, '\\\\\\\\');
-}
-
 export function joinWithFinalConjunction<T>(list: T[], word = 'and '): string {
     if (list.length < 2) {
         /**
