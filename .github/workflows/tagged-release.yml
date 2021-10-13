@@ -2,10 +2,8 @@ name: 'tagged-release'
 
 on:
     push:
-        branches:
-            - '**'
-        # tags:
-        #     - 'v*'
+        tags:
+            - 'v*'
 
 jobs:
     tagged-release:
@@ -13,12 +11,12 @@ jobs:
         runs-on: 'ubuntu-latest'
 
         steps:
-            - name: Checkout
-              uses: actions/checkout@v2
-              with:
-                  ref: main
-            - name: try to do something
-              uses: './../.github/actions/auto-release'
+            - name: 'build and test'
+              run: |
+                  npm ci
+                  npm run test:full
+
+            - uses: 'marvinpinto/action-automatic-releases@latest'
               with:
                   repo_token: '${{ secrets.GITHUB_TOKEN }}'
                   prerelease: false
