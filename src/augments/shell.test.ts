@@ -1,10 +1,10 @@
 import {join} from 'path';
 import {testGroup} from 'test-vir';
-import {runBashCommand} from './bash';
 import {getRepoRootDir, interpolationSafeWindowsPath, toPosixPath} from './path';
+import {runShellCommand} from './shell';
 
 testGroup({
-    description: runBashCommand.name,
+    description: runShellCommand.name,
     tests: (runTest) => {
         runTest({
             description: 'produces expected output',
@@ -16,7 +16,7 @@ testGroup({
                 exitSignal: undefined,
             },
             test: async () => {
-                return await runBashCommand('echo "hello there"');
+                return await runShellCommand('echo "hello there"');
             },
         });
 
@@ -30,7 +30,7 @@ testGroup({
                 exitSignal: undefined,
             },
             test: async () => {
-                return await runBashCommand('pwd', __dirname);
+                return await runShellCommand('pwd', {cwd: __dirname});
             },
         });
 
@@ -40,7 +40,7 @@ testGroup({
                 errorClass: Error,
             },
             test: async () => {
-                const result = await runBashCommand(`exit 1`);
+                const result = await runShellCommand(`exit 1`);
                 if (result.error) {
                     throw result.error;
                 } else {
@@ -54,7 +54,7 @@ testGroup({
                 errorClass: Error,
             },
             test: async () => {
-                await runBashCommand(`exit 2`, undefined, true);
+                await runShellCommand(`exit 2`, {rejectOnError: true});
             },
         });
 
@@ -68,7 +68,7 @@ testGroup({
 
                 const finalPhrase = 'end of line';
 
-                const commandOutput = await runBashCommand(
+                const commandOutput = await runShellCommand(
                     `seq 20 | xargs -I{} cat ${packageLockPath}; echo "${finalPhrase}"`,
                 );
 
