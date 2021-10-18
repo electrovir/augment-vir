@@ -121,11 +121,11 @@ function processListener<T extends ShellEmitterEventKey>(
 }
 
 export type RunShellCommandParams = {
-    cwd?: string;
-    shell?: string;
-    rejectOnError?: boolean;
-    stdoutCallback?: (stdout: string | Buffer) => void | Promise<void>;
-    stderrCallback?: (stderr: string | Buffer) => void | Promise<void>;
+    cwd?: string | undefined;
+    shell?: string | undefined;
+    rejectOnError?: boolean | undefined;
+    stdoutCallback?: (stdout: string | Buffer) => void | Promise<void> | undefined;
+    stderrCallback?: (stderr: string | Buffer) => void | Promise<void> | undefined;
 };
 
 export async function runShellCommand(

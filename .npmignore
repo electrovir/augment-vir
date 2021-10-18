@@ -15,9 +15,9 @@ snowpack.config.mjs
 src/
 static/
 test-repos/
-dist/test-repos/
 tsconfig-base.json
 tsconfig.json
 
+dist/test-files/
 dist/repo-paths.js
 dist/repo-paths.d.ts
