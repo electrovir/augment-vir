@@ -19,8 +19,8 @@ export const ShellEmitterEvent = {
 export type ShellEmitterEventKey = typeof ShellEmitterEvent[keyof typeof ShellEmitterEvent];
 
 export type ShellEmitterListenerMap = {
-    [ShellEmitterEvent.stdout]: [string];
-    [ShellEmitterEvent.stderr]: [string];
+    [ShellEmitterEvent.stdout]: [string | Buffer];
+    [ShellEmitterEvent.stderr]: [string | Buffer];
     /**
      * Exit code and exit signal. Based on the Node.js documentation, either one or the other is
      * defined, never both at the same time.
@@ -124,8 +124,8 @@ export type RunShellCommandParams = {
     cwd?: string;
     shell?: string;
     rejectOnError?: boolean;
-    stdoutCallback?: (stdout: string) => void | Promise<void>;
-    stderrCallback?: (stderr: string) => void | Promise<void>;
+    stdoutCallback?: (stdout: string | Buffer) => void | Promise<void>;
+    stderrCallback?: (stderr: string | Buffer) => void | Promise<void>;
 };
 
 export async function runShellCommand(

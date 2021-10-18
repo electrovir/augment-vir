@@ -1,5 +1,6 @@
 import {join} from 'path';
 import {testGroup} from 'test-vir';
+import {longRunningFile, longRunningFileWithStderr} from '../repo-paths';
 import {getRepoRootDir, interpolationSafeWindowsPath, toPosixPath} from './path';
 import {runShellCommand} from './shell';
 
@@ -55,6 +56,58 @@ testGroup({
             },
             test: async () => {
                 await runShellCommand(`exit 2`, {rejectOnError: true});
+            },
+        });
+
+        runTest({
+            description: 'shell stdoutCallback should get fired when stdout is written',
+            expect: [true, 'started\nended\n'],
+            test: async () => {
+                const output: string[] = [];
+                let counter = 0;
+                const interval = setInterval(() => {
+                    output.push(String(counter++));
+                }, 100);
+                const finalResults = await runShellCommand(
+                    `node ${interpolationSafeWindowsPath(longRunningFile)}`,
+                    {
+                        stdoutCallback: (stdout) => {
+                            output.push(stdout.toString().trim());
+                        },
+                    },
+                );
+                clearInterval(interval);
+
+                const startIndex = output.indexOf('started');
+                const endIndex = output.indexOf('ended');
+
+                return [endIndex - startIndex > 5, finalResults.stdout];
+            },
+        });
+
+        runTest({
+            description: 'shell stderrCallback should get fired when stderr is written',
+            expect: [true, 'started\nended\n'],
+            test: async () => {
+                const output: string[] = [];
+                let counter = 0;
+                const interval = setInterval(() => {
+                    output.push(String(counter++));
+                }, 100);
+                const finalResults = await runShellCommand(
+                    `node ${interpolationSafeWindowsPath(longRunningFileWithStderr)}`,
+                    {
+                        stderrCallback: (stdout) => {
+                            output.push(stdout.toString().trim());
+                        },
+                    },
+                );
+                clearInterval(interval);
+
+                const startIndex = output.indexOf('started');
+                const endIndex = output.indexOf('ended');
+
+                return [endIndex - startIndex > 5, finalResults.stderr];
             },
         });
 
