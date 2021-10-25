@@ -182,7 +182,9 @@ export function randomString(length: number = 16): string {
     const inputLength = Math.ceil(length / 2);
     // server side
     if (typeof window === 'undefined') {
-        return require('crypto').randomBytes(inputLength).toString('hex');
+        throw new Error(
+            `Window not defined for ${randomString.name} function. If using this in a Node.js context, import ${randomString.name} from 'augment-vir/dist/node'`,
+        );
     }
     // browser side
     else {

@@ -175,27 +175,13 @@ testGroup({
     description: randomString.name,
     tests: (runTest) => {
         runTest({
+            expectError: {
+                errorMessage:
+                    "Window not defined for randomString function. If using this in a Node.js context, import randomString from 'augment-vir/dist/node'",
+            },
             description: 'random string length is not required (has a default)',
             test: () => {
                 randomString();
-            },
-        });
-
-        const length = 24;
-
-        runTest({
-            expect: length,
-            description: 'random string length matches specified length',
-            test: () => {
-                return randomString(length).length;
-            },
-        });
-
-        runTest({
-            expect: false,
-            description: 'multiple calls to random string are not identical',
-            test: () => {
-                return randomString() === randomString();
             },
         });
     },
