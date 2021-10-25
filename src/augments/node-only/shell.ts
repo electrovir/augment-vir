@@ -1,6 +1,6 @@
 import {ChildProcess, ExecException, spawn} from 'child_process';
 import {EventEmitter} from 'stream';
-import {combineErrors} from './error';
+import {combineErrors} from '../error';
 
 export type ShellOutput = {
     error: undefined | Error;

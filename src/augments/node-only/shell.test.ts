@@ -1,6 +1,6 @@
 import {join} from 'path';
 import {testGroup} from 'test-vir';
-import {longRunningFile, longRunningFileWithStderr} from '../repo-paths';
+import {longRunningFile, longRunningFileWithStderr} from '../../repo-paths';
 import {getRepoRootDir, interpolationSafeWindowsPath, toPosixPath} from './path';
 import {runShellCommand} from './shell';
 
