@@ -1,6 +1,6 @@
 {
     "name": "augment-vir",
-    "version": "1.2.1",
+    "version": "1.3.0",
     "homepage": "https://github.com/electrovir/augment-vir",
     "bugs": {
         "url": "https://github.com/electrovir/augment-vir/issues"
@@ -28,7 +28,7 @@
     },
     "devDependencies": {
         "@types/fs-extra": "^9.0.13",
-        "@types/node": "^16.11.1",
-        "virmator": "^1.3.3"
+        "@types/node": "^16.11.4",
+        "virmator": "^1.3.7"
     }
 }

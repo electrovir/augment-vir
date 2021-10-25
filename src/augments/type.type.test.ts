@@ -1,4 +1,11 @@
-import {DeepWriteable, Overwrite, Writeable} from './type';
+import {
+    DeepWriteable,
+    IfEquals,
+    Overwrite,
+    RequiredAndNotNull,
+    RequiredAndNotNullBy,
+    Writeable,
+} from './type';
 
 /** Testing Writeable<T> and DeepWriteable<T> */
 
@@ -44,3 +51,30 @@ const what: thing1 = {a: 'hello', b: 5};
 const who: Overwrite<thing1, {a: number}> = {...what, a: 2};
 // @ts-expect-error
 who.what = 'should not work';
+
+/** IfEquals */
+
+const yesAssignment: IfEquals<string, string, Date, RegExp> = new Date();
+const noAssignment: IfEquals<string, number, Date, RegExp> = new RegExp('');
+
+/** RequiredAndNotNull */
+const allDefined: RequiredAndNotNull<Record<'hello' | 'yes', string>> = {
+    hello: 'there',
+    yes: 'I would like one',
+};
+const oneNotDefined: RequiredAndNotNull<Record<'hello' | 'yes', string>> = {
+    hello: 'there',
+    // @ts-expect-error
+    yes: undefined,
+};
+
+/** RequiredAndNotNullBy */
+const missingStuff: Partial<typeof allDefined> = {};
+const yesDefined: RequiredAndNotNullBy<typeof missingStuff, 'yes'> = {
+    ...missingStuff,
+    yes: 'yo',
+};
+// @ts-expect-error
+const yesNotDefined: RequiredAndNotNullBy<typeof missingStuff, 'yes'> = {
+    ...missingStuff,
+};

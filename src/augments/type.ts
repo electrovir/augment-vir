@@ -27,3 +27,10 @@ export type RequiredBy<T, K extends keyof T> = Omit<T, K> & Required<Pick<T, K>>
  */
 export type RequiredAndNotNullBy<T, K extends keyof T> = Omit<T, K> &
     Required<{[PropertyName in K]: NonNullable<T[PropertyName]>}>;
+
+/** If type T = type U, then type Y. Else type N. */
+export type IfEquals<T, U, Y = unknown, N = never> = (<G>() => G extends T ? 1 : 2) extends <
+    G,
+>() => G extends U ? 1 : 2
+    ? Y
+    : N;
