@@ -4,6 +4,7 @@ import {
     escapeStringForRegExp,
     getAllIndexesOf,
     joinWithFinalConjunction,
+    randomString,
     replaceStringAtIndex,
     splitIncludeSplit,
     stripCommasFromNumberString,
@@ -165,6 +166,36 @@ testGroup({
             description: 'escaped text works as a RegExp',
             test: () => {
                 return '[*.*]'.match(new RegExp(escapeStringForRegExp('[*.*]')));
+            },
+        });
+    },
+});
+
+testGroup({
+    description: randomString.name,
+    tests: (runTest) => {
+        runTest({
+            description: 'random string length is not required (has a default)',
+            test: () => {
+                randomString();
+            },
+        });
+
+        const length = 24;
+
+        runTest({
+            expect: length,
+            description: 'random string length matches specified length',
+            test: () => {
+                return randomString(length).length;
+            },
+        });
+
+        runTest({
+            expect: false,
+            description: 'multiple calls to random string are not identical',
+            test: () => {
+                return randomString() === randomString();
             },
         });
     },
