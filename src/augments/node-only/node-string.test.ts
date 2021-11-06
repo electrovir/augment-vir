@@ -28,5 +28,13 @@ testGroup({
                 return randomString() === randomString();
             },
         });
+
+        runTest({
+            expect: 3,
+            description: 'length works with odd numbers',
+            test: () => {
+                return randomString(3).length;
+            },
+        });
     },
 });
