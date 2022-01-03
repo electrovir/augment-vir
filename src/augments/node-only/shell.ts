@@ -193,21 +193,24 @@ export async function runShellCommand(
 export function printShellCommandOutput(
     ShellOutput: {error?: unknown; stderr?: unknown; stdout?: unknown; exitCode?: unknown},
     withLabels = false,
+    ignoreError = false,
 ) {
-    if ('exitCode' in ShellOutput) {
+    if (ShellOutput.exitCode != undefined || withLabels) {
         withLabels && console.info('exit code');
         console.info(ShellOutput.exitCode);
     }
-    if ('stdout' in ShellOutput) {
+    if (!!ShellOutput.stdout || withLabels) {
         withLabels && console.info('stdout');
         console.info(ShellOutput.stdout);
     }
-    if ('stderr' in ShellOutput) {
+    if (!!ShellOutput.stderr || withLabels) {
         withLabels && console.info('stderr');
         console.error(ShellOutput.stderr);
     }
-    if ('error' in ShellOutput) {
+    if (ShellOutput.error || withLabels) {
         withLabels && console.info('error');
-        throw ShellOutput.error;
+        if (!ignoreError) {
+            throw ShellOutput.error;
+        }
     }
 }
