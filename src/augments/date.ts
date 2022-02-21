@@ -33,7 +33,11 @@ export function createDateFromSlashFormat(
     slashFormatString: string,
     yearPrefix: number | string = '',
 ) {
-    const [month, day, rawYearEnding = ''] = slashFormatString.split('/');
+    const [
+        month,
+        day,
+        rawYearEnding = '',
+    ] = slashFormatString.split('/');
 
     if (!month || !day) {
         throw new Error(`Unable to extract month or day from "${slashFormatString}"`);
@@ -57,7 +61,11 @@ export function createDateFromNamedCommaFormat(
     commaFormatString: string,
     ignoreInvalidMonth = false,
 ) {
-    const [monthName, dayNumber, fullYear] = commaFormatString.replace(',', '').split(' ');
+    const [
+        monthName,
+        dayNumber,
+        fullYear,
+    ] = commaFormatString.replace(',', '').split(' ');
     if (!monthName || !dayNumber || !fullYear) {
         throw new InvalidDateError(
             `Invalid ${createDateFromNamedCommaFormat.name} input: ${commaFormatString}`,

@@ -10,7 +10,12 @@ testGroup({
 
         runTest({
             description: 'creates symlink',
-            expect: [false, true, true, false],
+            expect: [
+                false,
+                true,
+                true,
+                false,
+            ],
             test: async () => {
                 const results: boolean[] = [];
                 results.push(existsSync(symlinkPath));
@@ -40,7 +45,12 @@ testGroup({
 
         runTest({
             description: 'creates output file with all directories',
-            expect: [false, true, true, false],
+            expect: [
+                false,
+                true,
+                true,
+                false,
+            ],
             test: async () => {
                 const results: boolean[] = [];
 

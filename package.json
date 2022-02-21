@@ -29,6 +29,6 @@
     "devDependencies": {
         "@types/fs-extra": "^9.0.13",
         "@types/node": "^17.0.19",
-        "virmator": "^1.4.1"
+        "virmator": "^1.4.2"
     }
 }

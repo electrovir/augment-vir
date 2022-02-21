@@ -7,7 +7,12 @@ export function deDupeRegExFlags(flags: string): string {
 export function addRegExpFlags(originalRegExp: RegExp, flags: string): RegExp {
     return new RegExp(
         originalRegExp.source,
-        deDupeRegExFlags([originalRegExp.flags, flags].join('')),
+        deDupeRegExFlags(
+            [
+                originalRegExp.flags,
+                flags,
+            ].join(''),
+        ),
     );
 }
 

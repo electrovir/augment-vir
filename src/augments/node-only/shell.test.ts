@@ -61,7 +61,10 @@ testGroup({
 
         runTest({
             description: 'shell stdoutCallback should get fired when stdout is written',
-            expect: [true, 'started\nended\n'],
+            expect: [
+                true,
+                'started\nended\n',
+            ],
             test: async () => {
                 const output: string[] = [];
                 let counter = 0;
@@ -81,13 +84,19 @@ testGroup({
                 const startIndex = output.indexOf('started');
                 const endIndex = output.indexOf('ended');
 
-                return [endIndex - startIndex > 5, finalResults.stdout];
+                return [
+                    endIndex - startIndex > 5,
+                    finalResults.stdout,
+                ];
             },
         });
 
         runTest({
             description: 'shell stderrCallback should get fired when stderr is written',
-            expect: [true, 'started\nended\n'],
+            expect: [
+                true,
+                'started\nended\n',
+            ],
             test: async () => {
                 const output: string[] = [];
                 let counter = 0;
@@ -107,7 +116,10 @@ testGroup({
                 const startIndex = output.indexOf('started');
                 const endIndex = output.indexOf('ended');
 
-                return [endIndex - startIndex > 5, finalResults.stderr];
+                return [
+                    endIndex - startIndex > 5,
+                    finalResults.stderr,
+                ];
             },
         });
 

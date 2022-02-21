@@ -15,10 +15,32 @@ testGroup({
     tests: (runTest) => {
         const tests: {input: unknown[]; expect: string}[] = [
             {input: [], expect: ''},
-            {input: ['a', 'b', 'c'], expect: 'a, b, and c'},
-            {input: [1, 2, 3, 4, 5], expect: '1, 2, 3, 4, and 5'},
             {
-                input: [{}, {}, {}, {}, {}],
+                input: [
+                    'a',
+                    'b',
+                    'c',
+                ],
+                expect: 'a, b, and c',
+            },
+            {
+                input: [
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                ],
+                expect: '1, 2, 3, 4, and 5',
+            },
+            {
+                input: [
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                ],
                 expect: '[object Object], [object Object], [object Object], [object Object], and [object Object]',
             },
         ];
@@ -191,7 +213,15 @@ testGroup({
     description: splitIncludeSplit.name,
     tests: (runTest) => {
         runTest({
-            expect: ['hello ', 'YoAaAaAu', ' do ', 'you', ' have some time for ', 'yoZzZu', '?'],
+            expect: [
+                'hello ',
+                'YoAaAaAu',
+                ' do ',
+                'you',
+                ' have some time for ',
+                'yoZzZu',
+                '?',
+            ],
             description: 'splits by variable length RegExp matches',
             test: () => {
                 return splitIncludeSplit(
@@ -203,7 +233,15 @@ testGroup({
         });
 
         runTest({
-            expect: ['hello ', 'You', ' do ', 'you', ' have some time for ', 'you', '?'],
+            expect: [
+                'hello ',
+                'You',
+                ' do ',
+                'you',
+                ' have some time for ',
+                'you',
+                '?',
+            ],
             description: 'splits by a simple string',
             test: () => {
                 return splitIncludeSplit('hello You do you have some time for you?', 'you', false);
@@ -217,7 +255,14 @@ testGroup({
     tests: (runTest) => {
         runTest({
             description: 'should find all substring instances in a string',
-            expect: [2, 5, 11, 18, 24, 31],
+            expect: [
+                2,
+                5,
+                11,
+                18,
+                24,
+                31,
+            ],
             test: () => {
                 return getAllIndexesOf('who would hocked your thought now?', 'o', false);
             },
@@ -225,7 +270,14 @@ testGroup({
 
         runTest({
             description: 'should find all regex instances in a string',
-            expect: [2, 5, 11, 18, 24, 31],
+            expect: [
+                2,
+                5,
+                11,
+                18,
+                24,
+                31,
+            ],
             test: () => {
                 return getAllIndexesOf('who would hocked your thought now?', /o/, false);
             },
@@ -233,7 +285,14 @@ testGroup({
 
         runTest({
             description: 'should find all RegExp matches with a capture group',
-            expect: [2, 5, 11, 18, 24, 31],
+            expect: [
+                2,
+                5,
+                11,
+                18,
+                24,
+                31,
+            ],
             test: () => {
                 return getAllIndexesOf('who would hocked your thought now?', /(o)/, false);
             },
@@ -241,7 +300,10 @@ testGroup({
 
         runTest({
             description: 'should handle substring at the beginning of the string correctly',
-            expect: [0, 3],
+            expect: [
+                0,
+                3,
+            ],
             test: () => {
                 return getAllIndexesOf('a fan is here', 'a', false);
             },
@@ -257,7 +319,10 @@ testGroup({
 
         runTest({
             description: 'should handle the substring at the end and beginning of the string',
-            expect: [0, 8],
+            expect: [
+                0,
+                8,
+            ],
             test: () => {
                 return getAllIndexesOf('some eggs', 's', false);
             },
@@ -265,7 +330,13 @@ testGroup({
 
         runTest({
             description: 'should handle longer words',
-            expect: [5, 15, 29, 41, 50],
+            expect: [
+                5,
+                15,
+                29,
+                41,
+                50,
+            ],
             test: () => {
                 return getAllIndexesOf(
                     'when you go to you to have a you because you like you',
@@ -277,7 +348,14 @@ testGroup({
 
         runTest({
             description: 'should match multiple in a row',
-            expect: [0, 3, 6, 9, 12, 15],
+            expect: [
+                0,
+                3,
+                6,
+                9,
+                12,
+                15,
+            ],
             test: () => {
                 return getAllIndexesOf('YouYouYouYouYouYou', 'You', false);
             },
@@ -285,7 +363,10 @@ testGroup({
 
         runTest({
             description: 'should not match case mismatch',
-            expect: [0, 20],
+            expect: [
+                0,
+                20,
+            ],
             test: () => {
                 return getAllIndexesOf('You are not you but You', 'You', true);
             },
@@ -293,7 +374,11 @@ testGroup({
 
         runTest({
             description: 'should honor case insensitive set to true',
-            expect: [0, 12, 20],
+            expect: [
+                0,
+                12,
+                20,
+            ],
             test: () => {
                 return getAllIndexesOf('You are not you but You', 'You', false);
             },

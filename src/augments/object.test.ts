@@ -19,7 +19,11 @@ testGroup({
     tests: (runTest) => {
         runTest({
             description: 'gets basic enum keys properly',
-            expect: ['Mercury', 'Venus', 'Earth'],
+            expect: [
+                'Mercury',
+                'Venus',
+                'Earth',
+            ],
             test: () => {
                 return getEnumTypedKeys(Planet);
             },
@@ -27,7 +31,11 @@ testGroup({
 
         runTest({
             description: 'enum keys can be used to access the enum',
-            expect: [Planet.Mercury, Planet.Venus, Planet.Earth],
+            expect: [
+                Planet.Mercury,
+                Planet.Venus,
+                Planet.Earth,
+            ],
             test: () => {
                 const keys = getEnumTypedKeys(Planet);
                 return keys.map((key) => Planet[key]);
@@ -41,7 +49,11 @@ testGroup({
     tests: (runTest) => {
         runTest({
             description: 'gets basic enum values properly',
-            expect: [Planet.Mercury, Planet.Venus, Planet.Earth],
+            expect: [
+                Planet.Mercury,
+                Planet.Venus,
+                Planet.Earth,
+            ],
             test: () => {
                 return getEnumTypedValues(Planet);
             },
@@ -63,7 +75,11 @@ testGroup({
 
         runTest({
             description: 'matches all correct enum values',
-            expect: [Planet.Mercury, Planet.Venus, Planet.Earth],
+            expect: [
+                Planet.Mercury,
+                Planet.Venus,
+                Planet.Earth,
+            ],
             test: () => {
                 return testEnumValues.filter((testValue) => isEnumValue(testValue, Planet));
             },
@@ -82,7 +98,11 @@ testGroup({
     tests: (runTest) => {
         runTest({
             description: 'gets basic object keys',
-            expect: [Planet.Mercury, Planet.Venus, Planet.Earth],
+            expect: [
+                Planet.Mercury,
+                Planet.Venus,
+                Planet.Earth,
+            ],
             test: () => {
                 return getObjectTypedKeys(greekNames);
             },
@@ -128,11 +148,23 @@ testGroup({
             description: 'excludes invalid enum values',
             expect: [],
             test: () => {
-                return filterToEnumValues(['derby', 'who', 'done', 'it'], TestEnum);
+                return filterToEnumValues(
+                    [
+                        'derby',
+                        'who',
+                        'done',
+                        'it',
+                    ],
+                    TestEnum,
+                );
             },
         });
 
-        const validValuesTest = [TestEnum.A, TestEnum.B, TestEnum.C];
+        const validValuesTest = [
+            TestEnum.A,
+            TestEnum.B,
+            TestEnum.C,
+        ];
         runTest({
             description: 'includes valid enum values',
             expect: validValuesTest,
@@ -143,10 +175,21 @@ testGroup({
 
         runTest({
             description: 'works with case insensitivity',
-            expect: [Planet.Mercury, Planet.Venus, Planet.Earth],
+            expect: [
+                Planet.Mercury,
+                Planet.Venus,
+                Planet.Earth,
+            ],
             test: () => {
                 return filterToEnumValues(
-                    ['MeRcUrY', 'vEnUs', 'EARth', 'MOON', 'luNA', 'not A planET'],
+                    [
+                        'MeRcUrY',
+                        'vEnUs',
+                        'EARth',
+                        'MOON',
+                        'luNA',
+                        'not A planET',
+                    ],
                     Planet,
                     true,
                 );
@@ -158,7 +201,14 @@ testGroup({
             expect: [Planet.Venus],
             test: () => {
                 return filterToEnumValues(
-                    ['MeRcUrY', Planet.Venus, 'EARth', 'MOON', 'luNA', 'not A planET'],
+                    [
+                        'MeRcUrY',
+                        Planet.Venus,
+                        'EARth',
+                        'MOON',
+                        'luNA',
+                        'not A planET',
+                    ],
                     Planet,
                 );
             },
@@ -166,10 +216,22 @@ testGroup({
 
         runTest({
             description: 'output order matches input order',
-            expect: [TestEnum.C, TestEnum.B, TestEnum.A],
+            expect: [
+                TestEnum.C,
+                TestEnum.B,
+                TestEnum.A,
+            ],
             test: () => {
                 return filterToEnumValues(
-                    ['what', TestEnum.C, 'who', 'where', 'why', TestEnum.B, TestEnum.A],
+                    [
+                        'what',
+                        TestEnum.C,
+                        'who',
+                        'where',
+                        'why',
+                        TestEnum.B,
+                        TestEnum.A,
+                    ],
                     TestEnum,
                 );
             },
