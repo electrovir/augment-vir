@@ -12,3 +12,15 @@ export function combineErrors(errors?: Error[]): Error | undefined {
     }
     return new Error(errors.map((error) => error.message.trim()).join('\n'));
 }
+
+export function extractErrorMessage(error: unknown): string {
+    if (!error) {
+        return '';
+    }
+
+    if (error instanceof Error) {
+        return error.message;
+    } else {
+        return String(error);
+    }
+}
