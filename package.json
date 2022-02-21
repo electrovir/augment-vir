@@ -1,6 +1,6 @@
 {
     "name": "augment-vir",
-    "version": "1.5.0",
+    "version": "1.5.1",
     "homepage": "https://github.com/electrovir/augment-vir",
     "bugs": {
         "url": "https://github.com/electrovir/augment-vir/issues"
@@ -13,10 +13,6 @@
     "author": {
         "name": "electrovir",
         "url": "https://github.com/electrovir"
-    },
-    "exports": {
-        ".": "./dist/web-index.js",
-        "./node": "./dist/node.js"
     },
     "main": "dist/web-index.js",
     "types": "dist/web-index.d.js",
