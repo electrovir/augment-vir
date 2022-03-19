@@ -1,3 +1,5 @@
+import {ArrayElement} from './type';
+
 export function getEnumTypedKeys<T>(input: T): (keyof T)[] {
     // keys are always strings
     return getObjectTypedKeys(input).filter((key) => isNaN(Number(key))) as (keyof T)[];
@@ -40,4 +42,33 @@ export function getObjectTypedKeys<T>(input: T): (keyof T)[] {
 
 export function getObjectTypedValues<T>(input: T): T[keyof T][] {
     return Object.values(input) as T[keyof T][];
+}
+
+export function typedHasOwnProperty<ObjectGeneric extends object, KeyGeneric extends PropertyKey>(
+    inputKey: KeyGeneric,
+    inputObject: ObjectGeneric,
+): inputObject is ObjectGeneric & Record<KeyGeneric, unknown> {
+    return (
+        typeof inputObject === 'object' &&
+        inputObject &&
+        Object.prototype.hasOwnProperty.call(inputObject, inputKey)
+    );
+}
+
+export function typedHasOwnProperties<
+    ObjectGeneric extends object,
+    KeyGenerics extends PropertyKey[],
+>(
+    inputKeys: KeyGenerics,
+    inputObject: ObjectGeneric,
+): inputObject is ObjectGeneric & Record<ArrayElement<KeyGenerics>, unknown> {
+    return (
+        typeof inputObject === 'object' &&
+        inputObject &&
+        inputKeys.every((key) => Object.prototype.hasOwnProperty.call(inputObject, key))
+    );
+}
+
+export function isObject(input: any): input is NonNullable<object> {
+    return typeof input === 'object' && !!input;
 }

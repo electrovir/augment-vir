@@ -1,5 +1,5 @@
 import {testGroup} from 'test-vir';
-import {randomString} from '../../node';
+import {randomString} from './node-string';
 
 testGroup({
     description: randomString.name,

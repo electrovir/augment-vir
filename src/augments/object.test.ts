@@ -6,6 +6,9 @@ import {
     getObjectTypedKeys,
     getObjectTypedValues,
     isEnumValue,
+    isObject,
+    typedHasOwnProperties,
+    typedHasOwnProperty,
 } from './object';
 
 enum Planet {
@@ -234,6 +237,132 @@ testGroup({
                     ],
                     TestEnum,
                 );
+            },
+        });
+    },
+});
+
+testGroup({
+    description: typedHasOwnProperty.name,
+    tests: (runTest) => {
+        const testObject = {
+            a: 1,
+            b: 2,
+            c: 3,
+            d: 4,
+            e: 5,
+        };
+
+        runTest({
+            description: 'should correctly test existing property name',
+            expect: true,
+            test: () => {
+                return typedHasOwnProperty('a', testObject);
+            },
+        });
+
+        runTest({
+            description: 'should correctly test another existing property name',
+            expect: true,
+            test: () => {
+                return typedHasOwnProperty('b', testObject);
+            },
+        });
+
+        runTest({
+            description: 'should fail on non-existing property names',
+            expect: false,
+            test: () => {
+                return typedHasOwnProperty('blah', testObject);
+            },
+        });
+    },
+});
+
+testGroup({
+    description: typedHasOwnProperties.name,
+    tests: (runTest) => {
+        const testObject = {
+            a: 1,
+            b: 2,
+            c: 3,
+            d: 4,
+            e: 5,
+        };
+
+        runTest({
+            description: 'should correctly test existing properties',
+            expect: true,
+            test: () => {
+                return typedHasOwnProperties(
+                    [
+                        'a',
+                        'b',
+                        'c',
+                        'd',
+                        'e',
+                    ],
+                    testObject,
+                );
+            },
+        });
+
+        runTest({
+            description: 'should correctly fail on nonexisting properties',
+            expect: false,
+            test: () => {
+                return typedHasOwnProperties(
+                    [
+                        'abba',
+                        'blah',
+                        'cookie',
+                        'derp',
+                        'ear',
+                    ],
+                    testObject,
+                );
+            },
+        });
+    },
+});
+
+testGroup({
+    description: isObject.name,
+    tests: (runTest) => {
+        runTest({
+            description: 'should pass on empty object',
+            expect: true,
+            test: () => {
+                return isObject({});
+            },
+        });
+
+        runTest({
+            description: 'should pass on filled in object',
+            expect: true,
+            test: () => {
+                return isObject({a: '4', b: '5'});
+            },
+        });
+
+        runTest({
+            description: 'should fail on null',
+            expect: false,
+            test: () => {
+                return isObject(null);
+            },
+        });
+
+        runTest({
+            description: 'should fail on other non-objects',
+            expect: false,
+            test: () => {
+                const testingItems = [
+                    5,
+                    '5',
+                ];
+
+                return testingItems.some(isObject);
             },
         });
     },
