@@ -1,4 +1,4 @@
-/** Includes Node.js-only augments */
+/** Node.js-only augments only */
 export * from './augments/node-only/file-system';
 export {randomString} from './augments/node-only/node-string';
 export * from './augments/node-only/path';
