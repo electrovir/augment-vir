@@ -14,8 +14,8 @@
         "name": "electrovir",
         "url": "https://github.com/electrovir"
     },
-    "main": "dist/web-index.js",
-    "types": "dist/web-index.d.js",
+    "main": "dist/index.js",
+    "types": "dist/index.d.js",
     "scripts": {
         "format": "virmator format write",
         "prepublishOnly": "npm run test:full",
@@ -24,11 +24,11 @@
         "test:full": "npm test && npm run spellcheck && virmator format check"
     },
     "dependencies": {
-        "fs-extra": "^10.0.1"
+        "fs-extra": "10.0.1"
     },
     "devDependencies": {
-        "@types/fs-extra": "^9.0.13",
-        "@types/node": "^17.0.21",
-        "virmator": "^1.4.5"
+        "@types/fs-extra": "9.0.13",
+        "@types/node": "17.0.21",
+        "virmator": "1.4.5"
     }
 }

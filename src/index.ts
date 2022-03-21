@@ -1,4 +1,4 @@
-/** Excludes all Node.js-only augments. Suitable for web imports. */
+/** Excludes all Node.js-only augments. Suitable for web imports as well as most Node.js use cases. */
 export * from './augments/array';
 export * from './augments/date';
 export * from './augments/error';
