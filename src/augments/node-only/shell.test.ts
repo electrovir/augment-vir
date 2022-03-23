@@ -1,149 +1,102 @@
 import {join} from 'path';
-import {testGroup} from 'test-vir';
+// this path looks like an error but the symlink test will fix that
 import {longRunningFile, longRunningFileWithStderr} from '../../repo-paths';
 import {getRepoRootDir, interpolationSafeWindowsPath, toPosixPath} from './path';
 import {runShellCommand} from './shell';
 
-testGroup({
-    description: runShellCommand.name,
-    tests: (runTest) => {
-        runTest({
-            description: 'produces expected output',
-            expect: {
-                error: undefined,
-                stderr: '',
-                stdout: 'hello there\n',
-                exitCode: 0,
-                exitSignal: undefined,
-            },
-            test: async () => {
-                return await runShellCommand('echo "hello there"');
-            },
+describe(runShellCommand.name, () => {
+    it('produces expected output', async () => {
+        expect(await runShellCommand('echo "hello there"')).toEqual({
+            error: undefined,
+            stderr: '',
+            stdout: 'hello there\n',
+            exitCode: 0,
+            exitSignal: undefined,
         });
+    });
 
-        runTest({
-            description: 'uses custom dir correctly',
-            expect: {
-                error: undefined,
-                stderr: '',
-                stdout: `${toPosixPath(__dirname)}\n`,
-                exitCode: 0,
-                exitSignal: undefined,
-            },
-            test: async () => {
-                return await runShellCommand('pwd', {cwd: __dirname});
-            },
+    it('uses custom dir correctly', async () => {
+        expect(await runShellCommand('pwd', {cwd: __dirname})).toEqual({
+            error: undefined,
+            stderr: '',
+            stdout: `${toPosixPath(__dirname)}\n`,
+            exitCode: 0,
+            exitSignal: undefined,
         });
+    });
 
-        runTest({
-            description: 'grabs error',
-            expectError: {
-                errorClass: Error,
+    it('grabs error', async () => {
+        expect((await runShellCommand(`exit 1`)).error).toBeInstanceOf(Error);
+    });
+
+    it('promise is rejected when requested to do so', async () => {
+        await expect(runShellCommand(`exit 2`, {rejectOnError: true})).rejects.toThrow(Error);
+    });
+
+    it('shell stdoutCallback should get fired when stdout is written', async () => {
+        const output: string[] = [];
+        let counter = 0;
+        const interval = setInterval(() => {
+            output.push(String(counter++));
+        }, 100);
+        const finalResults = await runShellCommand(
+            `ts-node ${interpolationSafeWindowsPath(longRunningFile)}`,
+            {
+                rejectOnError: true,
+                stdoutCallback: (stdout) => {
+                    output.push(stdout.toString().trim());
+                },
             },
-            test: async () => {
-                const result = await runShellCommand(`exit 1`);
-                if (result.error) {
-                    throw result.error;
-                } else {
-                }
+        );
+        clearInterval(interval);
+
+        const startIndex = output.indexOf('started');
+        const endIndex = output.indexOf('ended');
+
+        expect(endIndex - startIndex).toBeGreaterThan(5);
+        expect(finalResults.stdout).toBe('started\nended\n');
+    });
+
+    it('shell stderrCallback should get fired when stderr is written', async () => {
+        const output: string[] = [];
+        let counter = 0;
+        const interval = setInterval(() => {
+            output.push(String(counter++));
+        }, 100);
+        const finalResults = await runShellCommand(
+            `ts-node ${interpolationSafeWindowsPath(longRunningFileWithStderr)}`,
+            {
+                rejectOnError: true,
+                stderrCallback: (stdout) => {
+                    output.push(stdout.toString().trim());
+                },
             },
-        });
+        );
+        clearInterval(interval);
 
-        runTest({
-            description: 'promise is rejected when requested to do so',
-            expectError: {
-                errorClass: Error,
-            },
-            test: async () => {
-                await runShellCommand(`exit 2`, {rejectOnError: true});
-            },
-        });
+        const startIndex = output.indexOf('started');
+        const endIndex = output.indexOf('ended');
 
-        runTest({
-            description: 'shell stdoutCallback should get fired when stdout is written',
-            expect: [
-                true,
-                'started\nended\n',
-            ],
-            test: async () => {
-                const output: string[] = [];
-                let counter = 0;
-                const interval = setInterval(() => {
-                    output.push(String(counter++));
-                }, 100);
-                const finalResults = await runShellCommand(
-                    `node ${interpolationSafeWindowsPath(longRunningFile)}`,
-                    {
-                        stdoutCallback: (stdout) => {
-                            output.push(stdout.toString().trim());
-                        },
-                    },
-                );
-                clearInterval(interval);
+        expect(endIndex - startIndex).toBeGreaterThan(5);
+        expect(finalResults.stderr).toBe('started\nended\n');
+    });
 
-                const startIndex = output.indexOf('started');
-                const endIndex = output.indexOf('ended');
+    it('no buffer overflow errors', async () => {
+        const packageLockPath = interpolationSafeWindowsPath(
+            join(getRepoRootDir(), 'package-lock.json'),
+        );
 
-                return [
-                    endIndex - startIndex > 5,
-                    finalResults.stdout,
-                ];
-            },
-        });
+        const finalPhrase = 'end of line';
 
-        runTest({
-            description: 'shell stderrCallback should get fired when stderr is written',
-            expect: [
-                true,
-                'started\nended\n',
-            ],
-            test: async () => {
-                const output: string[] = [];
-                let counter = 0;
-                const interval = setInterval(() => {
-                    output.push(String(counter++));
-                }, 100);
-                const finalResults = await runShellCommand(
-                    `node ${interpolationSafeWindowsPath(longRunningFileWithStderr)}`,
-                    {
-                        stderrCallback: (stdout) => {
-                            output.push(stdout.toString().trim());
-                        },
-                    },
-                );
-                clearInterval(interval);
+        const commandOutput = await runShellCommand(
+            `seq 20 | xargs -I{} cat ${packageLockPath}; echo "${finalPhrase}"`,
+        );
 
-                const startIndex = output.indexOf('started');
-                const endIndex = output.indexOf('ended');
+        if (!commandOutput.stdout.trim().endsWith(finalPhrase)) {
+            console.error(commandOutput.stdout);
+            throw new Error(`didn't read all data`);
+        }
 
-                return [
-                    endIndex - startIndex > 5,
-                    finalResults.stderr,
-                ];
-            },
-        });
-
-        runTest({
-            description: 'no buffer overflow errors',
-            expect: undefined,
-            test: async () => {
-                const packageLockPath = interpolationSafeWindowsPath(
-                    join(getRepoRootDir(), 'package-lock.json'),
-                );
-
-                const finalPhrase = 'end of line';
-
-                const commandOutput = await runShellCommand(
-                    `seq 20 | xargs -I{} cat ${packageLockPath}; echo "${finalPhrase}"`,
-                );
-
-                if (!commandOutput.stdout.trim().endsWith(finalPhrase)) {
-                    console.error(commandOutput.stdout);
-                    throw new Error(`didn't read all data`);
-                }
-
-                return commandOutput.error;
-            },
-        });
-    },
+        expect(commandOutput.error).toBeUndefined();
+    });
 });

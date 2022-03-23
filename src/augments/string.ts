@@ -1,3 +1,4 @@
+import {ansiRegex} from './ansi';
 import {deDupeRegExFlags} from './regexp';
 
 /**
@@ -28,7 +29,13 @@ export function joinWithFinalConjunction<T>(list: T[], conjunction = 'and'): str
     return fullyJoined;
 }
 
-export function stripCommasFromNumberString(numberString: string): string {
+export function removeAnsiEscapeCodes(input: string): string {
+    return input.replace(ansiRegex, '');
+}
+
+export const removeColor = removeAnsiEscapeCodes;
+
+export function removeCommasFromNumberString(numberString: string): string {
     return numberString.replace(/,/g, '');
 }
 

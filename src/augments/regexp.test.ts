@@ -1,39 +1,22 @@
-import {testGroup} from 'test-vir';
 import {addRegExpFlags, deDupeRegExFlags} from './regexp';
 
-testGroup({
-    description: deDupeRegExFlags.name,
-    tests: (runTest) => {
-        runTest({
-            description: 'deDupes consecutive flags',
-            expect: 'ig',
-            test: () => deDupeRegExFlags('iIiIgGgG'),
-        });
-        runTest({
-            description: 'deDupes nonconsecutive flags',
-            expect: 'ig',
-            test: () => deDupeRegExFlags('igIgI'),
-        });
-    },
+describe(deDupeRegExFlags.name, () => {
+    it('deDupes consecutive flags', () => {
+        expect(deDupeRegExFlags('iIiIgGgG')).toBe('ig');
+    });
+    it('deDupes nonconsecutive flags', () => {
+        expect(deDupeRegExFlags('igIgI')).toBe('ig');
+    });
 });
 
-testGroup({
-    description: addRegExpFlags.name,
-    tests: (runTest) => {
-        runTest({
-            description: 'adds flags to a RegExp',
-            expect: 'i',
-            test: () => addRegExpFlags(/nothing to see here/, 'i').flags,
-        });
-        runTest({
-            description: 'does not duplicate flags',
-            expect: 'i',
-            test: () => addRegExpFlags(/nothing to see here/i, 'i').flags,
-        });
-        runTest({
-            description: 'preserves original flags',
-            expect: 'gi',
-            test: () => addRegExpFlags(/nothing to see here/g, 'i').flags,
-        });
-    },
+describe(addRegExpFlags.name, () => {
+    it('adds flags to a RegExp', () => {
+        expect(addRegExpFlags(/nothing to see here/, 'i').flags).toBe('i');
+    });
+    it('does not duplicate flags', () => {
+        expect(addRegExpFlags(/nothing to see here/i, 'i').flags).toBe('i');
+    });
+    it('preserves original flags', () => {
+        expect(addRegExpFlags(/nothing to see here/g, 'i').flags).toBe('gi');
+    });
 });

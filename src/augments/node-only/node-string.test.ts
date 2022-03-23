@@ -1,40 +1,21 @@
-import {testGroup} from 'test-vir';
 import {randomString} from './node-string';
 
-testGroup({
-    description: randomString.name,
-    tests: (runTest) => {
-        runTest({
-            description: 'random string length is not required (has a default)',
-            test: () => {
-                randomString();
-            },
-        });
+describe(randomString.name, () => {
+    it('random string length is not required (has a default)', () => {
+        expect(randomString()).toBeTruthy();
+    });
 
-        const length = 24;
+    const length = 24;
 
-        runTest({
-            expect: length,
-            description: 'random string length matches specified length',
-            test: () => {
-                return randomString(length).length;
-            },
-        });
+    it('random string length matches specified length', () => {
+        expect(randomString(length).length).toBe(length);
+    });
 
-        runTest({
-            expect: false,
-            description: 'multiple calls to random string are not identical',
-            test: () => {
-                return randomString() === randomString();
-            },
-        });
+    it('multiple calls to random string are not identical', () => {
+        expect(randomString() === randomString()).toBe(false);
+    });
 
-        runTest({
-            expect: 3,
-            description: 'length works with odd numbers',
-            test: () => {
-                return randomString(3).length;
-            },
-        });
-    },
+    it('length works with odd numbers', () => {
+        expect(randomString(3).length).toBe(3);
+    });
 });

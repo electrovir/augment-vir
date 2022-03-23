@@ -20,7 +20,7 @@
         "format": "virmator format write",
         "prepublishOnly": "npm run test:full",
         "spellcheck": "virmator spellcheck",
-        "test": "virmator test",
+        "test": "virmator test --runInBand",
         "test:full": "npm test && npm run spellcheck && virmator format check"
     },
     "dependencies": {
@@ -28,7 +28,7 @@
     },
     "devDependencies": {
         "@types/fs-extra": "9.0.13",
-        "@types/node": "17.0.21",
-        "virmator": "1.4.5"
+        "@types/node": "17.0.22",
+        "virmator": "2.0.2"
     }
 }
