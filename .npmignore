@@ -8,15 +8,22 @@
 .vscode/
 *.test.d.ts
 *.test.js
+*.test.ts
+dist/readme-examples/
+dist/scripts/
 dist/test/
+dist/vite/
+index.html
+public/
 scripts/
-snowpack.config.js
-snowpack.config.mjs
 src/
-static/
-test-repos/
+test-files/
 tsconfig-base.json
 tsconfig.json
+snowpack.config.js
+snowpack.config.mjs
+static/
+test-repos/
 
 dist/test-files/
 dist/repo-paths.js

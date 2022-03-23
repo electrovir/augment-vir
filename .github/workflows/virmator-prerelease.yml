@@ -3,37 +3,45 @@ name: branch-prerelease
 on:
     workflow_run:
         workflows: ['tests']
-        branches: '**'
         types:
             - completed
+        branches:
+            - '**'
+
+# this is currently running on main no matter what, even when a different branch triggered "tests"
 
 jobs:
-    package-release:
-        name: 'package release'
+    branch-prerelease:
+        name: 'branch prerelease'
         runs-on: 'ubuntu-latest'
         if: ${{ github.event.workflow_run.conclusion == 'success' }}
         steps:
-            - uses: actions/checkout@v1
-            - name: Use Node.js 14.x
+            - uses: actions/checkout@v3
+              with:
+                  ref: 'update-commands'
+            - name: Use Node.js 16.x
               uses: actions/setup-node@v1
               with:
-                  node-version: 14.x
+                  node-version: 16.x
+            - name: run test
+              run: |
+                  npm ci
+                  npm run test:full
             - name: pack and set vars
               id: vars
               run: |
                   branchName="${GITHUB_REF#refs/*/}"
-                  echo ::set-output name=short_ref::"$branchName"
+                  echo ::set-output name=prereleaseTagName::"$branchName-$GITHUB_SHA"
 
                   originalTarName="$(npm pack)"
                   packageName="$(npm -s run env echo '$npm_package_name')"
-                  timeStamp="$(date +%s)"
-                  newTarName="$packageName-$timeStamp.tgz"
+                  newTarName="$packageName-$GITHUB_SHA.tgz"
                   mv "$originalTarName" "$newTarName"
-                  echo ::set-output name=tar_name::"$newTarName"
+                  echo ::set-output name=tarName::"$newTarName"
             - uses: 'marvinpinto/action-automatic-releases@latest'
               with:
                   repo_token: '${{ secrets.GITHUB_TOKEN }}'
-                  automatic_release_tag: 'prerelease-${{ steps.vars.outputs.short_ref }}'
+                  automatic_release_tag: 'prerelease-${{ steps.vars.outputs.prereleaseTagName }}'
                   prerelease: true
                   files: |
-                      ${{ steps.vars.outputs.tar_name }}
+                      ${{ steps.vars.outputs.tarName }}
