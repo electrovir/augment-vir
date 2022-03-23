@@ -20,7 +20,7 @@
         "format": "virmator format write",
         "prepublishOnly": "npm run test:full",
         "spellcheck": "virmator spellcheck",
-        "test": "virmator test --runInBand",
+        "test": "virmator test --runInBand --no-write-config",
         "test:full": "npm test && npm run spellcheck && virmator format check"
     },
     "dependencies": {
