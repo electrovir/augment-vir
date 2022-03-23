@@ -1,4 +1,6 @@
-import {ensureDir, existsSync, lstat, readlink, symlink, writeFile} from 'fs-extra';
+import {existsSync} from 'fs';
+import {ensureDir} from 'fs-extra';
+import {lstat, readlink, symlink, writeFile} from 'fs/promises';
 import {dirname} from 'path';
 
 export async function createSymLink(

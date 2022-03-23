@@ -1,4 +1,6 @@
-import {existsSync, lstat, readFile, remove} from 'fs-extra';
+import {existsSync} from 'fs';
+import {remove} from 'fs-extra';
+import {lstat, readFile} from 'fs/promises';
 import {join} from 'path';
 import {createSymLink, writeFileAndDir} from './file-system';
 
