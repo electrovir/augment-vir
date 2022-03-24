@@ -11,6 +11,7 @@ export async function createSymLink(
     linkPath: string,
     /** The location and name the symlink file itself. */
     symlinkLocationPath: string,
+    /** This is required to keep windows happy. If you're creating a symlink to a directory, set this to true. */
     dir: boolean,
 ): Promise<void> {
     if (existsSync(symlinkLocationPath)) {
