@@ -11,6 +11,7 @@ export async function createSymLink(
     linkPath: string,
     /** The location and name the symlink file itself. */
     symlinkLocationPath: string,
+    dir: boolean,
 ): Promise<void> {
     if (existsSync(symlinkLocationPath)) {
         if (!(await lstat(symlinkLocationPath)).isSymbolicLink()) {
@@ -24,7 +25,7 @@ export async function createSymLink(
             );
         }
     } else {
-        await symlink(linkPath, symlinkLocationPath);
+        await symlink(linkPath, symlinkLocationPath, dir ? 'dir' : 'file');
     }
 }
 

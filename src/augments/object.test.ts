@@ -284,22 +284,55 @@ describe(getEntriesSortedByKey.name, () => {
         };
 
         expect(getEntriesSortedByKey(testObjectA)).toEqual([
-            'a',
-            'b',
-            'c',
-            'd',
-            'q',
+            [
+                'a',
+                2,
+            ],
+            [
+                'b',
+                5,
+            ],
+            [
+                'c',
+                4,
+            ],
+            [
+                'd',
+                3,
+            ],
+            [
+                'q',
+                9,
+            ],
         ]);
 
         testObjectA.aaa = 6;
 
         expect(getEntriesSortedByKey(testObjectA)).toEqual([
-            'a',
-            'aaa',
-            'b',
-            'c',
-            'd',
-            'q',
+            [
+                'a',
+                2,
+            ],
+            [
+                'aaa',
+                6,
+            ],
+            [
+                'b',
+                5,
+            ],
+            [
+                'c',
+                4,
+            ],
+            [
+                'd',
+                3,
+            ],
+            [
+                'q',
+                9,
+            ],
         ]);
     });
 });

@@ -1,6 +1,6 @@
 import {existsSync} from 'fs';
-import {lstat, remove} from 'fs-extra';
-import {readFile} from 'fs/promises';
+import {remove} from 'fs-extra';
+import {lstat, readFile} from 'fs/promises';
 import {join} from 'path';
 import {createSymLink, writeFileAndDir} from './file-system';
 
@@ -10,7 +10,7 @@ describe(createSymLink.name, () => {
     it('creates symlink', async () => {
         try {
             expect(existsSync(symlinkPath)).toBe(false);
-            await createSymLink(__dirname, symlinkPath);
+            await createSymLink(__dirname, symlinkPath, true);
             expect(existsSync(symlinkPath)).toBe(true);
             expect((await lstat(symlinkPath)).isSymbolicLink()).toBe(true);
         } catch (error) {
