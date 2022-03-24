@@ -1,11 +1,15 @@
 import {
+    areJsonEqual,
+    copyThroughJson,
     filterToEnumValues,
+    getEntriesSortedByKey,
     getEnumTypedKeys,
     getEnumTypedValues,
     getObjectTypedKeys,
     getObjectTypedValues,
     isEnumValue,
     isObject,
+    ObjectValueType,
     typedHasOwnProperties,
     typedHasOwnProperty,
 } from './object';
@@ -266,5 +270,103 @@ describe(isObject.name, () => {
         ];
 
         expect(testingItems.some(isObject)).toBe(false);
+    });
+});
+
+describe(getEntriesSortedByKey.name, () => {
+    it("should get entries in order even if they're not assigned in order", () => {
+        const testObjectA: Record<string, number> = {
+            a: 2,
+            b: 5,
+            q: 9,
+            d: 3,
+            c: 4,
+        };
+
+        expect(getEntriesSortedByKey(testObjectA)).toEqual([
+            'a',
+            'b',
+            'c',
+            'd',
+            'q',
+        ]);
+
+        testObjectA.aaa = 6;
+
+        expect(getEntriesSortedByKey(testObjectA)).toEqual([
+            'a',
+            'aaa',
+            'b',
+            'c',
+            'd',
+            'q',
+        ]);
+    });
+});
+
+describe(areJsonEqual.name, () => {
+    it('should pass for different object references', () => {
+        const objectA: Record<string, number> = {
+            a: 1,
+            c: 3,
+        };
+        const objectB: Record<string, number> = {
+            a: 1,
+            b: 2,
+            c: 3,
+        };
+
+        objectA.b = 2;
+
+        expect(areJsonEqual(objectA, objectB)).toBe(true);
+    });
+
+    it('should pass for same object references', () => {
+        const objectA: Record<string, number> = {
+            a: 1,
+            c: 3,
+        };
+
+        expect(areJsonEqual(objectA, objectA)).toBe(true);
+    });
+
+    it('should not pass if objects are different', () => {
+        const objectA: Record<string, number> = {
+            a: 1,
+            b: 2.1,
+            c: 3,
+        };
+        const objectB: Record<string, number> = {
+            a: 1,
+            b: 2,
+            c: 3,
+        };
+
+        expect(areJsonEqual(objectA, objectB)).toBe(false);
+        expect(areJsonEqual({...objectA, b: 2}, objectB)).toBe(true);
+    });
+});
+
+describe(copyThroughJson.name, () => {
+    it('should create an identical copy', () => {
+        const testObjectA = {a: 5, b: 'five', c: {d: 5}, e: [6]};
+
+        expect(copyThroughJson(testObjectA)).toEqual(testObjectA);
+    });
+});
+
+describe('ObjectValueType', () => {
+    it('should pass type checking', () => {
+        type TestType = {a: number; b: string};
+
+        const testObjectA: TestType = {a: 5, b: 'five'};
+        const testValueC = testObjectA.a;
+        let testAssign: ObjectValueType<TestType> = testObjectA.a;
+        testAssign = testObjectA.b;
+        // @ts-expect-error
+        testAssign = [5];
+        testAssign = testValueC;
+
+        expect(testAssign).toBe(testObjectA.a);
     });
 });
