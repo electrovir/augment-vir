@@ -1,6 +1,6 @@
 {
     "name": "augment-vir",
-    "version": "1.9.0",
+    "version": "1.9.1",
     "homepage": "https://github.com/electrovir/augment-vir",
     "bugs": {
         "url": "https://github.com/electrovir/augment-vir/issues"
@@ -18,7 +18,7 @@
     "types": "dist/index.d.js",
     "scripts": {
         "format": "virmator format write",
-        "prepublishOnly": "npm run test:full",
+        "prepublishOnly": "virmator compile && npm run test:full",
         "spellcheck": "virmator spellcheck",
         "test": "virmator test --runInBand --no-write-config",
         "test:full": "npm test && npm run spellcheck && virmator format check"
@@ -29,6 +29,6 @@
     "devDependencies": {
         "@types/fs-extra": "9.0.13",
         "@types/node": "17.0.23",
-        "virmator": "2.0.2"
+        "virmator": "2.0.3"
     }
 }
