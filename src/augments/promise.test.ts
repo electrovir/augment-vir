@@ -1,4 +1,4 @@
-import {assertInstanceOf} from './node-only/jest';
+import {assertInstanceOf} from './jest-only/jest';
 import {
     createDeferredPromiseWrapper,
     PromiseTimeoutError,
