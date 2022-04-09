@@ -6,6 +6,7 @@ export * from './augments/error';
 export * from './augments/function';
 export * from './augments/number';
 export * from './augments/object';
+export * from './augments/promise';
 export * from './augments/regexp';
 export * from './augments/string';
 export * from './augments/type';
