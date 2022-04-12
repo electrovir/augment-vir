@@ -1,6 +1,6 @@
 import {ChildProcess, ExecException, spawn} from 'child_process';
 import {EventEmitter} from 'stream';
-import {combineErrors} from '../error';
+import {combineErrorMessages, combineErrors} from '../error';
 
 export type ShellOutput = {
     error: undefined | Error;
@@ -169,8 +169,13 @@ export async function runShellCommand(
                     ) {
                         shellStream.childProcess.kill();
                     }
+                    const rejectionErrorMessage: string = combineErrorMessages([
+                        ...errors,
+                        stderr,
+                    ]);
+
                     // reject now cause the "done" listener won't get fired after killing the process
-                    reject(combineErrors(errors));
+                    reject(new Error(rejectionErrorMessage));
                 }
             }),
             processListener(ShellEmitterEvent.done, (exitCode, exitSignal) => {
