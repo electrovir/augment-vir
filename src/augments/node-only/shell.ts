@@ -58,10 +58,15 @@ export interface ShellEmitter extends EventEmitter {
     childProcess: ChildProcess;
 }
 
-export function streamShellCommand(command: string, cwd?: string, shell = 'bash'): ShellEmitter {
+export function streamShellCommand(
+    command: string,
+    cwd?: string,
+    shell = 'bash',
+    env: NodeJS.ProcessEnv = process.env,
+): ShellEmitter {
     const shellEmitter: ShellEmitter = new EventEmitter() as ShellEmitter;
 
-    const childProcess = spawn(command, {shell, cwd});
+    const childProcess = spawn(command, {shell, cwd, env});
     shellEmitter.childProcess = childProcess;
 
     if (!childProcess.stdout) {
@@ -122,6 +127,7 @@ function processListener<T extends ShellEmitterEventKey>(
 
 export type RunShellCommandParams = {
     cwd?: string | undefined;
+    env?: NodeJS.ProcessEnv | undefined;
     shell?: string | undefined;
     rejectOnError?: boolean | undefined;
     stdoutCallback?: (stdout: string | Buffer) => void | Promise<void> | undefined;
@@ -137,7 +143,7 @@ export async function runShellCommand(
         let stderr = '';
         const errors: Error[] = [];
 
-        const shellStream = streamShellCommand(command, options.cwd, options.shell);
+        const shellStream = streamShellCommand(command, options.cwd, options.shell, options.env);
 
         const listeners: Readonly<Readonly<ShellListener>[]> = [
             processListener(ShellEmitterEvent.stdout, (chunk) => {
