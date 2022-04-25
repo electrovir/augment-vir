@@ -34,3 +34,5 @@ export type IfEquals<T, U, Y = unknown, N = never> = (<G>() => G extends T ? 1 :
 >() => G extends U ? 1 : 2
     ? Y
     : N;
+
+export type UnPromise<T> = T extends PromiseLike<infer PromiseType> ? Awaited<PromiseType> : T;

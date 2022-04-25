@@ -445,6 +445,47 @@ describe(mapObject.name, () => {
         });
     });
 
+    it('should work with promises', async () => {
+        const originalObject = {
+            a: 1,
+            b: 2,
+            c: 3,
+            d: 4,
+            e: 5,
+        };
+
+        const mappedObject = mapObject(originalObject, async (key, value) => {
+            return Promise.resolve(String(value));
+        });
+
+        // type tests
+        // @ts-expect-error
+        onlyAcceptNumbers(mappedObject.a);
+        // @ts-expect-error
+        onlyAcceptStrings(mappedObject.a);
+        // @ts-expect-error
+        mappedObject.q;
+
+        const awaitedMappedObject = await mappedObject;
+
+        // type tests
+        // @ts-expect-error
+        onlyAcceptNumbers(awaitedMappedObject.a);
+        onlyAcceptStrings(awaitedMappedObject.a);
+        // @ts-expect-error
+        awaitedMappedObject.q;
+
+        expect(getObjectTypedKeys(originalObject)).toEqual(getObjectTypedKeys(awaitedMappedObject));
+
+        getObjectTypedKeys(originalObject).forEach((key) => {
+            expect(originalObject.hasOwnProperty(key)).toBe(true);
+            expect(awaitedMappedObject.hasOwnProperty(key)).toBe(true);
+
+            expect(Number(awaitedMappedObject[key])).toBe(originalObject[key]);
+            expect(String(originalObject[key])).toBe(awaitedMappedObject[key]);
+        });
+    });
+
     it('should preserve properties with complex value types', () => {
         const originalObject = {
             a: 1,
