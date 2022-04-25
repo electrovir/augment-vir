@@ -2,7 +2,8 @@ import {existsSync} from 'fs';
 import {remove} from 'fs-extra';
 import {lstat, readFile} from 'fs/promises';
 import {join} from 'path';
-import {createSymLink, writeFileAndDir} from './file-system';
+import {recursiveFileReadDir} from '../../repo-file-paths';
+import {createSymLink, readDirRecursive, writeFileAndDir} from './file-system';
 
 describe(createSymLink.name, () => {
     const symlinkPath = 'test-symlink';
@@ -46,5 +47,19 @@ describe(writeFileAndDir.name, () => {
         expect(existsSync(testOutputPath)).toBe(false);
 
         return results;
+    });
+});
+
+describe(readDirRecursive.name, () => {
+    it('should read files in a directory recursively', async () => {
+        const allFiles = (await readDirRecursive(recursiveFileReadDir)).sort();
+        expect(allFiles).toEqual([
+            'a-file.txt',
+            'b-file.txt',
+            join('inner-dir', 'a-file.txt'),
+            join('inner-dir', 'b-file.txt'),
+            join('inner-dir', 'double-inner-dir', 'a-file.txt'),
+            join('inner-dir', 'double-inner-dir', 'b-file.txt'),
+        ]);
     });
 });

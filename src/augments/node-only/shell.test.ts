@@ -1,6 +1,6 @@
 import {join} from 'path';
 // this path looks like an error but the symlink test will fix that
-import {longRunningFile, longRunningFileWithStderr} from '../../repo-paths';
+import {longRunningFile, longRunningFileWithStderr} from '../../repo-file-paths';
 import {getRepoRootDir, interpolationSafeWindowsPath, toPosixPath} from './path';
 import {runShellCommand} from './shell';
 
