@@ -88,6 +88,25 @@ export function areJsonEqual(a: object, b: object): boolean {
     }
 }
 
+export type MappedValues<EntireInputGeneric extends object, MappedValuesGeneric> = {
+    [MappedProp in keyof EntireInputGeneric]: MappedValuesGeneric;
+};
+
+export function mapObject<EntireInputGeneric extends object, MappedValuesGeneric>(
+    inputObject: EntireInputGeneric,
+    mapCallback: (
+        inputKey: keyof EntireInputGeneric,
+        keyValue: EntireInputGeneric[typeof inputKey],
+    ) => MappedValuesGeneric,
+): MappedValues<EntireInputGeneric, MappedValuesGeneric> {
+    return getObjectTypedKeys(inputObject).reduce((accum, currentKey) => {
+        return {
+            ...accum,
+            [currentKey]: mapCallback(currentKey, inputObject[currentKey]),
+        };
+    }, {} as MappedValues<EntireInputGeneric, MappedValuesGeneric>);
+}
+
 /** The input here must be serializable otherwise JSON parsing errors will be thrown */
 export function copyThroughJson<T>(input: T): T {
     try {

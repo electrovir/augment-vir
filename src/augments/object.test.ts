@@ -9,6 +9,7 @@ import {
     getObjectTypedValues,
     isEnumValue,
     isObject,
+    mapObject,
     ObjectValueType,
     typedHasOwnProperties,
     typedHasOwnProperty,
@@ -401,5 +402,82 @@ describe('ObjectValueType', () => {
         testAssign = testValueC;
 
         expect(testAssign).toBe(testObjectA.a);
+    });
+});
+
+describe(mapObject.name, () => {
+    function onlyAcceptNumbers(input: number): void {}
+    function onlyAcceptStrings(input: string): void {}
+
+    it("should map an object's values", () => {
+        const originalObject = {
+            a: 1,
+            b: 2,
+            c: 3,
+            d: 4,
+            e: 5,
+        };
+
+        // type tests
+        onlyAcceptNumbers(originalObject.a);
+        // @ts-expect-error
+        onlyAcceptStrings(originalObject.a);
+
+        const mappedObject = mapObject(originalObject, (key, value) => {
+            return String(value);
+        });
+
+        // type tests
+        // @ts-expect-error
+        onlyAcceptNumbers(mappedObject.a);
+        onlyAcceptStrings(mappedObject.a);
+        // @ts-expect-error
+        mappedObject.q;
+
+        expect(getObjectTypedKeys(originalObject)).toEqual(getObjectTypedKeys(mappedObject));
+
+        getObjectTypedKeys(originalObject).forEach((key) => {
+            expect(originalObject.hasOwnProperty(key)).toBe(true);
+            expect(mappedObject.hasOwnProperty(key)).toBe(true);
+
+            expect(Number(mappedObject[key])).toBe(originalObject[key]);
+            expect(String(originalObject[key])).toBe(mappedObject[key]);
+        });
+    });
+
+    it('should preserve properties with complex value types', () => {
+        const originalObject = {
+            a: 1,
+            b: {what: 'two'},
+            c: '3',
+            d: 4,
+            e: 5,
+        };
+
+        // type tests
+        onlyAcceptNumbers(originalObject.a);
+        // @ts-expect-error
+        onlyAcceptNumbers(originalObject.b);
+        // @ts-expect-error
+        onlyAcceptNumbers(originalObject.c);
+        // @ts-expect-error
+        onlyAcceptStrings(originalObject.a);
+
+        const mappedObject = mapObject(originalObject, (key, value) => {
+            return String(value);
+        });
+
+        // type tests
+        // @ts-expect-error
+        onlyAcceptNumbers(mappedObject.a);
+        // @ts-expect-error
+        onlyAcceptNumbers(mappedObject.b);
+        // @ts-expect-error
+        onlyAcceptNumbers(mappedObject.c);
+        onlyAcceptStrings(mappedObject.b);
+        onlyAcceptStrings(mappedObject.c);
+        onlyAcceptStrings(mappedObject.a);
+        // @ts-expect-error
+        mappedObject.q;
     });
 });
