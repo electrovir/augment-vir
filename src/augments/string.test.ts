@@ -1,8 +1,10 @@
 import {
+    camelCaseToKebabCase,
     collapseSpaces,
     escapeStringForRegExp,
     getAllIndexesOf,
     joinWithFinalConjunction,
+    kebabCaseToCamelCase,
     randomString,
     removeAnsiEscapeCodes,
     removeColor,
@@ -80,6 +82,60 @@ describe(removeCommasFromNumberString.name, () => {
 
     it(`comma stripped with decimal intact`, () => {
         expect(removeCommasFromNumberString('1,234.56')).toBe('1234.56');
+    });
+});
+
+
+describe(kebabCaseToCamelCase.name, () => {
+    it('should transform kebab-case to camelCase', () => {
+        expect(kebabCaseToCamelCase('hello-there-what-have-we-here')).toBe(
+            'helloThereWhatHaveWeHere',
+        );
+        expect(
+            kebabCaseToCamelCase('hello-there-what-have-we-here', {capitalizeFirstLetter: true}),
+        ).toBe('HelloThereWhatHaveWeHere');
+    });
+
+    it('should handle edge cases', () => {
+        expect(kebabCaseToCamelCase('hello-THERE-what-have-we-here')).toBe(
+            'helloThereWhatHaveWeHere',
+        );
+        expect(kebabCaseToCamelCase('-hello-THERE-what-have-we-here-')).toBe(
+            'helloThereWhatHaveWeHere',
+        );
+        expect(kebabCaseToCamelCase('-hello----THERE-what-have-we-here-')).toBe(
+            'helloThereWhatHaveWeHere',
+        );
+        expect(kebabCaseToCamelCase('-hello----THERE-what-HAVE---we-here-----')).toBe(
+            'helloThereWhatHaveWeHere',
+        );
+        // cspell: disable
+        expect(kebabCaseToCamelCase('HELLOTHEREWHATHAVEWEHERE')).toBe('hellotherewhathavewehere');
+        // cspell: enable
+        expect(
+            kebabCaseToCamelCase('----hello-there---what-have-we-here--', {
+                capitalizeFirstLetter: true,
+            }),
+        ).toBe('HelloThereWhatHaveWeHere');
+    });
+});
+
+describe(camelCaseToKebabCase.name, () => {
+    it('should transform camelCase to kebab-case', () => {
+        expect(camelCaseToKebabCase('MyVarItHasManyWordsInIt')).toBe(
+            'my-var-it-has-many-words-in-it',
+        );
+        expect(camelCaseToKebabCase('myVarItHasManyWordsInIt')).toBe(
+            'my-var-it-has-many-words-in-it',
+        );
+    });
+    it('should handle edge cases', () => {
+        expect(camelCaseToKebabCase('MyVar--It-HasMany--WordsInIt')).toBe(
+            'my-var---it--has-many---words-in-it',
+        );
+        expect(camelCaseToKebabCase('MyCSSVar')).toBe('my-css-var');
+        expect(camelCaseToKebabCase('whatIsGoingOnHERE')).toBe('what-is-going-on-here');
+        expect(camelCaseToKebabCase('whatIfIHaveAnI')).toBe('what-if-i-have-an-i');
     });
 });
 

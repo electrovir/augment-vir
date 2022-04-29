@@ -80,6 +80,82 @@ export function splitIncludeSplit(
     return splitterIncluded;
 }
 
+export type CasingOptions = {
+    capitalizeFirstLetter: boolean;
+};
+
+const defaultCasingOptions: Required<CasingOptions> = {
+    capitalizeFirstLetter: false,
+};
+
+export function capitalizeFirstLetter(input: string): string {
+    if (!input.length) {
+        return '';
+    }
+    const firstLetter: string = input[0] ?? '';
+    return firstLetter.toUpperCase() + input.slice(1);
+}
+
+function maybeCapitalize(
+    input: string,
+    casingOptions: Partial<CasingOptions> | undefined = defaultCasingOptions,
+): string {
+    return casingOptions.capitalizeFirstLetter ? capitalizeFirstLetter(input) : input;
+}
+
+export function kebabCaseToCamelCase(
+    rawKebabCase: string,
+    casingOptions: Partial<CasingOptions> | undefined = defaultCasingOptions,
+): string {
+    const kebabCase = rawKebabCase.toLowerCase();
+    if (!kebabCase.length) {
+        return '';
+    }
+
+    const camelCase = kebabCase
+        .replace(/^-+/, '')
+        .replace(/-{2,}/g, '-')
+        .replace(/-(?:.|$)/g, (dashMatch) => {
+            const letter = dashMatch[1];
+            if (letter) {
+                return letter.toUpperCase();
+            } else {
+                return '';
+            }
+        });
+
+    return maybeCapitalize(camelCase, casingOptions);
+}
+
+function isLowerCase(input: string): boolean {
+    // this excludes letters that are identical between lower and upper case like punctuation
+    return input !== input.toUpperCase();
+}
+
+export function camelCaseToKebabCase(rawCamelCase: string) {
+    const kebabCase: string = rawCamelCase
+        .split('')
+        .reduce((accum, currentLetter, index, originalString) => {
+            const previousLetter = index > 0 ? originalString[index - 1] ?? '' : '';
+            const nextLetter = index < originalString.length ? originalString[index + 1] ?? '' : '';
+            const possibleWordBoundary = isLowerCase(previousLetter) || isLowerCase(nextLetter);
+
+            if (
+                currentLetter === currentLetter.toLowerCase() ||
+                index === 0 ||
+                !possibleWordBoundary
+            ) {
+                accum += currentLetter;
+            } else {
+                accum += `-${currentLetter.toLowerCase()}`;
+            }
+            return accum;
+        }, '')
+        .toLowerCase();
+
+    return kebabCase;
+}
+
 export function replaceStringAtIndex(
     originalString: string,
     start: number,
