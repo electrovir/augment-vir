@@ -39,12 +39,15 @@ export function removeCommasFromNumberString(numberString: string): string {
     return numberString.replace(/,/g, '');
 }
 
-/**
- * Collapse all consecutive spaces into just one space and trim surrounding whitespace. Example:
- * "hello there" will turn into just "hello there".
- */
-export function collapseSpaces(input: string): string {
-    return input.trim().replace(/\s{2,}/g, ' ');
+/** Collapse all consecutive white space into just one space and trim surrounding whitespace. */
+export function collapseWhiteSpace(input: string): string {
+    return (
+        input
+            // sometimes \n isn't included in \s
+            .replace(/\n/, ' ')
+            .trim()
+            .replace(/\s{2,}/g, ' ')
+    );
 }
 
 /** Same as String.prototype.split but includes the delimiter to split by in the output array. */

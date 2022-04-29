@@ -1,6 +1,6 @@
 import {
     camelCaseToKebabCase,
-    collapseSpaces,
+    collapseWhiteSpace,
     escapeStringForRegExp,
     getAllIndexesOf,
     joinWithFinalConjunction,
@@ -51,19 +51,25 @@ describe(joinWithFinalConjunction.name, () => {
     });
 });
 
-describe(collapseSpaces.name, () => {
+describe(collapseWhiteSpace.name, () => {
     it(`check simple space collapsing`, () => {
-        expect(collapseSpaces('hello           there')).toBe('hello there');
+        expect(collapseWhiteSpace('hello           there')).toBe('hello there');
     });
 
     it(`multiple space collapsing`, () => {
         expect(
-            collapseSpaces('hello           there          you        are a bold           one'),
+            collapseWhiteSpace(
+                'hello           there          you        are a bold           one',
+            ),
         ).toBe('hello there you are a bold one');
     });
 
     it(`beginning and ending space is trimmed as well`, () => {
-        expect(collapseSpaces('     hello   there     ')).toBe('hello there');
+        expect(collapseWhiteSpace('     hello   there     ')).toBe('hello there');
+    });
+
+    it('should trim inner newlines', () => {
+        expect(collapseWhiteSpace('hello\n\nthere')).toBe('hello there');
     });
 });
 
@@ -84,7 +90,6 @@ describe(removeCommasFromNumberString.name, () => {
         expect(removeCommasFromNumberString('1,234.56')).toBe('1234.56');
     });
 });
-
 
 describe(kebabCaseToCamelCase.name, () => {
     it('should transform kebab-case to camelCase', () => {
