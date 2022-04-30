@@ -136,6 +136,12 @@ export type RunShellCommandParams = {
     stderrCallback?: (stderr: string) => void | Promise<void> | undefined;
 };
 
+function prepareChunkForLogging(chunk: string | Buffer, trimEndingLine: boolean): string {
+    const stringified = chunk.toString();
+
+    return trimEndingLine ? stringified.replace(/\n$/, '') : stringified;
+}
+
 export async function runShellCommand(
     command: string,
     options: RunShellCommandParams = {},
@@ -150,19 +156,19 @@ export async function runShellCommand(
         const listeners: Readonly<Readonly<ShellListener>[]> = [
             processListener(ShellEmitterEvent.stdout, (chunk) => {
                 if (options.stdoutCallback) {
-                    options.stdoutCallback(chunk.toString());
+                    options.stdoutCallback(prepareChunkForLogging(chunk, false));
                 }
                 if (options.hookUpToConsole) {
-                    console.log(chunk.toString());
+                    console.log(prepareChunkForLogging(chunk, true));
                 }
                 stdout += chunk;
             }),
             processListener(ShellEmitterEvent.stderr, (chunk) => {
                 if (options.stderrCallback) {
-                    options.stderrCallback(chunk.toString());
+                    options.stderrCallback(prepareChunkForLogging(chunk, false));
                 }
                 if (options.hookUpToConsole) {
-                    console.error(chunk.toString());
+                    console.error(prepareChunkForLogging(chunk, true));
                 }
                 stderr += chunk;
             }),
