@@ -70,6 +70,7 @@ describe(collapseWhiteSpace.name, () => {
 
     it('should trim inner newlines', () => {
         expect(collapseWhiteSpace('hello\n\nthere')).toBe('hello there');
+        expect(collapseWhiteSpace('hello\n\nthere\n\nstuff')).toBe('hello there stuff');
     });
 });
 

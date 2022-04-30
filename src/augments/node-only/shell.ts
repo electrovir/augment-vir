@@ -129,9 +129,11 @@ export type RunShellCommandParams = {
     cwd?: string | undefined;
     env?: NodeJS.ProcessEnv | undefined;
     shell?: string | undefined;
+    /** Automatically hook up stdout and stderr printing to the caller's console methods. */
+    hookUpToConsole?: boolean | undefined;
     rejectOnError?: boolean | undefined;
-    stdoutCallback?: (stdout: string | Buffer) => void | Promise<void> | undefined;
-    stderrCallback?: (stderr: string | Buffer) => void | Promise<void> | undefined;
+    stdoutCallback?: (stdout: string) => void | Promise<void> | undefined;
+    stderrCallback?: (stderr: string) => void | Promise<void> | undefined;
 };
 
 export async function runShellCommand(
@@ -148,13 +150,19 @@ export async function runShellCommand(
         const listeners: Readonly<Readonly<ShellListener>[]> = [
             processListener(ShellEmitterEvent.stdout, (chunk) => {
                 if (options.stdoutCallback) {
-                    options.stdoutCallback(chunk);
+                    options.stdoutCallback(chunk.toString());
+                }
+                if (options.hookUpToConsole) {
+                    console.log(chunk.toString());
                 }
                 stdout += chunk;
             }),
             processListener(ShellEmitterEvent.stderr, (chunk) => {
                 if (options.stderrCallback) {
-                    options.stderrCallback(chunk);
+                    options.stderrCallback(chunk.toString());
+                }
+                if (options.hookUpToConsole) {
+                    console.error(chunk.toString());
                 }
                 stderr += chunk;
             }),

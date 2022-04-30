@@ -44,7 +44,7 @@ export function collapseWhiteSpace(input: string): string {
     return (
         input
             // sometimes \n isn't included in \s
-            .replace(/\n/, ' ')
+            .replace(/\n/g, ' ')
             .trim()
             .replace(/\s{2,}/g, ' ')
     );
