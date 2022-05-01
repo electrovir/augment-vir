@@ -1,4 +1,5 @@
-import {assertInstanceOf, assertNotNullish} from './jest';
+import {isPromiseLike, wait} from '../promise';
+import {assertInstanceOf, assertNotNullish, expectDuration} from './jest';
 
 describe(assertInstanceOf.name, () => {
     it('should pass', () => {
@@ -91,5 +92,24 @@ describe(assertNotNullish.name, () => {
 
         // should not have a TypeScript error here
         expect(onlyAcceptNumbers(possiblyUndefined, 2)).toBe(7);
+    });
+});
+
+describe(expectDuration.name, () => {
+    it('should not return a promise when the callback is synchronous', () => {
+        const expectation = expectDuration(() => {
+            // do nothing
+        });
+        expect(isPromiseLike(expectation)).toBe(false);
+        expectation.toBeGreaterThanOrEqual(0);
+    });
+
+    it('should return a promise when the callback is asynchronous', async () => {
+        const duration = 100;
+        const expectation = expectDuration(async () => {
+            await wait(duration);
+        });
+        expect(isPromiseLike(expectation)).toBe(true);
+        (await expectation).toBeGreaterThanOrEqual(0);
     });
 });

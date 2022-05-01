@@ -12,6 +12,14 @@ export function wait(delayMs: number): Promise<void> {
     return deferredPromiseWrapper.promise;
 }
 
+export function isPromiseLike(input: any): input is PromiseLike<unknown> {
+    if (typeof input?.then === 'function') {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 export class PromiseTimeoutError extends Error {
     public override readonly name = 'PromiseTimeoutError';
 

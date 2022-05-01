@@ -1,6 +1,7 @@
 import {assertInstanceOf} from './jest-only/jest';
 import {
     createDeferredPromiseWrapper,
+    isPromiseLike,
     PromiseTimeoutError,
     wait,
     wrapPromiseInTimeout,
@@ -110,4 +111,13 @@ describe(wrapPromiseInTimeout.name, () => {
         },
         promiseDelayMs * 2,
     );
+});
+
+describe(isPromiseLike.name, () => {
+    it('should work', async () => {
+        const waiting = wait(400);
+        expect(isPromiseLike(waiting)).toBe(true);
+        const awaited = await waiting;
+        expect(isPromiseLike(awaited)).toBe(false);
+    });
 });

@@ -1,4 +1,13 @@
-import {filterOutIndexes, flatten2dArray, trimArrayStrings} from './array';
+import {
+    awaitedBlockingMap,
+    awaitedForEach,
+    filterOutIndexes,
+    flatten2dArray,
+    trimArrayStrings,
+} from './array';
+import {expectDuration} from './jest-only/jest';
+import {randomString} from './node-only/node-string';
+import {wait} from './promise';
 
 describe(filterOutIndexes.name, () => {
     const experimentArray = [
@@ -130,5 +139,58 @@ describe(flatten2dArray.name, () => {
             0,
             -1,
         ]);
+    });
+});
+
+describe(awaitedForEach.name, () => {
+    it('should ensure execution order', async () => {
+        const originalArray: string[] = Array(5)
+            .fill(0)
+            .map(() => randomString());
+        const results: string[] = [];
+        let totalWait = 0;
+        (
+            await expectDuration(async () => {
+                await awaitedForEach(originalArray, async (element, index) => {
+                    if (index === 1) {
+                        await wait(1000);
+                        totalWait += 1000;
+                    } else {
+                        await wait(50);
+                        totalWait += 50;
+                    }
+                    results.push(element);
+                });
+
+                // ensure the order is the same despite a long wait time in the middle
+            })
+        ).toBeGreaterThanOrEqual(totalWait);
+        expect(results).toEqual(originalArray);
+    });
+});
+
+describe(awaitedBlockingMap.name, () => {
+    it('should return values and maintain execution order', async () => {
+        const originalArray: string[] = Array(5)
+            .fill(0)
+            .map(() => randomString());
+        let totalWait = 0;
+        (
+            await expectDuration(async () => {
+                const results = await awaitedBlockingMap(originalArray, async (element, index) => {
+                    if (index === 1) {
+                        await wait(1000);
+                        totalWait += 1000;
+                    } else {
+                        await wait(50);
+                        totalWait += 50;
+                    }
+                    return {element};
+                });
+
+                // ensure the order is the same despite a long wait time in the middle
+                expect(results.map((wrapper) => wrapper.element)).toEqual(originalArray);
+            })
+        ).toBeGreaterThanOrEqual(totalWait);
     });
 });
