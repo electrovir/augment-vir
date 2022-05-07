@@ -29,3 +29,4 @@ test-repos/
 dist/test-files/
 dist/repo-paths.js
 dist/repo-paths.d.ts
+tsconfig.*.json
