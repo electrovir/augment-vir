@@ -36,3 +36,18 @@ export type IfEquals<T, U, Y = unknown, N = never> = (<G>() => G extends T ? 1 :
     : N;
 
 export type UnPromise<T> = T extends PromiseLike<infer PromiseType> ? Awaited<PromiseType> : T;
+
+/**
+ * This function returns another function that simply returns whatever input it's given. However, it
+ * also checks that the input matches the original wrapTypeWithReadonly's generic, while maintaining
+ * strict "const" like typing.
+ *
+ * Use like this: wrapTypeWithReadonly<EnforcedTypeHere>()(valueToEnforceTypeOn as const)
+ *
+ * Sometimes "as const" isn't required, sometimes it is. Just stick it on for any object or array.
+ */
+export function wrapTypeWithReadonly<P>() {
+    return <T extends P>(input: T): Readonly<T> => {
+        return input;
+    };
+}

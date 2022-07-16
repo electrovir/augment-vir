@@ -5,6 +5,7 @@ import {
     RequiredAndNotNull,
     RequiredAndNotNullBy,
     UnPromise,
+    wrapTypeWithReadonly,
     Writeable,
 } from './type';
 
@@ -95,4 +96,25 @@ import {
     const unPromised: UnPromise<typeof maybePromise> = '' as UnPromise<typeof maybePromise>;
 
     const goodOnlyString: string = unPromised;
+}
+
+{
+    /** WrapTypeWithReadonly */
+    function acceptsOnlySpecificType(input: {thingie: 5}) {
+        return input;
+    }
+    const specificObject = wrapTypeWithReadonly<Record<string, number>>()({thingie: 5} as const);
+    acceptsOnlySpecificType(specificObject);
+
+    const vagueObject: Record<string, number> = {thingie: 5};
+    // @ts-expect-error
+    acceptsOnlySpecificType(vagueObject);
+
+    const lessVagueObject: Record<string, number> = {thingie: 5} as const;
+    // @ts-expect-error
+    acceptsOnlySpecificType(lessVagueObject);
+
+    // this one works but doesn't enforce a specific type on the value at assignment
+    const unTypedObject = {thingie: 5} as const;
+    acceptsOnlySpecificType(unTypedObject);
 }
