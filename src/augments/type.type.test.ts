@@ -5,7 +5,7 @@ import {
     RequiredAndNotNull,
     RequiredAndNotNullBy,
     UnPromise,
-    wrapTypeWithReadonly,
+    wrapNarrowTypeWithTypeCheck,
     Writeable,
 } from './type';
 
@@ -103,7 +103,9 @@ import {
     function acceptsOnlySpecificType(input: {thingie: 5}) {
         return input;
     }
-    const specificObject = wrapTypeWithReadonly<Record<string, number>>()({thingie: 5} as const);
+    const specificObject = wrapNarrowTypeWithTypeCheck<Record<string, number>>()({
+        thingie: 5,
+    } as const);
     acceptsOnlySpecificType(specificObject);
 
     const vagueObject: Record<string, number> = {thingie: 5};
