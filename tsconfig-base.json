@@ -25,7 +25,8 @@
         "dist",
         "node_modules",
         "separate-configs",
-        "test-files"
+        "test-files",
+        "scripts"
     ],
     "ts-node": {
         "compilerOptions": {
