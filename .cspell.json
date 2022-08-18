@@ -1,4 +1,9 @@
 {
     "import": ".cspell-base.json",
-    "words": ["marvinpinto"]
+    "words": [
+        "marvinpinto",
+        "peta",
+        "yotta",
+        "zetta"
+    ]
 }
