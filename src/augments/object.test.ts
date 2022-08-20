@@ -198,16 +198,53 @@ describe(typedHasOwnProperty.name, () => {
         e: 5,
     };
 
-    it('should correctly test existing property name', () => {
-        expect(typedHasOwnProperty('a', testObject)).toBe(true);
+    const testCases: {input: any; property: string; output: boolean}[] = [
+        {
+            input: testObject,
+            property: 'a',
+            output: true,
+        },
+        {
+            input: testObject,
+            property: 'b',
+            output: true,
+        },
+        {
+            input: testObject,
+            property: 'blah',
+            output: false,
+        },
+        {
+            input: () => {},
+            property: 'name',
+            output: true,
+        },
+    ];
+
+    it('should pass all test cases', () => {
+        testCases.forEach((testCase) => {
+            const message = `Expected property ${testCase.property} to ${
+                testCase.output ? '' : 'not '
+            }exist.`;
+            try {
+                expect(typedHasOwnProperty(testCase.input, testCase.property)).toBe(
+                    testCase.output,
+                );
+            } catch (error) {
+                console.error(message);
+                throw error;
+            }
+        });
     });
 
-    it('should correctly test another existing property name', () => {
-        expect(typedHasOwnProperty('b', testObject)).toBe(true);
-    });
-
-    it('should fail on non-existing property names', () => {
-        expect(typedHasOwnProperty('blah', testObject)).toBe(false);
+    it('should pass type tests', () => {
+        const idkWhatThisIs: unknown = (() => {}) as unknown;
+        if (typedHasOwnProperty(idkWhatThisIs, 'name')) {
+            idkWhatThisIs.name;
+        } else {
+            // @ts-expect-error
+            idkWhatThisIs.name;
+        }
     });
 });
 
@@ -222,31 +259,25 @@ describe(typedHasOwnProperties.name, () => {
 
     it('should correctly test existing properties', () => {
         expect(
-            typedHasOwnProperties(
-                [
-                    'a',
-                    'b',
-                    'c',
-                    'd',
-                    'e',
-                ],
-                testObject,
-            ),
+            typedHasOwnProperties(testObject, [
+                'a',
+                'b',
+                'c',
+                'd',
+                'e',
+            ]),
         ).toBe(true);
     });
 
     it('should correctly fail on nonexisting properties', () => {
         expect(
-            typedHasOwnProperties(
-                [
-                    'abba',
-                    'blah',
-                    'cookie',
-                    'derp',
-                    'ear',
-                ],
-                testObject,
-            ),
+            typedHasOwnProperties(testObject, [
+                'abba',
+                'blah',
+                'cookie',
+                'derp',
+                'ear',
+            ]),
         ).toBe(false);
     });
 });
@@ -262,6 +293,10 @@ describe(isObject.name, () => {
 
     it('should fail on null', () => {
         expect(isObject(null)).toBe(false);
+    });
+
+    it('should fail on function', () => {
+        expect(isObject(() => {})).toBe(false);
     });
 
     it('should fail on other non-objects', () => {

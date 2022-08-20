@@ -44,33 +44,28 @@ export function getObjectTypedValues<T>(input: T): T[keyof T][] {
     return Object.values(input) as T[keyof T][];
 }
 
-export function typedHasOwnProperty<ObjectGeneric extends object, KeyGeneric extends PropertyKey>(
-    inputKey: KeyGeneric,
+export function typedHasOwnProperty<ObjectGeneric extends unknown, KeyGeneric extends PropertyKey>(
     inputObject: ObjectGeneric,
+    inputKey: KeyGeneric,
 ): inputObject is ObjectGeneric & Record<KeyGeneric, unknown> {
-    return (
-        typeof inputObject === 'object' &&
-        inputObject &&
-        Object.prototype.hasOwnProperty.call(inputObject, inputKey)
-    );
+    return inputObject && Object.prototype.hasOwnProperty.call(inputObject, inputKey);
 }
 
 export function typedHasOwnProperties<
-    ObjectGeneric extends object,
+    ObjectGeneric extends unknown,
     KeyGenerics extends PropertyKey[],
 >(
-    inputKeys: KeyGenerics,
     inputObject: ObjectGeneric,
+    inputKeys: KeyGenerics,
 ): inputObject is ObjectGeneric & Record<ArrayElement<KeyGenerics>, unknown> {
     return (
-        typeof inputObject === 'object' &&
         inputObject &&
         inputKeys.every((key) => Object.prototype.hasOwnProperty.call(inputObject, key))
     );
 }
 
-export function isObject(input: any): input is NonNullable<object> {
-    return typeof input === 'object' && !!input;
+export function isObject(input: any): input is NonNullable<object | Function> {
+    return !!input && typeof input === 'object';
 }
 
 export function getEntriesSortedByKey(input: object): [string, unknown][] {
