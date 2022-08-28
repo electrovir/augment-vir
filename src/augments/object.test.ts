@@ -83,6 +83,17 @@ describe(getObjectTypedKeys.name, () => {
             Planet.Earth,
         ]);
     });
+
+    it('includes symbols', () => {
+        const mySymbol = Symbol('derp');
+
+        expect(getObjectTypedKeys({[mySymbol]: 'nothing', ...greekNames})).toEqual([
+            Planet.Mercury,
+            Planet.Venus,
+            Planet.Earth,
+            mySymbol,
+        ]);
+    });
 });
 
 describe(getObjectTypedValues.name, () => {

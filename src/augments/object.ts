@@ -1,11 +1,11 @@
 import {ArrayElement, UnPromise} from './type';
 
-export function getEnumTypedKeys<T>(input: T): (keyof T)[] {
+export function getEnumTypedKeys<T extends object>(input: T): (keyof T)[] {
     // keys are always strings
     return getObjectTypedKeys(input).filter((key) => isNaN(Number(key))) as (keyof T)[];
 }
 
-export function getEnumTypedValues<T>(input: T): T[keyof T][] {
+export function getEnumTypedValues<T extends object>(input: T): T[keyof T][] {
     const keys = getEnumTypedKeys(input);
     return keys.map((key) => input[key]);
 }
@@ -36,19 +36,25 @@ export function filterToEnumValues<T extends object>(
     }
 }
 
-export function getObjectTypedKeys<T>(input: T): (keyof T)[] {
-    return Object.keys(input) as (keyof T)[];
+export function getObjectTypedKeys<ObjectGeneric extends unknown>(
+    input: ObjectGeneric,
+): (keyof ObjectGeneric)[] {
+    return Reflect.ownKeys(input as object) as (keyof ObjectGeneric)[];
 }
 
-export function getObjectTypedValues<T>(input: T): T[keyof T][] {
-    return Object.values(input) as T[keyof T][];
+export function getObjectTypedValues<ObjectGeneric extends unknown>(
+    input: ObjectGeneric,
+): ObjectGeneric[keyof ObjectGeneric][] {
+    return getObjectTypedKeys(input).map(
+        (key) => input[key],
+    ) as ObjectGeneric[keyof ObjectGeneric][];
 }
 
 export function typedHasOwnProperty<ObjectGeneric extends unknown, KeyGeneric extends PropertyKey>(
     inputObject: ObjectGeneric,
     inputKey: KeyGeneric,
 ): inputObject is ObjectGeneric & Record<KeyGeneric, unknown> {
-    return inputObject && Object.prototype.hasOwnProperty.call(inputObject, inputKey);
+    return inputObject && Reflect.has(inputObject as object, inputKey);
 }
 
 export function typedHasOwnProperties<
@@ -58,10 +64,7 @@ export function typedHasOwnProperties<
     inputObject: ObjectGeneric,
     inputKeys: KeyGenerics,
 ): inputObject is ObjectGeneric & Record<ArrayElement<KeyGenerics>, unknown> {
-    return (
-        inputObject &&
-        inputKeys.every((key) => Object.prototype.hasOwnProperty.call(inputObject, key))
-    );
+    return inputObject && inputKeys.every((key) => typedHasOwnProperty(inputObject, key));
 }
 
 export function isObject(input: any): input is NonNullable<object | Function> {
