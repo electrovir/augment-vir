@@ -1,3 +1,5 @@
+import {expect} from 'chai';
+import {describe, it} from 'mocha';
 import {
     awaitedBlockingMap,
     awaitedForEach,
@@ -5,7 +7,7 @@ import {
     flatten2dArray,
     trimArrayStrings,
 } from './array';
-import {expectDuration} from './jest-only/jest';
+import {expectDuration} from './chai-only/chai';
 import {randomString} from './node-only/node-string';
 import {wait} from './promise';
 
@@ -31,7 +33,7 @@ describe(filterOutIndexes.name, () => {
                     6,
                 ],
             ),
-        ).toEqual([
+        ).to.deep.equal([
             'a',
             'c',
             'd',
@@ -48,7 +50,7 @@ describe(filterOutIndexes.name, () => {
                 6,
             ],
         );
-        expect(experimentArray).toEqual([
+        expect(experimentArray).to.deep.equal([
             'a',
             'b',
             'c',
@@ -60,7 +62,7 @@ describe(filterOutIndexes.name, () => {
     });
 
     it("doesn't do anything if no indexes are given to remove", () => {
-        expect(filterOutIndexes(experimentArray, [])).toEqual(experimentArray);
+        expect(filterOutIndexes(experimentArray, [])).to.deep.equal(experimentArray);
     });
 });
 
@@ -76,7 +78,7 @@ describe(trimArrayStrings.name, () => {
                     
                 `.split('\n'),
             ),
-        ).toEqual([
+        ).to.deep.equal([
             'who is this',
             'what do you want',
             'hello there',
@@ -118,7 +120,7 @@ describe(flatten2dArray.name, () => {
                     -1,
                 ],
             ]),
-        ).toEqual([
+        ).to.deep.equal([
             1,
             2,
             3,
@@ -164,8 +166,8 @@ describe(awaitedForEach.name, () => {
 
                 // ensure the order is the same despite a long wait time in the middle
             })
-        ).toBeGreaterThanOrEqual(totalWait);
-        expect(results).toEqual(originalArray);
+        ).to.be.greaterThanOrEqual(totalWait);
+        expect(results).to.deep.equal(originalArray);
     });
 });
 
@@ -189,8 +191,8 @@ describe(awaitedBlockingMap.name, () => {
                 });
 
                 // ensure the order is the same despite a long wait time in the middle
-                expect(results.map((wrapper) => wrapper.element)).toEqual(originalArray);
+                expect(results.map((wrapper) => wrapper.element)).to.deep.equal(originalArray);
             })
-        ).toBeGreaterThanOrEqual(totalWait);
+        ).to.be.greaterThanOrEqual(totalWait);
     });
 });

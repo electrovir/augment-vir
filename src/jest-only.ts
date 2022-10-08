@@ -1,2 +1,2 @@
 /** Jest-only augments only */
-export * from './augments/jest-only/jest';
+export * from './augments/chai-only/chai';

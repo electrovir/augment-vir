@@ -88,7 +88,8 @@ export function streamShellCommand(
     });
     /**
      * Based on the Node.js documentation, we should listen to "close" instead of "exit" because the
-     * io streams will be finished when "close" emits. Also "close" always emits after "exit" anyway.
+     * io streams will be finished when "close" emits. Also "close" always emits after "exit"
+     * anyway.
      */
     childProcess.on('close', (inputExitCode, inputExitSignal) => {
         const exitCode: number | undefined = inputExitCode ?? undefined;

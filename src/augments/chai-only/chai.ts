@@ -1,27 +1,27 @@
+import {expect} from 'chai';
 import {isPromiseLike} from '../promise';
+
 export function assertInstanceOf<T>(
     input: unknown,
     classConstructor: new (...args: any) => T,
 ): asserts input is T {
-    expect(input).toBeInstanceOf(classConstructor);
+    expect(input).to.be.instanceOf(classConstructor);
 }
 
 export function assertNotNullish<T>(input: T): asserts input is NonNullable<T> {
-    expect(input).not.toBeNull();
-    expect(input).not.toBeUndefined();
+    expect(input).not.to.equal(null);
+    expect(input).not.to.equal(undefined);
 }
 
-export function expectDuration(
-    callback: () => PromiseLike<void>,
-): Promise<jest.JestMatchers<number>>;
-export function expectDuration(callback: () => void): jest.JestMatchers<number>;
+export function expectDuration(callback: () => PromiseLike<void>): Promise<Chai.Assertion>;
+export function expectDuration(callback: () => void): Chai.Assertion;
 export function expectDuration(
     callback: (() => void) | (() => PromiseLike<void>),
-): Promise<jest.JestMatchers<number>> | jest.JestMatchers<number> {
+): Promise<Chai.Assertion> | Chai.Assertion {
     const startTime = Date.now();
     const callbackResult = callback();
     if (isPromiseLike(callbackResult)) {
-        return new Promise<jest.JestMatchers<number>>(async (resolve, reject) => {
+        return new Promise<Chai.Assertion>(async (resolve, reject) => {
             try {
                 await callbackResult;
                 const endTime = Date.now();

@@ -1,3 +1,5 @@
+import {expect} from 'chai';
+import {describe, it} from 'mocha';
 import {isTruthy} from './function';
 
 describe(isTruthy.name, () => {
@@ -9,7 +11,7 @@ describe(isTruthy.name, () => {
             {},
         ];
 
-        expect(stuffToTest.every(isTruthy)).toBe(true);
+        expect(stuffToTest.every(isTruthy)).to.equal(true);
     });
 
     it('should filter out null types', () => {
@@ -21,7 +23,7 @@ describe(isTruthy.name, () => {
 
         const onlyStrings: string[] = stuffToTest.filter(isTruthy);
 
-        expect(onlyStrings).toEqual([
+        expect(onlyStrings).to.deep.equal([
             'stuff',
             'derp',
         ]);
@@ -37,6 +39,6 @@ describe(isTruthy.name, () => {
             NaN,
         ];
 
-        expect(stuffToTest.some(isTruthy)).toBe(false);
+        expect(stuffToTest.some(isTruthy)).to.equal(false);
     });
 });

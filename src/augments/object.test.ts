@@ -1,3 +1,5 @@
+import {expect} from 'chai';
+import {describe, it} from 'mocha';
 import {
     areJsonEqual,
     copyThroughJson,
@@ -23,7 +25,7 @@ enum Planet {
 
 describe(getEnumTypedKeys.name, () => {
     it('gets basic enum keys properly', () => {
-        expect(getEnumTypedKeys(Planet)).toEqual([
+        expect(getEnumTypedKeys(Planet)).to.deep.equal([
             'Mercury',
             'Venus',
             'Earth',
@@ -32,7 +34,7 @@ describe(getEnumTypedKeys.name, () => {
 
     it('enum keys can be used to access the enum', () => {
         const keys = getEnumTypedKeys(Planet);
-        expect(keys.map((key) => Planet[key])).toEqual([
+        expect(keys.map((key) => Planet[key])).to.deep.equal([
             Planet.Mercury,
             Planet.Venus,
             Planet.Earth,
@@ -42,7 +44,7 @@ describe(getEnumTypedKeys.name, () => {
 
 describe(getEnumTypedValues.name, () => {
     it('gets basic enum values properly', () => {
-        expect(getEnumTypedValues(Planet)).toEqual([
+        expect(getEnumTypedValues(Planet)).to.deep.equal([
             Planet.Mercury,
             Planet.Venus,
             Planet.Earth,
@@ -61,7 +63,7 @@ describe(isEnumValue.name, () => {
     ];
 
     it('matches all correct enum values', () => {
-        expect(testEnumValues.filter((testValue) => isEnumValue(testValue, Planet))).toEqual([
+        expect(testEnumValues.filter((testValue) => isEnumValue(testValue, Planet))).to.deep.equal([
             Planet.Mercury,
             Planet.Venus,
             Planet.Earth,
@@ -77,7 +79,7 @@ const greekNames: Record<Planet, string> = {
 
 describe(getObjectTypedKeys.name, () => {
     it('gets basic object keys', () => {
-        expect(getObjectTypedKeys(greekNames)).toEqual([
+        expect(getObjectTypedKeys(greekNames)).to.deep.equal([
             Planet.Mercury,
             Planet.Venus,
             Planet.Earth,
@@ -87,7 +89,7 @@ describe(getObjectTypedKeys.name, () => {
     it('includes symbols', () => {
         const mySymbol = Symbol('derp');
 
-        expect(getObjectTypedKeys({[mySymbol]: 'nothing', ...greekNames})).toEqual([
+        expect(getObjectTypedKeys({[mySymbol]: 'nothing', ...greekNames})).to.deep.equal([
             Planet.Mercury,
             Planet.Venus,
             Planet.Earth,
@@ -98,7 +100,7 @@ describe(getObjectTypedKeys.name, () => {
 
 describe(getObjectTypedValues.name, () => {
     it('gets basic object values', () => {
-        expect(getObjectTypedValues(greekNames)).toEqual([
+        expect(getObjectTypedValues(greekNames)).to.deep.equal([
             greekNames[Planet.Mercury],
             greekNames[Planet.Venus],
             greekNames[Planet.Earth],
@@ -114,7 +116,7 @@ describe(filterToEnumValues.name, () => {
     }
 
     it('empty input results in empty output', () => {
-        expect(filterToEnumValues([], TestEnum)).toEqual([]);
+        expect(filterToEnumValues([], TestEnum)).to.deep.equal([]);
     });
 
     it('excludes invalid enum values', () => {
@@ -128,7 +130,7 @@ describe(filterToEnumValues.name, () => {
                 ],
                 TestEnum,
             ),
-        ).toEqual([]);
+        ).to.deep.equal([]);
     });
 
     const validValuesTest = [
@@ -138,7 +140,7 @@ describe(filterToEnumValues.name, () => {
     ];
 
     it('includes valid enum values', () => {
-        expect(filterToEnumValues(validValuesTest, TestEnum)).toEqual(validValuesTest);
+        expect(filterToEnumValues(validValuesTest, TestEnum)).to.deep.equal(validValuesTest);
     });
 
     it('works with case insensitivity', () => {
@@ -155,7 +157,7 @@ describe(filterToEnumValues.name, () => {
                 Planet,
                 true,
             ),
-        ).toEqual([
+        ).to.deep.equal([
             Planet.Mercury,
             Planet.Venus,
             Planet.Earth,
@@ -175,7 +177,7 @@ describe(filterToEnumValues.name, () => {
                 ],
                 Planet,
             ),
-        ).toEqual([Planet.Venus]);
+        ).to.deep.equal([Planet.Venus]);
     });
 
     it('output order matches input order', () => {
@@ -192,7 +194,7 @@ describe(filterToEnumValues.name, () => {
                 ],
                 TestEnum,
             ),
-        ).toEqual([
+        ).to.deep.equal([
             TestEnum.C,
             TestEnum.B,
             TestEnum.A,
@@ -238,7 +240,7 @@ describe(typedHasOwnProperty.name, () => {
                 testCase.output ? '' : 'not '
             }exist.`;
             try {
-                expect(typedHasOwnProperty(testCase.input, testCase.property)).toBe(
+                expect(typedHasOwnProperty(testCase.input, testCase.property)).to.deep.equal(
                     testCase.output,
                 );
             } catch (error) {
@@ -277,7 +279,7 @@ describe(typedHasOwnProperties.name, () => {
                 'd',
                 'e',
             ]),
-        ).toBe(true);
+        ).to.equal(true);
     });
 
     it('should correctly fail on nonexisting properties', () => {
@@ -289,25 +291,25 @@ describe(typedHasOwnProperties.name, () => {
                 'derp',
                 'ear',
             ]),
-        ).toBe(false);
+        ).to.equal(false);
     });
 });
 
 describe(isObject.name, () => {
     it('should pass on empty object', () => {
-        expect(isObject({})).toBe(true);
+        expect(isObject({})).to.equal(true);
     });
 
     it('should pass on filled in object', () => {
-        expect(isObject({a: '4', b: '5'})).toBe(true);
+        expect(isObject({a: '4', b: '5'})).to.equal(true);
     });
 
     it('should fail on null', () => {
-        expect(isObject(null)).toBe(false);
+        expect(isObject(null)).to.equal(false);
     });
 
     it('should fail on function', () => {
-        expect(isObject(() => {})).toBe(false);
+        expect(isObject(() => {})).to.equal(false);
     });
 
     it('should fail on other non-objects', () => {
@@ -316,7 +318,7 @@ describe(isObject.name, () => {
             '5',
         ];
 
-        expect(testingItems.some(isObject)).toBe(false);
+        expect(testingItems.some(isObject)).to.equal(false);
     });
 });
 
@@ -330,7 +332,7 @@ describe(getEntriesSortedByKey.name, () => {
             c: 4,
         };
 
-        expect(getEntriesSortedByKey(testObjectA)).toEqual([
+        expect(getEntriesSortedByKey(testObjectA)).to.deep.equal([
             [
                 'a',
                 2,
@@ -355,7 +357,7 @@ describe(getEntriesSortedByKey.name, () => {
 
         testObjectA.aaa = 6;
 
-        expect(getEntriesSortedByKey(testObjectA)).toEqual([
+        expect(getEntriesSortedByKey(testObjectA)).to.deep.equal([
             [
                 'a',
                 2,
@@ -398,7 +400,7 @@ describe(areJsonEqual.name, () => {
 
         objectA.b = 2;
 
-        expect(areJsonEqual(objectA, objectB)).toBe(true);
+        expect(areJsonEqual(objectA, objectB)).to.equal(true);
     });
 
     it('should pass for same object references', () => {
@@ -407,7 +409,7 @@ describe(areJsonEqual.name, () => {
             c: 3,
         };
 
-        expect(areJsonEqual(objectA, objectA)).toBe(true);
+        expect(areJsonEqual(objectA, objectA)).to.equal(true);
     });
 
     it('should not pass if objects are different', () => {
@@ -422,8 +424,8 @@ describe(areJsonEqual.name, () => {
             c: 3,
         };
 
-        expect(areJsonEqual(objectA, objectB)).toBe(false);
-        expect(areJsonEqual({...objectA, b: 2}, objectB)).toBe(true);
+        expect(areJsonEqual(objectA, objectB)).to.equal(false);
+        expect(areJsonEqual({...objectA, b: 2}, objectB)).to.equal(true);
     });
 });
 
@@ -431,7 +433,7 @@ describe(copyThroughJson.name, () => {
     it('should create an identical copy', () => {
         const testObjectA = {a: 5, b: 'five', c: {d: 5}, e: [6]};
 
-        expect(copyThroughJson(testObjectA)).toEqual(testObjectA);
+        expect(copyThroughJson(testObjectA)).to.deep.equal(testObjectA);
     });
 });
 
@@ -447,7 +449,7 @@ describe('ObjectValueType', () => {
         testAssign = [5];
         testAssign = testValueC;
 
-        expect(testAssign).toBe(testObjectA.a);
+        expect(testAssign).to.deep.equal(testObjectA.a);
     });
 });
 
@@ -480,14 +482,14 @@ describe(mapObject.name, () => {
         // @ts-expect-error
         mappedObject.q;
 
-        expect(getObjectTypedKeys(originalObject)).toEqual(getObjectTypedKeys(mappedObject));
+        expect(getObjectTypedKeys(originalObject)).to.deep.equal(getObjectTypedKeys(mappedObject));
 
         getObjectTypedKeys(originalObject).forEach((key) => {
-            expect(originalObject.hasOwnProperty(key)).toBe(true);
-            expect(mappedObject.hasOwnProperty(key)).toBe(true);
+            expect(originalObject.hasOwnProperty(key)).to.equal(true);
+            expect(mappedObject.hasOwnProperty(key)).to.equal(true);
 
-            expect(Number(mappedObject[key])).toBe(originalObject[key]);
-            expect(String(originalObject[key])).toBe(mappedObject[key]);
+            expect(Number(mappedObject[key])).to.deep.equal(originalObject[key]);
+            expect(String(originalObject[key])).to.deep.equal(mappedObject[key]);
         });
     });
 
@@ -521,14 +523,16 @@ describe(mapObject.name, () => {
         // @ts-expect-error
         awaitedMappedObject.q;
 
-        expect(getObjectTypedKeys(originalObject)).toEqual(getObjectTypedKeys(awaitedMappedObject));
+        expect(getObjectTypedKeys(originalObject)).to.deep.equal(
+            getObjectTypedKeys(awaitedMappedObject),
+        );
 
         getObjectTypedKeys(originalObject).forEach((key) => {
-            expect(originalObject.hasOwnProperty(key)).toBe(true);
-            expect(awaitedMappedObject.hasOwnProperty(key)).toBe(true);
+            expect(originalObject.hasOwnProperty(key)).to.equal(true);
+            expect(awaitedMappedObject.hasOwnProperty(key)).to.equal(true);
 
-            expect(Number(awaitedMappedObject[key])).toBe(originalObject[key]);
-            expect(String(originalObject[key])).toBe(awaitedMappedObject[key]);
+            expect(Number(awaitedMappedObject[key])).to.deep.equal(originalObject[key]);
+            expect(String(originalObject[key])).to.deep.equal(awaitedMappedObject[key]);
         });
     });
 

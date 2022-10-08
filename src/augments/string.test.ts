@@ -1,3 +1,5 @@
+import {expect} from 'chai';
+import {describe, it} from 'mocha';
 import {
     camelCaseToKebabCase,
     collapseWhiteSpace,
@@ -47,13 +49,13 @@ describe(joinWithFinalConjunction.name, () => {
     ];
     it('should produce all correct outputs', () => {});
     tests.forEach((testInput, index) => {
-        expect(joinWithFinalConjunction(testInput.input)).toEqual(testInput.expect);
+        expect(joinWithFinalConjunction(testInput.input)).to.equal(testInput.expect);
     });
 });
 
 describe(collapseWhiteSpace.name, () => {
     it(`check simple space collapsing`, () => {
-        expect(collapseWhiteSpace('hello           there')).toBe('hello there');
+        expect(collapseWhiteSpace('hello           there')).to.equal('hello there');
     });
 
     it(`multiple space collapsing`, () => {
@@ -61,122 +63,124 @@ describe(collapseWhiteSpace.name, () => {
             collapseWhiteSpace(
                 'hello           there          you        are a bold           one',
             ),
-        ).toBe('hello there you are a bold one');
+        ).to.equal('hello there you are a bold one');
     });
 
     it(`beginning and ending space is trimmed as well`, () => {
-        expect(collapseWhiteSpace('     hello   there     ')).toBe('hello there');
+        expect(collapseWhiteSpace('     hello   there     ')).to.equal('hello there');
     });
 
     it('should trim inner newlines', () => {
-        expect(collapseWhiteSpace('hello\n\nthere')).toBe('hello there');
-        expect(collapseWhiteSpace('hello\n\nthere\n\nstuff')).toBe('hello there stuff');
+        expect(collapseWhiteSpace('hello\n\nthere')).to.equal('hello there');
+        expect(collapseWhiteSpace('hello\n\nthere\n\nstuff')).to.equal('hello there stuff');
     });
 });
 
 describe(removeCommasFromNumberString.name, () => {
     it(`one comma stripped`, () => {
-        expect(removeCommasFromNumberString('123,456')).toBe('123456');
+        expect(removeCommasFromNumberString('123,456')).to.equal('123456');
     });
 
     it(`multiple commas stripped`, () => {
-        expect(removeCommasFromNumberString('123,456,789,012')).toBe('123456789012');
+        expect(removeCommasFromNumberString('123,456,789,012')).to.equal('123456789012');
     });
 
     it(`no commas stripped`, () => {
-        expect(removeCommasFromNumberString('1234.56')).toBe('1234.56');
+        expect(removeCommasFromNumberString('1234.56')).to.equal('1234.56');
     });
 
     it(`comma stripped with decimal intact`, () => {
-        expect(removeCommasFromNumberString('1,234.56')).toBe('1234.56');
+        expect(removeCommasFromNumberString('1,234.56')).to.equal('1234.56');
     });
 });
 
 describe(kebabCaseToCamelCase.name, () => {
     it('should transform kebab-case to camelCase', () => {
-        expect(kebabCaseToCamelCase('hello-there-what-have-we-here')).toBe(
+        expect(kebabCaseToCamelCase('hello-there-what-have-we-here')).to.equal(
             'helloThereWhatHaveWeHere',
         );
         expect(
             kebabCaseToCamelCase('hello-there-what-have-we-here', {capitalizeFirstLetter: true}),
-        ).toBe('HelloThereWhatHaveWeHere');
+        ).to.equal('HelloThereWhatHaveWeHere');
     });
 
     it('should handle edge cases', () => {
-        expect(kebabCaseToCamelCase('hello-THERE-what-have-we-here')).toBe(
+        expect(kebabCaseToCamelCase('hello-THERE-what-have-we-here')).to.equal(
             'helloThereWhatHaveWeHere',
         );
-        expect(kebabCaseToCamelCase('-hello-THERE-what-have-we-here-')).toBe(
+        expect(kebabCaseToCamelCase('-hello-THERE-what-have-we-here-')).to.equal(
             'helloThereWhatHaveWeHere',
         );
-        expect(kebabCaseToCamelCase('-hello----THERE-what-have-we-here-')).toBe(
+        expect(kebabCaseToCamelCase('-hello----THERE-what-have-we-here-')).to.equal(
             'helloThereWhatHaveWeHere',
         );
-        expect(kebabCaseToCamelCase('-hello----THERE-what-HAVE---we-here-----')).toBe(
+        expect(kebabCaseToCamelCase('-hello----THERE-what-HAVE---we-here-----')).to.equal(
             'helloThereWhatHaveWeHere',
         );
         // cspell: disable
-        expect(kebabCaseToCamelCase('HELLOTHEREWHATHAVEWEHERE')).toBe('hellotherewhathavewehere');
+        expect(kebabCaseToCamelCase('HELLOTHEREWHATHAVEWEHERE')).to.equal(
+            'hellotherewhathavewehere',
+        );
         // cspell: enable
         expect(
             kebabCaseToCamelCase('----hello-there---what-have-we-here--', {
                 capitalizeFirstLetter: true,
             }),
-        ).toBe('HelloThereWhatHaveWeHere');
+        ).to.equal('HelloThereWhatHaveWeHere');
     });
 });
 
 describe(camelCaseToKebabCase.name, () => {
     it('should transform camelCase to kebab-case', () => {
-        expect(camelCaseToKebabCase('MyVarItHasManyWordsInIt')).toBe(
+        expect(camelCaseToKebabCase('MyVarItHasManyWordsInIt')).to.equal(
             'my-var-it-has-many-words-in-it',
         );
-        expect(camelCaseToKebabCase('myVarItHasManyWordsInIt')).toBe(
+        expect(camelCaseToKebabCase('myVarItHasManyWordsInIt')).to.equal(
             'my-var-it-has-many-words-in-it',
         );
     });
     it('should handle edge cases', () => {
-        expect(camelCaseToKebabCase('MyVar--It-HasMany--WordsInIt')).toBe(
+        expect(camelCaseToKebabCase('MyVar--It-HasMany--WordsInIt')).to.equal(
             'my-var---it--has-many---words-in-it',
         );
-        expect(camelCaseToKebabCase('MyCSSVar')).toBe('my-css-var');
-        expect(camelCaseToKebabCase('whatIsGoingOnHERE')).toBe('what-is-going-on-here');
-        expect(camelCaseToKebabCase('whatIfIHaveAnI')).toBe('what-if-i-have-an-i');
+        expect(camelCaseToKebabCase('MyCSSVar')).to.equal('my-css-var');
+        expect(camelCaseToKebabCase('whatIsGoingOnHERE')).to.equal('what-is-going-on-here');
+        expect(camelCaseToKebabCase('whatIfIHaveAnI')).to.equal('what-if-i-have-an-i');
     });
 });
 
 describe(replaceStringAtIndex.name, () => {
     it('should insert a string at the desire index without edge cases', () => {
-        expect(replaceStringAtIndex('eat the waffles', 4, 'his')).toBe('eat his waffles');
+        expect(replaceStringAtIndex('eat the waffles', 4, 'his')).to.equal('eat his waffles');
     });
 
     it('should insert the string at the beginning', () => {
-        expect(replaceStringAtIndex('eat the waffles', 0, 'cut')).toBe('cut the waffles');
+        expect(replaceStringAtIndex('eat the waffles', 0, 'cut')).to.equal('cut the waffles');
     });
 
     it('should replace the string at the end', () => {
         const originalString = 'race the race';
-        expect(replaceStringAtIndex(originalString, originalString.length - 1, 'y car!')).toBe(
+        expect(replaceStringAtIndex(originalString, originalString.length - 1, 'y car!')).to.equal(
             'race the racy car!',
         );
     });
 
     it('should replace longer text with shorter text', () => {
-        expect(replaceStringAtIndex('eat the waffles', 4, 'my', 3)).toBe('eat my waffles');
+        expect(replaceStringAtIndex('eat the waffles', 4, 'my', 3)).to.equal('eat my waffles');
     });
 
     it('should insert text is length is 0', () => {
-        expect(replaceStringAtIndex('eat the waffles', 8, 'blueberry ', 0)).toBe(
+        expect(replaceStringAtIndex('eat the waffles', 8, 'blueberry ', 0)).to.equal(
             'eat the blueberry waffles',
         );
     });
 
     it('should work with length when start index is 0 and replacement is shorter', () => {
-        expect(replaceStringAtIndex(' a b c', 0, ' of', 6)).toBe(' of');
+        expect(replaceStringAtIndex(' a b c', 0, ' of', 6)).to.equal(' of');
     });
 
     it('should work with length when start index is 0 and replacement is longer', () => {
-        expect(replaceStringAtIndex(' a b c', 0, ' super duper thing', 6)).toBe(
+        expect(replaceStringAtIndex(' a b c', 0, ' super duper thing', 6)).to.equal(
             ' super duper thing',
         );
     });
@@ -189,30 +193,30 @@ const identicalRemoveAnsiCodeFunctions = [
 identicalRemoveAnsiCodeFunctions.forEach((identicalFunction) => {
     describe(identicalFunction.name, () => {
         it('should remove all ansi escape codes', () => {
-            expect(identicalFunction('hello\x1b[1m there\x1b[0m')).toBe('hello there');
+            expect(identicalFunction('hello\x1b[1m there\x1b[0m')).to.equal('hello there');
         });
 
         it('should not remove anything when there are no escape codes', () => {
-            expect(identicalFunction('hello there')).toBe('hello there');
+            expect(identicalFunction('hello there')).to.equal('hello there');
         });
     });
 });
 
 describe(escapeStringForRegExp.name, () => {
     it('should escape regexp characters', () => {
-        expect(escapeStringForRegExp('[*.*]')).toBe('\\[\\*\\.\\*\\]');
+        expect(escapeStringForRegExp('[*.*]')).to.equal('\\[\\*\\.\\*\\]');
     });
 
     it('escaped text works as a RegExp', () => {
         const result = Array.from('[*.*]'.match(new RegExp(escapeStringForRegExp('[*.*]'))) || []);
         const expected = ['[*.*]'];
-        expect(result).toEqual(expected);
+        expect(result).to.deep.equal(expected);
     });
 });
 
 describe(randomString.name, () => {
     it('should not work in node (use the node version from node-only instead)', () => {
-        expect(randomString).toThrow(
+        expect(randomString).to.throw(
             "Window not defined for randomString function. If using this in a Node.js context, import randomString from 'augment-vir/dist/node'",
         );
     });
@@ -222,7 +226,7 @@ describe(splitIncludeSplit.name, () => {
     it('splits by variable length RegExp matches', () => {
         expect(
             splitIncludeSplit('hello YoAaAaAu do you have some time for yoZzZu?', /yo.*?u/i, false),
-        ).toEqual([
+        ).to.deep.equal([
             'hello ',
             'YoAaAaAu',
             ' do ',
@@ -234,23 +238,23 @@ describe(splitIncludeSplit.name, () => {
     });
 
     it('splits by a simple string', () => {
-        expect(splitIncludeSplit('hello You do you have some time for you?', 'you', false)).toEqual(
-            [
-                'hello ',
-                'You',
-                ' do ',
-                'you',
-                ' have some time for ',
-                'you',
-                '?',
-            ],
-        );
+        expect(
+            splitIncludeSplit('hello You do you have some time for you?', 'you', false),
+        ).to.deep.equal([
+            'hello ',
+            'You',
+            ' do ',
+            'you',
+            ' have some time for ',
+            'you',
+            '?',
+        ]);
     });
 });
 
 describe(getAllIndexesOf.name, () => {
     it('should find all substring instances in a string', () => {
-        expect(getAllIndexesOf('who would hocked your thought now?', 'o', false)).toEqual([
+        expect(getAllIndexesOf('who would hocked your thought now?', 'o', false)).to.deep.equal([
             2,
             5,
             11,
@@ -261,7 +265,7 @@ describe(getAllIndexesOf.name, () => {
     });
 
     it('should find all regex instances in a string', () => {
-        expect(getAllIndexesOf('who would hocked your thought now?', /o/, false)).toEqual([
+        expect(getAllIndexesOf('who would hocked your thought now?', /o/, false)).to.deep.equal([
             2,
             5,
             11,
@@ -272,7 +276,7 @@ describe(getAllIndexesOf.name, () => {
     });
 
     it('should find all RegExp matches with a capture group', () => {
-        expect(getAllIndexesOf('who would hocked your thought now?', /(o)/, false)).toEqual([
+        expect(getAllIndexesOf('who would hocked your thought now?', /(o)/, false)).to.deep.equal([
             2,
             5,
             11,
@@ -283,18 +287,18 @@ describe(getAllIndexesOf.name, () => {
     });
 
     it('should handle substring at the beginning of the string correctly', () => {
-        expect(getAllIndexesOf('a fan is here', 'a', false)).toEqual([
+        expect(getAllIndexesOf('a fan is here', 'a', false)).to.deep.equal([
             0,
             3,
         ]);
     });
 
     it('should handle the substring at the end of the string only', () => {
-        expect(getAllIndexesOf('boiled eggs', 's', false)).toEqual([10]);
+        expect(getAllIndexesOf('boiled eggs', 's', false)).to.deep.equal([10]);
     });
 
     it('should handle the substring at the end and beginning of the string', () => {
-        expect(getAllIndexesOf('some eggs', 's', false)).toEqual([
+        expect(getAllIndexesOf('some eggs', 's', false)).to.deep.equal([
             0,
             8,
         ]);
@@ -303,7 +307,7 @@ describe(getAllIndexesOf.name, () => {
     it('should handle longer words', () => {
         expect(
             getAllIndexesOf('when you go to you to have a you because you like you', 'you', true),
-        ).toEqual([
+        ).to.deep.equal([
             5,
             15,
             29,
@@ -313,7 +317,7 @@ describe(getAllIndexesOf.name, () => {
     });
 
     it('should match multiple in a row', () => {
-        expect(getAllIndexesOf('YouYouYouYouYouYou', 'You', false)).toEqual([
+        expect(getAllIndexesOf('YouYouYouYouYouYou', 'You', false)).to.deep.equal([
             0,
             3,
             6,
@@ -324,14 +328,14 @@ describe(getAllIndexesOf.name, () => {
     });
 
     it('should not match case mismatch', () => {
-        expect(getAllIndexesOf('You are not you but You', 'You', true)).toEqual([
+        expect(getAllIndexesOf('You are not you but You', 'You', true)).to.deep.equal([
             0,
             20,
         ]);
     });
 
     it('should honor case insensitive set to true', () => {
-        expect(getAllIndexesOf('You are not you but You', 'You', false)).toEqual([
+        expect(getAllIndexesOf('You are not you but You', 'You', false)).to.deep.equal([
             0,
             12,
             20,
@@ -339,7 +343,7 @@ describe(getAllIndexesOf.name, () => {
     });
 
     it('includes correct lengths for simple strings', () => {
-        expect(getAllIndexesOf('You are not you but You', 'You', false, true)).toEqual([
+        expect(getAllIndexesOf('You are not you but You', 'You', false, true)).to.deep.equal([
             {index: 0, length: 3},
             {index: 12, length: 3},
             {index: 20, length: 3},
@@ -347,7 +351,9 @@ describe(getAllIndexesOf.name, () => {
     });
 
     it('includes correct lengths for variable RegExp matches', () => {
-        expect(getAllIndexesOf('YoAaAaAaAu are not yoAu but You', /Yo.*?u/i, false, true)).toEqual([
+        expect(
+            getAllIndexesOf('YoAaAaAaAu are not yoAu but You', /Yo.*?u/i, false, true),
+        ).to.deep.equal([
             {index: 0, length: 10},
             {index: 19, length: 4},
             {index: 28, length: 3},
@@ -362,7 +368,7 @@ describe(getAllIndexesOf.name, () => {
                 false,
                 true,
             ),
-        ).toEqual([
+        ).to.deep.equal([
             {index: 6, length: 8},
             {index: 18, length: 3},
             {index: 41, length: 6},

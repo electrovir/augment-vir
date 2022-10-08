@@ -1,3 +1,5 @@
+import {expect} from 'chai';
+import {describe, it} from 'mocha';
 import {clamp, truncateNumber} from './number';
 
 describe(clamp.name, () => {
@@ -8,7 +10,7 @@ describe(clamp.name, () => {
                 min: 31,
                 value: 150,
             }),
-        ).toBe(45);
+        ).to.equal(45);
     });
 
     it('should successfully clamp upwards', () => {
@@ -18,7 +20,7 @@ describe(clamp.name, () => {
                 min: 31,
                 value: 13,
             }),
-        ).toBe(31);
+        ).to.equal(31);
     });
 
     it("shouldn't change values in the middle", () => {
@@ -28,7 +30,7 @@ describe(clamp.name, () => {
                 min: 31,
                 value: 42,
             }),
-        ).toBe(42);
+        ).to.equal(42);
     });
 });
 
@@ -61,12 +63,12 @@ describe(truncateNumber.name, () => {
             },
         ];
 
-        expect(comparisons.length).toBeGreaterThan(0);
+        expect(comparisons.length).to.be.greaterThan(0);
 
         comparisons.forEach((comparison) => {
             const truncated = truncateNumber(comparison.value);
-            expect(truncated).toBe(comparison.truncated);
-            expect(truncated.length).toBeLessThanOrEqual(6);
+            expect(truncated).to.equal(comparison.truncated);
+            expect(truncated.length).to.be.lessThanOrEqual(6);
         });
     });
 
@@ -106,12 +108,12 @@ describe(truncateNumber.name, () => {
             },
         ];
 
-        expect(comparisons.length).toBeGreaterThan(0);
+        expect(comparisons.length).to.be.greaterThan(0);
 
         comparisons.forEach((comparison) => {
             const truncated = truncateNumber(comparison.value, customSuffixes);
-            expect(truncated).toBe(comparison.truncated);
-            expect(truncated.length).toBeLessThanOrEqual(6);
+            expect(truncated).to.equal(comparison.truncated);
+            expect(truncated.length).to.be.lessThanOrEqual(6);
         });
     });
 });

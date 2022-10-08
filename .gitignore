@@ -1,5 +1,10 @@
 .DS_Store
+/*.tgz
+/Icon?
+coverage/
 dist/
-docs/
-Icon?
+graphics/
 node_modules/
+
+Icon?
+docs/

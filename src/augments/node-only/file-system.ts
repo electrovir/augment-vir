@@ -11,7 +11,10 @@ export async function createSymLink(
     linkPath: string,
     /** The location and name the symlink file itself. */
     symlinkLocationPath: string,
-    /** This is required to keep windows happy. If you're creating a symlink to a directory, set this to true. */
+    /**
+     * This is required to keep windows happy. If you're creating a symlink to a directory, set this
+     * to true.
+     */
     dir: boolean,
 ): Promise<void> {
     if (existsSync(symlinkLocationPath)) {
@@ -30,7 +33,10 @@ export async function createSymLink(
     }
 }
 
-/** Writes to the given file path and always ensures that the path's parent directories are all created. */
+/**
+ * Writes to the given file path and always ensures that the path's parent directories are all
+ * created.
+ */
 export async function writeFileAndDir(
     path: string,
     contents: string | NodeJS.ArrayBufferView,

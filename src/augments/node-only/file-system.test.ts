@@ -1,6 +1,8 @@
+import {expect} from 'chai';
 import {existsSync} from 'fs';
 import {remove} from 'fs-extra';
 import {lstat, readFile} from 'fs/promises';
+import {describe, it} from 'mocha';
 import {join} from 'path';
 import {recursiveFileReadDir} from '../../repo-file-paths';
 import {createSymLink, readDirRecursive, writeFileAndDir} from './file-system';
@@ -10,15 +12,15 @@ describe(createSymLink.name, () => {
 
     it('creates symlink', async () => {
         try {
-            expect(existsSync(symlinkPath)).toBe(false);
+            expect(existsSync(symlinkPath)).to.equal(false);
             await createSymLink(__dirname, symlinkPath, true);
-            expect(existsSync(symlinkPath)).toBe(true);
-            expect((await lstat(symlinkPath)).isSymbolicLink()).toBe(true);
+            expect(existsSync(symlinkPath)).to.equal(true);
+            expect((await lstat(symlinkPath)).isSymbolicLink()).to.equal(true);
         } catch (error) {
             throw error;
         } finally {
             await remove(symlinkPath);
-            expect(existsSync(symlinkPath)).toBe(false);
+            expect(existsSync(symlinkPath)).to.equal(false);
         }
     });
 });
@@ -35,16 +37,16 @@ describe(writeFileAndDir.name, () => {
     it('creates output file with all directories', async () => {
         const results: boolean[] = [];
 
-        expect(existsSync(paths[0])).toBe(false);
+        expect(existsSync(paths[0])).to.equal(false);
 
         try {
             await writeFileAndDir(testOutputPath, testFileContent);
-            expect(existsSync(testOutputPath)).toBe(true);
-            expect(testFileContent === (await readFile(testOutputPath)).toString()).toBe(true);
+            expect(existsSync(testOutputPath)).to.equal(true);
+            expect(testFileContent === (await readFile(testOutputPath)).toString()).to.equal(true);
         } catch (error) {}
 
         await remove(paths[0]);
-        expect(existsSync(testOutputPath)).toBe(false);
+        expect(existsSync(testOutputPath)).to.equal(false);
 
         return results;
     });
@@ -53,7 +55,7 @@ describe(writeFileAndDir.name, () => {
 describe(readDirRecursive.name, () => {
     it('should read files in a directory recursively', async () => {
         const allFiles = (await readDirRecursive(recursiveFileReadDir)).sort();
-        expect(allFiles).toEqual([
+        expect(allFiles).to.deep.equal([
             'a-file.txt',
             'b-file.txt',
             join('inner-dir', 'a-file.txt'),

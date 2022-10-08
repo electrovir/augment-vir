@@ -1,3 +1,6 @@
+import chai, {expect} from 'chai';
+import chaiAsPromised from 'chai-as-promised';
+import {describe, it} from 'mocha';
 import {join} from 'path';
 // this path looks like an error but the symlink test will fix that
 import {longRunningFile, longRunningFileWithStderr} from '../../repo-file-paths';
@@ -6,7 +9,7 @@ import {runShellCommand} from './shell';
 
 describe(runShellCommand.name, () => {
     it('produces expected output', async () => {
-        expect(await runShellCommand('echo "hello there"')).toEqual({
+        expect(await runShellCommand('echo "hello there"')).to.deep.equal({
             error: undefined,
             stderr: '',
             stdout: 'hello there\n',
@@ -16,7 +19,7 @@ describe(runShellCommand.name, () => {
     });
 
     it('uses custom dir correctly', async () => {
-        expect(await runShellCommand('pwd', {cwd: __dirname})).toEqual({
+        expect(await runShellCommand('pwd', {cwd: __dirname})).to.deep.equal({
             error: undefined,
             stderr: '',
             stdout: `${toPosixPath(__dirname)}\n`,
@@ -26,11 +29,12 @@ describe(runShellCommand.name, () => {
     });
 
     it('grabs error', async () => {
-        expect((await runShellCommand(`exit 1`)).error).toBeInstanceOf(Error);
+        expect((await runShellCommand(`exit 1`)).error).to.be.instanceOf(Error);
     });
 
     it('promise is rejected when requested to do so', async () => {
-        await expect(runShellCommand(`exit 2`, {rejectOnError: true})).rejects.toThrow(Error);
+        chai.use(chaiAsPromised);
+        await expect(runShellCommand(`exit 2`, {rejectOnError: true})).to.be.rejectedWith(Error);
     });
 
     it('shell stdoutCallback should get fired when stdout is written', async () => {
@@ -53,8 +57,8 @@ describe(runShellCommand.name, () => {
         const startIndex = output.indexOf('started');
         const endIndex = output.indexOf('ended');
 
-        expect(endIndex - startIndex).toBeGreaterThan(5);
-        expect(finalResults.stdout).toBe('started\nended\n');
+        expect(endIndex - startIndex).to.be.greaterThan(5);
+        expect(finalResults.stdout).to.equal('started\nended\n');
     });
 
     it('shell stderrCallback should get fired when stderr is written', async () => {
@@ -77,8 +81,8 @@ describe(runShellCommand.name, () => {
         const startIndex = output.indexOf('started');
         const endIndex = output.indexOf('ended');
 
-        expect(endIndex - startIndex).toBeGreaterThan(5);
-        expect(finalResults.stderr).toBe('started\nended\n');
+        expect(endIndex - startIndex).to.be.greaterThan(5);
+        expect(finalResults.stderr).to.equal('started\nended\n');
     });
 
     it('no buffer overflow errors', async () => {
@@ -97,6 +101,6 @@ describe(runShellCommand.name, () => {
             throw new Error(`didn't read all data`);
         }
 
-        expect(commandOutput.error).toBeUndefined();
+        expect(commandOutput.error).to.equal(undefined);
     });
 });
