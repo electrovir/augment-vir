@@ -36,3 +36,11 @@ export function extractErrorMessage(error: unknown): string {
         return String(error);
     }
 }
+
+export function ensureError(input: unknown): Error {
+    if (input instanceof Error) {
+        return input;
+    } else {
+        return new Error(extractErrorMessage(input));
+    }
+}

@@ -1,0 +1,27 @@
+export type Tuple<
+    ArrayElementGeneric,
+    LengthGeneric extends number,
+> = LengthGeneric extends LengthGeneric
+    ? number extends LengthGeneric
+        ? ArrayElementGeneric[]
+        : _TupleOf<ArrayElementGeneric, LengthGeneric, []>
+    : never;
+type _TupleOf<
+    ArrayElementGeneric,
+    LengthGeneric extends number,
+    FullArrayGeneric extends unknown[],
+> = FullArrayGeneric['length'] extends LengthGeneric
+    ? FullArrayGeneric
+    : _TupleOf<ArrayElementGeneric, LengthGeneric, [ArrayElementGeneric, ...FullArrayGeneric]>;
+
+export type AtLeastTuple<ArrayElementGeneric, LengthGeneric extends number> = [
+    ...Tuple<ArrayElementGeneric, LengthGeneric>,
+    ...ArrayElementGeneric[],
+];
+
+export function isLengthAtLeast<ArrayElementGeneric, LengthGeneric extends number>(
+    array: ReadonlyArray<ArrayElementGeneric>,
+    length: LengthGeneric,
+): array is AtLeastTuple<ArrayElementGeneric, LengthGeneric> {
+    return array.length >= length;
+}

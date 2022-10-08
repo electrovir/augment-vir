@@ -18,22 +18,22 @@ export function trimArrayStrings(input: string[]): string[] {
  * has finished its call on element 1.
  */
 export async function awaitedForEach<OriginalGeneric>(
-    input: OriginalGeneric[],
+    input: ReadonlyArray<OriginalGeneric>,
     callback: (
         arrayElement: OriginalGeneric,
         index: number,
-        wholeArray: OriginalGeneric[],
+        wholeArray: ReadonlyArray<OriginalGeneric>,
     ) => void | PromiseLike<void>,
 ): Promise<void> {
     await awaitedBlockingMap<OriginalGeneric, void | PromiseLike<void>>(input, callback);
 }
 
 export async function awaitedBlockingMap<OriginalGeneric, MappedGeneric>(
-    input: OriginalGeneric[],
+    input: ReadonlyArray<OriginalGeneric>,
     callback: (
         arrayElement: OriginalGeneric,
         index: number,
-        wholeArray: OriginalGeneric[],
+        wholeArray: ReadonlyArray<OriginalGeneric>,
     ) => MappedGeneric | PromiseLike<MappedGeneric>,
 ): Promise<Awaited<MappedGeneric>[]> {
     const mappedValues = await input.reduce(
@@ -52,4 +52,8 @@ export async function awaitedBlockingMap<OriginalGeneric, MappedGeneric>(
     );
 
     return mappedValues;
+}
+
+export function isInTypedArray<T>(array: T[], input: any): input is T {
+    return array.includes(input);
 }

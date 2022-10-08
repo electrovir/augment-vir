@@ -1,3 +1,5 @@
+import {typedHasProperty} from './object';
+
 export function wait(delayMs: number): Promise<void> {
     const deferredPromiseWrapper = createDeferredPromiseWrapper();
 
@@ -12,8 +14,10 @@ export function wait(delayMs: number): Promise<void> {
     return deferredPromiseWrapper.promise;
 }
 
-export function isPromiseLike(input: any): input is PromiseLike<unknown> {
-    if (typeof input?.then === 'function') {
+export function isPromiseLike<T>(
+    input: T | unknown,
+): input is T extends PromiseLike<infer ValueType> ? PromiseLike<ValueType> : PromiseLike<unknown> {
+    if (typedHasProperty(input, 'then') && typeof input.then === 'function') {
         return true;
     } else {
         return false;

@@ -19,7 +19,7 @@ export type RequiredAndNotNull<T> = {
 };
 
 /** Require only a subset of object properties. */
-export type RequiredBy<T, K extends keyof T> = Omit<T, K> & Required<Pick<T, K>>;
+export type RequiredBy<T, K extends keyof T> = Overwrite<T, Required<Pick<T, K>>>;
 
 /**
  * Require only a subset of object properties and require that they be not null. This is

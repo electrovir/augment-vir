@@ -98,7 +98,11 @@ describe(wrapPromiseInTimeout.name, () => {
         assertInstanceOf(timeoutError, PromiseTimeoutError);
         expect(timeoutError.message).to.equal(`Promised timed out after ${promiseDelayMs} ms.`);
         const endTime = Date.now();
-        expect(endTime - startTime).to.be.greaterThanOrEqual(promiseDelayMs);
+        expect(endTime - startTime).to.be.greaterThanOrEqual(
+            promiseDelayMs -
+                // small buffer
+                10,
+        );
     });
     // promiseDelayMs * 2,
 });

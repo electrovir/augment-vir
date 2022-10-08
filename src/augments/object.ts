@@ -1,7 +1,7 @@
-import {ArrayElement, UnPromise} from './type';
+import {RequiredBy, UnPromise} from './type';
 
 export function getEnumTypedKeys<T extends object>(input: T): (keyof T)[] {
-    // keys are always strings
+    // enum keys are always strings
     return getObjectTypedKeys(input).filter((key) => isNaN(Number(key))) as (keyof T)[];
 }
 
@@ -12,6 +12,13 @@ export function getEnumTypedValues<T extends object>(input: T): T[keyof T][] {
 
 export function isEnumValue<T extends object>(input: unknown, checkEnum: T): input is T[keyof T] {
     return getEnumTypedValues(checkEnum).includes(input as T[keyof T]);
+}
+
+export function isKeyof<ObjectGeneric>(
+    key: PropertyKey,
+    object: ObjectGeneric,
+): key is keyof object {
+    return typedHasProperty(object, key);
 }
 
 export function filterToEnumValues<T extends object>(
@@ -38,8 +45,20 @@ export function filterToEnumValues<T extends object>(
 
 export function getObjectTypedKeys<ObjectGeneric extends unknown>(
     input: ObjectGeneric,
-): (keyof ObjectGeneric)[] {
-    return Reflect.ownKeys(input as object) as (keyof ObjectGeneric)[];
+): ReadonlyArray<keyof ObjectGeneric> {
+    let reflectKeys: ReadonlyArray<keyof ObjectGeneric> | undefined;
+    try {
+        reflectKeys = Reflect.ownKeys(input as object) as unknown as ReadonlyArray<
+            keyof ObjectGeneric
+        >;
+    } catch (error) {}
+    return (
+        reflectKeys ??
+        ([
+            ...Object.keys(input as object),
+            ...Object.getOwnPropertySymbols(input as object),
+        ] as unknown as ReadonlyArray<keyof ObjectGeneric>)
+    );
 }
 
 export function getObjectTypedValues<ObjectGeneric extends unknown>(
@@ -50,24 +69,33 @@ export function getObjectTypedValues<ObjectGeneric extends unknown>(
     ) as ObjectGeneric[keyof ObjectGeneric][];
 }
 
-export function typedHasOwnProperty<ObjectGeneric extends unknown, KeyGeneric extends PropertyKey>(
-    inputObject: ObjectGeneric,
+type CombineTypeWithKey<
+    KeyGeneric extends PropertyKey,
+    ParentGeneric,
+> = ParentGeneric extends Partial<Record<KeyGeneric, unknown>>
+    ? ParentGeneric & RequiredBy<ParentGeneric, KeyGeneric>
+    : ParentGeneric extends
+          | Record<KeyGeneric, infer ValueGeneric>
+          | Partial<Record<KeyGeneric, infer ValueGeneric>>
+          | {}
+    ? Extract<ParentGeneric, RequiredBy<Record<KeyGeneric, ValueGeneric>, KeyGeneric>>
+    : ParentGeneric & Record<KeyGeneric, unknown>;
+
+export function typedHasProperty<KeyGeneric extends PropertyKey, ParentGeneric>(
+    inputObject: ParentGeneric,
     inputKey: KeyGeneric,
-): inputObject is ObjectGeneric & Record<KeyGeneric, unknown> {
-    return inputObject && Reflect.has(inputObject as object, inputKey);
+): inputObject is CombineTypeWithKey<KeyGeneric, ParentGeneric> {
+    return inputObject && inputKey in inputObject;
 }
 
-export function typedHasOwnProperties<
-    ObjectGeneric extends unknown,
-    KeyGenerics extends PropertyKey[],
->(
-    inputObject: ObjectGeneric,
-    inputKeys: KeyGenerics,
-): inputObject is ObjectGeneric & Record<ArrayElement<KeyGenerics>, unknown> {
-    return inputObject && inputKeys.every((key) => typedHasOwnProperty(inputObject, key));
+export function typedHasProperties<KeyGeneric extends PropertyKey, ParentGeneric>(
+    inputObject: ParentGeneric,
+    inputKeys: KeyGeneric[],
+): inputObject is CombineTypeWithKey<KeyGeneric, ParentGeneric> {
+    return inputObject && inputKeys.every((key) => typedHasProperty(inputObject, key));
 }
 
-export function isObject(input: any): input is NonNullable<object | Function> {
+export function isObject(input: any): input is NonNullable<object> {
     return !!input && typeof input === 'object';
 }
 
@@ -159,3 +187,98 @@ export function copyThroughJson<T>(input: T): T {
 }
 
 export type ObjectValueType<T extends object> = T[keyof T];
+
+export function matchesObjectShape<T extends object>(
+    testThisOne: unknown,
+    compareToThisOne: T,
+    allowExtraProps = false,
+    shouldLogWhy = false,
+): testThisOne is T {
+    try {
+        assertMatchesObjectShape(testThisOne, compareToThisOne, allowExtraProps);
+        return true;
+    } catch (error) {
+        if (shouldLogWhy) {
+            console.error(error);
+        }
+        return false;
+    }
+}
+
+export function assertMatchesObjectShape<T extends object>(
+    testThisOne: unknown,
+    compareToThisOne: T,
+    allowExtraProps = false,
+): asserts testThisOne is T {
+    const testKeys = getObjectTypedKeys(testThisOne);
+    const matchKeys = new Set(getObjectTypedKeys(compareToThisOne));
+
+    if (!allowExtraProps) {
+        const extraKeys = testKeys.filter((testKey) => !matchKeys.has(testKey));
+        if (extraKeys.length) {
+            throw new Error(`Test object has extra keys: ${extraKeys.join(', ')}`);
+        }
+    }
+    matchKeys.forEach((key): void => {
+        if (!typedHasProperty(testThisOne, key)) {
+            throw new Error(`test object does not have key "${String(key)}" from expected shape.`);
+        }
+
+        function throwKeyError(reason: string): never {
+            throw new Error(
+                `test object value at key "${String(key)}" did not match expected shape: ${reason}`,
+            );
+        }
+
+        const testValue = testThisOne[key];
+        const shouldMatch = compareToThisOne[key];
+
+        compareInnerValue(testValue, shouldMatch, throwKeyError);
+    });
+}
+
+function compareInnerValue(
+    testValue: unknown,
+    matchValue: unknown,
+    throwKeyError: (reason: string) => never,
+) {
+    const testType = typeof testValue;
+    const shouldMatchType = typeof matchValue;
+
+    if (testType !== shouldMatchType) {
+        throwKeyError(`type "${testType}" did not match expected type "${shouldMatchType}"`);
+    }
+
+    try {
+        if (typedHasProperty(matchValue, 'constructor')) {
+            if (
+                !typedHasProperty(testValue, 'constructor') ||
+                testValue.constructor !== matchValue.constructor
+            ) {
+                throwKeyError(
+                    `constructor "${
+                        (testValue as any)?.constructor?.name
+                    }" did not match expected constructor "${matchValue.constructor}"`,
+                );
+            }
+        }
+    } catch (error) {
+        // ignore errors from trying to find the constructor
+        if (error instanceof throwKeyError) {
+            throw error;
+        }
+    }
+
+    if (Array.isArray(matchValue)) {
+        if (!Array.isArray(testValue)) {
+            throwKeyError(`expected an array`);
+        }
+
+        testValue.forEach((testValueEntry) => {
+            const matchValueEntry = matchValue[0];
+            compareInnerValue(testValueEntry, matchValueEntry, throwKeyError);
+        });
+    } else if (isObject(matchValue)) {
+        assertMatchesObjectShape(testValue, matchValue);
+    }
+}

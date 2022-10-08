@@ -5,6 +5,7 @@ import {
     awaitedForEach,
     filterOutIndexes,
     flatten2dArray,
+    isInTypedArray,
     trimArrayStrings,
 } from './array';
 import {expectDuration} from './chai-only/chai';
@@ -194,5 +195,11 @@ describe(awaitedBlockingMap.name, () => {
                 expect(results.map((wrapper) => wrapper.element)).to.deep.equal(originalArray);
             })
         ).to.be.greaterThanOrEqual(totalWait);
+    });
+});
+
+describe(isInTypedArray.name, () => {
+    it('should match test cases', () => {
+        const testCases = [];
     });
 });

@@ -1,7 +1,9 @@
 import {expect} from 'chai';
 import {describe, it} from 'mocha';
+import {itCases} from './chai-only/assert-output';
 import {
     areJsonEqual,
+    assertMatchesObjectShape,
     copyThroughJson,
     filterToEnumValues,
     getEntriesSortedByKey,
@@ -13,9 +15,10 @@ import {
     isObject,
     mapObject,
     ObjectValueType,
-    typedHasOwnProperties,
-    typedHasOwnProperty,
+    typedHasProperties,
+    typedHasProperty,
 } from './object';
+import {isPromiseLike} from './promise';
 
 enum Planet {
     Mercury = 'mercury',
@@ -202,7 +205,7 @@ describe(filterToEnumValues.name, () => {
     });
 });
 
-describe(typedHasOwnProperty.name, () => {
+describe(typedHasProperty.name, () => {
     const testObject = {
         a: 1,
         b: 2,
@@ -240,7 +243,7 @@ describe(typedHasOwnProperty.name, () => {
                 testCase.output ? '' : 'not '
             }exist.`;
             try {
-                expect(typedHasOwnProperty(testCase.input, testCase.property)).to.deep.equal(
+                expect(typedHasProperty(testCase.input, testCase.property)).to.equal(
                     testCase.output,
                 );
             } catch (error) {
@@ -250,18 +253,55 @@ describe(typedHasOwnProperty.name, () => {
         });
     });
 
-    it('should pass type tests', () => {
+    it('should properly be able to access a property after checking it exists', () => {
         const idkWhatThisIs: unknown = (() => {}) as unknown;
-        if (typedHasOwnProperty(idkWhatThisIs, 'name')) {
+        if (typedHasProperty(idkWhatThisIs, 'name')) {
             idkWhatThisIs.name;
         } else {
             // @ts-expect-error
             idkWhatThisIs.name;
         }
     });
+
+    it('should preserve property value type when it exists', () => {
+        const whatever = {} as {name: string} | string;
+
+        // should not be able to access the property directly
+        // @ts-expect-error
+        whatever.name;
+
+        if (typedHasProperty(whatever, 'name')) {
+            whatever.name;
+
+            const onlyStrings: string = whatever.name;
+        }
+    });
+
+    it('should enforce that an optional property exists', () => {
+        const whatever = {} as {name?: string};
+
+        // should be able to access the property directly
+        const maybeUndefined: string | undefined = whatever.name;
+        // @ts-expect-error
+        const failsDefinedOnly: string = whatever.name;
+
+        if (typedHasProperty(whatever, 'name')) {
+            whatever.name;
+
+            const onlyString: string = whatever.name;
+        }
+    });
+
+    it('should work with generics', () => {
+        function isPromiseLike<T>(input: T) {
+            if (typedHasProperty(input, 'then')) {
+                input.then;
+            }
+        }
+    });
 });
 
-describe(typedHasOwnProperties.name, () => {
+describe(typedHasProperties.name, () => {
     const testObject = {
         a: 1,
         b: 2,
@@ -272,7 +312,7 @@ describe(typedHasOwnProperties.name, () => {
 
     it('should correctly test existing properties', () => {
         expect(
-            typedHasOwnProperties(testObject, [
+            typedHasProperties(testObject, [
                 'a',
                 'b',
                 'c',
@@ -284,7 +324,7 @@ describe(typedHasOwnProperties.name, () => {
 
     it('should correctly fail on nonexisting properties', () => {
         expect(
-            typedHasOwnProperties(testObject, [
+            typedHasProperties(testObject, [
                 'abba',
                 'blah',
                 'cookie',
@@ -292,6 +332,53 @@ describe(typedHasOwnProperties.name, () => {
                 'ear',
             ]),
         ).to.equal(false);
+    });
+
+    it('should pass type checks', () => {
+        const whatever = {} as {name: string} | string;
+
+        // should not be able to access the property directly
+        // @ts-expect-error
+        whatever.name;
+
+        if (
+            typedHasProperties(whatever, [
+                'name',
+                // 'value',
+            ])
+        ) {
+            whatever.name;
+            // @ts-expect-error
+            whatever.value;
+
+            const onlyStrings: string = whatever.name;
+        }
+        if (
+            typedHasProperties(whatever, [
+                'name',
+                'value',
+            ])
+        ) {
+            whatever.name;
+            whatever.value;
+
+            const onlyStrings: string = whatever.name;
+        }
+
+        type MaybePromise<T> =
+            | (T extends Promise<infer ValueType> ? T | ValueType : Promise<T> | T)
+            | undefined
+            | {error: Error};
+
+        const maybePromise = {} as MaybePromise<number>;
+
+        if (isPromiseLike(maybePromise)) {
+            const myPromise: PromiseLike<number> = maybePromise;
+        } else if (typedHasProperty(maybePromise, 'error')) {
+            const myError: Error = maybePromise.error;
+        } else {
+            maybePromise;
+        }
     });
 });
 
@@ -571,4 +658,117 @@ describe(mapObject.name, () => {
         // @ts-expect-error
         mappedObject.q;
     });
+});
+
+describe(assertMatchesObjectShape.name, () => {
+    itCases(assertMatchesObjectShape, [
+        {
+            description: 'should match with unequal values',
+            inputs: [
+                {
+                    a: 'derp',
+                    b: 0,
+                },
+                {
+                    a: '',
+                    b: Infinity,
+                },
+            ],
+            throws: undefined,
+        },
+        {
+            description: 'should not match with mismatched types',
+            inputs: [
+                {
+                    a: 42,
+                    b: 0,
+                },
+                {
+                    a: '',
+                    b: Infinity,
+                },
+            ],
+            throws: 'test object value at key "a" did not match expected shape: type "number" did not match expected type "string"',
+        },
+        {
+            description: 'should not match with an extra property',
+            inputs: [
+                {
+                    a: 42,
+                    b: 0,
+                    c: 52,
+                },
+                {
+                    a: 99,
+                    b: Infinity,
+                },
+            ],
+            throws: 'Test object has extra keys: c',
+        },
+        {
+            description: 'should match with an extra property when its allowed',
+            inputs: [
+                {
+                    a: 42,
+                    b: 0,
+                    c: 52,
+                },
+                {
+                    a: 99,
+                    b: Infinity,
+                },
+                true,
+            ],
+            throws: undefined,
+        },
+        {
+            description: 'should match with nested properties',
+            inputs: [
+                {
+                    a: 42,
+                    b: 0,
+                    c: {
+                        nested: {
+                            five: 4,
+                        },
+                    },
+                },
+                {
+                    a: 99,
+                    b: Infinity,
+                    c: {
+                        nested: {
+                            five: Infinity,
+                        },
+                    },
+                },
+            ],
+            throws: undefined,
+        },
+        {
+            description: 'should not match with invalid nested properties',
+            inputs: [
+                {
+                    a: 42,
+                    b: 0,
+                    c: {
+                        nested: {
+                            five: 4,
+                        },
+                    },
+                },
+                {
+                    a: 99,
+                    b: Infinity,
+                    c: {
+                        nested: {
+                            five: Infinity,
+                            six: 7,
+                        },
+                    },
+                },
+            ],
+            throws: 'test object does not have key "six" from expected shape.',
+        },
+    ]);
 });
