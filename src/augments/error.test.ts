@@ -1,5 +1,6 @@
-import {expect} from 'chai';
+import {assert, expect} from 'chai';
 import {describe, it} from 'mocha';
+import {typedMap} from './array';
 import {combineErrors, extractErrorMessage} from './error';
 
 describe(extractErrorMessage.name, () => {
@@ -20,7 +21,9 @@ describe(extractErrorMessage.name, () => {
     it('should return a string for strings', () => {
         expect(extractErrorMessage('just a string')).to.equal('just a string');
     });
+});
 
+describe(combineErrors.name, () => {
     it('should pass type tests', () => {
         function acceptOnlyError(input: Error): void {}
 
@@ -39,9 +42,35 @@ describe(extractErrorMessage.name, () => {
         // verify that an array with Error instances results in an Error return type
         acceptOnlyError(combineErrors([new Error()]));
 
+        acceptOnlyError(
+            combineErrors([
+                new Error(),
+                new Error(),
+                new Error(),
+            ]),
+        );
+
         // verify that a potentially empty Error array results in an Error|undefined return type
         const potentiallyEmptyErrorArray: Error[] = [];
         // @ts-expect-error
         acceptOnlyError(combineErrors(potentiallyEmptyErrorArray));
+    });
+
+    it('should combine multiple errors', () => {
+        const errors = typedMap(
+            [
+                'this is error',
+                'this is another error',
+                'when will it end',
+                'actually this is not many errors',
+            ] as const,
+            (message) => new Error(message),
+        );
+
+        const combinedErrors = combineErrors(errors);
+
+        errors.forEach((error) => {
+            assert.include(combinedErrors.message, error.message);
+        });
     });
 });

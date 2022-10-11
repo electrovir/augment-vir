@@ -14,7 +14,7 @@ type _TupleOf<
     ? FullArrayGeneric
     : _TupleOf<ArrayElementGeneric, LengthGeneric, [ArrayElementGeneric, ...FullArrayGeneric]>;
 
-export type AtLeastTuple<ArrayElementGeneric, LengthGeneric extends number> = [
+export type AtLeastTuple<ArrayElementGeneric, LengthGeneric extends number> = readonly [
     ...Tuple<ArrayElementGeneric, LengthGeneric>,
     ...ArrayElementGeneric[],
 ];

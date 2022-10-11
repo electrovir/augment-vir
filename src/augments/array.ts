@@ -1,3 +1,6 @@
+import {AtLeastTuple} from './tuple';
+import {ArrayElement} from './type';
+
 export function filterOutIndexes<T>(array: Readonly<T[]>, indexes: Readonly<number[]>): T[] {
     return array.filter((_, index) => !indexes.includes(index));
 }
@@ -7,6 +10,11 @@ export function flatten2dArray<T>(array2d: T[][]): T[] {
 
     return flattened;
 }
+
+export type AtLeastOneEntryArray<ArrayGeneric extends ReadonlyArray<any>> = AtLeastTuple<
+    ArrayElement<ArrayGeneric>,
+    1
+>;
 
 export function trimArrayStrings(input: string[]): string[] {
     return input.map((line) => line.trim()).filter((line) => line !== '');
@@ -56,4 +64,33 @@ export async function awaitedBlockingMap<OriginalGeneric, MappedGeneric>(
 
 export function isInTypedArray<T>(array: T[], input: any): input is T {
     return array.includes(input);
+}
+
+type MapCallbackType<ArrayType extends ReadonlyArray<any>, OutputType> = (
+    value: ArrayElement<ArrayType>,
+    index: number,
+    array: ArrayType,
+) => OutputType;
+
+/**
+ * This type should not be used outside of this file. This is used to match the
+ * Array.prototype.map's callback type, which has insufficient type information, to our more
+ * strictly typed MapCallbackType.
+ */
+type LibMapCallbackType<ArrayType extends ReadonlyArray<any>, OutputType> = (
+    value: ArrayElement<ArrayType>,
+    index: number,
+    array: readonly ArrayElement<ArrayType>[],
+) => OutputType;
+
+/** Preserves tuple types. */
+export function typedMap<InputArrayGeneric extends ReadonlyArray<any>, OutputType>(
+    arrayToMap: InputArrayGeneric,
+    mapCallback: MapCallbackType<InputArrayGeneric, OutputType>,
+): {[Index in keyof InputArrayGeneric]: OutputType} {
+    return arrayToMap.map(
+        mapCallback as LibMapCallbackType<InputArrayGeneric, OutputType>,
+    ) as unknown as {
+        [Index in keyof InputArrayGeneric]: OutputType;
+    };
 }

@@ -8,7 +8,7 @@ export type DeepWriteable<T> = {-readonly [P in keyof T]: DeepWriteable<T[P]>};
 export type Overwrite<T, U> = Pick<T, Exclude<keyof T, keyof U>> & U;
 
 /** Extract the element type out of an array type. */
-export type ArrayElement<ArrayType extends readonly unknown[]> = ArrayType[number];
+export type ArrayElement<ArrayType extends ReadonlyArray<any>> = ArrayType[number];
 
 /**
  * Same as the Required<> built-in type helper but this requires that each property be present and
@@ -50,4 +50,23 @@ export function wrapNarrowTypeWithTypeCheck<P>() {
     return <T extends P>(input: T): Readonly<T> => {
         return input;
     };
+}
+
+/**
+ * This type helper is useful for forcing function generics to be explicitly provided, rather than
+ * inferring them from the given inputs. See the test file for examples.
+ */
+export type NoInfer<T> = [T][T extends any ? 0 : never];
+
+/**
+ * This is a type helper that ensures the given input matches the given generic type. The generic is
+ * setup in such a way that if it is omitted (which is typically allowed in TypeScript, resulting in
+ * the generic being inferred from the inputs), there will actually be a type error. This forces
+ * each usage of this function to explicitly specify the generic, thus giving us type safety for the
+ * input.
+ */
+export function ensureType<ExpectedType = never>(
+    input: NoInfer<ExpectedType>,
+): NoInfer<ExpectedType> {
+    return input;
 }

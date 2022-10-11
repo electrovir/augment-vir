@@ -15,6 +15,7 @@ import {
     isObject,
     mapObject,
     ObjectValueType,
+    ObjectWithAtLeastSingleEntryArrays,
     typedHasProperties,
     typedHasProperty,
 } from './object';
@@ -661,7 +662,42 @@ describe(mapObject.name, () => {
 });
 
 describe(assertMatchesObjectShape.name, () => {
-    itCases(assertMatchesObjectShape, [
+    it('should require a generic to be provided', () => {
+        // @ts-expect-error
+        assertMatchesObjectShape({}, {});
+        assertMatchesObjectShape<{}>({}, {});
+    });
+
+    it('should require array properties to have at least one entry', () => {
+        type WithArrayProp = {
+            five: number;
+            arrayProp: string[];
+        };
+        const shouldNormallyBeAllowedWithoutEntries: WithArrayProp = {
+            five: 3,
+            arrayProp: [],
+        };
+
+        assertMatchesObjectShape<WithArrayProp>(shouldNormallyBeAllowedWithoutEntries, {
+            five: 3,
+            // @ts-expect-error
+            arrayProp: [],
+        });
+        assertMatchesObjectShape<WithArrayProp>(shouldNormallyBeAllowedWithoutEntries, {
+            five: 3,
+            arrayProp: ['hello'],
+        });
+        assertMatchesObjectShape<WithArrayProp>(shouldNormallyBeAllowedWithoutEntries, {
+            five: 3,
+
+            arrayProp: [
+                // @ts-expect-error
+                4,
+            ],
+        });
+    });
+
+    itCases(assertMatchesObjectShape<any>, [
         {
             description: 'should match with unequal values',
             inputs: [
@@ -672,6 +708,71 @@ describe(assertMatchesObjectShape.name, () => {
                 {
                     a: '',
                     b: Infinity,
+                },
+            ],
+            throws: undefined,
+        },
+        {
+            description: 'should be okay with array props that are empty',
+            inputs: [
+                {
+                    a: 'derp',
+                    b: [],
+                },
+                {
+                    a: '',
+                    b: ['a'],
+                },
+            ],
+            throws: undefined,
+        },
+        {
+            description: 'should pass on valid array values',
+            inputs: [
+                {
+                    a: 'derp',
+                    b: ['a'],
+                },
+                {
+                    a: '',
+                    b: ['a'],
+                },
+            ],
+            throws: undefined,
+        },
+        {
+            description: 'should fail on invalid array values',
+            inputs: [
+                {
+                    a: 'derp',
+                    b: [
+                        '2',
+                        4,
+                    ],
+                },
+                {
+                    a: '',
+                    b: ['a'],
+                },
+            ],
+            throws: 'entry at index "1" did not match expected shape: test object value at key "b" did not match expected shape: type "number" did not match expected type "string"',
+        },
+        {
+            description: 'should check against all possible array types',
+            inputs: [
+                {
+                    a: 'derp',
+                    b: [
+                        '2',
+                        4,
+                    ],
+                },
+                {
+                    a: '',
+                    b: [
+                        'a',
+                        4,
+                    ],
                 },
             ],
             throws: undefined,
@@ -771,4 +872,34 @@ describe(assertMatchesObjectShape.name, () => {
             throws: 'test object does not have key "six" from expected shape.',
         },
     ]);
+});
+
+describe('ObjectWithAtLeastSingleEntryArrays', () => {
+    it('should require all arrays to have at least one entry', () => {
+        const randomThing = {
+            what: 5,
+            nested: {
+                subArray: [] as string[],
+            },
+            topArray: [] as number[],
+        };
+
+        const shouldAllowAssignment: ObjectWithAtLeastSingleEntryArrays<typeof randomThing> = {
+            what: 5,
+            nested: {
+                subArray: ['yo'],
+            },
+            topArray: [5],
+        };
+
+        const invalidAssignment: ObjectWithAtLeastSingleEntryArrays<typeof randomThing> = {
+            what: 5,
+            nested: {
+                // @ts-expect-error
+                subArray: [],
+            },
+            // @ts-expect-error
+            topArray: [],
+        };
+    });
 });

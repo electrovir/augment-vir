@@ -1,10 +1,13 @@
 import {isTruthy} from './function';
+import {AtLeastTuple} from './tuple';
 
-export function combineErrors(errors: [Error, ...Error[]]): Error;
+export function combineErrors(errors: AtLeastTuple<Error, 1>): Error;
 export function combineErrors(errors: never[]): undefined;
 export function combineErrors(errors: Error[]): Error | undefined;
 export function combineErrors(errors?: undefined): undefined;
-export function combineErrors(errors?: Error[]): Error | undefined {
+export function combineErrors(
+    errors?: AtLeastTuple<Error, 1> | undefined | never[] | Error[],
+): Error | undefined {
     if (!errors || errors.length === 0) {
         return undefined;
     }

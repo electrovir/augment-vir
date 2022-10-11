@@ -1,4 +1,7 @@
-import {RequiredBy, UnPromise} from './type';
+import {AtLeastOneEntryArray} from './array';
+import {combineErrors, extractErrorMessage} from './error';
+import {isTruthy} from './function';
+import {NoInfer, RequiredBy, UnPromise} from './type';
 
 export function getEnumTypedKeys<T extends object>(input: T): (keyof T)[] {
     // enum keys are always strings
@@ -188,14 +191,27 @@ export function copyThroughJson<T>(input: T): T {
 
 export type ObjectValueType<T extends object> = T[keyof T];
 
-export function matchesObjectShape<T extends object>(
+/**
+ * Checks that the first input, testThisOne, matches the object shape of the second input,
+ * compareToThisOne. Does not compare exact values of properties, only types.
+ *
+ * To allow the test input, the first input, to have additional keys that the compare input, the
+ * second input, does not have, pass in a third argument set to true.
+ *
+ * This function REQUIRES a generic to be assigned to it: it cannot infer it from the inputs.
+ *
+ * The compare input, the second input, is required to have at least one entry in every array value
+ * that exists. If more array values are present, they will be considered other possible types for
+ * entries in that array.
+ */
+export function matchesObjectShape<MatchThisGeneric extends object>(
     testThisOne: unknown,
-    compareToThisOne: T,
+    compareToThisOne: NoInfer<ObjectWithAtLeastSingleEntryArrays<MatchThisGeneric>>,
     allowExtraProps = false,
     shouldLogWhy = false,
-): testThisOne is T {
+): testThisOne is MatchThisGeneric {
     try {
-        assertMatchesObjectShape(testThisOne, compareToThisOne, allowExtraProps);
+        assertMatchesObjectShape<MatchThisGeneric>(testThisOne, compareToThisOne, allowExtraProps);
         return true;
     } catch (error) {
         if (shouldLogWhy) {
@@ -205,11 +221,32 @@ export function matchesObjectShape<T extends object>(
     }
 }
 
-export function assertMatchesObjectShape<T extends object>(
+export type ObjectWithAtLeastSingleEntryArrays<BaseObject extends object> = {
+    [Prop in keyof BaseObject]: BaseObject[Prop] extends ReadonlyArray<any>
+        ? AtLeastOneEntryArray<BaseObject[Prop]>
+        : BaseObject[Prop] extends object
+        ? ObjectWithAtLeastSingleEntryArrays<BaseObject[Prop]>
+        : BaseObject[Prop];
+};
+
+/**
+ * Asserts that the first input, testThisOne, matches the object shape of the second input,
+ * compareToThisOne. Does not compare exact values of properties, only types.
+ *
+ * To allow the test input, the first input, to have additional keys that the compare input, the
+ * second input, does not have, pass in a third argument set to true.
+ *
+ * This function REQUIRES a generic to be assigned to it: it cannot infer it from the inputs.
+ *
+ * The compare input, the second input, is required to have at least one entry in every array value
+ * that exists. If more array values are present, they will be considered other possible types for
+ * entries in that array.
+ */
+export function assertMatchesObjectShape<MatchThisGeneric extends object = never>(
     testThisOne: unknown,
-    compareToThisOne: T,
+    compareToThisOne: NoInfer<ObjectWithAtLeastSingleEntryArrays<MatchThisGeneric>>,
     allowExtraProps = false,
-): asserts testThisOne is T {
+): asserts testThisOne is MatchThisGeneric {
     const testKeys = getObjectTypedKeys(testThisOne);
     const matchKeys = new Set(getObjectTypedKeys(compareToThisOne));
 
@@ -274,11 +311,29 @@ function compareInnerValue(
             throwKeyError(`expected an array`);
         }
 
-        testValue.forEach((testValueEntry) => {
-            const matchValueEntry = matchValue[0];
-            compareInnerValue(testValueEntry, matchValueEntry, throwKeyError);
+        testValue.forEach((testValueEntry, index) => {
+            const errors = matchValue
+                .map((matchValue) => {
+                    try {
+                        compareInnerValue(testValueEntry, matchValue, throwKeyError);
+                        return undefined;
+                    } catch (error) {
+                        return new Error(
+                            `entry at index "${index}" did not match expected shape: ${extractErrorMessage(
+                                error,
+                            )}`,
+                        );
+                    }
+                })
+                .filter(isTruthy);
+
+            if (errors.length === 1) {
+                throw errors[0];
+            } else if (errors.length) {
+                throw combineErrors(errors);
+            }
         });
     } else if (isObject(matchValue)) {
-        assertMatchesObjectShape(testValue, matchValue);
+        assertMatchesObjectShape<{}>(testValue, matchValue);
     }
 }
