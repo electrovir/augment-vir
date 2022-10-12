@@ -258,6 +258,9 @@ describe(typedHasProperty.name, () => {
         const idkWhatThisIs: unknown = (() => {}) as unknown;
         if (typedHasProperty(idkWhatThisIs, 'name')) {
             idkWhatThisIs.name;
+            if (typedHasProperty(idkWhatThisIs, 'derp')) {
+                idkWhatThisIs.derp;
+            }
         } else {
             // @ts-expect-error
             idkWhatThisIs.name;
@@ -265,7 +268,7 @@ describe(typedHasProperty.name, () => {
     });
 
     it('should preserve property value type when it exists', () => {
-        const whatever = {} as {name: string} | string;
+        const whatever = {} as {name: string} | string | {derp: string};
 
         // should not be able to access the property directly
         // @ts-expect-error
@@ -297,6 +300,38 @@ describe(typedHasProperty.name, () => {
         function isPromiseLike<T>(input: T) {
             if (typedHasProperty(input, 'then')) {
                 input.then;
+            }
+        }
+    });
+
+    it('should allow type narrowing', () => {
+        function assertOutputProperty(
+            keyPath: string,
+            testExpectations: object,
+            outputKey: string,
+        ): void {
+            if (!typedHasProperty(testExpectations, outputKey)) {
+                throw new Error(`${keyPath} > ${outputKey} is missing.`);
+            }
+
+            const value = testExpectations[outputKey];
+
+            if (typeof value !== 'string' && !isObject(value)) {
+                throw new Error(`${keyPath} > "${outputKey}" is invalid. Got "${value}"`);
+            } else if (isObject(value)) {
+                if (!typedHasProperty(value, 'type') || value.type !== 'regexp') {
+                    throw new Error(
+                        `${keyPath} > "${outputKey}".type is invalid. Expected "regexp".`,
+                    );
+                }
+
+                value;
+
+                if (!typedHasProperty(value, 'value') || typeof value.value !== 'string') {
+                    throw new Error(
+                        `${keyPath} > "${outputKey}".value is invalid. Expected a string.`,
+                    );
+                }
             }
         }
     });
