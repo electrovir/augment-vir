@@ -20,6 +20,7 @@ import {
     typedHasProperty,
 } from './object';
 import {isPromiseLike} from './promise';
+import {Equal, ExpectTrue} from './type-test';
 
 enum Planet {
     Mercury = 'mercury',
@@ -258,6 +259,7 @@ describe(typedHasProperty.name, () => {
         const idkWhatThisIs: unknown = (() => {}) as unknown;
         if (typedHasProperty(idkWhatThisIs, 'name')) {
             idkWhatThisIs.name;
+            type ShouldBeUnknown = ExpectTrue<Equal<typeof idkWhatThisIs.name, unknown>>;
             if (typedHasProperty(idkWhatThisIs, 'derp')) {
                 idkWhatThisIs.derp;
             }
@@ -278,6 +280,27 @@ describe(typedHasProperty.name, () => {
             whatever.name;
 
             const onlyStrings: string = whatever.name;
+        }
+    });
+
+    it('should preserve function properties', () => {
+        interface dummy {
+            stuff: string;
+            callback: Function;
+        }
+        const interfaceWithFunction = {} as dummy;
+
+        // should not be able to access the property directly
+        // @ts-expect-error
+        interfaceWithFunction.name;
+
+        if (
+            typedHasProperty(interfaceWithFunction, 'createMany') &&
+            typeof interfaceWithFunction.createMany === 'function'
+        ) {
+            interfaceWithFunction.createMany;
+
+            interfaceWithFunction.createMany();
         }
     });
 

@@ -72,17 +72,24 @@ export function getObjectTypedValues<ObjectGeneric extends unknown>(
     ) as ObjectGeneric[keyof ObjectGeneric][];
 }
 
-type CombinedParentValue<
+type ExtractValue<
     KeyGeneric extends PropertyKey,
     ParentGeneric,
 > = KeyGeneric extends keyof ParentGeneric
     ? RequiredBy<ParentGeneric, KeyGeneric>[KeyGeneric]
     : KeyGeneric extends keyof Extract<ParentGeneric, Record<KeyGeneric, any>>
     ? RequiredBy<Extract<ParentGeneric, Record<KeyGeneric, any>>, KeyGeneric>[KeyGeneric]
-    : unknown;
+    : never;
+
+type CombinedParentValue<KeyGeneric extends PropertyKey, ParentGeneric> = ExtractValue<
+    KeyGeneric,
+    ParentGeneric
+> extends never
+    ? unknown
+    : ExtractValue<KeyGeneric, ParentGeneric>;
 
 type CombineTypeWithKey<KeyGeneric extends PropertyKey, ParentGeneric> = ParentGeneric &
-    RequiredBy<Record<KeyGeneric, CombinedParentValue<KeyGeneric, ParentGeneric>>, KeyGeneric>;
+    Record<KeyGeneric, CombinedParentValue<KeyGeneric, ParentGeneric>>;
 
 export function typedHasProperty<KeyGeneric extends PropertyKey, ParentGeneric>(
     inputObject: ParentGeneric,
