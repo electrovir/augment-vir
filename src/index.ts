@@ -11,3 +11,4 @@ export * from './augments/regexp';
 export * from './augments/string';
 export * from './augments/tuple';
 export * from './augments/type';
+export * from './augments/type-test';
