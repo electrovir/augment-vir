@@ -91,11 +91,30 @@ type CombinedParentValue<KeyGeneric extends PropertyKey, ParentGeneric> = Extrac
 type CombineTypeWithKey<KeyGeneric extends PropertyKey, ParentGeneric> = ParentGeneric &
     Record<KeyGeneric, CombinedParentValue<KeyGeneric, ParentGeneric>>;
 
+const hasPropertyAttempts: ReadonlyArray<(object: object, key: PropertyKey) => boolean> = [
+    (object, key) => {
+        return key in object;
+    },
+    (object, key) => {
+        /** This handles cases where the input object can't use `in` directly, like string literals */
+        return key in object.constructor.prototype;
+    },
+];
+
 export function typedHasProperty<KeyGeneric extends PropertyKey, ParentGeneric>(
     inputObject: ParentGeneric,
     inputKey: KeyGeneric,
 ): inputObject is CombineTypeWithKey<KeyGeneric, ParentGeneric> {
-    return inputObject && inputKey in inputObject;
+    if (!inputObject) {
+        return false;
+    }
+    return hasPropertyAttempts.some((attemptCallback) => {
+        try {
+            return attemptCallback(inputObject, inputKey);
+        } catch (error) {
+            return false;
+        }
+    });
 }
 
 export function typedHasProperties<KeyGeneric extends PropertyKey, ParentGeneric>(

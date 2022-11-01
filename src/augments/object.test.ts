@@ -237,6 +237,16 @@ describe(typedHasProperty.name, () => {
             property: 'name',
             output: true,
         },
+        {
+            input: 'derp',
+            property: 'tagName',
+            output: false,
+        },
+        {
+            input: 'derp',
+            property: 'concat',
+            output: true,
+        },
     ];
 
     it('should pass all test cases', () => {
