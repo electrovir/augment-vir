@@ -63,10 +63,13 @@ export function streamShellCommand(
     cwd?: string,
     shell = 'bash',
     env: NodeJS.ProcessEnv = process.env,
+    hookUpToConsole = false,
 ): ShellEmitter {
     const shellEmitter: ShellEmitter = new EventEmitter() as ShellEmitter;
 
-    const childProcess = spawn(command, {shell, cwd, env});
+    const stdio = hookUpToConsole ? [process.stdin] : undefined;
+
+    const childProcess = spawn(command, {shell, cwd, env, stdio});
     shellEmitter.childProcess = childProcess;
 
     if (!childProcess.stdout) {
@@ -152,7 +155,13 @@ export async function runShellCommand(
         let stderr = '';
         const errors: Error[] = [];
 
-        const shellStream = streamShellCommand(command, options.cwd, options.shell, options.env);
+        const shellStream = streamShellCommand(
+            command,
+            options.cwd,
+            options.shell,
+            options.env,
+            options.hookUpToConsole,
+        );
 
         const listeners: Readonly<Readonly<ShellListener>[]> = [
             processListener(ShellEmitterEvent.stdout, (chunk) => {
