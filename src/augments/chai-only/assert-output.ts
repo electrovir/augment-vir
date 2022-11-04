@@ -44,7 +44,7 @@ export function assertOutput<FunctionToCallGeneric extends (...args: any[]) => a
 }
 
 type BaseTestCase<OutputGeneric> = {
-    description: string;
+    it: string;
 } & (
     | {
           expect: OutputGeneric;
@@ -62,22 +62,23 @@ export type OutputTestCaseMultipleInputs<InputGeneric, OutputGeneric> = {
     inputs: InputGeneric;
 } & BaseTestCase<OutputGeneric>;
 
+export type FunctionTestCase<FunctionToCallGeneric extends (...args: any[]) => any | Promise<any>> =
+    Parameters<FunctionToCallGeneric> extends AtLeastTuple<any, 2>
+        ? OutputTestCaseMultipleInputs<
+              Parameters<FunctionToCallGeneric>,
+              Awaited<ReturnType<FunctionToCallGeneric>>
+          >
+        : OutputTestCaseSingleInput<
+              Parameters<FunctionToCallGeneric>[0],
+              Awaited<ReturnType<FunctionToCallGeneric>>
+          >;
+
 export function itCases<FunctionToCallGeneric extends (...args: any[]) => any | Promise<any>>(
     functionToCall: FunctionToCallGeneric,
-    testCases: ReadonlyArray<
-        Parameters<typeof functionToCall> extends AtLeastTuple<any, 2>
-            ? OutputTestCaseMultipleInputs<
-                  Parameters<typeof functionToCall>,
-                  Awaited<ReturnType<typeof functionToCall>>
-              >
-            : OutputTestCaseSingleInput<
-                  Parameters<typeof functionToCall>[0],
-                  Awaited<ReturnType<typeof functionToCall>>
-              >
-    >,
+    testCases: ReadonlyArray<FunctionTestCase<typeof functionToCall>>,
 ) {
     return testCases.map((testCase) => {
-        return it(testCase.description, async () => {
+        return it(testCase.it, async () => {
             const functionInputs: Parameters<typeof functionToCall> =
                 'input' in testCase
                     ? ([testCase.input] as Parameters<typeof functionToCall>)
@@ -87,7 +88,7 @@ export function itCases<FunctionToCallGeneric extends (...args: any[]) => any | 
                 assertOutputWithDescription(
                     functionToCall,
                     testCase.expect,
-                    testCase.description ?? '',
+                    testCase.it ?? '',
                     ...functionInputs,
                 );
             } else {
@@ -105,7 +106,7 @@ export function itCases<FunctionToCallGeneric extends (...args: any[]) => any | 
                             },
                             testCase.throws,
                             undefined,
-                            testCase.description,
+                            testCase.it,
                         );
                     } else {
                         assert.throws(
@@ -114,7 +115,7 @@ export function itCases<FunctionToCallGeneric extends (...args: any[]) => any | 
                             },
                             undefined,
                             testCase.throws,
-                            testCase.description,
+                            testCase.it,
                         );
                     }
                 }

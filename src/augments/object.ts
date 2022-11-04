@@ -158,17 +158,18 @@ export type MappedValues<
  * Creates a new object with the same properties as the input object, but with values set to the
  * result of mapCallback for each property.
  */
-export function mapObject<EntireInputGeneric extends object, MappedValueGeneric>(
+export function mapObjectValues<EntireInputGeneric extends object, MappedValueGeneric>(
     inputObject: EntireInputGeneric,
     mapCallback: (
         inputKey: keyof EntireInputGeneric,
         keyValue: EntireInputGeneric[typeof inputKey],
+        fullObject: EntireInputGeneric,
     ) => MappedValueGeneric,
 ): MappedValues<EntireInputGeneric, MappedValueGeneric> {
     let gotAPromise = false;
 
     const mappedObject = getObjectTypedKeys(inputObject).reduce((accum, currentKey) => {
-        const mappedValue = mapCallback(currentKey, inputObject[currentKey]);
+        const mappedValue = mapCallback(currentKey, inputObject[currentKey], inputObject);
         if (mappedValue instanceof Promise) {
             gotAPromise = true;
         }
@@ -203,6 +204,24 @@ export function mapObject<EntireInputGeneric extends object, MappedValueGeneric>
     } else {
         return mappedObject as unknown as MappedValues<EntireInputGeneric, MappedValueGeneric>;
     }
+}
+
+export function filterObject<ObjectGeneric extends object>(
+    inputObject: ObjectGeneric,
+    callback: (
+        key: keyof ObjectGeneric,
+        value: ObjectValueType<ObjectGeneric>,
+        fullObject: ObjectGeneric,
+    ) => boolean,
+): Partial<ObjectGeneric> {
+    const filteredKeys = getObjectTypedKeys(inputObject).filter((key) => {
+        const value = inputObject[key];
+        return callback(key, value, inputObject);
+    });
+    return filteredKeys.reduce((accum, key) => {
+        accum[key] = inputObject[key];
+        return accum;
+    }, {} as Partial<ObjectGeneric>);
 }
 
 /** The input here must be serializable otherwise JSON parsing errors will be thrown */

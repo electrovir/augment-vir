@@ -1,10 +1,12 @@
-import {expect} from 'chai';
+import {assert, expect} from 'chai';
 import {describe, it} from 'mocha';
 import {itCases} from './chai-only/assert-output';
+import {randomString} from './node-only/node-string';
 import {
     areJsonEqual,
     assertMatchesObjectShape,
     copyThroughJson,
+    filterObject,
     filterToEnumValues,
     getEntriesSortedByKey,
     getEnumTypedKeys,
@@ -13,7 +15,7 @@ import {
     getObjectTypedValues,
     isEnumValue,
     isObject,
-    mapObject,
+    mapObjectValues,
     ObjectValueType,
     ObjectWithAtLeastSingleEntryArrays,
     typedHasProperties,
@@ -609,7 +611,88 @@ describe('ObjectValueType', () => {
     });
 });
 
-describe(mapObject.name, () => {
+describe(filterObject.name, () => {
+    const symbolKey = Symbol('symbol-key');
+
+    const testObject = {
+        simple: randomString(),
+        [symbolKey]: Math.random(),
+        anotherKey: randomString(),
+        5: randomString(),
+        numeric: Math.random(),
+    } as const;
+
+    it('should not modify input object', () => {
+        const referenceCopy = testObject;
+        const originalObject = {...testObject};
+        const originalKeys = Object.keys(testObject);
+        filterObject(originalKeys, () => false);
+
+        assert.deepStrictEqual(testObject, originalObject);
+        assert.deepStrictEqual(Object.keys(testObject), originalKeys);
+        assert.strictEqual(referenceCopy, testObject);
+    });
+
+    itCases(filterObject, [
+        {
+            it: 'should not remove keys when filter is always true',
+            expect: {
+                simple: testObject.simple,
+                [symbolKey]: testObject[symbolKey],
+                anotherKey: testObject.anotherKey,
+                5: testObject[5],
+                numeric: testObject.numeric,
+            },
+            inputs: [
+                testObject,
+                () => true,
+            ],
+        },
+        {
+            it: 'should be able to remove symbol keys',
+            expect: {
+                simple: testObject.simple,
+                anotherKey: testObject.anotherKey,
+                5: testObject[5],
+                numeric: testObject.numeric,
+            },
+            inputs: [
+                testObject,
+                (key) => {
+                    return typeof key !== 'symbol';
+                },
+            ],
+        },
+        {
+            it: 'should be able to filter to ONLY symbol keys',
+            expect: {
+                [symbolKey]: testObject[symbolKey],
+            },
+            inputs: [
+                testObject,
+                (key) => {
+                    return typeof key == 'symbol';
+                },
+            ],
+        },
+        {
+            it: 'should be able to remove by value',
+            expect: {
+                simple: testObject.simple,
+                anotherKey: testObject.anotherKey,
+                5: testObject[5],
+            },
+            inputs: [
+                testObject,
+                (key, value) => {
+                    return typeof value === 'string';
+                },
+            ],
+        },
+    ]);
+});
+
+describe(mapObjectValues.name, () => {
     function onlyAcceptNumbers(input: number): void {}
     function onlyAcceptStrings(input: string): void {}
 
@@ -627,7 +710,7 @@ describe(mapObject.name, () => {
         // @ts-expect-error
         onlyAcceptStrings(originalObject.a);
 
-        const mappedObject = mapObject(originalObject, (key, value) => {
+        const mappedObject = mapObjectValues(originalObject, (key, value) => {
             return String(value);
         });
 
@@ -658,7 +741,7 @@ describe(mapObject.name, () => {
             e: 5,
         };
 
-        const mappedObject = mapObject(originalObject, async (key, value) => {
+        const mappedObject = mapObjectValues(originalObject, async (key, value) => {
             return Promise.resolve(String(value));
         });
 
@@ -710,7 +793,7 @@ describe(mapObject.name, () => {
         // @ts-expect-error
         onlyAcceptStrings(originalObject.a);
 
-        const mappedObject = mapObject(originalObject, (key, value) => {
+        const mappedObject = mapObjectValues(originalObject, (key, value) => {
             return String(value);
         });
 
@@ -767,7 +850,7 @@ describe(assertMatchesObjectShape.name, () => {
 
     itCases(assertMatchesObjectShape<any>, [
         {
-            description: 'should match with unequal values',
+            it: 'should match with unequal values',
             inputs: [
                 {
                     a: 'derp',
@@ -781,7 +864,7 @@ describe(assertMatchesObjectShape.name, () => {
             throws: undefined,
         },
         {
-            description: 'should be okay with array props that are empty',
+            it: 'should be okay with array props that are empty',
             inputs: [
                 {
                     a: 'derp',
@@ -795,7 +878,7 @@ describe(assertMatchesObjectShape.name, () => {
             throws: undefined,
         },
         {
-            description: 'should pass on valid array values',
+            it: 'should pass on valid array values',
             inputs: [
                 {
                     a: 'derp',
@@ -809,7 +892,7 @@ describe(assertMatchesObjectShape.name, () => {
             throws: undefined,
         },
         {
-            description: 'should fail on invalid array values',
+            it: 'should fail on invalid array values',
             inputs: [
                 {
                     a: 'derp',
@@ -826,7 +909,7 @@ describe(assertMatchesObjectShape.name, () => {
             throws: 'entry at index "1" did not match expected shape: test object value at key "b" did not match expected shape: type "number" did not match expected type "string"',
         },
         {
-            description: 'should check against all possible array types',
+            it: 'should check against all possible array types',
             inputs: [
                 {
                     a: 'derp',
@@ -846,7 +929,7 @@ describe(assertMatchesObjectShape.name, () => {
             throws: undefined,
         },
         {
-            description: 'should not match with mismatched types',
+            it: 'should not match with mismatched types',
             inputs: [
                 {
                     a: 42,
@@ -860,7 +943,7 @@ describe(assertMatchesObjectShape.name, () => {
             throws: 'test object value at key "a" did not match expected shape: type "number" did not match expected type "string"',
         },
         {
-            description: 'should not match with an extra property',
+            it: 'should not match with an extra property',
             inputs: [
                 {
                     a: 42,
@@ -875,7 +958,7 @@ describe(assertMatchesObjectShape.name, () => {
             throws: 'Test object has extra keys: c',
         },
         {
-            description: 'should match with an extra property when its allowed',
+            it: 'should match with an extra property when its allowed',
             inputs: [
                 {
                     a: 42,
@@ -891,7 +974,7 @@ describe(assertMatchesObjectShape.name, () => {
             throws: undefined,
         },
         {
-            description: 'should match with nested properties',
+            it: 'should match with nested properties',
             inputs: [
                 {
                     a: 42,
@@ -915,7 +998,7 @@ describe(assertMatchesObjectShape.name, () => {
             throws: undefined,
         },
         {
-            description: 'should not match with invalid nested properties',
+            it: 'should not match with invalid nested properties',
             inputs: [
                 {
                     a: 42,
