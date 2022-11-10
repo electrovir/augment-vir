@@ -906,7 +906,7 @@ describe(assertMatchesObjectShape.name, () => {
                     b: ['a'],
                 },
             ],
-            throws: 'entry at index "1" did not match expected shape: test object value at key "b" did not match expected shape: type "number" did not match expected type "string"',
+            throws: 'entry at index "1" did not match any of the possible types from "a"',
         },
         {
             it: 'should check against all possible array types',

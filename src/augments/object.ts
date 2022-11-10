@@ -1,5 +1,5 @@
 import {AtLeastOneEntryArray} from './array';
-import {combineErrors, extractErrorMessage} from './error';
+import {extractErrorMessage} from './error';
 import {isTruthy} from './function';
 import {NoInfer, RequiredBy, UnPromise} from './type';
 
@@ -372,10 +372,12 @@ function compareInnerValue(
                 })
                 .filter(isTruthy);
 
-            if (errors.length === 1) {
-                throw errors[0];
-            } else if (errors.length) {
-                throw combineErrors(errors);
+            if (errors.length === matchValue.length) {
+                throw new Error(
+                    `entry at index "${index}" did not match any of the possible types from "${matchValue.join(
+                        ', ',
+                    )}"`,
+                );
             }
         });
     } else if (isObject(matchValue)) {

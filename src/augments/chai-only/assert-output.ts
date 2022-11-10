@@ -98,25 +98,26 @@ export function itCases<FunctionToCallGeneric extends (...args: any[]) => any | 
                 } catch (thrownError) {
                     caughtError = thrownError;
                 }
-                if (testCase.throws) {
-                    if (testCase.throws instanceof RegExp || typeof testCase.throws === 'string') {
-                        assert.throws(
-                            () => {
-                                throw caughtError;
-                            },
-                            testCase.throws,
-                            undefined,
-                            testCase.it,
-                        );
+                if ('throws' in testCase) {
+                    const errorThrower = () => {
+                        if (caughtError) {
+                            throw caughtError;
+                        }
+                    };
+
+                    Object.defineProperty(errorThrower, 'name', {
+                        value: functionToCall.name,
+                    });
+
+                    if (!testCase.throws) {
+                        assert.doesNotThrow(errorThrower);
+                    } else if (
+                        testCase.throws instanceof RegExp ||
+                        typeof testCase.throws === 'string'
+                    ) {
+                        assert.throws(errorThrower, testCase.throws, undefined, testCase.it);
                     } else {
-                        assert.throws(
-                            () => {
-                                throw caughtError;
-                            },
-                            undefined,
-                            testCase.throws,
-                            testCase.it,
-                        );
+                        assert.throws(errorThrower, undefined, testCase.throws, testCase.it);
                     }
                 }
             }
