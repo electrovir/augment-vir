@@ -1,6 +1,6 @@
 {
     "name": "augment-vir",
-    "version": "3.1.1",
+    "version": "3.1.2",
     "homepage": "https://github.com/electrovir/augment-vir",
     "bugs": {
         "url": "https://github.com/electrovir/augment-vir/issues"
@@ -40,25 +40,25 @@
     },
     "devDependencies": {
         "@istanbuljs/nyc-config-typescript": "^1.0.2",
-        "@types/chai": "^4.3.3",
+        "@types/chai": "^4.3.4",
         "@types/fs-extra": "9.0.13",
         "@types/mocha": "^10.0.0",
         "@types/node": "18.11.9",
-        "chai": "^4.3.6",
-        "cspell": "^6.14.0",
+        "chai": "^4.3.7",
+        "cspell": "^6.14.1",
         "istanbul-smart-text-reporter": "^0.0.1",
         "mocha": "^10.1.0",
-        "mocha-spec-reporter-with-file-names": "^0.0.0",
+        "mocha-spec-reporter-with-file-names": "^0.0.2",
         "nyc": "^15.1.0",
         "prettier": "^2.7.1",
         "prettier-plugin-jsdoc": "^0.4.2",
         "prettier-plugin-multiline-arrays": "^1.1.1",
-        "prettier-plugin-organize-imports": "^3.1.1",
+        "prettier-plugin-organize-imports": "^3.2.0",
         "prettier-plugin-packagejson": "^2.3.0",
         "prettier-plugin-sort-json": "^0.0.3",
         "prettier-plugin-toml": "^0.3.1",
         "ts-node": "^10.9.1",
         "typescript": "4.8.4",
-        "virmator": "4.2.14"
+        "virmator": "4.2.17"
     }
 }

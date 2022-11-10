@@ -68,10 +68,12 @@ export type FunctionTestCase<FunctionToCallGeneric extends (...args: any[]) => a
               Parameters<FunctionToCallGeneric>,
               Awaited<ReturnType<FunctionToCallGeneric>>
           >
-        : OutputTestCaseSingleInput<
+        : Parameters<FunctionToCallGeneric> extends AtLeastTuple<any, 1>
+        ? OutputTestCaseSingleInput<
               Parameters<FunctionToCallGeneric>[0],
               Awaited<ReturnType<FunctionToCallGeneric>>
-          >;
+          >
+        : BaseTestCase<Awaited<ReturnType<FunctionToCallGeneric>>>;
 
 export function itCases<FunctionToCallGeneric extends (...args: any[]) => any | Promise<any>>(
     functionToCall: FunctionToCallGeneric,
@@ -82,7 +84,10 @@ export function itCases<FunctionToCallGeneric extends (...args: any[]) => any | 
             const functionInputs: Parameters<typeof functionToCall> =
                 'input' in testCase
                     ? ([testCase.input] as Parameters<typeof functionToCall>)
-                    : testCase.inputs;
+                    : 'inputs' in testCase
+                    ? testCase.inputs
+                    : // as cast here to cover the case where the input has NO inputs
+                      ([] as unknown as Parameters<typeof functionToCall>);
 
             if ('expect' in testCase) {
                 assertOutputWithDescription(
@@ -98,27 +103,38 @@ export function itCases<FunctionToCallGeneric extends (...args: any[]) => any | 
                 } catch (thrownError) {
                     caughtError = thrownError;
                 }
-                if ('throws' in testCase) {
-                    const errorThrower = () => {
-                        if (caughtError) {
-                            throw caughtError;
-                        }
-                    };
-
-                    Object.defineProperty(errorThrower, 'name', {
-                        value: functionToCall.name,
-                    });
-
-                    if (!testCase.throws) {
-                        assert.doesNotThrow(errorThrower);
-                    } else if (
-                        testCase.throws instanceof RegExp ||
-                        typeof testCase.throws === 'string'
-                    ) {
-                        assert.throws(errorThrower, testCase.throws, undefined, testCase.it);
-                    } else {
-                        assert.throws(errorThrower, undefined, testCase.throws, testCase.it);
+                const errorThrower = () => {
+                    if (caughtError) {
+                        throw caughtError;
                     }
+                };
+                // give a better name if possible
+                Object.defineProperty(errorThrower, 'name', {
+                    value: functionToCall.name,
+                });
+
+                if (!testCase.throws) {
+                    assert.doesNotThrow(
+                        errorThrower,
+                        `${errorThrower.name} should not have thrown an error.`,
+                    );
+                } else if (
+                    testCase.throws instanceof RegExp ||
+                    typeof testCase.throws === 'string'
+                ) {
+                    assert.throws(
+                        errorThrower,
+                        undefined,
+                        testCase.throws,
+                        `Caught error did not match expectations`,
+                    );
+                } else {
+                    assert.throws(
+                        errorThrower,
+                        testCase.throws,
+                        undefined,
+                        `Caught error did not match expectations`,
+                    );
                 }
             }
         });
