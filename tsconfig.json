@@ -1,8 +1,14 @@
 {
+    "extends": "virmator/base-configs/base-tsconfig.json",
     "compilerOptions": {
-        "declarationDir": "dist/types",
-        "module": "ESNext",
-        "outDir": "dist/esm"
+        "composite": true,
+        "incremental": true,
+        "noEmit": false
     },
-    "extends": "./tsconfig-base.json"
+    "exclude": [
+        "./configs",
+        "./dist",
+        "./node_modules",
+        "packages/node-js/test-files"
+    ]
 }

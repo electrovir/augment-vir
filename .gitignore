@@ -6,5 +6,4 @@ dist/
 graphics/
 node_modules/
 
-Icon?
-docs/
+*.tsbuildinfo

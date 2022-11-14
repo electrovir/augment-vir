@@ -1,0 +1,23 @@
+{
+    "files": [],
+    "references": [
+        {
+            "path": "packages/common"
+        },
+        {
+            "path": "packages/chai"
+        },
+        {
+            "path": "packages/node-js"
+        },
+        {
+            "path": "packages/common-tests"
+        },
+        {
+            "path": "packages/browser"
+        },
+        {
+            "path": "packages/scripts"
+        }
+    ]
+}

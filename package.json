@@ -1,6 +1,7 @@
 {
     "name": "augment-vir",
-    "version": "3.1.2",
+    "version": "4.0.0",
+    "private": true,
     "homepage": "https://github.com/electrovir/augment-vir",
     "bugs": {
         "url": "https://github.com/electrovir/augment-vir/issues"
@@ -14,42 +15,27 @@
         "name": "electrovir",
         "url": "https://github.com/electrovir"
     },
-    "main": "dist/cjs/index.js",
-    "module": "dist/esm/index.js",
-    "types": "dist/types/index.d.ts",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "workspaces": [
+        "./packages/*"
+    ],
     "scripts": {
-        "build": "virmator frontend build",
-        "compile": "rm -rf dist && tsc --project tsconfig.json && tsc --project tsconfig.cjs.json && tsc --project tsconfig.esm.json",
+        "compile": "find . -name tsconfig.tsbuildinfo -delete && npm run compile --workspaces -s",
         "docs:update": "virmator code-in-markdown",
         "format": "virmator format",
-        "prepublishOnly": "npm run compile && npm run test:all",
-        "preview": "virmator frontend preview",
+        "prepublishOnly": "echo \"Error: use \\x1b[32m\\\"npm run publish\\\"\\x1b[0m instead of \\x1b[31m\\\"npm publish\\\"\\x1b[0m\" && exit 1;",
+        "publish": "npm run test:all && virmator publish",
         "spellcheck": "virmator spellcheck",
-        "start": "npm install && virmator frontend",
-        "test": "virmator test",
-        "test:all": "npm run test:types && npm test && npm run spellcheck && npm run test:format",
+        "test": "npm run test --workspaces",
+        "test:all": "npm run spellcheck && npm run test:format && npm run test:docs && npm run test:types && npm run test",
+        "test:docs": "virmator code-in-markdown check",
         "test:format": "virmator format check",
-        "test:types": "tsc --noEmit",
-        "test:web": "virmator test-web"
-    },
-    "dependencies": {
-        "@type-challenges/utils": "^0.1.1",
-        "@types/chai-as-promised": "^7.1.5",
-        "chai-as-promised": "^7.1.1",
-        "fs-extra": "10.1.0"
+        "test:types": "tsc --build tsconfig.build.json"
     },
     "devDependencies": {
-        "@istanbuljs/nyc-config-typescript": "^1.0.2",
-        "@types/chai": "^4.3.4",
-        "@types/fs-extra": "9.0.13",
-        "@types/mocha": "^10.0.0",
-        "@types/node": "18.11.9",
-        "chai": "^4.3.7",
-        "cspell": "^6.14.1",
-        "istanbul-smart-text-reporter": "^0.0.1",
-        "mocha": "^10.1.0",
-        "mocha-spec-reporter-with-file-names": "^0.0.2",
-        "nyc": "^15.1.0",
+        "cspell": "^6.14.2",
+        "markdown-code-example-inserter": "^0.1.11",
         "prettier": "^2.7.1",
         "prettier-plugin-jsdoc": "^0.4.2",
         "prettier-plugin-multiline-arrays": "^1.1.1",
@@ -57,8 +43,6 @@
         "prettier-plugin-packagejson": "^2.3.0",
         "prettier-plugin-sort-json": "^0.0.3",
         "prettier-plugin-toml": "^0.3.1",
-        "ts-node": "^10.9.1",
-        "typescript": "4.8.4",
-        "virmator": "4.2.17"
+        "virmator": "^4.3.0"
     }
 }

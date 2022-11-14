@@ -5,10 +5,14 @@
 .*
 /*.tgz
 /Icon?
+/configs/
 /coverage/
 /cspell.config.js
 /graphics/
-/scripts/
+/public/
 /src/
-/test-files/
+bash-scripts/
+test-files/
 tsconfig*.json
+
+*.tsbuildinfo

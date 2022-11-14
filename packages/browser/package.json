@@ -1,0 +1,25 @@
+{
+    "name": "@augment-vir/browser",
+    "version": "4.0.0",
+    "license": "MIT",
+    "author": {
+        "name": "electrovir",
+        "url": "https://github.com/electrovir"
+    },
+    "scripts": {
+        "compile": "rm -rf dist && virmator compile",
+        "test": "virmator test-web"
+    },
+    "devDependencies": {
+        "@open-wc/testing": "^3.1.7",
+        "@types/mocha": "^10.0.0",
+        "@web/dev-server-esbuild": "^0.3.3",
+        "@web/test-runner": "^0.15.0",
+        "@web/test-runner-commands": "^0.6.5",
+        "@web/test-runner-playwright": "^0.9.0",
+        "typescript": "^4.8.4"
+    },
+    "publishConfig": {
+        "access": "public"
+    }
+}

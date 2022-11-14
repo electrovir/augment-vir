@@ -7,8 +7,6 @@ module.exports = {
     ],
     words: [
         ...baseConfig.words,
-        'peta',
-        'yotta',
-        'zetta',
+        'tsbuildinfo',
     ],
 };
