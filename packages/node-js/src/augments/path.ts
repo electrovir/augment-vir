@@ -1,4 +1,4 @@
-import {sep} from 'path';
+import {join, sep} from 'path';
 
 /** Convert a given path to a windows path if the current system doesn't use `/`. */
 export function replaceWithWindowsPathIfNeeded(input: string): string {
@@ -24,4 +24,11 @@ export function toPosixPath(maybeWindowsPath: string): string {
  */
 export function interpolationSafeWindowsPath(input: string): string {
     return input.replace(/\\/g, '\\\\\\\\');
+}
+
+export function joinFileNamesWithParentDirPath(
+    parentDirPath: string,
+    childNames: ReadonlyArray<string>,
+): ReadonlyArray<string> {
+    return childNames.map((childName) => join(parentDirPath, childName));
 }

@@ -1,6 +1,6 @@
 {
     "name": "augment-vir",
-    "version": "4.0.0",
+    "version": "4.1.0",
     "private": true,
     "homepage": "https://github.com/electrovir/augment-vir",
     "bugs": {
@@ -21,7 +21,7 @@
         "./packages/*"
     ],
     "scripts": {
-        "compile": "find . -name tsconfig.tsbuildinfo -delete && npm run compile --workspaces -s",
+        "compile": "find . -name tsconfig.tsbuildinfo -delete && npm run compile --workspaces",
         "docs:update": "virmator code-in-markdown",
         "format": "virmator format",
         "prepublishOnly": "echo \"Error: use \\x1b[32m\\\"npm run publish\\\"\\x1b[0m instead of \\x1b[31m\\\"npm publish\\\"\\x1b[0m\" && exit 1;",
@@ -43,6 +43,6 @@
         "prettier-plugin-packagejson": "^2.3.0",
         "prettier-plugin-sort-json": "^0.0.3",
         "prettier-plugin-toml": "^0.3.1",
-        "virmator": "^4.3.0"
+        "virmator": "file:../virmator/virmator-4.3.0.tgz"
     }
 }

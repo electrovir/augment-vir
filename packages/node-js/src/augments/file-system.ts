@@ -1,6 +1,6 @@
 import {existsSync} from 'fs';
 import {ensureDir} from 'fs-extra';
-import {lstat, readdir, readlink, stat, symlink, writeFile} from 'fs/promises';
+import {lstat, readdir, readFile, readlink, stat, symlink, writeFile} from 'fs/promises';
 import {dirname, join, relative} from 'path';
 
 export async function createSymLink(
@@ -69,4 +69,12 @@ async function internalReadDirPathsRecursive(dirPath: string, basePath: string):
  */
 export async function readDirRecursive(dirPath: string): Promise<string[]> {
     return await internalReadDirPathsRecursive(dirPath, dirPath);
+}
+
+export async function readFileIfExists(path: string): Promise<string | undefined> {
+    if (existsSync(path)) {
+        return (await readFile(path)).toString();
+    } else {
+        return undefined;
+    }
 }

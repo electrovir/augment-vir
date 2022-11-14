@@ -1,3 +1,4 @@
+import {extractErrorMessage} from './error';
 import {typedHasProperty} from './object';
 
 export function wait(delayMs: number): Promise<void> {
@@ -81,4 +82,44 @@ export function createDeferredPromiseWrapper<T = void>(): DeferredPromiseWrapper
         resolve,
         reject,
     };
+}
+
+export type WaitForConditionInputs = {
+    conditionCallback: () => boolean | Promise<boolean>;
+    timeoutMs?: number;
+    intervalMs?: number;
+    timeoutMessage?: string;
+};
+
+export async function waitForCondition({
+    conditionCallback,
+    timeoutMs = 10000,
+    intervalMs = 100,
+    timeoutMessage = '',
+}: WaitForConditionInputs) {
+    let condition: boolean = false;
+    let lastError: unknown;
+    async function checkCondition() {
+        try {
+            condition = !!(await conditionCallback());
+        } catch (error) {
+            condition = false;
+            lastError = error;
+        }
+    }
+    const startTime = Date.now();
+    await checkCondition();
+
+    while (!condition) {
+        await wait(intervalMs);
+        if (Date.now() - startTime >= timeoutMs) {
+            const message = timeoutMessage ? `${timeoutMessage}: ` : '';
+            throw new Error(
+                `${message}Timeout of "${timeoutMs}" exceeded waiting for condition to be true${extractErrorMessage(
+                    lastError,
+                )}`,
+            );
+        }
+        await checkCondition();
+    }
 }

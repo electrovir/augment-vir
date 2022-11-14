@@ -1,5 +1,4 @@
-import {AtLeastTuple} from '@augment-vir/common';
-import {isPromiseLike} from 'augment-vir';
+import {AtLeastTuple, isPromiseLike} from '@augment-vir/common';
 import {assert} from 'chai';
 
 function assertOutputWithDescription<
