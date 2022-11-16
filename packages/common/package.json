@@ -22,7 +22,8 @@
         "test": "echo \"use common-test to run tests\" && exit 0"
     },
     "dependencies": {
-        "@type-challenges/utils": "^0.1.1"
+        "@type-challenges/utils": "^0.1.1",
+        "type-fest": "^3.2.0"
     },
     "devDependencies": {
         "prettier": "^2.7.1",
