@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/scripts",
-    "version": "4.3.1",
+    "version": "4.4.0",
     "private": "true",
     "license": "MIT",
     "author": {
@@ -8,7 +8,7 @@
         "url": "https://github.com/electrovir"
     },
     "scripts": {
-        "compile": "rm -rf dist && virmator compile",
+        "compile": "tsc --pretty",
         "test": "virmator test"
     },
     "devDependencies": {

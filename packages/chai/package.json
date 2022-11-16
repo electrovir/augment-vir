@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/chai",
-    "version": "4.3.1",
+    "version": "4.4.0",
     "license": "MIT",
     "author": {
         "name": "electrovir",
@@ -9,7 +9,7 @@
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "scripts": {
-        "compile": "rm -rf dist && virmator compile",
+        "compile": "tsc --pretty",
         "test": "virmator test"
     },
     "dependencies": {

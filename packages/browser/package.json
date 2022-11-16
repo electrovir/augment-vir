@@ -1,13 +1,13 @@
 {
     "name": "@augment-vir/browser",
-    "version": "4.3.1",
+    "version": "4.4.0",
     "license": "MIT",
     "author": {
         "name": "electrovir",
         "url": "https://github.com/electrovir"
     },
     "scripts": {
-        "compile": "rm -rf dist && virmator compile",
+        "compile": "tsc --pretty",
         "test": "virmator test-web"
     },
     "devDependencies": {
