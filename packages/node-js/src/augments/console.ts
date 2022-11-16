@@ -1,5 +1,5 @@
+import {mapObjectValues} from '@augment-vir/common';
 import {styles} from 'ansi-colors';
-import {mapObjectValues} from 'augment-vir';
 import {createInterface} from 'readline';
 import {inspect} from 'util';
 

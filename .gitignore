@@ -6,4 +6,5 @@ dist/
 graphics/
 node_modules/
 
+*.tgz
 *.tsbuildinfo
