@@ -163,7 +163,7 @@ export async function runShellCommand(
             options.hookUpToConsole,
         );
 
-        const listeners: Readonly<Readonly<ShellListener>[]> = [
+        const listeners: ReadonlyArray<Readonly<ShellListener>> = [
             processListener(ShellEmitterEvent.stdout, (chunk) => {
                 if (options.stdoutCallback) {
                     options.stdoutCallback(prepareChunkForLogging(chunk, false));
@@ -217,7 +217,7 @@ export async function runShellCommand(
                     exitSignal,
                 });
             }),
-        ] as Readonly<Readonly<ShellListener>[]>;
+        ] as ReadonlyArray<Readonly<ShellListener>>;
 
         listeners.forEach((listener) => {
             shellStream.addListener(listener.eventType, listener.eventListener);

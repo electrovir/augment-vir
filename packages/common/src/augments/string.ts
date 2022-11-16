@@ -10,7 +10,7 @@ import {deDupeRegExFlags} from './regexp';
  *   to begin with.
  * @param conjunction Defaults to 'and'. The conjunction to be used before the final element.
  */
-export function joinWithFinalConjunction<T>(list: T[], conjunction = 'and'): string {
+export function joinWithFinalConjunction(list: ReadonlyArray<any>, conjunction = 'and'): string {
     if (list.length < 2) {
         /**
          * If there are not multiple things in the list to join, just turn the list into a string
@@ -62,7 +62,7 @@ export function splitIncludeSplit(
 
     const splits = original.split(splitter);
 
-    const splitterIncluded = splits.reduce((accum: string[], current, index) => {
+    const splitterIncluded = splits.reduce((accum: ReadonlyArray<string>, current, index) => {
         // this will be undefined on the last index
         const splitterLength: {index: number; length: number} | undefined = indexLengths[index];
 

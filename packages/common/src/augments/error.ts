@@ -2,11 +2,11 @@ import {isTruthy} from './function';
 import {AtLeastTuple} from './tuple';
 
 export function combineErrors(errors: AtLeastTuple<Error, 1>): Error;
-export function combineErrors(errors: never[]): undefined;
-export function combineErrors(errors: Error[]): Error | undefined;
+export function combineErrors(errors: ReadonlyArray<never>): undefined;
+export function combineErrors(errors: ReadonlyArray<Error>): Error | undefined;
 export function combineErrors(errors?: undefined): undefined;
 export function combineErrors(
-    errors?: AtLeastTuple<Error, 1> | undefined | never[] | Error[],
+    errors?: AtLeastTuple<Error, 1> | undefined | ReadonlyArray<never> | ReadonlyArray<Error>,
 ): Error | undefined {
     if (!errors || errors.length === 0) {
         return undefined;
@@ -20,7 +20,9 @@ export function combineErrors(
     return new Error(errors.map((error) => extractErrorMessage(error).trim()).join('\n'));
 }
 
-export function combineErrorMessages(errors?: (Error | string | undefined)[] | undefined): string {
+export function combineErrorMessages(
+    errors?: ReadonlyArray<Error | string | undefined> | undefined,
+): string {
     if (!errors) {
         return '';
     }

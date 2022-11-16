@@ -49,7 +49,7 @@ async function internalReadDirPathsRecursive(dirPath: string, basePath: string):
     const dirContents = await readdir(dirPath);
     const recursiveContents: string[] = (
         await Promise.all(
-            dirContents.map(async (fileName): Promise<string | string[]> => {
+            dirContents.map(async (fileName): Promise<string | ReadonlyArray<string>> => {
                 const filePath = join(dirPath, fileName);
                 if ((await stat(filePath)).isDirectory()) {
                     return internalReadDirPathsRecursive(filePath, basePath);

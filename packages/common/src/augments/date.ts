@@ -11,7 +11,7 @@ export const englishFullMonthNames = [
     'october',
     'november',
     'december',
-];
+] as const;
 
 export const englishShortMonthNames = englishFullMonthNames.map((longMonthName) =>
     longMonthName.slice(0, 3),
@@ -72,7 +72,9 @@ export function createDateFromNamedCommaFormat(
         );
     }
 
-    const longMonthIndex = englishFullMonthNames.indexOf(monthName.toLowerCase());
+    const longMonthIndex = (englishFullMonthNames as ReadonlyArray<string>).indexOf(
+        monthName.toLowerCase(),
+    );
     const shortMonthIndex = englishShortMonthNames.indexOf(monthName.toLowerCase());
 
     let monthIndex = longMonthIndex === -1 ? shortMonthIndex : longMonthIndex;

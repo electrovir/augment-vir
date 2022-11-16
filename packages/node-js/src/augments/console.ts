@@ -25,7 +25,7 @@ export const logColors: Readonly<Record<ColorKey, string>> = {
 
 type ToLoggingStringInputs = {
     colors: ColorKey | ReadonlyArray<ColorKey>;
-    args: any[];
+    args: ReadonlyArray<any>;
 };
 
 function toLoggingString({colors, args}: ToLoggingStringInputs): string {
@@ -58,15 +58,15 @@ export enum LogType {
     success = 'success',
 }
 
-export const log: Record<LogType, (...args: any[]) => void> = {
-    [LogType.info]: (...args: any[]) => {
+export const log: Record<LogType, (...args: ReadonlyArray<any>) => void> = {
+    [LogType.info]: (...args: ReadonlyArray<any>) => {
         writeLog({
             logType: 'stdout',
             colors: ColorKey.info,
             args,
         });
     },
-    [LogType.error]: (...args: any[]) => {
+    [LogType.error]: (...args: ReadonlyArray<any>) => {
         writeLog({
             logType: 'stderr',
             colors: [
@@ -76,14 +76,14 @@ export const log: Record<LogType, (...args: any[]) => void> = {
             args,
         });
     },
-    [LogType.bold]: (...args: any[]) => {
+    [LogType.bold]: (...args: ReadonlyArray<any>) => {
         writeLog({
             logType: 'stdout',
             colors: ColorKey.bold,
             args,
         });
     },
-    [LogType.mutate]: (...args: any[]) => {
+    [LogType.mutate]: (...args: ReadonlyArray<any>) => {
         writeLog({
             logType: 'stdout',
             colors: [
@@ -93,14 +93,14 @@ export const log: Record<LogType, (...args: any[]) => void> = {
             args,
         });
     },
-    [LogType.faint]: (...args: any[]) => {
+    [LogType.faint]: (...args: ReadonlyArray<any>) => {
         writeLog({
             logType: 'stdout',
             colors: ColorKey.faint,
             args,
         });
     },
-    [LogType.success]: (...args: any[]) => {
+    [LogType.success]: (...args: ReadonlyArray<any>) => {
         writeLog({
             logType: 'stdout',
             colors: [
@@ -112,16 +112,14 @@ export const log: Record<LogType, (...args: any[]) => void> = {
     },
 } as const;
 
-export const logIf: Record<LogType, (condition: boolean, ...args: any[]) => void> = mapObjectValues(
-    log,
-    (key) => {
-        return (condition: boolean, ...args: any[]) => {
+export const logIf: Record<LogType, (condition: boolean, ...args: ReadonlyArray<any>) => void> =
+    mapObjectValues(log, (key) => {
+        return (condition: boolean, ...args: ReadonlyArray<any>) => {
             if (condition) {
                 log[key](...args);
             }
         };
-    },
-);
+    });
 
 export async function askQuestion(questionToAsk: string, timeoutMs = 60_000): Promise<string> {
     const cliInterface = createInterface({

@@ -1,11 +1,11 @@
 import {AtLeastTuple} from './tuple';
 import {ArrayElement} from './type';
 
-export function filterOutIndexes<T>(array: Readonly<T[]>, indexes: Readonly<number[]>): T[] {
+export function filterOutIndexes<T>(array: ReadonlyArray<T>, indexes: ReadonlyArray<number>): T[] {
     return array.filter((_, index) => !indexes.includes(index));
 }
 
-export function flatten2dArray<T>(array2d: T[][]): T[] {
+export function flatten2dArray<T>(array2d: ReadonlyArray<ReadonlyArray<T>>): T[] {
     const flattened: T[] = array2d.reduce((accum: T[], row) => accum.concat(row), []);
 
     return flattened;
@@ -16,7 +16,7 @@ export type AtLeastOneEntryArray<ArrayGeneric extends ReadonlyArray<any>> = AtLe
     1
 >;
 
-export function trimArrayStrings(input: string[]): string[] {
+export function trimArrayStrings(input: ReadonlyArray<string>): string[] {
     return input.map((line) => line.trim()).filter((line) => line !== '');
 }
 
@@ -62,7 +62,7 @@ export async function awaitedBlockingMap<OriginalGeneric, MappedGeneric>(
     return mappedValues;
 }
 
-export function isInTypedArray<T>(array: T[], input: any): input is T {
+export function isInTypedArray<T>(array: ReadonlyArray<T>, input: any): input is T {
     return array.includes(input);
 }
 

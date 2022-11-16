@@ -25,7 +25,7 @@ export function isKeyof<ObjectGeneric>(
 }
 
 export function filterToEnumValues<T extends object>(
-    inputs: unknown[],
+    inputs: ReadonlyArray<unknown>,
     checkEnum: T,
     caseInsensitive = false,
 ): T[keyof T][] {
@@ -119,7 +119,7 @@ export function typedHasProperty<KeyGeneric extends PropertyKey, ParentGeneric>(
 
 export function typedHasProperties<KeyGeneric extends PropertyKey, ParentGeneric>(
     inputObject: ParentGeneric,
-    inputKeys: KeyGeneric[],
+    inputKeys: ReadonlyArray<KeyGeneric>,
 ): inputObject is CombineTypeWithKey<KeyGeneric, ParentGeneric> {
     return inputObject && inputKeys.every((key) => typedHasProperty(inputObject, key));
 }

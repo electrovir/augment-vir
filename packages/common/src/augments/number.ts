@@ -77,7 +77,7 @@ const maxDecimals = 4;
  */
 export function truncateNumber(
     originalValue: unknown,
-    suffixes: readonly string[] = defaultTruncationSuffixes,
+    suffixes: ReadonlyArray<string> = defaultTruncationSuffixes,
 ): string {
     try {
         const value = typeof originalValue === 'number' ? originalValue : Number(originalValue);
