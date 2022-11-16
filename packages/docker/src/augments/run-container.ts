@@ -23,6 +23,7 @@ export type RunContainerInputs = {
     executionEnv?: Record<string, string>;
     removeWhenDone?: boolean;
     extraDockerInputs?: ReadonlyArray<string>;
+    useCurrentUser?: boolean;
 };
 
 export async function runContainer({
@@ -36,6 +37,7 @@ export async function runContainer({
     executionEnv,
     enableLogging,
     removeWhenDone,
+    useCurrentUser,
     extraDockerInputs = [],
 }: RunContainerInputs) {
     try {
@@ -45,11 +47,13 @@ export async function runContainer({
         const containerNameFlag = containerName ? `--name='${containerName}'` : '';
         const volumeMapFlags = makeVolumeFlags(volumeMapping);
         const rmFlag = removeWhenDone ? '--rm' : '';
+        const userFlag = useCurrentUser ? '--user "$(id -u)":"$(id -g)"' : '';
 
         const fullCommand = combineCommandAndFlags([
             'docker',
             'run',
             portMapFlags,
+            userFlag,
             volumeMapFlags,
             envFlags,
             rmFlag,
