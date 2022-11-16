@@ -7,6 +7,7 @@ export type ExecContainerInputs = {
     command: string;
     envMapping?: EnvMap | undefined;
     executionEnv?: Record<string, string> | undefined;
+    extraDockerInputs?: ReadonlyArray<string>;
 };
 
 export async function containerExec({
@@ -15,6 +16,7 @@ export async function containerExec({
     command,
     envMapping,
     executionEnv,
+    extraDockerInputs = [],
 }: ExecContainerInputs) {
     const envFlags = makeEnvFlags(envMapping);
     const ttyFlag = tty ? '-t' : '';
@@ -24,6 +26,7 @@ export async function containerExec({
         'exec',
         ttyFlag,
         envFlags,
+        ...extraDockerInputs,
         containerNameOrId,
         command,
     ]);

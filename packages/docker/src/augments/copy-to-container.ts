@@ -5,6 +5,7 @@ export type CopyToContainerInputs = {
     isDir: boolean;
     containerAbsolutePath: string;
     containerNameOrId: string;
+    extraDockerInputs?: ReadonlyArray<string>;
 };
 
 export async function copyToContainer({
@@ -12,11 +13,14 @@ export async function copyToContainer({
     isDir,
     hostPath,
     containerNameOrId,
+    extraDockerInputs = [],
 }: CopyToContainerInputs): Promise<void> {
     const suffix = isDir ? '/.' : '';
     const fullHostPath = `${hostPath}${suffix}`;
+    const extraInputs: string = extraDockerInputs.join(' ');
+
     await runShellCommand(
-        `docker cp '${fullHostPath}' '${containerNameOrId}:${containerAbsolutePath}'`,
+        `docker cp ${extraInputs} '${fullHostPath}' '${containerNameOrId}:${containerAbsolutePath}'`,
         {rejectOnError: true},
     );
 }

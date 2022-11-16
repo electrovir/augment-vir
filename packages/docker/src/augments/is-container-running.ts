@@ -39,9 +39,10 @@ export async function executeIfContainerIsNotRunning({
     const containerIsAlreadyRunning: boolean = !!containerInfo?.State.Running;
 
     if (containerInfo && !containerInfo.State.Running) {
-        // fully remove the container
+        // fully remove the container first
         await killContainer(containerNameOrId);
     }
+
     if (containerIsAlreadyRunning) {
         await waitForContainerToBeResponsive(containerNameOrId);
         logIf.faint(enableLogging, `Container "${containerNameOrId}" is already running...`);

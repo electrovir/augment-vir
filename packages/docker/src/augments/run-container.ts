@@ -22,6 +22,7 @@ export type RunContainerInputs = {
     envMapping?: EnvMap | undefined;
     executionEnv?: Record<string, string>;
     removeWhenDone?: boolean;
+    extraDockerInputs?: ReadonlyArray<string>;
 };
 
 export async function runContainer({
@@ -35,6 +36,7 @@ export async function runContainer({
     executionEnv,
     enableLogging,
     removeWhenDone,
+    extraDockerInputs = [],
 }: RunContainerInputs) {
     try {
         const portMapFlags = makePortMapFlags(portMapping);
@@ -53,6 +55,7 @@ export async function runContainer({
             rmFlag,
             detachFlag,
             containerNameFlag,
+            ...extraDockerInputs,
             imageName,
             command,
         ]);
