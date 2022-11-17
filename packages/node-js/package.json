@@ -1,6 +1,14 @@
 {
     "name": "@augment-vir/node-js",
     "version": "4.4.0",
+    "homepage": "https://github.com/electrovir/augment-vir/tree/main/packages/node-js",
+    "bugs": {
+        "url": "https://github.com/electrovir/augment-vir/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/electrovir/augment-vir"
+    },
     "license": "MIT",
     "author": {
         "name": "electrovir",
