@@ -384,3 +384,9 @@ function compareInnerValue(
         assertMatchesObjectShape<{}>(testValue, matchValue);
     }
 }
+
+export function typedObjectFromEntries<KeyType extends PropertyKey, ValueType>(
+    entries: ReadonlyArray<Readonly<[KeyType, ValueType]>>,
+): Record<KeyType, ValueType> {
+    return Object.fromEntries(entries) as Record<KeyType, ValueType>;
+}

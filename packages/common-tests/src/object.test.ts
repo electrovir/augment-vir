@@ -24,6 +24,7 @@ import {
 import {randomString} from '@augment-vir/node-js';
 import {assert, expect} from 'chai';
 import {describe, it} from 'mocha';
+import {typedObjectFromEntries} from '../../common/src/augments/object';
 
 enum Planet {
     Mercury = 'mercury',
@@ -1053,5 +1054,30 @@ describe('ObjectWithAtLeastSingleEntryArrays', () => {
             // @ts-expect-error
             topArray: [],
         };
+    });
+});
+
+describe(typedObjectFromEntries.name, () => {
+    it('should maintain types', () => {
+        enum MyEnum {
+            aKey = 'a',
+            bKey = 'b',
+        }
+
+        const entries = getEnumTypedValues(MyEnum).map((enumValue): [MyEnum, string] => {
+            return [
+                enumValue,
+                `${enumValue}-derp`,
+            ];
+        });
+
+        const formedObject = typedObjectFromEntries(entries);
+
+        type shouldMatchType = ExpectTrue<Equal<typeof formedObject, Record<MyEnum, string>>>;
+
+        assert.deepStrictEqual(formedObject, {
+            [MyEnum.aKey]: 'a-derp',
+            [MyEnum.bKey]: 'b-derp',
+        });
     });
 });
