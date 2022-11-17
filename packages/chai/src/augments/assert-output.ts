@@ -89,7 +89,7 @@ export function itCases<FunctionToCallGeneric extends (...args: any[]) => any | 
                       ([] as unknown as Parameters<typeof functionToCall>);
 
             if ('expect' in testCase) {
-                assertOutputWithDescription(
+                await assertOutputWithDescription(
                     functionToCall,
                     testCase.expect,
                     testCase.it ?? '',
