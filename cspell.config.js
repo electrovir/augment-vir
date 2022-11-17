@@ -7,6 +7,8 @@ module.exports = {
     ],
     words: [
         ...baseConfig.words,
+        'datamodel',
+        'datasource',
         'tsbuildinfo',
     ],
 };
