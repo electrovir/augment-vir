@@ -5,7 +5,7 @@ import {
     RequiredAndNotNullBy,
     UnPromise,
     wrapNarrowTypeWithTypeCheck,
-} from '@augment-vir/common';
+} from '../../../common/src';
 
 {
     /** Overwrite */

@@ -55,7 +55,7 @@ export function createDateFromSlashFormat(
 /**
  * @param commaFormatString Should be at string of the form "monthName dayNumber, fullYear" Example:
  *   "May 19, 2005"
- * @param ignoreInvalidMonth Set to true to ignore invalid months
+ * @param ignoreInvalidMonth Set to true to ignore invalid months and just use the current UTC month
  */
 export function createDateFromNamedCommaFormat(
     commaFormatString: string,
@@ -81,7 +81,7 @@ export function createDateFromNamedCommaFormat(
 
     if (monthIndex === -1) {
         if (ignoreInvalidMonth) {
-            monthIndex = 4;
+            monthIndex = new Date().getUTCMonth();
         } else {
             throw new InvalidDateError(`Month name ${monthName} was not found.`);
         }

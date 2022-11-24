@@ -21,7 +21,7 @@
         "./packages/*"
     ],
     "scripts": {
-        "compile": "rm -rf packages/*/dist && find . -name  -delete && find . -name tsconfig.tsbuildinfo -delete && echo \"pre-compiling...\" && echo \"$(npm run compile --workspaces >/dev/null 2>&1)\" && npm run compile --workspaces",
+        "compile": "rm -rf packages/*/dist && find . -name tsconfig.tsbuildinfo -delete && echo \"pre-compiling...\" && echo \"$(npm run compile --workspaces >/dev/null 2>&1)\" && npm run compile --workspaces",
         "docs:update": "virmator code-in-markdown",
         "format": "virmator format",
         "prepublishOnly": "echo \"Error: use \\x1b[32m\\\"npm run publish\\\"\\x1b[0m instead of \\x1b[31m\\\"npm publish\\\"\\x1b[0m\" && exit 1;",

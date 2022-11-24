@@ -1,14 +1,14 @@
 import {assertInstanceOf} from '@augment-vir/chai';
+import chai, {expect} from 'chai';
+import chaiAsPromised from 'chai-as-promised';
+import {describe, it} from 'mocha';
 import {
     createDeferredPromiseWrapper,
     isPromiseLike,
     PromiseTimeoutError,
     wait,
     wrapPromiseInTimeout,
-} from '@augment-vir/common';
-import chai, {expect} from 'chai';
-import chaiAsPromised from 'chai-as-promised';
-import {describe, it} from 'mocha';
+} from '../../../common/src';
 
 // increase if tests are flaky in other environments, like GitHub Actions (which is typically slow)
 const promiseDelayMs = 500;

@@ -5,8 +5,12 @@ export const repoRootDirPath = dirname(dirname(dirname(dirname(__filename))));
 
 export const packagesDir = join(repoRootDirPath, 'packages');
 
-export async function readAllPackageDirPaths(): Promise<ReadonlyArray<string>> {
-    const dirs = await readdir(packagesDir);
+export async function readAllPublicPackageDirPaths(): Promise<ReadonlyArray<string>> {
+    const packageNames = await readdir(packagesDir);
 
-    return dirs;
+    const packageDirPaths = packageNames.map((packageName) => join(packagesDir, packageName));
+
+    // packageDirPaths.filter();
+
+    return packageDirPaths;
 }

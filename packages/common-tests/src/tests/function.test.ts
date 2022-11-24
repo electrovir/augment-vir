@@ -1,6 +1,6 @@
-import {isTruthy} from '@augment-vir/common';
 import {expect} from 'chai';
 import {describe, it} from 'mocha';
+import {isTruthy} from '../../../common/src';
 
 describe(isTruthy.name, () => {
     it('should return true for various truthy things', () => {

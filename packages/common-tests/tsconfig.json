@@ -15,9 +15,6 @@
             "path": "../chai"
         },
         {
-            "path": "../common"
-        },
-        {
             "path": "../node-js"
         }
     ]

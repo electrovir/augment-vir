@@ -1,16 +1,12 @@
-import {expectDuration} from '@augment-vir/chai';
-import {
-    awaitedBlockingMap,
-    awaitedForEach,
-    filterOutIndexes,
-    flatten2dArray,
-    isInTypedArray,
-    trimArrayStrings,
-    wait,
-} from '@augment-vir/common';
-import {randomString} from '@augment-vir/node-js';
+import {expectTypeOf, itCases} from '@augment-vir/chai';
 import {expect} from 'chai';
 import {describe, it} from 'mocha';
+import {
+    filterOutIndexes,
+    flatten2dArray,
+    trimArrayStrings,
+    typedArrayIncludes,
+} from '../../../common/src';
 
 describe(filterOutIndexes.name, () => {
     const experimentArray = [
@@ -145,61 +141,46 @@ describe(flatten2dArray.name, () => {
     });
 });
 
-describe(awaitedForEach.name, () => {
-    it('should ensure execution order', async () => {
-        const originalArray: string[] = Array(5)
-            .fill(0)
-            .map(() => randomString());
-        const results: string[] = [];
-        let totalWait = 0;
-        (
-            await expectDuration(async () => {
-                await awaitedForEach(originalArray, async (element, index) => {
-                    if (index === 1) {
-                        await wait(1000);
-                        totalWait += 1000;
-                    } else {
-                        await wait(50);
-                        totalWait += 50;
-                    }
-                    results.push(element);
-                });
+describe(typedArrayIncludes.name, () => {
+    itCases(typedArrayIncludes, [
+        {
+            it: 'should work for string array',
+            expect: true,
+            inputs: [
+                [
+                    'hello',
+                    'there',
+                ],
+                'there',
+            ],
+        },
+    ]);
 
-                // ensure the order is the same despite a long wait time in the middle
-            })
-        ).to.be.greaterThanOrEqual(totalWait);
-        expect(results).to.deep.equal(originalArray);
+    it('should be a general type guard', () => {
+        const array = [
+            'yo',
+            'hello',
+            'hi',
+        ];
+
+        const vagueVar: number | string = 'yo' as number | string;
+
+        if (typedArrayIncludes(array, vagueVar)) {
+            const definitelyString: string = vagueVar;
+        }
     });
-});
 
-describe(awaitedBlockingMap.name, () => {
-    it('should return values and maintain execution order', async () => {
-        const originalArray: string[] = Array(5)
-            .fill(0)
-            .map(() => randomString());
-        let totalWait = 0;
-        (
-            await expectDuration(async () => {
-                const results = await awaitedBlockingMap(originalArray, async (element, index) => {
-                    if (index === 1) {
-                        await wait(1000);
-                        totalWait += 1000;
-                    } else {
-                        await wait(50);
-                        totalWait += 50;
-                    }
-                    return {element};
-                });
+    it('should be a super narrow type guard', () => {
+        const array = [
+            'yo',
+            'hello',
+            'hi',
+        ] as const;
 
-                // ensure the order is the same despite a long wait time in the middle
-                expect(results.map((wrapper) => wrapper.element)).to.deep.equal(originalArray);
-            })
-        ).to.be.greaterThanOrEqual(totalWait);
-    });
-});
+        const vagueVar: number | string = 'yo' as number | string;
 
-describe(isInTypedArray.name, () => {
-    it('should match test cases', () => {
-        const testCases = [];
+        if (typedArrayIncludes(array, vagueVar)) {
+            expectTypeOf(vagueVar).toEqualTypeOf<'yo' | 'hello' | 'hi'>();
+        }
     });
 });

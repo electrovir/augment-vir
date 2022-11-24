@@ -1,13 +1,7 @@
-import {
-    AtLeastTuple,
-    DoesExtend,
-    ExpectFalse,
-    ExpectTrue,
-    isLengthAtLeast,
-    Tuple,
-} from '@augment-vir/common';
+import {expectTypeOf} from '@augment-vir/chai';
 import {assert} from 'chai';
 import {describe} from 'mocha';
+import {AtLeastTuple, isLengthAtLeast, Tuple} from '../../../common/src';
 
 describe(isLengthAtLeast.name, () => {
     it('should check length', () => {
@@ -44,15 +38,14 @@ describe(isLengthAtLeast.name, () => {
             'c',
         ];
         const access = anyArray[0];
-        type maybeUndefined = ExpectTrue<DoesExtend<typeof access, undefined>>;
+        expectTypeOf(access).toBeNullable();
 
         if (isLengthAtLeast(anyArray, 2)) {
             const inGuardAccess = anyArray[1];
-            type definitelyDefined = ExpectFalse<DoesExtend<typeof inGuardAccess, undefined>>;
+            expectTypeOf(inGuardAccess).not.toBeNullable();
             const stillMaybeUndefined = anyArray[10];
-            type maybeUndefinedAgain = ExpectTrue<
-                DoesExtend<typeof stillMaybeUndefined, undefined>
-            >;
+
+            expectTypeOf(stillMaybeUndefined).toBeNullable();
         }
     });
 });
@@ -79,6 +72,19 @@ describe('AtLeastTuple', () => {
     });
 
     it('should match arrays with more than the expected length', () => {
-        type moreThanOneEntry = ExpectTrue<DoesExtend<AtLeastTuple<any, 5>, [1, 2, 3, 4, 5, 6, 7]>>;
+        expectTypeOf([
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+        ] as const).toBeAssignableTo<AtLeastTuple<any, 5>>();
+        expectTypeOf([
+            1,
+            2,
+            3,
+        ] as const).not.toBeAssignableTo<AtLeastTuple<any, 5>>();
     });
 });

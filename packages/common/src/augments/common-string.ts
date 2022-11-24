@@ -1,5 +1,6 @@
 import {ansiRegex} from './ansi';
 import {deDupeRegExFlags} from './regexp';
+import {AtLeastTuple} from './tuple';
 
 /**
  * Join elements into a string with commas separating each value. Add a conjunction before the final
@@ -56,7 +57,12 @@ export function splitIncludeSplit(
     splitterInput: string | RegExp,
     caseSensitive: boolean,
 ) {
-    const indexLengths = getAllIndexesOf(original, splitterInput, caseSensitive, true);
+    const indexLengths = getAllIndexesOf({
+        searchIn: original,
+        searchFor: splitterInput,
+        caseSensitive,
+        includeLength: true,
+    });
 
     const splitter = makeCaseInsensitiveRegExp(splitterInput, caseSensitive);
 
@@ -91,18 +97,17 @@ const defaultCasingOptions: Required<CasingOptions> = {
     capitalizeFirstLetter: false,
 };
 
-export function capitalizeFirstLetter(input: string): string {
+export function capitalizeFirstLetter<InputGeneric extends string>(
+    input: InputGeneric,
+): Capitalize<InputGeneric> {
     if (!input.length) {
-        return '';
+        return '' as Capitalize<InputGeneric>;
     }
-    const firstLetter: string = input[0] ?? '';
-    return firstLetter.toUpperCase() + input.slice(1);
+    const firstLetter: string = input[0]!;
+    return (firstLetter.toUpperCase() + input.slice(1)) as Capitalize<InputGeneric>;
 }
 
-function maybeCapitalize(
-    input: string,
-    casingOptions: Partial<CasingOptions> | undefined = defaultCasingOptions,
-): string {
+function maybeCapitalize(input: string, casingOptions: Partial<CasingOptions>): string {
     return casingOptions.capitalizeFirstLetter ? capitalizeFirstLetter(input) : input;
 }
 
@@ -139,8 +144,8 @@ export function camelCaseToKebabCase(rawCamelCase: string) {
     const kebabCase: string = rawCamelCase
         .split('')
         .reduce((accum, currentLetter, index, originalString) => {
-            const previousLetter = index > 0 ? originalString[index - 1] ?? '' : '';
-            const nextLetter = index < originalString.length ? originalString[index + 1] ?? '' : '';
+            const previousLetter = index > 0 ? originalString[index - 1]! : '';
+            const nextLetter = index < originalString.length - 1 ? originalString[index + 1]! : '';
             const possibleWordBoundary = isLowerCase(previousLetter) || isLowerCase(nextLetter);
 
             if (
@@ -194,72 +199,81 @@ function makeCaseInsensitiveRegExp(searchForInput: string | RegExp, caseSensitiv
     return searchFor;
 }
 
-export function getAllIndexesOf(
-    searchIn: string,
-    searchForInput: string | RegExp,
-    caseSensitive: boolean,
-    includeLength: true,
-): {index: number; length: number}[];
-export function getAllIndexesOf(
-    searchIn: string,
-    searchForInput: string | RegExp,
-    caseSensitive: boolean,
-    includeLength?: false | undefined,
-): number[];
-export function getAllIndexesOf(
-    searchIn: string,
-    searchForInput: string | RegExp,
+export function getAllIndexesOf<IncludeLength extends boolean | undefined>({
+    searchIn,
+    searchFor,
+    caseSensitive,
+    includeLength,
+}: {
+    searchIn: string;
+    searchFor: string | RegExp;
     /**
      * CaseSensitive only applies when the input is a string. Otherwise, the RegExp's "i" flag is
      * used to determine case sensitivity.
      */
-    caseSensitive: boolean,
-    includeLength = false,
-): number[] | {index: number; length: number}[] {
-    const searchFor: RegExp = makeCaseInsensitiveRegExp(searchForInput, caseSensitive);
+    caseSensitive: boolean;
+    includeLength?: IncludeLength;
+}): IncludeLength extends true ? {index: number; length: number}[] : number[] {
+    const searchRegExp: RegExp = makeCaseInsensitiveRegExp(searchFor, caseSensitive);
 
     const indexes: number[] = [];
-    const indexesAndLengths: {index: number; length: number}[] = [];
+    const indexesAndLengths: {
+        index: number;
+        length: number;
+    }[] = [];
 
-    searchIn.replace(searchFor, (...matchResults: (string | number)[]): string => {
-        /**
-         * Grabbing the second to last entry in the array (rather than the second) takes capture
-         * groups into account.
-         */
-        const matchIndex: string | number | undefined = matchResults[matchResults.length - 2];
+    searchIn.replace(
+        searchRegExp,
+        (...matchResults: ReadonlyArray<string | undefined | number>): string => {
+            /**
+             * Grabbing the second to last entry in the array (rather than the second) takes capture
+             * groups into account.
+             */
+            const matchIndex: string | number | undefined = matchResults[matchResults.length - 2];
 
-        if (typeof matchIndex !== 'number') {
-            throw new Error(
-                `Match index "${matchIndex}" is not a number. Searching for "${searchForInput}" in "${searchIn}".`,
-            );
-        }
+            // this is used as a type safety catch and cannot actually be triggered on purpose
+            // istanbul ignore next
+            if (typeof matchIndex !== 'number') {
+                throw new Error(
+                    `Match index "${matchIndex}" is not a number. Searching for "${searchFor}" in "${searchIn}".`,
+                );
+            }
 
-        const regExpMatch: string | number | undefined = matchResults[0];
+            const regExpMatch: string | number | undefined = matchResults[0];
 
-        if (typeof regExpMatch !== 'string') {
-            throw new Error(`regExpMatch should've been a string but was ${typeof regExpMatch}!`);
-        }
+            // this is used as a type safety catch and cannot actually be triggered on purpose
+            // istanbul ignore next
+            if (typeof regExpMatch !== 'string') {
+                throw new Error(
+                    `regExpMatch should've been a string but was ${typeof regExpMatch}!`,
+                );
+            }
 
-        indexesAndLengths.push({index: matchIndex, length: regExpMatch.length});
-        indexes.push(matchIndex);
+            indexesAndLengths.push({index: matchIndex, length: regExpMatch.length});
+            indexes.push(matchIndex);
 
-        const originalMatch = matchResults[0];
+            const originalMatch = matchResults[0];
 
-        if (typeof originalMatch !== 'string') {
-            throw new Error(
-                `Original match when searching for "${searchForInput}" in "${searchIn}" at index ${matchIndex} is not a string.`,
-            );
-        }
-        /**
-         * Don't actually change any text. What we do here doesn't matter because we're not using
-         * the output of the .replace method, we're just producing side effects.
-         */
-        return originalMatch;
-    });
+            // this is used as a type safety catch and cannot actually be triggered on purpose
+            // istanbul ignore next
+            if (typeof originalMatch !== 'string') {
+                throw new Error(
+                    `Original match when searching for "${searchFor}" in "${searchIn}" at index ${matchIndex} is not a string.`,
+                );
+            }
+            /**
+             * Don't actually change any text. What we do here doesn't matter because we're not
+             * using the output of the .replace method, we're just producing side effects.
+             */
+            return originalMatch;
+        },
+    );
 
-    if (includeLength) {
-        return indexesAndLengths;
-    } else {
-        return indexes;
-    }
+    return (includeLength ? indexesAndLengths : indexes) as IncludeLength extends true
+        ? {index: number; length: number}[]
+        : number[];
+}
+
+export function typedSplit(input: string, splitString: string): AtLeastTuple<string, 1> {
+    return input.split(splitString) as unknown as AtLeastTuple<string, 1>;
 }

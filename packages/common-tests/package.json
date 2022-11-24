@@ -17,13 +17,17 @@
     },
     "scripts": {
         "compile": "tsc --pretty",
-        "test": "virmator test"
+        "test": "npm run test:types && virmator test",
+        "test:types": "tsc --noEmit"
     },
     "devDependencies": {
+        "@augment-vir/chai": "*",
+        "@augment-vir/common": "*",
         "@istanbuljs/nyc-config-typescript": "^1.0.2",
         "@types/chai": "^4.3.4",
         "@types/mocha": "^10.0.0",
         "chai": "^4.3.7",
+        "expect-type": "^0.15.0",
         "istanbul-smart-text-reporter": "^0.0.1",
         "mocha": "^10.1.0",
         "mocha-spec-reporter-with-file-names": "^0.0.2",

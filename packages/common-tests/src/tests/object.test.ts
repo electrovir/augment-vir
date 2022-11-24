@@ -1,10 +1,11 @@
-import {itCases} from '@augment-vir/chai';
+import {expectTypeOf, itCases} from '@augment-vir/chai';
+import {randomString} from '@augment-vir/node-js';
+import {assert, expect} from 'chai';
+import {describe, it} from 'mocha';
 import {
     areJsonEqual,
     assertMatchesObjectShape,
     copyThroughJson,
-    Equal,
-    ExpectTrue,
     filterObject,
     filterToEnumValues,
     getEntriesSortedByKey,
@@ -20,11 +21,8 @@ import {
     ObjectWithAtLeastSingleEntryArrays,
     typedHasProperties,
     typedHasProperty,
-} from '@augment-vir/common';
-import {randomString} from '@augment-vir/node-js';
-import {assert, expect} from 'chai';
-import {describe, it} from 'mocha';
-import {typedObjectFromEntries} from '../../common/src/augments/object';
+    typedObjectFromEntries,
+} from '../../../common/src';
 
 enum Planet {
     Mercury = 'mercury',
@@ -273,7 +271,7 @@ describe(typedHasProperty.name, () => {
         const idkWhatThisIs: unknown = (() => {}) as unknown;
         if (typedHasProperty(idkWhatThisIs, 'name')) {
             idkWhatThisIs.name;
-            type ShouldBeUnknown = ExpectTrue<Equal<typeof idkWhatThisIs.name, unknown>>;
+            expectTypeOf(idkWhatThisIs.name).toBeUnknown();
             if (typedHasProperty(idkWhatThisIs, 'derp')) {
                 idkWhatThisIs.derp;
             }
@@ -1073,7 +1071,7 @@ describe(typedObjectFromEntries.name, () => {
 
         const formedObject = typedObjectFromEntries(entries);
 
-        type shouldMatchType = ExpectTrue<Equal<typeof formedObject, Record<MyEnum, string>>>;
+        expectTypeOf(formedObject).toEqualTypeOf<Record<MyEnum, string>>();
 
         assert.deepStrictEqual(formedObject, {
             [MyEnum.aKey]: 'a-derp',

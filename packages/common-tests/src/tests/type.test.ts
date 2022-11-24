@@ -1,16 +1,15 @@
+import {expectTypeOf} from '@augment-vir/chai';
+import {assert} from 'chai';
+import {describe, it} from 'mocha';
 import {
     ArrayElement,
     DeepWriteable,
     ensureType,
-    Equal,
-    ExpectTrue,
     NoInfer,
     Tuple,
     wrapNarrowTypeWithTypeCheck,
     Writeable,
-} from '@augment-vir/common';
-import {assert} from 'chai';
-import {describe, it} from 'mocha';
+} from '../../../common/src';
 
 describe('NoInfer', () => {
     function functionThatHasAGenericForTesting<T = never>(input: NoInfer<T>): T {
@@ -63,8 +62,8 @@ describe(ensureType.name, () => {
 
 describe('ArrayElement', () => {
     it('should be able to extract types', () => {
-        type simpleExtract = ExpectTrue<Equal<ArrayElement<string[]>, string>>;
-        type withReadonly = ExpectTrue<Equal<ArrayElement<ReadonlyArray<string>>, string>>;
+        expectTypeOf<ArrayElement<string[]>>().toEqualTypeOf<string>();
+        expectTypeOf<ArrayElement<ReadonlyArray<string>>>().toEqualTypeOf<string>();
     });
 });
 
@@ -78,9 +77,13 @@ describe(wrapNarrowTypeWithTypeCheck.name, () => {
             'e',
         ] as const);
 
-        type shouldBeStrict = ExpectTrue<
-            Equal<typeof strictTuple, readonly ['a', 'b', 'c', 'd', 'e']>
-        >;
+        expectTypeOf(strictTuple).toEqualTypeOf([
+            'a',
+            'b',
+            'c',
+            'd',
+            'e',
+        ] as const);
     });
 });
 
