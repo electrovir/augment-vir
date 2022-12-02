@@ -28,7 +28,7 @@
         "publish": "npm run test:all && virmator publish",
         "spellcheck": "virmator spellcheck",
         "test": "npm run test --workspaces",
-        "test:all": "npm run spellcheck && npm run test:format && npm run test:docs && npm run test:types && npm run compile && npm run test",
+        "test:all": "npm run spellcheck && npm run test:format && npm run test:docs && npm run compile && npm run test:types && npm run test",
         "test:docs": "virmator code-in-markdown check",
         "test:format": "virmator format check",
         "test:types": "tsc --build tsconfig.build.json"
