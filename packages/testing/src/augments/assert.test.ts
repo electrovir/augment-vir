@@ -1,18 +1,18 @@
 import {isPromiseLike, wait} from '@augment-vir/common';
-import {expect} from 'chai';
+import {assert, expect} from 'chai';
 import {describe, it} from 'mocha';
-import {assertInstanceOf, assertNotNullish, expectDuration} from './chai';
+import {expectDuration, typedAssertInstanceOf, typedAssertNotNullish} from './assert';
 
-describe(assertInstanceOf.name, () => {
+describe(typedAssertInstanceOf.name, () => {
     it('should pass', () => {
         // expect.assertions(1);
-        assertInstanceOf(new Error(), Error);
+        typedAssertInstanceOf(assert, new Error(), Error);
     });
 
     it('should fail', () => {
         // expect.assertions(2);
         try {
-            assertInstanceOf('', Error);
+            typedAssertInstanceOf(assert, '', Error);
         } catch (error) {
             expect(error).to.be.instanceOf(Error);
         }
@@ -26,14 +26,14 @@ describe(assertInstanceOf.name, () => {
         // @ts-expect-error
         expect(mystery.message).to.equal(message);
 
-        assertInstanceOf(mystery, Error);
+        typedAssertInstanceOf(assert, mystery, Error);
 
         // should not have a TypeScript error here
         expect(mystery.message).to.equal(message);
     });
 });
 
-describe(assertNotNullish.name, () => {
+describe(typedAssertNotNullish.name, () => {
     it('should pass on defined, not null values', () => {
         const values = [
             '',
@@ -50,7 +50,7 @@ describe(assertNotNullish.name, () => {
         // expect.assertions(values.length * 2);
 
         values.forEach((value) => {
-            assertNotNullish(value);
+            typedAssertNotNullish(assert, value);
         });
     });
 
@@ -61,14 +61,14 @@ describe(assertNotNullish.name, () => {
         ];
 
         /**
-         * This value is wonky because assertNotNullish creates 2 assertions for undefined but only
-         * 1 for null.
+         * This value is wonky because typedAssertNotNullish creates 2 assertions for undefined but
+         * only 1 for null.
          */
         // expect.assertions(6);
 
         const errors = values.map((value) => {
             try {
-                assertNotNullish(value);
+                typedAssertNotNullish(assert, value);
             } catch (error) {
                 return error;
             }
@@ -90,7 +90,7 @@ describe(assertNotNullish.name, () => {
         // @ts-expect-error
         expect(onlyAcceptNumbers(possiblyUndefined, 2)).to.equal(7);
 
-        assertNotNullish(possiblyUndefined);
+        typedAssertNotNullish(assert, possiblyUndefined);
 
         // should not have a TypeScript error here
         expect(onlyAcceptNumbers(possiblyUndefined, 2)).to.equal(7);
@@ -99,7 +99,7 @@ describe(assertNotNullish.name, () => {
 
 describe(expectDuration.name, () => {
     it('should not return a promise when the callback is synchronous', () => {
-        const expectation = expectDuration(() => {
+        const expectation = expectDuration(expect, () => {
             // do nothing
         });
         expect(isPromiseLike(expectation)).to.equal(false);
@@ -108,7 +108,7 @@ describe(expectDuration.name, () => {
 
     it('should return a promise when the callback is asynchronous', async () => {
         const duration = 100;
-        const expectation = expectDuration(async () => {
+        const expectation = expectDuration(expect, async () => {
             await wait(duration);
         });
         expect(isPromiseLike(expectation)).to.equal(true);

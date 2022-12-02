@@ -1,5 +1,5 @@
-import {itCases} from '@augment-vir/chai';
-import {expect} from 'chai';
+import {itCases} from '@augment-vir/testing';
+import {assert, expect} from 'chai';
 import {describe, it} from 'mocha';
 import {
     createDateFromNamedCommaFormat,
@@ -12,6 +12,7 @@ import {
 
 describe(createDateFromSlashFormat.name, () => {
     itCases(
+        assert,
         (...args: Parameters<typeof createDateFromSlashFormat>) =>
             createDateFromSlashFormat(...args).toISOString(),
         [
@@ -96,6 +97,7 @@ describe('englishShortMonthNames', () => {
 
 describe(createDateFromNamedCommaFormat.name, () => {
     itCases(
+        assert,
         (...args: Parameters<typeof createDateFromNamedCommaFormat>) =>
             createDateFromNamedCommaFormat(...args).toISOString(),
         [

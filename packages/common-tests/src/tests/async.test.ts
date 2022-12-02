@@ -1,5 +1,5 @@
-import {expectDuration, itCases} from '@augment-vir/chai';
 import {randomString} from '@augment-vir/node-js';
+import {expectDuration, itCases} from '@augment-vir/testing';
 import {assert, expect} from 'chai';
 import {describe, it} from 'mocha';
 import {awaitedBlockingMap, awaitedForEach, wait} from '../../../common/src';
@@ -13,7 +13,7 @@ describe(awaitedForEach.name, () => {
         const results: string[] = [];
         let totalWait = 0;
         (
-            await expectDuration(async () => {
+            await expectDuration(expect, async () => {
                 await awaitedForEach(originalArray, async (element, index) => {
                     if (index === 1) {
                         await wait(1000);
@@ -39,7 +39,7 @@ describe(awaitedBlockingMap.name, () => {
             .map(() => randomString());
         let totalWait = 0;
         (
-            await expectDuration(async () => {
+            await expectDuration(expect, async () => {
                 const results = await awaitedBlockingMap(originalArray, async (element, index) => {
                     if (index === 1) {
                         await wait(1000);
@@ -59,7 +59,7 @@ describe(awaitedBlockingMap.name, () => {
 });
 
 describe(awaitedFilter.name, () => {
-    itCases(awaitedFilter, [
+    itCases(assert, awaitedFilter, [
         {
             it: 'should work with boolean return values',
             expect: ['yo'],

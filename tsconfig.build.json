@@ -5,10 +5,10 @@
             "path": "packages/common"
         },
         {
-            "path": "packages/chai"
+            "path": "packages/node-js"
         },
         {
-            "path": "packages/node-js"
+            "path": "packages/testing"
         },
         {
             "path": "packages/common-tests"

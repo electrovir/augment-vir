@@ -1,5 +1,5 @@
-import {expectTypeOf, itCases} from '@augment-vir/chai';
 import {randomString} from '@augment-vir/node-js';
+import {assertTypeOf, itCases} from '@augment-vir/testing';
 import {assert, expect} from 'chai';
 import {describe, it} from 'mocha';
 import {
@@ -271,7 +271,7 @@ describe(typedHasProperty.name, () => {
         const idkWhatThisIs: unknown = (() => {}) as unknown;
         if (typedHasProperty(idkWhatThisIs, 'name')) {
             idkWhatThisIs.name;
-            expectTypeOf(idkWhatThisIs.name).toBeUnknown();
+            assertTypeOf(idkWhatThisIs.name).toBeUnknown();
             if (typedHasProperty(idkWhatThisIs, 'derp')) {
                 idkWhatThisIs.derp;
             }
@@ -633,7 +633,7 @@ describe(filterObject.name, () => {
         assert.strictEqual(referenceCopy, testObject);
     });
 
-    itCases(filterObject, [
+    itCases(assert, filterObject, [
         {
             it: 'should not remove keys when filter is always true',
             expect: {
@@ -848,7 +848,7 @@ describe(assertMatchesObjectShape.name, () => {
         });
     });
 
-    itCases(assertMatchesObjectShape<any>, [
+    itCases(assert, assertMatchesObjectShape<any>, [
         {
             it: 'should match with unequal values',
             inputs: [
@@ -1071,7 +1071,7 @@ describe(typedObjectFromEntries.name, () => {
 
         const formedObject = typedObjectFromEntries(entries);
 
-        expectTypeOf(formedObject).toEqualTypeOf<Record<MyEnum, string>>();
+        assertTypeOf(formedObject).toEqualTypeOf<Record<MyEnum, string>>();
 
         assert.deepStrictEqual(formedObject, {
             [MyEnum.aKey]: 'a-derp',
