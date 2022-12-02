@@ -1,5 +1,5 @@
-import {typedAssertInstanceOf} from '@augment-vir/testing';
-import chai, {assert, expect} from 'chai';
+import {typedAssertInstanceOf} from '@augment-vir/chai';
+import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {describe, it} from 'mocha';
 import {
@@ -95,7 +95,7 @@ describe(wrapPromiseInTimeout.name, () => {
             timeoutError = internalError;
         }
 
-        typedAssertInstanceOf(assert, timeoutError, PromiseTimeoutError);
+        typedAssertInstanceOf(timeoutError, PromiseTimeoutError);
         expect(timeoutError.message).to.equal(`Promised timed out after ${promiseDelayMs} ms.`);
         const endTime = Date.now();
         expect(endTime - startTime).to.be.greaterThanOrEqual(

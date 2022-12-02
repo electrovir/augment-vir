@@ -1,4 +1,4 @@
-import {assertTypeOf} from '@augment-vir/testing';
+import {assertTypeOf} from '@augment-vir/chai';
 import {assert} from 'chai';
 import {describe, it} from 'mocha';
 import {

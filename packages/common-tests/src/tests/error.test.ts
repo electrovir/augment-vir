@@ -1,4 +1,4 @@
-import {itCases} from '@augment-vir/testing';
+import {itCases} from '@augment-vir/chai';
 import {assert, expect} from 'chai';
 import {describe, it} from 'mocha';
 import {combineErrors, extractErrorMessage, InvalidDateError, typedMap} from '../../../common/src';
@@ -77,7 +77,7 @@ describe(combineErrors.name, () => {
 });
 
 describe(combineErrorMessages.name, () => {
-    itCases({assert, it, forceIt: it.only}, combineErrorMessages, [
+    itCases(combineErrorMessages, [
         {
             it: 'should combine valid string messages',
             input: [
@@ -147,7 +147,7 @@ describe(ensureError.name, () => {
     const validError = new Error();
     const dateError = new InvalidDateError();
 
-    itCases({assert, it, forceIt: it.only}, ensureError, [
+    itCases(ensureError, [
         {
             it: 'should detect a valid error',
             input: validError,

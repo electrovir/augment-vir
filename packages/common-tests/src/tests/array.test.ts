@@ -1,5 +1,5 @@
-import {itCases} from '@augment-vir/testing';
-import {assert, expect} from 'chai';
+import {itCases} from '@augment-vir/chai';
+import {expect} from 'chai';
 import {describe, it} from 'mocha';
 import {
     filterOutIndexes,
@@ -143,7 +143,7 @@ describe(flatten2dArray.name, () => {
 });
 
 describe(typedArrayIncludes.name, () => {
-    itCases({assert, it, forceIt: it.only}, typedArrayIncludes, [
+    itCases(typedArrayIncludes, [
         {
             it: 'should work for string array',
             expect: true,

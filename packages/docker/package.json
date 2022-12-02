@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/docker",
-    "version": "6.0.0",
+    "version": "6.1.0",
     "homepage": "https://github.com/electrovir/augment-vir/tree/main/packages/docker",
     "bugs": {
         "url": "https://github.com/electrovir/augment-vir/issues"
@@ -23,6 +23,9 @@
     "dependencies": {
         "@augment-vir/common": "*",
         "@augment-vir/node-js": "*"
+    },
+    "devDependencies": {
+        "typescript": "^4.9.3"
     },
     "publishConfig": {
         "access": "public"

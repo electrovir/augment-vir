@@ -1,5 +1,4 @@
-import {assertTypeOf, itCases} from '@augment-vir/testing';
-import {assert} from 'chai';
+import {assertTypeOf, itCases} from '@augment-vir/chai';
 import {describe, it} from 'mocha';
 import {isTypeOfWithArray} from '../../../common/src';
 
@@ -20,7 +19,7 @@ describe(isTypeOfWithArray.name, () => {
         }
     });
 
-    itCases({assert, it, forceIt: it.only}, isTypeOfWithArray, [
+    itCases(isTypeOfWithArray, [
         {
             it: 'should distinguish array independent of object',
             inputs: [

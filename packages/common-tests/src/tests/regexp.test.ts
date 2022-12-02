@@ -1,5 +1,5 @@
-import {itCases} from '@augment-vir/testing';
-import {assert, expect} from 'chai';
+import {itCases} from '@augment-vir/chai';
+import {expect} from 'chai';
 import {describe, it} from 'mocha';
 import {addRegExpFlags, deDupeRegExFlags} from '../../../common/src';
 import {safeMatch} from '../../../common/src/augments/regexp';
@@ -26,7 +26,7 @@ describe(addRegExpFlags.name, () => {
 });
 
 describe(safeMatch.name, () => {
-    itCases({assert, it, forceIt: it.only}, safeMatch, [
+    itCases(safeMatch, [
         {
             it: 'should match a regexp',
             inputs: [

@@ -1,4 +1,4 @@
-import {itCases} from '@augment-vir/testing';
+import {itCases} from '@augment-vir/chai';
 import {assert, expect} from 'chai';
 import {describe, it} from 'mocha';
 import {addCommasToNumber, clamp, truncateNumber} from '../../../common/src/augments/common-number';
@@ -36,7 +36,7 @@ describe(clamp.name, () => {
 });
 
 describe(addCommasToNumber.name, () => {
-    itCases({assert, it, forceIt: it.only}, addCommasToNumber, [
+    itCases(addCommasToNumber, [
         {
             it: 'should add a comma to a thousand',
             input: 1_000,
@@ -64,7 +64,7 @@ describe(truncateNumber.name, () => {
         'E',
     ] as const;
 
-    itCases({assert, it, forceIt: it.only}, truncateNumber, [
+    itCases(truncateNumber, [
         {
             it: 'should truncate to 1k',
             inputs: [1000],

@@ -1,5 +1,5 @@
+import {assertTypeOf, itCases} from '@augment-vir/chai';
 import {randomString} from '@augment-vir/node-js';
-import {assertTypeOf, itCases} from '@augment-vir/testing';
 import {assert, expect} from 'chai';
 import {describe, it} from 'mocha';
 import {
@@ -633,7 +633,7 @@ describe(filterObject.name, () => {
         assert.strictEqual(referenceCopy, testObject);
     });
 
-    itCases({assert, it, forceIt: it.only}, filterObject, [
+    itCases(filterObject, [
         {
             it: 'should not remove keys when filter is always true',
             expect: {
@@ -848,7 +848,7 @@ describe(assertMatchesObjectShape.name, () => {
         });
     });
 
-    itCases({assert, it, forceIt: it.only}, assertMatchesObjectShape<any>, [
+    itCases(assertMatchesObjectShape<any>, [
         {
             it: 'should match with unequal values',
             inputs: [

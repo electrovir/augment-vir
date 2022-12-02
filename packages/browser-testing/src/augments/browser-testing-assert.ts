@@ -4,11 +4,23 @@ import {
     typedAssertNotNullish as generic_typedAssertNotNullish,
 } from '@augment-vir/testing';
 import {assert, expect} from '@open-wc/testing';
-import type {} from 'type-fest';
-export type {} from 'type-fest';
+import {Constructor} from 'type-fest';
 
-export const typedAssertInstanceOf = generic_typedAssertInstanceOf.bind(null, assert);
+export function typedAssertInstanceOf<T>(
+    input: unknown,
+    classConstructor: Constructor<T>,
+): asserts input is T {
+    return generic_typedAssertInstanceOf(assert, input, classConstructor);
+}
 
-export const typedAssertNotNullish = generic_typedAssertNotNullish.bind(null, assert);
+export function typedAssertNotNullish<T>(input: T): asserts input is NonNullable<T> {
+    return generic_typedAssertNotNullish(assert, input);
+}
 
-export const expectDuration = generic_expectDuration.bind(null, expect);
+export function expectDuration<ExpectGeneric extends (value: any) => any>(
+    callback: (() => void) | (() => PromiseLike<void>),
+): Promise<ReturnType<ExpectGeneric>> | ReturnType<ExpectGeneric> {
+    return generic_expectDuration(expect, callback) as
+        | Promise<ReturnType<ExpectGeneric>>
+        | ReturnType<ExpectGeneric>;
+}
