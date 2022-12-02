@@ -59,7 +59,7 @@ describe(awaitedBlockingMap.name, () => {
 });
 
 describe(awaitedFilter.name, () => {
-    itCases(assert, awaitedFilter, [
+    itCases({assert, it, forceIt: it.only}, awaitedFilter, [
         {
             it: 'should work with boolean return values',
             expect: ['yo'],

@@ -12,7 +12,7 @@ import {
 
 describe(createDateFromSlashFormat.name, () => {
     itCases(
-        assert,
+        {assert, it, forceIt: it.only},
         (...args: Parameters<typeof createDateFromSlashFormat>) =>
             createDateFromSlashFormat(...args).toISOString(),
         [
@@ -97,7 +97,7 @@ describe('englishShortMonthNames', () => {
 
 describe(createDateFromNamedCommaFormat.name, () => {
     itCases(
-        assert,
+        {assert, it, forceIt: it.only},
         (...args: Parameters<typeof createDateFromNamedCommaFormat>) =>
             createDateFromNamedCommaFormat(...args).toISOString(),
         [

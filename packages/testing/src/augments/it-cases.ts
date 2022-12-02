@@ -1,9 +1,11 @@
+import {AnyFunction} from '@augment-vir/common';
 import {assert as assertImport} from 'chai';
 import {Constructor} from 'type-fest';
 import {assertOutputWithDescription} from './assert-output';
 
 type BaseTestCase<OutputGeneric> = {
     it: string;
+    force?: true;
 } & (
     | {
           expect: OutputGeneric;
@@ -21,7 +23,7 @@ export type OutputTestCaseMultipleInputs<InputGeneric, OutputGeneric> = {
     inputs: InputGeneric;
 } & BaseTestCase<OutputGeneric>;
 
-export type FunctionTestCase<FunctionToCallGeneric extends (...args: any[]) => any | Promise<any>> =
+export type FunctionTestCase<FunctionToCallGeneric extends AnyFunction> =
     Parameters<FunctionToCallGeneric> extends []
         ? BaseTestCase<Awaited<ReturnType<FunctionToCallGeneric>>>
         : Parameters<FunctionToCallGeneric> extends [any?]
@@ -34,13 +36,18 @@ export type FunctionTestCase<FunctionToCallGeneric extends (...args: any[]) => a
               Awaited<ReturnType<FunctionToCallGeneric>>
           >;
 
-export function itCases<FunctionToCallGeneric extends (...args: any[]) => any | Promise<any>>(
-    assert: typeof assertImport,
+export function itCases<FunctionToCallGeneric extends AnyFunction>(
+    options: {
+        assert: typeof assertImport;
+        it: any;
+        forceIt: any;
+    },
     functionToCall: FunctionToCallGeneric,
     testCases: ReadonlyArray<FunctionTestCase<typeof functionToCall>>,
 ) {
     return testCases.map((testCase) => {
-        return it(testCase.it, async () => {
+        const itFunction = testCase.force ? options.forceIt : options.it;
+        return itFunction(testCase.it, async () => {
             const functionInputs: Parameters<typeof functionToCall> =
                 'input' in testCase
                     ? ([testCase.input] as Parameters<typeof functionToCall>)
@@ -51,7 +58,7 @@ export function itCases<FunctionToCallGeneric extends (...args: any[]) => any | 
 
             if ('expect' in testCase) {
                 await assertOutputWithDescription(
-                    assert,
+                    options.assert,
                     functionToCall,
                     testCase.expect,
                     testCase.it ?? '',
@@ -75,7 +82,7 @@ export function itCases<FunctionToCallGeneric extends (...args: any[]) => any | 
                 });
 
                 if (!testCase.throws) {
-                    assert.doesNotThrow(
+                    options.assert.doesNotThrow(
                         errorThrower,
                         `${errorThrower.name} should not have thrown an error.`,
                     );
@@ -83,14 +90,14 @@ export function itCases<FunctionToCallGeneric extends (...args: any[]) => any | 
                     testCase.throws instanceof RegExp ||
                     typeof testCase.throws === 'string'
                 ) {
-                    assert.throws(
+                    options.assert.throws(
                         errorThrower,
                         undefined,
                         testCase.throws,
                         `Caught error did not match expectations`,
                     );
                 } else {
-                    assert.throws(
+                    options.assert.throws(
                         errorThrower,
                         testCase.throws,
                         undefined,

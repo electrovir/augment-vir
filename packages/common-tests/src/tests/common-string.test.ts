@@ -17,7 +17,7 @@ import {
 } from '../../../common/src/augments/common-string';
 
 describe(joinWithFinalConjunction.name, () => {
-    itCases(assert, joinWithFinalConjunction, [
+    itCases({assert, it, forceIt: it.only}, joinWithFinalConjunction, [
         {
             it: 'should return empty string when given an empty array',
             inputs: [[]],
@@ -129,7 +129,7 @@ describe(removeCommasFromNumberString.name, () => {
 });
 
 describe(capitalizeFirstLetter.name, () => {
-    itCases(assert, capitalizeFirstLetter<any>, [
+    itCases({assert, it, forceIt: it.only}, capitalizeFirstLetter<any>, [
         {
             it: 'should capitalize a normal word',
             input: 'derp',
@@ -149,7 +149,7 @@ describe(capitalizeFirstLetter.name, () => {
 });
 
 describe(kebabCaseToCamelCase.name, () => {
-    itCases(assert, kebabCaseToCamelCase, [
+    itCases({assert, it, forceIt: it.only}, kebabCaseToCamelCase, [
         {
             it: 'should work on long string',
             inputs: ['hello-there-what-have-we-here'],
@@ -227,7 +227,7 @@ describe(kebabCaseToCamelCase.name, () => {
 });
 
 describe(camelCaseToKebabCase.name, () => {
-    itCases(assert, camelCaseToKebabCase, [
+    itCases({assert, it, forceIt: it.only}, camelCaseToKebabCase, [
         {
             it: 'should work with simple capitalized case',
             input: 'MyVarItHasManyWordsInIt',
@@ -357,7 +357,7 @@ describe(splitIncludeSplit.name, () => {
 });
 
 describe(getAllIndexesOf.name, () => {
-    itCases(assert, getAllIndexesOf, [
+    itCases({assert, it, forceIt: it.only}, getAllIndexesOf, [
         {
             it: 'should find all substring instances in a string',
             input: {

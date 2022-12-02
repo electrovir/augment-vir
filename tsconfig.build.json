@@ -2,13 +2,22 @@
     "files": [],
     "references": [
         {
+            "path": "packages/chai"
+        },
+        {
             "path": "packages/common"
         },
         {
             "path": "packages/node-js"
         },
         {
+            "path": "packages/prisma-node-js"
+        },
+        {
             "path": "packages/testing"
+        },
+        {
+            "path": "packages/docker"
         },
         {
             "path": "packages/common-tests"

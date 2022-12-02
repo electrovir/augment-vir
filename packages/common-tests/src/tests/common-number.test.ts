@@ -36,7 +36,7 @@ describe(clamp.name, () => {
 });
 
 describe(addCommasToNumber.name, () => {
-    itCases(assert, addCommasToNumber, [
+    itCases({assert, it, forceIt: it.only}, addCommasToNumber, [
         {
             it: 'should add a comma to a thousand',
             input: 1_000,
@@ -64,7 +64,7 @@ describe(truncateNumber.name, () => {
         'E',
     ] as const;
 
-    itCases(assert, truncateNumber, [
+    itCases({assert, it, forceIt: it.only}, truncateNumber, [
         {
             it: 'should truncate to 1k',
             inputs: [1000],

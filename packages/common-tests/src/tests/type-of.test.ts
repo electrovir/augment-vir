@@ -20,7 +20,7 @@ describe(isTypeOfWithArray.name, () => {
         }
     });
 
-    itCases(assert, isTypeOfWithArray, [
+    itCases({assert, it, forceIt: it.only}, isTypeOfWithArray, [
         {
             it: 'should distinguish array independent of object',
             inputs: [

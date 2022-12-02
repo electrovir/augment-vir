@@ -1,5 +1,5 @@
 {
-    "name": "@augment-vir/common",
+    "name": "@augment-vir/browser-testing",
     "version": "6.0.0",
     "homepage": "https://github.com/electrovir/augment-vir/tree/main/packages/common",
     "bugs": {
@@ -19,9 +19,13 @@
     "types": "dist/types/index.d.ts",
     "scripts": {
         "compile": "tsc --project tsconfig.json && tsc --project tsconfig.cjs.json && tsc --project tsconfig.esm.json",
-        "test": "echo \"use common-test to run tests\" && exit 0"
+        "test": "echo \"browser-testing augments are already tested by the testing package\" && exit 0"
     },
     "dependencies": {
+        "@augment-vir/testing": "*",
+        "@open-wc/testing": "^3.1.7",
+        "@types/mocha": "^10.0.1",
+        "expect-type": "^0.15.0",
         "type-fest": "^3.3.0"
     },
     "publishConfig": {

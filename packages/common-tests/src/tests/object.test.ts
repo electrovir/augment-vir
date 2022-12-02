@@ -633,7 +633,7 @@ describe(filterObject.name, () => {
         assert.strictEqual(referenceCopy, testObject);
     });
 
-    itCases(assert, filterObject, [
+    itCases({assert, it, forceIt: it.only}, filterObject, [
         {
             it: 'should not remove keys when filter is always true',
             expect: {
@@ -848,7 +848,7 @@ describe(assertMatchesObjectShape.name, () => {
         });
     });
 
-    itCases(assert, assertMatchesObjectShape<any>, [
+    itCases({assert, it, forceIt: it.only}, assertMatchesObjectShape<any>, [
         {
             it: 'should match with unequal values',
             inputs: [

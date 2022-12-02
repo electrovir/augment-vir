@@ -143,7 +143,7 @@ describe(flatten2dArray.name, () => {
 });
 
 describe(typedArrayIncludes.name, () => {
-    itCases(assert, typedArrayIncludes, [
+    itCases({assert, it, forceIt: it.only}, typedArrayIncludes, [
         {
             it: 'should work for string array',
             expect: true,

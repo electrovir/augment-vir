@@ -26,7 +26,7 @@ describe(addRegExpFlags.name, () => {
 });
 
 describe(safeMatch.name, () => {
-    itCases(assert, safeMatch, [
+    itCases({assert, it, forceIt: it.only}, safeMatch, [
         {
             it: 'should match a regexp',
             inputs: [

@@ -1,9 +1,7 @@
-import {isPromiseLike} from '@augment-vir/common';
+import {AnyFunction, isPromiseLike} from '@augment-vir/common';
 import type {assert as assertImport} from 'chai';
 
-export function assertOutputWithDescription<
-    FunctionToCallGeneric extends (...args: any[]) => any | Promise<any>,
->(
+export function assertOutputWithDescription<FunctionToCallGeneric extends AnyFunction>(
     assert: typeof assertImport,
     functionToCall: FunctionToCallGeneric,
     expectedOutput: Awaited<ReturnType<typeof functionToCall>>,
@@ -35,7 +33,7 @@ export function assertOutputWithDescription<
     }
 }
 
-export function assertOutput<FunctionToCallGeneric extends (...args: any[]) => any | Promise<any>>(
+export function assertOutput<FunctionToCallGeneric extends AnyFunction>(
     assert: typeof assertImport,
     functionToCall: FunctionToCallGeneric,
     expectedOutput: Awaited<ReturnType<typeof functionToCall>>,

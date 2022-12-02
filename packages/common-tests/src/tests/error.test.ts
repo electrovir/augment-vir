@@ -77,7 +77,7 @@ describe(combineErrors.name, () => {
 });
 
 describe(combineErrorMessages.name, () => {
-    itCases(assert, combineErrorMessages, [
+    itCases({assert, it, forceIt: it.only}, combineErrorMessages, [
         {
             it: 'should combine valid string messages',
             input: [
@@ -147,7 +147,7 @@ describe(ensureError.name, () => {
     const validError = new Error();
     const dateError = new InvalidDateError();
 
-    itCases(assert, ensureError, [
+    itCases({assert, it, forceIt: it.only}, ensureError, [
         {
             it: 'should detect a valid error',
             input: validError,

@@ -1,10 +1,10 @@
 import {assert} from 'chai';
-import {describe} from 'mocha';
+import {describe, it} from 'mocha';
 import {itCases} from './it-cases';
 
 describe(itCases.name, () => {
     itCases(
-        assert,
+        {assert, it, forceIt: it.only},
         () => {
             throw new Error();
         },
@@ -15,7 +15,7 @@ describe(itCases.name, () => {
             },
         ],
     );
-    itCases(assert, () => {}, [
+    itCases({assert, it, forceIt: it.only}, () => {}, [
         {
             throws: undefined,
             it: 'should pass when no errors are thrown',

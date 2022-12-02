@@ -1,3 +1,5 @@
+import {AnyFunction} from '@augment-vir/common';
+
 // this function is not used at run time, it's only here for types
 // istanbul ignore next
 function getTypeOf(x: any) {
@@ -12,7 +14,7 @@ export type TypeOfMapping = {
     array: any[];
     bigint: bigint;
     boolean: boolean;
-    function: (...args: any[]) => any;
+    function: AnyFunction;
     number: number;
     object: object;
     string: string;
