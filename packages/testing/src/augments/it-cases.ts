@@ -1,46 +1,6 @@
-import {AtLeastTuple, isPromiseLike} from '@augment-vir/common';
-import {assert} from 'chai';
-
-function assertOutputWithDescription<
-    FunctionToCallGeneric extends (...args: any[]) => any | Promise<any>,
->(
-    functionToCall: FunctionToCallGeneric,
-    expectedOutput: Awaited<ReturnType<typeof functionToCall>>,
-    description: string,
-    ...inputs: Parameters<typeof functionToCall>
-): ReturnType<typeof functionToCall> extends Promise<any> ? Promise<void> : void {
-    const result = functionToCall(...inputs);
-
-    const failureMessage =
-        description ||
-        `${functionToCall.name} output failed to match expectation with input: ${inputs
-            .map((entry) => JSON.stringify(entry))
-            .join(', ')}`;
-
-    if (isPromiseLike(result)) {
-        return new Promise<void>(async (resolve, reject) => {
-            try {
-                assert.deepStrictEqual(await result, expectedOutput, failureMessage);
-                resolve();
-            } catch (error) {
-                reject(error);
-            }
-        }) as ReturnType<typeof functionToCall> extends Promise<any> ? Promise<void> : void;
-    } else {
-        assert.deepStrictEqual(result, expectedOutput, failureMessage);
-        return undefined as ReturnType<typeof functionToCall> extends Promise<any>
-            ? Promise<void>
-            : void;
-    }
-}
-
-export function assertOutput<FunctionToCallGeneric extends (...args: any[]) => any | Promise<any>>(
-    functionToCall: FunctionToCallGeneric,
-    expectedOutput: Awaited<ReturnType<typeof functionToCall>>,
-    ...inputs: Parameters<typeof functionToCall>
-): ReturnType<typeof functionToCall> extends Promise<any> ? Promise<void> : void {
-    return assertOutputWithDescription(functionToCall, expectedOutput, '', ...inputs);
-}
+import {assert as assertImport} from 'chai';
+import {Constructor} from 'type-fest';
+import {assertOutputWithDescription} from './assert-output';
 
 type BaseTestCase<OutputGeneric> = {
     it: string;
@@ -49,7 +9,7 @@ type BaseTestCase<OutputGeneric> = {
           expect: OutputGeneric;
       }
     | {
-          throws: RegExp | string | ErrorConstructor | Error | null | undefined;
+          throws: RegExp | string | Constructor<Error> | Error | null | undefined;
       }
 );
 
@@ -62,19 +22,20 @@ export type OutputTestCaseMultipleInputs<InputGeneric, OutputGeneric> = {
 } & BaseTestCase<OutputGeneric>;
 
 export type FunctionTestCase<FunctionToCallGeneric extends (...args: any[]) => any | Promise<any>> =
-    Parameters<FunctionToCallGeneric> extends AtLeastTuple<any, 2>
-        ? OutputTestCaseMultipleInputs<
-              Parameters<FunctionToCallGeneric>,
-              Awaited<ReturnType<FunctionToCallGeneric>>
-          >
-        : Parameters<FunctionToCallGeneric> extends AtLeastTuple<any, 1>
+    Parameters<FunctionToCallGeneric> extends []
+        ? BaseTestCase<Awaited<ReturnType<FunctionToCallGeneric>>>
+        : Parameters<FunctionToCallGeneric> extends [any?]
         ? OutputTestCaseSingleInput<
               Parameters<FunctionToCallGeneric>[0],
               Awaited<ReturnType<FunctionToCallGeneric>>
           >
-        : BaseTestCase<Awaited<ReturnType<FunctionToCallGeneric>>>;
+        : OutputTestCaseMultipleInputs<
+              Parameters<FunctionToCallGeneric>,
+              Awaited<ReturnType<FunctionToCallGeneric>>
+          >;
 
 export function itCases<FunctionToCallGeneric extends (...args: any[]) => any | Promise<any>>(
+    assert: typeof assertImport,
     functionToCall: FunctionToCallGeneric,
     testCases: ReadonlyArray<FunctionTestCase<typeof functionToCall>>,
 ) {
@@ -90,6 +51,7 @@ export function itCases<FunctionToCallGeneric extends (...args: any[]) => any | 
 
             if ('expect' in testCase) {
                 await assertOutputWithDescription(
+                    assert,
                     functionToCall,
                     testCase.expect,
                     testCase.it ?? '',

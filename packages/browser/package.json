@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/browser",
-    "version": "4.6.1",
+    "version": "5.0.0",
     "homepage": "https://github.com/electrovir/augment-vir/tree/main/packages/browser",
     "bugs": {
         "url": "https://github.com/electrovir/augment-vir/issues"
@@ -14,17 +14,20 @@
         "name": "electrovir",
         "url": "https://github.com/electrovir"
     },
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
     "scripts": {
         "compile": "tsc --pretty",
         "test": "virmator test-web"
     },
     "devDependencies": {
         "@open-wc/testing": "^3.1.7",
-        "@types/mocha": "^10.0.0",
+        "@types/mocha": "^10.0.1",
         "@web/dev-server-esbuild": "^0.3.3",
         "@web/test-runner": "^0.15.0",
         "@web/test-runner-commands": "^0.6.5",
         "@web/test-runner-playwright": "^0.9.0",
+        "istanbul-smart-text-reporter": "^1.0.0",
         "typescript": "^4.8.4"
     },
     "publishConfig": {

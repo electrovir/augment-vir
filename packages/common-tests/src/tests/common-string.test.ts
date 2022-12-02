@@ -1,5 +1,5 @@
-import {itCases} from '@augment-vir/chai';
-import {expect} from 'chai';
+import {itCases} from '@augment-vir/testing';
+import {assert, expect} from 'chai';
 import {describe, it} from 'mocha';
 import {
     camelCaseToKebabCase,
@@ -17,7 +17,7 @@ import {
 } from '../../../common/src/augments/common-string';
 
 describe(joinWithFinalConjunction.name, () => {
-    itCases(joinWithFinalConjunction, [
+    itCases(assert, joinWithFinalConjunction, [
         {
             it: 'should return empty string when given an empty array',
             inputs: [[]],
@@ -129,7 +129,7 @@ describe(removeCommasFromNumberString.name, () => {
 });
 
 describe(capitalizeFirstLetter.name, () => {
-    itCases(capitalizeFirstLetter<any>, [
+    itCases(assert, capitalizeFirstLetter<any>, [
         {
             it: 'should capitalize a normal word',
             input: 'derp',
@@ -149,7 +149,7 @@ describe(capitalizeFirstLetter.name, () => {
 });
 
 describe(kebabCaseToCamelCase.name, () => {
-    itCases(kebabCaseToCamelCase, [
+    itCases(assert, kebabCaseToCamelCase, [
         {
             it: 'should work on long string',
             inputs: ['hello-there-what-have-we-here'],
@@ -227,7 +227,7 @@ describe(kebabCaseToCamelCase.name, () => {
 });
 
 describe(camelCaseToKebabCase.name, () => {
-    itCases(camelCaseToKebabCase, [
+    itCases(assert, camelCaseToKebabCase, [
         {
             it: 'should work with simple capitalized case',
             input: 'MyVarItHasManyWordsInIt',
@@ -357,7 +357,7 @@ describe(splitIncludeSplit.name, () => {
 });
 
 describe(getAllIndexesOf.name, () => {
-    itCases(getAllIndexesOf, [
+    itCases(assert, getAllIndexesOf, [
         {
             it: 'should find all substring instances in a string',
             input: {

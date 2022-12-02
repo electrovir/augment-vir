@@ -3,20 +3,12 @@
     "compilerOptions": {
         "rootDir": "./src",
         "outDir": "./dist",
-        "module": "CommonJS"
+        "module": "ES2020"
     },
     "exclude": [
         "./configs",
         "./dist",
         "./node_modules",
         "./test-files"
-    ],
-    "references": [
-        {
-            "path": "../common"
-        },
-        {
-            "path": "../testing"
-        }
     ]
 }

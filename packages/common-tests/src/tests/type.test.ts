@@ -1,4 +1,4 @@
-import {expectTypeOf} from '@augment-vir/chai';
+import {assertTypeOf} from '@augment-vir/testing';
 import {assert} from 'chai';
 import {describe, it} from 'mocha';
 import {
@@ -62,8 +62,8 @@ describe(ensureType.name, () => {
 
 describe('ArrayElement', () => {
     it('should be able to extract types', () => {
-        expectTypeOf<ArrayElement<string[]>>().toEqualTypeOf<string>();
-        expectTypeOf<ArrayElement<ReadonlyArray<string>>>().toEqualTypeOf<string>();
+        assertTypeOf<ArrayElement<string[]>>().toEqualTypeOf<string>();
+        assertTypeOf<ArrayElement<ReadonlyArray<string>>>().toEqualTypeOf<string>();
     });
 });
 
@@ -77,7 +77,7 @@ describe(wrapNarrowTypeWithTypeCheck.name, () => {
             'e',
         ] as const);
 
-        expectTypeOf(strictTuple).toEqualTypeOf([
+        assertTypeOf(strictTuple).toEqualTypeOf([
             'a',
             'b',
             'c',

@@ -1,4 +1,5 @@
-import {expectTypeOf, itCases} from '@augment-vir/chai';
+import {assertTypeOf, itCases} from '@augment-vir/testing';
+import {assert} from 'chai';
 import {describe, it} from 'mocha';
 import {isTypeOfWithArray} from '../../../common/src';
 
@@ -7,7 +8,7 @@ describe(isTypeOfWithArray.name, () => {
         const possiblyNumber = 42 as number | number[];
 
         if (isTypeOfWithArray(possiblyNumber, 'array')) {
-            expectTypeOf(possiblyNumber).toEqualTypeOf<number[]>();
+            assertTypeOf(possiblyNumber).toEqualTypeOf<number[]>();
         }
     });
 
@@ -15,11 +16,11 @@ describe(isTypeOfWithArray.name, () => {
         const anything = {} as any;
 
         if (isTypeOfWithArray(anything, 'bigint')) {
-            expectTypeOf(anything).toEqualTypeOf<bigint>();
+            assertTypeOf(anything).toEqualTypeOf<bigint>();
         }
     });
 
-    itCases(isTypeOfWithArray, [
+    itCases(assert, isTypeOfWithArray, [
         {
             it: 'should distinguish array independent of object',
             inputs: [

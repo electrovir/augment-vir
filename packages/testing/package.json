@@ -1,7 +1,7 @@
 {
-    "name": "@augment-vir/chai",
-    "version": "4.6.1",
-    "homepage": "https://github.com/electrovir/augment-vir/tree/main/packages/chai",
+    "name": "@augment-vir/testing",
+    "version": "5.0.0",
+    "homepage": "https://github.com/electrovir/augment-vir/tree/main/packages/testing",
     "bugs": {
         "url": "https://github.com/electrovir/augment-vir/issues"
     },
@@ -21,18 +21,23 @@
         "test": "virmator test"
     },
     "dependencies": {
-        "@augment-vir/common": "*"
+        "@augment-vir/common": "*",
+        "@types/chai": "^4.3.4",
+        "expect-type": "^0.15.0",
+        "mock-vir": "^0.0.4",
+        "type-fest": "^3.2.0"
     },
     "devDependencies": {
+        "@electrovir/nyc": "^15.1.0",
         "@istanbuljs/nyc-config-typescript": "^1.0.2",
-        "@types/chai": "^4.3.4",
         "@types/mocha": "^10.0.0",
         "chai": "^4.3.7",
-        "istanbul-smart-text-reporter": "^0.0.1",
+        "istanbul-smart-text-reporter": "^1.0.1",
         "mocha": "^10.1.0",
         "mocha-spec-reporter-with-file-names": "^0.0.2",
         "nyc": "^15.1.0",
         "ts-node": "^10.9.1",
+        "tsx": "^3.12.1",
         "typescript": "^4.8.4"
     },
     "publishConfig": {

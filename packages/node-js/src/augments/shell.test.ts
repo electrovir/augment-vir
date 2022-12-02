@@ -44,7 +44,7 @@ describe(runShellCommand.name, () => {
             output.push(String(counter++));
         }, 100);
         const finalResults = await runShellCommand(
-            `ts-node ${interpolationSafeWindowsPath(longRunningFile)}`,
+            `tsx ${interpolationSafeWindowsPath(longRunningFile)}`,
             {
                 rejectOnError: true,
                 stdoutCallback: (stdout) => {
@@ -68,7 +68,7 @@ describe(runShellCommand.name, () => {
             output.push(String(counter++));
         }, 100);
         const finalResults = await runShellCommand(
-            `ts-node ${interpolationSafeWindowsPath(longRunningFileWithStderr)}`,
+            `tsx ${interpolationSafeWindowsPath(longRunningFileWithStderr)}`,
             {
                 rejectOnError: true,
                 stderrCallback: (stdout) => {

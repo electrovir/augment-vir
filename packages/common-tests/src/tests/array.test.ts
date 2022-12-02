@@ -1,5 +1,5 @@
-import {expectTypeOf, itCases} from '@augment-vir/chai';
-import {expect} from 'chai';
+import {itCases} from '@augment-vir/testing';
+import {assert, expect} from 'chai';
 import {describe, it} from 'mocha';
 import {
     filterOutIndexes,
@@ -7,6 +7,7 @@ import {
     trimArrayStrings,
     typedArrayIncludes,
 } from '../../../common/src';
+import {assertTypeOf} from '../../../testing/src/augments/assert-type-of';
 
 describe(filterOutIndexes.name, () => {
     const experimentArray = [
@@ -142,7 +143,7 @@ describe(flatten2dArray.name, () => {
 });
 
 describe(typedArrayIncludes.name, () => {
-    itCases(typedArrayIncludes, [
+    itCases(assert, typedArrayIncludes, [
         {
             it: 'should work for string array',
             expect: true,
@@ -180,7 +181,7 @@ describe(typedArrayIncludes.name, () => {
         const vagueVar: number | string = 'yo' as number | string;
 
         if (typedArrayIncludes(array, vagueVar)) {
-            expectTypeOf(vagueVar).toEqualTypeOf<'yo' | 'hello' | 'hi'>();
+            assertTypeOf(vagueVar).toEqualTypeOf<'yo' | 'hello' | 'hi'>();
         }
     });
 });
