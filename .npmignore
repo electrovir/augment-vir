@@ -16,3 +16,4 @@ test-files/
 tsconfig*.json
 
 *.tsbuildinfo
+*.d.ts.map
