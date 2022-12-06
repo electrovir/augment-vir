@@ -291,6 +291,7 @@ export function assertMatchesObjectShape<MatchThisGeneric extends object = never
     testThisOne: unknown,
     compareToThisOne: NoInfer<ObjectWithAtLeastSingleEntryArrays<MatchThisGeneric>>,
     allowExtraProps = false,
+    noCheckInnerValueOfTheseKeys: Partial<Record<keyof typeof compareToThisOne, boolean>> = {},
 ): asserts testThisOne is MatchThisGeneric {
     const testKeys = getObjectTypedKeys(testThisOne);
     const matchKeys = new Set(getObjectTypedKeys(compareToThisOne));
@@ -315,7 +316,9 @@ export function assertMatchesObjectShape<MatchThisGeneric extends object = never
         const testValue = testThisOne[key];
         const shouldMatch = compareToThisOne[key];
 
-        compareInnerValue(testValue, shouldMatch, throwKeyError);
+        if (!noCheckInnerValueOfTheseKeys[key]) {
+            compareInnerValue(testValue, shouldMatch, throwKeyError, allowExtraProps);
+        }
     });
 }
 
@@ -323,6 +326,7 @@ function compareInnerValue(
     testValue: unknown,
     matchValue: unknown,
     throwKeyError: (reason: string) => never,
+    allowExtraProps: boolean,
 ) {
     const testType = typeof testValue;
     const shouldMatchType = typeof matchValue;
@@ -360,7 +364,12 @@ function compareInnerValue(
             const errors = matchValue
                 .map((matchValue) => {
                     try {
-                        compareInnerValue(testValueEntry, matchValue, throwKeyError);
+                        compareInnerValue(
+                            testValueEntry,
+                            matchValue,
+                            throwKeyError,
+                            allowExtraProps,
+                        );
                         return undefined;
                     } catch (error) {
                         return new Error(
@@ -381,7 +390,7 @@ function compareInnerValue(
             }
         });
     } else if (isObject(matchValue)) {
-        assertMatchesObjectShape<{}>(testValue, matchValue);
+        assertMatchesObjectShape<{}>(testValue, matchValue, allowExtraProps);
     }
 }
 

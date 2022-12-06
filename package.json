@@ -1,6 +1,6 @@
 {
     "name": "augment-vir",
-    "version": "6.1.1",
+    "version": "6.1.2",
     "private": true,
     "homepage": "https://github.com/electrovir/augment-vir",
     "bugs": {
@@ -34,7 +34,7 @@
         "test:types": "tsc --build tsconfig.build.json"
     },
     "devDependencies": {
-        "cspell": "^6.16.0",
+        "cspell": "^6.17.0",
         "markdown-code-example-inserter": "^0.1.11",
         "prettier": "^2.8.0",
         "prettier-plugin-jsdoc": "^0.4.2",
