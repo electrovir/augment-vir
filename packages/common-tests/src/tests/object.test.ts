@@ -848,6 +848,27 @@ describe(assertMatchesObjectShape.name, () => {
         });
     });
 
+    it('should ignore inner keys', () => {
+        assertMatchesObjectShape<{derp: {thing: number}}>(
+            {
+                derp: {
+                    thing: 'wrong value' as any,
+                },
+            },
+            {
+                derp: {
+                    thing: 5,
+                },
+            },
+            false,
+            {
+                derp: {
+                    thing: true,
+                },
+            },
+        );
+    });
+
     itCases(assertMatchesObjectShape<any>, [
         {
             it: 'should match with unequal values',

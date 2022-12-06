@@ -274,6 +274,12 @@ export type ObjectWithAtLeastSingleEntryArrays<BaseObject extends object> = {
         : BaseObject[Prop];
 };
 
+type NestedBoolean<MatchObject extends object> = Partial<{
+    [Prop in keyof MatchObject]: MatchObject[Prop] extends object
+        ? NestedBoolean<MatchObject[Prop]> | boolean
+        : boolean;
+}>;
+
 /**
  * Asserts that the first input, testThisOne, matches the object shape of the second input,
  * compareToThisOne. Does not compare exact values of properties, only types.
@@ -291,7 +297,7 @@ export function assertMatchesObjectShape<MatchThisGeneric extends object = never
     testThisOne: unknown,
     compareToThisOne: NoInfer<ObjectWithAtLeastSingleEntryArrays<MatchThisGeneric>>,
     allowExtraProps = false,
-    noCheckInnerValueOfTheseKeys: Partial<Record<keyof typeof compareToThisOne, boolean>> = {},
+    noCheckInnerValueOfTheseKeys: NestedBoolean<typeof compareToThisOne> = {},
 ): asserts testThisOne is MatchThisGeneric {
     const testKeys = getObjectTypedKeys(testThisOne);
     const matchKeys = new Set(getObjectTypedKeys(compareToThisOne));
@@ -317,7 +323,13 @@ export function assertMatchesObjectShape<MatchThisGeneric extends object = never
         const shouldMatch = compareToThisOne[key];
 
         if (!noCheckInnerValueOfTheseKeys[key]) {
-            compareInnerValue(testValue, shouldMatch, throwKeyError, allowExtraProps);
+            compareInnerValue(
+                testValue,
+                shouldMatch,
+                throwKeyError,
+                allowExtraProps,
+                (noCheckInnerValueOfTheseKeys[key] as any) ?? {},
+            );
         }
     });
 }
@@ -327,6 +339,7 @@ function compareInnerValue(
     matchValue: unknown,
     throwKeyError: (reason: string) => never,
     allowExtraProps: boolean,
+    noCheckInnerValueOfTheseKeys: Partial<Record<string, boolean>>,
 ) {
     const testType = typeof testValue;
     const shouldMatchType = typeof matchValue;
@@ -369,6 +382,7 @@ function compareInnerValue(
                             matchValue,
                             throwKeyError,
                             allowExtraProps,
+                            noCheckInnerValueOfTheseKeys,
                         );
                         return undefined;
                     } catch (error) {
@@ -390,7 +404,12 @@ function compareInnerValue(
             }
         });
     } else if (isObject(matchValue)) {
-        assertMatchesObjectShape<{}>(testValue, matchValue, allowExtraProps);
+        assertMatchesObjectShape<{}>(
+            testValue,
+            matchValue,
+            allowExtraProps,
+            noCheckInnerValueOfTheseKeys,
+        );
     }
 }
 
