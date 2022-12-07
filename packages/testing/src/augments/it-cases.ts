@@ -82,10 +82,7 @@ export function itCases<FunctionToCallGeneric extends AnyFunction>(
                 });
 
                 if (!testCase.throws) {
-                    options.assert.doesNotThrow(
-                        errorThrower,
-                        `${errorThrower.name} should not have thrown an error.`,
-                    );
+                    options.assert.doesNotThrow(errorThrower);
                 } else if (
                     testCase.throws instanceof RegExp ||
                     typeof testCase.throws === 'string'

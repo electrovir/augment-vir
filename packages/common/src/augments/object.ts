@@ -274,7 +274,7 @@ export type ObjectWithAtLeastSingleEntryArrays<BaseObject extends object> = {
         : BaseObject[Prop];
 };
 
-type NestedBoolean<MatchObject extends object> = Partial<{
+export type NestedBoolean<MatchObject extends object> = Partial<{
     [Prop in keyof MatchObject]: MatchObject[Prop] extends object
         ? NestedBoolean<MatchObject[Prop]> | boolean
         : boolean;
