@@ -48,19 +48,17 @@ export function filterToEnumValues<T extends object>(
 
 export function getObjectTypedKeys<ObjectGeneric extends unknown>(
     input: ObjectGeneric,
-): ReadonlyArray<keyof ObjectGeneric> {
-    let reflectKeys: ReadonlyArray<keyof ObjectGeneric> | undefined;
+): Array<keyof ObjectGeneric> {
+    let reflectKeys: Array<keyof ObjectGeneric> | undefined;
     try {
-        reflectKeys = Reflect.ownKeys(input as object) as unknown as ReadonlyArray<
-            keyof ObjectGeneric
-        >;
+        reflectKeys = Reflect.ownKeys(input as object) as unknown as Array<keyof ObjectGeneric>;
     } catch (error) {}
     return (
         reflectKeys ??
         ([
             ...Object.keys(input as object),
             ...Object.getOwnPropertySymbols(input as object),
-        ] as unknown as ReadonlyArray<keyof ObjectGeneric>)
+        ] as unknown as Array<keyof ObjectGeneric>)
     );
 }
 

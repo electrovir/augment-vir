@@ -125,7 +125,7 @@ type ShellListener<T extends ShellEmitterEventKey = ShellEmitterEventKey> = {
 function processListener<T extends ShellEmitterEventKey>(
     eventType: ShellListener<T>['eventType'],
     eventListener: ShellListener<T>['eventListener'],
-): Readonly<ShellListener<T>> {
+): ShellListener<T> {
     return {eventType, eventListener};
 }
 

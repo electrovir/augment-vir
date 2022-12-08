@@ -29,6 +29,6 @@ export function interpolationSafeWindowsPath(input: string): string {
 export function joinFileNamesWithParentDirPath(
     parentDirPath: string,
     childNames: ReadonlyArray<string>,
-): ReadonlyArray<string> {
+): Array<string> {
     return childNames.map((childName) => join(parentDirPath, childName));
 }
