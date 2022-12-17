@@ -4,5 +4,13 @@
         "declarationDir": "dist/types",
         "module": "ESNext",
         "outDir": "dist/esm"
-    }
+    },
+    "references": [
+        {
+            "path": "../common"
+        },
+        {
+            "path": "../testing"
+        }
+    ]
 }

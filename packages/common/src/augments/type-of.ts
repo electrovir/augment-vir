@@ -1,4 +1,4 @@
-import {AnyFunction} from '@augment-vir/common';
+import {AnyFunction} from './function';
 
 // this function is not used at run time, it's only here for types
 // istanbul ignore next

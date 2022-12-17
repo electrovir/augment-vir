@@ -3,5 +3,13 @@
         "outDir": "dist/cjs",
         "module": "CommonJS"
     },
-    "extends": "./tsconfig.base.json"
+    "extends": "./tsconfig.base.json",
+    "references": [
+        {
+            "path": "../common"
+        },
+        {
+            "path": "../testing"
+        }
+    ]
 }

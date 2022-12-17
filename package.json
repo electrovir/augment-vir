@@ -21,7 +21,7 @@
         "./packages/*"
     ],
     "scripts": {
-        "compile": "rm -rf packages/*/dist && rm -f packages/*/tsconfig.tsbuildinfo && echo \"pre-compiling...\" && echo \"$(npm run compile --workspaces >/dev/null 2>&1)\" && npm run compile --workspaces",
+        "compile": "rm -rf packages/*/dist && rm -f packages/*/tsconfig.tsbuildinfo && tsc --build tsconfig.build.json && echo \"$(npm run compile --workspaces >/dev/null 2>&1)\" && npm run compile --workspaces",
         "docs:update": "virmator code-in-markdown",
         "format": "virmator format",
         "publish": "virmator publish npm run test:all",

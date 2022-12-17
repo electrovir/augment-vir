@@ -3,5 +3,13 @@
         "module": "ES2020",
         "outDir": "dist/esm"
     },
-    "extends": "./tsconfig.base.json"
+    "extends": "./tsconfig.base.json",
+    "references": [
+        {
+            "path": "../common"
+        },
+        {
+            "path": "../testing"
+        }
+    ]
 }
