@@ -1,4 +1,5 @@
 import {itCases} from '@augment-vir/chai';
+import {assertTypeOf} from '@augment-vir/testing';
 import {expect} from 'chai';
 import {describe, it} from 'mocha';
 import {
@@ -7,7 +8,6 @@ import {
     trimArrayStrings,
     typedArrayIncludes,
 } from '../../../common/src';
-import {assertTypeOf} from '../../../testing/src/augments/assert-type-of';
 
 describe(filterOutIndexes.name, () => {
     const experimentArray = [

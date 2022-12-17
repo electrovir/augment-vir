@@ -1,5 +1,6 @@
 import {assertTypeOf, itCases} from '@augment-vir/chai';
 import {describe, it} from 'mocha';
+import {JsonObject, JsonValue} from 'type-fest';
 import {isTypeOfWithArray} from '../../../common/src';
 
 describe(isTypeOfWithArray.name, () => {
@@ -16,6 +17,25 @@ describe(isTypeOfWithArray.name, () => {
 
         if (isTypeOfWithArray(anything, 'bigint')) {
             assertTypeOf(anything).toEqualTypeOf<bigint>();
+        }
+    });
+
+    it('should narrow a union', () => {
+        const anything = {} as string | object;
+
+        if (isTypeOfWithArray(anything, 'string')) {
+            assertTypeOf(anything).toEqualTypeOf('');
+        }
+    });
+
+    it('should narrow out array types in the object type', () => {
+        const anything = {} as JsonValue;
+
+        assertTypeOf<JsonObject>().toMatchTypeOf(anything);
+        assertTypeOf(anything).not.toMatchTypeOf<JsonObject>();
+
+        if (isTypeOfWithArray(anything, 'object')) {
+            assertTypeOf(anything).toMatchTypeOf<JsonObject>();
         }
     });
 

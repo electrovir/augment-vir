@@ -43,7 +43,7 @@ export async function getContainerInfo(
     const parsedOutput = JSON.parse(output.stdout) as ReadonlyArray<ContainerInfo>;
 
     if (parsedOutput.length === 0) {
-        throw new Error(`Got not output from "${command}"`);
+        throw new Error(`Got no output from "${command}"`);
     } else if (parsedOutput.length > 1) {
         throw new Error(`Got more than one output from "${command}"`);
     }

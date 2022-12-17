@@ -16,7 +16,7 @@ export type TypeOfMapping = {
     boolean: boolean;
     function: AnyFunction;
     number: number;
-    object: object;
+    object: Record<PropertyKey, unknown>;
     string: string;
     symbol: symbol;
     undefined: undefined;

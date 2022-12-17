@@ -1,6 +1,6 @@
 {
     "name": "augment-vir",
-    "version": "6.1.5",
+    "version": "6.1.6",
     "private": true,
     "homepage": "https://github.com/electrovir/augment-vir",
     "bugs": {
@@ -21,30 +21,29 @@
         "./packages/*"
     ],
     "scripts": {
-        "compile": "rm -rf packages/*/dist && rm -f packages/**/*/tsconfig.tsbuildinfo && echo \"pre-compiling...\" && echo \"$(npm run compile --workspaces >/dev/null 2>&1)\" && npm run compile --workspaces",
+        "compile": "rm -rf packages/*/dist && rm -f packages/*/tsconfig.tsbuildinfo && echo \"pre-compiling...\" && echo \"$(npm run compile --workspaces >/dev/null 2>&1)\" && npm run compile --workspaces",
         "docs:update": "virmator code-in-markdown",
         "format": "virmator format",
-        "prepublishOnly": "echo \"Error: use \\x1b[32m\\\"npm run publish\\\"\\x1b[0m instead of \\x1b[31m\\\"npm publish\\\"\\x1b[0m\" && exit 1;",
-        "publish": "npm run test:all && virmator publish",
+        "publish": "virmator publish npm run test:all",
         "spellcheck": "virmator spellcheck",
-        "test": "npm run test --workspaces",
-        "test:all": "npm run spellcheck && npm run test:format && npm run test:docs && npm run compile && npm run test:types && npm run test",
+        "test": "npm run compile && npm run test --workspaces",
+        "test:all": "npm run spellcheck && npm run test:format && npm run test:docs && npm run test && npm run test:types",
         "test:docs": "virmator code-in-markdown check",
         "test:format": "virmator format check",
         "test:types": "tsc --build tsconfig.build.json"
     },
     "devDependencies": {
         "cspell": "^6.17.0",
-        "markdown-code-example-inserter": "^0.1.11",
-        "prettier": "^2.8.0",
+        "markdown-code-example-inserter": "^0.1.13",
+        "prettier": "^2.8.1",
         "prettier-plugin-jsdoc": "^0.4.2",
-        "prettier-plugin-multiline-arrays": "^1.1.1",
+        "prettier-plugin-multiline-arrays": "^1.1.2",
         "prettier-plugin-organize-imports": "^3.2.1",
         "prettier-plugin-packagejson": "^2.3.0",
         "prettier-plugin-sort-json": "^0.0.3",
         "prettier-plugin-toml": "^0.3.1",
         "tsx": "^3.12.1",
-        "typescript": "^4.9.3",
-        "virmator": "^5.0.2"
+        "typescript": "^4.9.4",
+        "virmator": "^5.2.3"
     }
 }

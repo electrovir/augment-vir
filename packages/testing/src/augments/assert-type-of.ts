@@ -1,21 +1,15 @@
 import {Overwrite} from '@augment-vir/common';
-import {Eq, ExpectTypeOf, Not} from 'expect-type';
-
-type MismatchArgs<B extends boolean, C extends boolean> = Eq<B, C> extends true ? [] : [never];
+import {ExpectTypeOf, Not} from 'expect-type';
 
 type ExtraTypeChecks<TestingType, B extends boolean> = {
-    toBeAssignableTo: {
-        <Expected>(...MISMATCH: MismatchArgs<TestingType extends Expected ? true : false, B>): true;
-        <Expected>(
-            expected: Expected,
-            ...MISMATCH: MismatchArgs<TestingType extends Expected ? true : false, B>
-        ): true;
-    };
+    toBeAssignableTo: ExpectTypeOf<TestingType, B>['toMatchTypeOf'];
 };
 
 type WithExtraNotTypeChecks<TestingType, B extends boolean> = Overwrite<
     ExpectTypeOf<TestingType, B>,
-    {not: ExpectTypeOf<TestingType, B>['not'] & ExtraTypeChecks<TestingType, Not<B>>}
+    {
+        not: ExpectTypeOf<TestingType, B>['not'] & ExtraTypeChecks<TestingType, Not<B>>;
+    }
 >;
 
 type AssertTypeOf<TestingType, B extends boolean> = WithExtraNotTypeChecks<TestingType, B> &
