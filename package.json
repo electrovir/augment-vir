@@ -21,13 +21,14 @@
         "./packages/*"
     ],
     "scripts": {
-        "compile": "rm -rf packages/*/dist && rm -f packages/*/tsconfig.tsbuildinfo && tsc --build tsconfig.build.json && echo \"$(npm run compile --workspaces >/dev/null 2>&1)\" && npm run compile --workspaces",
+        "compile": "tsc --build tsconfig.build.json && npm run compile --workspaces",
+        "compile:clean": "rm -rf packages/*/dist && rm -f packages/*/tsconfig.tsbuildinfo && npm run compile",
         "docs:update": "virmator code-in-markdown",
         "format": "virmator format",
         "publish": "virmator publish npm run test:all",
         "spellcheck": "virmator spellcheck",
-        "test": "npm run compile && npm run test --workspaces",
-        "test:all": "npm run spellcheck && npm run test:format && npm run test:docs && npm run test && npm run test:types",
+        "test": "tsc --build tsconfig.build.json && npm run test --workspaces",
+        "test:all": "npm run compile && npm run spellcheck && npm run test:format && npm run test:docs && npm run test",
         "test:docs": "virmator code-in-markdown check",
         "test:format": "virmator format check",
         "test:types": "tsc --build tsconfig.build.json"
