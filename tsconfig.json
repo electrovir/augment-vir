@@ -9,5 +9,8 @@
         "./dist",
         "./node_modules",
         "packages/node-js/test-files"
-    ]
+    ],
+    "ts-node": {
+        "transpileOnly": true
+    }
 }

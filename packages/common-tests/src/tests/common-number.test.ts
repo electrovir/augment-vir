@@ -96,7 +96,7 @@ describe(truncateNumber.name, () => {
             expect: '6e-18',
         },
         {
-            it: 'should error on invalid input',
+            it: 'should ignore invalid input',
             inputs: [
                 'hello there',
                 {
@@ -106,7 +106,7 @@ describe(truncateNumber.name, () => {
             expect: 'hello there',
         },
         {
-            it: 'should error if custom suffixes are not long enough',
+            it: 'should ignore if custom suffixes are not long enough',
             inputs: [
                 1_000_000_000,
                 {

@@ -27,7 +27,7 @@
         "@web/test-runner": "^0.15.0",
         "@web/test-runner-commands": "^0.6.5",
         "@web/test-runner-playwright": "^0.9.0",
-        "istanbul-smart-text-reporter": "^1.0.1",
+        "istanbul-smart-text-reporter": "^1.1.1",
         "typescript": "^4.9.4"
     },
     "publishConfig": {

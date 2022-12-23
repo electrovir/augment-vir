@@ -1,11 +1,13 @@
 import {AnyFunction} from '@augment-vir/common';
 import {FunctionTestCase, itCases as generic_itCases} from '@augment-vir/testing';
-import {assert} from 'chai';
+import chai, {assert} from 'chai';
 export type {
     FunctionTestCase,
     OutputTestCaseMultipleInputs,
     OutputTestCaseSingleInput,
 } from '@augment-vir/testing';
+
+chai.config.truncateThreshold = 0;
 
 export function itCases<FunctionToCallGeneric extends AnyFunction>(
     functionToCall: FunctionToCallGeneric,
