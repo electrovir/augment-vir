@@ -7,6 +7,7 @@ export enum ColorKey {
     bold = 'bold',
     error = 'error',
     faint = 'faint',
+    normalWeight = 'normal-weight',
     info = 'info',
     mutate = 'mutate',
     reset = 'reset',
@@ -16,6 +17,7 @@ export enum ColorKey {
 export const logColors: Readonly<Record<ColorKey, string>> = {
     [ColorKey.bold]: styles.bold.open,
     [ColorKey.error]: styles.red.open,
+    [ColorKey.normalWeight]: '\x1b[22m',
     [ColorKey.faint]: styles.gray.open,
     [ColorKey.info]: styles.cyan.open,
     [ColorKey.mutate]: styles.magenta.open,
