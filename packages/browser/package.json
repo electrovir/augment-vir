@@ -18,7 +18,8 @@
     "types": "dist/index.d.ts",
     "scripts": {
         "compile": "tsc --pretty",
-        "test": "virmator test-web"
+        "test": "virmator test-web",
+        "test:coverage": "npm test"
     },
     "devDependencies": {
         "@open-wc/testing": "^3.1.7",

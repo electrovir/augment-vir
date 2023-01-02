@@ -19,14 +19,15 @@
     "types": "dist/types/index.d.ts",
     "scripts": {
         "compile": "tsc --project tsconfig.json && tsc --project tsconfig.cjs.json && tsc --project tsconfig.esm.json",
-        "test": "echo \"browser-testing augments are already tested by the testing package\" && exit 0"
+        "test": "echo \"browser-testing augments are already tested by the testing package\" && exit 0",
+        "test:coverage": "npm test"
     },
     "dependencies": {
         "@augment-vir/testing": "*",
         "@open-wc/testing": "^3.1.7",
         "@types/mocha": "^10.0.1",
         "expect-type": "^0.15.0",
-        "type-fest": "^3.4.0"
+        "type-fest": "^3.5.0"
     },
     "devDependencies": {
         "typescript": "^4.9.4"

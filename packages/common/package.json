@@ -19,10 +19,11 @@
     "types": "dist/types/index.d.ts",
     "scripts": {
         "compile": "tsc --project tsconfig.json && tsc --project tsconfig.cjs.json && tsc --project tsconfig.esm.json",
-        "test": "echo \"use common-test to run tests\" && exit 0"
+        "test": "echo \"use common-test to run tests\" && exit 0",
+        "test:coverage": "npm test"
     },
     "dependencies": {
-        "type-fest": "^3.4.0"
+        "type-fest": "^3.5.0"
     },
     "devDependencies": {
         "typescript": "^4.9.4"

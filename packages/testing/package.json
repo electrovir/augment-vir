@@ -19,17 +19,19 @@
     "types": "dist/types/index.d.ts",
     "scripts": {
         "compile": "tsc --project tsconfig.json && tsc --project tsconfig.cjs.json && tsc --project tsconfig.esm.json",
-        "test": "virmator test"
+        "test": "virmator test",
+        "test:coverage": "npm test coverage"
     },
     "dependencies": {
         "@augment-vir/common": "*",
         "@types/chai": "^4.3.4",
         "expect-type": "^0.15.0",
         "mock-vir": "^0.0.5",
-        "type-fest": "^3.4.0"
+        "type-fest": "^3.5.0"
     },
     "devDependencies": {
-        "@electrovir/c8": "^7.12.0-fix1",
+        "@electrovir/nyc": "^15.1.0-fix0",
+        "@istanbuljs/nyc-config-typescript": "^1.0.2",
         "@types/mocha": "^10.0.1",
         "chai": "^4.3.7",
         "istanbul-smart-text-reporter": "^1.1.1",

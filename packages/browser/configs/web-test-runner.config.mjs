@@ -2,7 +2,7 @@ import {getWebTestRunnerConfigWithCoveragePercent} from 'virmator/base-configs/b
 
 /** @type {import('@web/test-runner').TestRunnerConfig} */
 const webTestRunnerConfig = {
-    ...getWebTestRunnerConfigWithCoveragePercent(0),
+    ...getWebTestRunnerConfigWithCoveragePercent(100),
 };
 
 export default webTestRunnerConfig;

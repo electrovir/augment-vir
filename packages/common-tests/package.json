@@ -18,12 +18,14 @@
     "scripts": {
         "compile": "tsc --pretty",
         "test": " npm run test:types && virmator test",
+        "test:coverage": "npm test coverage",
         "test:types": "tsc --noEmit"
     },
     "devDependencies": {
         "@augment-vir/chai": "*",
         "@augment-vir/node-js": "*",
-        "@electrovir/c8": "^7.12.0-fix1",
+        "@electrovir/nyc": "^15.1.0-fix0",
+        "@istanbuljs/nyc-config-typescript": "^1.0.2",
         "@types/chai": "^4.3.4",
         "@types/mocha": "^10.0.1",
         "chai": "^4.3.7",
@@ -33,7 +35,7 @@
         "mocha-spec-reporter-with-file-names": "^0.0.3",
         "ts-node": "^10.9.1",
         "tsx": "^3.12.1",
-        "type-fest": "^3.4.0",
+        "type-fest": "^3.5.0",
         "typescript": "^4.9.4"
     }
 }

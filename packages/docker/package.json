@@ -18,7 +18,8 @@
     "types": "dist/index.d.ts",
     "scripts": {
         "compile": "tsc --pretty",
-        "test": "echo \"no tests yet\" && exit 0"
+        "test": "echo \"no tests yet\" && exit 0",
+        "test:coverage": "npm test"
     },
     "dependencies": {
         "@augment-vir/common": "*",

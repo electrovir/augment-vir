@@ -9,13 +9,15 @@
     },
     "scripts": {
         "compile": "tsc --pretty",
-        "test": "virmator test"
+        "test": "virmator test",
+        "test:coverage": "npm test coverage"
     },
     "devDependencies": {
-        "@electrovir/c8": "^7.12.0-fix1",
+        "@electrovir/nyc": "^15.1.0-fix0",
+        "@istanbuljs/nyc-config-typescript": "^1.0.2",
         "@types/chai": "^4.3.4",
         "@types/mocha": "^10.0.1",
-        "@types/node": "^18.11.17",
+        "@types/node": "^18.11.18",
         "chai": "^4.3.7",
         "istanbul-smart-text-reporter": "^1.1.1",
         "mocha": "^10.2.0",
