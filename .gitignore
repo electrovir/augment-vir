@@ -1,10 +1,9 @@
+*.tgz
+*.tsbuildinfo
 .DS_Store
-/*.tgz
 /Icon?
 coverage/
 dist/
 graphics/
 node_modules/
-
-*.tgz
-*.tsbuildinfo
+src/all-files-for-code-coverage.test.ts

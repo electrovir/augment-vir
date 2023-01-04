@@ -1,6 +1,6 @@
 {
     "name": "augment-vir",
-    "version": "6.2.0",
+    "version": "6.3.0",
     "private": true,
     "homepage": "https://github.com/electrovir/augment-vir",
     "bugs": {
@@ -26,13 +26,14 @@
         "docs:update": "virmator code-in-markdown",
         "format": "virmator format",
         "publish": "virmator publish npm run test:all",
-        "spellcheck": "virmator spellcheck",
         "test": "tsc --build tsconfig.build.json && npm run test --workspaces",
-        "test:all": "npm run compile && npm run spellcheck && npm run test:format && npm run test:docs && npm run test:coverage",
+        "test:all": "npm run compile && npm run test:spelling && npm run test:format && npm run test:docs && npm run test:coverage",
         "test:coverage": "tsc --build tsconfig.build.json && npm run test:coverage --workspaces",
         "test:docs": "virmator code-in-markdown check",
         "test:format": "virmator format check",
-        "test:types": "tsc --build tsconfig.build.json"
+        "test:spelling": "virmator spellcheck",
+        "test:types": "tsc --build tsconfig.build.json",
+        "test:web": "virmator test-web"
     },
     "devDependencies": {
         "cspell": "^6.18.1",
@@ -46,6 +47,6 @@
         "prettier-plugin-toml": "^0.3.1",
         "tsx": "^3.12.1",
         "typescript": "^4.9.4",
-        "virmator": "^5.3.0"
+        "virmator": "^5.3.1"
     }
 }

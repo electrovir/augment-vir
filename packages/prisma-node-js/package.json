@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/prisma-node-js",
-    "version": "6.2.0",
+    "version": "6.3.0",
     "homepage": "https://github.com/electrovir/augment-vir/tree/main/packages/prisma-node-js",
     "bugs": {
         "url": "https://github.com/electrovir/augment-vir/issues"
@@ -19,7 +19,7 @@
     "scripts": {
         "compile": "tsc --pretty",
         "test": "echo \"no tests yet\" && exit 0",
-        "test:coverage": "npm test coverage"
+        "test:coverage": "npm test"
     },
     "dependencies": {
         "@augment-vir/common": "*",
