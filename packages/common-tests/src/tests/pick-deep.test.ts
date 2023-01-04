@@ -33,5 +33,43 @@ describe('PickDeep', () => {
                 secondLevel1: string;
             };
         }>();
+        assertTypeOf<
+            PickDeep<
+                TestObject,
+                [
+                    'topLevel' | 'topLevelWithNested1' | 'topLevelWithNested2',
+                    'secondLevel1' | 'secondLevel2',
+                ]
+            >
+        >().toEqualTypeOf<{
+            topLevel: string;
+            topLevelWithNested1: {
+                secondLevel1: string;
+            };
+            topLevelWithNested2: {
+                secondLevel2: string;
+            };
+        }>();
+        assertTypeOf<
+            PickDeep<
+                TestObject,
+                [
+                    'topLevel' | 'topLevelWithNested1' | 'topLevelWithNested2',
+                    'secondLevel1' | 'secondLevel2' | 'secondLevelWithNested2',
+                    'thirdLevel',
+                ]
+            >
+        >().toEqualTypeOf<{
+            topLevel: string;
+            topLevelWithNested1: {
+                secondLevel1: string;
+            };
+            topLevelWithNested2: {
+                secondLevel2: string;
+                secondLevelWithNested2: {
+                    thirdLevel: string;
+                };
+            };
+        }>();
     });
 });

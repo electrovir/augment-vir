@@ -1,25 +1,27 @@
 import {UnionToIntersection} from 'type-fest';
 import {NestedKeys} from './nested-keys';
 
-export type PickDeep<
+type InnerPickDeep<
     OriginalObjectGeneric extends object,
-    DeepKeys extends NestedKeys<OriginalObjectGeneric>,
+    DeepKeys extends any[],
 > = UnionToIntersection<
-    DeepKeys extends [infer CurrentLevelPick, ...infer ExtraKeys]
-        ? CurrentLevelPick extends PropertyKey
-            ? CurrentLevelPick extends keyof OriginalObjectGeneric
-                ? {
-                      [CurrentProp in CurrentLevelPick]: OriginalObjectGeneric[CurrentProp] extends object
-                          ? ExtraKeys extends NestedKeys<OriginalObjectGeneric[CurrentProp]>
-                              ? PickDeep<OriginalObjectGeneric[CurrentProp], ExtraKeys>
-                              : {}
-                          : OriginalObjectGeneric[CurrentProp];
-                  }
-                : never
-            : never
+    DeepKeys extends [infer CurrentLevelPick, ...infer RemainingKeys]
+        ? {
+              [CurrentProp in Extract<
+                  CurrentLevelPick,
+                  keyof OriginalObjectGeneric
+              >]: OriginalObjectGeneric[CurrentProp] extends object
+                  ? InnerPickDeep<OriginalObjectGeneric[CurrentProp], RemainingKeys>
+                  : OriginalObjectGeneric[CurrentProp];
+          }
         : DeepKeys extends [infer CurrentLevelPick]
         ? CurrentLevelPick extends keyof OriginalObjectGeneric
             ? Pick<OriginalObjectGeneric, CurrentLevelPick>
             : never
         : never
 >;
+
+export type PickDeep<
+    OriginalObjectGeneric extends object,
+    DeepKeys extends NestedKeys<OriginalObjectGeneric>,
+> = InnerPickDeep<OriginalObjectGeneric, DeepKeys>;
