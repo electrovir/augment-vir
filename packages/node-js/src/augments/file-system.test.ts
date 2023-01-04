@@ -1,26 +1,73 @@
-import {expect} from 'chai';
+import chai, {assert, expect} from 'chai';
+import chaiAsPromised from 'chai-as-promised';
 import {existsSync} from 'fs';
 import {remove} from 'fs-extra';
-import {lstat, readFile} from 'fs/promises';
+import {lstat, readFile, writeFile} from 'fs/promises';
 import {describe, it} from 'mocha';
+import {tmpdir} from 'os';
 import {join} from 'path';
+import {executeAndReturnError} from '../../../common/src';
 import {recursiveFileReadDir} from '../repo-file-paths';
 import {createSymLink, readDirRecursive, writeFileAndDir} from './file-system';
 
 describe(createSymLink.name, () => {
-    const symlinkPath = 'test-symlink';
+    const symlinkPath = join(tmpdir(), 'test-symlink');
 
     it('creates symlink', async () => {
         try {
-            expect(existsSync(symlinkPath)).to.equal(false);
+            const existsBeforeTest = existsSync(symlinkPath);
             await createSymLink(__dirname, symlinkPath, true);
-            expect(existsSync(symlinkPath)).to.equal(true);
-            expect((await lstat(symlinkPath)).isSymbolicLink()).to.equal(true);
-        } catch (error) {
-            throw error;
+            const existsAfterTest = existsSync(symlinkPath);
+            const isSymLink = (await lstat(symlinkPath)).isSymbolicLink();
+            await remove(symlinkPath);
+            const existsAfterDeletion = existsSync(symlinkPath);
+
+            assert.deepStrictEqual(
+                {
+                    existsBeforeTest,
+                    existsAfterTest,
+                    isSymLink,
+                    existsAfterDeletion,
+                },
+                {
+                    existsBeforeTest: false,
+                    existsAfterTest: true,
+                    isSymLink: true,
+                    existsAfterDeletion: false,
+                },
+            );
         } finally {
             await remove(symlinkPath);
-            expect(existsSync(symlinkPath)).to.equal(false);
+        }
+    });
+
+    it('errors if there is already a file at the given location', async () => {
+        try {
+            const existsBeforeTest = existsSync(symlinkPath);
+            await writeFile(symlinkPath, '');
+            const existsAfterFileCreation = existsSync(symlinkPath);
+            const thrownError = await executeAndReturnError(() =>
+                createSymLink(__dirname, symlinkPath, true),
+            );
+            await remove(symlinkPath);
+            const existsAfterFileDeletion = existsSync(symlinkPath);
+
+            chai.use(chaiAsPromised);
+            assert.deepStrictEqual(
+                {
+                    existsBeforeTest,
+                    existsAfterFileCreation,
+                    existsAfterFileDeletion,
+                },
+                {
+                    existsBeforeTest: false,
+                    existsAfterFileCreation: true,
+                    existsAfterFileDeletion: false,
+                },
+            );
+            assert.instanceOf(thrownError, Error);
+        } finally {
+            await remove(symlinkPath);
         }
     });
 });

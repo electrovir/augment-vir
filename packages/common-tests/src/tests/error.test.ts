@@ -1,8 +1,16 @@
 import {itCases} from '@augment-vir/chai';
 import {assert, expect} from 'chai';
 import {describe, it} from 'mocha';
-import {combineErrors, extractErrorMessage, InvalidDateError, typedMap} from '../../../common/src';
-import {combineErrorMessages, ensureError} from '../../../common/src/augments/error';
+import {
+    combineErrorMessages,
+    combineErrors,
+    ensureError,
+    executeAndReturnError,
+    extractErrorMessage,
+    InvalidDateError,
+    typedMap,
+    wait,
+} from '../../../common/src';
 
 describe(extractErrorMessage.name, () => {
     it('should extract message from error object', () => {
@@ -162,6 +170,43 @@ describe(ensureError.name, () => {
             it: 'should return error of given string',
             input: 'hello',
             expect: new Error('hello'),
+        },
+    ]);
+});
+
+describe(executeAndReturnError.name, () => {
+    it('should have correct return types', async () => {
+        const syncResult: Error | void = executeAndReturnError(() => {});
+        const asyncResult: Promise<Error | void> = executeAndReturnError(async () => {});
+    });
+
+    itCases(executeAndReturnError, [
+        {
+            it: 'should return undefined if no error is thrown',
+            input: () => {},
+            expect: undefined,
+        },
+        {
+            it: 'should handle an async input without errors',
+            input: async () => {
+                await wait(0);
+            },
+            expect: undefined,
+        },
+        {
+            it: 'should catch a synchronous error',
+            input: () => {
+                throw new Error('test error');
+            },
+            expect: new Error('test error'),
+        },
+        {
+            it: 'should catch an asynchronous error',
+            input: async () => {
+                await wait(0);
+                throw new Error('test error');
+            },
+            expect: new Error('test error'),
         },
     ]);
 });

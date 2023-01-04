@@ -1,5 +1,7 @@
-import {isTruthy} from './function';
+import {isTruthy, NoInputsFunction} from './function';
+import {isPromiseLike} from './promise';
 import {AtLeastTuple} from './tuple';
+import {UnPromise} from './type';
 
 export function combineErrors(errors: AtLeastTuple<Error, 1>): Error;
 export function combineErrors(errors: ReadonlyArray<never>): undefined;
@@ -48,4 +50,39 @@ export function ensureError(input: unknown): Error {
     } else {
         return new Error(extractErrorMessage(input));
     }
+}
+
+export function executeAndReturnError<CallbackGeneric extends NoInputsFunction<PromiseLike<any>>>(
+    callback: CallbackGeneric,
+): Promise<Error | UnPromise<ReturnType<CallbackGeneric>>>;
+export function executeAndReturnError<CallbackGeneric extends NoInputsFunction>(
+    callback: CallbackGeneric,
+): Error | ReturnType<CallbackGeneric>;
+export function executeAndReturnError<CallbackGeneric extends NoInputsFunction>(
+    callback: CallbackGeneric,
+): Promise<Error | UnPromise<ReturnType<CallbackGeneric>>> | Error | ReturnType<CallbackGeneric> {
+    let caughtError: Error | undefined;
+
+    try {
+        const result: ReturnType<CallbackGeneric> = callback();
+
+        if (isPromiseLike(result)) {
+            return new Promise<Error | ReturnType<CallbackGeneric>>(async (resolve) => {
+                try {
+                    const output = await result;
+                    return resolve(output);
+                } catch (error) {
+                    caughtError = ensureError(error);
+                }
+
+                return resolve(caughtError);
+            });
+        } else {
+            return result;
+        }
+    } catch (error) {
+        caughtError = ensureError(error);
+    }
+
+    return caughtError;
 }

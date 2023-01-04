@@ -4,7 +4,6 @@ const baseOptions = require('virmator/base-configs/base-mocharc.js');
 const mochaConfig = {
     ...baseOptions,
     fullTrace: true,
-    require: ['tsx'],
 };
 
 module.exports = mochaConfig;
