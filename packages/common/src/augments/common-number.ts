@@ -37,7 +37,6 @@ export function clamp(
 }
 
 const defaultTruncationSuffixes = [
-    '', // no suffix, numbers below 1000
     'k', // thousand
     'M', // million
     'B', // billion
@@ -85,7 +84,6 @@ const maxDecimals = 4;
  *
  * Default suffixes are:
  *
- *     '', // no suffix, numbers below 1000
  *     'k', // thousand
  *     'M', // million
  *     'B', // billion
@@ -123,11 +121,17 @@ export function truncateNumber(
 
         const results = recursiveTruncation(stringValue);
 
-        const suffixes = customSuffixes ?? defaultTruncationSuffixes;
+        const suffixes = [
+            '',
+            ...(customSuffixes ?? defaultTruncationSuffixes),
+        ];
         const suffix = suffixes[results.recursionDepth];
 
         if (suffix === undefined) {
             throw new Error(`Number is too large, could not truncate: ${value}`);
+        }
+        if (stringValue.length <= 5) {
+            return addCommasToNumber(value);
         }
 
         const decimalPlaces = maxDecimals - (results.value.length - 1) - suffix.length;
@@ -137,11 +141,7 @@ export function truncateNumber(
 
         const combined = `${results.value}${withDecimal}${suffix}`;
 
-        if (combined.length > stringValue.length + 1) {
-            return addCommasToNumber(value);
-        } else {
-            return combined;
-        }
+        return combined;
     } catch (error) {
         const errorCallback = customErrorLogCallback ? customErrorLogCallback : console.error;
         if (!suppressErrorLogging) {

@@ -66,9 +66,9 @@ describe(truncateNumber.name, () => {
 
     itCases(truncateNumber, [
         {
-            it: 'should truncate to 1k',
+            it: 'should not truncate 1000',
             inputs: [1000],
-            expect: '1k',
+            expect: '1,000',
         },
         {
             it: 'should not truncate with a purely decimal number',
@@ -144,14 +144,29 @@ describe(truncateNumber.name, () => {
             inputs: [1.567891],
             expect: '1.5678',
         },
-
         {
-            it: 'should truncate one thousand with custom suffixes',
+            it: 'should not truncate one thousand with custom suffixes',
             inputs: [
                 1000,
                 {customSuffixes},
             ],
-            expect: `1${customSuffixes[1]}`,
+            expect: `1,000`,
+        },
+        {
+            it: 'should not truncate ten thousand with custom suffixes',
+            inputs: [
+                10_000,
+                {customSuffixes},
+            ],
+            expect: `10,000`,
+        },
+        {
+            it: 'should truncate one hundred thousand with custom suffixes',
+            inputs: [
+                100_000,
+                {customSuffixes},
+            ],
+            expect: `100A`,
         },
         {
             it: 'should still just add a comma to a thousand',
@@ -167,7 +182,7 @@ describe(truncateNumber.name, () => {
                 12_344_567,
                 {customSuffixes},
             ],
-            expect: `12.34${customSuffixes[2]}`,
+            expect: `12.34B`,
         },
         {
             it: 'should truncate three digit million with custom suffixes',
@@ -175,15 +190,15 @@ describe(truncateNumber.name, () => {
                 122_344_567,
                 {customSuffixes},
             ],
-            expect: `122.3${customSuffixes[2]}`,
+            expect: `122.3B`,
         },
         {
-            it: 'should truncate short numbers with custom suffixes',
+            it: 'should not truncate short numbers with custom suffixes',
             inputs: [
                 123,
                 {customSuffixes},
             ],
-            expect: `123${customSuffixes[0]}`,
+            expect: `123`,
         },
         {
             it: 'should truncate decimal with custom suffixes',
@@ -191,7 +206,7 @@ describe(truncateNumber.name, () => {
                 1.567891,
                 {customSuffixes},
             ],
-            expect: `1.567${customSuffixes[0]}`,
+            expect: `1.5678`,
         },
         {
             it: 'should return a string for a non-string and non-number input',
