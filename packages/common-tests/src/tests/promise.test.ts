@@ -68,7 +68,9 @@ describe(wait.name, () => {
             await wrapPromiseInTimeout(timeoutSoTestActuallyFinishes, wait(Infinity));
         } catch (error) {}
         const endTime = Date.now();
-        expect(endTime - startTime).to.be.lessThanOrEqual(timeoutSoTestActuallyFinishes);
+        expect(endTime - startTime).to.be.greaterThanOrEqual(
+            timeoutSoTestActuallyFinishes - 10, // small buffer,
+        );
     });
 });
 
