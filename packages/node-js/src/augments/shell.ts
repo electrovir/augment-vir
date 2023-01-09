@@ -16,7 +16,7 @@ export const ShellEmitterEvent = {
     done: 'done',
     error: 'error',
 } as const;
-export type ShellEmitterEventKey = typeof ShellEmitterEvent[keyof typeof ShellEmitterEvent];
+export type ShellEmitterEventKey = (typeof ShellEmitterEvent)[keyof typeof ShellEmitterEvent];
 
 export type ShellEmitterListenerMap = {
     [ShellEmitterEvent.stdout]: [string | Buffer];

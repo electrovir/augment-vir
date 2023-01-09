@@ -23,7 +23,7 @@
         "test:coverage": "npm test"
     },
     "dependencies": {
-        "type-fest": "^3.5.0"
+        "type-fest": "^3.5.1"
     },
     "devDependencies": {
         "typescript": "^4.9.4"
