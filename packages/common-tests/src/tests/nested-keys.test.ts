@@ -1,4 +1,5 @@
-import {assertTypeOf} from '@augment-vir/chai';
+import {assertTypeOf, itCases} from '@augment-vir/chai';
+import {randomString} from '@augment-vir/node-js';
 import {describe} from 'mocha';
 import {getValueFromNestedKeys, NestedSequentialKeys} from '../../../common/src';
 import {NestedKeys} from '../../../common/src/augments/nested-keys';
@@ -107,4 +108,39 @@ describe('getValueFromNestedKeys', () => {
             ]),
         ).toEqualTypeOf<Date | undefined>();
     });
+
+    const testObject = {
+        topLevelValue: randomString(),
+        topLevelObject: {
+            nestedTwo: randomString(),
+            nestedAgain: {
+                tripleNested: randomString(),
+            },
+        },
+    } as const;
+
+    itCases(
+        (keys: NestedSequentialKeys<typeof testObject>) => getValueFromNestedKeys(testObject, keys),
+        [
+            {
+                it: 'should return the correct top level value',
+                input: ['topLevelObject'],
+                expect: testObject.topLevelObject,
+            },
+            {
+                it: 'should return undefined if key is missing',
+                input: ['missing key' as any],
+                expect: undefined,
+            },
+            {
+                it: 'should get the value from nested keys',
+                input: [
+                    'topLevelObject',
+                    'nestedAgain',
+                    'tripleNested',
+                ],
+                expect: testObject.topLevelObject.nestedAgain.tripleNested,
+            },
+        ],
+    );
 });

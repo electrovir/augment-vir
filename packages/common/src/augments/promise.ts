@@ -4,13 +4,14 @@ import {typedHasProperty} from './object';
 export function wait(delayMs: number): Promise<void> {
     const deferredPromiseWrapper = createDeferredPromiseWrapper();
 
-    if (delayMs === Infinity || delayMs < 0) {
-        return deferredPromiseWrapper.promise;
+    if (delayMs !== Infinity) {
+        setTimeout(
+            () => {
+                deferredPromiseWrapper.resolve();
+            },
+            delayMs <= 0 ? 0 : delayMs,
+        );
     }
-
-    setTimeout(() => {
-        deferredPromiseWrapper.resolve();
-    }, delayMs);
 
     return deferredPromiseWrapper.promise;
 }
@@ -71,6 +72,8 @@ export function createDeferredPromiseWrapper<T = void>(): DeferredPromiseWrapper
         reject = rejectCallback;
     });
 
+    // no way to test this edge case
+    // istanbul ignore next
     if (!resolve || !reject) {
         throw new Error(
             `Reject and resolve callbacks were not set by the promise constructor for ${createDeferredPromiseWrapper.name}.`,
@@ -96,7 +99,7 @@ export async function waitForCondition({
     timeoutMs = 10000,
     intervalMs = 100,
     timeoutMessage = '',
-}: WaitForConditionInputs) {
+}: WaitForConditionInputs): Promise<void> {
     let condition: boolean = false;
     let lastError: unknown;
     async function checkCondition() {

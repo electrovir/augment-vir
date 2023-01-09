@@ -1,5 +1,4 @@
 import {UnionToIntersection} from 'type-fest';
-import {extractErrorMessage} from './error';
 import {ObjectValueType, typedHasProperty} from './object';
 
 // produces an array type where each subsequent entry must be a key in the previous entry's object
@@ -50,27 +49,19 @@ export function getValueFromNestedKeys<
      */
 
     const keyToAccess = nestedKeys[0];
-    try {
-        if (!typedHasProperty(inputObject, keyToAccess)) {
-            return undefined;
-        }
 
-        const currentValue = inputObject[keyToAccess];
+    if (!typedHasProperty(inputObject, keyToAccess)) {
+        return undefined;
+    }
 
-        if (nestedKeys.length > 1) {
-            return getValueFromNestedKeys(
-                currentValue as any,
-                (nestedKeys as KeysGeneric).slice(1) as any,
-            ) as any;
-        } else {
-            return currentValue as NestedValue<ObjectGeneric, KeysGeneric>;
-        }
-    } catch (error) {
-        console.error({inputObject, nestedKeys});
-        throw new Error(
-            `Failed to traverse into inputObject using key "${String(
-                keyToAccess,
-            )}": ${extractErrorMessage(error)}`,
-        );
+    const currentValue = inputObject[keyToAccess];
+
+    if (nestedKeys.length > 1) {
+        return getValueFromNestedKeys(
+            currentValue as any,
+            (nestedKeys as KeysGeneric).slice(1) as any,
+        ) as any;
+    } else {
+        return currentValue as NestedValue<ObjectGeneric, KeysGeneric>;
     }
 }

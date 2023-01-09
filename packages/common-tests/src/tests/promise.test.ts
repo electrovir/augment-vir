@@ -1,5 +1,6 @@
 import {typedAssertInstanceOf} from '@augment-vir/chai';
-import chai, {expect} from 'chai';
+import {randomString} from '@augment-vir/node-js';
+import chai, {assert, expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {describe, it} from 'mocha';
 import {
@@ -15,7 +16,6 @@ const promiseDelayMs = 500;
 
 describe(createDeferredPromiseWrapper.name, () => {
     it('should create a promise which can be resolved externally.', async () => {
-        // expect.assertions(1);
         const resolveValue = Math.random();
 
         const deferredPromise = createDeferredPromiseWrapper<number>();
@@ -25,10 +25,8 @@ describe(createDeferredPromiseWrapper.name, () => {
 
         expect(await deferredPromise.promise).to.equal(resolveValue);
     });
-    // promiseDelayMs * 2,
 
     it('should create a promise that can be rejected externally.', async () => {
-        // expect.assertions(1);
         const message = 'this was rejected internally';
         const deferredPromise = createDeferredPromiseWrapper<number>();
         setTimeout(() => {
@@ -38,28 +36,44 @@ describe(createDeferredPromiseWrapper.name, () => {
         chai.use(chaiAsPromised);
         await expect(deferredPromise.promise).to.be.rejectedWith(message);
     });
-    // promiseDelayMs * 2,
 });
 
 describe(wait.name, () => {
-    it('should create a promise which can be resolved externally.', async () => {
-        // expect.assertions(1);
+    it('should create a promise which takes time to resolve.', async () => {
         const startTime = Date.now();
 
-        const delayPromise = wait(promiseDelayMs);
-
-        await delayPromise;
+        await wait(promiseDelayMs);
 
         const endTime = Date.now();
 
         expect(endTime - startTime).to.be.greaterThanOrEqual(promiseDelayMs);
     });
-    // promiseDelayMs * 2,
+
+    it('should resolve instantly when given a negative timeout', async () => {
+        const startTime = Date.now();
+
+        await wait(-500);
+
+        const endTime = Date.now();
+
+        // use a buffer of 100 ms
+        expect(endTime - startTime).to.be.lessThanOrEqual(100);
+    });
+
+    it('should never resolve when given a timeout of Infinity', async () => {
+        const startTime = Date.now();
+        const timeoutSoTestActuallyFinishes = 1000;
+
+        try {
+            await wrapPromiseInTimeout(timeoutSoTestActuallyFinishes, wait(Infinity));
+        } catch (error) {}
+        const endTime = Date.now();
+        expect(endTime - startTime).to.be.lessThanOrEqual(timeoutSoTestActuallyFinishes);
+    });
 });
 
 describe(wrapPromiseInTimeout.name, () => {
     it('should not reject a promise when it is resolved in time', async () => {
-        // expect.assertions(2);
         const startTime = Date.now();
         const deferredPromiseWrapper = createDeferredPromiseWrapper<number>();
         const promiseWithTimeout = wrapPromiseInTimeout(
@@ -75,10 +89,8 @@ describe(wrapPromiseInTimeout.name, () => {
         const endTime = Date.now();
         expect(endTime - startTime).to.be.lessThanOrEqual(promiseDelayMs);
     });
-    // promiseDelayMs * 2,
 
     it('should reject when the promise is not resolved in time', async () => {
-        // expect.assertions(4);
         const startTime = Date.now();
         const deferredPromiseWrapper = createDeferredPromiseWrapper<number>();
         const promiseWithTimeout = wrapPromiseInTimeout(
@@ -104,7 +116,15 @@ describe(wrapPromiseInTimeout.name, () => {
                 10,
         );
     });
-    // promiseDelayMs * 2,
+
+    it('should reject if the given promise rejects', async () => {
+        chai.use(chaiAsPromised);
+        const testErrorMessage = randomString();
+        await assert.isRejected(
+            wrapPromiseInTimeout(Infinity, Promise.reject(new Error(testErrorMessage))),
+            testErrorMessage,
+        );
+    });
 });
 
 describe(isPromiseLike.name, () => {
