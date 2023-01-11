@@ -16,11 +16,11 @@ type _TupleOf<
 
 export type AtLeastTuple<ArrayElementGeneric, LengthGeneric extends number> = readonly [
     ...Tuple<ArrayElementGeneric, LengthGeneric>,
-    ...ArrayElementGeneric[],
+    ...(ArrayElementGeneric | undefined)[],
 ];
 
 export function isLengthAtLeast<ArrayElementGeneric, LengthGeneric extends number>(
-    array: ReadonlyArray<ArrayElementGeneric>,
+    array: ReadonlyArray<ArrayElementGeneric | undefined>,
     length: LengthGeneric,
 ): array is AtLeastTuple<ArrayElementGeneric, LengthGeneric> {
     return array.length >= length;
