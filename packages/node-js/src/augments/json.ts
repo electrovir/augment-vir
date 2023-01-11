@@ -1,4 +1,4 @@
-import {typeOfWithArray} from '@augment-vir/common';
+import {getRuntimeTypeOf} from '@augment-vir/common';
 import {ensureDir} from 'fs-extra';
 import {readFile, writeFile} from 'fs/promises';
 import {dirname} from 'path';
@@ -47,8 +47,8 @@ export async function appendJson<T extends JsonObject | JsonArray>(
             ...data,
         };
     } else {
-        const currentType: string = typeOfWithArray(currentJson);
-        const dataType: string = typeOfWithArray(data);
+        const currentType: string = getRuntimeTypeOf(currentJson);
+        const dataType: string = getRuntimeTypeOf(data);
         throw new Error(
             `Type mismatch between new JSON data to append and current JSON data at "${path}": current file is "${currentType}" and data is "${dataType}"`,
         );

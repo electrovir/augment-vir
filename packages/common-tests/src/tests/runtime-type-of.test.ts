@@ -1,13 +1,14 @@
 import {assertTypeOf, itCases} from '@augment-vir/chai';
 import {describe, it} from 'mocha';
 import {JsonObject, JsonValue} from 'type-fest';
-import {isTypeOfWithArray} from '../../../common/src';
+import {isRuntimeTypeOf} from '../../../common/src';
+import {assertRuntimeTypeOf} from '../../../common/src/augments/runtime-type-of';
 
-describe(isTypeOfWithArray.name, () => {
+describe(isRuntimeTypeOf.name, () => {
     it('should narrow a union type', () => {
         const possiblyNumber = 42 as number | number[];
 
-        if (isTypeOfWithArray(possiblyNumber, 'array')) {
+        if (isRuntimeTypeOf(possiblyNumber, 'array')) {
             assertTypeOf(possiblyNumber).toEqualTypeOf<number[]>();
         }
     });
@@ -15,7 +16,7 @@ describe(isTypeOfWithArray.name, () => {
     it('should narrow an any type', () => {
         const anything = {} as any;
 
-        if (isTypeOfWithArray(anything, 'bigint')) {
+        if (isRuntimeTypeOf(anything, 'bigint')) {
             assertTypeOf(anything).toEqualTypeOf<bigint>();
         }
     });
@@ -23,7 +24,7 @@ describe(isTypeOfWithArray.name, () => {
     it('should narrow a union', () => {
         const anything = {} as string | object;
 
-        if (isTypeOfWithArray(anything, 'string')) {
+        if (isRuntimeTypeOf(anything, 'string')) {
             assertTypeOf(anything).toEqualTypeOf('');
         }
     });
@@ -34,12 +35,12 @@ describe(isTypeOfWithArray.name, () => {
         assertTypeOf<JsonObject>().toMatchTypeOf(anything);
         assertTypeOf(anything).not.toMatchTypeOf<JsonObject>();
 
-        if (isTypeOfWithArray(anything, 'object')) {
+        if (isRuntimeTypeOf(anything, 'object')) {
             assertTypeOf(anything).toMatchTypeOf<JsonObject>();
         }
     });
 
-    itCases(isTypeOfWithArray, [
+    itCases(isRuntimeTypeOf, [
         {
             it: 'should distinguish array independent of object',
             inputs: [
@@ -57,4 +58,14 @@ describe(isTypeOfWithArray.name, () => {
             expect: true,
         },
     ]);
+});
+
+describe(assertRuntimeTypeOf.name, () => {
+    it('should narrow types', () => {
+        const example = 'test thing' as unknown;
+
+        assertTypeOf(example).not.toEqualTypeOf<string>();
+        assertRuntimeTypeOf(example, 'string');
+        assertTypeOf(example).toEqualTypeOf<string>();
+    });
 });
