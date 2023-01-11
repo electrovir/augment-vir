@@ -1,4 +1,5 @@
 import {assertTypeOf, itCases} from '@augment-vir/chai';
+import {assert} from 'chai';
 import {describe, it} from 'mocha';
 import {JsonObject, JsonValue} from 'type-fest';
 import {isRuntimeTypeOf} from '../../../common/src';
@@ -67,5 +68,9 @@ describe(assertRuntimeTypeOf.name, () => {
         assertTypeOf(example).not.toEqualTypeOf<string>();
         assertRuntimeTypeOf(example, 'string');
         assertTypeOf(example).toEqualTypeOf<string>();
+    });
+
+    it('should throw an error if the assertion fails', () => {
+        assert.throws(() => assertRuntimeTypeOf([], 'string'), TypeError);
     });
 });

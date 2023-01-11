@@ -42,9 +42,12 @@ export function wrapPromiseInTimeout<PromiseValueType>(
     originalPromise: PromiseLike<PromiseValueType>,
 ): Promise<PromiseValueType> {
     return new Promise<PromiseValueType>(async (resolve, reject) => {
-        const timeoutId = setTimeout(() => {
-            reject(new PromiseTimeoutError(durationMs));
-        }, durationMs);
+        const timeoutId =
+            durationMs === Infinity
+                ? undefined
+                : setTimeout(() => {
+                      reject(new PromiseTimeoutError(durationMs));
+                  }, durationMs);
         try {
             const result = await originalPromise;
             resolve(result);

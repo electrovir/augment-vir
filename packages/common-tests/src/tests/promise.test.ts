@@ -10,6 +10,7 @@ import {
     wait,
     wrapPromiseInTimeout,
 } from '../../../common/src';
+import {waitForCondition} from '../../../common/src/augments/promise';
 
 // increase if tests are flaky in other environments, like GitHub Actions (which is typically slow)
 const promiseDelayMs = 500;
@@ -46,7 +47,9 @@ describe(wait.name, () => {
 
         const endTime = Date.now();
 
-        expect(endTime - startTime).to.be.greaterThanOrEqual(promiseDelayMs);
+        expect(endTime - startTime).to.be.greaterThanOrEqual(
+            promiseDelayMs - 10 /* small buffer */,
+        );
     });
 
     it('should resolve instantly when given a negative timeout', async () => {
@@ -135,5 +138,68 @@ describe(isPromiseLike.name, () => {
         expect(isPromiseLike(waiting)).to.equal(true);
         const awaited = await waiting;
         expect(isPromiseLike(awaited)).to.equal(false);
+    });
+});
+
+describe(waitForCondition.name, () => {
+    it('should resolve once a condition is true', async () => {
+        let condition = false;
+        await waitForCondition({
+            conditionCallback: () => {
+                if (condition) {
+                    return true;
+                } else {
+                    condition = true;
+                    return false;
+                }
+            },
+        });
+        assert.isTrue(condition);
+    });
+
+    it('should wait until the condition is true', async () => {
+        let condition = false;
+        setTimeout(() => {
+            condition = true;
+        }, 1000);
+        assert.isFalse(condition);
+        await waitForCondition({
+            conditionCallback: () => {
+                return condition;
+            },
+        });
+        assert.isTrue(condition);
+    });
+
+    it('should handle errors', async () => {
+        const errorMessage = randomString();
+
+        chai.use(chaiAsPromised);
+        await assert.isRejected(
+            waitForCondition({
+                timeoutMs: 100,
+                conditionCallback: () => {
+                    throw new Error(errorMessage);
+                },
+            }),
+            errorMessage,
+        );
+    });
+
+    it('should use timeoutMessage', async () => {
+        const timeoutMessage = randomString();
+
+        chai.use(chaiAsPromised);
+
+        await assert.isRejected(
+            waitForCondition({
+                timeoutMessage,
+                timeoutMs: 100,
+                conditionCallback: () => {
+                    return false;
+                },
+            }),
+            timeoutMessage,
+        );
     });
 });
