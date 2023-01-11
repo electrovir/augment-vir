@@ -1,7 +1,12 @@
-import {removeCommasFromNumberString, typedSplit} from './common-string';
+import {removeCommasFromNumberString} from './common-string';
 import {safeMatch} from './regexp';
 
-export function addCommasToNumber(input: number): string {
+export const NaNString = String(NaN);
+
+export function addCommasToNumber(input: number | string): string {
+    if (typeof input === 'string' && isNaN(Number(input))) {
+        return NaNString;
+    }
     const stringValue: string = String(input);
     const [
         digits,
@@ -36,117 +41,16 @@ export function clamp(
     return Math.max(Math.min(value, max), min);
 }
 
-const defaultTruncationSuffixes = [
-    'k', // thousand
-    'M', // million
-    'B', // billion
-    'T', // trillion
-    'P', // peta-, quadrillion
-    'E', // exa- quintillion
-    'Z', // zetta- sextillion
-    'Y', // yotta- septillion
-] as const;
-
-function recursiveTruncation(
-    value: string,
-    recursionDepth = 0,
-    decimalValues = '',
-): {
-    value: string;
-    recursionDepth: number;
-    decimalValues: string;
-} {
-    if (value.includes('e+')) {
-        throw new Error(`Number is too large, it cannot be truncated: ${value}`);
-    } else if (value.includes('e-')) {
-        throw new Error(`Number is too small, it cannot be truncated: ${value}`);
+export function convertIntoNumber(input: unknown): number {
+    if (typeof input === 'number') {
+        return input;
+    } else if (typeof input === 'string') {
+        return Number(removeCommasFromNumberString(input));
+    } else {
+        return Number(input);
     }
-    const split = typedSplit(value, '.');
-    decimalValues = split[1] ?? decimalValues;
-    const amount: string = split[0];
-    if (amount.length > 3) {
-        decimalValues = amount.slice(-3);
-        return recursiveTruncation(amount.slice(0, -3), recursionDepth + 1, decimalValues);
-    }
-
-    return {
-        value: amount,
-        decimalValues,
-        recursionDepth,
-    };
 }
 
-const maxDecimals = 4;
-
-/**
- * This truncates a number such that is will at a max have 6 characters including suffix, decimal
- * point, or comma.
- *
- * Default suffixes are:
- *
- *     'k', // thousand
- *     'M', // million
- *     'B', // billion
- *     'T', // trillion
- *     'P', // peta-, quadrillion
- *     'E', // exa- quintillion
- *     'Z', // zetta- sextillion
- *     'Y', // yotta- septillion
- */
-export function truncateNumber(
-    originalValue: unknown,
-    {
-        customSuffixes,
-        suppressErrorLogging,
-        customErrorLogCallback,
-    }: {
-        customSuffixes?: ReadonlyArray<string>;
-        suppressErrorLogging?: boolean;
-        customErrorLogCallback?: (...args: any) => void;
-    } = {},
-): string {
-    try {
-        const value =
-            typeof originalValue === 'number'
-                ? originalValue
-                : typeof originalValue === 'string'
-                ? Number(removeCommasFromNumberString(originalValue))
-                : Number(originalValue);
-
-        if (isNaN(value)) {
-            throw new Error(`${originalValue} could not be converted into a number.`);
-        }
-
-        const stringValue = String(value);
-
-        const results = recursiveTruncation(stringValue);
-
-        const suffixes = [
-            '',
-            ...(customSuffixes ?? defaultTruncationSuffixes),
-        ];
-        const suffix = suffixes[results.recursionDepth];
-
-        if (suffix === undefined) {
-            throw new Error(`Number is too large, could not truncate: ${value}`);
-        }
-        if (stringValue.length <= 5) {
-            return addCommasToNumber(value);
-        }
-
-        const decimalPlaces = maxDecimals - (results.value.length - 1) - suffix.length;
-
-        const decimalValues = results.decimalValues.replace(/0+$/, '').slice(0, decimalPlaces);
-        const withDecimal = decimalValues.length ? `.${decimalValues}` : '';
-
-        const combined = `${results.value}${withDecimal}${suffix}`;
-
-        return combined;
-    } catch (error) {
-        const errorCallback = customErrorLogCallback ? customErrorLogCallback : console.error;
-        if (!suppressErrorLogging) {
-            errorCallback(error);
-        }
-        return String(originalValue);
-    }
+export function doesRequireScientificNotation(input: number): boolean {
+    return String(input).includes('e');
 }

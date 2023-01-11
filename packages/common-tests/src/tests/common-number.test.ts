@@ -1,7 +1,11 @@
 import {itCases} from '@augment-vir/chai';
-import {assert, expect} from 'chai';
+import {expect} from 'chai';
 import {describe, it} from 'mocha';
-import {addCommasToNumber, clamp, truncateNumber} from '../../../common/src/augments/common-number';
+import {
+    addCommasToNumber,
+    clamp,
+    convertIntoNumber,
+} from '../../../common/src/augments/common-number';
 
 describe(clamp.name, () => {
     it('should successfully clamp downwards', () => {
@@ -35,12 +39,67 @@ describe(clamp.name, () => {
     });
 });
 
+describe(convertIntoNumber.name, () => {
+    itCases(convertIntoNumber, [
+        {
+            it: 'should simply return back a number input',
+            input: 5,
+            expect: 5,
+        },
+        {
+            it: 'should convert a string to a number',
+            input: '42',
+            expect: 42,
+        },
+        {
+            it: 'should handle decimals',
+            input: 5.63,
+            expect: 5.63,
+        },
+        {
+            it: 'should handle decimals in a string',
+            input: '9.87',
+            expect: 9.87,
+        },
+        {
+            it: 'should handle commas in a string',
+            input: '9,123.87',
+            expect: 9123.87,
+        },
+        {
+            it: 'should even handle commas in incorrect places in a string',
+            input: '1,2,3,8.,6,7',
+            expect: 1238.67,
+        },
+        {
+            it: 'should coerce date objects into a number',
+            input: new Date('2033-01-09T05:05:05Z'),
+            expect: 1988859905000,
+        },
+        {
+            it: 'should just return NaN for other values',
+            input: /this-is-a-regex/,
+            expect: NaN,
+        },
+    ]);
+});
+
 describe(addCommasToNumber.name, () => {
     itCases(addCommasToNumber, [
         {
             it: 'should add a comma to a thousand',
             input: 1_000,
             expect: '1,000',
+        },
+        {
+            it: 'should handle an invalid number',
+            input: 'not a number',
+            expect: 'NaN',
+        },
+        {
+            it: 'should handle string inputs',
+            input: '1000000',
+            expect: '1,000,000',
         },
         {
             it: 'should add multiple commas',
@@ -53,182 +112,4 @@ describe(addCommasToNumber.name, () => {
             expect: '1,000,123.456',
         },
     ]);
-});
-
-describe(truncateNumber.name, () => {
-    const customSuffixes = [
-        'A',
-        'B',
-        'C',
-        'D',
-        'E',
-    ] as const;
-
-    itCases(truncateNumber, [
-        {
-            it: 'should not truncate 1000',
-            inputs: [1000],
-            expect: '1,000',
-        },
-        {
-            it: 'should not truncate with a purely decimal number',
-            inputs: [0.05],
-            expect: '0.05',
-        },
-        {
-            it: 'should not truncate on huge number',
-            inputs: [
-                9999999999999999999999999,
-                {
-                    suppressErrorLogging: true,
-                },
-            ],
-            expect: '1e+25',
-        },
-        {
-            it: 'should not truncate on tiny number',
-            inputs: [
-                0.000000000000000006,
-                {
-                    suppressErrorLogging: true,
-                },
-            ],
-            expect: '6e-18',
-        },
-        {
-            it: 'should ignore invalid input',
-            inputs: [
-                'hello there',
-                {
-                    suppressErrorLogging: true,
-                },
-            ],
-            expect: 'hello there',
-        },
-        {
-            it: 'should ignore if custom suffixes are not long enough',
-            inputs: [
-                1_000_000_000,
-                {
-                    customSuffixes: [
-                        '',
-                        'a',
-                    ],
-                    suppressErrorLogging: true,
-                },
-            ],
-            expect: '1000000000',
-        },
-        {
-            it: 'should just add a comma to a thousand',
-            inputs: [1234],
-            expect: '1,234',
-        },
-        {
-            it: 'should truncate two digit million',
-            inputs: [12_344_567],
-            expect: '12.34M',
-        },
-        {
-            it: 'should truncate three digit million',
-            inputs: [122_344_567],
-            expect: '122.3M',
-        },
-        {
-            it: 'should not make any change to short numbers',
-            inputs: [123],
-            expect: '123',
-        },
-        {
-            it: 'should truncate decimals',
-            inputs: [1.567891],
-            expect: '1.5678',
-        },
-        {
-            it: 'should not truncate one thousand with custom suffixes',
-            inputs: [
-                1000,
-                {customSuffixes},
-            ],
-            expect: `1,000`,
-        },
-        {
-            it: 'should not truncate ten thousand with custom suffixes',
-            inputs: [
-                10_000,
-                {customSuffixes},
-            ],
-            expect: `10,000`,
-        },
-        {
-            it: 'should truncate one hundred thousand with custom suffixes',
-            inputs: [
-                100_000,
-                {customSuffixes},
-            ],
-            expect: `100A`,
-        },
-        {
-            it: 'should still just add a comma to a thousand',
-            inputs: [
-                1234,
-                {customSuffixes},
-            ],
-            expect: `1,234`,
-        },
-        {
-            it: 'should truncate two digit million with custom suffixes',
-            inputs: [
-                12_344_567,
-                {customSuffixes},
-            ],
-            expect: `12.34B`,
-        },
-        {
-            it: 'should truncate three digit million with custom suffixes',
-            inputs: [
-                122_344_567,
-                {customSuffixes},
-            ],
-            expect: `122.3B`,
-        },
-        {
-            it: 'should not truncate short numbers with custom suffixes',
-            inputs: [
-                123,
-                {customSuffixes},
-            ],
-            expect: `123`,
-        },
-        {
-            it: 'should truncate decimal with custom suffixes',
-            inputs: [
-                1.567891,
-                {customSuffixes},
-            ],
-            expect: `1.5678`,
-        },
-        {
-            it: 'should return a string for a non-string and non-number input',
-            inputs: [
-                {},
-                {
-                    suppressErrorLogging: true,
-                },
-            ],
-            expect: '[object Object]',
-        },
-    ]);
-
-    it('should log an error when one occurs', () => {
-        const errorOutput: unknown[] = [];
-        truncateNumber('not a number', {
-            customErrorLogCallback: (...args) => {
-                errorOutput.push(args);
-            },
-        });
-        assert.lengthOf(errorOutput, 1);
-        assert.isArray(errorOutput[0]);
-        assert.instanceOf((errorOutput[0] as unknown[])[0], Error);
-    });
 });

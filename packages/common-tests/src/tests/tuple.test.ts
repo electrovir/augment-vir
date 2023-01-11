@@ -48,6 +48,21 @@ describe(isLengthAtLeast.name, () => {
             assertTypeOf(stillMaybeUndefined).toBeNullable();
         }
     });
+
+    it('should still have undefined indexes after the asserted length', () => {
+        const myArray = [1];
+        if (isLengthAtLeast(myArray, 2)) {
+            assertTypeOf(myArray[2]).toEqualTypeOf<number | undefined>();
+            const [
+                first,
+                second,
+                third,
+            ] = myArray;
+            assertTypeOf(first).toEqualTypeOf<number>();
+            assertTypeOf(second).toEqualTypeOf<number>();
+            assertTypeOf(third).toEqualTypeOf<number | undefined>();
+        }
+    });
 });
 
 describe('AtLeastTuple', () => {

@@ -1,5 +1,5 @@
-import {itCases} from '@augment-vir/chai';
-import {expect} from 'chai';
+import {assertTypeOf, itCases} from '@augment-vir/chai';
+import {assert, expect} from 'chai';
 import {describe, it} from 'mocha';
 import {
     camelCaseToKebabCase,
@@ -14,6 +14,7 @@ import {
     removeCommasFromNumberString,
     replaceStringAtIndex,
     splitIncludeSplit,
+    typedSplit,
 } from '../../../common/src/augments/common-string';
 
 describe(joinWithFinalConjunction.name, () => {
@@ -574,4 +575,21 @@ describe(getAllIndexesOf.name, () => {
             ],
         },
     ]);
+});
+
+describe(typedSplit.name, () => {
+    it('should still split like normal', () => {
+        assert.deepStrictEqual(typedSplit('1.2', '.'), [
+            '1',
+            '2',
+        ]);
+    });
+    it('should have the correct types', () => {
+        const [
+            first,
+            second,
+        ] = typedSplit('1.2', '.');
+        assertTypeOf(first).toEqualTypeOf<string>();
+        assertTypeOf(second).toEqualTypeOf<string | undefined>();
+    });
 });
