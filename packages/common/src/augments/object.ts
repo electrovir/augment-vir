@@ -17,6 +17,10 @@ export function isEnumValue<T extends object>(input: unknown, checkEnum: T): inp
     return getEnumTypedValues(checkEnum).includes(input as T[keyof T]);
 }
 
+export type PartialWithNullable<T extends object> = {
+    [Prop in keyof T]?: T[Prop] | null | undefined;
+};
+
 export function isKeyof<ObjectGeneric>(
     key: PropertyKey,
     object: ObjectGeneric,
