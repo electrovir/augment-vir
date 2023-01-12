@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/browser-testing",
-    "version": "8.0.0",
+    "version": "8.1.0",
     "homepage": "https://github.com/electrovir/augment-vir/tree/main/packages/common",
     "bugs": {
         "url": "https://github.com/electrovir/augment-vir/issues"
@@ -26,7 +26,7 @@
         "@augment-vir/testing": "*",
         "@open-wc/testing": "^3.1.7",
         "@types/mocha": "^10.0.1",
-        "expect-type": "^0.15.0",
+        "@web/test-runner-commands": "^0.6.5",
         "type-fest": "^3.5.1"
     },
     "devDependencies": {

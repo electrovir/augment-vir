@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/node-js",
-    "version": "8.0.0",
+    "version": "8.1.0",
     "homepage": "https://github.com/electrovir/augment-vir/tree/main/packages/node-js",
     "bugs": {
         "url": "https://github.com/electrovir/augment-vir/issues"
@@ -34,7 +34,7 @@
         "@istanbuljs/nyc-config-typescript": "^1.0.2",
         "@types/chai": "^4.3.4",
         "@types/chai-as-promised": "^7.1.5",
-        "@types/fs-extra": "^11.0.0",
+        "@types/fs-extra": "^11.0.1",
         "@types/mocha": "^10.0.1",
         "@types/node": "^18.11.18",
         "chai": "^4.3.7",
