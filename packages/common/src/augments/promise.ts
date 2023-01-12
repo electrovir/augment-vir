@@ -1,5 +1,5 @@
 import {extractErrorMessage} from './error';
-import {typedHasProperty} from './object';
+import {typedHasProperty} from './object/typed-has-property';
 
 export function wait(delayMs: number): Promise<void> {
     const deferredPromiseWrapper = createDeferredPromiseWrapper();

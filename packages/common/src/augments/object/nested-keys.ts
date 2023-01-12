@@ -1,5 +1,6 @@
 import {UnionToIntersection} from 'type-fest';
-import {ObjectValueType, typedHasProperty} from './object';
+import {ObjectValueType} from './object';
+import {typedHasProperty} from './typed-has-property';
 
 // produces an array type where each subsequent entry must be a key in the previous entry's object
 export type NestedSequentialKeys<ObjectGeneric extends object> = ObjectValueType<{
