@@ -3,7 +3,7 @@ import {typedHasProperty} from './typed-has-property';
 export function isKeyof<ObjectGeneric>(
     key: PropertyKey,
     object: ObjectGeneric,
-): key is keyof object {
+): key is keyof ObjectGeneric {
     return typedHasProperty(object, key);
 }
 

@@ -1,8 +1,8 @@
 import {assertTypeOf, itCases} from '@augment-vir/chai';
 import {randomString} from '@augment-vir/node-js';
 import {describe} from 'mocha';
-import {getValueFromNestedKeys, NestedSequentialKeys} from '../../../common/src';
-import {NestedKeys} from '../../../common/src/augments/nested-keys';
+import {getValueFromNestedKeys, NestedSequentialKeys} from '../../../../common/src';
+import {NestedKeys} from '../../../../common/src/augments/object/nested-keys';
 
 type ExampleObjectType = {
     topLevel: string;
