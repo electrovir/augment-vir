@@ -21,9 +21,18 @@ export function filterObject<ObjectGeneric>(
 
 export function omitObjectKeys<ObjectGeneric, KeyGeneric extends keyof ObjectGeneric>(
     inputObject: Readonly<ObjectGeneric>,
-    excludeTheseKeys: ReadonlyArray<KeyGeneric>,
+    omitTheseKeys: ReadonlyArray<KeyGeneric>,
 ): Omit<ObjectGeneric, KeyGeneric> {
     return filterObject<ObjectGeneric>(inputObject, (currentKey) => {
-        return !excludeTheseKeys.includes(currentKey as KeyGeneric);
+        return !omitTheseKeys.includes(currentKey as KeyGeneric);
     }) as Omit<ObjectGeneric, KeyGeneric>;
+}
+
+export function pickObjectKeys<ObjectGeneric, KeyGeneric extends keyof ObjectGeneric>(
+    inputObject: Readonly<ObjectGeneric>,
+    pickTheseKeys: ReadonlyArray<KeyGeneric>,
+): Pick<ObjectGeneric, KeyGeneric> {
+    return filterObject<ObjectGeneric>(inputObject, (currentKey) => {
+        return pickTheseKeys.includes(currentKey as KeyGeneric);
+    }) as Pick<ObjectGeneric, KeyGeneric>;
 }

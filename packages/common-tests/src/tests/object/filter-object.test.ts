@@ -3,6 +3,7 @@ import {randomString} from '@augment-vir/node-js';
 import {assert} from 'chai';
 import {describe, it} from 'mocha';
 import {filterObject, omitObjectKeys, wrapNarrowTypeWithTypeCheck} from '../../../../common/src';
+import {pickObjectKeys} from '../../../../common/src/augments/object/filter-object';
 
 describe(filterObject.name, () => {
     const symbolKey = Symbol('symbol-key');
@@ -124,6 +125,47 @@ describe(omitObjectKeys.name, () => {
                     ['b'],
                 ],
                 expect: {a: 1, c: 3},
+            },
+        ],
+    );
+});
+
+describe(pickObjectKeys.name, () => {
+    it('should pick object types', () => {
+        const exampleObject = {
+            five: 'four',
+            4: 3,
+            somethingElse: 4,
+        } as const;
+        const keysToKeep = wrapNarrowTypeWithTypeCheck<ReadonlyArray<keyof typeof exampleObject>>()(
+            [
+                'five',
+                'somethingElse',
+            ] as const,
+        );
+
+        assertTypeOf(exampleObject[4]).toEqualTypeOf<3>();
+
+        const output = pickObjectKeys(exampleObject, keysToKeep);
+
+        assertTypeOf(output).toBeAssignableTo<
+            Pick<typeof exampleObject, 'five' | 'somethingElse'>
+        >();
+
+        // @ts-expect-error
+        output[4];
+    });
+
+    itCases(
+        (...inputs: Parameters<typeof pickObjectKeys<any, any>>) => pickObjectKeys(...inputs),
+        [
+            {
+                it: 'should keep basic keys',
+                inputs: [
+                    {a: 1, b: 2, c: 3},
+                    ['b'],
+                ],
+                expect: {b: 2},
             },
         ],
     );
