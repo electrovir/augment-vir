@@ -9,6 +9,7 @@ module.exports = {
         ...baseConfig.words,
         'datamodel',
         'datasource',
+        'jsonify',
         'tsbuildinfo',
     ],
 };

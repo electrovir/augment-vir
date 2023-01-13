@@ -1,4 +1,4 @@
-import {getEntriesSortedByKey, getObjectTypedKeys} from './object-entries';
+import {getEntriesSortedByKey} from './object-entries';
 
 export type PartialWithNullable<T extends object> = {
     [Prop in keyof T]?: T[Prop] | null | undefined;
@@ -19,24 +19,6 @@ export function areJsonEqual(a: object, b: object): boolean {
     }
 }
 
-export function filterObject<ObjectGeneric extends object>(
-    inputObject: ObjectGeneric,
-    callback: (
-        key: keyof ObjectGeneric,
-        value: ObjectValueType<ObjectGeneric>,
-        fullObject: ObjectGeneric,
-    ) => boolean,
-): Partial<ObjectGeneric> {
-    const filteredKeys = getObjectTypedKeys(inputObject).filter((key) => {
-        const value = inputObject[key];
-        return callback(key, value, inputObject);
-    });
-    return filteredKeys.reduce((accum, key) => {
-        accum[key] = inputObject[key];
-        return accum;
-    }, {} as Partial<ObjectGeneric>);
-}
-
 /** The input here must be serializable otherwise JSON parsing errors will be thrown */
 export function copyThroughJson<T>(input: T): T {
     try {
@@ -47,4 +29,4 @@ export function copyThroughJson<T>(input: T): T {
     }
 }
 
-export type ObjectValueType<T extends object> = T[keyof T];
+export type PropertyValueType<T> = T[keyof T];

@@ -8,6 +8,8 @@ export * from './augments/environment';
 export * from './augments/error';
 export * from './augments/function';
 export * from './augments/object/enum';
+export * from './augments/object/filter-object';
+export * from './augments/object/jsonify';
 export * from './augments/object/map-object';
 export * from './augments/object/matches-object-shape';
 export * from './augments/object/nested-keys';
