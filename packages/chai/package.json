@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/chai",
-    "version": "9.1.0",
+    "version": "9.2.0",
     "homepage": "https://github.com/electrovir/augment-vir/tree/main/packages/common",
     "bugs": {
         "url": "https://github.com/electrovir/augment-vir/issues"

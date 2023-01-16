@@ -16,6 +16,13 @@ export function wait(delayMs: number): Promise<void> {
     return deferredPromiseWrapper.promise;
 }
 
+export async function waitValue<ResolutionValue>(
+    delayMs: number,
+    returnValue: ResolutionValue,
+): Promise<ResolutionValue> {
+    return wait(delayMs).then(() => returnValue);
+}
+
 export function isPromiseLike<T>(
     input: T | unknown,
 ): input is T extends PromiseLike<infer ValueType> ? PromiseLike<ValueType> : PromiseLike<unknown> {
