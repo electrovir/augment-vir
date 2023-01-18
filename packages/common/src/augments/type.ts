@@ -1,3 +1,5 @@
+import {Except, Simplify} from 'type-fest';
+
 /** Makes all properties in an object writable. This is the opposite of Readonly<> */
 export type Writeable<T> = {-readonly [P in keyof T]: T[P]};
 
@@ -17,6 +19,15 @@ export type ArrayElement<ArrayType extends ReadonlyArray<any>> = ArrayType[numbe
 export type RequiredAndNotNull<T> = {
     [P in keyof T]-?: NonNullable<T[P]>;
 };
+
+export type SetOptionalAndNullable<
+    OriginalObjectGeneric,
+    OptionalKeysGeneric extends keyof OriginalObjectGeneric,
+> = Simplify<
+    Except<OriginalObjectGeneric, OptionalKeysGeneric> & {
+        [PropKey in OptionalKeysGeneric]?: OriginalObjectGeneric[PropKey] | null | undefined;
+    }
+>;
 
 /** Require only a subset of object properties. */
 export type RequiredBy<T, K extends keyof T> = Overwrite<T, Required<Pick<T, K>>>;

@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/common-tests",
-    "version": "9.2.0",
+    "version": "9.3.0",
     "private": true,
     "homepage": "https://github.com/electrovir/augment-vir/tree/main/packages/common-tests",
     "bugs": {
