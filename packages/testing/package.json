@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/testing",
-    "version": "9.3.1",
+    "version": "9.3.2",
     "homepage": "https://github.com/electrovir/augment-vir/tree/main/packages/testing",
     "bugs": {
         "url": "https://github.com/electrovir/augment-vir/issues"

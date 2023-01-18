@@ -140,7 +140,9 @@ export async function askQuestion(questionToAsk: string, timeoutMs = 60_000): Pr
         const timeoutId = timeoutMs
             ? setTimeout(() => {
                   cliInterface.close();
-                  reject(`Took too long to respond (over "${timeoutMs / 1_000}" seconds)`);
+                  reject(
+                      new Error(`Took too long to respond (over "${timeoutMs / 1_000}" seconds)`),
+                  );
               }, timeoutMs)
             : undefined;
 
