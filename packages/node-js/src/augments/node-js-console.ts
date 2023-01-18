@@ -129,11 +129,18 @@ export async function askQuestion(questionToAsk: string, timeoutMs = 60_000): Pr
         output: process.stdout,
     });
 
+    // handle killing the process
+    cliInterface.on('SIGINT', () => {
+        cliInterface.close();
+        process.stdout.write('\n');
+        process.kill(process.pid, 'SIGINT');
+    });
+
     return new Promise((resolve, reject) => {
         const timeoutId = timeoutMs
             ? setTimeout(() => {
                   cliInterface.close();
-                  reject(`Took too long to response (over "${timeoutMs / 1_000}" seconds)`);
+                  reject(`Took too long to respond (over "${timeoutMs / 1_000}" seconds)`);
               }, timeoutMs)
             : undefined;
 
