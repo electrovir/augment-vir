@@ -1,3 +1,5 @@
+import {Jsonifiable} from 'type-fest';
+import {extractErrorMessage} from '../error';
 import {getEntriesSortedByKey} from './object-entries';
 
 export type PartialWithNullable<T extends object> = {
@@ -8,13 +10,23 @@ export function isObject(input: any): input is NonNullable<object> {
     return !!input && typeof input === 'object';
 }
 
-export function areJsonEqual(a: object, b: object): boolean {
+export function areJsonEqual(a: Jsonifiable, b: Jsonifiable): boolean {
     try {
-        const sortedAEntries = getEntriesSortedByKey(a);
-        const sortedBEntries = getEntriesSortedByKey(b);
-        return JSON.stringify(sortedAEntries) === JSON.stringify(sortedBEntries);
+        if (a === b) {
+            return true;
+        }
+
+        if (isObject(a) && isObject(b)) {
+            const sortedAEntries = getEntriesSortedByKey(a);
+            const sortedBEntries = getEntriesSortedByKey(b);
+            return JSON.stringify(sortedAEntries) === JSON.stringify(sortedBEntries);
+        } else {
+            return JSON.stringify(a) === JSON.stringify(b);
+        }
     } catch (error) {
-        console.error(`Failed to compare objects using JSON.stringify`);
+        console.error(
+            `Failed to compare objects using JSON.stringify: ${extractErrorMessage(error)}`,
+        );
         throw error;
     }
 }

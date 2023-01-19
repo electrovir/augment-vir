@@ -55,6 +55,10 @@ describe(areJsonEqual.name, () => {
         expect(areJsonEqual(objectA, objectA)).to.equal(true);
     });
 
+    it('should pass for non object inputs', () => {
+        expect(areJsonEqual('hello', 'hello')).to.equal(true);
+    });
+
     it('should not pass if objects are different', () => {
         const objectA: Record<string, number> = {
             a: 1,

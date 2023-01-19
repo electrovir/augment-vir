@@ -11,5 +11,6 @@ module.exports = {
         'datasource',
         'jsonify',
         'tsbuildinfo',
+        'jsonifiable',
     ],
 };
