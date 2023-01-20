@@ -1,4 +1,4 @@
-import {getRuntimeTypeOf} from '@augment-vir/common';
+import {getRuntimeTypeOf, PartialAndNullable} from '@augment-vir/common';
 import {ensureDir} from 'fs-extra';
 import {readFile, writeFile} from 'fs/promises';
 import {dirname} from 'path';
@@ -13,17 +13,26 @@ export async function readJson<T extends JsonValue>(path: string): Promise<T> {
     }
 }
 
+export type WriteJsonOptions = PartialAndNullable<{
+    includeTrailingNewLine: boolean;
+}>;
+
 export async function writeJson<T extends JsonObject | JsonArray>(
     path: string,
     data: T,
+    options?: WriteJsonOptions | undefined,
 ): Promise<void> {
     await ensureDir(dirname(path));
-    await writeFile(path, JSON.stringify(data, null, 4));
+
+    const trailingNewLine = options?.includeTrailingNewLine ? '\n' : '';
+
+    await writeFile(path, JSON.stringify(data, null, 4) + trailingNewLine);
 }
 
 export async function appendJson<T extends JsonObject | JsonArray>(
     path: string,
     data: T,
+    options?: WriteJsonOptions | undefined,
 ): Promise<void> {
     let currentJson = await readJson(path);
     if (typeof currentJson !== 'object') {
@@ -54,5 +63,5 @@ export async function appendJson<T extends JsonObject | JsonArray>(
         );
     }
 
-    await writeJson(path, withAppendedData);
+    await writeJson(path, withAppendedData, options);
 }
