@@ -2,7 +2,7 @@ import {Jsonifiable} from 'type-fest';
 import {extractErrorMessage} from '../error';
 import {getEntriesSortedByKey} from './object-entries';
 
-export type PartialWithNullable<T extends object> = {
+export type PartialAndNullable<T extends object> = {
     [Prop in keyof T]?: T[Prop] | null | undefined;
 };
 
