@@ -37,6 +37,26 @@ describe(createDeferredPromiseWrapper.name, () => {
         chai.use(chaiAsPromised);
         await expect(deferredPromise.promise).to.be.rejectedWith(message);
     });
+
+    it('should settle after rejection', async () => {
+        const examplePromise = createDeferredPromiseWrapper<number>();
+
+        assert.isFalse(examplePromise.isSettled());
+
+        examplePromise.reject('no reason');
+
+        assert.isTrue(examplePromise.isSettled());
+    });
+
+    it('should settle after resolution', async () => {
+        const examplePromise = createDeferredPromiseWrapper<number>();
+
+        assert.isFalse(examplePromise.isSettled());
+
+        examplePromise.resolve(Math.random());
+
+        assert.isTrue(examplePromise.isSettled());
+    });
 });
 
 describe(wait.name, () => {
