@@ -10,7 +10,7 @@ export function isObject(input: any): input is NonNullable<object> {
     return !!input && typeof input === 'object';
 }
 
-export function areJsonEqual(a: Jsonifiable, b: Jsonifiable): boolean {
+export function areJsonEqual(a: Jsonifiable | undefined, b: Jsonifiable | undefined): boolean {
     try {
         if (a === b) {
             return true;

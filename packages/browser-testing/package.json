@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/browser-testing",
-    "version": "11.1.1",
+    "version": "11.1.2",
     "homepage": "https://github.com/electrovir/augment-vir/tree/main/packages/common",
     "bugs": {
         "url": "https://github.com/electrovir/augment-vir/issues"
