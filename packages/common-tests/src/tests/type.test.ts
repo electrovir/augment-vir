@@ -10,6 +10,7 @@ import {
     wrapNarrowTypeWithTypeCheck,
     Writeable,
 } from '../../../common/src';
+import {makeReadonly, makeWritable} from '../../../common/src/augments/type';
 
 describe('NoInfer', () => {
     function functionThatHasAGenericForTesting<T = never>(input: NoInfer<T>): T {
@@ -124,5 +125,47 @@ describe('Writeable', () => {
 
         myDeeplyMutableMenu.breakfast = [];
         myDeeplyMutableMenu.breakfast.push('egg');
+    });
+});
+
+function getExampleReadonlyObject() {
+    const exampleObject = {a: 'five'} as const;
+    return exampleObject;
+}
+
+function runWriteAccessTests(writeAccessModifier: (input: any) => any) {
+    const originalExample = getExampleReadonlyObject();
+    const writableExample = writeAccessModifier(originalExample);
+
+    assert.strictEqual(writableExample, originalExample);
+    assert.deepStrictEqual(writableExample, originalExample);
+}
+
+describe(makeWritable.name, () => {
+    it('should make a type writeable', () => {
+        assertTypeOf(getExampleReadonlyObject()).not.toEqualTypeOf<{a: 'five'}>();
+        assertTypeOf(makeWritable(getExampleReadonlyObject())).toEqualTypeOf<{a: 'five'}>();
+    });
+
+    it('should not modify the object reference that was made writable', () => {
+        runWriteAccessTests(makeWritable);
+    });
+});
+
+describe(makeReadonly.name, () => {
+    function getExampleWritableObject() {
+        return makeWritable(getExampleReadonlyObject());
+    }
+
+    it('should make a type readonly', () => {
+        assertTypeOf(getExampleWritableObject()).toEqualTypeOf<{a: 'five'}>();
+        assertTypeOf(makeReadonly(getExampleWritableObject())).not.toEqualTypeOf<{a: 'five'}>();
+        assertTypeOf(makeReadonly(getExampleWritableObject())).toEqualTypeOf<
+            Readonly<{a: 'five'}>
+        >();
+    });
+
+    it('should not modify the object reference that was made readonly', () => {
+        runWriteAccessTests(makeReadonly);
     });
 });

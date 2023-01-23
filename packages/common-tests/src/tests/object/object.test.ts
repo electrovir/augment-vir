@@ -1,4 +1,4 @@
-import {expect} from 'chai';
+import {assert, expect} from 'chai';
 import {describe, it} from 'mocha';
 import {areJsonEqual, copyThroughJson, isObject, PropertyValueType} from '../../../../common/src';
 
@@ -57,6 +57,8 @@ describe(areJsonEqual.name, () => {
 
     it('should pass for non object inputs', () => {
         expect(areJsonEqual('hello', 'hello')).to.equal(true);
+        assert.isTrue(areJsonEqual(undefined, undefined));
+        assert.isFalse(areJsonEqual(undefined, {}));
     });
 
     it('should not pass if objects are different', () => {

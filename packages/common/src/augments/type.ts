@@ -32,6 +32,14 @@ export type SetOptionalAndNullable<
 /** Require only a subset of object properties. */
 export type RequiredBy<T, K extends keyof T> = Overwrite<T, Required<Pick<T, K>>>;
 
+export function makeWritable<T>(input: T): Writeable<T> {
+    return input;
+}
+
+export function makeReadonly<T>(input: T): Readonly<T> {
+    return input;
+}
+
 /**
  * Require only a subset of object properties and require that they be not null. This is
  * particularly useful in conjunction with the "exactOptionalPropertyTypes" tsconfig flag.
