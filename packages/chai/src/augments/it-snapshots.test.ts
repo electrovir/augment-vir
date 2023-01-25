@@ -15,5 +15,17 @@ describe(itSnapshots.name, () => {
                 },
             ],
         );
+        itSnapshots(
+            (b: number) => {
+                return 5 + b;
+            },
+            'group key',
+            [
+                {
+                    it: 'should do a thing',
+                    input: 32,
+                },
+            ],
+        );
     });
 });

@@ -23,13 +23,13 @@ type SnapshotTestCase<FunctionToTestGeneric extends AnyFunction> =
 
 type DoesNotAcceptEmptyString = 'this function does not accept empty strings';
 
-export function itSnapshots<FunctionToTestGeneric extends AnyFunction, GroupKey extends string>(
+export function itSnapshots<FunctionToTestGeneric extends AnyFunction, DescribeKey extends string>(
     functionToTest: FunctionToTestGeneric,
-    snapshotGroupKey: '' extends GroupKey
+    describeKey: '' extends DescribeKey
         ? DoesNotAcceptEmptyString
-        : DoesNotAcceptEmptyString extends GroupKey
+        : DoesNotAcceptEmptyString extends DescribeKey
         ? never
-        : GroupKey,
+        : DescribeKey,
     snapshotCases: void extends ReturnType<FunctionToTestGeneric>
         ? 'functionToTest must return something so its output can be tested.'
         : ReadonlyArray<SnapshotTestCase<FunctionToTestGeneric>>,
@@ -46,19 +46,36 @@ export function itSnapshots<FunctionToTestGeneric extends AnyFunction, GroupKey 
             ...previousPromises,
             newDeferredPromise.promise,
         ];
+        // add an empty error handler to prevent extraneous errors
+        newDeferredPromise.promise.catch(() => null);
         it(snapshotCase.it, async () => {
             try {
-                await Promise.all(currentPromises);
-                await assertExpectedOutput(functionToTest, {
-                    key: {
-                        topKey: snapshotGroupKey,
-                        subKey: snapshotCase.it,
+                await Promise.all(previousPromises);
+            } catch (error) {
+                // ignore this errors so that all tests try to run
+            }
+            try {
+                const inputs: Parameters<FunctionToTestGeneric> =
+                    'input' in snapshotCase
+                        ? ([snapshotCase.input] as Parameters<FunctionToTestGeneric>)
+                        : 'inputs' in snapshotCase
+                        ? snapshotCase.inputs
+                        : ([] as unknown as Parameters<FunctionToTestGeneric>);
+                await assertExpectedOutput(
+                    functionToTest,
+                    {
+                        key: {
+                            topKey: describeKey,
+                            subKey: snapshotCase.it,
+                        },
+                        ...options,
                     },
-                    ...options,
-                });
+                    ...inputs,
+                );
                 newDeferredPromise.resolve();
             } catch (error) {
                 newDeferredPromise.reject(error);
+                throw error;
             }
         });
 
