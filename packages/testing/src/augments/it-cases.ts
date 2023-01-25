@@ -15,34 +15,28 @@ type BaseTestCase<OutputGeneric> = {
       }
 );
 
-export type OutputTestCaseSingleInput<InputGeneric, OutputGeneric> = {
-    input: InputGeneric;
-} & BaseTestCase<OutputGeneric>;
+export type OutputTestCaseSingleInput<FunctionToTestGeneric extends AnyFunction> = {
+    input: Parameters<FunctionToTestGeneric>[0];
+} & BaseTestCase<Awaited<ReturnType<FunctionToTestGeneric>>>;
 
-export type OutputTestCaseMultipleInputs<InputGeneric, OutputGeneric> = {
-    inputs: InputGeneric;
-} & BaseTestCase<OutputGeneric>;
+export type OutputTestCaseMultipleInputs<FunctionToTestGeneric extends AnyFunction> = {
+    inputs: Parameters<FunctionToTestGeneric>;
+} & BaseTestCase<Awaited<ReturnType<FunctionToTestGeneric>>>;
 
-export type FunctionTestCase<FunctionToCallGeneric extends AnyFunction> =
-    Parameters<FunctionToCallGeneric> extends []
-        ? BaseTestCase<Awaited<ReturnType<FunctionToCallGeneric>>>
-        : Parameters<FunctionToCallGeneric> extends [any?]
-        ? OutputTestCaseSingleInput<
-              Parameters<FunctionToCallGeneric>[0],
-              Awaited<ReturnType<FunctionToCallGeneric>>
-          >
-        : OutputTestCaseMultipleInputs<
-              Parameters<FunctionToCallGeneric>,
-              Awaited<ReturnType<FunctionToCallGeneric>>
-          >;
+export type FunctionTestCase<FunctionToTestGeneric extends AnyFunction> =
+    Parameters<FunctionToTestGeneric> extends []
+        ? BaseTestCase<Awaited<ReturnType<FunctionToTestGeneric>>>
+        : Parameters<FunctionToTestGeneric> extends [any?]
+        ? OutputTestCaseSingleInput<FunctionToTestGeneric>
+        : OutputTestCaseMultipleInputs<FunctionToTestGeneric>;
 
-export function itCases<FunctionToCallGeneric extends AnyFunction>(
+export function itCases<FunctionToTestGeneric extends AnyFunction>(
     options: {
         assert: typeof assertImport;
         it: any;
         forceIt: any;
     },
-    functionToCall: FunctionToCallGeneric,
+    functionToCall: FunctionToTestGeneric,
     testCases: ReadonlyArray<FunctionTestCase<typeof functionToCall>>,
 ) {
     return testCases.map((testCase) => {
