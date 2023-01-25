@@ -8,6 +8,6 @@ export function addPx(input: number | string): string {
     }
 }
 
-export function removePx(input: string): number {
+export function removePx(input: WithPx | string): number {
     return Number(input.replace(/px$/, ''));
 }
