@@ -11,12 +11,12 @@ type RawTypeOf = ReturnType<typeof rawGetTypeOf>;
 export type RuntimeTypeOf = RawTypeOf | 'array';
 
 export type RuntimeTypeOfMapping = {
-    array: any[];
+    array: any[] | ReadonlyArray<any>;
     bigint: bigint;
     boolean: boolean;
-    function: AnyFunction;
+    function: AnyFunction | Readonly<AnyFunction>;
     number: number;
-    object: Record<PropertyKey, unknown>;
+    object: Record<PropertyKey, unknown> | Readonly<Record<PropertyKey, unknown>>;
     string: string;
     symbol: symbol;
     undefined: undefined;
@@ -37,8 +37,13 @@ export function isRuntimeTypeOf<T extends RuntimeTypeOf>(
 export function assertRuntimeTypeOf<T extends RuntimeTypeOf>(
     input: unknown,
     testType: T,
+    inputName: string,
 ): asserts input is RuntimeTypeOfMapping[T] {
     if (!isRuntimeTypeOf(input, testType)) {
-        throw new TypeError(`'${input}' is not of type '${testType}'`);
+        throw new TypeError(
+            `'${inputName}' is of type '${getRuntimeTypeOf(
+                input,
+            )}' but type '${testType}' was expected.`,
+        );
     }
 }

@@ -66,11 +66,11 @@ describe(assertRuntimeTypeOf.name, () => {
         const example = 'test thing' as unknown;
 
         assertTypeOf(example).not.toEqualTypeOf<string>();
-        assertRuntimeTypeOf(example, 'string');
+        assertRuntimeTypeOf(example, 'string', 'example');
         assertTypeOf(example).toEqualTypeOf<string>();
     });
 
     it('should throw an error if the assertion fails', () => {
-        assert.throws(() => assertRuntimeTypeOf([], 'string'), TypeError);
+        assert.throws(() => assertRuntimeTypeOf([], 'string', 'empty array'), TypeError);
     });
 });
