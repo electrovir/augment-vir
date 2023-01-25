@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/node-js",
-    "version": "11.2.0",
+    "version": "11.3.0",
     "homepage": "https://github.com/electrovir/augment-vir/tree/main/packages/node-js",
     "bugs": {
         "url": "https://github.com/electrovir/augment-vir/issues"
