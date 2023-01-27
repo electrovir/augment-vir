@@ -9,6 +9,8 @@ export type {
 
 chai.config.truncateThreshold = 0;
 
+export const runItCases = itCases;
+
 export function itCases<FunctionToCallGeneric extends AnyFunction>(
     functionToCall: FunctionToCallGeneric,
     testCases: ReadonlyArray<FunctionTestCase<typeof functionToCall>>,

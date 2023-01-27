@@ -30,30 +30,32 @@ export type FunctionTestCase<FunctionToTestGeneric extends AnyFunction> =
         ? OutputTestCaseSingleInput<FunctionToTestGeneric>
         : OutputTestCaseMultipleInputs<FunctionToTestGeneric>;
 
+export const runItCases = itCases;
+
 export function itCases<FunctionToTestGeneric extends AnyFunction>(
     options: {
         assert: typeof assertImport;
         it: any;
         forceIt: any;
     },
-    functionToCall: FunctionToTestGeneric,
-    testCases: ReadonlyArray<FunctionTestCase<typeof functionToCall>>,
+    functionToTest: FunctionToTestGeneric,
+    testCases: ReadonlyArray<FunctionTestCase<typeof functionToTest>>,
 ) {
     return testCases.map((testCase) => {
         const itFunction = testCase.force ? options.forceIt : options.it;
         return itFunction(testCase.it, async () => {
-            const functionInputs: Parameters<typeof functionToCall> =
+            const functionInputs: Parameters<typeof functionToTest> =
                 'input' in testCase
-                    ? ([testCase.input] as Parameters<typeof functionToCall>)
+                    ? ([testCase.input] as Parameters<typeof functionToTest>)
                     : 'inputs' in testCase
                     ? testCase.inputs
                     : // as cast here to cover the case where the input has NO inputs
-                      ([] as unknown as Parameters<typeof functionToCall>);
+                      ([] as unknown as Parameters<typeof functionToTest>);
 
             if ('expect' in testCase) {
                 await assertOutputWithDescription(
                     options.assert,
-                    functionToCall,
+                    functionToTest,
                     testCase.expect,
                     testCase.it ?? '',
                     ...functionInputs,
@@ -61,7 +63,7 @@ export function itCases<FunctionToTestGeneric extends AnyFunction>(
             } else {
                 let caughtError: unknown;
                 try {
-                    await functionToCall(...functionInputs);
+                    await functionToTest(...functionInputs);
                 } catch (thrownError) {
                     caughtError = thrownError;
                 }
@@ -72,7 +74,7 @@ export function itCases<FunctionToTestGeneric extends AnyFunction>(
                 };
                 // give a better name if possible
                 Object.defineProperty(errorThrower, 'name', {
-                    value: functionToCall.name,
+                    value: functionToTest.name,
                 });
 
                 if (!testCase.throws) {

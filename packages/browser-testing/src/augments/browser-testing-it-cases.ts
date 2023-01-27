@@ -7,6 +7,8 @@ export type {
     OutputTestCaseSingleInput,
 } from '@augment-vir/testing';
 
+export const runItCases = itCases;
+
 export function itCases<FunctionToCallGeneric extends AnyFunction>(
     functionToCall: FunctionToCallGeneric,
     testCases: ReadonlyArray<FunctionTestCase<typeof functionToCall>>,
