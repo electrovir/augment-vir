@@ -1,4 +1,4 @@
-import {createDeferredPromiseWrapper} from '../../../common/src';
+import {createDeferredPromiseWrapper} from '@augment-vir/common';
 
 export async function loadVideo(videoUrl: string): Promise<HTMLVideoElement> {
     const deferredPromise = createDeferredPromiseWrapper<HTMLVideoElement>();
