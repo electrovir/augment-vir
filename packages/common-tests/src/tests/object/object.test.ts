@@ -35,7 +35,7 @@ describe(areJsonEqual.name, () => {
             a: 1,
             c: 3,
         };
-        const objectB: Record<string, number> = {
+        const objectB: Readonly<Record<string, number>> = {
             a: 1,
             b: 2,
             c: 3,

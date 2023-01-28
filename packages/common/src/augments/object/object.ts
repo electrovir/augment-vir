@@ -1,5 +1,5 @@
-import {Jsonifiable} from 'type-fest';
 import {extractErrorMessage} from '../error';
+import {JsonCompatibleValue} from '../json-compatible';
 import {getEntriesSortedByKey} from './object-entries';
 
 export type PartialAndNullable<T extends object> = {
@@ -10,7 +10,10 @@ export function isObject(input: any): input is NonNullable<object> {
     return !!input && typeof input === 'object';
 }
 
-export function areJsonEqual(a: Jsonifiable | undefined, b: Jsonifiable | undefined): boolean {
+export function areJsonEqual(
+    a: Readonly<JsonCompatibleValue | undefined>,
+    b: Readonly<JsonCompatibleValue | undefined>,
+): boolean {
     try {
         if (a === b) {
             return true;

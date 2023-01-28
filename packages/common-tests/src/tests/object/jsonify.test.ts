@@ -1,10 +1,10 @@
 import {itCases} from '@augment-vir/chai';
 import {describe} from 'mocha';
-import {JsonValue} from 'type-fest';
 import {jsonify} from '../../../../common/src';
+import {JsonCompatibleObject} from '../../../../common/src/augments/json-compatible';
 
 describe(jsonify.name, () => {
-    const allJsonValues: JsonValue = {
+    const jsonCompatible: JsonCompatibleObject = {
         a: 5,
         b: 'five',
         c: false,
@@ -24,8 +24,8 @@ describe(jsonify.name, () => {
         },
         {
             it: 'should work with primitive properties',
-            input: allJsonValues,
-            expect: allJsonValues,
+            input: jsonCompatible,
+            expect: jsonCompatible,
         },
         {
             it: 'will strip out map types',

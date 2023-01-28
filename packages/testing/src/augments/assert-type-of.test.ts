@@ -1,5 +1,5 @@
+import {JsonCompatibleObject, JsonCompatibleValue} from '@augment-vir/common';
 import {describe} from 'mocha';
-import {JsonObject, JsonValue} from 'type-fest';
 import {assertTypeOf} from './assert-type-of';
 
 describe(assertTypeOf.name, () => {
@@ -9,7 +9,7 @@ describe(assertTypeOf.name, () => {
         assertTypeOf('').toBeAssignableTo<string | number>();
         assertTypeOf('').not.toBeAssignableTo<number>();
 
-        assertTypeOf<JsonObject>().toBeAssignableTo<JsonValue>();
-        assertTypeOf<JsonValue>().not.toBeAssignableTo<JsonObject>();
+        assertTypeOf<JsonCompatibleObject>().toBeAssignableTo<JsonCompatibleValue>();
+        assertTypeOf<JsonCompatibleValue>().not.toBeAssignableTo<JsonCompatibleObject>();
     });
 });

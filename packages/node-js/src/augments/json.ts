@@ -1,10 +1,17 @@
-import {getRuntimeTypeOf, PartialAndNullable} from '@augment-vir/common';
+import {
+    getRuntimeTypeOf,
+    JsonCompatibleArray,
+    JsonCompatibleObject,
+    JsonCompatibleValue,
+    PartialAndNullable,
+} from '@augment-vir/common';
 import {ensureDir} from 'fs-extra';
 import {readFile, writeFile} from 'fs/promises';
 import {dirname} from 'path';
-import {JsonArray, JsonObject, JsonValue} from 'type-fest';
 
-export async function readJson<T extends JsonValue>(path: string): Promise<T> {
+export async function readJson<T extends JsonCompatibleValue = JsonCompatibleValue>(
+    path: string,
+): Promise<T> {
     try {
         const json = JSON.parse((await readFile(path)).toString());
         return json;
@@ -17,7 +24,7 @@ export type WriteJsonOptions = PartialAndNullable<{
     includeTrailingNewLine: boolean;
 }>;
 
-export async function writeJson<T extends JsonObject | JsonArray>(
+export async function writeJson<T extends JsonCompatibleObject | JsonCompatibleArray>(
     path: string,
     data: T,
     options?: WriteJsonOptions | undefined,
@@ -29,7 +36,7 @@ export async function writeJson<T extends JsonObject | JsonArray>(
     await writeFile(path, JSON.stringify(data, null, 4) + trailingNewLine);
 }
 
-export async function appendJson<T extends JsonObject | JsonArray>(
+export async function appendJson<T extends JsonCompatibleObject | JsonCompatibleArray>(
     path: string,
     data: T,
     options?: WriteJsonOptions | undefined,
@@ -39,7 +46,7 @@ export async function appendJson<T extends JsonObject | JsonArray>(
         currentJson = [currentJson];
     }
 
-    let withAppendedData: JsonObject | JsonArray;
+    let withAppendedData: JsonCompatibleObject | JsonCompatibleArray;
     if (Array.isArray(currentJson) && Array.isArray(data)) {
         withAppendedData = [
             ...currentJson,

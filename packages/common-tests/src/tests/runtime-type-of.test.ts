@@ -1,8 +1,11 @@
 import {assertTypeOf, itCases} from '@augment-vir/chai';
 import {assert} from 'chai';
 import {describe, it} from 'mocha';
-import {JsonObject, JsonValue} from 'type-fest';
 import {isRuntimeTypeOf} from '../../../common/src';
+import {
+    JsonCompatibleObject,
+    JsonCompatibleValue,
+} from '../../../common/src/augments/json-compatible';
 import {assertRuntimeTypeOf} from '../../../common/src/augments/runtime-type-of';
 
 describe(isRuntimeTypeOf.name, () => {
@@ -31,13 +34,13 @@ describe(isRuntimeTypeOf.name, () => {
     });
 
     it('should narrow out array types in the object type', () => {
-        const anything = {} as JsonValue;
+        const anything = {} as JsonCompatibleValue;
 
-        assertTypeOf<JsonObject>().toMatchTypeOf(anything);
-        assertTypeOf(anything).not.toMatchTypeOf<JsonObject>();
+        assertTypeOf<JsonCompatibleObject>().toMatchTypeOf(anything);
+        assertTypeOf(anything).not.toMatchTypeOf<JsonCompatibleObject>();
 
         if (isRuntimeTypeOf(anything, 'object')) {
-            assertTypeOf(anything).toMatchTypeOf<JsonObject>();
+            assertTypeOf(anything).toMatchTypeOf<JsonCompatibleObject>();
         }
     });
 
