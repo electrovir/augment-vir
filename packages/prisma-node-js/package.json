@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/prisma-node-js",
-    "version": "12.2.1",
+    "version": "12.3.0",
     "homepage": "https://github.com/electrovir/augment-vir/tree/main/packages/prisma-node-js",
     "bugs": {
         "url": "https://github.com/electrovir/augment-vir/issues"
@@ -27,7 +27,7 @@
     },
     "devDependencies": {
         "istanbul-smart-text-reporter": "^1.1.1",
-        "typescript": "^4.9.4"
+        "typescript": "^4.9.5"
     },
     "publishConfig": {
         "access": "public"
