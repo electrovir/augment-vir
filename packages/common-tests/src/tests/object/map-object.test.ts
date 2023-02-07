@@ -1,8 +1,48 @@
+import {assertTypeOf} from '@augment-vir/chai';
 import {randomString} from '@augment-vir/node-js';
 import chai, {assert, expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {describe, it} from 'mocha';
-import {getObjectTypedKeys, mapObjectValues} from '../../../../common/src';
+import {
+    getObjectTypedKeys,
+    mapObjectValues,
+    mapObjectValuesSync,
+    PropertyValueType,
+    waitValue,
+} from '../../../../common/src';
+
+describe(mapObjectValuesSync.name, () => {
+    it('should have proper types', () => {
+        assert.notInstanceOf(
+            mapObjectValuesSync({thing: 5})(async () => {
+                return await waitValue(40, 0);
+            }),
+            Promise,
+        );
+
+        assertTypeOf(
+            mapObjectValuesSync({thing: 2})<{thing: number}>((key, value) => {
+                return 5;
+            }),
+        ).toEqualTypeOf<{thing: number}>();
+    });
+
+    it('should properly map', () => {
+        const startingObject = {
+            a: '4',
+            b: 52,
+            c: /hello there/,
+        } as const;
+
+        const mappedObject = mapObjectValuesSync(startingObject)((key, value) => {
+            assertTypeOf(key).toEqualTypeOf<keyof typeof startingObject>();
+            assertTypeOf(value).toEqualTypeOf<PropertyValueType<typeof startingObject>>();
+            return String(value).length;
+        });
+
+        assert.deepStrictEqual(mappedObject, {a: 1, b: 2, c: 13});
+    });
+});
 
 describe(mapObjectValues.name, () => {
     function onlyAcceptNumbers(input: number): void {}

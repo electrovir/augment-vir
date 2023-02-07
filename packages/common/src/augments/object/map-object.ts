@@ -1,4 +1,5 @@
 import {UnPromise} from '../type';
+import {PropertyValueType} from './object';
 import {getObjectTypedKeys} from './object-entries';
 
 export type InnerMappedValues<EntireInputGeneric extends object, MappedValueGeneric> = {
@@ -11,6 +12,49 @@ export type MappedValues<
 > = MappedValueGeneric extends PromiseLike<unknown>
     ? Promise<InnerMappedValues<EntireInputGeneric, UnPromise<MappedValueGeneric>>>
     : InnerMappedValues<EntireInputGeneric, UnPromise<MappedValueGeneric>>;
+
+/**
+ * Map an object's keys to new values synchronously. This is different from plain mapObjectValues in
+ * that this will not wrap the return value in a promise if any of the new object values are
+ * promises. This function also requires currying in order to get the types correct. This allows you
+ * to explicitly state the return type.
+ *
+ * @example
+ *     mapObjectValuesSync({objectToIterateOver: 'initial value'})<{objectToIterateOver: number}>(
+ *         (key, value) => ({
+ *             newValue: value.length,
+ *         }),
+ *     );
+ */
+export function mapObjectValuesSync<EntireInputGeneric extends object>(
+    inputObject: EntireInputGeneric,
+) {
+    function innerMap<OutputObjectGeneric extends object>(
+        mapCallback: (
+            inputKey: keyof EntireInputGeneric,
+            keyValue: EntireInputGeneric[typeof inputKey],
+            fullObject: EntireInputGeneric,
+        ) => never extends PropertyValueType<OutputObjectGeneric>
+            ? any
+            : PropertyValueType<OutputObjectGeneric>,
+    ): OutputObjectGeneric {
+        const mappedObject: OutputObjectGeneric = getObjectTypedKeys(inputObject).reduce(
+            (accum, currentKey) => {
+                const mappedValue = mapCallback(currentKey, inputObject[currentKey], inputObject);
+
+                return {
+                    ...accum,
+                    [currentKey]: mappedValue,
+                };
+            },
+            {} as OutputObjectGeneric,
+        );
+
+        return mappedObject;
+    }
+
+    return innerMap;
+}
 
 /**
  * Creates a new object with the same properties as the input object, but with values set to the

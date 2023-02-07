@@ -60,6 +60,27 @@ describe('NestedKeys', () => {
         assertTypeOf<
             ['threeLevelsDeep', 'singleNestedProp', 'nestedTwo', 'nestedThree']
         >().not.toBeAssignableTo(exampleObjectInstance);
+
+        type NftExtraData = {
+            nftId: string;
+            offers: ReadonlyArray<{derp: string}>;
+            listing:
+                | {
+                      price: number;
+                      locked: boolean | number[];
+                  }
+                | undefined;
+        };
+
+        type SortDefinition<EntryGeneric extends object> = {
+            sortName: string;
+            sortField: NestedSequentialKeys<EntryGeneric>;
+        };
+
+        const keys: SortDefinition<NftExtraData> = {
+            sortField: ['listing'],
+            sortName: 'derp',
+        };
     });
 });
 
