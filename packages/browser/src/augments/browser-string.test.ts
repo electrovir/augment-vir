@@ -1,5 +1,5 @@
 import {assert} from '@open-wc/testing';
-import {randomString} from './string';
+import {randomString} from './browser-string';
 
 describe(randomString.name, () => {
     it('should produce unique strings', () => {
