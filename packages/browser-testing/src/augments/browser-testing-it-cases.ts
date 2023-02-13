@@ -13,5 +13,14 @@ export function itCases<FunctionToCallGeneric extends AnyFunction>(
     functionToCall: FunctionToCallGeneric,
     testCases: ReadonlyArray<FunctionTestCase<typeof functionToCall>>,
 ) {
-    return generic_itCases({assert, it, forceIt: it.only}, functionToCall, testCases);
+    return generic_itCases(
+        {
+            assert,
+            it,
+            forceIt: it.only,
+            excludeIt: it.skip,
+        },
+        functionToCall,
+        testCases,
+    );
 }

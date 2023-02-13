@@ -5,7 +5,8 @@ import {assertOutputWithDescription} from './assert-output';
 
 type BaseTestCase<OutputGeneric> = {
     it: string;
-    force?: true;
+    force?: boolean | undefined;
+    exclude?: boolean | undefined;
 } & (
     | {
           expect: OutputGeneric;
@@ -37,12 +38,17 @@ export function itCases<FunctionToTestGeneric extends AnyFunction>(
         assert: typeof assertImport;
         it: any;
         forceIt: any;
+        excludeIt: any;
     },
     functionToTest: FunctionToTestGeneric,
     testCases: ReadonlyArray<FunctionTestCase<typeof functionToTest>>,
 ) {
     return testCases.map((testCase) => {
-        const itFunction = testCase.force ? options.forceIt : options.it;
+        const itFunction = testCase.force
+            ? options.forceIt
+            : testCase.exclude
+            ? options.excludeIt
+            : options.it;
         return itFunction(testCase.it, async () => {
             const functionInputs: Parameters<typeof functionToTest> =
                 'input' in testCase

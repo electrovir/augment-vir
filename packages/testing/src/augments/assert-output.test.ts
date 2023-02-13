@@ -27,7 +27,7 @@ describe(assertOutput.name, () => {
         }
     });
 
-    itCases({assert, it, forceIt: it.only}, assertOutput, [
+    itCases({assert, it, forceIt: it.only, excludeIt: it.skip}, assertOutput, [
         {
             it: 'should pass when the values match',
             inputs: [
