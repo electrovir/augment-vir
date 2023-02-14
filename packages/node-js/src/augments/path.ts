@@ -1,4 +1,4 @@
-import {join, sep} from 'path';
+import {join, parse, sep} from 'path';
 
 /** Convert a given path to a windows path if the current system doesn't use `/`. */
 export function replaceWithWindowsPathIfNeeded(input: string): string {
@@ -31,4 +31,8 @@ export function joinFileNamesWithParentDirPath(
     childNames: ReadonlyArray<string>,
 ): Array<string> {
     return childNames.map((childName) => join(parentDirPath, childName));
+}
+
+export function getSystemRootPath() {
+    return parse(process.cwd()).root;
 }

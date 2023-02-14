@@ -1,6 +1,6 @@
-import {expect} from 'chai';
+import {assert, expect} from 'chai';
 import {describe, it} from 'mocha';
-import {interpolationSafeWindowsPath, toPosixPath} from './path';
+import {getSystemRootPath, interpolationSafeWindowsPath, toPosixPath} from './path';
 
 describe(interpolationSafeWindowsPath.name, () => {
     it('with drive letter', () => {
@@ -21,5 +21,11 @@ describe(toPosixPath.name, () => {
         expect(toPosixPath('D:\\\\a\\\\virmator\\\\virmator\\\\dist\n')).to.equal(
             '/d/a/virmator/virmator/dist\n',
         );
+    });
+});
+
+describe(getSystemRootPath.name, () => {
+    it('returns the system root', () => {
+        assert.strictEqual(toPosixPath(getSystemRootPath()), '/');
     });
 });
