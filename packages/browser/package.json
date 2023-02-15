@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/browser",
-    "version": "12.9.0",
+    "version": "12.9.1",
     "homepage": "https://github.com/electrovir/augment-vir/tree/main/packages/browser",
     "bugs": {
         "url": "https://github.com/electrovir/augment-vir/issues"
@@ -22,7 +22,7 @@
         "test:coverage": "npm test coverage"
     },
     "devDependencies": {
-        "@augment-vir/browser-testing": "^12.9.0",
+        "@augment-vir/browser-testing": "^12.9.1",
         "@open-wc/testing": "^3.1.7",
         "@types/mocha": "^10.0.1",
         "@web/dev-server-esbuild": "^0.3.3",

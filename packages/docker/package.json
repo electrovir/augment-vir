@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/docker",
-    "version": "12.9.0",
+    "version": "12.9.1",
     "homepage": "https://github.com/electrovir/augment-vir/tree/main/packages/docker",
     "bugs": {
         "url": "https://github.com/electrovir/augment-vir/issues"
@@ -22,8 +22,8 @@
         "test:coverage": "npm test"
     },
     "dependencies": {
-        "@augment-vir/common": "^12.9.0",
-        "@augment-vir/node-js": "^12.9.0"
+        "@augment-vir/common": "^12.9.1",
+        "@augment-vir/node-js": "^12.9.1"
     },
     "devDependencies": {
         "typescript": "^4.9.5"
