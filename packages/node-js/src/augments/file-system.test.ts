@@ -120,29 +120,33 @@ describe(readDirRecursive.name, () => {
 });
 
 describe(readDirFilesByExtension.name, () => {
-    itCases(readDirFilesByExtension, [
-        {
-            it: 'filters to dir files with a single extension',
-            input: {dirPath: packageDir, extension: '.json'},
-            expect: [
-                'package.json',
-                'tsconfig.json',
-            ].sort(),
-        },
-        {
-            it: 'filters to dir files with multiple extensions',
-            input: {
-                dirPath: packageDir,
-                extensions: [
-                    '.json',
-                    '.md',
-                ],
+    itCases(
+        async (...inputs: Parameters<typeof readDirFilesByExtension>) =>
+            (await readDirFilesByExtension(...inputs)).sort(),
+        [
+            {
+                it: 'filters to dir files with a single extension',
+                input: {dirPath: packageDir, extension: '.json'},
+                expect: [
+                    'package.json',
+                    'tsconfig.json',
+                ].sort(),
             },
-            expect: [
-                'README.md',
-                'package.json',
-                'tsconfig.json',
-            ].sort(),
-        },
-    ]);
+            {
+                it: 'filters to dir files with multiple extensions',
+                input: {
+                    dirPath: packageDir,
+                    extensions: [
+                        '.json',
+                        '.md',
+                    ],
+                },
+                expect: [
+                    'README.md',
+                    'package.json',
+                    'tsconfig.json',
+                ].sort(),
+            },
+        ],
+    );
 });
