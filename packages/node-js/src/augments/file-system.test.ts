@@ -1,3 +1,4 @@
+import {itCases} from '@augment-vir/chai';
 import chai, {assert, expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {existsSync} from 'fs';
@@ -7,8 +8,13 @@ import {describe, it} from 'mocha';
 import {tmpdir} from 'os';
 import {join} from 'path';
 import {executeAndReturnError} from '../../../common/src';
-import {recursiveFileReadDir} from '../repo-file-paths';
-import {createSymLink, readDirRecursive, writeFileAndDir} from './file-system';
+import {packageDir, recursiveFileReadDir} from '../repo-file-paths';
+import {
+    createSymLink,
+    readDirFilesByExtension,
+    readDirRecursive,
+    writeFileAndDir,
+} from './file-system';
 
 describe(createSymLink.name, () => {
     const symlinkPath = join(tmpdir(), 'test-symlink');
@@ -111,4 +117,32 @@ describe(readDirRecursive.name, () => {
             join('inner-dir', 'double-inner-dir', 'b-file.txt'),
         ]);
     });
+});
+
+describe(readDirFilesByExtension.name, () => {
+    itCases(readDirFilesByExtension, [
+        {
+            it: 'filters to dir files with a single extension',
+            input: {dirPath: packageDir, extension: '.json'},
+            expect: [
+                'package.json',
+                'tsconfig.json',
+            ].sort(),
+        },
+        {
+            it: 'filters to dir files with multiple extensions',
+            input: {
+                dirPath: packageDir,
+                extensions: [
+                    '.json',
+                    '.md',
+                ],
+            },
+            expect: [
+                'README.md',
+                'package.json',
+                'tsconfig.json',
+            ].sort(),
+        },
+    ]);
 });

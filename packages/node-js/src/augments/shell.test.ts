@@ -2,8 +2,7 @@ import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {describe, it} from 'mocha';
 import {join} from 'path';
-// this path looks like an error but the symlink test will fix that
-import {longRunningFile, longRunningFileWithStderr, repoDir} from '../repo-file-paths';
+import {longRunningFile, longRunningFileWithStderr, packageDir} from '../repo-file-paths';
 import {interpolationSafeWindowsPath, toPosixPath} from './path';
 import {runShellCommand} from './shell';
 
@@ -86,7 +85,7 @@ describe(runShellCommand.name, () => {
     });
 
     it('no buffer overflow errors', async () => {
-        const packageLockPath = interpolationSafeWindowsPath(join(repoDir, 'package-lock.json'));
+        const packageLockPath = interpolationSafeWindowsPath(join(packageDir, 'package-lock.json'));
 
         const finalPhrase = 'end of line';
 

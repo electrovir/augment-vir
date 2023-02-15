@@ -2,6 +2,7 @@ import {existsSync} from 'fs';
 import {ensureDir} from 'fs-extra';
 import {lstat, readdir, readFile, readlink, stat, symlink, writeFile} from 'fs/promises';
 import {dirname, join, relative} from 'path';
+import {RequireExactlyOne} from 'type-fest';
 
 export async function createSymLink(
     /**
@@ -77,4 +78,28 @@ export async function readFileIfExists(path: string): Promise<string | undefined
     } else {
         return undefined;
     }
+}
+
+/**
+ * Reads all files within a directory and then filters them by the given extension or extensions.
+ * Returns that filtered list.
+ */
+export async function readDirFilesByExtension({
+    dirPath,
+    extension,
+    extensions,
+}: {
+    dirPath: string;
+} & RequireExactlyOne<{
+    extension: string;
+    extensions: ReadonlyArray<string>;
+}>) {
+    const extensionsToCheck: ReadonlyArray<string> = extensions ? extensions : [extension];
+
+    const fileNames = await readdir(dirPath);
+
+    const filteredFileNames = fileNames.filter((fileName) =>
+        extensionsToCheck.some((extensionToCheck) => fileName.endsWith(extensionToCheck)),
+    );
+    return filteredFileNames;
 }

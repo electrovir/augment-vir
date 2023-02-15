@@ -1,8 +1,8 @@
 import {dirname, join} from 'path';
 
-export const repoDir = dirname(__dirname);
+export const packageDir = dirname(__dirname);
 
-const testFilesDir = join(repoDir, 'test-files');
+const testFilesDir = join(packageDir, 'test-files');
 const longRunningFileDir = join(testFilesDir, 'long-running-test-file');
 export const longRunningFile = join(longRunningFileDir, 'long-running-file.ts');
 export const longRunningFileWithStderr = join(
