@@ -1,5 +1,6 @@
 import {
     getRuntimeTypeOf,
+    isRuntimeTypeOf,
     JsonCompatibleArray,
     JsonCompatibleObject,
     JsonCompatibleValue,
@@ -55,35 +56,37 @@ export async function writeJson<T extends JsonCompatibleObject | JsonCompatibleA
 
 export async function appendJson<T extends JsonCompatibleObject | JsonCompatibleArray>(
     path: string,
-    data: T,
+    newData: T,
     options?: WriteJsonOptions | undefined,
 ): Promise<void> {
-    let currentJson = await readJson(path);
-    if (typeof currentJson !== 'object') {
-        currentJson = [currentJson];
+    const fileJson = await readJson(path);
+    if (fileJson === undefined) {
+        const writeAllData = typeof newData === 'object' ? newData : [newData];
+
+        await writeJson(path, writeAllData, options);
+
+        return;
     }
 
+    const currentJson = typeof fileJson === 'object' ? fileJson : [fileJson];
+
     let withAppendedData: JsonCompatibleObject | JsonCompatibleArray;
-    if (Array.isArray(currentJson) && Array.isArray(data)) {
+
+    if (isRuntimeTypeOf(currentJson, 'array') && isRuntimeTypeOf(newData, 'array')) {
         withAppendedData = [
             ...currentJson,
-            ...data,
+            ...newData,
         ];
-    } else if (
-        typeof currentJson === 'object' &&
-        !Array.isArray(currentJson) &&
-        typeof data === 'object' &&
-        !Array.isArray(data)
-    ) {
+    } else if (isRuntimeTypeOf(currentJson, 'object') && isRuntimeTypeOf(newData, 'object')) {
         withAppendedData = {
             ...currentJson,
-            ...data,
+            ...newData,
         };
     } else {
-        const currentType: string = getRuntimeTypeOf(currentJson);
-        const dataType: string = getRuntimeTypeOf(data);
         throw new Error(
-            `Type mismatch between new JSON data to append and current JSON data at "${path}": current file is "${currentType}" and data is "${dataType}"`,
+            `Type mismatch between new JSON data to append and current JSON data at "${path}": current file is "${getRuntimeTypeOf(
+                currentJson,
+            )}" and new data is "${getRuntimeTypeOf(newData)}"`,
         );
     }
 
