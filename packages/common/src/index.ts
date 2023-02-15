@@ -7,6 +7,7 @@ export * from './augments/date';
 export * from './augments/environment';
 export * from './augments/error';
 export * from './augments/function';
+export * from './augments/json';
 export * from './augments/json-compatible';
 export * from './augments/object/enum';
 export * from './augments/object/filter-object';
