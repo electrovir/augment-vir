@@ -3,21 +3,38 @@ import {
     JsonCompatibleArray,
     JsonCompatibleObject,
     JsonCompatibleValue,
+    parseJson,
     PartialAndNullable,
 } from '@augment-vir/common';
+import {existsSync} from 'fs';
 import {ensureDir} from 'fs-extra';
 import {readFile, writeFile} from 'fs/promises';
 import {dirname} from 'path';
 
-export async function readJson<T extends JsonCompatibleValue = JsonCompatibleValue>(
+export async function readJson<ParsedJsonType extends JsonCompatibleValue = JsonCompatibleValue>(
     path: string,
-): Promise<T> {
-    try {
-        const json = JSON.parse((await readFile(path)).toString());
-        return json;
-    } catch (error) {
-        return {} as T;
+    options: {
+        shapeMatcher?: ParsedJsonType | undefined;
+        throwErrors?: boolean | undefined;
+    } = {},
+): Promise<ParsedJsonType | undefined> {
+    if (!existsSync(path) && !options.throwErrors) {
+        return undefined;
     }
+
+    const contents = (await readFile(path)).toString();
+    const json = parseJson({
+        jsonString: contents,
+        shapeMatcher: options.shapeMatcher,
+        errorHandler: (error) => {
+            if (options.throwErrors) {
+                throw error;
+            } else {
+                return undefined;
+            }
+        },
+    });
+    return json;
 }
 
 export type WriteJsonOptions = PartialAndNullable<{

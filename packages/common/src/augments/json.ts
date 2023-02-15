@@ -7,7 +7,7 @@ export function parseJson<ParsedJsonGeneric>({
     shapeMatcher,
 }: {
     jsonString: string;
-    errorHandler?: (error: unknown) => void;
+    errorHandler?: (error: unknown) => never | ParsedJsonGeneric;
     shapeMatcher?: ParsedJsonGeneric;
 }): ParsedJsonGeneric {
     try {
@@ -23,8 +23,10 @@ export function parseJson<ParsedJsonGeneric>({
 
         return parsedJson as ParsedJsonGeneric;
     } catch (error) {
-        errorHandler?.(error);
-        // if the above error handler doesn't halt execution then this will
-        throw error;
+        if (errorHandler) {
+            return errorHandler(error);
+        } else {
+            throw error;
+        }
     }
 }
