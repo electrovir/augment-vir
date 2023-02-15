@@ -1,6 +1,6 @@
 {
     "name": "augment-vir",
-    "version": "12.6.1",
+    "version": "12.7.0",
     "private": true,
     "homepage": "https://github.com/electrovir/augment-vir",
     "bugs": {
@@ -36,7 +36,7 @@
         "test:web": "virmator test-web"
     },
     "devDependencies": {
-        "cspell": "^6.25.0",
+        "cspell": "^6.26.1",
         "markdown-code-example-inserter": "^0.3.0",
         "prettier": "^2.8.4",
         "prettier-plugin-jsdoc": "^0.4.2",
