@@ -1,5 +1,6 @@
 import {assert, expect} from 'chai';
 import {describe, it} from 'mocha';
+import {sep} from 'path';
 import {getSystemRootPath, interpolationSafeWindowsPath, toPosixPath} from './path';
 
 describe(interpolationSafeWindowsPath.name, () => {
@@ -26,6 +27,10 @@ describe(toPosixPath.name, () => {
 
 describe(getSystemRootPath.name, () => {
     it('returns the system root', () => {
-        assert.strictEqual(toPosixPath(getSystemRootPath()), '/');
+        if (sep === '/') {
+            assert.strictEqual(toPosixPath(getSystemRootPath()), '/');
+        } else {
+            assert.match(toPosixPath(getSystemRootPath()), /\/\w\//);
+        }
     });
 });
