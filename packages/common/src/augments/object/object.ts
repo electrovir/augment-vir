@@ -6,6 +6,10 @@ export type PartialAndNullable<T extends object> = {
     [Prop in keyof T]?: T[Prop] | null | undefined;
 };
 
+export type PartialAndUndefined<T extends object> = {
+    [Prop in keyof T]?: T[Prop] | undefined;
+};
+
 export function isObject(input: any): input is NonNullable<object> {
     return !!input && typeof input === 'object';
 }
