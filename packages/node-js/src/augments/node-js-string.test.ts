@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {describe, it} from 'mocha';
-import {randomString} from './string';
+import {randomString} from './node-js-string';
 
 describe(randomString.name, () => {
     it('random string length is not required (has a default)', () => {
