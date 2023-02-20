@@ -122,9 +122,7 @@ describe(createDateFromNamedCommaFormat.name, () => {
             },
             {
                 it: 'should work with long month name',
-                inputs: [
-                    'March 17, 2019',
-                ],
+                inputs: ['March 17, 2019'],
                 expect: '2019-03-17T00:00:00.000Z',
             },
             {

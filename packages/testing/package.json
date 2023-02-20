@@ -27,7 +27,7 @@
         "@types/chai": "^4.3.4",
         "expect-type": "^0.15.0",
         "mock-vir": "^0.1.0",
-        "type-fest": "^3.5.7"
+        "type-fest": "^3.6.0"
     },
     "devDependencies": {
         "@electrovir/nyc": "^15.1.0-fix0",
