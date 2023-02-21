@@ -1,4 +1,4 @@
-import {isRuntimeTypeOf, isTruthy} from '../../../common/src';
+import {isRuntimeTypeOf, isTruthy} from '@augment-vir/common';
 
 export type QueryThroughShadowInputs = {
     element: Element | ShadowRoot;
