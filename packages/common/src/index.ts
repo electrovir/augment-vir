@@ -22,6 +22,7 @@ export * from './augments/object/typed-has-property';
 export * from './augments/promise';
 export * from './augments/regexp';
 export * from './augments/runtime-type-of';
+export * from './augments/string/url';
 export * from './augments/truncate-number';
 export * from './augments/tuple';
 export * from './augments/type';
