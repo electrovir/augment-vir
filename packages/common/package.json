@@ -24,7 +24,7 @@
         "test:types": "tsc --noEmit"
     },
     "dependencies": {
-        "type-fest": "^3.6.0"
+        "type-fest": "^3.6.1"
     },
     "devDependencies": {
         "typescript": "^4.9.5"
