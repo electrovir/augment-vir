@@ -89,7 +89,3 @@ export function ensureType<ExpectedType = never>(
 ): NoInfer<ExpectedType> {
     return input;
 }
-
-export type TypedFunction<ParametersGeneric extends any[], ReturnTypeGeneric> = (
-    ...args: ParametersGeneric
-) => ReturnTypeGeneric;

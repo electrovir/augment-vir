@@ -13,7 +13,7 @@
     ],
     "references": [
         {
-            "path": "../testing"
+            "path": "../chai"
         },
         {
             "path": "../node-js"
