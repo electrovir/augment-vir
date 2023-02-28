@@ -1,9 +1,9 @@
-import {AnyFunction} from '@augment-vir/common';
+import {AnyFunction, TypedFunction} from '@augment-vir/common';
 import {assert as assertImport} from 'chai';
 import {Constructor} from 'type-fest';
 import {assertOutputWithDescription} from './assert-output';
 
-type BaseTestCase<OutputGeneric> = {
+export type BaseTestCase<OutputGeneric> = {
     it: string;
     force?: boolean | undefined;
     exclude?: boolean | undefined;
@@ -21,15 +21,28 @@ export type OutputTestCaseSingleInput<FunctionToTestGeneric extends AnyFunction>
 } & BaseTestCase<Awaited<ReturnType<FunctionToTestGeneric>>>;
 
 export type OutputTestCaseMultipleInputs<FunctionToTestGeneric extends AnyFunction> = {
-    inputs: Parameters<FunctionToTestGeneric>;
+    inputs: Parameters<FunctionToTestGeneric>['length'] extends never
+        ? FunctionToTestGeneric extends TypedFunction<[infer ArgumentsType], any>
+            ? // readonly rest params case
+              ArgumentsType[]
+            : // leftover case, haven't figured out how to trigger this yet
+              never
+        : // all other cases
+          Parameters<FunctionToTestGeneric>;
 } & BaseTestCase<Awaited<ReturnType<FunctionToTestGeneric>>>;
 
 export type FunctionTestCase<FunctionToTestGeneric extends AnyFunction> =
-    Parameters<FunctionToTestGeneric> extends []
-        ? BaseTestCase<Awaited<ReturnType<FunctionToTestGeneric>>>
-        : Parameters<FunctionToTestGeneric> extends [any?]
-        ? OutputTestCaseSingleInput<FunctionToTestGeneric>
-        : OutputTestCaseMultipleInputs<FunctionToTestGeneric>;
+    1 extends Parameters<FunctionToTestGeneric>['length']
+        ? Parameters<FunctionToTestGeneric>['length'] extends 0 | 1
+            ? // only one param case
+              OutputTestCaseSingleInput<FunctionToTestGeneric>
+            : // multiple params with a rest param
+              OutputTestCaseMultipleInputs<FunctionToTestGeneric>
+        : 0 extends Parameters<FunctionToTestGeneric>['length']
+        ? // no param case
+          BaseTestCase<Awaited<ReturnType<FunctionToTestGeneric>>>
+        : // multiple param case
+          OutputTestCaseMultipleInputs<FunctionToTestGeneric>;
 
 export const runItCases = itCases;
 
@@ -41,7 +54,7 @@ export function itCases<FunctionToTestGeneric extends AnyFunction>(
         excludeIt: any;
     },
     functionToTest: FunctionToTestGeneric,
-    testCases: ReadonlyArray<FunctionTestCase<typeof functionToTest>>,
+    testCases: ReadonlyArray<FunctionTestCase<FunctionToTestGeneric>>,
 ) {
     return testCases.map((testCase) => {
         const itFunction = testCase.force
@@ -50,13 +63,13 @@ export function itCases<FunctionToTestGeneric extends AnyFunction>(
             ? options.excludeIt
             : options.it;
         return itFunction(testCase.it, async () => {
-            const functionInputs: Parameters<typeof functionToTest> =
+            const functionInputs: Parameters<FunctionToTestGeneric> =
                 'input' in testCase
-                    ? ([testCase.input] as Parameters<typeof functionToTest>)
+                    ? ([testCase.input] as unknown[] as Parameters<FunctionToTestGeneric>)
                     : 'inputs' in testCase
-                    ? testCase.inputs
+                    ? (testCase.inputs as unknown[] as Parameters<FunctionToTestGeneric>)
                     : // as cast here to cover the case where the input has NO inputs
-                      ([] as unknown as Parameters<typeof functionToTest>);
+                      ([] as unknown[] as Parameters<FunctionToTestGeneric>);
 
             if ('expect' in testCase) {
                 await assertOutputWithDescription(
