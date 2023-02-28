@@ -1,7 +1,7 @@
 {
     "name": "@augment-vir/scripts",
     "version": "12.11.2",
-    "private": "true",
+    "private": true,
     "license": "MIT",
     "author": {
         "name": "electrovir",
@@ -10,7 +10,12 @@
     "scripts": {
         "compile": "tsc --pretty",
         "test": "virmator test",
-        "test:coverage": "npm test coverage"
+        "test:coverage": "npm test coverage",
+        "verify": "ts-node src/index.ts"
+    },
+    "dependencies": {
+        "@augment-vir/common": "^12.11.2",
+        "@augment-vir/node-js": "^12.11.2"
     },
     "devDependencies": {
         "@electrovir/nyc": "^15.1.0-fix0",
@@ -23,6 +28,7 @@
         "mocha": "^10.2.0",
         "mocha-spec-reporter-with-file-names": "^0.0.3",
         "ts-node": "^10.9.1",
+        "type-fest": "^3.6.1",
         "typescript": "^4.9.5"
     }
 }
