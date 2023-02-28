@@ -1,13 +1,25 @@
-import {combineErrorMessages} from '@augment-vir/common';
+import {combineErrorMessages, ensureError} from '@augment-vir/common';
 import {log} from '@augment-vir/node-js';
 import {Promisable} from 'type-fest';
+import {updateAllInternalAugmentVirDeps} from './scripts/update-all-augment-vir-deps';
 import {assertAllAugmentsExported} from './scripts/verify-all-augments-are-exported';
 
-const verifications: (() => Promisable<Error[]>)[] = [assertAllAugmentsExported];
+const verifications: (() => Promisable<Error[]>)[] = [
+    assertAllAugmentsExported,
+    updateAllInternalAugmentVirDeps,
+];
 
 async function runAllVerifications() {
     const errors = (
-        await Promise.all(verifications.map(async (verification) => await verification()))
+        await Promise.all(
+            verifications.map(async (verification): Promise<Error[]> => {
+                try {
+                    return await verification();
+                } catch (error) {
+                    return [ensureError(error)];
+                }
+            }),
+        )
     ).flat();
 
     if (errors.length) {

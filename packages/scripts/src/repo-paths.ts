@@ -5,12 +5,12 @@ import {PackageJson} from 'type-fest';
 
 export const repoRootDirPath = dirname(dirname(dirname(dirname(__filename))));
 
-export const packagesDir = join(repoRootDirPath, 'packages');
+export const packagesDirPath = join(repoRootDirPath, 'packages');
 
 export async function getAllPublicPackageDirPaths(): Promise<ReadonlyArray<string>> {
-    const packageNames = await readdir(packagesDir);
+    const packageNames = await readdir(packagesDirPath);
 
-    const packageDirPaths = packageNames.map((packageName) => join(packagesDir, packageName));
+    const packageDirPaths = packageNames.map((packageName) => join(packagesDirPath, packageName));
 
     const packagePublicity = await Promise.all(
         packageDirPaths.map(async (packageDirPath) => {

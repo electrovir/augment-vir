@@ -1,6 +1,6 @@
 {
     "name": "augment-vir",
-    "version": "12.11.2",
+    "version": "12.12.0",
     "private": true,
     "homepage": "https://github.com/electrovir/augment-vir",
     "bugs": {
@@ -47,6 +47,6 @@
         "prettier-plugin-sort-json": "^1.0.0",
         "prettier-plugin-toml": "^0.3.1",
         "typescript": "^4.9.5",
-        "virmator": "^6.0.2"
+        "virmator": "^6.1.1"
     }
 }
