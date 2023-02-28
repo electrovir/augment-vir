@@ -21,7 +21,7 @@
         "./packages/*"
     ],
     "scripts": {
-        "compile": "rm -rf packages/*/dist && rm -f packages/*/tsconfig.tsbuildinfo && npm run compile",
+        "compile": "rm -rf packages/*/dist && rm -f packages/*/tsconfig.tsbuildinfo && tsc --build tsconfig.build.json && npm run compile --workspaces",
         "docs:update": "virmator code-in-markdown",
         "format": "virmator format",
         "publish": "virmator publish \"npm run test:all\"",
