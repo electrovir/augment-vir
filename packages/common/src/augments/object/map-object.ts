@@ -19,9 +19,9 @@ export type MappedValues<
  *
  * @example
  *     mapObjectValuesSync({objectToIterateOver: 'initial value'})<{objectToIterateOver: number}>(
- *     (key, value) => ({
- *     newValue: value.length,
- *     }),
+ *         (key, value) => ({
+ *             newValue: value.length,
+ *         }),
  *     );
  */
 export function mapObjectValuesSync<EntireInputGeneric extends object>(

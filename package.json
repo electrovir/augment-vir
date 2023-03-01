@@ -47,6 +47,6 @@
         "prettier-plugin-sort-json": "^1.0.0",
         "prettier-plugin-toml": "^0.3.1",
         "typescript": "^4.9.5",
-        "virmator": "^6.1.1"
+        "virmator": "^6.2.1"
     }
 }
