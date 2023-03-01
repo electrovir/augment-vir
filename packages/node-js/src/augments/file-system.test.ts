@@ -8,7 +8,7 @@ import {describe, it} from 'mocha';
 import {tmpdir} from 'os';
 import {join} from 'path';
 import {executeAndReturnError} from '../../../common/src';
-import {packageDir, recursiveFileReadDir} from '../repo-file-paths';
+import {nodeJsPackageDir, recursiveFileReadDir} from '../repo-file-paths.test-helpers';
 import {
     createSymLink,
     readDirFilesByExtension,
@@ -126,7 +126,7 @@ describe(readDirFilesByExtension.name, () => {
         [
             {
                 it: 'filters to dir files with a single extension',
-                input: {dirPath: packageDir, extension: '.json'},
+                input: {dirPath: nodeJsPackageDir, extension: '.json'},
                 expect: [
                     'package.json',
                     'tsconfig.json',
@@ -135,7 +135,7 @@ describe(readDirFilesByExtension.name, () => {
             {
                 it: 'filters to dir files with multiple extensions',
                 input: {
-                    dirPath: packageDir,
+                    dirPath: nodeJsPackageDir,
                     extensions: [
                         '.json',
                         '.md',
