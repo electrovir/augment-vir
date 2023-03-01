@@ -1,4 +1,4 @@
-import {typedAssertInstanceOf} from '@augment-vir/chai';
+import {assertTypeOf, typedAssertInstanceOf} from '@augment-vir/chai';
 import {randomString} from '@augment-vir/node-js';
 import chai, {assert, expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
@@ -6,11 +6,13 @@ import {describe, it} from 'mocha';
 import {
     createDeferredPromiseWrapper,
     isPromiseLike,
+    MaybePromise,
     PromiseTimeoutError,
+    UnPromise,
     wait,
+    waitForCondition,
     wrapPromiseInTimeout,
 } from '../../../common/src';
-import {waitForCondition} from '../../../common/src/augments/promise';
 
 // increase if tests are flaky in other environments, like GitHub Actions (which is typically slow)
 const promiseDelayMs = 500;
@@ -221,5 +223,19 @@ describe(waitForCondition.name, () => {
             }),
             timeoutMessage,
         );
+    });
+});
+
+describe('UnPromise', () => {
+    it('unwraps promises', () => {
+        assertTypeOf<UnPromise<Promise<Promise<string>>>>().toEqualTypeOf<string>();
+        assertTypeOf<UnPromise<string>>().toEqualTypeOf<string>();
+    });
+});
+
+describe('MaybePromise', () => {
+    it('wraps and unwraps promises', () => {
+        assertTypeOf<MaybePromise<string>>().toEqualTypeOf<string | Promise<string>>();
+        assertTypeOf<MaybePromise<Promise<string>>>().toEqualTypeOf<string | Promise<string>>();
     });
 });

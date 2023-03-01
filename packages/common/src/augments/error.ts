@@ -1,7 +1,4 @@
-import {isTruthy, NoInputsFunction} from './function';
-import {isPromiseLike} from './promise';
-import {AtLeastTuple} from './tuple';
-import {UnPromise} from './type';
+import {AtLeastTuple, isPromiseLike, isTruthy, NoInputsFunction, UnPromise} from '..';
 
 export function combineErrors(errors: AtLeastTuple<Error, 1>): Error;
 export function combineErrors(errors: ReadonlyArray<never>): undefined;

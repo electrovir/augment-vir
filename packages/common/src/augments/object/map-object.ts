@@ -1,6 +1,4 @@
-import {UnPromise} from '../type';
-import {PropertyValueType} from './object';
-import {getObjectTypedKeys} from './object-entries';
+import {getObjectTypedKeys, PropertyValueType, UnPromise} from '../..';
 
 export type InnerMappedValues<EntireInputGeneric extends object, MappedValueGeneric> = {
     [MappedProp in keyof EntireInputGeneric]: MappedValueGeneric;
@@ -21,9 +19,9 @@ export type MappedValues<
  *
  * @example
  *     mapObjectValuesSync({objectToIterateOver: 'initial value'})<{objectToIterateOver: number}>(
- *         (key, value) => ({
- *             newValue: value.length,
- *         }),
+ *     (key, value) => ({
+ *     newValue: value.length,
+ *     }),
  *     );
  */
 export function mapObjectValuesSync<EntireInputGeneric extends object>(

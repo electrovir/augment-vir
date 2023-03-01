@@ -54,8 +54,6 @@ export type IfEquals<T, U, Y = unknown, N = never> = (<G>() => G extends T ? 1 :
     ? Y
     : N;
 
-export type UnPromise<T> = T extends PromiseLike<infer PromiseType> ? Awaited<PromiseType> : T;
-
 /**
  * This function returns another function that simply returns whatever input it's given. However, it
  * also checks that the input matches the original wrapNarrowTypeWithTypeCheck's generic, while

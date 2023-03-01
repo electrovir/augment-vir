@@ -33,6 +33,10 @@ export function isPromiseLike<T>(
     }
 }
 
+export type UnPromise<T> = T extends PromiseLike<infer PromiseType> ? Awaited<PromiseType> : T;
+
+export type MaybePromise<T> = Promise<UnPromise<T>> | UnPromise<T>;
+
 export class PromiseTimeoutError extends Error {
     public override readonly name = 'PromiseTimeoutError';
 

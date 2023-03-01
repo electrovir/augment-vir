@@ -3,7 +3,6 @@ import {
     Overwrite,
     RequiredAndNotNull,
     RequiredAndNotNullBy,
-    UnPromise,
     wrapNarrowTypeWithTypeCheck,
 } from '../../../common/src';
 
@@ -44,16 +43,6 @@ import {
     const yesNotDefined: RequiredAndNotNullBy<typeof missingStuff, 'yes'> = {
         ...missingStuff,
     };
-}
-
-{
-    /** UnPromise */
-    const maybePromise: string | Promise<string> = '' as string | Promise<string>;
-    // @ts-expect-error
-    const badOnlyString: string = maybePromise;
-    const unPromised: UnPromise<typeof maybePromise> = '' as UnPromise<typeof maybePromise>;
-
-    const goodOnlyString: string = unPromised;
 }
 
 {
