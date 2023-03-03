@@ -1,5 +1,5 @@
 import {readJson} from '@augment-vir/node-js';
-import {readdir} from 'fs/promises';
+import {readdir, stat} from 'fs/promises';
 import {dirname, join} from 'path';
 import {PackageJson} from 'type-fest';
 
@@ -7,10 +7,20 @@ export const repoRootDirPath = dirname(dirname(dirname(dirname(__filename))));
 
 export const packagesDirPath = join(repoRootDirPath, 'packages');
 
-export async function getAllPublicPackageDirPaths(): Promise<ReadonlyArray<string>> {
+export async function getAllPackageDirPaths(): Promise<ReadonlyArray<string>> {
     const packageNames = await readdir(packagesDirPath);
 
     const packageDirPaths = packageNames.map((packageName) => join(packagesDirPath, packageName));
+
+    const areFolders = await Promise.all(
+        packageDirPaths.map(async (path) => (await stat(path)).isDirectory()),
+    );
+
+    return packageDirPaths.filter((path, index) => areFolders[index]);
+}
+
+export async function getAllPublicPackageDirPaths(): Promise<ReadonlyArray<string>> {
+    const packageDirPaths = await getAllPackageDirPaths();
 
     const packagePublicity = await Promise.all(
         packageDirPaths.map(async (packageDirPath) => {

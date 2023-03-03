@@ -2,7 +2,7 @@ import {readJson} from '@augment-vir/node-js';
 import {readFile, writeFile} from 'fs/promises';
 import {basename, join} from 'path';
 import {PackageJson} from 'type-fest';
-import {getAllPublicPackageDirPaths, repoRootDirPath} from '../repo-paths';
+import {getAllPackageDirPaths, repoRootDirPath} from '../repo-paths';
 
 export async function updateAllInternalAugmentVirDeps(): Promise<Error[]> {
     const rootPackageVersion = (await readJson<PackageJson>(join(repoRootDirPath, 'package.json')))
@@ -12,7 +12,7 @@ export async function updateAllInternalAugmentVirDeps(): Promise<Error[]> {
         return [new Error(`Failed to read the root package version.`)];
     }
 
-    const packageDirPaths = await getAllPublicPackageDirPaths();
+    const packageDirPaths = await getAllPackageDirPaths();
 
     const errors = await Promise.all(
         packageDirPaths.map(
