@@ -54,3 +54,18 @@ export function convertIntoNumber(input: unknown): number {
 export function doesRequireScientificNotation(input: number): boolean {
     return String(input).includes('e');
 }
+
+/**
+ * Given a min and max, ensures that they are in correct order. Meaning, min is less than max. If
+ * that is not the case, the returned value is the given min and max values swapped.
+ */
+export function ensureMinAndMax({min, max}: {min: number; max: number}): {
+    min: number;
+    max: number;
+} {
+    if (min > max) {
+        return {min: max, max: min};
+    } else {
+        return {min, max};
+    }
+}
