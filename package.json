@@ -26,7 +26,7 @@
         "format": "virmator format",
         "publish": "virmator publish \"npm run test:all\"",
         "test": "tsc --build tsconfig.build.json && npm run test --workspaces -s",
-        "test:all": "npm run test:files && npm run compile && npm run test:spelling && npm run test:format && npm run test:docs && npm run test:coverage",
+        "test:all": "npm run compile && npm run test:files && npm run compile && npm run test:spelling && npm run test:format && npm run test:docs && npm run test:coverage",
         "test:coverage": "tsc --build tsconfig.build.json && npm run test:coverage --workspaces",
         "test:docs": "virmator code-in-markdown check",
         "test:files": "cd packages/scripts && npm run verify",
