@@ -1,7 +1,7 @@
-import {ensureMinAndMax} from '@augment-vir/common';
+import {clamp, ensureMinAndMax, isUuid} from '@augment-vir/common';
 import {assert} from '@open-wc/testing';
 import {itCases} from '../../../browser-testing/src';
-import {randomInteger, randomString} from './browser-random';
+import {createUuid, randomBoolean, randomInteger, randomString} from './browser-random';
 
 describe(randomString.name, () => {
     it('should produce unique strings', () => {
@@ -17,6 +17,65 @@ describe(randomString.name, () => {
             randomStrings.length,
             'some "random" strings were removed when converting to a set, meaning there were duplicates.',
         );
+    });
+});
+
+describe(randomBoolean.name, () => {
+    itCases(
+        (likelyTrue: number) => {
+            const counts = {
+                true: 0,
+                false: 0,
+            };
+            for (let i = 0; i < 1_000_000; i++) {
+                if (randomBoolean(likelyTrue)) {
+                    counts.true++;
+                } else {
+                    counts.false++;
+                }
+            }
+            const percentActuallyTrue = (counts.true / (counts.true + counts.false)) * 100;
+            assert.isAbove(
+                percentActuallyTrue,
+                clamp({value: likelyTrue, min: 0, max: 100}) - 1,
+                'actual true percent was below acceptable range',
+            );
+            assert.isBelow(
+                percentActuallyTrue,
+                clamp({value: likelyTrue, min: 0, max: 100}) + 1,
+                'actual true percent was above acceptable range',
+            );
+        },
+        [
+            {
+                it: 'works with straight 50/50',
+                input: 50,
+                throws: undefined,
+            },
+            {
+                it: 'clamps to 100',
+                input: 5000,
+                throws: undefined,
+            },
+            {
+                it: 'clamps to 0',
+                input: -100,
+                throws: undefined,
+            },
+            {
+                it: 'works with a different percentage',
+                input: 39,
+                throws: undefined,
+            },
+        ],
+    );
+});
+
+describe(createUuid.name, () => {
+    it('produces valid V4 uuids', () => {
+        for (let i = 0; i < 1_000; i++) {
+            assert.isTrue(isUuid(createUuid()));
+        }
     });
 });
 
