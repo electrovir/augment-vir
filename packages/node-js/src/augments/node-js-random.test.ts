@@ -1,8 +1,8 @@
-import {ensureMinAndMax} from '@augment-vir/common';
+import {ensureMinAndMax, isUuid} from '@augment-vir/common';
 import {assert} from 'chai';
 import {describe, it} from 'mocha';
 import {itCases} from '../../../chai/src';
-import {randomInteger, randomString} from './node-js-random';
+import {createUuid, randomInteger, randomString} from './node-js-random';
 
 describe(randomString.name, () => {
     it('random string length is not required (has a default)', () => {
@@ -21,6 +21,14 @@ describe(randomString.name, () => {
 
     it('length works with odd numbers', () => {
         assert.lengthOf(randomString(3), 3);
+    });
+});
+
+describe(createUuid.name, () => {
+    it('produces valid V4 uuids', () => {
+        for (let i = 0; i < 1_000; i++) {
+            assert.isTrue(isUuid(createUuid()));
+        }
     });
 });
 
@@ -47,9 +55,21 @@ describe(randomInteger.name, () => {
             const loopMax = Math.abs(input.max - input.min) * 100;
             for (let i = 0; i < loopMax; i++) {
                 const randomInt = randomInteger(input);
-                assert.isAbove(randomInt, Math.floor(ensureMinAndMax(input).min) - 1);
-                assert.isBelow(randomInt, Math.floor(ensureMinAndMax(input).max) + 1);
-                assert.strictEqual(randomInt, Math.floor(randomInt));
+                assert.isAbove(
+                    randomInt,
+                    Math.floor(ensureMinAndMax(input).min) - 1,
+                    'random integer was not within min bounds',
+                );
+                assert.isBelow(
+                    randomInt,
+                    Math.floor(ensureMinAndMax(input).max) + 1,
+                    'random integer was not within max bounds',
+                );
+                assert.strictEqual(
+                    randomInt,
+                    Math.floor(randomInt),
+                    'random number did not equal itself without decimals',
+                );
             }
 
             return loopMax;

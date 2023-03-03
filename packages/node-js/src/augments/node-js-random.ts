@@ -4,7 +4,7 @@ export function randomBoolean(percentLikelyToBeTrue: number = 50): boolean {
     return randomInteger({min: 0, max: 49}) < percentLikelyToBeTrue / 2;
 }
 
-export function uuid() {
+export function createUuid() {
     return crypto.randomUUID();
 }
 
@@ -20,7 +20,7 @@ export function randomInteger({min, max}: {min: number; max: number}): number {
             return accum + byte * 256 ** index;
         }, 0);
     } while (value >= cutoff);
-    return min + (value % range);
+    return Math.floor(min + (value % range));
 }
 
 export function randomString(inputLength: number = 16): string {

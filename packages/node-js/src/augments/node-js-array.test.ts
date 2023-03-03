@@ -1,4 +1,4 @@
-import {assert} from '@open-wc/testing';
+import {assert} from 'chai';
 import {shuffleArray} from './node-js-array';
 import {randomInteger} from './node-js-random';
 
