@@ -11,6 +11,7 @@ export * from './augments/json';
 export * from './augments/json-compatible';
 export * from './augments/object/enum';
 export * from './augments/object/filter-object';
+export * from './augments/object/has-key';
 export * from './augments/object/jsonify';
 export * from './augments/object/map-object';
 export * from './augments/object/matches-object-shape';
