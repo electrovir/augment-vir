@@ -8,7 +8,7 @@ import {
     englishFullMonthNames,
     englishShortMonthNames,
     InvalidDateError,
-} from '../../../common/src';
+} from '../../../../common/src';
 
 describe(createDateFromSlashFormat.name, () => {
     itCases(

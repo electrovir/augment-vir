@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/testing",
-    "version": "13.0.0",
+    "version": "13.1.0",
     "homepage": "https://github.com/electrovir/augment-vir/tree/main/packages/testing",
     "bugs": {
         "url": "https://github.com/electrovir/augment-vir/issues"
@@ -23,7 +23,7 @@
         "test:coverage": "npm test coverage"
     },
     "dependencies": {
-        "@augment-vir/common": "^13.0.0",
+        "@augment-vir/common": "^13.1.0",
         "@types/chai": "^4.3.4",
         "expect-type": "^0.15.0",
         "mock-vir": "^0.1.0",
