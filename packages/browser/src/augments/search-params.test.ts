@@ -5,17 +5,37 @@ import {objectToSearchParamsString, searchParamStringToObject} from './search-pa
 describe(objectToSearchParamsString.name, () => {
     itCases(objectToSearchParamsString, [
         {
-            it: 'should return an empty string for an empty object',
+            it: 'returns an empty string for an empty object',
             input: {},
             expect: '',
         },
         {
-            it: 'should convert an object into a search params string',
+            it: 'converts an object into a search params string',
             input: {
                 a: 'five',
                 b: 'four',
             },
             expect: '?a=five&b=four',
+        },
+        {
+            it: 'filters out nullish values',
+            input: {
+                a: undefined,
+                b: 'four',
+                c: null,
+                d: 'five',
+            },
+            expect: '?b=four&d=five',
+        },
+        {
+            it: 'converts non-string primitives to strings',
+            input: {
+                a: 'string',
+                b: 42,
+                c: true,
+                d: 52n,
+            },
+            expect: '?a=string&b=42&c=true&d=52',
         },
     ]);
 });

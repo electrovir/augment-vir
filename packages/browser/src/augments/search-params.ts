@@ -1,7 +1,20 @@
-import {assertMatchesObjectShape, isRuntimeTypeOf} from '@augment-vir/common';
+import {
+    assertMatchesObjectShape,
+    filterObject,
+    isRuntimeTypeOf,
+    mapObjectValues,
+} from '@augment-vir/common';
+import {Primitive} from 'type-fest';
 
-export function objectToSearchParamsString(inputObject: Record<string, string>): string {
-    const searchParams = new URLSearchParams(Object.entries(inputObject));
+export type SearchParamObjectBase = Record<string, Exclude<Primitive, symbol>>;
+
+export function objectToSearchParamsString(inputObject: SearchParamObjectBase): string {
+    const filteredInputs = filterObject(inputObject, (key, value) => {
+        return value != undefined;
+    });
+    const stringifiedInputs = mapObjectValues(filteredInputs, (key, value) => String(value));
+
+    const searchParams = new URLSearchParams(Object.entries(stringifiedInputs));
 
     const searchParamsString = searchParams.toString();
 
@@ -12,15 +25,15 @@ export function objectToSearchParamsString(inputObject: Record<string, string>):
     }
 }
 
-export function searchParamStringToObject<VerifyShapeGeneric extends Record<string, string>>(
+export function searchParamStringToObject<VerifyShapeGeneric extends SearchParamObjectBase>(
     inputUrl: string | Pick<URL, 'searchParams'>,
     verifyShape: VerifyShapeGeneric,
 ): VerifyShapeGeneric;
-export function searchParamStringToObject<VerifyShapeGeneric extends Record<string, string>>(
+export function searchParamStringToObject<VerifyShapeGeneric extends SearchParamObjectBase>(
     inputUrl: string | Pick<URL, 'searchParams'>,
     verifyShape?: VerifyShapeGeneric | undefined,
 ): Record<string, string>;
-export function searchParamStringToObject<VerifyShapeGeneric extends Record<string, string>>(
+export function searchParamStringToObject<VerifyShapeGeneric extends SearchParamObjectBase>(
     inputUrl: string | Pick<URL, 'searchParams'>,
     verifyShape?: VerifyShapeGeneric | undefined,
 ): VerifyShapeGeneric | Record<string, string> {
@@ -31,7 +44,7 @@ export function searchParamStringToObject<VerifyShapeGeneric extends Record<stri
     const paramsObject = Object.fromEntries(searchEntries);
 
     if (verifyShape) {
-        assertMatchesObjectShape<Record<string, string>>(paramsObject, verifyShape);
+        assertMatchesObjectShape<SearchParamObjectBase>(paramsObject, verifyShape);
     }
 
     return paramsObject;
