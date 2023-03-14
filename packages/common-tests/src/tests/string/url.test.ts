@@ -54,5 +54,38 @@ describe(joinUrlParts.name, () => {
             ],
             expect: 'https://wikipedia.org/start/end/actual%20end',
         },
+        {
+            it: 'does not encode query params',
+            inputs: [
+                'https://wikipedia.org',
+                'start/end',
+                'actual end',
+                '?stuff=yes&hi=what',
+            ],
+            expect: 'https://wikipedia.org/start/end/actual%20end?stuff=yes&hi=what',
+        },
+        {
+            it: 'joins query params with &',
+            inputs: [
+                'https://wikipedia.org',
+                'start/end',
+                'actual end',
+                '?stuff=hoopla',
+                'hi=more',
+            ],
+            expect: 'https://wikipedia.org/start/end/actual%20end?stuff=hoopla&hi=more',
+        },
+        {
+            it: 'does not join hash params with anything',
+            inputs: [
+                'https://wikipedia.org',
+                'start/end',
+                'actual end',
+                '?stuff=some-hash',
+                '#hash-stuff-here',
+                'more-hash',
+            ],
+            expect: 'https://wikipedia.org/start/end/actual%20end?stuff=some-hash#hash-stuff-heremore-hash',
+        },
     ]);
 });
