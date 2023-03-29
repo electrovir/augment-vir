@@ -1,6 +1,6 @@
+import {itCases} from '@augment-vir/browser-testing';
 import {clamp, ensureMinAndMax, isUuid} from '@augment-vir/common';
 import {assert} from '@open-wc/testing';
-import {itCases} from '../../../browser-testing/src';
 import {createUuid, randomBoolean, randomInteger, randomString} from './browser-random';
 
 describe(randomString.name, () => {

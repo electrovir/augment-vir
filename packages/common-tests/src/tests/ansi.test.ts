@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {describe, it} from 'mocha';
-import {ansiRegex, safeMatch} from '../../../common/src';
+import {ansiRegex, safeMatch} from '@augment-vir/common';
 
 describe('ansiRegex', () => {
     it('should match all ansi codes in a string', () => {

@@ -1,14 +1,14 @@
 import {assertTypeOf, itCases} from '@augment-vir/chai';
-import {assert, expect} from 'chai';
-import {describe, it} from 'mocha';
 import {
     getEntriesSortedByKey,
     getEnumTypedValues,
     getObjectTypedKeys,
     getObjectTypedValues,
+    isKeyof,
     typedObjectFromEntries,
-} from '../../../../common/src';
-import {isKeyof} from '../../../../common/src/augments/object/object-entries';
+} from '@augment-vir/common';
+import {assert, expect} from 'chai';
+import {describe, it} from 'mocha';
 
 enum Planet {
     Mercury = 'mercury',

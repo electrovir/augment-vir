@@ -1,12 +1,12 @@
 import {assertTypeOf, itCases} from '@augment-vir/chai';
-import {assert} from 'chai';
-import {describe, it} from 'mocha';
-import {isRuntimeTypeOf} from '../../../common/src';
 import {
+    assertRuntimeTypeOf,
+    isRuntimeTypeOf,
     JsonCompatibleObject,
     JsonCompatibleValue,
-} from '../../../common/src/augments/json-compatible';
-import {assertRuntimeTypeOf} from '../../../common/src/augments/runtime-type-of';
+} from '@augment-vir/common';
+import {assert} from 'chai';
+import {describe, it} from 'mocha';
 
 describe(isRuntimeTypeOf.name, () => {
     it('should narrow a union type', () => {

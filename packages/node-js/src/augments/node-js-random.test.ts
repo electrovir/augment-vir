@@ -1,7 +1,7 @@
+import {itCases} from '@augment-vir/chai';
 import {ensureMinAndMax, isUuid} from '@augment-vir/common';
 import {assert} from 'chai';
 import {describe, it} from 'mocha';
-import {itCases} from '../../../chai/src';
 import {createUuid, randomInteger, randomString} from './node-js-random';
 
 describe(randomString.name, () => {

@@ -3,7 +3,7 @@ import {
     JsonCompatibleArray,
     JsonCompatibleObject,
     JsonCompatiblePrimitiveValue,
-} from '../../../common/src/augments/json-compatible';
+} from '@augment-vir/common';
 
 describe('JsonCompatibleValue', () => {
     it('should have proper JsonCompatiblePrimitiveValue types', () => {

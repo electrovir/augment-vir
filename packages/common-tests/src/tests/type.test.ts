@@ -1,16 +1,17 @@
 import {assertTypeOf} from '@augment-vir/chai';
-import {assert} from 'chai';
-import {describe, it} from 'mocha';
 import {
     ArrayElement,
     DeepWriteable,
     ensureType,
+    makeReadonly,
+    makeWritable,
     NoInfer,
     Tuple,
     wrapNarrowTypeWithTypeCheck,
     Writeable,
-} from '../../../common/src';
-import {makeReadonly, makeWritable} from '../../../common/src/augments/type';
+} from '@augment-vir/common';
+import {assert} from 'chai';
+import {describe, it} from 'mocha';
 
 describe('NoInfer', () => {
     function functionThatHasAGenericForTesting<T = never>(input: NoInfer<T>): T {

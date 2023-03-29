@@ -1,6 +1,6 @@
 import {itCases} from '@augment-vir/chai';
+import {truncateNumber} from '@augment-vir/common';
 import {describe} from 'mocha';
-import {truncateNumber} from '../../../common/src/augments/truncate-number';
 
 describe(truncateNumber.name, () => {
     const testCases: ReadonlyArray<{

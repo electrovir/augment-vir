@@ -1,13 +1,13 @@
 import {itCases} from '@augment-vir/chai';
-import {assertTypeOf} from '@augment-vir/testing';
-import {expect} from 'chai';
-import {describe, it} from 'mocha';
 import {
     filterOutIndexes,
     flatten2dArray,
     trimArrayStrings,
     typedArrayIncludes,
-} from '../../../common/src';
+} from '@augment-vir/common';
+import {assertTypeOf} from '@augment-vir/testing';
+import {expect} from 'chai';
+import {describe, it} from 'mocha';
 
 describe(filterOutIndexes.name, () => {
     const experimentArray = [

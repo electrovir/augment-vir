@@ -1,9 +1,8 @@
 import {expectDuration, itCases} from '@augment-vir/chai';
+import {awaitedBlockingMap, awaitedFilter, awaitedForEach, wait} from '@augment-vir/common';
 import {randomString} from '@augment-vir/node-js';
 import {assert, expect} from 'chai';
 import {describe, it} from 'mocha';
-import {awaitedBlockingMap, awaitedForEach, wait} from '../../../common/src';
-import {awaitedFilter} from '../../../common/src/augments/async';
 
 describe(awaitedForEach.name, () => {
     it('should ensure execution order', async () => {

@@ -1,15 +1,15 @@
 import {assertTypeOf} from '@augment-vir/chai';
-import {randomString} from '@augment-vir/node-js';
-import chai, {assert, expect} from 'chai';
-import chaiAsPromised from 'chai-as-promised';
-import {describe, it} from 'mocha';
 import {
     getObjectTypedKeys,
     mapObjectValues,
     mapObjectValuesSync,
     PropertyValueType,
     waitValue,
-} from '../../../../common/src';
+} from '@augment-vir/common';
+import {randomString} from '@augment-vir/node-js';
+import chai, {assert, expect} from 'chai';
+import chaiAsPromised from 'chai-as-promised';
+import {describe, it} from 'mocha';
 
 describe(mapObjectValuesSync.name, () => {
     it('should have proper types', () => {

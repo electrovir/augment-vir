@@ -1,11 +1,11 @@
-import {expect} from 'chai';
-import {describe, it} from 'mocha';
 import {
     filterToEnumValues,
     getEnumTypedKeys,
     getEnumTypedValues,
     isEnumValue,
-} from '../../../../common/src';
+} from '@augment-vir/common';
+import {expect} from 'chai';
+import {describe, it} from 'mocha';
 
 enum Planet {
     Mercury = 'mercury',

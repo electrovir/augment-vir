@@ -1,6 +1,6 @@
 import {itCases} from '@augment-vir/chai';
+import {assertMatchesObjectShape, ObjectWithAtLeastSingleEntryArrays} from '@augment-vir/common';
 import {describe, it} from 'mocha';
-import {assertMatchesObjectShape, ObjectWithAtLeastSingleEntryArrays} from '../../../../common/src';
 
 describe('ObjectWithAtLeastSingleEntryArrays', () => {
     it('should require all arrays to have at least one entry', () => {

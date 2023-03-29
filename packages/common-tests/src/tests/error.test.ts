@@ -1,6 +1,4 @@
 import {itCases} from '@augment-vir/chai';
-import {assert, expect} from 'chai';
-import {describe, it} from 'mocha';
 import {
     combineErrorMessages,
     combineErrors,
@@ -10,7 +8,9 @@ import {
     InvalidDateError,
     typedMap,
     wait,
-} from '../../../common/src';
+} from '@augment-vir/common';
+import {assert, expect} from 'chai';
+import {describe, it} from 'mocha';
 
 describe(extractErrorMessage.name, () => {
     it('should extract message from error object', () => {

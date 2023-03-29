@@ -1,8 +1,7 @@
 import {itCases} from '@augment-vir/chai';
+import {addRegExpFlags, deDupeRegExFlags, safeMatch} from '@augment-vir/common';
 import {expect} from 'chai';
 import {describe, it} from 'mocha';
-import {addRegExpFlags, deDupeRegExFlags} from '../../../common/src';
-import {safeMatch} from '../../../common/src/augments/regexp';
 
 describe(deDupeRegExFlags.name, () => {
     it('deDupes consecutive flags', () => {

@@ -1,5 +1,5 @@
 import {itCases} from '@augment-vir/chai';
-import {calculateRelativeDate} from '../../../../common/src';
+import {calculateRelativeDate} from '@augment-vir/common';
 
 describe(calculateRelativeDate.name, () => {
     /** ISO string of this date is "2009-02-13T23:31:30.123Z" */

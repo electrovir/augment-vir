@@ -1,4 +1,5 @@
 import {itCases} from '@augment-vir/chai';
+import {executeAndReturnError} from '@augment-vir/common';
 import chai, {assert, expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {existsSync} from 'fs';
@@ -7,7 +8,6 @@ import {lstat, readFile, writeFile} from 'fs/promises';
 import {describe, it} from 'mocha';
 import {tmpdir} from 'os';
 import {join} from 'path';
-import {executeAndReturnError} from '../../../common/src';
 import {nodeJsPackageDir, recursiveFileReadDir} from '../repo-file-paths.test-helpers';
 import {
     createSymLink,

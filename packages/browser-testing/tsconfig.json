@@ -4,13 +4,5 @@
         "module": "ESNext",
         "outDir": "dist/esm"
     },
-    "extends": "./tsconfig.base.json",
-    "references": [
-        {
-            "path": "../common"
-        },
-        {
-            "path": "../testing"
-        }
-    ]
+    "extends": "./tsconfig.base.json"
 }

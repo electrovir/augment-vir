@@ -1,12 +1,7 @@
 import {assertTypeOf} from '@augment-vir/chai';
+import {isObject, isPromiseLike, typedHasProperties, typedHasProperty} from '@augment-vir/common';
 import {expect} from 'chai';
 import {describe, it} from 'mocha';
-import {
-    isObject,
-    isPromiseLike,
-    typedHasProperties,
-    typedHasProperty,
-} from '../../../../common/src';
 
 describe(typedHasProperty.name, () => {
     const testObject = {

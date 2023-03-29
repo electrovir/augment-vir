@@ -1,7 +1,7 @@
 import {itCases} from '@augment-vir/chai';
+import {addCommasToNumber, clamp, convertIntoNumber, ensureMinAndMax} from '@augment-vir/common';
 import {expect} from 'chai';
 import {describe, it} from 'mocha';
-import {addCommasToNumber, clamp, convertIntoNumber, ensureMinAndMax} from '../../../common/src';
 
 describe(clamp.name, () => {
     it('should successfully clamp downwards', () => {

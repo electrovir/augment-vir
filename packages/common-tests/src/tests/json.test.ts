@@ -1,5 +1,5 @@
 import {itCases} from '@augment-vir/chai';
-import {parseJson} from '../../../common/src/augments/json';
+import {parseJson} from '@augment-vir/common';
 
 describe(parseJson.name, () => {
     itCases(parseJson, [

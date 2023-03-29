@@ -1,9 +1,13 @@
 import {assertTypeOf, itCases} from '@augment-vir/chai';
+import {
+    filterObject,
+    omitObjectKeys,
+    pickObjectKeys,
+    wrapNarrowTypeWithTypeCheck,
+} from '@augment-vir/common';
 import {randomString} from '@augment-vir/node-js';
 import {assert} from 'chai';
 import {describe, it} from 'mocha';
-import {filterObject, omitObjectKeys, wrapNarrowTypeWithTypeCheck} from '../../../../common/src';
-import {pickObjectKeys} from '../../../../common/src/augments/object/filter-object';
 
 describe(filterObject.name, () => {
     const symbolKey = Symbol('symbol-key');

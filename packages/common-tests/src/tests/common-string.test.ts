@@ -1,6 +1,4 @@
 import {assertTypeOf, itCases} from '@augment-vir/chai';
-import {assert, expect} from 'chai';
-import {describe, it} from 'mocha';
 import {
     camelCaseToKebabCase,
     capitalizeFirstLetter,
@@ -15,7 +13,9 @@ import {
     replaceStringAtIndex,
     splitIncludeSplit,
     typedSplit,
-} from '../../../common/src/augments/common-string';
+} from '@augment-vir/common';
+import {assert, expect} from 'chai';
+import {describe, it} from 'mocha';
 
 describe(joinWithFinalConjunction.name, () => {
     itCases(joinWithFinalConjunction, [

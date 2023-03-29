@@ -1,8 +1,7 @@
 import {assertTypeOf} from '@augment-vir/chai';
+import {isTruthy, TypedFunction} from '@augment-vir/common';
 import {expect} from 'chai';
 import {describe, it} from 'mocha';
-import {isTruthy} from '../../../common/src';
-import {TypedFunction} from '../../../common/src/augments/function';
 
 describe(isTruthy.name, () => {
     it('should return true for various truthy things', () => {

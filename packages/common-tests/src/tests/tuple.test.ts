@@ -1,7 +1,7 @@
 import {assertTypeOf} from '@augment-vir/chai';
+import {AtLeastTuple, isLengthAtLeast, Tuple} from '@augment-vir/common';
 import {assert} from 'chai';
 import {describe} from 'mocha';
-import {AtLeastTuple, isLengthAtLeast, Tuple} from '../../../common/src';
 
 describe(isLengthAtLeast.name, () => {
     it('should check length', () => {

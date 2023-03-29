@@ -1,7 +1,6 @@
 import {itCases} from '@augment-vir/chai';
+import {JsonCompatibleObject, jsonify} from '@augment-vir/common';
 import {describe} from 'mocha';
-import {jsonify} from '../../../../common/src';
-import {JsonCompatibleObject} from '../../../../common/src/augments/json-compatible';
 
 describe(jsonify.name, () => {
     const jsonCompatible: JsonCompatibleObject = {

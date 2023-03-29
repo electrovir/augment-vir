@@ -1,6 +1,6 @@
 import {assertTypeOf} from '@augment-vir/chai';
+import {PickDeep} from '@augment-vir/common';
 import {describe, it} from 'mocha';
-import {PickDeep} from '../../../common/src';
 
 describe('PickDeep', () => {
     type TestObject = {

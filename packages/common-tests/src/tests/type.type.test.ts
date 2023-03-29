@@ -4,7 +4,7 @@ import {
     RequiredAndNotNull,
     RequiredAndNotNullBy,
     wrapNarrowTypeWithTypeCheck,
-} from '../../../common/src';
+} from '@augment-vir/common';
 
 {
     /** Overwrite */

@@ -1,6 +1,4 @@
 import {itCases} from '@augment-vir/chai';
-import {expect} from 'chai';
-import {describe, it} from 'mocha';
 import {
     createDateFromNamedCommaFormat,
     createDateFromSlashFormat,
@@ -8,7 +6,9 @@ import {
     englishFullMonthNames,
     englishShortMonthNames,
     InvalidDateError,
-} from '../../../../common/src';
+} from '@augment-vir/common';
+import {expect} from 'chai';
+import {describe, it} from 'mocha';
 
 describe(createDateFromSlashFormat.name, () => {
     itCases(

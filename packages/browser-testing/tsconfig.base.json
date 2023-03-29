@@ -1,5 +1,5 @@
 {
-    "extends": "../../tsconfig.json",
+    "extends": "../../tsconfig.repo-base.json",
     "compilerOptions": {
         "rootDir": "./src",
         "outDir": "./dist",
@@ -11,13 +11,5 @@
         "./dist",
         "./node_modules",
         "./test-files"
-    ],
-    "references": [
-        {
-            "path": "../common"
-        },
-        {
-            "path": "../testing"
-        }
     ]
 }

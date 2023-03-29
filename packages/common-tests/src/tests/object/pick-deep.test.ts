@@ -1,5 +1,5 @@
+import {NestedKeys} from '@augment-vir/common';
 import {UnionToIntersection} from 'type-fest';
-import {NestedKeys} from '../../../../common/src';
 
 type InnerPickDeep<
     OriginalObjectGeneric extends object,

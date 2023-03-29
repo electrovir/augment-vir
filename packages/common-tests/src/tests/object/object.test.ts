@@ -1,6 +1,6 @@
+import {areJsonEqual, copyThroughJson, isObject, PropertyValueType} from '@augment-vir/common';
 import {assert, expect} from 'chai';
 import {describe, it} from 'mocha';
-import {areJsonEqual, copyThroughJson, isObject, PropertyValueType} from '../../../../common/src';
 
 describe(isObject.name, () => {
     it('should pass on empty object', () => {

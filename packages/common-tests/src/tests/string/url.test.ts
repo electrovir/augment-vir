@@ -1,5 +1,5 @@
 import {itCases} from '@augment-vir/chai';
-import {joinUrlParts} from '../../../../common/src/augments/string/url';
+import {joinUrlParts} from '@augment-vir/common';
 
 describe(joinUrlParts.name, () => {
     itCases(joinUrlParts, [
