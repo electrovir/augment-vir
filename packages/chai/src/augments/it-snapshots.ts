@@ -1,5 +1,5 @@
 import {AnyFunction, assertRuntimeTypeOf, createDeferredPromiseWrapper} from '@augment-vir/common';
-import {assertExpectedOutput, CompareExpectationsOptions} from 'test-established-expectations';
+import {CompareExpectationsOptions, assertExpectedOutput} from 'test-established-expectations';
 
 type SnapshotTestBaseCase = {
     it: string;

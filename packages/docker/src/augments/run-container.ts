@@ -1,12 +1,12 @@
 import {logIf, runShellCommand} from '@augment-vir/node-js';
 import {
-    combineCommandAndFlags,
     EnvMap,
+    PortMap,
+    VolumeMap,
+    combineCommandAndFlags,
     makeEnvFlags,
     makePortMapFlags,
     makeVolumeFlags,
-    PortMap,
-    VolumeMap,
 } from './docker-command-inputs';
 import {waitForContainerToBeRemoved} from './is-container-running';
 import {killContainer} from './kill-container';

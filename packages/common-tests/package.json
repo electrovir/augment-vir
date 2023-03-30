@@ -22,8 +22,8 @@
         "test:types": "tsc --noEmit"
     },
     "devDependencies": {
-        "@augment-vir/chai": "^13.2.1",
-        "@augment-vir/node-js": "^13.2.1",
+        "@augment-vir/chai": "^13.2.2",
+        "@augment-vir/node-js": "^13.2.2",
         "@electrovir/nyc": "^15.1.0-fix0",
         "@istanbuljs/nyc-config-typescript": "^1.0.2",
         "@types/chai": "^4.3.4",

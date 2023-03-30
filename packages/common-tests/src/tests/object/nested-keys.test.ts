@@ -1,5 +1,5 @@
 import {assertTypeOf, itCases} from '@augment-vir/chai';
-import {getValueFromNestedKeys, NestedKeys, NestedSequentialKeys} from '@augment-vir/common';
+import {NestedKeys, NestedSequentialKeys, getValueFromNestedKeys} from '@augment-vir/common';
 import {randomString} from '@augment-vir/node-js';
 import {describe} from 'mocha';
 

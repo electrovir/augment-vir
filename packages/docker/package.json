@@ -22,8 +22,8 @@
         "test:coverage": "npm test"
     },
     "dependencies": {
-        "@augment-vir/common": "^13.2.1",
-        "@augment-vir/node-js": "^13.2.1"
+        "@augment-vir/common": "^13.2.2",
+        "@augment-vir/node-js": "^13.2.2"
     },
     "devDependencies": {
         "typescript": "^5.0.2"

@@ -23,7 +23,7 @@
         "test:coverage": "npm test coverage"
     },
     "dependencies": {
-        "@augment-vir/common": "^13.2.1",
+        "@augment-vir/common": "^13.2.2",
         "@types/chai": "^4.3.4",
         "expect-type": "^0.15.0",
         "mock-vir": "^0.1.0",

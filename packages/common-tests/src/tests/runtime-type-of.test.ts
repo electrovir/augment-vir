@@ -1,9 +1,9 @@
 import {assertTypeOf, itCases} from '@augment-vir/chai';
 import {
-    assertRuntimeTypeOf,
-    isRuntimeTypeOf,
     JsonCompatibleObject,
     JsonCompatibleValue,
+    assertRuntimeTypeOf,
+    isRuntimeTypeOf,
 } from '@augment-vir/common';
 import {assert} from 'chai';
 import {describe, it} from 'mocha';

@@ -4,9 +4,9 @@ import {assertTypeOf} from './assert-type-of';
 import {
     BaseTestCase,
     FunctionTestCase,
-    itCases,
     OutputTestCaseMultipleInputs,
     OutputTestCaseSingleInput,
+    itCases,
 } from './it-cases';
 
 describe(itCases.name, () => {

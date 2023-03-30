@@ -1,4 +1,4 @@
-import {randomBytes, webcrypto as crypto} from 'crypto';
+import {webcrypto as crypto, randomBytes} from 'crypto';
 
 export function randomBoolean(percentLikelyToBeTrue: number = 50): boolean {
     return randomInteger({min: 0, max: 49}) < percentLikelyToBeTrue / 2;

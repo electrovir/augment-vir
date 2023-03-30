@@ -1,10 +1,10 @@
 import {assertTypeOf, typedAssertInstanceOf} from '@augment-vir/chai';
 import {
-    createDeferredPromiseWrapper,
-    isPromiseLike,
     MaybePromise,
     PromiseTimeoutError,
     UnPromise,
+    createDeferredPromiseWrapper,
+    isPromiseLike,
     wait,
     waitForCondition,
     wrapPromiseInTimeout,

@@ -23,8 +23,8 @@
         "test:coverage": "npm test coverage"
     },
     "dependencies": {
-        "@augment-vir/common": "^13.2.1",
-        "@augment-vir/testing": "^13.2.1",
+        "@augment-vir/common": "^13.2.2",
+        "@augment-vir/testing": "^13.2.2",
         "@open-wc/testing": "^3.1.7",
         "@types/mocha": "^10.0.1",
         "@web/test-runner-commands": "^0.6.5",
