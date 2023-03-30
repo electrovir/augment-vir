@@ -17,7 +17,7 @@
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "scripts": {
-        "compile": "tsc --pretty",
+        "compile": "tsc",
         "test": "echo \"no tests yet\" && exit 0",
         "test:coverage": "npm test"
     },
@@ -26,7 +26,7 @@
         "@augment-vir/node-js": "^13.2.1"
     },
     "devDependencies": {
-        "typescript": "^4.9.5"
+        "typescript": "^5.0.2"
     },
     "publishConfig": {
         "access": "public"

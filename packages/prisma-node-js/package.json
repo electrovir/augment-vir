@@ -17,7 +17,7 @@
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "scripts": {
-        "compile": "tsc --pretty",
+        "compile": "tsc",
         "test": "echo \"no tests yet\" && exit 0",
         "test:coverage": "npm test"
     },
@@ -27,7 +27,7 @@
     },
     "devDependencies": {
         "istanbul-smart-text-reporter": "^1.1.1",
-        "typescript": "^4.9.5"
+        "typescript": "^5.0.2"
     },
     "publishConfig": {
         "access": "public"

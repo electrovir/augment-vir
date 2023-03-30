@@ -46,7 +46,7 @@
         "prettier-plugin-packagejson": "^2.4.3",
         "prettier-plugin-sort-json": "^1.0.0",
         "prettier-plugin-toml": "^0.3.1",
-        "tsc-mono": "^1.0.0",
+        "tsc-mono": "^1.0.1",
         "typescript": "^5.0.2",
         "virmator": "^6.2.2"
     }

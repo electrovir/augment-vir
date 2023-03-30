@@ -1,8 +1,15 @@
 {
+    "extends": "../../tsconfig.repo-base.json",
     "compilerOptions": {
         "declarationDir": "dist/types",
-        "module": "ESNext",
-        "outDir": "dist/esm"
+        "outDir": "dist/esm",
+        "rootDir": "./src",
+        "module": "ES2020"
     },
-    "extends": "./tsconfig.base.json"
+    "exclude": [
+        "./configs",
+        "./dist",
+        "./node_modules",
+        "./test-files"
+    ]
 }

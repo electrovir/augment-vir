@@ -18,16 +18,16 @@
     "module": "dist/esm/index.js",
     "types": "dist/types/index.d.ts",
     "scripts": {
-        "compile": "tsc --project tsconfig.json && tsc --project tsconfig.cjs.json && tsc --project tsconfig.esm.json",
+        "compile": "tsc --project tsconfig.json && tsc --project tsconfig.cjs.json",
         "test": "echo \"use common-test to run tests\" && exit 0",
         "test:coverage": "npm test",
         "test:types": "tsc --noEmit"
     },
     "dependencies": {
-        "type-fest": "^3.6.1"
+        "type-fest": "^3.7.2"
     },
     "devDependencies": {
-        "typescript": "^4.9.5"
+        "typescript": "^5.0.2"
     },
     "publishConfig": {
         "access": "public"
