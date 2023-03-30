@@ -25,15 +25,14 @@
         "docs:update": "virmator code-in-markdown",
         "format": "virmator format",
         "publish": "virmator publish \"npm run test:all\"",
-        "test": "tsc --build tsconfig.build.json && npm run test --workspaces -s",
+        "test": "npm run test --workspaces -s",
         "test:all": "npm run compile && npm run test:files && npm run compile && npm run test:spelling && npm run test:format && npm run test:docs && npm run test:coverage",
-        "test:coverage": "tsc --build tsconfig.build.json && npm run test:coverage --workspaces",
+        "test:coverage": "npm run test:coverage --workspaces",
         "test:docs": "virmator code-in-markdown check",
         "test:files": "cd packages/scripts && npm run verify",
         "test:format": "virmator format check",
         "test:spelling": "virmator spellcheck",
-        "test:types": "tsc --build tsconfig.build.json",
-        "test:web": "virmator test-web"
+        "test:types": "tsc-mono packages for-each tsc --noEmit"
     },
     "devDependencies": {
         "cspell": "^6.31.1",
