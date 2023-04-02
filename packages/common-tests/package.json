@@ -35,6 +35,6 @@
         "mocha-spec-reporter-with-file-names": "^0.0.3",
         "ts-node": "^10.9.1",
         "type-fest": "^3.7.2",
-        "typescript": "^5.0.2"
+        "typescript": "^5.0.3"
     }
 }

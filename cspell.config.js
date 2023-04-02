@@ -7,10 +7,5 @@ module.exports = {
     ],
     words: [
         ...baseConfig.words,
-        'datamodel',
-        'datasource',
-        'jsonify',
-        'tsbuildinfo',
-        'jsonifiable',
     ],
 };

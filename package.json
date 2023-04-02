@@ -10,7 +10,7 @@
         "type": "git",
         "url": "https://github.com/electrovir/augment-vir"
     },
-    "license": "MIT",
+    "license": "(MIT or CC0 1.0)",
     "author": {
         "name": "electrovir",
         "url": "https://github.com/electrovir"
@@ -32,7 +32,7 @@
         "test:files": "cd packages/scripts && npm run verify",
         "test:format": "virmator format check",
         "test:spelling": "virmator spellcheck",
-        "test:types": "tsc-mono packages for-each tsc --noEmit"
+        "test:types": "tsc-mono for-each tsc --noEmit"
     },
     "devDependencies": {
         "cspell": "^6.31.1",
@@ -45,8 +45,8 @@
         "prettier-plugin-packagejson": "^2.4.3",
         "prettier-plugin-sort-json": "^1.0.0",
         "prettier-plugin-toml": "^0.3.1",
-        "tsc-mono": "^1.0.1",
-        "typescript": "^5.0.2",
-        "virmator": "^6.2.2"
+        "tsc-mono": "^2.1.0",
+        "typescript": "^5.0.3",
+        "virmator": "^6.3.1"
     }
 }
