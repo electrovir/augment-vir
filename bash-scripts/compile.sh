@@ -6,7 +6,6 @@ set -e;
 
 rm -rf node_modules/@augment-vir;
 rm -rf packages/*/dist;
-rm -f packages/*/tsconfig.tsbuildinfo;
 npm i;
 
 echo "compiling...";
