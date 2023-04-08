@@ -32,6 +32,8 @@ export type TypedFunction<Arguments, Return> = Arguments extends readonly any[]
     ? () => Return
     : (arg: Arguments) => Return;
 
-export function isTruthy<T>(input: T): input is NonNullable<T> {
+export function isTruthy<T>(
+    input: T,
+): input is Exclude<T, undefined | null | false | 0 | '' | -0 | 0n> {
     return !!input;
 }

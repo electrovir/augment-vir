@@ -42,6 +42,22 @@ describe(isTruthy.name, () => {
 
         expect(stuffToTest.some(isTruthy)).to.equal(false);
     });
+
+    it('excludes falsy types', () => {
+        const stuffToTest = [
+            undefined,
+            false,
+            0,
+            '',
+            null,
+            'hello there',
+        ] as const;
+
+        const filtered = stuffToTest.filter(isTruthy);
+
+        assertTypeOf(filtered).toMatchTypeOf<string[]>();
+        assertTypeOf(stuffToTest).not.toMatchTypeOf<string[]>();
+    });
 });
 
 describe('TypedFunction', () => {
