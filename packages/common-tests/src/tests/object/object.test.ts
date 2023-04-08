@@ -1,3 +1,4 @@
+import {itCases} from '@augment-vir/chai';
 import {areJsonEqual, copyThroughJson, isObject, PropertyValueType} from '@augment-vir/common';
 import {assert, expect} from 'chai';
 import {describe, it} from 'mocha';
@@ -76,6 +77,29 @@ describe(areJsonEqual.name, () => {
         expect(areJsonEqual(objectA, objectB)).to.equal(false);
         expect(areJsonEqual({...objectA, b: 2}, objectB)).to.equal(true);
     });
+
+    itCases(areJsonEqual, [
+        {
+            it: 'passes for nested unordered object keys',
+            inputs: [
+                {
+                    b: {
+                        first: 1,
+                        second: 2,
+                    },
+                    a: 'hi',
+                },
+                {
+                    b: {
+                        second: 2,
+                        first: 1,
+                    },
+                    a: 'hi',
+                },
+            ],
+            expect: true,
+        },
+    ]);
 });
 
 describe(copyThroughJson.name, () => {

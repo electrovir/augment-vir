@@ -1,6 +1,5 @@
-import {extractErrorMessage} from '../error';
+import {ensureError} from '../error';
 import {JsonCompatibleValue} from '../json-compatible';
-import {getEntriesSortedByKey} from './object-entries';
 
 export type PartialAndNullable<T extends object> = {
     [Prop in keyof T]?: T[Prop] | null | undefined;
@@ -14,6 +13,12 @@ export function isObject(input: any): input is NonNullable<object> {
     return !!input && typeof input === 'object';
 }
 
+const areJsonEqualFailureMessage = 'Failed to compare objects using JSON.stringify';
+
+function baseAreJsonEqual(a: any, b: any): boolean {
+    return JSON.stringify(a) === JSON.stringify(b);
+}
+
 export function areJsonEqual(
     a: Readonly<JsonCompatibleValue | undefined>,
     b: Readonly<JsonCompatibleValue | undefined>,
@@ -24,16 +29,23 @@ export function areJsonEqual(
         }
 
         if (isObject(a) && isObject(b)) {
-            const sortedAEntries = getEntriesSortedByKey(a);
-            const sortedBEntries = getEntriesSortedByKey(b);
-            return JSON.stringify(sortedAEntries) === JSON.stringify(sortedBEntries);
+            const areKeysEqual = baseAreJsonEqual(Object.keys(a).sort(), Object.keys(b).sort());
+            if (!areKeysEqual) {
+                return false;
+            }
+
+            return Object.keys(a).every((keyName) => {
+                return areJsonEqual(a[keyName as any], b[keyName as any]);
+            });
         } else {
-            return JSON.stringify(a) === JSON.stringify(b);
+            return baseAreJsonEqual(a, b);
         }
-    } catch (error) {
-        console.error(
-            `Failed to compare objects using JSON.stringify: ${extractErrorMessage(error)}`,
-        );
+    } catch (caught) {
+        const error = ensureError(caught);
+        if (error.message.startsWith(areJsonEqualFailureMessage)) {
+            throw error;
+        }
+        error.message = `${areJsonEqualFailureMessage}: ${error.message}`;
         throw error;
     }
 }
