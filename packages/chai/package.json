@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/chai",
-    "version": "13.2.3",
+    "version": "13.2.4",
     "homepage": "https://github.com/electrovir/augment-vir/tree/main/packages/common",
     "bugs": {
         "url": "https://github.com/electrovir/augment-vir/issues"
@@ -23,16 +23,16 @@
         "test:coverage": "npm test"
     },
     "dependencies": {
-        "@augment-vir/common": "^13.2.3",
-        "@augment-vir/testing": "^13.2.3",
+        "@augment-vir/common": "^13.2.4",
+        "@augment-vir/testing": "^13.2.4",
         "@types/chai-as-promised": "^7.1.5",
         "chai-as-promised": "^7.1.1",
         "expect-type": "^0.15.0",
         "test-established-expectations": "^0.3.0",
-        "type-fest": "^3.7.2"
+        "type-fest": "^3.8.0"
     },
     "devDependencies": {
-        "typescript": "^5.0.3"
+        "typescript": "^5.0.4"
     },
     "publishConfig": {
         "access": "public"

@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/common",
-    "version": "13.2.3",
+    "version": "13.2.4",
     "homepage": "https://github.com/electrovir/augment-vir/tree/main/packages/common",
     "bugs": {
         "url": "https://github.com/electrovir/augment-vir/issues"
@@ -24,10 +24,10 @@
         "test:types": "tsc --noEmit"
     },
     "dependencies": {
-        "type-fest": "^3.7.2"
+        "type-fest": "^3.8.0"
     },
     "devDependencies": {
-        "typescript": "^5.0.3"
+        "typescript": "^5.0.4"
     },
     "publishConfig": {
         "access": "public"

@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/testing",
-    "version": "13.2.3",
+    "version": "13.2.4",
     "homepage": "https://github.com/electrovir/augment-vir/tree/main/packages/testing",
     "bugs": {
         "url": "https://github.com/electrovir/augment-vir/issues"
@@ -23,11 +23,11 @@
         "test:coverage": "npm test coverage"
     },
     "dependencies": {
-        "@augment-vir/common": "^13.2.3",
+        "@augment-vir/common": "^13.2.4",
         "@types/chai": "^4.3.4",
         "expect-type": "^0.15.0",
         "mock-vir": "^0.1.0",
-        "type-fest": "^3.7.2"
+        "type-fest": "^3.8.0"
     },
     "devDependencies": {
         "@electrovir/nyc": "^15.1.0-fix0",
@@ -38,7 +38,7 @@
         "mocha": "^10.2.0",
         "mocha-spec-reporter-with-file-names": "^0.0.3",
         "ts-node": "^10.9.1",
-        "typescript": "^5.0.3"
+        "typescript": "^5.0.4"
     },
     "publishConfig": {
         "access": "public"
