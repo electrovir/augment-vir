@@ -23,5 +23,24 @@ export function isLengthAtLeast<ArrayElementGeneric, LengthGeneric extends numbe
     array: ReadonlyArray<ArrayElementGeneric | undefined>,
     length: LengthGeneric,
 ): array is AtLeastTuple<ArrayElementGeneric, LengthGeneric> {
-    return array.length >= length;
+    try {
+        assertLengthAtLeast(array, length);
+        return true;
+    } catch (error) {
+        return false;
+    }
+}
+
+export function assertLengthAtLeast<ArrayElementGeneric, LengthGeneric extends number>(
+    array: ReadonlyArray<ArrayElementGeneric | undefined>,
+    length: LengthGeneric,
+    arrayName?: string,
+): asserts array is AtLeastTuple<ArrayElementGeneric, LengthGeneric> {
+    if (array.length < length) {
+        throw new Error(
+            arrayName
+                ? `'${arrayName}' is not at least '${length}' in length.`
+                : `Array is not at least '${length}' in length.`,
+        );
+    }
 }

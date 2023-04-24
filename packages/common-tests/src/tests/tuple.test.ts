@@ -1,7 +1,45 @@
-import {assertTypeOf} from '@augment-vir/chai';
-import {AtLeastTuple, isLengthAtLeast, Tuple} from '@augment-vir/common';
+import {assertTypeOf, itCases} from '@augment-vir/chai';
+import {AtLeastTuple, Tuple, assertLengthAtLeast, isLengthAtLeast} from '@augment-vir/common';
 import {assert} from 'chai';
 import {describe} from 'mocha';
+
+describe(assertLengthAtLeast.name, () => {
+    it('is a type guard', () => {
+        const anyArray: string[] = [
+            'a',
+            'b',
+            'c',
+        ];
+        const access = anyArray[0];
+        assertTypeOf(access).toBeNullable();
+        assertLengthAtLeast(anyArray, 2);
+
+        const inGuardAccess = anyArray[1];
+        assertTypeOf(inGuardAccess).not.toBeNullable();
+        const stillMaybeUndefined = anyArray[10];
+
+        assertTypeOf(stillMaybeUndefined).toBeNullable();
+    });
+
+    itCases(assertLengthAtLeast, [
+        {
+            it: 'works on a sufficiently sized array',
+            inputs: [
+                [''],
+                1,
+            ],
+            throws: undefined,
+        },
+        {
+            it: 'fails on an insufficiently sized array',
+            inputs: [
+                [''],
+                2,
+            ],
+            throws: Error,
+        },
+    ]);
+});
 
 describe(isLengthAtLeast.name, () => {
     it('should check length', () => {
