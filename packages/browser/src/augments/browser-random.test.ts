@@ -18,11 +18,14 @@ describe(randomString.name, () => {
             'some "random" strings were removed when converting to a set, meaning there were duplicates.',
         );
     });
+    it('uses the given length parameter', () => {
+        assert.lengthOf(randomString(4), 4);
+    });
 });
 
 describe(randomBoolean.name, () => {
     itCases(
-        (likelyTrue: number) => {
+        (likelyTrue?: number) => {
             const counts = {
                 true: 0,
                 false: 0,
@@ -37,12 +40,12 @@ describe(randomBoolean.name, () => {
             const percentActuallyTrue = (counts.true / (counts.true + counts.false)) * 100;
             assert.isAbove(
                 percentActuallyTrue,
-                clamp({value: likelyTrue, min: 0, max: 100}) - 1,
+                clamp({value: likelyTrue ?? 50, min: 0, max: 100}) - 1,
                 'actual true percent was below acceptable range',
             );
             assert.isBelow(
                 percentActuallyTrue,
-                clamp({value: likelyTrue, min: 0, max: 100}) + 1,
+                clamp({value: likelyTrue ?? 50, min: 0, max: 100}) + 1,
                 'actual true percent was above acceptable range',
             );
         },
@@ -50,6 +53,11 @@ describe(randomBoolean.name, () => {
             {
                 it: 'works with straight 50/50',
                 input: 50,
+                throws: undefined,
+            },
+            {
+                it: 'defaults to straight 50/50',
+                input: undefined,
                 throws: undefined,
             },
             {

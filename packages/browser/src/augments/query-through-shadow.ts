@@ -98,7 +98,7 @@ function handleNestedQueries(
     const firstQuery = inputs.queries[0];
 
     /** No way to intentionally trigger this edge case, we're just catching it here for type purposes */
-    /* c8 ignore next 7 */
+    /* c8 ignore start */
     if (!firstQuery) {
         throw new Error(
             `Somehow the first query was empty in '[${inputs.queries.join(',')}]' for query '${
@@ -106,6 +106,7 @@ function handleNestedQueries(
             }'`,
         );
     }
+    /* c8 ignore stop */
     const results = queryThroughShadow({
         ...inputs,
         query: firstQuery,

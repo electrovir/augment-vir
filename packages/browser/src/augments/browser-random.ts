@@ -1,6 +1,8 @@
 import {clamp, ensureMinAndMax} from '@augment-vir/common';
 const crypto = globalThis.crypto;
 
+// can't get this coverage to work
+/* c8 ignore start */
 /**
  * Creates a random integer (decimal points are all cut off) between the given min and max
  * (inclusive).
@@ -79,3 +81,4 @@ export function randomString(inputLength: number = 16): string {
             .substring(0, inputLength)
     );
 }
+/* c8 ignore stop */
