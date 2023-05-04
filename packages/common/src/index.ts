@@ -10,6 +10,7 @@ export * from './augments/error';
 export * from './augments/function';
 export * from './augments/json';
 export * from './augments/json-compatible';
+export * from './augments/map';
 export * from './augments/object/enum';
 export * from './augments/object/filter-object';
 export * from './augments/object/has-key';
