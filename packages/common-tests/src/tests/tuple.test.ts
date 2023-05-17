@@ -1,5 +1,11 @@
 import {assertTypeOf, itCases} from '@augment-vir/chai';
-import {AtLeastTuple, Tuple, assertLengthAtLeast, isLengthAtLeast} from '@augment-vir/common';
+import {
+    AtLeastTuple,
+    MappedTuple,
+    Tuple,
+    assertLengthAtLeast,
+    isLengthAtLeast,
+} from '@augment-vir/common';
 import {assert} from 'chai';
 import {describe} from 'mocha';
 
@@ -139,5 +145,30 @@ describe('AtLeastTuple', () => {
             2,
             3,
         ] as const).not.toBeAssignableTo<AtLeastTuple<any, 5>>();
+    });
+});
+
+describe('MappedTuple', () => {
+    it('has proper types', () => {
+        const myArray = [
+            1,
+            2,
+            3,
+            4,
+            'a',
+            'b',
+        ] as const;
+        type MappedMyArray = MappedTuple<typeof myArray, RegExp>;
+
+        assertTypeOf<MappedMyArray>().toEqualTypeOf<
+            Readonly<[RegExp, RegExp, RegExp, RegExp, RegExp, RegExp]>
+        >();
+        assertTypeOf<MappedMyArray>().not.toEqualTypeOf<
+            Readonly<[RegExp, RegExp, RegExp, RegExp, RegExp, RegExp, RegExp]>
+        >();
+        assertTypeOf<MappedMyArray>().not.toEqualTypeOf<
+            Readonly<[RegExp, RegExp, RegExp, RegExp, RegExp]>
+        >();
+        assertTypeOf<MappedMyArray>().not.toEqualTypeOf<ReadonlyArray<RegExp>>();
     });
 });
