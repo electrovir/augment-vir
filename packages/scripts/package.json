@@ -14,13 +14,13 @@
         "verify": "ts-node src/index.ts"
     },
     "dependencies": {
-        "@augment-vir/common": "^13.4.0",
-        "@augment-vir/node-js": "^13.4.0"
+        "@augment-vir/common": "^13.5.0",
+        "@augment-vir/node-js": "^13.5.0"
     },
     "devDependencies": {
         "@electrovir/nyc": "^15.1.0-fix0",
         "@istanbuljs/nyc-config-typescript": "^1.0.2",
-        "@types/chai": "^4.3.4",
+        "@types/chai": "^4.3.5",
         "@types/mocha": "^10.0.1",
         "@types/node": "^18.16.0",
         "chai": "^4.3.7",
