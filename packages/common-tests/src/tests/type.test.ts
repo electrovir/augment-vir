@@ -2,13 +2,14 @@ import {assertTypeOf} from '@augment-vir/chai';
 import {
     ArrayElement,
     DeepWriteable,
+    NoInfer,
+    RequireNonVoid,
+    Tuple,
+    Writeable,
     ensureType,
     makeReadonly,
     makeWritable,
-    NoInfer,
-    Tuple,
     wrapNarrowTypeWithTypeCheck,
-    Writeable,
 } from '@augment-vir/common';
 import {assert} from 'chai';
 import {describe, it} from 'mocha';
@@ -29,6 +30,17 @@ describe('NoInfer', () => {
         // @ts-expect-error
         functionThatHasAGenericForTesting(randomTestValue);
         functionThatHasAGenericForTesting<typeof randomTestValue>(randomTestValue);
+    });
+});
+
+describe('RequireNonVoid', () => {
+    it('blocks void values', () => {
+        assertTypeOf<RequireNonVoid<void, 'success', 'failure'>>().toEqualTypeOf<'failure'>();
+        assertTypeOf<RequireNonVoid<void, 'success', 'failure'>>().not.toEqualTypeOf<'success'>();
+    });
+    it('allows non-void values', () => {
+        assertTypeOf<RequireNonVoid<undefined, 'success', 'failure'>>().toEqualTypeOf<'success'>();
+        assertTypeOf<RequireNonVoid<undefined, 'success', 'failure'>>().toEqualTypeOf<'success'>();
     });
 });
 
