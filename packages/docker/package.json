@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/docker",
-    "version": "13.5.0",
+    "version": "14.0.0",
     "homepage": "https://github.com/electrovir/augment-vir/tree/main/packages/docker",
     "bugs": {
         "url": "https://github.com/electrovir/augment-vir/issues"
