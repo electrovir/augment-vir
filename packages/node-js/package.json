@@ -22,7 +22,7 @@
         "test:coverage": "npm test coverage"
     },
     "dependencies": {
-        "@augment-vir/common": "^13.5.0",
+        "@augment-vir/common": "^14.0.0",
         "ansi-colors": "^4.1.3",
         "axios": "^1.4.0",
         "fs-extra": "^11.1.1",
@@ -30,7 +30,7 @@
         "type-fest": "^3.10.0"
     },
     "devDependencies": {
-        "@augment-vir/chai": "^13.5.0",
+        "@augment-vir/chai": "^14.0.0",
         "@electrovir/nyc": "^15.1.0-fix0",
         "@istanbuljs/nyc-config-typescript": "^1.0.2",
         "@types/chai": "^4.3.5",

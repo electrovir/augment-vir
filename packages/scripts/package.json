@@ -14,8 +14,8 @@
         "verify": "ts-node src/index.ts"
     },
     "dependencies": {
-        "@augment-vir/common": "^13.5.0",
-        "@augment-vir/node-js": "^13.5.0"
+        "@augment-vir/common": "^14.0.0",
+        "@augment-vir/node-js": "^14.0.0"
     },
     "devDependencies": {
         "@electrovir/nyc": "^15.1.0-fix0",
