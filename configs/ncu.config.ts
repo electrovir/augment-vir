@@ -5,7 +5,9 @@ export const ncuConfig: RunOptions = {
     upgrade: true,
     root: true,
     // exclude these
-    reject: [],
+    reject: [
+        '@types/node',
+    ],
     // include only these
     filter: [],
 };
