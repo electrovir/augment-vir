@@ -2,7 +2,7 @@ import {isPromiseLike, MaybePromise, PartialAndNullable} from '@augment-vir/comm
 import type {assert as assertImport} from 'chai';
 
 export type ErrorMatchOptions = PartialAndNullable<{
-    matchMessage: string;
+    matchMessage: string | RegExp;
     matchConstructor: ErrorConstructor | Error | {new (...args: any[]): Error};
 }>;
 
