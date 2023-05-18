@@ -28,7 +28,6 @@
         "@types/chai-as-promised": "^7.1.5",
         "chai-as-promised": "^7.1.1",
         "expect-type": "^0.15.0",
-        "test-established-expectations": "^0.3.0",
         "type-fest": "^3.10.0"
     },
     "devDependencies": {
