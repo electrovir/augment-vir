@@ -1,14 +1,13 @@
-import {assertTypeOf} from '@augment-vir/chai';
+import {assertThrows, assertTypeOf} from '@augment-vir/chai';
 import {
+    PropertyValueType,
     getObjectTypedKeys,
     mapObjectValues,
     mapObjectValuesSync,
-    PropertyValueType,
     waitValue,
 } from '@augment-vir/common';
 import {randomString} from '@augment-vir/node-js';
-import chai, {assert, expect} from 'chai';
-import chaiAsPromised from 'chai-as-promised';
+import {assert, expect} from 'chai';
 import {describe, it} from 'mocha';
 
 describe(mapObjectValuesSync.name, () => {
@@ -95,12 +94,13 @@ describe(mapObjectValues.name, () => {
 
         const errorMessage = randomString();
 
-        chai.use(chaiAsPromised);
-        await assert.isRejected(
-            mapObjectValues(originalObject, async (key, value) => {
+        await assertThrows(
+            mapObjectValues(originalObject, async (key, value): Promise<any> => {
                 throw new Error(errorMessage);
             }),
-            errorMessage,
+            {
+                matchMessage: errorMessage,
+            },
         );
     });
 

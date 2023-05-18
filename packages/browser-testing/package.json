@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/browser-testing",
-    "version": "14.0.1",
+    "version": "14.1.0",
     "homepage": "https://github.com/electrovir/augment-vir/tree/main/packages/common",
     "bugs": {
         "url": "https://github.com/electrovir/augment-vir/issues"
@@ -19,12 +19,12 @@
     "types": "dist/types/index.d.ts",
     "scripts": {
         "compile": "tsc --project tsconfig.json && tsc --project tsconfig.cjs.json",
-        "test": "virmator test-web",
-        "test:coverage": "npm test coverage"
+        "test": "echo \"browser-testing augments are already tested by the testing package\" && exit 0",
+        "test:coverage": "npm test"
     },
     "dependencies": {
-        "@augment-vir/common": "^14.0.1",
-        "@augment-vir/testing": "^14.0.1",
+        "@augment-vir/common": "^14.1.0",
+        "@augment-vir/testing": "^14.1.0",
         "@open-wc/testing": "^3.1.8",
         "@types/mocha": "^10.0.1",
         "@web/test-runner-commands": "^0.7.0",

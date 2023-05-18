@@ -1,5 +1,5 @@
-import chai, {expect} from 'chai';
-import chaiAsPromised from 'chai-as-promised';
+import {assertThrows} from '@augment-vir/chai';
+import {expect} from 'chai';
 import {describe, it} from 'mocha';
 import {join} from 'path';
 import {
@@ -36,8 +36,9 @@ describe(runShellCommand.name, () => {
     });
 
     it('promise is rejected when requested to do so', async () => {
-        chai.use(chaiAsPromised);
-        await expect(runShellCommand(`exit 2`, {rejectOnError: true})).to.be.rejectedWith(Error);
+        await assertThrows(runShellCommand(`exit 2`, {rejectOnError: true}), {
+            matchConstructor: Error,
+        });
     });
 
     it('shell stdoutCallback should get fired when stdout is written', async () => {

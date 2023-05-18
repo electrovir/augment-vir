@@ -1,7 +1,6 @@
 import {itCases} from '@augment-vir/chai';
 import {executeAndReturnError} from '@augment-vir/common';
-import chai, {assert, expect} from 'chai';
-import chaiAsPromised from 'chai-as-promised';
+import {assert, expect} from 'chai';
 import {existsSync} from 'fs';
 import {remove} from 'fs-extra';
 import {lstat, readFile, writeFile} from 'fs/promises';
@@ -58,7 +57,6 @@ describe(createSymLink.name, () => {
             await remove(symlinkPath);
             const existsAfterFileDeletion = existsSync(symlinkPath);
 
-            chai.use(chaiAsPromised);
             assert.deepStrictEqual(
                 {
                     existsBeforeTest,

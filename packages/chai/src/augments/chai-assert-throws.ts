@@ -1,6 +1,6 @@
 import {MaybePromise} from '@augment-vir/common';
 import {ErrorMatchOptions, assertThrows as generic_assertThrows} from '@augment-vir/testing';
-import {assert} from '@open-wc/testing';
+import {assert} from 'chai';
 
 export function assertThrows(
     callback: Promise<any>,

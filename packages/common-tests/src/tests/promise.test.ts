@@ -1,4 +1,4 @@
-import {assertTypeOf, typedAssertInstanceOf} from '@augment-vir/chai';
+import {assertThrows, assertTypeOf, typedAssertInstanceOf} from '@augment-vir/chai';
 import {
     MaybePromise,
     PromiseTimeoutError,
@@ -10,8 +10,7 @@ import {
     wrapPromiseInTimeout,
 } from '@augment-vir/common';
 import {randomString} from '@augment-vir/node-js';
-import chai, {assert, expect} from 'chai';
-import chaiAsPromised from 'chai-as-promised';
+import {assert, expect} from 'chai';
 import {describe, it} from 'mocha';
 
 // increase if tests are flaky in other environments, like GitHub Actions (which is typically slow)
@@ -36,8 +35,9 @@ describe(createDeferredPromiseWrapper.name, () => {
             deferredPromise.reject(message);
         }, promiseDelayMs);
 
-        chai.use(chaiAsPromised);
-        await expect(deferredPromise.promise).to.be.rejectedWith(message);
+        await assertThrows(() => deferredPromise.promise, {
+            matchMessage: message,
+        });
     });
 
     it('should settle after rejection', async () => {
@@ -125,8 +125,9 @@ describe(wrapPromiseInTimeout.name, () => {
             deferredPromiseWrapper.promise,
         );
 
-        chai.use(chaiAsPromised);
-        await expect(promiseWithTimeout).to.be.rejectedWith(PromiseTimeoutError);
+        await assertThrows(() => promiseWithTimeout, {
+            matchConstructor: PromiseTimeoutError,
+        });
         let timeoutError;
         try {
             await promiseWithTimeout;
@@ -145,11 +146,13 @@ describe(wrapPromiseInTimeout.name, () => {
     });
 
     it('should reject if the given promise rejects', async () => {
-        chai.use(chaiAsPromised);
         const testErrorMessage = randomString();
-        await assert.isRejected(
+
+        await assertThrows(
             wrapPromiseInTimeout(Infinity, Promise.reject(new Error(testErrorMessage))),
-            testErrorMessage,
+            {
+                matchMessage: testErrorMessage,
+            },
         );
     });
 });
@@ -196,24 +199,23 @@ describe(waitForCondition.name, () => {
     it('should handle errors', async () => {
         const errorMessage = randomString();
 
-        chai.use(chaiAsPromised);
-        await assert.isRejected(
+        await assertThrows(
             waitForCondition({
                 timeoutMs: 100,
                 conditionCallback: () => {
                     throw new Error(errorMessage);
                 },
             }),
-            errorMessage,
+            {
+                matchMessage: errorMessage,
+            },
         );
     });
 
     it('should use timeoutMessage', async () => {
         const timeoutMessage = randomString();
 
-        chai.use(chaiAsPromised);
-
-        await assert.isRejected(
+        await assertThrows(
             waitForCondition({
                 timeoutMessage,
                 timeoutMs: 100,
@@ -221,7 +223,9 @@ describe(waitForCondition.name, () => {
                     return false;
                 },
             }),
-            timeoutMessage,
+            {
+                matchMessage: timeoutMessage,
+            },
         );
     });
 });
