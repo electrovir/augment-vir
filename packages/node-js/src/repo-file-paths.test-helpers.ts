@@ -1,6 +1,6 @@
 import {dirname, join} from 'path';
 
-export const virmatorDirPath = dirname(dirname(dirname(__dirname)));
+export const augmentVirRepoDirPath = dirname(dirname(dirname(__dirname)));
 
 export const nodeJsPackageDir = dirname(__dirname);
 
