@@ -1,4 +1,4 @@
-import {isPromiseLike, wait} from '@augment-vir/common';
+import {isPromiseLike, isTruthy, wait} from '@augment-vir/common';
 import {assert, expect} from 'chai';
 import {describe, it} from 'mocha';
 import {expectDuration, typedAssertInstanceOf, typedAssertNotNullish} from './assert';
@@ -66,13 +66,16 @@ describe(typedAssertNotNullish.name, () => {
          */
         // expect.assertions(6);
 
-        const errors = values.map((value) => {
-            try {
-                typedAssertNotNullish(assert, value);
-            } catch (error) {
-                return error;
-            }
-        });
+        const errors = values
+            .map((value) => {
+                try {
+                    typedAssertNotNullish(assert, value);
+                    return undefined;
+                } catch (error) {
+                    return error;
+                }
+            })
+            .filter(isTruthy);
 
         expect(errors.length).to.equal(values.length);
         errors.forEach((error) => {

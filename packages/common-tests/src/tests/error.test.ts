@@ -1,13 +1,14 @@
-import {itCases} from '@augment-vir/chai';
+import {assertTypeOf, itCases} from '@augment-vir/chai';
 import {
+    InvalidDateError,
     combineErrorMessages,
     combineErrors,
     ensureError,
     executeAndReturnError,
     extractErrorMessage,
-    InvalidDateError,
     typedMap,
     wait,
+    wrapInTry,
 } from '@augment-vir/common';
 import {assert, expect} from 'chai';
 import {describe, it} from 'mocha';
@@ -172,6 +173,64 @@ describe(ensureError.name, () => {
             expect: new Error('hello'),
         },
     ]);
+});
+
+describe(wrapInTry.name, () => {
+    itCases(wrapInTry, [
+        {
+            it: 'returns the callback return if it does not error',
+            input: {
+                callback() {
+                    return 'success!';
+                },
+                fallbackValue: 'failed',
+            },
+            expect: 'success!',
+        },
+        {
+            it: 'returns the fallback if the callback does error',
+            input: {
+                callback() {
+                    throw new Error('errored');
+                },
+                fallbackValue: 'failed',
+            },
+            expect: 'failed',
+        },
+        {
+            it: 'calls the catchCallback if the callback does error',
+            input: {
+                callback() {
+                    throw new Error('errored');
+                },
+                catchCallback(error) {
+                    return 'got the catchCallback';
+                },
+            },
+            expect: 'got the catchCallback',
+        },
+    ]);
+
+    it('has proper types', () => {
+        assertTypeOf(
+            wrapInTry({
+                callback() {
+                    return 'hello';
+                },
+                fallbackValue: 4,
+            }),
+        ).toEqualTypeOf<number | string>();
+        assertTypeOf(
+            wrapInTry({
+                callback() {
+                    return 'hello';
+                },
+                catchCallback() {
+                    return 5;
+                },
+            }),
+        ).toEqualTypeOf<number | string>();
+    });
 });
 
 describe(executeAndReturnError.name, () => {

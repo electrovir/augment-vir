@@ -118,6 +118,14 @@ describe('getValueFromNestedKeys', () => {
             '',
         ]);
 
+        const value = getValueFromNestedKeys(example, [
+            'threeLevelsDeep',
+            'nestedOne',
+            'nestedTwo',
+            'nestedThree',
+            'propTwo',
+        ]);
+
         assertTypeOf(
             getValueFromNestedKeys(example, [
                 'threeLevelsDeep',

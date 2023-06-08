@@ -1,3 +1,4 @@
+import {RequireExactlyOne} from 'type-fest';
 import {AtLeastTuple, isPromiseLike, isTruthy, NoInputsFunction, UnPromise} from '..';
 
 export function combineErrors(errors: AtLeastTuple<Error, 1>): Error;
@@ -46,6 +47,27 @@ export function ensureError(input: unknown): Error {
         return input;
     } else {
         return new Error(extractErrorMessage(input));
+    }
+}
+
+export type TryWrapInputs<CallbackReturn, FallbackReturn> = {
+    callback: () => CallbackReturn;
+} & RequireExactlyOne<{
+    fallbackValue: FallbackReturn;
+    catchCallback: (error: unknown) => FallbackReturn;
+}>;
+
+export function wrapInTry<CallbackReturn, FallbackReturn>(
+    inputs: TryWrapInputs<CallbackReturn, FallbackReturn>,
+): FallbackReturn | CallbackReturn {
+    try {
+        return inputs.callback();
+    } catch (error) {
+        if (inputs.catchCallback) {
+            return inputs.catchCallback(error);
+        } else {
+            return inputs.fallbackValue;
+        }
     }
 }
 

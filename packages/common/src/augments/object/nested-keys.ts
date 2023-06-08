@@ -5,8 +5,8 @@ import {typedHasProperty} from './typed-has-property';
 // produces an array type where each subsequent entry must be a key in the previous entry's object
 export type NestedSequentialKeys<ObjectGeneric extends object> = PropertyValueType<{
     [Prop in keyof ObjectGeneric]: NonNullable<ObjectGeneric[Prop]> extends object
-        ? [Prop, ...(NestedSequentialKeys<NonNullable<ObjectGeneric[Prop]>> | [])]
-        : [Prop];
+        ? Readonly<[Prop, ...(NestedSequentialKeys<NonNullable<ObjectGeneric[Prop]>> | [])]>
+        : Readonly<[Prop]>;
 }>;
 
 export type NestedKeys<ObjectGeneric extends object> = UnionToIntersection<
@@ -37,8 +37,8 @@ export type NestedValue<
     : never;
 
 export function getValueFromNestedKeys<
-    ObjectGeneric extends object,
-    KeysGeneric extends NestedSequentialKeys<ObjectGeneric>,
+    const ObjectGeneric extends object,
+    const KeysGeneric extends NestedSequentialKeys<ObjectGeneric>,
 >(
     inputObject: ObjectGeneric,
     nestedKeys: KeysGeneric,
@@ -60,7 +60,7 @@ export function getValueFromNestedKeys<
     if (nestedKeys.length > 1) {
         return getValueFromNestedKeys(
             currentValue as any,
-            (nestedKeys as KeysGeneric).slice(1) as any,
+            (nestedKeys as ReadonlyArray<any>).slice(1) as any,
         ) as any;
     } else {
         return currentValue as NestedValue<ObjectGeneric, KeysGeneric>;

@@ -1,6 +1,6 @@
 {
     "name": "augment-vir",
-    "version": "14.2.2",
+    "version": "14.3.0",
     "private": true,
     "homepage": "https://github.com/electrovir/augment-vir",
     "bugs": {
@@ -25,6 +25,7 @@
         "docs:update": "virmator code-in-markdown",
         "format": "virmator format",
         "publish": "virmator publish \"npm run test:all\"",
+        "regenerate-deps": "rm -rf node_modules && rm -rf packages/*/node_modules && rm -f package-lock.json && npm i",
         "test": "npm run test --workspaces -s",
         "test:all": "npm run compile && npm run test:files && npm run test:spelling && npm run test:format && npm run test:docs && npm run test:coverage",
         "test:coverage": "npm run test:coverage --workspaces",
@@ -48,7 +49,7 @@
         "prettier-plugin-sort-json": "^1.0.0",
         "prettier-plugin-toml": "^0.3.1",
         "tsc-mono": "^2.1.2",
-        "typescript": "^5.0.4",
-        "virmator": "^6.6.0"
+        "typescript": "^5.1.3",
+        "virmator": "^6.6.2"
     }
 }
