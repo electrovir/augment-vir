@@ -44,7 +44,7 @@ export function queryThroughShadow(
         });
     }
 
-    const shadowRootChildren = Array.from(inputs.element.children)
+    const shadowRootChildren = Array.from(inputs.element.querySelectorAll('*'))
         .filter(
             (child): child is Element & {shadowRoot: NonNullable<Element['shadowRoot']>} =>
                 !!child.shadowRoot,
