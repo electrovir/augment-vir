@@ -1,6 +1,6 @@
 {
     "name": "augment-vir",
-    "version": "14.3.0",
+    "version": "14.3.1",
     "private": true,
     "homepage": "https://github.com/electrovir/augment-vir",
     "bugs": {
@@ -37,7 +37,7 @@
     },
     "devDependencies": {
         "cspell": "^6.31.1",
-        "esbuild": "^0.17.19",
+        "esbuild": "^0.18.1",
         "markdown-code-example-inserter": "^0.3.1",
         "npm-check-updates": "^16.10.12",
         "prettier": "^2.8.8",
