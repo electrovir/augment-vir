@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/scripts",
-    "version": "14.3.1",
+    "version": "14.4.0",
     "private": true,
     "license": "MIT",
     "author": {
@@ -14,15 +14,15 @@
         "verify": "ts-node src/index.ts"
     },
     "dependencies": {
-        "@augment-vir/common": "^14.3.1",
-        "@augment-vir/node-js": "^14.3.1"
+        "@augment-vir/common": "^14.4.0",
+        "@augment-vir/node-js": "^14.4.0"
     },
     "devDependencies": {
         "@electrovir/nyc": "^15.1.0-fix0",
         "@istanbuljs/nyc-config-typescript": "^1.0.2",
         "@types/chai": "^4.3.5",
         "@types/mocha": "^10.0.1",
-        "@types/node": "^20.3.0",
+        "@types/node": "^20.3.1",
         "chai": "^4.3.7",
         "istanbul-smart-text-reporter": "^1.1.2",
         "mocha": "^10.2.0",
