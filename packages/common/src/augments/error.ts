@@ -1,5 +1,12 @@
 import {RequireExactlyOne} from 'type-fest';
-import {AtLeastTuple, isPromiseLike, isTruthy, NoInputsFunction, UnPromise} from '..';
+import {
+    AtLeastTuple,
+    isPromiseLike,
+    isTruthy,
+    NoInputsFunction,
+    typedHasProperty,
+    UnPromise,
+} from '..';
 
 export function combineErrors(errors: AtLeastTuple<Error, 1>): Error;
 export function combineErrors(errors: ReadonlyArray<never>): undefined;
@@ -30,24 +37,32 @@ export function combineErrorMessages(
     return errors.map(extractErrorMessage).filter(isTruthy).join('\n');
 }
 
-export function extractErrorMessage(error: unknown): string {
-    if (!error) {
+export function extractErrorMessage(maybeError: unknown): string {
+    if (!maybeError) {
         return '';
     }
 
-    if (error instanceof Error) {
-        return error.message;
+    if (maybeError instanceof Error) {
+        return maybeError.message;
+    } else if (typedHasProperty(maybeError, 'message')) {
+        return String(maybeError.message);
     } else {
-        return String(error);
+        return String(maybeError);
     }
 }
 
-export function ensureError(input: unknown): Error {
-    if (input instanceof Error) {
-        return input;
+export function ensureError(maybeError: unknown): Error {
+    if (maybeError instanceof Error) {
+        return maybeError;
     } else {
-        return new Error(extractErrorMessage(input));
+        return new Error(extractErrorMessage(maybeError));
     }
+}
+
+export function ensureErrorAndPrependMessage(maybeError: unknown, prependMessage: string): Error {
+    const error = ensureError(maybeError);
+    error.message = `${prependMessage}: ${error.message}`;
+    return error;
 }
 
 export type TryWrapInputs<CallbackReturn, FallbackReturn> = {
