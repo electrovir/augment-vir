@@ -1,6 +1,5 @@
 import {assertTypeOf, itCases} from '@augment-vir/chai';
 import {
-    InvalidDateError,
     combineErrorMessages,
     combineErrors,
     ensureError,
@@ -154,7 +153,9 @@ describe(combineErrorMessages.name, () => {
 
 describe(ensureError.name, () => {
     const validError = new Error();
-    const dateError = new InvalidDateError();
+
+    class SubError extends Error {}
+    const dateError = new SubError();
 
     itCases(ensureError, [
         {

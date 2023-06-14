@@ -9,4 +9,4 @@ npm i;
 
 echo "compiling...";
 
-tsc-mono for-each npm run compile;
+mono-vir for-each npm run compile;
