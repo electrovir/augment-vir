@@ -22,8 +22,8 @@
         "test:coverage": "npm test"
     },
     "dependencies": {
-        "@augment-vir/common": "^14.4.0",
-        "@augment-vir/node-js": "^14.4.0"
+        "@augment-vir/common": "^15.0.0",
+        "@augment-vir/node-js": "^15.0.0"
     },
     "devDependencies": {
         "istanbul-smart-text-reporter": "^1.1.2",

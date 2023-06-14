@@ -23,8 +23,8 @@
         "test:coverage": "npm test"
     },
     "dependencies": {
-        "@augment-vir/common": "^14.4.0",
-        "@augment-vir/testing": "^14.4.0",
+        "@augment-vir/common": "^15.0.0",
+        "@augment-vir/testing": "^15.0.0",
         "type-fest": "^3.11.1"
     },
     "devDependencies": {
