@@ -1,4 +1,4 @@
-import {createDeferredPromiseWrapper} from '../../../../node_modules/@augment-vir/common/dist/types/index';
+import {createDeferredPromiseWrapper} from '@augment-vir/common';
 
 export async function waitForAnimationFrame(frameCount: number = 1): Promise<void> {
     const deferredPromise = createDeferredPromiseWrapper<void>();
