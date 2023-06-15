@@ -44,5 +44,8 @@
     "typescript.tsdk": "node_modules/typescript/lib",
     "files.associations": {
         "*.svg": "html"
+    },
+    "yaml.schemas": {
+        "https://json.schemastore.org/github-workflow.json": "file:///Users/electrovir/repos/electrovir/augment-vir/.github/workflows/tests.yml"
     }
 }
