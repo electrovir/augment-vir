@@ -1,7 +1,7 @@
 import {unlink, writeFile} from 'fs/promises';
 import {join} from 'path';
 import {augmentVirRepoDirPath, nodeJsPackageDir} from '../../repo-file-paths.test-helpers';
-import {toPosixPath} from '../path';
+import {interpolationSafeWindowsPath, toPosixPath} from '../path';
 import {runShellCommand} from '../shell';
 import {queryNpmWorkspace} from './query-workspace';
 
@@ -20,9 +20,12 @@ describe(queryNpmWorkspace.name, () => {
 
         await writeFile(tempFilePath, tmpTsFileContent);
 
-        const result = await runShellCommand(`tsc --noEmit ${toPosixPath(tempFilePath)}`, {
-            cwd: nodeJsPackageDir,
-        });
+        const result = await runShellCommand(
+            `tsc --noEmit ${interpolationSafeWindowsPath(toPosixPath(tempFilePath))}`,
+            {
+                cwd: nodeJsPackageDir,
+            },
+        );
 
         if (result.exitCode) {
             throw new Error(
