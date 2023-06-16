@@ -36,6 +36,7 @@
         "@web/test-runner-visual-regression": "^0.8.0",
         "element-vir": "^13.0.4",
         "istanbul-smart-text-reporter": "^1.1.2",
+        "type-fest": "^3.12.0",
         "typescript": "^5.1.3"
     },
     "publishConfig": {
