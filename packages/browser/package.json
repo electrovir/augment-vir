@@ -34,7 +34,7 @@
         "@web/test-runner-commands": "^0.7.0",
         "@web/test-runner-playwright": "^0.10.1",
         "@web/test-runner-visual-regression": "^0.8.0",
-        "element-vir": "^13.0.4",
+        "element-vir": "^14.0.1",
         "istanbul-smart-text-reporter": "^1.1.2",
         "type-fest": "^3.12.0",
         "typescript": "^5.1.3"
