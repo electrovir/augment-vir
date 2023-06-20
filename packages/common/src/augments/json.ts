@@ -34,15 +34,61 @@ export function parseJson<ParsedJsonGeneric>({
     }
 }
 
+export function stringifyJson({
+    source,
+    whitespace,
+    errorHandler,
+}: {
+    source: unknown;
+    whitespace?: number;
+    errorHandler?: (error: unknown) => string | never;
+}): string {
+    try {
+        const stringifiedJson = JSON.stringify(source, undefined, whitespace);
+
+        return stringifiedJson;
+    } catch (error) {
+        if (errorHandler) {
+            return errorHandler(error);
+        } else {
+            throw error;
+        }
+    }
+}
+
 const areJsonEqualFailureMessage = 'Failed to compare objects using JSON.stringify';
 
-function baseAreJsonEqual(a: any, b: any): boolean {
-    return JSON.stringify(a) === JSON.stringify(b);
+function baseAreJsonEqual(a: unknown, b: unknown, ignoreStringifyErrors: boolean): boolean {
+    return (
+        stringifyJson({
+            source: a,
+            errorHandler(error) {
+                if (ignoreStringifyErrors) {
+                    return '';
+                } else {
+                    throw error;
+                }
+            },
+        }) ===
+        stringifyJson({
+            source: b,
+            errorHandler(error) {
+                if (ignoreStringifyErrors) {
+                    return '';
+                } else {
+                    throw error;
+                }
+            },
+        })
+    );
 }
 
 export function areJsonEqual(
     a: Readonly<JsonCompatibleValue | undefined>,
     b: Readonly<JsonCompatibleValue | undefined>,
+    options: Partial<{
+        ignoreNonSerializableProperties: boolean | undefined;
+    }> = {},
 ): boolean {
     try {
         if (a === b) {
@@ -50,7 +96,11 @@ export function areJsonEqual(
         }
 
         if (isObject(a) && isObject(b)) {
-            const areKeysEqual = baseAreJsonEqual(Object.keys(a).sort(), Object.keys(b).sort());
+            const areKeysEqual = baseAreJsonEqual(
+                Object.keys(a).sort(),
+                Object.keys(b).sort(),
+                !!options?.ignoreNonSerializableProperties,
+            );
             if (!areKeysEqual) {
                 return false;
             }
@@ -59,7 +109,7 @@ export function areJsonEqual(
                 return areJsonEqual(a[keyName as any], b[keyName as any]);
             });
         } else {
-            return baseAreJsonEqual(a, b);
+            return baseAreJsonEqual(a, b, !!options?.ignoreNonSerializableProperties);
         }
     } catch (caught) {
         const error = ensureError(caught);

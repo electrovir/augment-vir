@@ -1,5 +1,5 @@
 import {itCases} from '@augment-vir/chai';
-import {areJsonEqual, parseJson} from '@augment-vir/common';
+import {areJsonEqual, parseJson, stringifyJson} from '@augment-vir/common';
 import {assert, expect} from 'chai';
 import {describe, it} from 'mocha';
 
@@ -144,6 +144,61 @@ describe(areJsonEqual.name, () => {
                 },
             ],
             expect: true,
+        },
+        {
+            it: 'ignore non-serializable properties',
+            inputs: [
+                {
+                    b: {
+                        first: 1,
+                        second: 2,
+                    },
+                    a: 'hi',
+                },
+                {
+                    b: {
+                        second: 2,
+                        first: 1,
+                    },
+                    a: 'hi',
+                },
+            ],
+            expect: true,
+        },
+    ]);
+});
+
+describe(stringifyJson.name, () => {
+    const recursiveObject = {
+        nested: '' as any,
+    };
+    recursiveObject.nested = recursiveObject;
+
+    itCases(stringifyJson, [
+        {
+            it: 'handles a basic object',
+            input: {source: {thing: 'a'}},
+            expect: '{"thing":"a"}',
+        },
+        {
+            it: 'inserts whitespace',
+            input: {source: {thing: 'a'}, whitespace: 4},
+            expect: '{\n    "thing": "a"\n}',
+        },
+        {
+            it: 'handles a stringify failure with the errorHandler',
+            input: {
+                source: recursiveObject,
+                errorHandler() {
+                    return 'failure';
+                },
+            },
+            expect: 'failure',
+        },
+        {
+            it: 'throws an error on stringify failure without an errorHandler',
+            input: {source: recursiveObject},
+            throws: Error,
         },
     ]);
 });

@@ -1,6 +1,3 @@
-import {ensureError} from '../error';
-import {JsonCompatibleValue} from '../json-compatible';
-
 export type PartialAndNullable<T extends object> = {
     [Prop in keyof T]?: T[Prop] | null | undefined;
 };
@@ -12,7 +9,6 @@ export type PartialAndUndefined<T extends object> = {
 export function isObject(input: any): input is NonNullable<object> {
     return !!input && typeof input === 'object';
 }
-
 
 /** The input here must be serializable otherwise JSON parsing errors will be thrown */
 export function copyThroughJson<T>(input: T): T {
