@@ -1,6 +1,6 @@
 {
     "name": "augment-vir",
-    "version": "15.2.0",
+    "version": "15.2.1",
     "private": true,
     "homepage": "https://github.com/electrovir/augment-vir",
     "bugs": {
@@ -54,5 +54,9 @@
         "prettier-plugin-toml": "^0.3.1",
         "typescript": "^5.1.3",
         "virmator": "^6.6.4"
+    },
+    "overrides": {
+        "semver": "npm:semver@7.5.3",
+        "make-dir": "npm:make-dir@v4.0.0"
     }
 }

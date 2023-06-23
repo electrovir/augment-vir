@@ -9,18 +9,18 @@ import {Constructor} from 'type-fest';
 export function typedAssertInstanceOf<T>(
     input: unknown,
     classConstructor: Constructor<T>,
+    message?: string | undefined,
 ): asserts input is T {
-    return generic_typedAssertInstanceOf(assert, input, classConstructor);
+    return generic_typedAssertInstanceOf(assert, input, classConstructor, message);
 }
 
-export function typedAssertNotNullish<T>(input: T): asserts input is NonNullable<T> {
-    return generic_typedAssertNotNullish(assert, input);
+export function typedAssertNotNullish<T>(
+    input: T,
+    message?: string | undefined,
+): asserts input is NonNullable<T> {
+    return generic_typedAssertNotNullish(assert, input, message);
 }
 
-export function expectDuration<ExpectGeneric extends (value: any) => any>(
-    callback: (() => void) | (() => PromiseLike<void>),
-): Promise<ReturnType<ExpectGeneric>> | ReturnType<ExpectGeneric> {
-    return generic_expectDuration(expect, callback) as
-        | Promise<ReturnType<ExpectGeneric>>
-        | ReturnType<ExpectGeneric>;
+export function expectDuration(callback: (() => void) | (() => PromiseLike<void>)) {
+    return generic_expectDuration(expect, callback);
 }

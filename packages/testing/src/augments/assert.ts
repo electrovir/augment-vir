@@ -6,16 +6,18 @@ export function typedAssertInstanceOf<T>(
     assert: typeof assertImport,
     input: unknown,
     classConstructor: Constructor<T>,
+    message?: string | undefined,
 ): asserts input is T {
-    assert.instanceOf(input, classConstructor);
+    assert.instanceOf(input, classConstructor, message);
 }
 
 export function typedAssertNotNullish<T>(
     assert: typeof assertImport,
     input: T,
+    message?: string | undefined,
 ): asserts input is NonNullable<T> {
-    assert.isNotNull(input);
-    assert.isDefined(input);
+    assert.isNotNull(input, message);
+    assert.isDefined(input, message);
 }
 
 export function expectDuration<ExpectGeneric extends (value: any) => any>(
