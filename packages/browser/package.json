@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/browser",
-    "version": "15.2.1",
+    "version": "15.3.0",
     "homepage": "https://github.com/electrovir/augment-vir/tree/main/packages/browser",
     "bugs": {
         "url": "https://github.com/electrovir/augment-vir/issues"
@@ -19,13 +19,15 @@
     "scripts": {
         "compile": "tsc",
         "test": "virmator test-web",
-        "test:coverage": "npm test coverage"
+        "test:coverage": "npm test coverage",
+        "test:debug": "web-test-runner --color --config configs/web-test-runner.config.mjs --only-one-browser --watch",
+        "test:watch": "web-test-runner --color --config configs/web-test-runner.config.mjs --watch"
     },
     "dependencies": {
-        "@augment-vir/common": "^15.2.1"
+        "@augment-vir/common": "^15.3.0"
     },
     "devDependencies": {
-        "@augment-vir/browser-testing": "^15.2.1",
+        "@augment-vir/browser-testing": "^15.3.0",
         "@open-wc/testing": "^3.2.0",
         "@types/chai": "^4.3.5",
         "@types/mocha": "^10.0.1",
@@ -34,7 +36,7 @@
         "@web/test-runner-commands": "^0.7.0",
         "@web/test-runner-playwright": "^0.10.1",
         "@web/test-runner-visual-regression": "^0.8.0",
-        "element-vir": "^14.0.1",
+        "element-vir": "^14.0.3",
         "istanbul-smart-text-reporter": "^1.1.2",
         "type-fest": "^3.12.0",
         "typescript": "^5.1.3"
