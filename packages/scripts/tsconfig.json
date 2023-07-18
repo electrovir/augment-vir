@@ -1,13 +1,13 @@
 {
-    "extends": "../../tsconfig.repo-base.json",
     "compilerOptions": {
-        "rootDir": "./src",
-        "outDir": "./dist"
+        "outDir": "./dist",
+        "rootDir": "./src"
     },
     "exclude": [
         "./configs",
         "./dist",
         "./node_modules",
         "./test-files"
-    ]
+    ],
+    "extends": "../../tsconfig.repo-base.json"
 }

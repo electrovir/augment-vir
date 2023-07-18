@@ -1,9 +1,8 @@
 {
-    "extends": "virmator/base-configs/base-tsconfig.json",
     "compilerOptions": {
-        "preserveSymlinks": true,
         "composite": false,
         "declarationMap": false,
+        "preserveSymlinks": true,
         "target": "ES2021"
     },
     "exclude": [
@@ -12,6 +11,7 @@
         "./node_modules",
         "packages/node-js/test-files"
     ],
+    "extends": "virmator/base-configs/base-tsconfig.json",
     "ts-node": {
         "transpileOnly": true
     }

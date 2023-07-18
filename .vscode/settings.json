@@ -41,10 +41,10 @@
     "editor.formatOnSave": true,
     "editor.rulers": [100],
     "editor.wordWrapColumn": 100,
-    "typescript.tsdk": "node_modules/typescript/lib",
     "files.associations": {
         "*.svg": "html"
     },
+    "typescript.tsdk": "node_modules/typescript/lib",
     "yaml.schemas": {
         "https://json.schemastore.org/github-workflow.json": "file:///Users/electrovir/repos/electrovir/augment-vir/.github/workflows/tests.yml"
     }
