@@ -1,5 +1,6 @@
 import {mapObjectValues} from '@augment-vir/common';
 import {styles} from 'ansi-colors';
+import type {Socket} from 'net';
 import {createInterface} from 'readline';
 import {inspect} from 'util';
 
@@ -30,7 +31,7 @@ type ToLoggingStringInputs = {
     args: ReadonlyArray<any>;
 };
 
-function toLoggingString({colors, args}: ToLoggingStringInputs): string {
+export function toLogString({colors, args}: ToLoggingStringInputs): string {
     const colorKeysArray: ReadonlyArray<ColorKey> = Array.isArray(colors) ? colors : [colors];
 
     return (
@@ -47,81 +48,86 @@ function toLoggingString({colors, args}: ToLoggingStringInputs): string {
     );
 }
 
-function writeLog(inputs: ToLoggingStringInputs & {logType: 'stderr' | 'stdout'}) {
-    process[inputs.logType].write(toLoggingString(inputs));
+export enum LogOutputType {
+    standard = 'stdout',
+    error = 'stderr',
 }
 
-export enum LogType {
-    info = 'info',
-    error = 'error',
-    bold = 'bold',
-    mutate = 'mutate',
-    faint = 'faint',
-    success = 'success',
+export type Logger = ReturnType<typeof createLogger>;
+
+export function createLogger(logWriters: Record<LogOutputType, Pick<Socket, 'write'>>) {
+    function writeLog(inputs: ToLoggingStringInputs & {logType: LogOutputType}) {
+        logWriters[inputs.logType].write(toLogString(inputs));
+    }
+    const logger = {
+        info(...args: ReadonlyArray<any>) {
+            writeLog({
+                logType: LogOutputType.standard,
+                colors: ColorKey.info,
+                args,
+            });
+        },
+        error(...args: ReadonlyArray<any>) {
+            writeLog({
+                logType: LogOutputType.error,
+                colors: [
+                    ColorKey.error,
+                    ColorKey.bold,
+                ],
+                args,
+            });
+        },
+        bold(...args: ReadonlyArray<any>) {
+            writeLog({
+                logType: LogOutputType.standard,
+                colors: ColorKey.bold,
+                args,
+            });
+        },
+        mutate(...args: ReadonlyArray<any>) {
+            writeLog({
+                logType: LogOutputType.standard,
+                colors: [
+                    ColorKey.bold,
+                    ColorKey.mutate,
+                ],
+                args,
+            });
+        },
+        faint(...args: ReadonlyArray<any>) {
+            writeLog({
+                logType: LogOutputType.standard,
+                colors: ColorKey.faint,
+                args,
+            });
+        },
+        success(...args: ReadonlyArray<any>) {
+            writeLog({
+                logType: LogOutputType.standard,
+                colors: [
+                    ColorKey.bold,
+                    ColorKey.success,
+                ],
+                args,
+            });
+        },
+    } as const;
+
+    return logger;
 }
 
-export const log: Record<LogType, (...args: ReadonlyArray<any>) => void> = {
-    [LogType.info]: (...args: ReadonlyArray<any>) => {
-        writeLog({
-            logType: 'stdout',
-            colors: ColorKey.info,
-            args,
-        });
-    },
-    [LogType.error]: (...args: ReadonlyArray<any>) => {
-        writeLog({
-            logType: 'stderr',
-            colors: [
-                ColorKey.error,
-                ColorKey.bold,
-            ],
-            args,
-        });
-    },
-    [LogType.bold]: (...args: ReadonlyArray<any>) => {
-        writeLog({
-            logType: 'stdout',
-            colors: ColorKey.bold,
-            args,
-        });
-    },
-    [LogType.mutate]: (...args: ReadonlyArray<any>) => {
-        writeLog({
-            logType: 'stdout',
-            colors: [
-                ColorKey.bold,
-                ColorKey.mutate,
-            ],
-            args,
-        });
-    },
-    [LogType.faint]: (...args: ReadonlyArray<any>) => {
-        writeLog({
-            logType: 'stdout',
-            colors: ColorKey.faint,
-            args,
-        });
-    },
-    [LogType.success]: (...args: ReadonlyArray<any>) => {
-        writeLog({
-            logType: 'stdout',
-            colors: [
-                ColorKey.bold,
-                ColorKey.success,
-            ],
-            args,
-        });
-    },
-} as const;
+export const log: Logger = createLogger(process);
 
-export const logIf: Record<LogType, (condition: boolean, ...args: ReadonlyArray<any>) => void> =
-    mapObjectValues(log, (key) => {
-        return (condition: boolean, ...args: ReadonlyArray<any>) => {
-            if (condition) {
-                log[key](...args);
-            }
-        };
-    });
+export const logIf: Record<
+    keyof Logger,
+    (condition: boolean, ...args: ReadonlyArray<any>) => void
+> = mapObjectValues(log, (key) => {
+    return (condition: boolean, ...args: ReadonlyArray<any>) => {
+        if (condition) {
+            log[key](...args);
+        }
+    };
+});
 
 export async function askQuestion(questionToAsk: string, timeoutMs = 60_000): Promise<string> {
     const cliInterface = createInterface({
