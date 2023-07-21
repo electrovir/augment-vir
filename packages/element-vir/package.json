@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/element-vir",
-    "version": "15.4.0",
+    "version": "15.4.1",
     "homepage": "https://github.com/electrovir/augment-vir/tree/main/packages/element-vir",
     "bugs": {
         "url": "https://github.com/electrovir/augment-vir/issues"
@@ -22,10 +22,10 @@
         "test:coverage": "npm test coverage"
     },
     "dependencies": {
-        "@augment-vir/common": "^15.4.0"
+        "@augment-vir/common": "^15.4.1"
     },
     "devDependencies": {
-        "@augment-vir/browser-testing": "^15.4.0",
+        "@augment-vir/browser-testing": "^15.4.1",
         "@open-wc/testing": "^3.2.0",
         "@types/chai": "^4.3.5",
         "@types/mocha": "^10.0.1",
@@ -33,7 +33,7 @@
         "@web/test-runner": "^0.17.0",
         "@web/test-runner-commands": "^0.8.0",
         "@web/test-runner-playwright": "^0.10.1",
-        "@web/test-runner-visual-regression": "^0.8.1",
+        "@web/test-runner-visual-regression": "^0.8.2",
         "istanbul-smart-text-reporter": "^1.1.2",
         "typescript": "^5.1.6"
     },
