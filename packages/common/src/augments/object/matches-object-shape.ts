@@ -1,6 +1,6 @@
 import {AtLeastOneEntryArray} from '../array';
+import {isTruthy} from '../boolean';
 import {extractErrorMessage} from '../error';
-import {isTruthy} from '../function';
 import {NoInfer} from '../type';
 import {isObject} from './object';
 import {getObjectTypedKeys} from './object-entries';

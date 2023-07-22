@@ -1,64 +1,6 @@
 import {assertTypeOf} from '@augment-vir/chai';
-import {isTruthy, TypedFunction} from '@augment-vir/common';
-import {expect} from 'chai';
+import {TypedFunction} from '@augment-vir/common';
 import {describe, it} from 'mocha';
-
-describe(isTruthy.name, () => {
-    it('should return true for various truthy things', () => {
-        const stuffToTest: any[] = [
-            'stuff',
-            5,
-            [],
-            {},
-        ];
-
-        expect(stuffToTest.every(isTruthy)).to.equal(true);
-    });
-
-    it('should filter out null types', () => {
-        const stuffToTest: (string | undefined)[] = [
-            'stuff',
-            undefined,
-            'derp',
-        ];
-
-        const onlyStrings: string[] = stuffToTest.filter(isTruthy);
-
-        expect(onlyStrings).to.deep.equal([
-            'stuff',
-            'derp',
-        ]);
-    });
-
-    it('should fail on falsy things', () => {
-        const stuffToTest: any[] = [
-            undefined,
-            false,
-            0,
-            '',
-            null,
-            NaN,
-        ];
-
-        expect(stuffToTest.some(isTruthy)).to.equal(false);
-    });
-
-    it('excludes falsy types', () => {
-        const stuffToTest = [
-            undefined,
-            false,
-            0,
-            '',
-            null,
-            'hello there',
-        ] as const;
-
-        const filtered = stuffToTest.filter(isTruthy);
-
-        assertTypeOf(filtered).toMatchTypeOf<string[]>();
-        assertTypeOf(stuffToTest).not.toMatchTypeOf<string[]>();
-    });
-});
 
 describe('TypedFunction', () => {
     it('properly assigns a single argument and a return type', () => {

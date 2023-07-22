@@ -1,6 +1,7 @@
 export * from './augments/ansi';
 export * from './augments/array';
 export * from './augments/async';
+export * from './augments/boolean';
 export * from './augments/common-number';
 export * from './augments/common-string';
 export * from './augments/environment';
