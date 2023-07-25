@@ -1,4 +1,6 @@
+import {assertThrows} from '@augment-vir/chai';
 import {
+    ensureEnum,
     filterToEnumValues,
     getEnumTypedKeys,
     getEnumTypedValues,
@@ -39,6 +41,22 @@ describe(getEnumTypedValues.name, () => {
             Planet.Venus,
             Planet.Earth,
         ]);
+    });
+});
+
+describe(ensureEnum.name, () => {
+    it('has proper types', () => {
+        ensureEnum(Planet.Mercury, Planet);
+        ensureEnum('mercury', Planet);
+        ensureEnum('earth', Planet);
+        assertThrows(() =>
+            // @ts-expect-error
+            ensureEnum('not a planet', Planet),
+        );
+        assertThrows(() =>
+            // @ts-expect-error
+            ensureEnum(2, Planet),
+        );
     });
 });
 
