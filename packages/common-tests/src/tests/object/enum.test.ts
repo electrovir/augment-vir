@@ -57,6 +57,12 @@ describe(ensureEnum.name, () => {
             // @ts-expect-error
             ensureEnum(2, Planet),
         );
+        const testPlanet: Planet = ensureEnum('mercury', Planet);
+
+        assertThrows(() => {
+            // @ts-expect-error
+            const testPlanet2: Planet = ensureEnum(2, Planet);
+        });
     });
 });
 

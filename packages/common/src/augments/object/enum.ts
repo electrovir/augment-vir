@@ -19,7 +19,7 @@ export function isEnumValue<T extends object>(input: unknown, checkEnum: T): inp
 export function ensureEnum<
     const ValueType extends `${EnumType[keyof EnumType]}`,
     const EnumType extends object,
->(value: ValueType, checkEnum: EnumType): EnumType {
+>(value: ValueType, checkEnum: EnumType): EnumType[keyof EnumType] {
     if (isEnumValue(value, checkEnum)) {
         return value;
     } else {
