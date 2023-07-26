@@ -1,6 +1,6 @@
 {
     "name": "augment-vir",
-    "version": "15.6.1",
+    "version": "16.0.0",
     "private": true,
     "homepage": "https://github.com/electrovir/augment-vir",
     "bugs": {
@@ -40,9 +40,9 @@
     "devDependencies": {
         "concurrently": "^8.2.0",
         "cspell": "^6.31.2",
-        "esbuild": "^0.18.15",
+        "esbuild": "^0.18.17",
         "markdown-code-example-inserter": "^0.3.1",
-        "npm-check-updates": "^16.10.16",
+        "npm-check-updates": "^16.10.17",
         "prettier": "^2.8.8",
         "prettier-plugin-interpolated-html-tags": "^0.0.4",
         "prettier-plugin-jsdoc": "^0.4.2",
