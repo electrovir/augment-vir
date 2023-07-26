@@ -129,11 +129,42 @@ export const logIf: Record<
     };
 });
 
-export async function askQuestion(questionToAsk: string, timeoutMs = 60_000): Promise<string> {
+export type AskQuestionOptions = {
+    timeoutMs: number;
+    hideUserInput: boolean;
+};
+
+const defaultAskQuestionOptions: AskQuestionOptions = {
+    timeoutMs: 60_000,
+    hideUserInput: false,
+};
+
+export async function askQuestion(
+    questionToAsk: string,
+    {
+        hideUserInput = defaultAskQuestionOptions.hideUserInput,
+        timeoutMs = defaultAskQuestionOptions.timeoutMs,
+    }: Partial<AskQuestionOptions> = defaultAskQuestionOptions,
+): Promise<string> {
     const cliInterface = createInterface({
         input: process.stdin,
         output: process.stdout,
     });
+
+    if (hideUserInput) {
+        let promptWritten = false;
+        /** _writeToOutput is not in the types OR in the Node.js documentation but is a thing. */
+        (cliInterface as unknown as {_writeToOutput: (prompt: string) => void})._writeToOutput = (
+            prompt,
+        ) => {
+            if (!promptWritten) {
+                (
+                    cliInterface as unknown as {output: {write: (output: string) => void}}
+                ).output.write(prompt);
+                promptWritten = true;
+            }
+        };
+    }
 
     // handle killing the process
     cliInterface.on('SIGINT', () => {
@@ -152,7 +183,8 @@ export async function askQuestion(questionToAsk: string, timeoutMs = 60_000): Pr
               }, timeoutMs)
             : undefined;
 
-        cliInterface.question(questionToAsk + ' ', (response) => {
+        process.stdout.write(questionToAsk + '\n');
+        cliInterface.question('', (response) => {
             if (timeoutId != undefined) {
                 clearTimeout(timeoutId);
             }
@@ -167,20 +199,18 @@ export async function askQuestionUntilConditionMet({
     conditionCallback,
     invalidInputMessage,
     tryCountMax = 5,
-    timeoutMs = 60_000,
+    ...options
 }: {
     questionToAsk: string;
     conditionCallback: (response: string) => boolean | Promise<boolean>;
     invalidInputMessage: string;
     tryCountMax?: number;
-    /** Set to 0 to disable the timeout */
-    timeoutMs?: number;
-}): Promise<string> {
+} & Partial<AskQuestionOptions>): Promise<string> {
     let wasConditionMet = false;
     let retryCount = 0;
     let response = '';
     while (!wasConditionMet && retryCount <= tryCountMax) {
-        response = (await askQuestion(questionToAsk, timeoutMs)).trim();
+        response = (await askQuestion(questionToAsk, options)).trim();
         wasConditionMet = await conditionCallback(response);
         if (!wasConditionMet) {
             log.error(invalidInputMessage);
