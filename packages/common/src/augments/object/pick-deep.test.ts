@@ -1,6 +1,6 @@
 import {assertTypeOf} from '@augment-vir/chai';
-import {PickDeep} from '@augment-vir/common';
 import {describe, it} from 'mocha';
+import {PickDeep} from './pick-deep';
 
 describe('PickDeep', () => {
     type TestObject = {
@@ -22,8 +22,14 @@ describe('PickDeep', () => {
         };
     };
 
+    type derp = PickDeep<TestObject, ['topLevelWithNested1']>;
+
     it('should accept valid types', () => {
         assertTypeOf<PickDeep<TestObject, ['topLevel']>>().toEqualTypeOf<{topLevel: string}>();
+
+        assertTypeOf<PickDeep<TestObject, ['topLevelWithNested1']>>().toEqualTypeOf<{
+            topLevelWithNested1: TestObject['topLevelWithNested1'];
+        }>();
 
         assertTypeOf<
             PickDeep<TestObject, ['topLevel' | 'topLevelWithNested1', 'secondLevel1']>
