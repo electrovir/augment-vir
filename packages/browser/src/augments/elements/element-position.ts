@@ -3,11 +3,15 @@ import {assertLengthAtLeast} from '@augment-vir/common';
 export type ElementPosition = {x: number; y: number};
 
 export async function checkIfEntirelyInScrollView(element: Element) {
+    return checkIfInScrollView(element, 1);
+}
+
+export async function checkIfInScrollView(element: Element, ratio: number) {
     return new Promise((resolve) => {
         const observer = new IntersectionObserver((entries, observerItself) => {
             assertLengthAtLeast(entries, 1);
             observerItself.disconnect();
-            resolve(entries[0].intersectionRatio === 1);
+            resolve(entries[0].intersectionRatio >= ratio);
         });
         observer.observe(element);
     });
