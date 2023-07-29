@@ -2,11 +2,12 @@ import {itCases} from '@augment-vir/chai';
 import {
     filterOutIndexes,
     flatten2dArray,
+    repeatArray,
     trimArrayStrings,
     typedArrayIncludes,
 } from '@augment-vir/common';
 import {assertTypeOf} from '@augment-vir/testing';
-import {expect} from 'chai';
+import {assert, expect} from 'chai';
 import {describe, it} from 'mocha';
 
 describe(filterOutIndexes.name, () => {
@@ -183,5 +184,77 @@ describe(typedArrayIncludes.name, () => {
         if (typedArrayIncludes(array, vagueVar)) {
             assertTypeOf(vagueVar).toEqualTypeOf<'yo' | 'hello' | 'hi'>();
         }
+    });
+});
+
+describe(repeatArray.name, () => {
+    itCases(repeatArray, [
+        {
+            it: 'does nothing with an empty array',
+            inputs: [
+                5,
+                [],
+            ],
+            expect: [],
+        },
+        {
+            it: 'repeats the given array',
+            inputs: [
+                5,
+                [
+                    'a',
+                    'b',
+                    'c',
+                ],
+            ],
+            expect: [
+                'a',
+                'b',
+                'c',
+                'a',
+                'b',
+                'c',
+                'a',
+                'b',
+                'c',
+                'a',
+                'b',
+                'c',
+                'a',
+                'b',
+                'c',
+            ],
+        },
+        {
+            it: 'works with a decimal repeat value',
+            inputs: [
+                2.5,
+                [
+                    'a',
+                    'b',
+                    'c',
+                ],
+            ],
+            expect: [
+                'a',
+                'b',
+                'c',
+                'a',
+                'b',
+                'c',
+            ],
+        },
+    ]);
+
+    it('returns a new array', () => {
+        const originalArray = [
+            'a',
+            'b',
+            'c',
+        ];
+        const repeatedArray = repeatArray(2, originalArray);
+
+        assert.isFalse(repeatedArray === originalArray);
+        assert.notDeepEqual(repeatedArray, originalArray);
     });
 });

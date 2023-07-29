@@ -52,3 +52,7 @@ export function typedMap<InputArrayGeneric extends ReadonlyArray<any>, OutputTyp
         [Index in keyof InputArrayGeneric]: OutputType;
     };
 }
+
+export function repeatArray<T>(repeatCount: number, array: T[]): T[] {
+    return Array.from({length: repeatCount}, () => [...array]).flat();
+}
