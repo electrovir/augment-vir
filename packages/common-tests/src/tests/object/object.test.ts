@@ -1,4 +1,11 @@
-import {copyThroughJson, isObject, PropertyValueType} from '@augment-vir/common';
+import {assertTypeOf} from '@augment-vir/chai';
+import {
+    ExcludeKeysWithMatchingValues,
+    ExtractKeysWithMatchingValues,
+    PropertyValueType,
+    copyThroughJson,
+    isObject,
+} from '@augment-vir/common';
 import {expect} from 'chai';
 import {describe, it} from 'mocha';
 
@@ -50,5 +57,35 @@ describe('PropertyValueType', () => {
         testAssign = testValueC;
 
         expect(testAssign).to.deep.equal(testObjectA.a);
+    });
+});
+
+const exampleObject = {
+    a: 5,
+    b: 'five',
+    c: /five/,
+    d: undefined,
+    e: [],
+} as const;
+
+describe('ExtractKeysWithMatchingValues', () => {
+    it('extracts keys', () => {
+        assertTypeOf<
+            ExtractKeysWithMatchingValues<typeof exampleObject, number>
+        >().toEqualTypeOf<'a'>();
+        assertTypeOf<
+            ExtractKeysWithMatchingValues<typeof exampleObject, number | string>
+        >().toEqualTypeOf<'a' | 'b'>();
+    });
+});
+
+describe('ExcludeKeysWithMatchingValues', () => {
+    it('extracts keys', () => {
+        assertTypeOf<ExcludeKeysWithMatchingValues<typeof exampleObject, number>>().toEqualTypeOf<
+            'b' | 'c' | 'd' | 'e'
+        >();
+        assertTypeOf<
+            ExcludeKeysWithMatchingValues<typeof exampleObject, number | string>
+        >().toEqualTypeOf<'c' | 'd' | 'e'>();
     });
 });

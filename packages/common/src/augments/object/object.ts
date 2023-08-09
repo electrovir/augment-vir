@@ -21,3 +21,11 @@ export function copyThroughJson<T>(input: T): T {
 }
 
 export type PropertyValueType<T> = T[keyof T];
+
+export type ExtractKeysWithMatchingValues<OriginalObject extends object, Matcher> = keyof {
+    [Prop in keyof OriginalObject as OriginalObject[Prop] extends Matcher ? Prop : never]: Prop;
+};
+
+export type ExcludeKeysWithMatchingValues<OriginalObject extends object, Matcher> = keyof {
+    [Prop in keyof OriginalObject as OriginalObject[Prop] extends Matcher ? never : Prop]: Prop;
+};
