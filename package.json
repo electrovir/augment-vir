@@ -25,7 +25,7 @@
         "docs:update": "virmator code-in-markdown",
         "format": "virmator format",
         "publish": "virmator publish \"npm run test:all\"",
-        "test": "npm run test --workspaces -s",
+        "test": "mono-vir for-each-async npm test",
         "test:all": "npm run compile && npm run test:files && concurrently --kill-others-on-fail --kill-signal SIGKILL -c auto --colors --names spelling,format,docs,tests \"npm run test:spelling\" \"npm run test:format\" \"npm run test:docs\" \"npm run test:coverage\"",
         "test:coverage": "npm run test:coverage --workspaces",
         "test:docs": "virmator code-in-markdown check",
@@ -34,14 +34,12 @@
         "test:spelling": "virmator spellcheck",
         "test:types": "tsc-mono for-each tsc --noEmit"
     },
-    "dependencies": {
-        "mono-vir": "^0.1.4"
-    },
     "devDependencies": {
         "concurrently": "^8.2.0",
         "cspell": "^6.31.2",
         "esbuild": "^0.18.17",
         "markdown-code-example-inserter": "^0.3.1",
+        "mono-vir": "^0.1.4",
         "npm-check-updates": "^16.10.17",
         "prettier": "^2.8.8",
         "prettier-plugin-interpolated-html-tags": "^0.0.4",
