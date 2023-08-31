@@ -1,6 +1,6 @@
 {
     "name": "augment-vir",
-    "version": "16.4.0",
+    "version": "16.4.1",
     "private": true,
     "homepage": "https://github.com/electrovir/augment-vir",
     "bugs": {
@@ -32,25 +32,25 @@
         "test:files": "cd packages/scripts && npm run verify",
         "test:format": "virmator format check",
         "test:spelling": "virmator spellcheck",
-        "test:types": "tsc-mono for-each tsc --noEmit"
+        "test:types": "mono-vir for-each-async tsc --noEmit"
     },
     "devDependencies": {
-        "concurrently": "^8.2.0",
-        "cspell": "^6.31.2",
-        "esbuild": "^0.18.17",
+        "concurrently": "^8.2.1",
+        "cspell": "^7.2.0",
+        "esbuild": "^0.19.2",
         "markdown-code-example-inserter": "^0.3.1",
         "mono-vir": "^0.1.4",
-        "npm-check-updates": "^16.10.17",
+        "npm-check-updates": "^16.12.3",
         "prettier": "^2.8.8",
         "prettier-plugin-interpolated-html-tags": "^0.0.4",
         "prettier-plugin-jsdoc": "^0.4.2",
         "prettier-plugin-multiline-arrays": "^2.0.0",
         "prettier-plugin-organize-imports": "^3.2.3",
         "prettier-plugin-packagejson": "^2.4.5",
-        "prettier-plugin-sort-json": "^1.0.0",
+        "prettier-plugin-sort-json": "^2.0.0",
         "prettier-plugin-toml": "^0.3.1",
-        "typescript": "^5.1.6",
-        "virmator": "^7.3.0"
+        "typescript": "^5.2.2",
+        "virmator": "^7.4.0"
     },
     "overrides": {
         "semver": "npm:semver@7.5.3",
