@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/testing",
-    "version": "16.4.1",
+    "version": "16.4.2",
     "homepage": "https://github.com/electrovir/augment-vir/tree/main/packages/testing",
     "bugs": {
         "url": "https://github.com/electrovir/augment-vir/issues"
@@ -23,14 +23,14 @@
         "test:coverage": "npm test coverage"
     },
     "dependencies": {
-        "@augment-vir/common": "^16.4.1",
+        "@augment-vir/common": "^16.4.2",
         "expect-type": "^0.15.0",
         "type-fest": "^4.3.1"
     },
     "devDependencies": {
         "@electrovir/nyc": "^15.1.0-fix0",
         "@istanbuljs/nyc-config-typescript": "^1.0.2",
-        "@types/chai": "^4.3.5",
+        "@types/chai": "^4.3.6",
         "@types/mocha": "^10.0.1",
         "chai": "^4.3.8",
         "istanbul-smart-text-reporter": "^1.1.2",

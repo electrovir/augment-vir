@@ -1,6 +1,6 @@
 {
     "name": "augment-vir",
-    "version": "16.4.1",
+    "version": "16.4.2",
     "private": true,
     "homepage": "https://github.com/electrovir/augment-vir",
     "bugs": {
@@ -36,11 +36,11 @@
     },
     "devDependencies": {
         "concurrently": "^8.2.1",
-        "cspell": "^7.2.0",
+        "cspell": "^7.3.2",
         "esbuild": "^0.19.2",
         "markdown-code-example-inserter": "^0.3.1",
         "mono-vir": "^0.1.4",
-        "npm-check-updates": "^16.12.3",
+        "npm-check-updates": "~16.12.3",
         "prettier": "^2.8.8",
         "prettier-plugin-interpolated-html-tags": "^0.0.4",
         "prettier-plugin-jsdoc": "^0.4.2",
@@ -50,7 +50,7 @@
         "prettier-plugin-sort-json": "^2.0.0",
         "prettier-plugin-toml": "^0.3.1",
         "typescript": "^5.2.2",
-        "virmator": "^7.4.0"
+        "virmator": "^7.4.1"
     },
     "overrides": {
         "semver": "npm:semver@7.5.3",
