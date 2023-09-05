@@ -1,6 +1,9 @@
-import {assertTypeOf, itCases} from '@augment-vir/browser-testing';
-import {mapObjectValues} from '@augment-vir/common';
-import {objectToSearchParamsString, searchParamStringToObject} from './search-params';
+import {assertTypeOf, itCases} from '@augment-vir/chai';
+import {
+    mapObjectValues,
+    objectToSearchParamsString,
+    searchParamStringToObject,
+} from '@augment-vir/common';
 
 describe(objectToSearchParamsString.name, () => {
     itCases(objectToSearchParamsString, [

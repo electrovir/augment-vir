@@ -1,5 +1,7 @@
-import {assertMatchesObjectShape, isRuntimeTypeOf, isTruthy} from '@augment-vir/common';
 import {Primitive} from 'type-fest';
+import {isTruthy} from '../boolean';
+import {assertMatchesObjectShape} from '../object/matches-object-shape';
+import {isRuntimeTypeOf} from '../runtime-type-of';
 
 export type SearchParamObjectBase = Record<string, Exclude<Primitive, symbol>>;
 

@@ -25,6 +25,7 @@ export * from './augments/object/typed-has-property';
 export * from './augments/promise';
 export * from './augments/regexp';
 export * from './augments/runtime-type-of';
+export * from './augments/string/search-params';
 export * from './augments/string/suffixes';
 export * from './augments/string/url';
 export * from './augments/string/uuid';
