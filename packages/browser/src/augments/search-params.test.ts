@@ -18,6 +18,11 @@ describe(objectToSearchParamsString.name, () => {
             expect: '?a=five&b=four',
         },
         {
+            it: 'does not encode values',
+            input: {a: 'what,five'},
+            expect: '?a=what,five',
+        },
+        {
             it: 'filters out nullish values',
             input: {
                 a: undefined,
@@ -63,6 +68,11 @@ describe(searchParamStringToObject.name, () => {
             it: 'should extract an empty object if no search params are included',
             inputs: ['https://example.com'],
             expect: {},
+        },
+        {
+            it: 'works with commas in the values',
+            inputs: ['https://example.com?a=what,five'],
+            expect: {a: 'what,five'},
         },
         {
             it: 'should extract all params',

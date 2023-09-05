@@ -1,25 +1,25 @@
-import {
-    assertMatchesObjectShape,
-    filterObject,
-    isRuntimeTypeOf,
-    mapObjectValues,
-} from '@augment-vir/common';
+import {assertMatchesObjectShape, isRuntimeTypeOf, isTruthy} from '@augment-vir/common';
 import {Primitive} from 'type-fest';
 
 export type SearchParamObjectBase = Record<string, Exclude<Primitive, symbol>>;
 
 export function objectToSearchParamsString(inputObject: SearchParamObjectBase): string {
-    const filteredInputs = filterObject(inputObject, (key, value) => {
-        return value != undefined;
-    });
-    const stringifiedInputs = mapObjectValues(filteredInputs, (key, value) => String(value));
+    const valueStrings = Object.entries(inputObject)
+        .map(
+            ([
+                key,
+                value,
+            ]) => {
+                if (value == undefined) {
+                    return undefined;
+                }
+                return `${key}=${String(value)}`;
+            },
+        )
+        .filter(isTruthy);
 
-    const searchParams = new URLSearchParams(Object.entries(stringifiedInputs));
-
-    const searchParamsString = searchParams.toString();
-
-    if (searchParamsString) {
-        return `?${searchParamsString}`;
+    if (valueStrings.length) {
+        return `?${valueStrings.join('&')}`;
     } else {
         return '';
     }
