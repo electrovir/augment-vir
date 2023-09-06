@@ -2,7 +2,7 @@ import {assertTypeOf, itCases} from '@augment-vir/chai';
 import {
     mapObjectValues,
     objectToSearchParamsString,
-    searchParamStringToObject,
+    urlToSearchParamsObject,
 } from '@augment-vir/common';
 
 describe(objectToSearchParamsString.name, () => {
@@ -48,7 +48,7 @@ describe(objectToSearchParamsString.name, () => {
     ]);
 });
 
-describe(searchParamStringToObject.name, () => {
+describe(urlToSearchParamsObject.name, () => {
     const exampleUrl = 'https://example.com?a=what&b=five&who=you';
     const exampleUrlSearchParamsObject = {
         a: 'what',
@@ -57,16 +57,16 @@ describe(searchParamStringToObject.name, () => {
     } as const;
 
     it('should propagate the generic type properly', () => {
-        assertTypeOf(searchParamStringToObject(exampleUrl)).toEqualTypeOf<Record<string, string>>();
+        assertTypeOf(urlToSearchParamsObject(exampleUrl)).toEqualTypeOf<Record<string, string>>();
 
         const searchParamsObjectShape = mapObjectValues(exampleUrlSearchParamsObject, () => '');
 
-        assertTypeOf(searchParamStringToObject(exampleUrl, searchParamsObjectShape)).toEqualTypeOf<
+        assertTypeOf(urlToSearchParamsObject(exampleUrl, searchParamsObjectShape)).toEqualTypeOf<
             typeof searchParamsObjectShape
         >();
     });
 
-    itCases(searchParamStringToObject, [
+    itCases(urlToSearchParamsObject, [
         {
             it: 'should extract an empty object if no search params are included',
             inputs: ['https://example.com'],

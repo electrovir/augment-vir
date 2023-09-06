@@ -27,15 +27,15 @@ export function objectToSearchParamsString(inputObject: SearchParamObjectBase): 
     }
 }
 
-export function searchParamStringToObject<VerifyShapeGeneric extends SearchParamObjectBase>(
+export function urlToSearchParamsObject<VerifyShapeGeneric extends SearchParamObjectBase>(
     inputUrl: string | Pick<URL, 'searchParams'>,
     verifyShape: VerifyShapeGeneric,
 ): VerifyShapeGeneric;
-export function searchParamStringToObject<VerifyShapeGeneric extends SearchParamObjectBase>(
+export function urlToSearchParamsObject<VerifyShapeGeneric extends SearchParamObjectBase>(
     inputUrl: string | Pick<URL, 'searchParams'>,
     verifyShape?: VerifyShapeGeneric | undefined,
 ): Record<string, string>;
-export function searchParamStringToObject<VerifyShapeGeneric extends SearchParamObjectBase>(
+export function urlToSearchParamsObject<VerifyShapeGeneric extends SearchParamObjectBase>(
     inputUrl: string | Pick<URL, 'searchParams'>,
     verifyShape?: VerifyShapeGeneric | undefined,
 ): VerifyShapeGeneric | Record<string, string> {
