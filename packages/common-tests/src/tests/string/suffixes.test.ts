@@ -72,10 +72,10 @@ describe(addSuffix.name, () => {
     itCases(addSuffix, [
         {
             it: 'adds a simple suffix',
-            inputs: [
-                'stuff is here',
-                ' and here',
-            ],
+            input: {
+                value: 'stuff is here',
+                suffix: ' and here',
+            },
             expect: 'stuff is here and here',
         },
     ]);
@@ -85,10 +85,10 @@ describe(removeSuffix.name, () => {
     itCases(removeSuffix, [
         {
             it: 'removes a simple suffix',
-            inputs: [
-                'stuff is here and here',
-                ' and here',
-            ],
+            input: {
+                value: 'stuff is here and here',
+                suffix: ' and here',
+            },
             expect: 'stuff is here',
         },
     ]);
