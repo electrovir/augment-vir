@@ -73,6 +73,14 @@ describe(urlToSearchParamsObject.name, () => {
             expect: {},
         },
         {
+            it: 'does not decode anything',
+            inputs: ['http://example.com/page?filters=Content.Type-0,1,2&sort=Number.%230'],
+            expect: {
+                filters: 'Content.Type-0,1,2',
+                sort: 'Number.%230',
+            },
+        },
+        {
             it: 'works with commas in the values',
             inputs: ['https://example.com?a=what,five'],
             expect: {a: 'what,five'},
