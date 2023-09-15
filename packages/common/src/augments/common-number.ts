@@ -7,7 +7,10 @@ export function addCommasToNumber(input: number | string): string {
     if (typeof input === 'string' && isNaN(Number(input))) {
         return NaNString;
     }
-    const stringValue: string = String(input);
+    const numericValue: number = Number(input);
+    const isNegative: boolean = numericValue < 0;
+
+    const stringValue: string = String(Math.abs(numericValue));
     const [
         digits,
         decimalValues,
@@ -18,9 +21,15 @@ export function addCommasToNumber(input: number | string): string {
         .reverse()
         .map((entry) => entry.split('').reverse().join(''));
 
-    const withCommas = separated.join(',');
+    const valueWithCommas = separated.join(',');
 
-    return `${withCommas}${decimalString}`;
+    const negativeMarker = isNegative ? '-' : '';
+
+    return [
+        negativeMarker,
+        valueWithCommas,
+        decimalString,
+    ].join('');
 }
 
 export function clamp(

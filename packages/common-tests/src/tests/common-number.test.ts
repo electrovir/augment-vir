@@ -83,29 +83,34 @@ describe(convertIntoNumber.name, () => {
 describe(addCommasToNumber.name, () => {
     itCases(addCommasToNumber, [
         {
-            it: 'should add a comma to a thousand',
+            it: 'adds a comma to a thousand',
             input: 1_000,
             expect: '1,000',
         },
         {
-            it: 'should handle an invalid number',
+            it: 'handles an invalid number',
             input: 'not a number',
             expect: 'NaN',
         },
         {
-            it: 'should handle string inputs',
+            it: 'handles string inputs',
             input: '1000000',
             expect: '1,000,000',
         },
         {
-            it: 'should add multiple commas',
+            it: 'adds multiple commas',
             input: 1_000_123_123,
             expect: '1,000,123,123',
         },
         {
-            it: 'should add commas even when there are decimal points',
+            it: 'adds commas even when there are decimal points',
             input: 1_000_123.456,
             expect: '1,000,123.456',
+        },
+        {
+            it: 'does not put a comma after the negative',
+            input: -100000,
+            expect: '-100,000',
         },
     ]);
 });
