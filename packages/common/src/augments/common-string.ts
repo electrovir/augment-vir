@@ -1,4 +1,5 @@
 import {ansiRegex} from './ansi';
+import {PartialAndUndefined} from './object/object';
 import {deDupeRegExFlags} from './regexp';
 import {AtLeastTuple} from './tuple';
 
@@ -135,18 +136,72 @@ export function kebabCaseToCamelCase(
     return maybeCapitalize(camelCase, casingOptions);
 }
 
-function isLowerCase(input: string): boolean {
-    // this excludes letters that are identical between lower and upper case like punctuation
-    return input !== input.toUpperCase();
+export enum StringCaseEnum {
+    Upper = 'upper',
+    Lower = 'lower',
+}
+
+/** Indicates whether the given string has different lower and upper case variants. */
+export function hasCase(input: string): boolean {
+    return input.toLowerCase() !== input.toUpperCase();
+}
+
+export type IsCaseOptions = {
+    /**
+     * Block characters that don't have different upper and lower case versions (such as
+     * punctuation).
+     */
+    blockNoCaseCharacters: boolean;
+};
+
+/**
+ * Checks if the given string is exclusively of the specific case.
+ *
+ * Note that some characters have no casing, such as punctuation (they have no difference between
+ * upper and lower casings). By default, those letters always return `true` for this function,
+ * regardless of which `caseType` is provided. To instead return `false` for any such characters,
+ * pass in an options object and set blockNoCaseCharacters to true.
+ */
+export function isCase(
+    input: string,
+    caseType: StringCaseEnum,
+    options?: PartialAndUndefined<IsCaseOptions>,
+): boolean {
+    if (!input && options?.blockNoCaseCharacters) {
+        return false;
+    }
+
+    for (let letterIndex = 0; letterIndex < input.length; letterIndex++) {
+        const letter = input[letterIndex] || '';
+
+        if (!hasCase(letter)) {
+            if (options?.blockNoCaseCharacters) {
+                return false;
+            } else {
+                continue;
+            }
+        }
+
+        if (caseType === StringCaseEnum.Upper && letter !== letter.toUpperCase()) {
+            return false;
+        } else if (caseType === StringCaseEnum.Lower && letter !== letter.toLowerCase()) {
+            return false;
+        }
+    }
+
+    return true;
 }
 
 export function camelCaseToKebabCase(rawCamelCase: string) {
     const kebabCase: string = rawCamelCase
         .split('')
         .reduce((accum, currentLetter, index, originalString) => {
-            const previousLetter = index > 0 ? originalString[index - 1]! : '';
-            const nextLetter = index < originalString.length - 1 ? originalString[index + 1]! : '';
-            const possibleWordBoundary = isLowerCase(previousLetter) || isLowerCase(nextLetter);
+            const previousLetter: string = index > 0 ? originalString[index - 1] || '' : '';
+            const nextLetter: string =
+                index < originalString.length - 1 ? originalString[index + 1] || '' : '';
+            const possibleWordBoundary =
+                isCase(previousLetter, StringCaseEnum.Lower, {blockNoCaseCharacters: true}) ||
+                isCase(nextLetter, StringCaseEnum.Lower, {blockNoCaseCharacters: true});
 
             if (
                 currentLetter === currentLetter.toLowerCase() ||
