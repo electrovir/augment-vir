@@ -1,4 +1,4 @@
-import {assertThrows, assertTypeOf, typedAssertInstanceOf} from '@augment-vir/chai';
+import {assertThrows, assertTypeOf} from '@augment-vir/chai';
 import {
     MaybePromise,
     PromiseTimeoutError,
@@ -12,6 +12,7 @@ import {
 import {randomString} from '@augment-vir/node-js';
 import {assert, expect} from 'chai';
 import {describe, it} from 'mocha';
+import {assertInstanceOf} from 'run-time-assertions';
 
 // increase if tests are flaky in other environments, like GitHub Actions (which is typically slow)
 const promiseDelayMs = 500;
@@ -135,7 +136,7 @@ describe(wrapPromiseInTimeout.name, () => {
             timeoutError = internalError;
         }
 
-        typedAssertInstanceOf(timeoutError, PromiseTimeoutError);
+        assertInstanceOf(timeoutError, PromiseTimeoutError);
         expect(timeoutError.message).to.equal(`Promised timed out after ${promiseDelayMs} ms.`);
         const endTime = Date.now();
         expect(endTime - startTime).to.be.greaterThanOrEqual(

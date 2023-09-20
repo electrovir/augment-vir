@@ -1,10 +1,7 @@
-import {
-    assertOutput,
-    typedAssertInstanceOf,
-    typedAssertNotNullish,
-} from '@augment-vir/browser-testing';
+import {assertOutput} from '@augment-vir/browser-testing';
 import {assert, fixture as renderFixture, waitUntil} from '@open-wc/testing';
 import {html} from 'element-vir';
+import {assertDefined, assertInstanceOf} from 'run-time-assertions';
 import {
     appendPositionDebugDiv,
     checkIfEntirelyInScrollView,
@@ -32,8 +29,8 @@ describe(checkIfEntirelyInScrollView.name, () => {
         const firstElement = fixture.querySelector('.child:first-of-type');
         const lastElement = fixture.querySelector('.child:last-of-type');
 
-        typedAssertInstanceOf(firstElement, HTMLDivElement);
-        typedAssertInstanceOf(lastElement, HTMLDivElement);
+        assertInstanceOf(firstElement, HTMLDivElement);
+        assertInstanceOf(lastElement, HTMLDivElement);
 
         await assertOutput(checkIfEntirelyInScrollView, true, firstElement);
         await assertOutput(checkIfEntirelyInScrollView, false, lastElement);
@@ -77,7 +74,7 @@ describe(appendPositionDebugDiv.name, () => {
             );
         }
 
-        typedAssertNotNullish(findDebugDiv(), 'failed to find the debug div');
+        assertDefined(findDebugDiv(), 'failed to find the debug div');
 
         debugDiv.remove();
         assert.isUndefined(findDebugDiv() ?? undefined, 'debug div should have removed itself');
