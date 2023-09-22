@@ -10,7 +10,7 @@ describe(joinUrlParts.name, () => {
                 'other path',
                 'page',
             ],
-            expect: 'https://wikipedia.org/other%20path/page',
+            expect: 'https://wikipedia.org/other path/page',
         },
         {
             it: 'strips duplicate slashes',
@@ -52,7 +52,16 @@ describe(joinUrlParts.name, () => {
                 'start/end',
                 'actual end',
             ],
-            expect: 'https://wikipedia.org/start/end/actual%20end',
+            expect: 'https://wikipedia.org/start/end/actual end',
+        },
+        {
+            it: 'does not encode url parts',
+            inputs: [
+                'http://localhost:5432',
+                'start',
+                'end',
+            ],
+            expect: 'http://localhost:5432/start/end',
         },
         {
             it: 'does not encode query params',
@@ -62,7 +71,7 @@ describe(joinUrlParts.name, () => {
                 'actual end',
                 '?stuff=yes&hi=what',
             ],
-            expect: 'https://wikipedia.org/start/end/actual%20end?stuff=yes&hi=what',
+            expect: 'https://wikipedia.org/start/end/actual end?stuff=yes&hi=what',
         },
         {
             it: 'joins query params with &',
@@ -73,7 +82,7 @@ describe(joinUrlParts.name, () => {
                 '?stuff=hoopla',
                 'hi=more',
             ],
-            expect: 'https://wikipedia.org/start/end/actual%20end?stuff=hoopla&hi=more',
+            expect: 'https://wikipedia.org/start/end/actual end?stuff=hoopla&hi=more',
         },
         {
             it: 'does not join hash params with anything',
@@ -82,10 +91,10 @@ describe(joinUrlParts.name, () => {
                 'start/end',
                 'actual end',
                 '?stuff=some-hash',
-                '#hash-stuff-here',
-                'more-hash',
+                '#hash-stuff-he',
+                're-hash',
             ],
-            expect: 'https://wikipedia.org/start/end/actual%20end?stuff=some-hash#hash-stuff-heremore-hash',
+            expect: 'https://wikipedia.org/start/end/actual end?stuff=some-hash#hash-stuff-here-hash',
         },
     ]);
 });

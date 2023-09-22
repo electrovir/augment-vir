@@ -2,7 +2,7 @@ const protocolSplit = '://';
 
 /**
  * Joins all given arguments together as if they were parts of a URL. Preserves trailing slashes and
- * removes consecutive slashes in the path. This also encodes each URL part.
+ * removes consecutive slashes in the path.
  *
  * @example: joinToUrl('https://example.com', 'path1', 'path2/', '/path3/') === 'https://example.com/path1/path2/path3/'
  */
@@ -28,7 +28,7 @@ export function joinUrlParts(...urlParts: ReadonlyArray<string>): string {
                 mapSearchParamsStarted = true;
                 return part;
             } else {
-                return encodeURIComponent(part);
+                return part;
             }
         })
         .reduce((fillingUpArray, currentEntry, currentIndex, inputArray) => {

@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/common",
-    "version": "19.0.0",
+    "version": "19.0.1",
     "homepage": "https://github.com/electrovir/augment-vir/tree/main/packages/common",
     "bugs": {
         "url": "https://github.com/electrovir/augment-vir/issues"
@@ -18,7 +18,7 @@
     "module": "dist/esm/index.js",
     "types": "dist/types/index.d.ts",
     "scripts": {
-        "compile": "tsc --project tsconfig.json && tsc --project tsconfig.cjs.json",
+        "compile": "rm -rf dist && tsc --project tsconfig.json && tsc --project tsconfig.cjs.json",
         "test": "echo \"use common-test to run tests\" && exit 0",
         "test:coverage": "npm test",
         "test:types": "tsc --noEmit"
