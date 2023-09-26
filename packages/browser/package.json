@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/browser",
-    "version": "19.0.1",
+    "version": "19.0.2",
     "homepage": "https://github.com/electrovir/augment-vir/tree/main/packages/browser",
     "bugs": {
         "url": "https://github.com/electrovir/augment-vir/issues"
@@ -24,10 +24,10 @@
         "test:watch": "web-test-runner --color --config configs/web-test-runner.config.mjs --watch"
     },
     "dependencies": {
-        "@augment-vir/common": "^19.0.1"
+        "@augment-vir/common": "^19.0.2"
     },
     "devDependencies": {
-        "@augment-vir/browser-testing": "^19.0.1",
+        "@augment-vir/browser-testing": "^19.0.2",
         "@open-wc/testing": "^3.2.0",
         "@types/chai": "^4.3.6",
         "@types/mocha": "^10.0.1",

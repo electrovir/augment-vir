@@ -1,6 +1,6 @@
 {
     "name": "augment-vir",
-    "version": "19.0.1",
+    "version": "19.0.2",
     "private": true,
     "homepage": "https://github.com/electrovir/augment-vir",
     "bugs": {
@@ -22,13 +22,13 @@
     ],
     "scripts": {
         "compile": "bash ./bash-scripts/compile.sh",
-        "docs:update": "virmator code-in-markdown",
+        "docs:update": "virmator docs",
         "format": "virmator format",
         "publish": "virmator publish \"npm run test:all\"",
         "test": "mono-vir for-each-async npm test",
-        "test:all": "npm run compile && npm run test:files && npm i && concurrently --kill-others-on-fail --kill-signal SIGKILL -c auto --colors --names spelling,format,docs,tests \"npm run test:spelling\" \"npm run test:format\" \"npm run test:docs\" \"npm run test:coverage\"",
+        "test:all": "npm run compile && npm run test:files && npm i && concurrently --kill-others-on-fail --kill-signal SIGKILL -c auto --colors --names spelling,format,docs,tests \"npm run test:spelling\" \"npm run test:format\" \"npm run test:coverage\"",
         "test:coverage": "npm run test:coverage --workspaces",
-        "test:docs": "virmator code-in-markdown check",
+        "test:docs": "virmator docs check",
         "test:files": "cd packages/scripts && npm run verify",
         "test:format": "virmator format check",
         "test:spelling": "virmator spellcheck",
@@ -49,6 +49,7 @@
         "prettier-plugin-packagejson": "^2.4.5",
         "prettier-plugin-sort-json": "^2.0.0",
         "prettier-plugin-toml": "^0.3.1",
+        "typedoc": "^0.25.1",
         "typescript": "^5.2.2",
         "virmator": "^8.0.1"
     },
