@@ -194,18 +194,20 @@ export async function askQuestion(
     });
 }
 
+export type QuestionUntilConditionMetConfig = {
+    questionToAsk: string;
+    conditionCallback: (response: string) => boolean | Promise<boolean>;
+    invalidInputMessage: string;
+    tryCountMax?: number;
+} & Partial<AskQuestionOptions>;
+
 export async function askQuestionUntilConditionMet({
     questionToAsk,
     conditionCallback,
     invalidInputMessage,
     tryCountMax = 5,
     ...options
-}: {
-    questionToAsk: string;
-    conditionCallback: (response: string) => boolean | Promise<boolean>;
-    invalidInputMessage: string;
-    tryCountMax?: number;
-} & Partial<AskQuestionOptions>): Promise<string> {
+}: QuestionUntilConditionMetConfig): Promise<string> {
     let wasConditionMet = false;
     let retryCount = 0;
     let response = '';
