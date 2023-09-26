@@ -34,7 +34,7 @@
         "mocha-spec-reporter-with-file-names": "^0.0.3",
         "run-time-assertions": "^0.0.2",
         "ts-node": "^10.9.1",
-        "type-fest": "^4.3.1",
+        "type-fest": "^4.3.2",
         "typescript": "^5.2.2"
     }
 }
