@@ -1,14 +1,8 @@
 import {itCases} from '@augment-vir/browser-testing';
 import {fixture as renderFixture} from '@open-wc/testing';
-import {
-    DeclarativeElement,
-    DeclarativeElementDefinition,
-    HTMLTemplateResult,
-    defineElementNoInputs,
-    html,
-} from 'element-vir';
-import {HtmlSpecTagName} from 'html-spec-tags';
+import {HTMLTemplateResult, defineElementNoInputs, html} from 'element-vir';
 import {getDirectChildren, getNestedChildren} from './element-children';
+import {toTagOrDefinition} from './tag-or-definition';
 
 function createChildTester(
     functionToTest: (element: Readonly<Element>, depth?: number | undefined) => Element[],
@@ -18,13 +12,7 @@ function createChildTester(
 
         const elements = functionToTest(fixture, depth);
 
-        return elements.map((element) => {
-            if (element instanceof DeclarativeElement) {
-                return element.constructor;
-            } else {
-                return element.tagName.toLowerCase();
-            }
-        }) as (HtmlSpecTagName | DeclarativeElementDefinition)[];
+        return elements.map(toTagOrDefinition);
     }
 
     return innerTest;

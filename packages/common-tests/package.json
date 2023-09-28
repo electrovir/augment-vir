@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/common-tests",
-    "version": "19.2.0",
+    "version": "19.3.0",
     "private": true,
     "homepage": "https://github.com/electrovir/augment-vir/tree/main/packages/common-tests",
     "bugs": {
@@ -22,13 +22,13 @@
         "test:types": "tsc --noEmit"
     },
     "devDependencies": {
-        "@augment-vir/chai": "^19.2.0",
-        "@augment-vir/node-js": "^19.2.0",
+        "@augment-vir/chai": "^19.3.0",
+        "@augment-vir/node-js": "^19.3.0",
         "@electrovir/nyc": "^15.1.0-fix0",
         "@istanbuljs/nyc-config-typescript": "^1.0.2",
         "@types/chai": "^4.3.6",
-        "@types/mocha": "^10.0.1",
-        "chai": "^4.3.8",
+        "@types/mocha": "^10.0.2",
+        "chai": "^4.3.10",
         "istanbul-smart-text-reporter": "^1.1.2",
         "mocha": "^10.2.0",
         "mocha-spec-reporter-with-file-names": "^0.0.3",
