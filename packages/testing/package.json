@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/testing",
-    "version": "19.3.0",
+    "version": "19.3.1",
     "homepage": "https://github.com/electrovir/augment-vir/tree/main/packages/testing",
     "bugs": {
         "url": "https://github.com/electrovir/augment-vir/issues"
@@ -23,7 +23,7 @@
         "test:coverage": "npm test coverage"
     },
     "dependencies": {
-        "@augment-vir/common": "^19.3.0",
+        "@augment-vir/common": "^19.3.1",
         "expect-type": "^0.15.0",
         "type-fest": "^4.3.2"
     },
