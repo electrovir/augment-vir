@@ -25,7 +25,7 @@
     "dependencies": {
         "@augment-vir/common": "^19.3.1",
         "expect-type": "^0.15.0",
-        "type-fest": "^4.3.2"
+        "type-fest": "^4.3.3"
     },
     "devDependencies": {
         "@electrovir/nyc": "^15.1.0-fix0",
