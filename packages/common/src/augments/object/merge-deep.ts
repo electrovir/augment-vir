@@ -21,25 +21,28 @@ export function mergeDeep<T extends BaseObject>(...inputs: (T | Partial<T>)[]): 
     const mergeProps: Record<PropertyKey, BaseObject[]> = {};
 
     inputs.forEach((individualInput) => {
-        result = {
-            ...result,
-            ...individualInput,
-        };
-
-        Object.entries(individualInput).forEach(
-            ([
-                key,
-                value,
-            ]) => {
-                if (isRuntimeTypeOf(value, 'object')) {
-                    const mergePropsArray = mergeProps[key] || [];
-                    if (!mergeProps[key]) {
-                        mergeProps[key] = mergePropsArray;
+        try {
+            Object.entries(individualInput).forEach(
+                ([
+                    key,
+                    value,
+                ]) => {
+                    if (isRuntimeTypeOf(value, 'object')) {
+                        const mergePropsArray = mergeProps[key] || [];
+                        if (!mergeProps[key]) {
+                            mergeProps[key] = mergePropsArray;
+                        }
+                        mergePropsArray.push(value);
                     }
-                    mergePropsArray.push(value);
-                }
-            },
-        );
+                },
+            );
+            result = {
+                ...result,
+                ...individualInput,
+            };
+        } catch (error) {
+            /** Ignore errors, such as individualInput not actually being an object. */
+        }
     });
 
     Object.entries(mergeProps).forEach(
