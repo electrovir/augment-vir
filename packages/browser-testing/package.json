@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/browser-testing",
-    "version": "19.4.0",
+    "version": "19.4.1",
     "homepage": "https://github.com/electrovir/augment-vir/tree/main/packages/common",
     "bugs": {
         "url": "https://github.com/electrovir/augment-vir/issues"
@@ -23,8 +23,8 @@
         "test:coverage": "npm test"
     },
     "dependencies": {
-        "@augment-vir/common": "^19.4.0",
-        "@augment-vir/testing": "^19.4.0",
+        "@augment-vir/common": "^19.4.1",
+        "@augment-vir/testing": "^19.4.1",
         "@open-wc/testing": "^3.2.0",
         "@types/mocha": "^10.0.2",
         "@web/test-runner-commands": "^0.8.0",

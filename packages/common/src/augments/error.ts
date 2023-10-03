@@ -1,12 +1,5 @@
 import {RequireExactlyOne} from 'type-fest';
-import {
-    AtLeastTuple,
-    isPromiseLike,
-    isTruthy,
-    NoInputsFunction,
-    typedHasProperty,
-    UnPromise,
-} from '..';
+import {AtLeastTuple, NoInputsFunction, isPromiseLike, isTruthy, typedHasProperty} from '..';
 
 export function combineErrors(errors: AtLeastTuple<Error, 1>): Error;
 export function combineErrors(errors: ReadonlyArray<never>): undefined;
@@ -88,13 +81,13 @@ export function wrapInTry<CallbackReturn, FallbackReturn>(
 
 export function executeAndReturnError<CallbackGeneric extends NoInputsFunction<PromiseLike<any>>>(
     callback: CallbackGeneric,
-): Promise<Error | UnPromise<ReturnType<CallbackGeneric>>>;
+): Promise<Error | Awaited<ReturnType<CallbackGeneric>>>;
 export function executeAndReturnError<CallbackGeneric extends NoInputsFunction>(
     callback: CallbackGeneric,
 ): Error | ReturnType<CallbackGeneric>;
 export function executeAndReturnError<CallbackGeneric extends NoInputsFunction>(
     callback: CallbackGeneric,
-): Promise<Error | UnPromise<ReturnType<CallbackGeneric>>> | Error | ReturnType<CallbackGeneric> {
+): Promise<Error | Awaited<ReturnType<CallbackGeneric>>> | Error | ReturnType<CallbackGeneric> {
     let caughtError: Error | undefined;
 
     try {

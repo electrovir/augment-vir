@@ -1,4 +1,5 @@
-import {getObjectTypedKeys, PropertyValueType, UnPromise} from '../..';
+import {PropertyValueType} from './object';
+import {getObjectTypedKeys} from './object-entries';
 
 export type InnerMappedValues<EntireInputGeneric extends object, MappedValueGeneric> = {
     [MappedProp in keyof EntireInputGeneric]: MappedValueGeneric;
@@ -8,8 +9,8 @@ export type MappedValues<
     EntireInputGeneric extends object,
     MappedValueGeneric,
 > = MappedValueGeneric extends PromiseLike<unknown>
-    ? Promise<InnerMappedValues<EntireInputGeneric, UnPromise<MappedValueGeneric>>>
-    : InnerMappedValues<EntireInputGeneric, UnPromise<MappedValueGeneric>>;
+    ? Promise<InnerMappedValues<EntireInputGeneric, Awaited<MappedValueGeneric>>>
+    : InnerMappedValues<EntireInputGeneric, Awaited<MappedValueGeneric>>;
 
 /**
  * Map an object's keys to new values synchronously. This is different from plain mapObjectValues in
@@ -18,11 +19,7 @@ export type MappedValues<
  * to explicitly state the return type.
  *
  * @example
- *     mapObjectValuesSync({objectToIterateOver: 'initial value'})<{objectToIterateOver: number}>(
- *         (key, value) => ({
- *             newValue: value.length,
- *         }),
- *     );
+ *     mapObjectValuesSync({objectToIterateOver: 'initial value'})(callback);
  */
 export function mapObjectValuesSync<EntireInputGeneric extends object>(
     inputObject: EntireInputGeneric,
@@ -77,10 +74,10 @@ export function mapObjectValues<EntireInputGeneric extends object, MappedValueGe
             ...accum,
             [currentKey]: mappedValue,
         };
-    }, {} as MappedValues<EntireInputGeneric, UnPromise<MappedValueGeneric>>);
+    }, {} as MappedValues<EntireInputGeneric, Awaited<MappedValueGeneric>>);
 
     if (gotAPromise) {
-        return new Promise<InnerMappedValues<EntireInputGeneric, UnPromise<MappedValueGeneric>>>(
+        return new Promise<InnerMappedValues<EntireInputGeneric, Awaited<MappedValueGeneric>>>(
             async (resolve, reject) => {
                 try {
                     await Promise.all(
@@ -93,7 +90,7 @@ export function mapObjectValues<EntireInputGeneric extends object, MappedValueGe
                     resolve(
                         mappedObject as InnerMappedValues<
                             EntireInputGeneric,
-                            UnPromise<MappedValueGeneric>
+                            Awaited<MappedValueGeneric>
                         >,
                     );
                 } catch (error) {

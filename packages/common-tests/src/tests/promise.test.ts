@@ -2,7 +2,6 @@ import {assertThrows, assertTypeOf} from '@augment-vir/chai';
 import {
     MaybePromise,
     PromiseTimeoutError,
-    UnPromise,
     createDeferredPromiseWrapper,
     isPromiseLike,
     wait,
@@ -231,16 +230,10 @@ describe(waitForCondition.name, () => {
     });
 });
 
-describe('UnPromise', () => {
-    it('unwraps promises', () => {
-        assertTypeOf<UnPromise<Promise<Promise<string>>>>().toEqualTypeOf<string>();
-        assertTypeOf<UnPromise<string>>().toEqualTypeOf<string>();
-    });
-});
-
 describe('MaybePromise', () => {
-    it('wraps and unwraps promises', () => {
+    it('wraps in a promise', () => {
         assertTypeOf<MaybePromise<string>>().toEqualTypeOf<string | Promise<string>>();
-        assertTypeOf<MaybePromise<Promise<string>>>().toEqualTypeOf<string | Promise<string>>();
+        /** You have manually unwrap nested promises. */
+        assertTypeOf<MaybePromise<Promise<string>>>().not.toEqualTypeOf<string | Promise<string>>();
     });
 });
