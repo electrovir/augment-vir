@@ -2,6 +2,7 @@ import {assertThrows, assertTypeOf} from '@augment-vir/chai';
 import {
     MaybePromise,
     PromiseTimeoutError,
+    callAsynchronously,
     createDeferredPromiseWrapper,
     isPromiseLike,
     wait,
@@ -15,6 +16,32 @@ import {assertInstanceOf} from 'run-time-assertions';
 
 // increase if tests are flaky in other environments, like GitHub Actions (which is typically slow)
 const promiseDelayMs = 500;
+
+describe(callAsynchronously.name, () => {
+    it('does not interrupt synchronous code order', async () => {
+        const values: number[] = [];
+        values.push(1);
+        const asyncOutput = callAsynchronously(() => {
+            values.push(3);
+        });
+        values.push(2);
+        await asyncOutput;
+        assert.deepStrictEqual(
+            values,
+            [
+                1,
+                2,
+                3,
+            ],
+        );
+    });
+
+    it("returns the callback's output", async () => {
+        const randomValue = randomString();
+
+        assert.strictEqual(await callAsynchronously(() => randomValue), randomValue);
+    });
+});
 
 describe(createDeferredPromiseWrapper.name, () => {
     it('should create a promise which can be resolved externally.', async () => {
