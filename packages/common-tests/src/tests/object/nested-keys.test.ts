@@ -1,6 +1,12 @@
 import {assertTypeOf, itCases} from '@augment-vir/chai';
-import {NestedKeys, NestedSequentialKeys, getValueFromNestedKeys} from '@augment-vir/common';
+import {
+    NestedKeys,
+    NestedSequentialKeys,
+    getValueFromNestedKeys,
+    setValueWithNestedKeys,
+} from '@augment-vir/common';
 import {randomString} from '@augment-vir/node-js';
+import {assert} from 'chai';
 import {describe} from 'mocha';
 
 type ExampleObjectType = {
@@ -19,6 +25,49 @@ type ExampleObjectType = {
         };
     };
 };
+
+describe(setValueWithNestedKeys.name, () => {
+    const exampleOriginal = {
+        a: {
+            b: {
+                c: 3,
+            },
+        },
+    };
+
+    it('sets a value deeply', () => {
+        const newValue = Math.random();
+
+        setValueWithNestedKeys(
+            exampleOriginal,
+            [
+                'a',
+                'b',
+                'c',
+            ],
+            newValue,
+        );
+
+        assert.strictEqual(exampleOriginal.a.b.c, newValue);
+    });
+
+    it("creates keys that didn't exist", () => {
+        const missingKeys = {} as typeof exampleOriginal;
+        const newValue = Math.random();
+
+        setValueWithNestedKeys(
+            missingKeys,
+            [
+                'a',
+                'b',
+                'c',
+            ],
+            newValue,
+        );
+
+        assert.strictEqual(missingKeys.a.b.c, newValue);
+    });
+});
 
 describe('NestedKeys', () => {
     it('should restrict types', () => {

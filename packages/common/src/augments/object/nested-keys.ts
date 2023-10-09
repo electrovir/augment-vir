@@ -1,4 +1,4 @@
-import {PropertyValueType} from './object';
+import {PropertyValueType, isObject} from './object';
 import {UnionToIntersection} from './old-union-to-intersection';
 import {typedHasProperty} from './typed-has-property';
 
@@ -35,6 +35,40 @@ export type NestedValue<
             : never
         : never
     : never;
+
+export function setValueWithNestedKeys<
+    const ObjectGeneric extends object,
+    const KeysGeneric extends NestedSequentialKeys<ObjectGeneric>,
+>(
+    inputObject: ObjectGeneric,
+    nestedKeys: KeysGeneric,
+    value: NestedValue<ObjectGeneric, KeysGeneric>,
+): void {
+    /**
+     * Lots of as any casts in here because these types are, under the hood, pretty complex. Since
+     * the inputs and outputs of this function are well typed, these internal as any casts do not
+     * affect the external API of this function.
+     */
+
+    const nextKey = nestedKeys[0];
+    if (!(nextKey in inputObject)) {
+        inputObject[nextKey] = {} as any;
+    } else if (!isObject(inputObject[nextKey])) {
+        throw new Error(`Cannot set value at key '${String(nextKey)}' as its not an object.`);
+    }
+
+    const nextParent = inputObject[nextKey];
+
+    if (nestedKeys.length > 2) {
+        setValueWithNestedKeys(
+            nextParent as any,
+            (nestedKeys as ReadonlyArray<string>).slice(1) as any,
+            value,
+        );
+    } else {
+        (nextParent as any)[(nestedKeys as ReadonlyArray<string>)[1]!] = value;
+    }
+}
 
 export function getValueFromNestedKeys<
     const ObjectGeneric extends object,
