@@ -1,5 +1,4 @@
-import {getOrSetFromMap} from '@augment-vir/common';
-import {randomString} from '@augment-vir/node-js';
+import {getOrSetFromMap, randomString} from '@augment-vir/common';
 import {assert} from 'chai';
 import {describe} from 'mocha';
 

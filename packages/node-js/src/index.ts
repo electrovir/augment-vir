@@ -3,7 +3,6 @@ export * from './augments/http';
 export * from './augments/node-js-array';
 export * from './augments/node-js-console';
 export * from './augments/node-js-json';
-export * from './augments/node-js-random';
 export * from './augments/npm/query-workspace';
 export * from './augments/npm/read-package-json';
 export * from './augments/path';

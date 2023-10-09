@@ -1,6 +1,6 @@
+import {randomInteger} from '@augment-vir/common';
 import {assert} from 'chai';
 import {shuffleArray} from './node-js-array';
-import {randomInteger} from './node-js-random';
 
 describe(shuffleArray.name, () => {
     const exampleArray: ReadonlyArray<number> = Array(100)

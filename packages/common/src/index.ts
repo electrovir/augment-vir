@@ -25,6 +25,7 @@ export * from './augments/object/old-union-to-intersection';
 export * from './augments/object/pick-deep';
 export * from './augments/object/typed-has-property';
 export * from './augments/promise';
+export * from './augments/random';
 export * from './augments/regexp';
 export * from './augments/runtime-type-of';
 export * from './augments/string/prefixes';

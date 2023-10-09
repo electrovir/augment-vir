@@ -1,7 +1,14 @@
-import {itCases} from '@augment-vir/browser-testing';
-import {clamp, ensureMinAndMax, isUuid} from '@augment-vir/common';
-import {assert} from '@open-wc/testing';
-import {createUuid, randomBoolean, randomInteger, randomString} from './browser-random';
+import {itCases} from '@augment-vir/chai';
+import {
+    clamp,
+    createUuid,
+    ensureMinAndMax,
+    isUuid,
+    randomBoolean,
+    randomInteger,
+    randomString,
+} from '@augment-vir/common';
+import {assert} from 'chai';
 
 describe(randomString.name, () => {
     it('should produce unique strings', () => {

@@ -1,6 +1,5 @@
 export * from './augments/animation-frame';
 export * from './augments/browser-array';
-export * from './augments/browser-random';
 export * from './augments/elements/element-children';
 export * from './augments/elements/element-position';
 export * from './augments/elements/query-children';

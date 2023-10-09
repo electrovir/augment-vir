@@ -1,6 +1,6 @@
+import {randomInteger} from '@augment-vir/common';
 import {assert} from '@open-wc/testing';
 import {shuffleArray} from './browser-array';
-import {randomInteger} from './browser-random';
 
 describe(shuffleArray.name, () => {
     const exampleArray: ReadonlyArray<number> = Array(100)

@@ -5,11 +5,11 @@ import {
     callAsynchronously,
     createDeferredPromiseWrapper,
     isPromiseLike,
+    randomString,
     wait,
     waitForCondition,
     wrapPromiseInTimeout,
 } from '@augment-vir/common';
-import {randomString} from '@augment-vir/node-js';
 import {assert, expect} from 'chai';
 import {describe, it} from 'mocha';
 import {assertInstanceOf} from 'run-time-assertions';

@@ -1,4 +1,5 @@
-import {clamp, ensureMinAndMax} from '@augment-vir/common';
+import {clamp, ensureMinAndMax} from './common-number';
+
 const crypto = globalThis.crypto;
 
 // can't get this coverage to work

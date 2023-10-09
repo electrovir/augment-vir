@@ -1,6 +1,5 @@
 import {itCases} from '@augment-vir/chai';
-import {hasKey} from '@augment-vir/common';
-import {randomInteger, randomString} from '@augment-vir/node-js';
+import {hasKey, randomInteger, randomString} from '@augment-vir/common';
 
 describe(hasKey.name, () => {
     const exampleSymbol = Symbol('example');

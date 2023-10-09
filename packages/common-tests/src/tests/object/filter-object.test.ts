@@ -3,9 +3,9 @@ import {
     filterObject,
     omitObjectKeys,
     pickObjectKeys,
+    randomString,
     wrapNarrowTypeWithTypeCheck,
 } from '@augment-vir/common';
-import {randomString} from '@augment-vir/node-js';
 import {assert} from 'chai';
 import {describe, it} from 'mocha';
 

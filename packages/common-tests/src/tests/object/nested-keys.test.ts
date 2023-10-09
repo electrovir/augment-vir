@@ -3,9 +3,9 @@ import {
     NestedKeys,
     NestedSequentialKeys,
     getValueFromNestedKeys,
+    randomString,
     setValueWithNestedKeys,
 } from '@augment-vir/common';
-import {randomString} from '@augment-vir/node-js';
 import {assert} from 'chai';
 import {describe} from 'mocha';
 

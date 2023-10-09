@@ -1,6 +1,5 @@
 import {assertTypeOf} from '@augment-vir/chai';
-import {Falsy, Truthy, ifTruthy, isFalsy, isTruthy} from '@augment-vir/common';
-import {randomBoolean} from '@augment-vir/node-js';
+import {Falsy, Truthy, ifTruthy, isFalsy, isTruthy, randomBoolean} from '@augment-vir/common';
 import {assert, expect} from 'chai';
 import {describe, it} from 'mocha';
 

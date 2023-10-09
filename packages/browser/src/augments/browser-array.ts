@@ -1,4 +1,4 @@
-import {randomString} from './browser-random';
+import {randomString} from '@augment-vir/common';
 
 /** Creates a new array which is a shuffled version of the input array. */
 export function shuffleArray<ArrayElementType>(

@@ -1,6 +1,11 @@
 import {expectDuration, itCases} from '@augment-vir/chai';
-import {awaitedBlockingMap, awaitedFilter, awaitedForEach, wait} from '@augment-vir/common';
-import {randomString} from '@augment-vir/node-js';
+import {
+    awaitedBlockingMap,
+    awaitedFilter,
+    awaitedForEach,
+    randomString,
+    wait,
+} from '@augment-vir/common';
 import {assert, expect} from 'chai';
 import {describe, it} from 'mocha';
 
