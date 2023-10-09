@@ -1,5 +1,5 @@
-import {UnionToIntersection} from 'type-fest';
 import {PropertyValueType} from './object';
+import {UnionToIntersection} from './old-union-to-intersection';
 import {typedHasProperty} from './typed-has-property';
 
 // produces an array type where each subsequent entry must be a key in the previous entry's object

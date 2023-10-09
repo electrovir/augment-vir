@@ -21,6 +21,7 @@ export * from './augments/object/merge-deep';
 export * from './augments/object/nested-keys';
 export * from './augments/object/object';
 export * from './augments/object/object-entries';
+export * from './augments/object/old-union-to-intersection';
 export * from './augments/object/pick-deep';
 export * from './augments/object/typed-has-property';
 export * from './augments/promise';
