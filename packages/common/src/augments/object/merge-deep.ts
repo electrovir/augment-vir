@@ -1,14 +1,12 @@
 import {isRuntimeTypeOf} from '../runtime-type-of';
 import {isLengthAtLeast} from '../tuple';
 
-export type BaseObject = Record<PropertyKey, unknown>;
-
 /**
  * Accepts multiple objects and merges their key-value pairs recursively.
  *
  * Note that order matters! Each input object will overwrite the properties of the previous objects.
  */
-export function mergeDeep<T extends BaseObject>(...inputs: (T | Partial<T>)[]): T {
+export function mergeDeep<T extends object>(...inputs: (T | Partial<T>)[]): T {
     if (!isLengthAtLeast(inputs, 1)) {
         return {} as T;
     }
@@ -16,9 +14,9 @@ export function mergeDeep<T extends BaseObject>(...inputs: (T | Partial<T>)[]): 
         return inputs[0] as T;
     }
 
-    let result: BaseObject = {};
+    let result: any = {};
 
-    const mergeProps: Record<PropertyKey, BaseObject[]> = {};
+    const mergeProps: Record<PropertyKey, any[]> = {};
 
     inputs.forEach((individualInput) => {
         try {
