@@ -24,6 +24,35 @@ describe('PickDeepStrict', () => {
 
     type derp = PickDeepStrict<TestObject, ['topLevelWithNested1']>;
 
+    it('works with nested keys that only exist on some nested values', () => {
+        type TestObjectWithMethods = {
+            topLevel: () => void;
+            topLevel2: {
+                nested: {
+                    nested2: {
+                        hello: string;
+                    };
+                };
+                nestedSibling: {
+                    something: number;
+                };
+            };
+        };
+
+        type Picked = PickDeep<TestObjectWithMethods, ['topLevel' | 'topLevel2', 'nested']>;
+
+        assertTypeOf<Picked>().toEqualTypeOf<{
+            topLevel: () => void;
+            topLevel2: {
+                nested: {
+                    nested2: {
+                        hello: string;
+                    };
+                };
+            };
+        }>();
+    });
+
     it('should accept valid types', () => {
         assertTypeOf<PickDeepStrict<TestObject, ['topLevel']>>().toEqualTypeOf<{
             topLevel: string;

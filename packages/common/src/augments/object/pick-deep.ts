@@ -1,3 +1,4 @@
+import {AnyFunction} from '../function';
 import {NestedKeys} from './nested-keys';
 
 type InnerPickDeep<
@@ -8,7 +9,11 @@ type InnerPickDeep<
           [CurrentProp in Extract<
               CurrentLevelPick,
               keyof OriginalObjectGeneric
-          >]: OriginalObjectGeneric[CurrentProp] extends object
+          >]: OriginalObjectGeneric[CurrentProp] extends AnyFunction
+              ? OriginalObjectGeneric[CurrentProp]
+              : OriginalObjectGeneric[CurrentProp] extends Array<any>
+              ? OriginalObjectGeneric[CurrentProp]
+              : OriginalObjectGeneric[CurrentProp] extends object
               ? InnerPickDeep<OriginalObjectGeneric[CurrentProp], RemainingKeys>
               : OriginalObjectGeneric[CurrentProp];
       }
