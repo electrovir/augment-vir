@@ -1,4 +1,4 @@
-import {assertTypeOf, itCases} from '@augment-vir/chai';
+import {itCases} from '@augment-vir/chai';
 import {
     combineErrorMessages,
     combineErrors,
@@ -11,6 +11,7 @@ import {
 } from '@augment-vir/common';
 import {assert, expect} from 'chai';
 import {describe, it} from 'mocha';
+import {assertTypeOf} from 'run-time-assertions';
 
 describe(extractErrorMessage.name, () => {
     it('should extract message from error object', () => {

@@ -1,6 +1,7 @@
-import {assertThrows, assertTypeOf, clickElement} from '@augment-vir/browser-testing';
+import {clickElement} from '@augment-vir/browser-testing';
 import {fixture as renderFixture, waitUntil} from '@open-wc/testing';
 import {html, listen} from 'element-vir';
+import {assertThrows, assertTypeOf} from 'run-time-assertions';
 import {extractEventTarget} from './event-target';
 
 describe(extractEventTarget.name, () => {

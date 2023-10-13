@@ -1,7 +1,7 @@
-import {assertThrows} from '@augment-vir/chai';
 import {expect} from 'chai';
 import {describe, it} from 'mocha';
 import {join} from 'path';
+import {assertThrows} from 'run-time-assertions';
 import {
     longRunningFile,
     longRunningFileWithStderr,

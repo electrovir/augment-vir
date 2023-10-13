@@ -1,6 +1,6 @@
 import {assert} from 'chai';
 import {describe, it} from 'mocha';
-import {assertTypeOf} from './assert-type-of';
+import {assertTypeOf} from 'run-time-assertions';
 import {
     BaseTestCase,
     FunctionTestCase,

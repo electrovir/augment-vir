@@ -1,4 +1,4 @@
-import {assertTypeOf, itCases} from '@augment-vir/chai';
+import {itCases} from '@augment-vir/chai';
 import {
     AtLeastTuple,
     MappedTuple,
@@ -8,6 +8,7 @@ import {
 } from '@augment-vir/common';
 import {assert} from 'chai';
 import {describe} from 'mocha';
+import {assertTypeOf} from 'run-time-assertions';
 
 describe(assertLengthAtLeast.name, () => {
     it('is a type guard', () => {

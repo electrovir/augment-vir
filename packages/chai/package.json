@@ -30,6 +30,9 @@
     "devDependencies": {
         "typescript": "^5.2.2"
     },
+    "peerDependencies": {
+        "chai": "^4.3.10"
+    },
     "publishConfig": {
         "access": "public"
     }

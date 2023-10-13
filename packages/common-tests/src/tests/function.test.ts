@@ -1,6 +1,6 @@
-import {assertTypeOf} from '@augment-vir/chai';
 import {TypedFunction} from '@augment-vir/common';
 import {describe, it} from 'mocha';
+import {assertTypeOf} from 'run-time-assertions';
 
 describe('TypedFunction', () => {
     it('properly assigns a single argument and a return type', () => {

@@ -1,4 +1,3 @@
-import {assertThrows, assertTypeOf} from '@augment-vir/chai';
 import {
     MaybePromise,
     PromiseTimeoutError,
@@ -12,7 +11,7 @@ import {
 } from '@augment-vir/common';
 import {assert, expect} from 'chai';
 import {describe, it} from 'mocha';
-import {assertInstanceOf} from 'run-time-assertions';
+import {assertInstanceOf, assertThrows, assertTypeOf} from 'run-time-assertions';
 
 // increase if tests are flaky in other environments, like GitHub Actions (which is typically slow)
 const promiseDelayMs = 500;

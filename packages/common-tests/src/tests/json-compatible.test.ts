@@ -1,9 +1,9 @@
-import {assertTypeOf} from '@augment-vir/chai';
 import {
     JsonCompatibleArray,
     JsonCompatibleObject,
     JsonCompatiblePrimitiveValue,
 } from '@augment-vir/common';
+import {assertTypeOf} from 'run-time-assertions';
 
 describe('JsonCompatibleValue', () => {
     it('should have proper JsonCompatiblePrimitiveValue types', () => {

@@ -25,21 +25,21 @@
     },
     "dependencies": {
         "@augment-vir/common": "^20.0.1",
-        "element-vir": "^16.4.2",
+        "element-vir": "^16.4.7",
         "html-spec-tags": "^1.0.0"
     },
     "devDependencies": {
         "@augment-vir/browser-testing": "^20.0.1",
         "@open-wc/testing": "^3.2.0",
-        "@types/chai": "^4.3.6",
+        "@types/chai": "^4.3.8",
         "@types/mocha": "^10.0.2",
         "@web/dev-server-esbuild": "^0.4.1",
-        "@web/test-runner": "^0.17.1",
-        "@web/test-runner-commands": "^0.8.0",
+        "@web/test-runner": "^0.17.2",
+        "@web/test-runner-commands": "^0.8.1",
         "@web/test-runner-playwright": "^0.10.1",
         "@web/test-runner-visual-regression": "^0.8.2",
         "istanbul-smart-text-reporter": "^1.1.2",
-        "run-time-assertions": "^0.0.2",
+        "run-time-assertions": "^0.1.2",
         "type-fest": "^4.4.0",
         "typescript": "^5.2.2"
     },

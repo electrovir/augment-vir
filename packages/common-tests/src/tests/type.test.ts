@@ -1,4 +1,3 @@
-import {assertTypeOf} from '@augment-vir/chai';
 import {
     ArrayElement,
     DeepWriteable,
@@ -13,6 +12,7 @@ import {
 } from '@augment-vir/common';
 import {assert} from 'chai';
 import {describe, it} from 'mocha';
+import {assertTypeOf} from 'run-time-assertions';
 
 describe('NoInfer', () => {
     function functionThatHasAGenericForTesting<T = never>(input: NoInfer<T>): T {

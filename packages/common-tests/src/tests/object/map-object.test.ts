@@ -1,4 +1,3 @@
-import {assertThrows, assertTypeOf} from '@augment-vir/chai';
 import {
     PropertyValueType,
     getObjectTypedKeys,
@@ -9,6 +8,7 @@ import {
 } from '@augment-vir/common';
 import {assert, expect} from 'chai';
 import {describe, it} from 'mocha';
+import {assertThrows, assertTypeOf} from 'run-time-assertions';
 
 describe(mapObjectValuesSync.name, () => {
     it('should have proper types', () => {

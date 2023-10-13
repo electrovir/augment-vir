@@ -1,4 +1,3 @@
-import {assertTypeOf} from '@augment-vir/chai';
 import {
     ExcludeKeysWithMatchingValues,
     ExtractKeysWithMatchingValues,
@@ -8,6 +7,7 @@ import {
 } from '@augment-vir/common';
 import {expect} from 'chai';
 import {describe, it} from 'mocha';
+import {assertTypeOf} from 'run-time-assertions';
 
 describe(isObject.name, () => {
     it('should pass on empty object', () => {

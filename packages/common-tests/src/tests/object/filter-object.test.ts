@@ -1,4 +1,4 @@
-import {assertTypeOf, itCases} from '@augment-vir/chai';
+import {itCases} from '@augment-vir/chai';
 import {
     filterObject,
     omitObjectKeys,
@@ -8,6 +8,7 @@ import {
 } from '@augment-vir/common';
 import {assert} from 'chai';
 import {describe, it} from 'mocha';
+import {assertTypeOf} from 'run-time-assertions';
 
 describe(filterObject.name, () => {
     const symbolKey = Symbol('symbol-key');

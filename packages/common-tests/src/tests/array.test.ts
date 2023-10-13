@@ -6,9 +6,9 @@ import {
     trimArrayStrings,
     typedArrayIncludes,
 } from '@augment-vir/common';
-import {assertTypeOf} from '@augment-vir/testing';
 import {assert, expect} from 'chai';
 import {describe, it} from 'mocha';
+import {assertTypeOf} from 'run-time-assertions';
 
 describe(filterOutIndexes.name, () => {
     const experimentArray = [

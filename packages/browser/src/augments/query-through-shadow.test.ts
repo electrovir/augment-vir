@@ -1,7 +1,8 @@
-import {assertTypeOf, itCases} from '@augment-vir/browser-testing';
+import {itCases} from '@augment-vir/browser-testing';
 import {isRuntimeTypeOf} from '@augment-vir/common';
 import {assert, fixture as renderFixture} from '@open-wc/testing';
 import {defineElementNoInputs, html} from 'element-vir';
+import {assertTypeOf} from 'run-time-assertions';
 import {queryThroughShadow} from './query-through-shadow';
 
 const classNames = {

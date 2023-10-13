@@ -1,5 +1,9 @@
 import {RequireExactlyOne} from 'type-fest';
-import {AtLeastTuple, NoInputsFunction, isPromiseLike, isTruthy, typedHasProperty} from '..';
+import {isTruthy} from './boolean';
+import {NoInputsFunction} from './function';
+import {typedHasProperty} from './object/typed-has-property';
+import {isPromiseLike} from './promise/promise';
+import {AtLeastTuple} from './tuple';
 
 export function combineErrors(errors: AtLeastTuple<Error, 1>): Error;
 export function combineErrors(errors: ReadonlyArray<never>): undefined;

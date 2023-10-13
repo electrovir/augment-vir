@@ -1,6 +1,6 @@
-import {assertTypeOf} from '@augment-vir/chai';
 import {timeCallback, wait} from '@augment-vir/common';
 import {assert} from 'chai';
+import {assertTypeOf} from 'run-time-assertions';
 
 describe(timeCallback.name, () => {
     it('measures the time', async () => {

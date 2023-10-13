@@ -1,7 +1,7 @@
-import {assertTypeOf} from '@augment-vir/chai';
 import {Falsy, Truthy, ifTruthy, isFalsy, isTruthy, randomBoolean} from '@augment-vir/common';
 import {assert, expect} from 'chai';
 import {describe, it} from 'mocha';
+import {assertTypeOf} from 'run-time-assertions';
 
 const falsyArray = [
     undefined,

@@ -1,9 +1,10 @@
-import {assertTypeOf, itCases} from '@augment-vir/chai';
+import {itCases} from '@augment-vir/chai';
 import {
     mapObjectValues,
     objectToSearchParamsString,
     urlToSearchParamsObject,
 } from '@augment-vir/common';
+import {assertTypeOf} from 'run-time-assertions';
 
 describe(objectToSearchParamsString.name, () => {
     itCases(objectToSearchParamsString, [

@@ -1,4 +1,3 @@
-import {assertThrows} from '@augment-vir/chai';
 import {
     ensureEnum,
     filterToEnumValues,
@@ -8,6 +7,7 @@ import {
 } from '@augment-vir/common';
 import {expect} from 'chai';
 import {describe, it} from 'mocha';
+import {assertThrows} from 'run-time-assertions';
 
 enum Planet {
     Mercury = 'mercury',
