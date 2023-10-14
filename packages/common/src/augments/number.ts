@@ -7,3 +7,13 @@ export function toEnsuredNumber(input: any): number {
         return numeric;
     }
 }
+
+export function wrapNumber({max, min, value}: {value: number; max: number; min: number}): number {
+    if (value > max) {
+        return min;
+    } else if (value < min) {
+        return max;
+    }
+
+    return value;
+}
