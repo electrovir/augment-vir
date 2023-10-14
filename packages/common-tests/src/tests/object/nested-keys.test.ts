@@ -20,7 +20,7 @@ type ExampleObjectType = {
             nestedTwo: {
                 nestedThree: {
                     propOne: RegExp;
-                    propTwo: Date;
+                    propTwo: Date | undefined;
                 };
             };
         };
@@ -131,9 +131,20 @@ describe('NestedKeys', () => {
             sortName: 'derp',
         };
     });
-});
 
-describe('NestedAnyKeys', () => {
+    it('works through arrays', () => {
+        type ParentType = {
+            stuff: {hello: string};
+            multiple: {moreStuff: {nested: number}}[];
+        };
+
+        const nestedKeys: NestedKeys<ParentType> = [
+            'multiple',
+            'moreStuff',
+            'nested',
+        ];
+    });
+
     it('should allow unions', () => {
         assertTypeOf<ExampleObjectType['topLevel' | 'oneLevelDeep']>().toEqualTypeOf<
             string | ExampleObjectType['oneLevelDeep']
@@ -153,9 +164,7 @@ describe('getValueFromNestedKeys', () => {
     it('should restrict types properly', () => {
         const example: ExampleObjectType = {} as any;
 
-        assertTypeOf(getValueFromNestedKeys(example, ['topLevel'])).toEqualTypeOf<
-            string | undefined
-        >();
+        assertTypeOf(getValueFromNestedKeys(example, ['topLevel'])).toEqualTypeOf<string>();
 
         const derp: NestedSequentialKeys<ExampleObjectType> = ['topLevel'];
 
@@ -187,6 +196,23 @@ describe('getValueFromNestedKeys', () => {
         ).toEqualTypeOf<Date | undefined>();
     });
 
+    it('works through arrays', () => {
+        const output = getValueFromNestedKeys(
+            {
+                stuff: {hello: 'hi'},
+                multiple: [{moreStuff: {nested: 5}}],
+            },
+            [
+                'multiple',
+                'moreStuff',
+                'nested',
+            ],
+        );
+
+        assertTypeOf(output).toEqualTypeOf<5[]>();
+        assert.deepStrictEqual(output, [5]);
+    });
+
     const testObject = {
         topLevelValue: randomString(),
         topLevelObject: {
@@ -208,7 +234,7 @@ describe('getValueFromNestedKeys', () => {
             {
                 it: 'should return undefined if key is missing',
                 input: ['missing key' as any],
-                expect: undefined,
+                expect: undefined as any,
             },
             {
                 it: 'should get the value from nested keys',

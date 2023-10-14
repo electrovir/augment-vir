@@ -1,17 +1,24 @@
+import {isRuntimeTypeOf} from '../runtime-type-of';
+import {ArrayElement} from '../type';
 import {PropertyValueType, isObject} from './object';
 import {UnionToIntersection} from './old-union-to-intersection';
 import {typedHasProperty} from './typed-has-property';
 
 // produces an array type where each subsequent entry must be a key in the previous entry's object
-export type NestedSequentialKeys<ObjectGeneric extends object> = PropertyValueType<{
-    [Prop in keyof ObjectGeneric]: NonNullable<ObjectGeneric[Prop]> extends object
-        ? Readonly<[Prop, ...(NestedSequentialKeys<NonNullable<ObjectGeneric[Prop]>> | [])]>
-        : Readonly<[Prop]>;
-}>;
+export type NestedSequentialKeys<ObjectGeneric extends object> =
+    NonNullable<ObjectGeneric> extends ReadonlyArray<any>
+        ? NestedSequentialKeys<Extract<NonNullable<ObjectGeneric>[number], object>>
+        : PropertyValueType<{
+              [Prop in keyof ObjectGeneric]: NonNullable<ObjectGeneric[Prop]> extends object
+                  ? Readonly<
+                        [Prop, ...(NestedSequentialKeys<NonNullable<ObjectGeneric[Prop]>> | [])]
+                    >
+                  : Readonly<[Prop]>;
+          }>;
 
-export type NestedKeys<ObjectGeneric extends object> = UnionToIntersection<
-    Extract<PropertyValueType<ObjectGeneric>, object>
-> extends object
+export type NestedKeys<ObjectGeneric extends object> = ObjectGeneric extends ReadonlyArray<any>
+    ? NestedKeys<ArrayElement<ObjectGeneric>>
+    : UnionToIntersection<Extract<PropertyValueType<ObjectGeneric>, object>> extends object
     ? [
           keyof ObjectGeneric,
           ...(
@@ -24,7 +31,9 @@ export type NestedKeys<ObjectGeneric extends object> = UnionToIntersection<
 export type NestedValue<
     ObjectGeneric extends object,
     NestedKeysGeneric extends NestedSequentialKeys<ObjectGeneric>,
-> = NestedKeysGeneric extends readonly [infer FirstEntry, ...infer FollowingEntries]
+> = ObjectGeneric extends ReadonlyArray<any>
+    ? NestedValue<Extract<ObjectGeneric[number], object>, NestedKeysGeneric>[]
+    : NestedKeysGeneric extends readonly [infer FirstEntry, ...infer FollowingEntries]
     ? FirstEntry extends keyof ObjectGeneric
         ? FollowingEntries extends never[]
             ? ObjectGeneric[FirstEntry]
@@ -40,7 +49,7 @@ export function setValueWithNestedKeys<
     const ObjectGeneric extends object,
     const KeysGeneric extends NestedSequentialKeys<ObjectGeneric>,
 >(
-    inputObject: ObjectGeneric,
+    originalObject: ObjectGeneric,
     nestedKeys: KeysGeneric,
     value: NestedValue<ObjectGeneric, KeysGeneric>,
 ): void {
@@ -49,8 +58,19 @@ export function setValueWithNestedKeys<
      * the inputs and outputs of this function are well typed, these internal as any casts do not
      * affect the external API of this function.
      */
+    const nestedKeysInput = nestedKeys as string[];
+    const inputObject = originalObject as Record<PropertyKey, any>;
 
-    const nextKey = nestedKeys[0];
+    if (isRuntimeTypeOf(inputObject, 'array')) {
+        inputObject.forEach((entry) => {
+            if (isObject(entry)) {
+                (setValueWithNestedKeys as any)(entry, nestedKeysInput, value);
+            }
+        });
+        return;
+    }
+
+    const nextKey = nestedKeysInput[0]!;
     if (!(nextKey in inputObject)) {
         inputObject[nextKey] = {} as any;
     } else if (!isObject(inputObject[nextKey])) {
@@ -59,43 +79,41 @@ export function setValueWithNestedKeys<
 
     const nextParent = inputObject[nextKey];
 
-    if (nestedKeys.length > 2) {
-        setValueWithNestedKeys(
-            nextParent as any,
-            (nestedKeys as ReadonlyArray<string>).slice(1) as any,
-            value,
-        );
+    if (nestedKeysInput.length > 2) {
+        (setValueWithNestedKeys as any)(nextParent, nestedKeysInput.slice(1), value);
     } else {
-        (nextParent as any)[(nestedKeys as ReadonlyArray<string>)[1]!] = value;
+        (nextParent as any)[nestedKeysInput[1]!] = value;
     }
 }
 
 export function getValueFromNestedKeys<
     const ObjectGeneric extends object,
     const KeysGeneric extends NestedSequentialKeys<ObjectGeneric>,
->(
-    inputObject: ObjectGeneric,
-    nestedKeys: KeysGeneric,
-): NestedValue<ObjectGeneric, KeysGeneric> | undefined {
+>(originalObject: ObjectGeneric, nestedKeys: KeysGeneric): NestedValue<ObjectGeneric, KeysGeneric> {
     /**
      * Lots of as any casts in here because these types are, under the hood, pretty complex. Since
      * the inputs and outputs of this function are well typed, these internal as any casts do not
      * affect the external API of this function.
      */
+    const nestedKeysInput = nestedKeys as string[];
+    const inputObject = originalObject as Record<PropertyKey, any>;
 
-    const keyToAccess = nestedKeys[0];
+    if (isRuntimeTypeOf(inputObject, 'array')) {
+        return inputObject.map((entry) =>
+            (getValueFromNestedKeys as any)(entry, nestedKeys),
+        ) as NestedValue<ObjectGeneric, KeysGeneric>;
+    }
+
+    const keyToAccess = nestedKeysInput[0]!;
 
     if (!typedHasProperty(inputObject, keyToAccess)) {
-        return undefined;
+        return undefined as NestedValue<ObjectGeneric, KeysGeneric>;
     }
 
     const currentValue = inputObject[keyToAccess];
 
-    if (nestedKeys.length > 1) {
-        return getValueFromNestedKeys(
-            currentValue as any,
-            (nestedKeys as ReadonlyArray<any>).slice(1) as any,
-        ) as any;
+    if (nestedKeysInput.length > 1) {
+        return (getValueFromNestedKeys as any)(currentValue, nestedKeysInput.slice(1)) as any;
     } else {
         return currentValue as NestedValue<ObjectGeneric, KeysGeneric>;
     }
