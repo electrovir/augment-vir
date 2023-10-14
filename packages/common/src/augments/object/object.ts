@@ -6,6 +6,7 @@ export type PartialAndUndefined<T extends object> = {
     [Prop in keyof T]?: T[Prop] | undefined;
 };
 
+/** Checks if the input is non-null and an object. Includes arrays. */
 export function isObject(input: any): input is NonNullable<object> {
     return !!input && typeof input === 'object';
 }

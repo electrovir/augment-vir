@@ -1,5 +1,8 @@
 import {itCases} from '@augment-vir/chai';
 import {mergeDeep} from '@augment-vir/common';
+import chai from 'chai';
+
+chai.config.truncateThreshold = 1_000;
 
 describe(mergeDeep.name, () => {
     itCases(mergeDeep, [
@@ -12,6 +15,23 @@ describe(mergeDeep.name, () => {
             it: 'returns the first object if only one is given',
             inputs: [{first: 'hello'}],
             expect: {first: 'hello'},
+        },
+        {
+            it: 'merges through an array',
+            inputs: [
+                [
+                    {a: 'b', c: 'd'},
+                    {q: 'r', s: 't'},
+                ],
+                [
+                    {e: 'f', g: 'h'},
+                    {q: 'rZr', s: 'tZt', u: 'v'},
+                ],
+            ],
+            expect: [
+                {a: 'b', c: 'd', e: 'f', g: 'h'},
+                {q: 'rZr', s: 'tZt', u: 'v'},
+            ],
         },
         {
             it: 'does a shallow merge',
@@ -58,7 +78,7 @@ describe(mergeDeep.name, () => {
             },
         },
         {
-            it: 'does not merge arrays',
+            it: 'does merge arrays',
             inputs: [
                 {
                     first: 'hello',
@@ -83,6 +103,8 @@ describe(mergeDeep.name, () => {
                 arrayProp: [
                     9,
                     10,
+                    3,
+                    4,
                 ],
             },
         },
