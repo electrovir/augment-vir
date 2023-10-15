@@ -1,3 +1,4 @@
+import {PartialDeep} from 'type-fest';
 import {isRuntimeTypeOf} from '../runtime-type-of';
 import {isLengthAtLeast} from '../tuple';
 import {isObject} from './object';
@@ -7,7 +8,9 @@ import {isObject} from './object';
  *
  * Note that order matters! Each input object will overwrite the properties of the previous objects.
  */
-export function mergeDeep<T extends object>(...inputs: (T | Partial<T>)[]): T {
+export function mergeDeep<T extends object>(
+    ...inputs: (T | PartialDeep<T, {recurseIntoArrays: true}>)[]
+): T {
     if (!isLengthAtLeast(inputs, 1)) {
         // nothing to merge if no inputs
         return {} as T;
