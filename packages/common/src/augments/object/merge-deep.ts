@@ -8,8 +8,8 @@ import {isObject} from './object';
  *
  * Note that order matters! Each input object will overwrite the properties of the previous objects.
  */
-export function mergeDeep<T extends object>(
-    ...inputs: (T | PartialDeep<T, {recurseIntoArrays: true}>)[]
+export function mergeDeep<const T extends object>(
+    ...inputs: (Readonly<T> | Readonly<PartialDeep<T, {recurseIntoArrays: true}>>)[]
 ): T {
     if (!isLengthAtLeast(inputs, 1)) {
         // nothing to merge if no inputs
@@ -52,7 +52,7 @@ export function mergeDeep<T extends object>(
                     };
                 }
             } else {
-                result = individualInput;
+                result = {...individualInput};
             }
         } catch (error) {
             /** Ignore errors, such as individualInput not actually being an object. */
