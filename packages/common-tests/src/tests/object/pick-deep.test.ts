@@ -125,8 +125,12 @@ describe('PickDeep', () => {
         withArray: {key1: string; key2: number; key3: boolean}[];
         possiblyUndefined:
             | {
+                  nestedMaybe:
+                      | {
+                            things: number;
+                        }
+                      | undefined;
                   stuff: string;
-                  maybeNotStuff: string | undefined;
               }[]
             | undefined;
         topLevelWithNested2: {
@@ -137,6 +141,25 @@ describe('PickDeep', () => {
         };
     };
 
+    it('works when sub keys fail to match a specific property', () => {
+        assertTypeOf<
+            PickDeep<TestObject, ['topLevelWithNested1' | 'topLevelWithNested2', 'secondLevel2']>
+        >().toEqualTypeOf<{
+            topLevelWithNested1: {
+                secondLevel1: string;
+                secondLevelWithNested11: {
+                    thirdLevel11: string;
+                };
+                secondLevelWithNested12: {
+                    thirdLevel12: string;
+                };
+            };
+            topLevelWithNested2: {
+                secondLevel2: string;
+            };
+        }>();
+    });
+
     it('fails to pick a key that is not from the given type', () => {
         assertTypeOf<
             PickDeep<TestObject, ['topLevel' | 'notReal', 'secondLevel1']>
@@ -146,10 +169,17 @@ describe('PickDeep', () => {
     });
 
     it('picks through unions', () => {
-        assertTypeOf<PickDeep<TestObject, ['possiblyUndefined', 'maybeNotStuff']>>().toEqualTypeOf<{
+        assertTypeOf<
+            PickDeep<TestObject, ['possiblyUndefined', 'nestedMaybe' | 'stuff']>
+        >().toEqualTypeOf<{
             possiblyUndefined:
                 | {
-                      maybeNotStuff: string | undefined;
+                      nestedMaybe:
+                          | {
+                                things: number;
+                            }
+                          | undefined;
+                      stuff: string;
                   }[]
                 | undefined;
         }>();
