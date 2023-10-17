@@ -22,8 +22,6 @@ describe('PickDeepStrict', () => {
         };
     };
 
-    type derp = PickDeepStrict<TestObject, ['topLevelWithNested1']>;
-
     it('works with nested keys that only exist on some nested values', () => {
         type TestObjectWithMethods = {
             topLevel: () => void;
@@ -39,7 +37,7 @@ describe('PickDeepStrict', () => {
             };
         };
 
-        type Picked = PickDeep<TestObjectWithMethods, ['topLevel' | 'topLevel2', 'nested']>;
+        type Picked = PickDeepStrict<TestObjectWithMethods, ['topLevel' | 'topLevel2', 'nested']>;
 
         assertTypeOf<Picked>().toEqualTypeOf<{
             topLevel: () => void;
@@ -123,6 +121,8 @@ describe('PickDeep', () => {
                 thirdLevel12: string;
             };
         };
+        withReadonlyArray: ReadonlyArray<{key1: string; key2: number; key3: boolean}>;
+        withArray: {key1: string; key2: number; key3: boolean}[];
         topLevelWithNested2: {
             secondLevel2: string;
             secondLevelWithNested2: {
@@ -131,13 +131,21 @@ describe('PickDeep', () => {
         };
     };
 
-    type derp = PickDeep<TestObject, ['topLevelWithNested1']>;
-
     it('fails to pick a key that is not from the given type', () => {
         assertTypeOf<
             PickDeep<TestObject, ['topLevel' | 'notReal', 'secondLevel1']>
         >().toEqualTypeOf<{
             topLevel: string;
+        }>();
+    });
+
+    it('picks into arrays', () => {
+        assertTypeOf<PickDeep<TestObject, ['withReadonlyArray', 'key1']>>().toEqualTypeOf<{
+            withReadonlyArray: ReadonlyArray<{key1: string}>;
+        }>();
+
+        assertTypeOf<PickDeep<TestObject, ['withArray', 'key1']>>().toEqualTypeOf<{
+            withArray: {key1: string}[];
         }>();
     });
 

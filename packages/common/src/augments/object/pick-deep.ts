@@ -1,4 +1,5 @@
 import {AnyFunction} from '../function';
+import {ArrayElement} from '../type';
 import {NestedKeys} from './nested-keys';
 
 type InnerPickDeep<
@@ -12,7 +13,13 @@ type InnerPickDeep<
           >]: OriginalObjectGeneric[CurrentProp] extends AnyFunction
               ? OriginalObjectGeneric[CurrentProp]
               : OriginalObjectGeneric[CurrentProp] extends Array<any>
-              ? OriginalObjectGeneric[CurrentProp]
+              ? Array<
+                    InnerPickDeep<ArrayElement<OriginalObjectGeneric[CurrentProp]>, RemainingKeys>
+                >
+              : OriginalObjectGeneric[CurrentProp] extends ReadonlyArray<any>
+              ? ReadonlyArray<
+                    InnerPickDeep<ArrayElement<OriginalObjectGeneric[CurrentProp]>, RemainingKeys>
+                >
               : OriginalObjectGeneric[CurrentProp] extends object
               ? InnerPickDeep<OriginalObjectGeneric[CurrentProp], RemainingKeys>
               : OriginalObjectGeneric[CurrentProp];
