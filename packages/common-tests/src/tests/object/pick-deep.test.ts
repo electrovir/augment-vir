@@ -123,6 +123,12 @@ describe('PickDeep', () => {
         };
         withReadonlyArray: ReadonlyArray<{key1: string; key2: number; key3: boolean}>;
         withArray: {key1: string; key2: number; key3: boolean}[];
+        possiblyUndefined:
+            | {
+                  stuff: string;
+                  maybeNotStuff: string | undefined;
+              }[]
+            | undefined;
         topLevelWithNested2: {
             secondLevel2: string;
             secondLevelWithNested2: {
@@ -136,6 +142,16 @@ describe('PickDeep', () => {
             PickDeep<TestObject, ['topLevel' | 'notReal', 'secondLevel1']>
         >().toEqualTypeOf<{
             topLevel: string;
+        }>();
+    });
+
+    it('picks through unions', () => {
+        assertTypeOf<PickDeep<TestObject, ['possiblyUndefined', 'maybeNotStuff']>>().toEqualTypeOf<{
+            possiblyUndefined:
+                | {
+                      maybeNotStuff: string | undefined;
+                  }[]
+                | undefined;
         }>();
     });
 

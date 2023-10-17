@@ -10,19 +10,39 @@ type InnerPickDeep<
           [CurrentProp in Extract<
               CurrentLevelPick,
               keyof OriginalObjectGeneric
-          >]: OriginalObjectGeneric[CurrentProp] extends AnyFunction
+          >]: AnyFunction extends Extract<OriginalObjectGeneric[CurrentProp], AnyFunction>
+              ?
+                    | OriginalObjectGeneric[CurrentProp]
+                    | Exclude<OriginalObjectGeneric[CurrentProp], AnyFunction>
+              : Array<any> extends Extract<OriginalObjectGeneric[CurrentProp], Array<any>>
+              ?
+                    | Array<
+                          InnerPickDeep<
+                              ArrayElement<Extract<OriginalObjectGeneric[CurrentProp], Array<any>>>,
+                              RemainingKeys
+                          >
+                      >
+                    | Exclude<OriginalObjectGeneric[CurrentProp], Array<any>>
+              : ReadonlyArray<any> extends Extract<
+                    OriginalObjectGeneric[CurrentProp],
+                    ReadonlyArray<any>
+                >
+              ?
+                    | ReadonlyArray<
+                          InnerPickDeep<
+                              ArrayElement<
+                                  Extract<OriginalObjectGeneric[CurrentProp], ReadonlyArray<any>>
+                              >,
+                              RemainingKeys
+                          >
+                      >
+                    | Exclude<OriginalObjectGeneric[CurrentProp], ReadonlyArray<any>>
+              : Extract<OriginalObjectGeneric[CurrentProp], Record<any, any>> extends never
               ? OriginalObjectGeneric[CurrentProp]
-              : OriginalObjectGeneric[CurrentProp] extends Array<any>
-              ? Array<
-                    InnerPickDeep<ArrayElement<OriginalObjectGeneric[CurrentProp]>, RemainingKeys>
-                >
-              : OriginalObjectGeneric[CurrentProp] extends ReadonlyArray<any>
-              ? ReadonlyArray<
-                    InnerPickDeep<ArrayElement<OriginalObjectGeneric[CurrentProp]>, RemainingKeys>
-                >
-              : OriginalObjectGeneric[CurrentProp] extends object
-              ? InnerPickDeep<OriginalObjectGeneric[CurrentProp], RemainingKeys>
-              : OriginalObjectGeneric[CurrentProp];
+              : InnerPickDeep<
+                    Extract<OriginalObjectGeneric[CurrentProp], Record<any, any>>,
+                    RemainingKeys
+                >;
       }
     : DeepKeys extends []
     ? OriginalObjectGeneric
