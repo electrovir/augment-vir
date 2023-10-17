@@ -2,10 +2,10 @@ import {AnyFunction} from '../function';
 import {ArrayElement} from '../type';
 import {NestedKeys} from './nested-keys';
 
-type InnerPickDeep<
-    OriginalObjectGeneric extends object,
-    DeepKeys extends any[],
-> = DeepKeys extends [infer CurrentLevelPick, ...infer RemainingKeys]
+type InnerPickDeep<OriginalObjectGeneric, DeepKeys extends any[]> = DeepKeys extends [
+    infer CurrentLevelPick,
+    ...infer RemainingKeys,
+]
     ? {
           [CurrentProp in Extract<
               CurrentLevelPick,

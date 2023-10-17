@@ -1,6 +1,9 @@
 import {unlink, writeFile} from 'fs/promises';
-import {join} from 'path';
-import {augmentVirRepoDirPath, nodeJsPackageDir} from '../../repo-file-paths.test-helpers';
+import {
+    augmentVirRepoDirPath,
+    nodeJsPackageDir,
+    tempWorkspaceQueryFile,
+} from '../../repo-file-paths.test-helpers';
 import {interpolationSafeWindowsPath, toPosixPath} from '../path';
 import {runShellCommand} from '../shell';
 import {queryNpmWorkspace} from './query-workspace';
@@ -12,11 +15,11 @@ describe(queryNpmWorkspace.name, () => {
         const stringifiedData = JSON.stringify(data, null, 4);
 
         const tmpTsFileContent = [
-            "import type {NpmWorkspace} from './query-workspace';",
+            "import type {NpmWorkspace} from '../src/augments/npm/query-workspace';",
             `const testQueryData: NpmWorkspace[] = ${stringifiedData};`,
         ].join('\n');
 
-        const tempFilePath = join(__dirname, 'temp-workspace-query-output.ts');
+        const tempFilePath = tempWorkspaceQueryFile;
 
         await writeFile(tempFilePath, tmpTsFileContent);
 

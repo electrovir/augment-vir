@@ -11,6 +11,7 @@ export const longRunningFileWithStderr = join(
     longRunningFileDir,
     'long-running-file-with-stderr.ts',
 );
+export const tempWorkspaceQueryFile = join(testFilesDir, 'temp-workspace-query-output.ts');
 
 export const recursiveFileReadDir = join(testFilesDir, 'recursive-reading');
 
