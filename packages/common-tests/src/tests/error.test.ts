@@ -211,6 +211,30 @@ describe(wrapInTry.name, () => {
             },
             expect: 'got the catchCallback',
         },
+        {
+            it: 'works with async callbacks and a fallback',
+            input: {
+                async callback() {
+                    await wait(1);
+                    throw new Error('yikes');
+                },
+                fallbackValue: 'got the fallbackValue',
+            },
+            expect: 'got the fallbackValue',
+        },
+        {
+            it: 'works with async callbacks and catchCallback',
+            input: {
+                async callback() {
+                    await wait(1);
+                    throw new Error('yikes');
+                },
+                catchCallback(error) {
+                    return 'got the catchCallback';
+                },
+            },
+            expect: 'got the catchCallback',
+        },
     ]);
 
     it('has proper types', () => {
@@ -232,6 +256,14 @@ describe(wrapInTry.name, () => {
                 },
             }),
         ).toEqualTypeOf<number | string>();
+        assertTypeOf(
+            wrapInTry({
+                async callback() {
+                    return 'hello' as const;
+                },
+                fallbackValue: 'bye' as const,
+            }),
+        ).toEqualTypeOf<Promise<'hello'> | 'bye'>();
     });
 });
 

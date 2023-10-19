@@ -1,6 +1,6 @@
 {
     "name": "augment-vir",
-    "version": "21.3.5",
+    "version": "21.3.6",
     "private": true,
     "homepage": "https://github.com/electrovir/augment-vir",
     "bugs": {
@@ -39,7 +39,7 @@
         "concurrently": "^8.2.1",
         "cspell": "^7.3.8",
         "dependency-cruiser": "^14.1.1",
-        "esbuild": "^0.19.4",
+        "esbuild": "^0.19.5",
         "markdown-code-example-inserter": "^0.3.2",
         "mono-vir": "^0.1.6",
         "npm-check-updates": "~16.12.3",

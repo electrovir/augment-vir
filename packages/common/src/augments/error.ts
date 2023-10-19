@@ -73,7 +73,19 @@ export function wrapInTry<CallbackReturn, FallbackReturn>(
     inputs: TryWrapInputs<CallbackReturn, FallbackReturn>,
 ): FallbackReturn | CallbackReturn {
     try {
-        return inputs.callback();
+        const returnValue = inputs.callback();
+
+        if (returnValue instanceof Promise) {
+            return returnValue.catch((error) => {
+                if (inputs.catchCallback) {
+                    return inputs.catchCallback(error);
+                } else {
+                    return inputs.fallbackValue;
+                }
+            }) as FallbackReturn | CallbackReturn;
+        } else {
+            return returnValue;
+        }
     } catch (error) {
         if (inputs.catchCallback) {
             return inputs.catchCallback(error);
