@@ -10,21 +10,19 @@ import {
 
 describe(checkIfEntirelyInScrollView.name, () => {
     it('detects when elements are out of the scroll area', async () => {
-        const fixture = await renderFixture(
-            html`
-                <div style="max-height: 100px; overflow: auto;">
-                    ${Array(10)
-                        .fill(0)
-                        .map(() => {
-                            return html`
-                                <div class="child" style="height: 20px; border: 1px solid red;">
-                                    stuff
-                                </div>
-                            `;
-                        })}
-                </div>
-            `,
-        );
+        const fixture = await renderFixture(html`
+            <div style="max-height: 100px; overflow: auto;">
+                ${Array(10)
+                    .fill(0)
+                    .map(() => {
+                        return html`
+                            <div class="child" style="height: 20px; border: 1px solid red;">
+                                stuff
+                            </div>
+                        `;
+                    })}
+            </div>
+        `);
 
         const firstElement = fixture.querySelector('.child:first-of-type');
         const lastElement = fixture.querySelector('.child:last-of-type');
@@ -45,11 +43,9 @@ describe(checkIfEntirelyInScrollView.name, () => {
 
 describe(getCenterOfElement.name, () => {
     it('correctly gets the center', async () => {
-        const fixture = await renderFixture(
-            html`
-                <div style="height: 100px; width: 100px;"></div>
-            `,
-        );
+        const fixture = await renderFixture(html`
+            <div style="height: 100px; width: 100px;"></div>
+        `);
 
         assertOutput(getCenterOfElement, {x: 58, y: 58}, fixture);
     });
@@ -57,11 +53,9 @@ describe(getCenterOfElement.name, () => {
 
 describe(appendPositionDebugDiv.name, () => {
     it('inserts the div', async () => {
-        const fixture = await renderFixture(
-            html`
-                <div style="height: 100px; width: 100px;"></div>
-            `,
-        );
+        const fixture = await renderFixture(html`
+            <div style="height: 100px; width: 100px;"></div>
+        `);
 
         const debugDiv = appendPositionDebugDiv(getCenterOfElement(fixture));
 

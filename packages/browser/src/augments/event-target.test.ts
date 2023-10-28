@@ -8,25 +8,23 @@ describe(extractEventTarget.name, () => {
     it('extracts the event target', async () => {
         let clickCount = 0;
 
-        const fixture = await renderFixture(
-            html`
-                <button
-                    ${listen('click', (event) => {
-                        const target = extractEventTarget(event, HTMLButtonElement);
+        const fixture = await renderFixture(html`
+            <button
+                ${listen('click', (event) => {
+                    const target = extractEventTarget(event, HTMLButtonElement);
 
-                        assertTypeOf(target).toEqualTypeOf<HTMLButtonElement>();
+                    assertTypeOf(target).toEqualTypeOf<HTMLButtonElement>();
 
-                        assertThrows(() => {
-                            extractEventTarget(event, HTMLDivElement);
-                        });
+                    assertThrows(() => {
+                        extractEventTarget(event, HTMLDivElement);
+                    });
 
-                        clickCount++;
-                    })}
-                >
-                    Click me
-                </button>
-            `,
-        );
+                    clickCount++;
+                })}
+            >
+                Click me
+            </button>
+        `);
 
         await clickElement(fixture);
 

@@ -14,15 +14,13 @@ const TestElement = defineElementNoInputs({
 });
 
 async function runToTagOrDefinitionTest(query: ChildrenQuery) {
-    const rendered = await renderFixture(
-        html`
-            <section>
-                <${TestElement}></${TestElement}>
-                <div></div>
-                <span class="my-span"></span>
-            </section>
-        `,
-    );
+    const rendered = await renderFixture(html`
+        <section>
+            <${TestElement}></${TestElement}>
+            <div></div>
+            <span class="my-span"></span>
+        </section>
+    `);
     const foundChild = queryChildren(rendered, query)[0];
 
     if (!foundChild) {

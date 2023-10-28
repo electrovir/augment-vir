@@ -31,46 +31,49 @@ export function joinUrlParts(...urlParts: ReadonlyArray<string>): string {
                 return part;
             }
         })
-        .reduce((fillingUpArray, currentEntry, currentIndex, inputArray) => {
-            if (reduceSearchParamsStarted) {
-                return fillingUpArray;
-            }
+        .reduce(
+            (fillingUpArray, currentEntry, currentIndex, inputArray) => {
+                if (reduceSearchParamsStarted) {
+                    return fillingUpArray;
+                }
 
-            const nextEntry = inputArray[currentIndex + 1];
+                const nextEntry = inputArray[currentIndex + 1];
 
-            let newEntry = currentEntry;
+                let newEntry = currentEntry;
 
-            const nextHasQuestion = !currentEntry.includes('?') && nextEntry?.startsWith('?');
+                const nextHasQuestion = !currentEntry.includes('?') && nextEntry?.startsWith('?');
 
-            if (nextEntry?.startsWith('?') || nextHasQuestion) {
-                reduceSearchParamsStarted = true;
-                let foundHash = false;
-                const subsequentSearchParams = inputArray
-                    .slice(nextHasQuestion ? currentIndex + 2 : currentIndex + 1)
-                    .reduce((joinedParams, currentParam) => {
-                        if (currentParam.includes('#')) {
-                            foundHash = true;
-                        }
+                if (nextEntry?.startsWith('?') || nextHasQuestion) {
+                    reduceSearchParamsStarted = true;
+                    let foundHash = false;
+                    const subsequentSearchParams = inputArray
+                        .slice(nextHasQuestion ? currentIndex + 2 : currentIndex + 1)
+                        .reduce((joinedParams, currentParam) => {
+                            if (currentParam.includes('#')) {
+                                foundHash = true;
+                            }
 
-                        if (foundHash) {
-                            return joinedParams.concat(currentParam);
-                        } else {
-                            return [
-                                joinedParams,
-                                currentParam,
-                            ].join('&');
-                        }
-                    }, '');
+                            if (foundHash) {
+                                return joinedParams.concat(currentParam);
+                            } else {
+                                return [
+                                    joinedParams,
+                                    currentParam,
+                                ].join('&');
+                            }
+                        }, '');
 
-                newEntry = [
-                    currentEntry,
-                    nextEntry,
-                    subsequentSearchParams,
-                ].join('');
-            }
+                    newEntry = [
+                        currentEntry,
+                        nextEntry,
+                        subsequentSearchParams,
+                    ].join('');
+                }
 
-            return fillingUpArray.concat(newEntry);
-        }, [] as (string | undefined)[]);
+                return fillingUpArray.concat(newEntry);
+            },
+            [] as (string | undefined)[],
+        );
     return [
         protocol,
         protocol ? protocolSplit : '',

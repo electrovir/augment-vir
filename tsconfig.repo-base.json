@@ -11,7 +11,7 @@
         "./node_modules",
         "packages/node-js/test-files"
     ],
-    "extends": "virmator/base-configs/base-tsconfig.json",
+    "extends": "virmator/base-configs/tsconfig.base.json",
     "ts-node": {
         "transpileOnly": true
     }
