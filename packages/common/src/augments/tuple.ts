@@ -48,3 +48,5 @@ export function assertLengthAtLeast<ArrayElementGeneric, LengthGeneric extends n
 export type MappedTuple<Tuple extends ReadonlyArray<any>, NewValueType> = {
     [I in keyof Tuple]: NewValueType;
 };
+
+export type MaybeTuple<T> = T | AtLeastTuple<T, 1>;
