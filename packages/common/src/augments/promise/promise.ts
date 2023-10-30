@@ -52,3 +52,16 @@ export function wrapPromiseInTimeout<PromiseValueType>(
 export async function callAsynchronously<T>(callback: () => MaybePromise<T>) {
     return await Promise.resolve().then(() => callback());
 }
+
+export async function executeWithRetries<T>(retryCount: number, callback: () => T): Promise<T> {
+    let currentRetry = 0;
+    while (currentRetry < retryCount) {
+        try {
+            const result = await callback();
+            return result;
+        } catch (error) {
+            currentRetry++;
+        }
+    }
+    throw new Error('Retry max reached.');
+}
