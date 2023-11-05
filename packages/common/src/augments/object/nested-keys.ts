@@ -7,7 +7,7 @@ import {typedHasProperty} from './typed-has-property';
 // produces an array type where each subsequent entry must be a key in the previous entry's object
 export type NestedSequentialKeys<ObjectGeneric extends object> =
     NonNullable<ObjectGeneric> extends ReadonlyArray<any>
-        ? never extends Extract<NonNullable<ObjectGeneric>[number], object>
+        ? Extract<NonNullable<ObjectGeneric>[number], object> extends never
             ? [number]
             : NestedSequentialKeys<Extract<NonNullable<ObjectGeneric>[number], object>>
         : PropertyValueType<{

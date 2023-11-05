@@ -70,6 +70,12 @@ describe(setValueWithNestedKeys.name, () => {
     });
 });
 
+describe('NestedSequentialKeys', () => {
+    it('does not crash on primitive arrays', () => {
+        assertTypeOf<NestedSequentialKeys<ReadonlyArray<string>>>().toEqualTypeOf<[number]>();
+    });
+});
+
 describe('NestedKeys', () => {
     it('should restrict types', () => {
         const exampleObjectInstance: NestedSequentialKeys<ExampleObjectType> = {} as any;
