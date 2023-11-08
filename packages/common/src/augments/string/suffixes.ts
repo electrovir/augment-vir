@@ -1,4 +1,4 @@
-import {toEnsuredNumber} from '../number';
+import {toEnsuredNumber} from '../common-number';
 
 export type WithSuffix<Suffix extends string> = `${string}${Suffix}`;
 

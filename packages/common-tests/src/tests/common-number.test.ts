@@ -1,38 +1,45 @@
 import {itCases} from '@augment-vir/chai';
-import {addCommasToNumber, clamp, convertIntoNumber, ensureMinAndMax} from '@augment-vir/common';
-import {expect} from 'chai';
+import {
+    Dimensions,
+    addCommasToNumber,
+    clamp,
+    convertIntoNumber,
+    ensureMinAndMax,
+    round,
+    toEnsuredNumber,
+} from '@augment-vir/common';
 import {describe, it} from 'mocha';
 
 describe(clamp.name, () => {
-    it('should successfully clamp downwards', () => {
-        expect(
-            clamp({
-                max: 45,
-                min: 31,
-                value: 150,
-            }),
-        ).to.equal(45);
-    });
-
-    it('should successfully clamp upwards', () => {
-        expect(
-            clamp({
-                max: 45,
-                min: 31,
-                value: 13,
-            }),
-        ).to.equal(31);
-    });
-
-    it("shouldn't change values in the middle", () => {
-        expect(
-            clamp({
-                max: 45,
-                min: 31,
+    itCases(clamp, [
+        {
+            it: 'does not alter a within-range value',
+            input: {
+                max: 50,
+                min: 40,
                 value: 42,
-            }),
-        ).to.equal(42);
-    });
+            },
+            expect: 42,
+        },
+        {
+            it: 'clamps a too high number',
+            input: {
+                max: 50,
+                min: 40,
+                value: 1_000,
+            },
+            expect: 50,
+        },
+        {
+            it: 'clamps a too low number',
+            input: {
+                max: 50,
+                min: 40,
+                value: 20,
+            },
+            expect: 40,
+        },
+    ]);
 });
 
 describe(convertIntoNumber.name, () => {
@@ -182,4 +189,70 @@ describe(ensureMinAndMax.name, () => {
             expect: {min: 1.3, max: 1.5},
         },
     ]);
+});
+
+describe(toEnsuredNumber.name, () => {
+    itCases(toEnsuredNumber, [
+        {
+            it: 'converts a string to a number',
+            input: '5',
+            expect: 5,
+        },
+        {
+            it: 'errors on invalid number string',
+            input: '5-3',
+            throws: Error,
+        },
+        {
+            it: 'errors on object input',
+            input: {},
+            throws: Error,
+        },
+    ]);
+});
+
+describe(round.name, () => {
+    itCases(round, [
+        {
+            it: 'rounds down with 2 decimals',
+            input: {
+                digits: 2,
+                number: 1.123456,
+            },
+            expect: 1.12,
+        },
+        {
+            it: 'rounds up with 2 decimals',
+            input: {
+                digits: 2,
+                number: 1.125456,
+            },
+            expect: 1.13,
+        },
+        {
+            it: 'rounds up with 3 decimals and a carry',
+            input: {
+                digits: 3,
+                number: 1.129556,
+            },
+            expect: 1.13,
+        },
+        {
+            it: 'rounds up with 0 decimals',
+            input: {
+                digits: 0,
+                number: 1.564123,
+            },
+            expect: 2,
+        },
+    ]);
+});
+
+describe('Dimensions', () => {
+    it('is assignable to from expected object shape', () => {
+        const testDimensions: Dimensions = {
+            width: 0,
+            height: Infinity,
+        };
+    });
 });

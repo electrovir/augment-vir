@@ -32,24 +32,6 @@ export function addCommasToNumber(input: number | string): string {
     ].join('');
 }
 
-export function clamp(
-    /**
-     * This uses a destructured object so that consumers cannot get confused as to which input is
-     * which (which would be easy to do since they're all of the same type).
-     */
-    {
-        value,
-        min,
-        max,
-    }: {
-        value: number;
-        min: number;
-        max: number;
-    },
-): number {
-    return Math.max(Math.min(value, max), min);
-}
-
 export function convertIntoNumber(input: unknown): number {
     if (typeof input === 'number') {
         return input;
@@ -78,3 +60,44 @@ export function ensureMinAndMax({min, max}: {min: number; max: number}): {
         return {min, max};
     }
 }
+
+export function toEnsuredNumber(input: any): number {
+    const numeric = Number(input);
+
+    if (isNaN(numeric)) {
+        throw new Error(`Cannot convert given input to a number: ${input}`);
+    } else {
+        return numeric;
+    }
+}
+/**
+ * If the given value is outside the given min/max bounds, instead of clamping the number (as the
+ * `clamp` function does), this function wraps the value around to the next bound.
+ *
+ * @example
+ *     wrapNumber({min: 0, max: 100, value: 101}) == 0;
+ */
+export function wrapNumber({max, min, value}: {value: number; max: number; min: number}): number {
+    if (value > max) {
+        return min;
+    } else if (value < min) {
+        return max;
+    }
+
+    return value;
+}
+
+export function round(inputs: {number: number; digits: number}): number {
+    const digitFactor = Math.pow(10, inputs.digits);
+    const multiplied = inputs.number * digitFactor;
+
+    return Number((Math.round(multiplied) / digitFactor).toFixed(inputs.digits));
+}
+
+/** Clamp's the given value to within the min and max bounds, inclusive. */
+export function clamp({value, min, max}: {value: number; min: number; max: number}) {
+    return Math.min(Math.max(value, min), max);
+}
+
+/** Standard box dimensions. */
+export type Dimensions = {width: number; height: number};
