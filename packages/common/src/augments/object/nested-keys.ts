@@ -21,14 +21,14 @@ export type NestedSequentialKeys<ObjectGeneric extends object> =
 export type NestedKeys<ObjectGeneric extends object> = ObjectGeneric extends ReadonlyArray<any>
     ? NestedKeys<ArrayElement<ObjectGeneric>>
     : UnionToIntersection<Extract<PropertyValueType<ObjectGeneric>, object>> extends object
-    ? [
-          keyof ObjectGeneric,
-          ...(
-              | NestedKeys<UnionToIntersection<Extract<PropertyValueType<ObjectGeneric>, object>>>
-              | []
-          ),
-      ]
-    : [keyof ObjectGeneric];
+      ? [
+            keyof ObjectGeneric,
+            ...(
+                | NestedKeys<UnionToIntersection<Extract<PropertyValueType<ObjectGeneric>, object>>>
+                | []
+            ),
+        ]
+      : [keyof ObjectGeneric];
 
 export type NestedValue<
     ObjectGeneric extends object,
@@ -36,16 +36,16 @@ export type NestedValue<
 > = ObjectGeneric extends ReadonlyArray<any>
     ? NestedValue<Extract<ObjectGeneric[number], object>, NestedKeysGeneric>[]
     : NestedKeysGeneric extends readonly [infer FirstEntry, ...infer FollowingEntries]
-    ? FirstEntry extends keyof ObjectGeneric
-        ? FollowingEntries extends never[]
-            ? ObjectGeneric[FirstEntry]
-            : ObjectGeneric[FirstEntry] extends object
-            ? FollowingEntries extends NestedSequentialKeys<ObjectGeneric[FirstEntry]>
-                ? NestedValue<ObjectGeneric[FirstEntry], FollowingEntries>
+      ? FirstEntry extends keyof ObjectGeneric
+          ? FollowingEntries extends never[]
+              ? ObjectGeneric[FirstEntry]
+              : ObjectGeneric[FirstEntry] extends object
+                ? FollowingEntries extends NestedSequentialKeys<ObjectGeneric[FirstEntry]>
+                    ? NestedValue<ObjectGeneric[FirstEntry], FollowingEntries>
+                    : never
                 : never
-            : never
-        : never
-    : never;
+          : never
+      : never;
 
 export function setValueWithNestedKeys<
     const ObjectGeneric extends object,

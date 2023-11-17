@@ -17,49 +17,49 @@ export type InnerPickDeep<OriginalObjectGeneric, DeepKeys extends any[]> = DeepK
                         | OriginalObjectGeneric[CurrentProp]
                         | Exclude<OriginalObjectGeneric[CurrentProp], AnyFunction>
                   : Array<any> extends Extract<OriginalObjectGeneric[CurrentProp], Array<any>>
-                  ?
-                        | Array<
-                              InnerPickDeep<
-                                  ArrayElement<
-                                      Extract<OriginalObjectGeneric[CurrentProp], Array<any>>
-                                  >,
-                                  RemainingKeys
+                    ?
+                          | Array<
+                                InnerPickDeep<
+                                    ArrayElement<
+                                        Extract<OriginalObjectGeneric[CurrentProp], Array<any>>
+                                    >,
+                                    RemainingKeys
+                                >
+                            >
+                          | Exclude<OriginalObjectGeneric[CurrentProp], Array<any>>
+                    : ReadonlyArray<any> extends Extract<
+                            OriginalObjectGeneric[CurrentProp],
+                            ReadonlyArray<any>
+                        >
+                      ?
+                            | ReadonlyArray<
+                                  InnerPickDeep<
+                                      ArrayElement<
+                                          Extract<
+                                              OriginalObjectGeneric[CurrentProp],
+                                              ReadonlyArray<any>
+                                          >
+                                      >,
+                                      RemainingKeys
+                                  >
                               >
-                          >
-                        | Exclude<OriginalObjectGeneric[CurrentProp], Array<any>>
-                  : ReadonlyArray<any> extends Extract<
-                        OriginalObjectGeneric[CurrentProp],
-                        ReadonlyArray<any>
-                    >
-                  ?
-                        | ReadonlyArray<
-                              InnerPickDeep<
-                                  ArrayElement<
-                                      Extract<
-                                          OriginalObjectGeneric[CurrentProp],
-                                          ReadonlyArray<any>
-                                      >
-                                  >,
-                                  RemainingKeys
-                              >
-                          >
-                        | Exclude<OriginalObjectGeneric[CurrentProp], ReadonlyArray<any>>
-                  : Extract<OriginalObjectGeneric[CurrentProp], Record<any, any>> extends never
-                  ? OriginalObjectGeneric[CurrentProp]
-                  :
-                        | InnerPickDeep<
-                              Extract<OriginalObjectGeneric[CurrentProp], Record<any, any>>,
-                              RemainingKeys
-                          >
-                        | Exclude<OriginalObjectGeneric[CurrentProp], Record<any, any>>;
+                            | Exclude<OriginalObjectGeneric[CurrentProp], ReadonlyArray<any>>
+                      : Extract<OriginalObjectGeneric[CurrentProp], Record<any, any>> extends never
+                        ? OriginalObjectGeneric[CurrentProp]
+                        :
+                              | InnerPickDeep<
+                                    Extract<OriginalObjectGeneric[CurrentProp], Record<any, any>>,
+                                    RemainingKeys
+                                >
+                              | Exclude<OriginalObjectGeneric[CurrentProp], Record<any, any>>;
           }
     : DeepKeys extends []
-    ? OriginalObjectGeneric
-    : DeepKeys extends [infer CurrentLevelPick]
-    ? CurrentLevelPick extends keyof OriginalObjectGeneric
-        ? Pick<OriginalObjectGeneric, CurrentLevelPick>
-        : never
-    : never;
+      ? OriginalObjectGeneric
+      : DeepKeys extends [infer CurrentLevelPick]
+        ? CurrentLevelPick extends keyof OriginalObjectGeneric
+            ? Pick<OriginalObjectGeneric, CurrentLevelPick>
+            : never
+        : never;
 
 /**
  * Pick nested keys with more strict type parameter requirements. However, these stricter type

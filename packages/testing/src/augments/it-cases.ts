@@ -39,10 +39,10 @@ export type FunctionTestCase<FunctionToTestGeneric extends AnyFunction> =
             : // multiple params with a rest param
               OutputTestCaseMultipleInputs<FunctionToTestGeneric>
         : 0 extends Parameters<FunctionToTestGeneric>['length']
-        ? // no param case
-          BaseTestCase<Awaited<ReturnType<FunctionToTestGeneric>>>
-        : // multiple param case
-          OutputTestCaseMultipleInputs<FunctionToTestGeneric>;
+          ? // no param case
+            BaseTestCase<Awaited<ReturnType<FunctionToTestGeneric>>>
+          : // multiple param case
+            OutputTestCaseMultipleInputs<FunctionToTestGeneric>;
 
 export const runItCases = itCases;
 
@@ -60,16 +60,16 @@ export function itCases<FunctionToTestGeneric extends AnyFunction>(
         const itFunction = testCase.force
             ? options.forceIt
             : testCase.exclude
-            ? options.excludeIt
-            : options.it;
+              ? options.excludeIt
+              : options.it;
         return itFunction(testCase.it, async () => {
             const functionInputs: Parameters<FunctionToTestGeneric> =
                 'input' in testCase
                     ? ([testCase.input] as unknown[] as Parameters<FunctionToTestGeneric>)
                     : 'inputs' in testCase
-                    ? (testCase.inputs as unknown[] as Parameters<FunctionToTestGeneric>)
-                    : // as cast here to cover the case where the input has NO inputs
-                      ([] as unknown[] as Parameters<FunctionToTestGeneric>);
+                      ? (testCase.inputs as unknown[] as Parameters<FunctionToTestGeneric>)
+                      : // as cast here to cover the case where the input has NO inputs
+                        ([] as unknown[] as Parameters<FunctionToTestGeneric>);
 
             if ('expect' in testCase) {
                 await assertOutputWithDescription(

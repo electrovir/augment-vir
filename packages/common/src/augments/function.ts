@@ -29,5 +29,5 @@ export type TypedFunction<Arguments, Return> = Arguments extends readonly any[]
         ? (...args: ArrayElement<Arguments>[]) => Return
         : (...args: Arguments) => Return
     : void extends Arguments
-    ? () => Return
-    : (arg: Arguments) => Return;
+      ? () => Return
+      : (arg: Arguments) => Return;

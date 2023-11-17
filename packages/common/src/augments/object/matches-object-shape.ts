@@ -40,8 +40,8 @@ export type ObjectWithAtLeastSingleEntryArrays<BaseObject extends object> = {
     [Prop in keyof BaseObject]: BaseObject[Prop] extends ReadonlyArray<any>
         ? AtLeastOneEntryArray<BaseObject[Prop]>
         : BaseObject[Prop] extends object
-        ? ObjectWithAtLeastSingleEntryArrays<BaseObject[Prop]>
-        : BaseObject[Prop];
+          ? ObjectWithAtLeastSingleEntryArrays<BaseObject[Prop]>
+          : BaseObject[Prop];
 };
 
 export type NestedBoolean<MatchObject extends object> = Partial<{

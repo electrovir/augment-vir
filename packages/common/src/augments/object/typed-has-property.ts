@@ -6,8 +6,8 @@ type ExtractValue<
 > = KeyGeneric extends keyof ParentGeneric
     ? RequiredBy<ParentGeneric, KeyGeneric>[KeyGeneric]
     : KeyGeneric extends keyof Extract<ParentGeneric, Record<KeyGeneric, any>>
-    ? RequiredBy<Extract<ParentGeneric, Record<KeyGeneric, any>>, KeyGeneric>[KeyGeneric]
-    : never;
+      ? RequiredBy<Extract<ParentGeneric, Record<KeyGeneric, any>>, KeyGeneric>[KeyGeneric]
+      : never;
 
 type CombinedParentValue<KeyGeneric extends PropertyKey, ParentGeneric> = ExtractValue<
     KeyGeneric,
