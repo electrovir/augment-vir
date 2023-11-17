@@ -17,6 +17,47 @@ describe(mergeDeep.name, () => {
             expect: {first: 'hello'},
         },
         {
+            it: 'removes keys overridden with undefined',
+            inputs: [
+                {
+                    a: 'hi',
+                    b: 'bye',
+                },
+                {
+                    b: undefined,
+                },
+            ],
+            expect: {
+                a: 'hi',
+            },
+        },
+        {
+            it: 'removes undefined array entries',
+            inputs: [
+                [
+                    'a',
+                    'b',
+                    'c',
+                    'd',
+                    'e',
+                    'f',
+                ],
+                [
+                    'a',
+                    'b',
+                    undefined,
+                    undefined,
+                    'e',
+                ],
+            ],
+            expect: [
+                'a',
+                'b',
+                'e',
+                'f',
+            ],
+        },
+        {
             it: 'merges through an array',
             inputs: [
                 [

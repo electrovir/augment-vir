@@ -4,7 +4,8 @@ import {isLengthAtLeast} from '../tuple';
 import {isObject} from './object';
 
 /**
- * Accepts multiple objects and merges their key-value pairs recursively.
+ * Accepts multiple objects and merges their key-value pairs recursively. Any values set to
+ * undefined will be removed.
  *
  * Note that order matters! Each input object will overwrite the properties of the previous objects.
  */
@@ -41,21 +42,14 @@ export function mergeDeep<const T extends object>(
                     key,
                     value,
                 ]) => {
-                    const mergePropsArray = mergeProps[key] || [];
                     if (!mergeProps[key]) {
-                        mergeProps[key] = mergePropsArray;
+                        mergeProps[key] = [];
                     }
-                    mergePropsArray.push(value);
+                    mergeProps[key]!.push(value);
                 },
             );
-            if (result) {
-                if (isRuntimeTypeOf(result, 'object')) {
-                    result = {
-                        ...result,
-                        ...individualInput,
-                    };
-                }
-            } else {
+
+            if (!result) {
                 if (isRuntimeTypeOf(individualInput, 'array')) {
                     result = [...individualInput];
                 } else {
@@ -72,9 +66,17 @@ export function mergeDeep<const T extends object>(
             key,
             mergeValues,
         ]) => {
-            result[key] = mergeDeep(...mergeValues);
+            const newValue = mergeDeep(...mergeValues);
+            if (newValue === undefined && key in result) {
+                delete result[key];
+            } else if (newValue !== undefined) {
+                result[key] = newValue;
+            }
         },
     );
+    if (isRuntimeTypeOf(result, 'array')) {
+        result = result.filter((entry) => entry !== undefined);
+    }
 
     return result as T;
 }
