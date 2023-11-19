@@ -22,13 +22,13 @@
         "@istanbuljs/nyc-config-typescript": "^1.0.2",
         "@types/chai": "^4.3.10",
         "@types/mocha": "^10.0.4",
-        "@types/node": "^20.9.1",
+        "@types/node": "^20.9.2",
         "chai": "^4.3.10",
         "istanbul-smart-text-reporter": "^1.1.2",
         "mocha": "^10.2.0",
         "mocha-spec-reporter-with-file-names": "^0.0.3",
         "ts-node": "^10.9.1",
-        "type-fest": "^4.7.1",
+        "type-fest": "^4.8.1",
         "typescript": "^5.2.2"
     }
 }
