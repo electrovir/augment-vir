@@ -1,6 +1,4 @@
 import {
-    getRuntimeTypeOf,
-    isRuntimeTypeOf,
     JsonCompatibleArray,
     JsonCompatibleObject,
     JsonCompatibleValue,
@@ -11,6 +9,7 @@ import {existsSync} from 'fs';
 import {ensureDir} from 'fs-extra';
 import {readFile, writeFile} from 'fs/promises';
 import {dirname} from 'path';
+import {getRunTimeType, isRunTimeType} from 'run-time-assertions';
 
 export async function readJson<ParsedJsonType extends JsonCompatibleValue = JsonCompatibleValue>(
     path: string,
@@ -72,21 +71,21 @@ export async function appendJson<T extends JsonCompatibleObject | JsonCompatible
 
     let withAppendedData: JsonCompatibleObject | JsonCompatibleArray;
 
-    if (isRuntimeTypeOf(currentJson, 'array') && isRuntimeTypeOf(newData, 'array')) {
+    if (isRunTimeType(currentJson, 'array') && isRunTimeType(newData, 'array')) {
         withAppendedData = [
             ...currentJson,
             ...newData,
         ];
-    } else if (isRuntimeTypeOf(currentJson, 'object') && isRuntimeTypeOf(newData, 'object')) {
+    } else if (isRunTimeType(currentJson, 'object') && isRunTimeType(newData, 'object')) {
         withAppendedData = {
             ...currentJson,
             ...newData,
         };
     } else {
         throw new Error(
-            `Type mismatch between new JSON data to append and current JSON data at "${path}": current file is "${getRuntimeTypeOf(
+            `Type mismatch between new JSON data to append and current JSON data at "${path}": current file is "${getRunTimeType(
                 currentJson,
-            )}" and new data is "${getRuntimeTypeOf(newData)}"`,
+            )}" and new data is "${getRunTimeType(newData)}"`,
         );
     }
 

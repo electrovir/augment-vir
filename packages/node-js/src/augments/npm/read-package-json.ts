@@ -1,5 +1,5 @@
-import {isRuntimeTypeOf} from '@augment-vir/common';
 import {join} from 'path';
+import {isRunTimeType} from 'run-time-assertions';
 import {PackageJson} from 'type-fest';
 import {readJson} from '../node-js-json';
 
@@ -11,7 +11,7 @@ export async function readPackageJson(dirPath: string): Promise<PackageJson> {
         throw new Error(`package.json file does not exist in '${dirPath}'`);
     }
 
-    if (!isRuntimeTypeOf(packageJson, 'object')) {
+    if (!isRunTimeType(packageJson, 'object')) {
         throw new Error(`Parsing package.json file did not return an object in '${dirPath}'`);
     }
 

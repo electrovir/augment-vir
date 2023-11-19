@@ -1,4 +1,4 @@
-import {isRuntimeTypeOf} from '../runtime-type-of';
+import {isRunTimeType} from 'run-time-assertions';
 import {ArrayElement} from '../type';
 import {PropertyValueType, isObject} from './object';
 import {UnionToIntersection} from './old-union-to-intersection';
@@ -63,7 +63,7 @@ export function setValueWithNestedKeys<
     const nestedKeysInput = nestedKeys as string[];
     const inputObject = originalObject as Record<PropertyKey, any>;
 
-    if (isRuntimeTypeOf(inputObject, 'array')) {
+    if (isRunTimeType(inputObject, 'array')) {
         inputObject.forEach((entry) => {
             if (isObject(entry)) {
                 (setValueWithNestedKeys as any)(entry, nestedKeysInput, value);
@@ -100,7 +100,7 @@ export function getValueFromNestedKeys<
     const nestedKeysInput = nestedKeys as string[];
     const inputObject = originalObject as Record<PropertyKey, any>;
 
-    if (isRuntimeTypeOf(inputObject, 'array')) {
+    if (isRunTimeType(inputObject, 'array')) {
         return inputObject.map((entry) =>
             (getValueFromNestedKeys as any)(entry, nestedKeys),
         ) as NestedValue<ObjectGeneric, KeysGeneric>;

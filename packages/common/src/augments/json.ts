@@ -1,8 +1,8 @@
+import {assertRunTimeType, getRunTimeType, isRunTimeType} from 'run-time-assertions';
 import {ensureError} from './error';
 import {JsonCompatibleValue} from './json-compatible';
 import {assertMatchesObjectShape} from './object/matches-object-shape';
 import {isObject} from './object/object';
-import {assertRuntimeTypeOf, getRuntimeTypeOf, isRuntimeTypeOf} from './runtime-type-of';
 
 export function parseJson<ParsedJsonGeneric>({
     jsonString,
@@ -17,10 +17,10 @@ export function parseJson<ParsedJsonGeneric>({
         const parsedJson = JSON.parse(jsonString);
 
         if (shapeMatcher != undefined) {
-            if (isRuntimeTypeOf(shapeMatcher, 'object')) {
+            if (isRunTimeType(shapeMatcher, 'object')) {
                 assertMatchesObjectShape<any>(parsedJson, shapeMatcher);
             } else {
-                assertRuntimeTypeOf(parsedJson, getRuntimeTypeOf(shapeMatcher), 'parsedJson');
+                assertRunTimeType(parsedJson, getRunTimeType(shapeMatcher), 'parsedJson');
             }
         }
 

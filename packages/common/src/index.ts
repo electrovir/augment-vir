@@ -28,7 +28,6 @@ export * from './augments/promise/promise';
 export * from './augments/promise/wait';
 export * from './augments/random';
 export * from './augments/regexp';
-export * from './augments/runtime-type-of';
 export * from './augments/string/prefixes';
 export * from './augments/string/search-params';
 export * from './augments/string/suffixes';

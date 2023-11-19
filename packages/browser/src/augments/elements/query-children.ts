@@ -1,5 +1,5 @@
-import {isRuntimeTypeOf} from '@augment-vir/common';
 import {DeclarativeElementDefinition} from 'element-vir';
+import {isRunTimeType} from 'run-time-assertions';
 import {getNestedChildren} from './element-children';
 
 export type ChildrenQuery = string | DeclarativeElementDefinition;
@@ -12,7 +12,7 @@ export type ChildrenQuery = string | DeclarativeElementDefinition;
  * children from that function apply here.
  */
 export function queryChildren(startingElement: Readonly<Element>, query: ChildrenQuery): Element[] {
-    const finalQuery = isRuntimeTypeOf(query, 'string') ? query : query.tagName;
+    const finalQuery = isRunTimeType(query, 'string') ? query : query.tagName;
     const allNestedChildren = getNestedChildren(startingElement);
     const matches = allNestedChildren.filter((child) => child.matches(finalQuery));
     return matches;

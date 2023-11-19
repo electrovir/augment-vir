@@ -1,4 +1,5 @@
-import {isRuntimeTypeOf, isTruthy} from '@augment-vir/common';
+import {isTruthy} from '@augment-vir/common';
+import {isRunTimeType} from 'run-time-assertions';
 
 export type QueryThroughShadowInputs = {
     element: Element | ShadowRoot;
@@ -116,7 +117,7 @@ function handleNestedQueries(
         return results;
     }
 
-    if (isRuntimeTypeOf(results, 'array')) {
+    if (isRunTimeType(results, 'array')) {
         return results
             .map((result) => {
                 return handleNestedQueries({

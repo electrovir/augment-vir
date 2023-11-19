@@ -1,5 +1,5 @@
+import {isRunTimeType} from 'run-time-assertions';
 import {PartialDeep} from 'type-fest';
-import {isRuntimeTypeOf} from '../runtime-type-of';
 import {isLengthAtLeast} from '../tuple';
 import {isObject} from './object';
 
@@ -50,7 +50,7 @@ export function mergeDeep<const T extends object>(
             );
 
             if (!result) {
-                if (isRuntimeTypeOf(individualInput, 'array')) {
+                if (isRunTimeType(individualInput, 'array')) {
                     result = [...individualInput];
                 } else {
                     result = {...individualInput};
@@ -74,7 +74,7 @@ export function mergeDeep<const T extends object>(
             }
         },
     );
-    if (isRuntimeTypeOf(result, 'array')) {
+    if (isRunTimeType(result, 'array')) {
         result = result.filter((entry) => entry !== undefined);
     }
 
