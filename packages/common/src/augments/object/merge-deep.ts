@@ -1,7 +1,6 @@
 import {isRunTimeType} from 'run-time-assertions';
 import {PartialDeep} from 'type-fest';
 import {isLengthAtLeast} from '../tuple';
-import {isObject} from './object';
 
 /**
  * Accepts multiple objects and merges their key-value pairs recursively. Any values set to
@@ -30,52 +29,42 @@ export function mergeDeep<const T extends object>(
     const mergeProps: Record<PropertyKey, any[]> = {};
 
     inputs.forEach((individualInput) => {
-        try {
-            if (!isObject(individualInput)) {
-                /** If not an object, we can't merge. So overwrite instead. */
-                result = individualInput;
-                return;
-            }
-
-            Object.entries(individualInput).forEach(
-                ([
-                    key,
-                    value,
-                ]) => {
-                    if (!mergeProps[key]) {
-                        mergeProps[key] = [];
-                    }
-                    mergeProps[key]!.push(value);
-                },
-            );
-
-            if (!result) {
-                if (isRunTimeType(individualInput, 'array')) {
-                    result = [...individualInput];
-                } else {
-                    result = {...individualInput};
-                }
-            }
-        } catch (error) {
-            /** Ignore errors, such as individualInput not actually being an object. */
+        if (!isRunTimeType(individualInput, 'object')) {
+            /** If not an object, we can't merge. So overwrite instead. */
+            result = individualInput;
+            return;
+        } else if (!isRunTimeType(result, 'object')) {
+            /** If result isn't an object then we need to make it into one. */
+            result = {...individualInput};
         }
+
+        Object.entries(individualInput).forEach(
+            ([
+                key,
+                value,
+            ]) => {
+                if (!mergeProps[key]) {
+                    mergeProps[key] = [];
+                }
+                mergeProps[key]!.push(value);
+            },
+        );
     });
 
-    Object.entries(mergeProps).forEach(
-        ([
-            key,
-            mergeValues,
-        ]) => {
-            const newValue = mergeDeep(...mergeValues);
-            if (newValue === undefined && key in result) {
-                delete result[key];
-            } else if (newValue !== undefined) {
-                result[key] = newValue;
-            }
-        },
-    );
-    if (isRunTimeType(result, 'array')) {
-        result = result.filter((entry) => entry !== undefined);
+    if (isRunTimeType(result, 'object')) {
+        Object.entries(mergeProps).forEach(
+            ([
+                key,
+                mergeValues,
+            ]) => {
+                const newValue = mergeDeep(...mergeValues);
+                if (newValue === undefined && key in result) {
+                    delete result[key];
+                } else if (newValue !== undefined) {
+                    result[key] = newValue;
+                }
+            },
+        );
     }
 
     return result as T;

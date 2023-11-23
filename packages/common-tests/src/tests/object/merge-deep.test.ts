@@ -32,7 +32,7 @@ describe(mergeDeep.name, () => {
             },
         },
         {
-            it: 'removes undefined array entries',
+            it: 'overrides array values',
             inputs: [
                 [
                     'a',
@@ -53,12 +53,13 @@ describe(mergeDeep.name, () => {
             expect: [
                 'a',
                 'b',
+                undefined,
+                undefined,
                 'e',
-                'f',
             ],
         },
         {
-            it: 'merges through an array',
+            it: 'overwrites array entries',
             inputs: [
                 [
                     {a: 'b', c: 'd'},
@@ -70,7 +71,7 @@ describe(mergeDeep.name, () => {
                 ],
             ],
             expect: [
-                {a: 'b', c: 'd', e: 'f', g: 'h'},
+                {e: 'f', g: 'h'},
                 {q: 'rZr', s: 'tZt', u: 'v'},
             ],
         },
@@ -119,7 +120,7 @@ describe(mergeDeep.name, () => {
             },
         },
         {
-            it: 'does merge arrays',
+            it: 'overwrites nested arrays',
             inputs: [
                 {
                     first: 'hello',
@@ -144,8 +145,6 @@ describe(mergeDeep.name, () => {
                 arrayProp: [
                     9,
                     10,
-                    3,
-                    4,
                 ],
             },
         },
