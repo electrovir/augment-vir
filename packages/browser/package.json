@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/browser",
-    "version": "22.0.1",
+    "version": "22.1.0",
     "homepage": "https://github.com/electrovir/augment-vir/tree/main/packages/browser",
     "bugs": {
         "url": "https://github.com/electrovir/augment-vir/issues"
@@ -24,13 +24,13 @@
         "test:watch": "web-test-runner --color --config configs/web-test-runner.config.mjs --watch"
     },
     "dependencies": {
-        "@augment-vir/common": "^22.0.1",
+        "@augment-vir/common": "^22.1.0",
         "element-vir": "^17.0.3",
         "html-spec-tags": "^1.0.2",
         "run-time-assertions": "^0.2.1"
     },
     "devDependencies": {
-        "@augment-vir/browser-testing": "^22.0.1",
+        "@augment-vir/browser-testing": "^22.1.0",
         "@open-wc/testing": "^4.0.0",
         "@types/chai": "^4.3.11",
         "@types/mocha": "^10.0.6",
