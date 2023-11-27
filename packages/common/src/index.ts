@@ -4,6 +4,7 @@ export * from './augments/async';
 export * from './augments/boolean';
 export * from './augments/common-number';
 export * from './augments/common-string';
+export * from './augments/debounce';
 export * from './augments/environment';
 export * from './augments/error';
 export * from './augments/function';
