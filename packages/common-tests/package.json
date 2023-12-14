@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/common-tests",
-    "version": "22.1.0",
+    "version": "22.1.1",
     "private": true,
     "homepage": "https://github.com/electrovir/augment-vir/tree/main/packages/common-tests",
     "bugs": {
@@ -22,9 +22,9 @@
         "test:types": "tsc --noEmit"
     },
     "devDependencies": {
-        "@augment-vir/chai": "^22.1.0",
-        "@augment-vir/common": "^22.1.0",
-        "@augment-vir/node-js": "^22.1.0",
+        "@augment-vir/chai": "^22.1.1",
+        "@augment-vir/common": "^22.1.1",
+        "@augment-vir/node-js": "^22.1.1",
         "@electrovir/nyc": "^15.1.0-fix0",
         "@istanbuljs/nyc-config-typescript": "^1.0.2",
         "@types/chai": "^4.3.11",
@@ -34,8 +34,8 @@
         "mocha": "^10.2.0",
         "mocha-spec-reporter-with-file-names": "^0.0.3",
         "run-time-assertions": "^0.2.1",
-        "ts-node": "^10.9.1",
-        "type-fest": "^4.8.2",
+        "ts-node": "^10.9.2",
+        "type-fest": "^4.8.3",
         "typescript": "5.2.2"
     }
 }
