@@ -1,12 +1,19 @@
 #!/usr/bin/env bash
 
-echo "hold on while we reinstall everything..."
-rm -rf node_modules >/dev/null 2>&1 && rm -rf packages/*/node_modules >/dev/null 2>&1 && rm -f package-lock.json >/dev/null 2>&1
-
 set -e;
+echo "hold on while we reinstall everything..."
 
-npm i;
+
+if ! virmator deps regen git; then
+    npm ci
+fi
 
 echo "compiling...";
+
+# We specifically have to compile the common package first because mono-vir depends on it and we
+# override all @augment-vir/* package versions in this mono-repo's package.json.
+cd packages/common;
+npm run compile;
+cd -;
 
 mono-vir for-each npm run compile;
