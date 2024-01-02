@@ -119,4 +119,15 @@ describe(calculateTextDimensions.name, () => {
             }
         });
     });
+
+    it('accepts custom options', async () => {
+        const parentElement = await fixture(html`
+            <div></div>
+        `);
+
+        await calculateTextDimensions(parentElement, 'hi', {
+            errorMessage: 'oops',
+            timeout: {milliseconds: 9_000_000},
+        });
+    });
 });

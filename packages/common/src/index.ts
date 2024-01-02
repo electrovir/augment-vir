@@ -7,6 +7,7 @@ export * from './augments/common-string';
 export * from './augments/debounce';
 export * from './augments/environment';
 export * from './augments/error';
+export * from './augments/esm-path';
 export * from './augments/function';
 export * from './augments/json';
 export * from './augments/json-compatible';

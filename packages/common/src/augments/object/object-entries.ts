@@ -1,5 +1,6 @@
 import {typedHasProperty} from './typed-has-property';
 
+/** @deprecated This is the same as hasKey */
 export function isKeyof<ObjectGeneric>(
     key: PropertyKey,
     object: ObjectGeneric,

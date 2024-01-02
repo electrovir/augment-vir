@@ -45,12 +45,20 @@ export async function calculateTextDimensions(
             },
             intervalMs: 100,
             timeoutMs: customOptions?.timeout?.milliseconds || 10_000,
-            timeoutMessage: customOptions?.errorMessage || 'Failed to calculate text size.',
+            timeoutMessage:
+                customOptions?.errorMessage ||
+                `Failed to calculate text size in '${parentElement.tagName}'.`,
         });
 
+        /**
+         * No way to intentionally trigger this edge case, we're just catching it here for type
+         * purposes
+         */
+        /* c8 ignore start */
         if (!latestSize) {
             throw new Error('Failed to calculate text size.');
         }
+        /* c8 ignore stop */
 
         return {
             height: latestSize.height,
