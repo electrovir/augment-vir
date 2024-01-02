@@ -25,8 +25,8 @@
     },
     "dependencies": {
         "browser-or-node": "^2.1.1",
-        "run-time-assertions": "^0.2.1",
-        "type-fest": "^4.8.3"
+        "run-time-assertions": "^0.3.0",
+        "type-fest": "^4.9.0"
     },
     "devDependencies": {
         "typescript": "5.2.2"

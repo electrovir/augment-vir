@@ -9,6 +9,8 @@ export const ncuConfig: RunOptions = {
     reject: [
         ...baseNcuConfig.reject,
         'expect-type',
+        /** V5 requires type: module, which we are not yet ready for */
+        'chai',
     ],
     // include only these
     filter: [],
