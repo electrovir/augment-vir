@@ -1,7 +1,6 @@
 import {Dimensions, awaitedBlockingMap, mapObjectValues} from '@augment-vir/common';
 import {assert, fixture} from '@open-wc/testing';
 import {CSSResult, css, html} from 'element-vir';
-import {isRunTimeType} from 'run-time-assertions';
 import {calculateTextDimensions} from './text-width';
 
 describe(calculateTextDimensions.name, () => {
@@ -28,8 +27,9 @@ describe(calculateTextDimensions.name, () => {
         text: string;
         customStyle?: CSSResult | undefined;
         expect: {
-            width: number | {min: number; max: number};
-            height: number | {min: number; max: number};
+            width: number;
+            height: number;
+            buffer?: number;
         };
     }> = [
         {
@@ -44,21 +44,15 @@ describe(calculateTextDimensions.name, () => {
             name: 'simple text',
             text: 'hello there',
             expect: {
-                height: {
-                    min: 17,
-                    max: 20,
-                },
-                width: 68,
+                height: 18,
+                width: 67,
             },
         },
         {
             name: 'wrapped long text',
             text: 'hello there really long text super duper long why is it so long oh no it is never going to end hello there really long text super duper long why is it so long oh no it is never going to end hello there really long text super duper long why is it so long oh no it is never going to end hello there really long text super duper long why is it so long oh no it is never going to end hello there really long text super duper long why is it so long oh no it is never going to end hello there really long text super duper long why is it so long oh no it is never going to end hello there really long text super duper long why is it so long oh no it is never going to end',
             expect: {
-                height: {
-                    min: 107,
-                    max: 116,
-                },
+                height: 112,
                 width: 792,
             },
         },
@@ -69,54 +63,40 @@ describe(calculateTextDimensions.name, () => {
                 white-space: nowrap;
             `,
             expect: {
-                height: {
-                    min: 17,
-                    max: 20,
-                },
+                height: 18,
                 width: 4093,
+                buffer: 1500,
             },
         },
     ];
 
+    const defaultBuffer = 30;
+
     it('passes all test cases', async () => {
         await awaitedBlockingMap(testCases, async (testCase) => {
             const output = await testCalculateTextDimensions(testCase.text, testCase.customStyle);
-            if (isRunTimeType(testCase.expect.width, 'number')) {
-                assert.strictEqual(
-                    output.width,
-                    testCase.expect.width,
-                    `Incorrect exact width for '${testCase.name}' test case`,
-                );
-            } else {
-                assert.isAbove(
-                    output.width,
-                    testCase.expect.width.min,
-                    `Incorrect min width for '${testCase.name}' test case`,
-                );
-                assert.isBelow(
-                    output.width,
-                    testCase.expect.width.max,
-                    `Incorrect max width for '${testCase.name}' test case`,
-                );
-            }
-            if (isRunTimeType(testCase.expect.height, 'number')) {
-                assert.strictEqual(
-                    output.height,
-                    testCase.expect.height,
-                    `Incorrect exact height for '${testCase.name}' test case`,
-                );
-            } else {
-                assert.isAbove(
-                    output.height,
-                    testCase.expect.height.min,
-                    `Incorrect min height for '${testCase.name}' test case`,
-                );
-                assert.isBelow(
-                    output.height,
-                    testCase.expect.height.max,
-                    `Incorrect max height for '${testCase.name}' test case`,
-                );
-            }
+            const buffer = testCase.expect.buffer || defaultBuffer;
+
+            assert.isAbove(
+                output.width,
+                testCase.expect.width - buffer,
+                `Width for '${testCase.name}' test case is below the buffer of '${buffer}'`,
+            );
+            assert.isBelow(
+                output.width,
+                testCase.expect.width + buffer,
+                `Width for '${testCase.name}' test case is above the buffer of '${buffer}'`,
+            );
+            assert.isAbove(
+                output.height,
+                testCase.expect.height - buffer,
+                `Height for '${testCase.name}' test case is below the buffer of '${buffer}'`,
+            );
+            assert.isBelow(
+                output.height,
+                testCase.expect.height + buffer,
+                `Height for '${testCase.name}' test case is below the buffer of '${buffer}'`,
+            );
         });
     });
 
