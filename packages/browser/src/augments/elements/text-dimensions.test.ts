@@ -1,7 +1,7 @@
 import {Dimensions, awaitedBlockingMap, mapObjectValues} from '@augment-vir/common';
 import {assert, fixture} from '@open-wc/testing';
 import {CSSResult, css, html} from 'element-vir';
-import {calculateTextDimensions} from './text-width';
+import {calculateTextDimensions} from './text-dimensions';
 
 describe(calculateTextDimensions.name, () => {
     async function testCalculateTextDimensions(
