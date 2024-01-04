@@ -6,6 +6,8 @@ export async function calculateTextDimensions(
     customOptions?: PartialAndUndefined<{
         timeout: {milliseconds: number};
         errorMessage: string;
+        /** Set to true to leave the text element in the DOM. */
+        debug: boolean;
     }>,
 ): Promise<Dimensions> {
     if (!text) {
@@ -46,7 +48,7 @@ export async function calculateTextDimensions(
             conditionCallback() {
                 return !!latestSize;
             },
-            intervalMs: 100,
+            intervalMs: 0,
             timeoutMs: customOptions?.timeout?.milliseconds || 10_000,
             timeoutMessage:
                 customOptions?.errorMessage ||
@@ -68,7 +70,9 @@ export async function calculateTextDimensions(
             width: latestSize.width,
         };
     } finally {
-        textWrapperElement.remove();
+        if (!customOptions?.debug) {
+            textWrapperElement.remove();
+        }
         resizeObserver.disconnect();
     }
 }

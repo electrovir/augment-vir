@@ -108,6 +108,7 @@ describe(calculateTextDimensions.name, () => {
         await calculateTextDimensions(parentElement, 'hi', {
             errorMessage: 'oops',
             timeout: {milliseconds: 9_000_000},
+            debug: true,
         });
     });
 });
