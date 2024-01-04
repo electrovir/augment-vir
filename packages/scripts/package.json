@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/scripts",
-    "version": "22.2.0",
+    "version": "22.2.1",
     "private": true,
     "license": "MIT",
     "author": {
@@ -14,8 +14,8 @@
         "verify": "ts-node src/index.ts"
     },
     "dependencies": {
-        "@augment-vir/common": "^22.2.0",
-        "@augment-vir/node-js": "^22.2.0"
+        "@augment-vir/common": "^22.2.1",
+        "@augment-vir/node-js": "^22.2.1"
     },
     "devDependencies": {
         "@electrovir/nyc": "^15.1.0-fix0",

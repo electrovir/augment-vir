@@ -26,7 +26,10 @@ export async function calculateTextDimensions(
     textWrapperElement.style.transition = 'none';
     textWrapperElement.setAttribute('aria-hidden', 'true');
 
-    parentElement.appendChild(textWrapperElement);
+    /** Automatically account for shadow roots. */
+    const childAttachPoint = parentElement.shadowRoot || parentElement;
+
+    childAttachPoint.appendChild(textWrapperElement);
     let latestSize: DOMRectReadOnly | undefined;
     /**
      * Use resize observer instead of clientWidth, getComputedStyle, or getBoundingClientRect to
