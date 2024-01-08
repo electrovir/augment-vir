@@ -6,6 +6,7 @@ export * from './augments/elements/query-children';
 export * from './augments/elements/tag-or-definition';
 export * from './augments/elements/text-dimensions';
 export * from './augments/event-target';
+export * from './augments/global-listen';
 export * from './augments/image';
 export * from './augments/query-through-shadow';
 export * from './augments/video';
