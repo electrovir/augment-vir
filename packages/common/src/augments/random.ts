@@ -1,6 +1,14 @@
 import {clamp, ensureMinAndMax} from './common-number';
 
-const crypto = globalThis.crypto;
+function accessCrypto(): Crypto {
+    if (globalThis.crypto) {
+        return globalThis.crypto;
+    } else {
+        return require('crypto').webcrypto;
+    }
+}
+
+const crypto = accessCrypto();
 
 // can't get this coverage to work
 /* c8 ignore start */

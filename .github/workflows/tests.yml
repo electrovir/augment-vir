@@ -12,12 +12,13 @@ jobs:
             fail-fast: false
             matrix:
                 os: [ubuntu-latest, windows-latest, macos-latest]
+                node-version: [18.x, 20.x, 21.x]
         steps:
             - uses: actions/checkout@v3
             - name: Use Node.js
               uses: actions/setup-node@v3
               with:
-                  node-version-file: '.nvmrc'
+                  node-version: ${{ matrix.node-version }}
             - name: update npm
               run: npm i -g npm@9.6.7 --registry=https://registry.npmjs.org
             - name: run test
