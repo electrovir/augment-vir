@@ -125,8 +125,9 @@ function compareInnerValue(
                 testValue.constructor !== matchValue.constructor
             ) {
                 throwKeyError(
-                    `constructor "${(testValue as any)?.constructor
-                        ?.name}" did not match expected constructor "${matchValue.constructor}"`,
+                    `constructor "${
+                        (testValue as any)?.constructor?.name
+                    }" did not match expected constructor "${matchValue.constructor}"`,
                 );
             }
         }

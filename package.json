@@ -1,6 +1,6 @@
 {
     "name": "augment-vir",
-    "version": "22.4.0",
+    "version": "23.0.0",
     "private": true,
     "homepage": "https://github.com/electrovir/augment-vir",
     "bugs": {
@@ -36,6 +36,14 @@
         "test:types": "mono-vir for-each-async tsc --noEmit"
     },
     "devDependencies": {
+        "@augment-vir/browser": "file:./packages/browser",
+        "@augment-vir/browser-testing": "file:./packages/browser-testing",
+        "@augment-vir/chai": "file:./packages/chai",
+        "@augment-vir/common": "file:./packages/common",
+        "@augment-vir/docker": "file:./packages/docker",
+        "@augment-vir/node-js": "file:./packages/node-js",
+        "@augment-vir/prisma-node-js": "file:./packages/prisma-node-js",
+        "@augment-vir/testing": "file:./packages/testing",
         "concurrently": "^8.2.2",
         "cspell": "^8.3.2",
         "dependency-cruiser": "^16.0.0",
@@ -63,8 +71,6 @@
         "@augment-vir/docker": "*",
         "@augment-vir/node-js": "*",
         "@augment-vir/prisma-node-js": "*",
-        "@augment-vir/testing": "*",
-        "semver": "npm:semver@7.5.3",
-        "make-dir": "npm:make-dir@v4.0.0"
+        "@augment-vir/testing": "*"
     }
 }

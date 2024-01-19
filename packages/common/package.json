@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/common",
-    "version": "22.4.0",
+    "version": "23.0.0",
     "homepage": "https://github.com/electrovir/augment-vir/tree/main/packages/common",
     "bugs": {
         "url": "https://github.com/electrovir/augment-vir/issues"
@@ -25,7 +25,6 @@
     },
     "dependencies": {
         "browser-or-node": "^2.1.1",
-        "date-vir": "^5.1.1",
         "run-time-assertions": "^0.3.0",
         "type-fest": "^4.9.0"
     },

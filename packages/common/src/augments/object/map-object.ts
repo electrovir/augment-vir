@@ -5,12 +5,10 @@ export type InnerMappedValues<EntireInputGeneric extends object, MappedValueGene
     [MappedProp in keyof EntireInputGeneric]: MappedValueGeneric;
 };
 
-export type MappedValues<
-    EntireInputGeneric extends object,
-    MappedValueGeneric,
-> = MappedValueGeneric extends PromiseLike<unknown>
-    ? Promise<InnerMappedValues<EntireInputGeneric, Awaited<MappedValueGeneric>>>
-    : InnerMappedValues<EntireInputGeneric, Awaited<MappedValueGeneric>>;
+export type MappedValues<EntireInputGeneric extends object, MappedValueGeneric> =
+    MappedValueGeneric extends PromiseLike<unknown>
+        ? Promise<InnerMappedValues<EntireInputGeneric, Awaited<MappedValueGeneric>>>
+        : InnerMappedValues<EntireInputGeneric, Awaited<MappedValueGeneric>>;
 
 /**
  * Map an object's keys to new values synchronously. This is different from plain mapObjectValues in

@@ -9,12 +9,10 @@ type ExtractValue<
       ? RequiredBy<Extract<ParentGeneric, Record<KeyGeneric, any>>, KeyGeneric>[KeyGeneric]
       : never;
 
-type CombinedParentValue<KeyGeneric extends PropertyKey, ParentGeneric> = ExtractValue<
-    KeyGeneric,
-    ParentGeneric
-> extends never
-    ? unknown
-    : ExtractValue<KeyGeneric, ParentGeneric>;
+type CombinedParentValue<KeyGeneric extends PropertyKey, ParentGeneric> =
+    ExtractValue<KeyGeneric, ParentGeneric> extends never
+        ? unknown
+        : ExtractValue<KeyGeneric, ParentGeneric>;
 
 type CombineTypeWithKey<KeyGeneric extends PropertyKey, ParentGeneric> = ParentGeneric &
     Record<KeyGeneric, CombinedParentValue<KeyGeneric, ParentGeneric>>;
