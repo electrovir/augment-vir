@@ -1,4 +1,5 @@
-import {extractErrorMessage} from '../error';
+import {FalsyTypes} from '../boolean';
+import {ensureErrorAndPrependMessage} from '../error';
 import {createDeferredPromiseWrapper} from './deferred-promise';
 
 export function wait(delayMs: number): Promise<void> {
@@ -23,42 +24,60 @@ export async function waitValue<ResolutionValue>(
     return wait(delayMs).then(() => returnValue);
 }
 
-export type WaitForConditionInputs = {
-    conditionCallback: () => boolean | Promise<boolean>;
-    timeoutMs?: number;
-    intervalMs?: number;
-    timeoutMessage?: string;
+export type WaitUntilTruthyOptions = {
+    interval: {milliseconds: number};
+    timeout: {milliseconds: number};
 };
 
-export async function waitForCondition({
-    conditionCallback,
-    timeoutMs = 10000,
-    intervalMs = 100,
-    timeoutMessage = '',
-}: WaitForConditionInputs): Promise<void> {
-    let condition: boolean = false;
+export const defaultWaitUntilDefinedOptions: WaitUntilTruthyOptions = {
+    interval: {
+        milliseconds: 100,
+    },
+    timeout: {
+        milliseconds: 10_000,
+    },
+};
+
+/**
+ * Runs the predicate until it returns a truthy value, then returns that value. Use the options
+ * input to modify the timeout and interval durations. Automatically catches errors and handles
+ * async predicates.
+ */
+export async function waitUntilTruthy<Value>(
+    predicate: () => Value | Promise<Value> | FalsyTypes,
+    failureMessage?: string | undefined,
+    optionsInput: Partial<WaitUntilTruthyOptions> = {},
+): Promise<Awaited<Value>> {
+    const options: WaitUntilTruthyOptions = {
+        ...defaultWaitUntilDefinedOptions,
+        ...optionsInput,
+    };
+
+    let lastValue: Awaited<Value> | FalsyTypes = undefined;
     let lastError: unknown;
     async function checkCondition() {
         try {
-            condition = !!(await conditionCallback());
+            lastValue = await predicate();
         } catch (error) {
-            condition = false;
+            lastValue = undefined;
             lastError = error;
         }
     }
     const startTime = Date.now();
-    await checkCondition();
 
-    while (!condition) {
-        await wait(intervalMs);
-        if (Date.now() - startTime >= timeoutMs) {
-            const message = timeoutMessage ? `${timeoutMessage}: ` : '';
-            throw new Error(
-                `${message}Timeout of "${timeoutMs}" exceeded waiting for condition to be true${extractErrorMessage(
-                    lastError,
-                )}`,
-            );
-        }
+    while (!lastValue) {
         await checkCondition();
+        await wait(options.interval.milliseconds);
+        if (Date.now() - startTime >= options.timeout.milliseconds) {
+            const message = failureMessage ? `${failureMessage}: ` : '';
+            const preMessage = `${message}Timeout of "${options.timeout.milliseconds}" exceeded waiting for value to be defined`;
+            if (lastError) {
+                throw ensureErrorAndPrependMessage(lastError, preMessage);
+            } else {
+                throw new Error(preMessage);
+            }
+        }
     }
+
+    return lastValue;
 }

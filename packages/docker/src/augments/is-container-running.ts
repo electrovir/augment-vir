@@ -1,4 +1,4 @@
-import {waitForCondition} from '@augment-vir/common';
+import {waitUntilTruthy} from '@augment-vir/common';
 import {logIf, runShellCommand} from '@augment-vir/node-js';
 import {getContainerInfo} from './container-info';
 import {killContainer} from './kill-container';
@@ -10,20 +10,15 @@ export async function isContainerResponding(containerNameOrId: string): Promise<
 }
 
 export async function waitForContainerToBeResponsive(containerNameOrId: string): Promise<void> {
-    await waitForCondition({
-        conditionCallback: () => {
-            return isContainerResponding(containerNameOrId);
-        },
+    await waitUntilTruthy(() => {
+        return isContainerResponding(containerNameOrId);
     });
 }
 
 export async function waitForContainerToBeRemoved(containerNameOrId: string): Promise<void> {
-    await waitForCondition({
-        conditionCallback: async () => {
-            return !(await isContainerResponding(containerNameOrId));
-        },
-        timeoutMessage: 'container was never removed',
-    });
+    await waitUntilTruthy(async () => {
+        return !(await isContainerResponding(containerNameOrId));
+    }, 'container was never removed');
 }
 
 export async function executeIfContainerIsNotRunning({

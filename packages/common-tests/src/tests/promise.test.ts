@@ -6,7 +6,7 @@ import {
     isPromiseLike,
     randomString,
     wait,
-    waitForCondition,
+    waitUntilTruthy,
     wrapPromiseInTimeout,
 } from '@augment-vir/common';
 import {assert, expect} from 'chai';
@@ -192,18 +192,16 @@ describe(isPromiseLike.name, () => {
     });
 });
 
-describe(waitForCondition.name, () => {
+describe(waitUntilTruthy.name, () => {
     it('should resolve once a condition is true', async () => {
         let condition = false;
-        await waitForCondition({
-            conditionCallback: () => {
-                if (condition) {
-                    return true;
-                } else {
-                    condition = true;
-                    return false;
-                }
-            },
+        await waitUntilTruthy(() => {
+            if (condition) {
+                return true;
+            } else {
+                condition = true;
+                return false;
+            }
         });
         assert.isTrue(condition);
     });
@@ -214,10 +212,8 @@ describe(waitForCondition.name, () => {
             condition = true;
         }, 1000);
         assert.isFalse(condition);
-        await waitForCondition({
-            conditionCallback: () => {
-                return condition;
-            },
+        await waitUntilTruthy(() => {
+            return condition;
         });
         assert.isTrue(condition);
     });
@@ -226,12 +222,15 @@ describe(waitForCondition.name, () => {
         const errorMessage = randomString();
 
         await assertThrows(
-            waitForCondition({
-                timeoutMs: 100,
-                conditionCallback: () => {
+            waitUntilTruthy(
+                () => {
                     throw new Error(errorMessage);
                 },
-            }),
+                '',
+                {
+                    timeout: {milliseconds: 100},
+                },
+            ),
             {
                 matchMessage: errorMessage,
             },
@@ -242,13 +241,15 @@ describe(waitForCondition.name, () => {
         const timeoutMessage = randomString();
 
         await assertThrows(
-            waitForCondition({
-                timeoutMessage,
-                timeoutMs: 100,
-                conditionCallback: () => {
+            waitUntilTruthy(
+                () => {
                     return false;
                 },
-            }),
+                timeoutMessage,
+                {
+                    timeout: {milliseconds: 100},
+                },
+            ),
             {
                 matchMessage: timeoutMessage,
             },

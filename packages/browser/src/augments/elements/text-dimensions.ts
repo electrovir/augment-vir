@@ -1,4 +1,4 @@
-import {Dimensions, PartialAndUndefined, waitForCondition} from '@augment-vir/common';
+import {Dimensions, PartialAndUndefined, waitUntilTruthy} from '@augment-vir/common';
 
 export async function calculateTextDimensions(
     parentElement: Element,
@@ -44,16 +44,15 @@ export async function calculateTextDimensions(
     textWrapperElement.innerText = text;
 
     try {
-        await waitForCondition({
-            conditionCallback() {
-                return !!latestSize;
-            },
-            intervalMs: 0,
-            timeoutMs: customOptions?.timeout?.milliseconds || 10_000,
-            timeoutMessage:
-                customOptions?.errorMessage ||
+        await waitUntilTruthy(
+            () => !!latestSize,
+            customOptions?.errorMessage ||
                 `Failed to calculate text size in '${parentElement.tagName}'.`,
-        });
+            {
+                interval: {milliseconds: 0},
+                timeout: {milliseconds: customOptions?.timeout?.milliseconds || 10_000},
+            },
+        );
 
         /**
          * No way to intentionally trigger this edge case, we're just catching it here for type

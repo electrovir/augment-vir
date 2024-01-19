@@ -1,4 +1,4 @@
-import {DebounceStyle, createDebounce, timeCallback, waitForCondition} from '@augment-vir/common';
+import {DebounceStyle, createDebounce, timeCallback, waitUntilTruthy} from '@augment-vir/common';
 import {assert} from 'chai';
 
 describe(createDebounce.name, () => {
@@ -13,13 +13,11 @@ describe(createDebounce.name, () => {
         });
         assert.strictEqual(callCount, 1);
         const duration = await timeCallback(async () => {
-            await waitForCondition({
-                conditionCallback() {
-                    debounced(() => {
-                        callCount++;
-                    });
-                    return callCount > 1;
-                },
+            await waitUntilTruthy(() => {
+                debounced(() => {
+                    callCount++;
+                });
+                return callCount > 1;
             });
         });
         assert.isAbove(duration, 450);
@@ -36,13 +34,11 @@ describe(createDebounce.name, () => {
         });
         assert.strictEqual(callCount, 0);
         const duration = await timeCallback(async () => {
-            await waitForCondition({
-                conditionCallback() {
-                    debounced(() => {
-                        callCount++;
-                    });
-                    return callCount > 0;
-                },
+            await waitUntilTruthy(() => {
+                debounced(() => {
+                    callCount++;
+                });
+                return callCount > 0;
             });
         });
         assert.isAbove(duration, 450);
