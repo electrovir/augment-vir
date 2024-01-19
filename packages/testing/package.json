@@ -38,7 +38,7 @@
         "mocha-spec-reporter-with-file-names": "^0.0.3",
         "run-time-assertions": "^0.3.0",
         "ts-node": "^10.9.2",
-        "typescript": "5.2.2"
+        "typescript": "5.3.3"
     },
     "publishConfig": {
         "access": "public"
