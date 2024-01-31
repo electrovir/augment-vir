@@ -1,26 +1,28 @@
 import {AnyFunction} from '@augment-vir/common';
-import {FunctionTestCase, itCases as generic_itCases} from '@augment-vir/testing';
+import {CustomAsserter, FunctionTestCase, itCases as generic_itCases} from '@augment-vir/testing';
 import {assert} from '@open-wc/testing';
-export type {
-    FunctionTestCase,
-    OutputTestCaseMultipleInputs,
-    OutputTestCaseSingleInput,
-} from '@augment-vir/testing';
+export type {OutputTestCaseMultipleInputs, OutputTestCaseSingleInput} from '@augment-vir/testing';
 
-export const runItCases = itCases;
-
-export function itCases<FunctionToCallGeneric extends AnyFunction>(
-    functionToCall: FunctionToCallGeneric,
-    testCases: ReadonlyArray<FunctionTestCase<typeof functionToCall>>,
-) {
+export function itCases<FunctionToTest extends AnyFunction>(
+    functionToTest: FunctionToTest,
+    customAsserter: CustomAsserter<FunctionToTest>,
+    testCases: ReadonlyArray<FunctionTestCase<FunctionToTest>>,
+): unknown[];
+export function itCases<FunctionToTest extends AnyFunction>(
+    functionToTest: FunctionToTest,
+    testCases: ReadonlyArray<FunctionTestCase<FunctionToTest>>,
+): unknown[];
+export function itCases<FunctionToTest extends AnyFunction>(
+    functionToTest: FunctionToTest,
+    testCasesOrCustomAsserter:
+        | CustomAsserter<FunctionToTest>
+        | ReadonlyArray<FunctionTestCase<FunctionToTest>>,
+    maybeTestCases?: ReadonlyArray<FunctionTestCase<FunctionToTest>> | undefined,
+): unknown[] {
     return generic_itCases(
-        {
-            assert,
-            it,
-            forceIt: it.only,
-            excludeIt: it.skip,
-        },
-        functionToCall,
-        testCases,
+        {assert, it, forceIt: it.only, excludeIt: it.skip},
+        functionToTest,
+        testCasesOrCustomAsserter,
+        maybeTestCases,
     );
 }

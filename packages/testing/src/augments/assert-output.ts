@@ -1,14 +1,36 @@
 import {AnyFunction, isPromiseLike} from '@augment-vir/common';
 import type {assert as assertImport} from 'chai';
 
-export function assertOutputWithDescription<FunctionToCallGeneric extends AnyFunction>(
+export type CustomAsserter<FunctionToCall extends AnyFunction> = (
+    actual: Awaited<ReturnType<FunctionToCall>>,
+    expected: Awaited<ReturnType<FunctionToCall>>,
+    failureMessage?: string | undefined,
+) => void;
+
+export function assertOutputWithDescription<FunctionToCall extends AnyFunction>(
     assert: typeof assertImport,
-    functionToCall: FunctionToCallGeneric,
+    functionToCall: FunctionToCall,
     expectedOutput: Awaited<ReturnType<typeof functionToCall>>,
     description: string,
     ...inputs: Parameters<typeof functionToCall>
 ): ReturnType<typeof functionToCall> extends Promise<any> ? Promise<void> : void {
-    const result = functionToCall(...inputs);
+    return assertOutputWithCustomAssertion(
+        assert.deepStrictEqual,
+        functionToCall,
+        expectedOutput,
+        description,
+        ...inputs,
+    );
+}
+
+export function assertOutputWithCustomAssertion<FunctionToCall extends AnyFunction>(
+    assertion: CustomAsserter<FunctionToCall>,
+    functionToCall: FunctionToCall,
+    expectedOutput: Awaited<ReturnType<typeof functionToCall>>,
+    description: string,
+    ...inputs: Parameters<typeof functionToCall>
+): ReturnType<typeof functionToCall> extends Promise<any> ? Promise<void> : void {
+    const result: ReturnType<FunctionToCall> = functionToCall(...inputs);
 
     const failureMessage =
         description ||
@@ -19,23 +41,24 @@ export function assertOutputWithDescription<FunctionToCallGeneric extends AnyFun
     if (isPromiseLike(result)) {
         return new Promise<void>(async (resolve, reject) => {
             try {
-                assert.deepStrictEqual(await result, expectedOutput, failureMessage);
+                assertion(await result, expectedOutput, failureMessage);
                 resolve();
             } catch (error) {
                 reject(error);
             }
         }) as ReturnType<typeof functionToCall> extends Promise<any> ? Promise<void> : void;
     } else {
-        assert.deepStrictEqual(result, expectedOutput, failureMessage);
+        assertion(result as Awaited<ReturnType<FunctionToCall>>, expectedOutput, failureMessage);
+        // fake a void return
         return undefined as ReturnType<typeof functionToCall> extends Promise<any>
             ? Promise<void>
             : void;
     }
 }
 
-export function assertOutput<FunctionToCallGeneric extends AnyFunction>(
+export function assertOutput<FunctionToCall extends AnyFunction>(
     assert: typeof assertImport,
-    functionToCall: FunctionToCallGeneric,
+    functionToCall: FunctionToCall,
     expectedOutput: Awaited<ReturnType<typeof functionToCall>>,
     ...inputs: Parameters<typeof functionToCall>
 ): ReturnType<typeof functionToCall> extends Promise<any> ? Promise<void> : void {

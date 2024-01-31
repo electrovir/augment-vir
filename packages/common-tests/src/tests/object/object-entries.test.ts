@@ -112,13 +112,34 @@ describe(getObjectTypedKeys.name, () => {
 });
 
 describe(getObjectTypedValues.name, () => {
-    it('gets basic object values', () => {
-        expect(getObjectTypedValues(greekNames)).to.deep.equal([
-            greekNames[Planet.Mercury],
-            greekNames[Planet.Venus],
-            greekNames[Planet.Earth],
-        ]);
-    });
+    itCases(getObjectTypedValues, [
+        {
+            it: 'gets basic values',
+            input: greekNames,
+            expect: [
+                greekNames[Planet.Mercury],
+                greekNames[Planet.Venus],
+                greekNames[Planet.Earth],
+            ],
+        },
+        {
+            it: 'does something with non-objects',
+            input: 'hello there',
+            expect: [
+                'h',
+                'e',
+                'l',
+                'l',
+                'o',
+                ' ',
+                't',
+                'h',
+                'e',
+                'r',
+                'e',
+            ],
+        },
+    ]);
 });
 
 describe(getEntriesSortedByKey.name, () => {

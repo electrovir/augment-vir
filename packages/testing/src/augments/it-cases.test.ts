@@ -12,6 +12,26 @@ import {
 describe(itCases.name, () => {
     const genericItCasesOptions = {assert, it, forceIt: it.only, excludeIt: it.skip};
 
+    it('supports a custom asserter', () => {
+        itCases(
+            genericItCasesOptions,
+            () => true,
+            (actual, expected) => assert.isTrue(actual === expected),
+            [
+                {
+                    it: 'stuff',
+                    expect: true,
+                },
+            ],
+        );
+        itCases(genericItCasesOptions, () => true, [
+            {
+                it: 'stuff',
+                expect: true,
+            },
+        ]);
+    });
+
     itCases(
         genericItCasesOptions,
         () => {
