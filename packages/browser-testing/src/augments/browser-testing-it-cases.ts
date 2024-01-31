@@ -1,7 +1,11 @@
 import {AnyFunction} from '@augment-vir/common';
 import {CustomAsserter, FunctionTestCase, itCases as generic_itCases} from '@augment-vir/testing';
 import {assert} from '@open-wc/testing';
-export type {OutputTestCaseMultipleInputs, OutputTestCaseSingleInput} from '@augment-vir/testing';
+export type {
+    FunctionTestCase,
+    OutputTestCaseMultipleInputs,
+    OutputTestCaseSingleInput,
+} from '@augment-vir/testing';
 
 export function itCases<FunctionToTest extends AnyFunction>(
     functionToTest: FunctionToTest,

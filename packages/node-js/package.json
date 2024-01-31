@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/node-js",
-    "version": "23.1.0",
+    "version": "23.1.1",
     "homepage": "https://github.com/electrovir/augment-vir/tree/main/packages/node-js",
     "bugs": {
         "url": "https://github.com/electrovir/augment-vir/issues"
@@ -22,7 +22,7 @@
         "test:coverage": "npm test coverage"
     },
     "dependencies": {
-        "@augment-vir/common": "^23.1.0",
+        "@augment-vir/common": "^23.1.1",
         "ansi-colors": "^4.1.3",
         "axios": "^1.6.5",
         "fs-extra": "^11.2.0",
@@ -31,7 +31,7 @@
         "type-fest": "^4.9.0"
     },
     "devDependencies": {
-        "@augment-vir/chai": "^23.1.0",
+        "@augment-vir/chai": "^23.1.1",
         "@electrovir/nyc": "^15.1.0-fix0",
         "@istanbuljs/nyc-config-typescript": "^1.0.2",
         "@types/chai": "^4.3.11",
