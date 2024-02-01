@@ -42,14 +42,16 @@ export function removeCommasFromNumberString(numberString: string): string {
 }
 
 /** Collapse all consecutive white space into just one space and trim surrounding whitespace. */
-export function collapseWhiteSpace(input: string): string {
-    return (
-        input
-            // sometimes \n isn't included in \s
-            .replace(/\n/g, ' ')
-            .trim()
-            .replace(/\s{2,}/g, ' ')
-    );
+export function collapseWhiteSpace(
+    input: string,
+    {keepNewLines}: PartialAndUndefined<{keepNewLines: boolean}> = {},
+): string {
+    const newLineReplacement = keepNewLines
+        ? input.replace(/[\s\n]*\n+[\s\n]*/g, '\n')
+        : // sometimes \n isn't included in \s
+          input.replace(/\n/g, ' ');
+
+    return newLineReplacement.trim().replace(/\s{2,}/g, ' ');
 }
 
 /** Same as String.prototype.split but includes the delimiter to split by in the output array. */

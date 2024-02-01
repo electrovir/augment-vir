@@ -93,26 +93,38 @@ describe(joinWithFinalConjunction.name, () => {
 });
 
 describe(collapseWhiteSpace.name, () => {
-    it(`check simple space collapsing`, () => {
-        expect(collapseWhiteSpace('hello           there')).to.equal('hello there');
-    });
-
-    it(`multiple space collapsing`, () => {
-        expect(
-            collapseWhiteSpace(
-                'hello           there          you        are a bold           one',
-            ),
-        ).to.equal('hello there you are a bold one');
-    });
-
-    it(`beginning and ending space is trimmed as well`, () => {
-        expect(collapseWhiteSpace('     hello   there     ')).to.equal('hello there');
-    });
-
-    it('should trim inner newlines', () => {
-        expect(collapseWhiteSpace('hello\n\nthere')).to.equal('hello there');
-        expect(collapseWhiteSpace('hello\n\nthere\n\nstuff')).to.equal('hello there stuff');
-    });
+    itCases(collapseWhiteSpace, [
+        {
+            it: 'works with single repeating spaces',
+            inputs: ['hello           there'],
+            expect: 'hello there',
+        },
+        {
+            it: 'works with multiple repeating spaces',
+            inputs: ['hello           there          you        are a bold           one'],
+            expect: 'hello there you are a bold one',
+        },
+        {
+            it: 'also trims',
+            inputs: ['     hello   there     '],
+            expect: 'hello there',
+        },
+        {
+            it: 'collapses newlines by default',
+            inputs: ['   \n  hello \n  there   \n\n  '],
+            expect: 'hello there',
+        },
+        {
+            it: 'can preserve newlines',
+            inputs: [
+                '   \n  hello \n  there   \n\n  ',
+                {
+                    keepNewLines: true,
+                },
+            ],
+            expect: 'hello\nthere',
+        },
+    ]);
 });
 
 describe(removeCommasFromNumberString.name, () => {
