@@ -1,3 +1,4 @@
+import {typedObjectFromEntries} from './object/object-entries';
 import {AtLeastTuple} from './tuple';
 import {ArrayElement} from './type';
 
@@ -81,5 +82,28 @@ export function groupArrayBy<ElementType, NewKey extends PropertyKey>(
             return accum;
         },
         {} as Record<NewKey, ElementType[]>,
+    );
+}
+
+/**
+ * Like `groupArrayBy` but maps array entries to a single key. Meaning, the resulting object does
+ * not have an array of elements (unless the original array itself contains arrays).
+ */
+export function arrayToObject<ElementType, NewKey extends PropertyKey>(
+    inputArray: ReadonlyArray<ElementType>,
+    callback: (
+        entry: ElementType,
+        index: number,
+        originalArray: ReadonlyArray<ElementType>,
+    ) => NewKey,
+): Record<NewKey, ElementType> {
+    return typedObjectFromEntries(
+        inputArray.map((entry, index, originalArray) => {
+            const key = callback(entry, index, originalArray);
+            return [
+                key,
+                entry,
+            ];
+        }),
     );
 }

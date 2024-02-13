@@ -1,5 +1,6 @@
 import {itCases} from '@augment-vir/chai';
 import {
+    arrayToObject,
     filterOutIndexes,
     flatten2dArray,
     groupArrayBy,
@@ -410,5 +411,142 @@ describe(groupArrayBy.name, () => {
                 }
             }),
         ).toEqualTypeOf<Record<TestEnum, {a: number; b: string}[]>>();
+    });
+});
+
+describe(arrayToObject.name, () => {
+    itCases(arrayToObject, [
+        {
+            it: 'handles an empty array',
+            inputs: [
+                [],
+                () => {
+                    return 'five';
+                },
+            ],
+            expect: {},
+        },
+        {
+            it: 'handles no collisions',
+            inputs: [
+                [
+                    {
+                        a: 'b',
+                        b: 'c',
+                        c: 'd',
+                        e: 'f',
+                    },
+                    {
+                        a: 'a',
+                        b: 'b',
+                        c: 'c',
+                        e: 'd',
+                    },
+                    {
+                        a: 'z',
+                        b: 'y',
+                        c: 'x',
+                        e: 'w',
+                    },
+                ],
+                (entry: any) => {
+                    return entry.c;
+                },
+            ],
+            expect: {
+                d: {
+                    a: 'b',
+                    b: 'c',
+                    c: 'd',
+                    e: 'f',
+                },
+                c: {
+                    a: 'a',
+                    b: 'b',
+                    c: 'c',
+                    e: 'd',
+                },
+                x: {
+                    a: 'z',
+                    b: 'y',
+                    c: 'x',
+                    e: 'w',
+                },
+            },
+        },
+        {
+            it: 'handles collisions',
+            inputs: [
+                [
+                    {
+                        a: 'b',
+                        b: 'c',
+                        c: 'd',
+                        e: 'f',
+                    },
+                    {
+                        a: 'a',
+                        b: 'b',
+                        c: 'd',
+                        e: 'd',
+                    },
+                    {
+                        a: 'z',
+                        b: 'y',
+                        c: 'x',
+                        e: 'w',
+                    },
+                ],
+                (entry: any) => {
+                    return entry.c;
+                },
+            ],
+            expect: {
+                d: {
+                    a: 'a',
+                    b: 'b',
+                    c: 'c',
+                    e: 'd',
+                },
+                x: {
+                    a: 'z',
+                    b: 'y',
+                    c: 'x',
+                    e: 'w',
+                },
+            },
+        },
+    ]);
+
+    it('has proper types', () => {
+        enum TestEnum {
+            First = 'first',
+            Second = 'second',
+        }
+
+        const testEntries = [
+            {
+                a: 1,
+                b: 'hello there',
+            },
+            {
+                a: 2,
+                b: 'good bye',
+            },
+            {
+                a: 1,
+                b: 'hello again',
+            },
+        ];
+
+        assertTypeOf(
+            arrayToObject(testEntries, (entry) => {
+                if (entry.a === 1) {
+                    return TestEnum.First;
+                } else {
+                    return TestEnum.Second;
+                }
+            }),
+        ).toEqualTypeOf<Record<TestEnum, {a: number; b: string}>>();
     });
 });
