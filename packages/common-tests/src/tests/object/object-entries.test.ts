@@ -10,6 +10,7 @@ import {
 import {assert, expect} from 'chai';
 import {describe, it} from 'mocha';
 import {assertTypeOf} from 'run-time-assertions';
+import {getObjectTypedEntries} from '../../../../common/src/augments/object/object-entries';
 
 enum Planet {
     Mercury = 'mercury',
@@ -84,6 +85,45 @@ describe(isKeyof.name, () => {
             expect: false,
         },
     ]);
+});
+
+describe(getObjectTypedEntries.name, () => {
+    itCases(getObjectTypedEntries, [
+        {
+            it: 'handles an empty object',
+            input: {},
+            expect: [],
+        },
+        {
+            it: 'gets entries',
+            input: {
+                hi: 'bye',
+                what: 4,
+            },
+            expect: [
+                [
+                    'hi',
+                    'bye',
+                ],
+                [
+                    'what',
+                    4,
+                ],
+            ],
+        },
+    ]);
+
+    it('has proper types', () => {
+        const exampleObject = {
+            hi: 'hi',
+            bye: 5,
+            somethingElse: /regexp/,
+        };
+
+        assertTypeOf(getObjectTypedEntries(exampleObject)).toEqualTypeOf<
+            ['bye' | 'hi' | 'somethingElse', string | number | RegExp][]
+        >();
+    });
 });
 
 describe(getObjectTypedKeys.name, () => {

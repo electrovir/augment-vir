@@ -32,6 +32,15 @@ export function getObjectTypedValues<ObjectGeneric extends unknown>(
     ) as ObjectGeneric[keyof ObjectGeneric][];
 }
 
+export function getObjectTypedEntries<ObjectGeneric extends unknown>(
+    input: ObjectGeneric,
+): [keyof ObjectGeneric, ObjectGeneric[keyof ObjectGeneric]][] {
+    return getObjectTypedKeys(input).map((key) => [
+        key,
+        input[key],
+    ]) as [keyof ObjectGeneric, ObjectGeneric[keyof ObjectGeneric]][];
+}
+
 export function getEntriesSortedByKey(input: object): [string, unknown][] {
     return Object.entries(input).sort((tupleA, tupleB) => tupleA[0].localeCompare(tupleB[0]));
 }
