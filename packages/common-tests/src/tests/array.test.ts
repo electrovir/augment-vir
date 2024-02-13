@@ -1,6 +1,7 @@
 import {itCases} from '@augment-vir/chai';
 import {
     arrayToObject,
+    filterMap,
     filterOutIndexes,
     flatten2dArray,
     groupArrayBy,
@@ -548,5 +549,80 @@ describe(arrayToObject.name, () => {
                 }
             }),
         ).toEqualTypeOf<Record<TestEnum, {a: number; b: string}>>();
+    });
+});
+
+describe(filterMap.name, () => {
+    itCases(filterMap, [
+        {
+            it: 'handles an empty array',
+            inputs: [
+                [],
+                (entry: any) => entry * 2,
+                (mappedEntry: any) => mappedEntry > 10,
+            ],
+            expect: [],
+        },
+        {
+            it: 'maps and filters',
+            inputs: [
+                [
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                ],
+                (entry: any) => entry * 2,
+                (mappedEntry: any) => mappedEntry > 10,
+            ],
+            expect: [12],
+        },
+    ]);
+
+    it('has proper types', () => {
+        const exampleArray = [
+            '1',
+            '2',
+            '3',
+            '4',
+            '5',
+            'fake number',
+            '1,123',
+            '6',
+        ];
+
+        const output = filterMap(
+            exampleArray,
+            (entry, index, originalArray) => {
+                assertTypeOf(entry).toEqualTypeOf<string>();
+                assertTypeOf(index).toEqualTypeOf<number>();
+                assertTypeOf(originalArray).toEqualTypeOf<ReadonlyArray<string>>();
+
+                return Number(entry);
+            },
+            (mapped, entry, index, originalArray) => {
+                assertTypeOf(mapped).toEqualTypeOf<number>();
+                assertTypeOf(entry).toEqualTypeOf<string>();
+                assertTypeOf(index).toEqualTypeOf<number>();
+                assertTypeOf(originalArray).toEqualTypeOf<ReadonlyArray<string>>();
+                return !isNaN(mapped);
+            },
+        );
+
+        assertTypeOf(output).toEqualTypeOf<number[]>();
+
+        assert.deepStrictEqual(
+            output,
+            [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+            ],
+        );
     });
 });

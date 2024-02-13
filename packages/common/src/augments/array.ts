@@ -107,3 +107,27 @@ export function arrayToObject<ElementType, NewKey extends PropertyKey>(
         }),
     );
 }
+
+export function filterMap<ElementType, MapReturn>(
+    inputArray: ReadonlyArray<ElementType>,
+    mapCallback: (
+        entry: ElementType,
+        index: number,
+        originalArray: ReadonlyArray<ElementType>,
+    ) => MapReturn,
+    filterCallback: (
+        mappedOutput: MapReturn,
+        originalEntry: ElementType,
+        index: number,
+        originalArray: ReadonlyArray<ElementType>,
+    ) => boolean,
+): MapReturn[] {
+    return inputArray.reduce((accum: MapReturn[], entry, index, originalArray) => {
+        const mapOutput = mapCallback(entry, index, originalArray);
+        const filterOutput = filterCallback(mapOutput, entry, index, originalArray);
+        if (filterOutput) {
+            accum.push(mapOutput);
+        }
+        return accum;
+    }, []);
+}
