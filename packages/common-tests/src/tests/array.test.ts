@@ -366,7 +366,7 @@ describe(groupArrayBy.name, () => {
                     {
                         a: 'a',
                         b: 'b',
-                        c: 'c',
+                        c: 'd',
                         e: 'd',
                     },
                 ],
@@ -506,7 +506,7 @@ describe(arrayToObject.name, () => {
                 d: {
                     a: 'a',
                     b: 'b',
-                    c: 'c',
+                    c: 'd',
                     e: 'd',
                 },
                 x: {
