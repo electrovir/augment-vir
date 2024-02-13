@@ -5,6 +5,7 @@ import {
     filterOutIndexes,
     flatten2dArray,
     groupArrayBy,
+    isTruthy,
     repeatArray,
     trimArrayStrings,
     typedArrayIncludes,
@@ -622,6 +623,37 @@ describe(filterMap.name, () => {
                 4,
                 5,
                 6,
+            ],
+        );
+    });
+
+    it('supports type guard filters', () => {
+        const exampleArray = [
+            '1',
+            '2',
+            '3',
+            '4',
+            '5',
+            'fake number',
+            '1,123',
+            '6',
+        ];
+
+        const output = filterMap(
+            exampleArray,
+            (entry) => {
+                const numeric = Number(entry);
+                return numeric % 2 ? numeric : undefined;
+            },
+            isTruthy,
+        );
+        assertTypeOf(output).toEqualTypeOf<number[]>();
+        assert.deepStrictEqual(
+            output,
+            [
+                1,
+                3,
+                5,
             ],
         );
     });
