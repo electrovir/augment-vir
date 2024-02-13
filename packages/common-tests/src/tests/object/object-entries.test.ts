@@ -2,6 +2,7 @@ import {itCases} from '@augment-vir/chai';
 import {
     getEntriesSortedByKey,
     getEnumTypedValues,
+    getObjectTypedEntries,
     getObjectTypedKeys,
     getObjectTypedValues,
     isKeyof,
@@ -10,7 +11,6 @@ import {
 import {assert, expect} from 'chai';
 import {describe, it} from 'mocha';
 import {assertTypeOf} from 'run-time-assertions';
-import {getObjectTypedEntries} from '../../../../common/src/augments/object/object-entries';
 
 enum Planet {
     Mercury = 'mercury',

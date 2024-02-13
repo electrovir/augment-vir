@@ -56,3 +56,30 @@ export function typedMap<InputArrayGeneric extends ReadonlyArray<any>, OutputTyp
 export function repeatArray<T>(repeatCount: number, array: T[]): T[] {
     return Array.from({length: repeatCount}, () => [...array]).flat();
 }
+
+/**
+ * Polyfill for `Object.groupBy`:
+ * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/groupBy
+ */
+export function groupArrayBy<ElementType, NewKey extends PropertyKey>(
+    inputArray: ReadonlyArray<ElementType>,
+    callback: (
+        entry: ElementType,
+        index: number,
+        originalArray: ReadonlyArray<ElementType>,
+    ) => NewKey,
+): Record<NewKey, ElementType[]> {
+    return inputArray.reduce(
+        (accum, entry, index, originalArray) => {
+            const key = callback(entry, index, originalArray);
+            if (!(key in accum)) {
+                accum[key] = [];
+            }
+
+            accum[key].push(entry);
+
+            return accum;
+        },
+        {} as Record<NewKey, ElementType[]>,
+    );
+}

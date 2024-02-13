@@ -2,6 +2,7 @@ import {itCases} from '@augment-vir/chai';
 import {
     filterOutIndexes,
     flatten2dArray,
+    groupArrayBy,
     repeatArray,
     trimArrayStrings,
     typedArrayIncludes,
@@ -256,5 +257,158 @@ describe(repeatArray.name, () => {
 
         assert.isFalse(repeatedArray === originalArray);
         assert.notDeepEqual(repeatedArray, originalArray);
+    });
+});
+
+describe(groupArrayBy.name, () => {
+    itCases(groupArrayBy, [
+        {
+            it: 'handles an empty array',
+            inputs: [
+                [],
+                () => {
+                    return 'five';
+                },
+            ],
+            expect: {},
+        },
+        {
+            it: 'groups by callback value',
+            inputs: [
+                [
+                    {
+                        a: 'b',
+                        b: 'c',
+                        c: 'd',
+                        e: 'f',
+                    },
+                    {
+                        a: 'a',
+                        b: 'b',
+                        c: 'c',
+                        e: 'd',
+                    },
+                    {
+                        a: 'z',
+                        b: 'y',
+                        c: 'x',
+                        e: 'w',
+                    },
+                ],
+                (entry: any) => {
+                    return entry.c;
+                },
+            ],
+            expect: {
+                d: [
+                    {
+                        a: 'b',
+                        b: 'c',
+                        c: 'd',
+                        e: 'f',
+                    },
+                ],
+                c: [
+                    {
+                        a: 'a',
+                        b: 'b',
+                        c: 'c',
+                        e: 'd',
+                    },
+                ],
+                x: [
+                    {
+                        a: 'z',
+                        b: 'y',
+                        c: 'x',
+                        e: 'w',
+                    },
+                ],
+            },
+        },
+        {
+            it: 'handles duplicate groupings',
+            inputs: [
+                [
+                    {
+                        a: 'b',
+                        b: 'c',
+                        c: 'd',
+                        e: 'f',
+                    },
+                    {
+                        a: 'a',
+                        b: 'b',
+                        c: 'd',
+                        e: 'd',
+                    },
+                    {
+                        a: 'z',
+                        b: 'y',
+                        c: 'x',
+                        e: 'w',
+                    },
+                ],
+                (entry: any) => {
+                    return entry.c;
+                },
+            ],
+            expect: {
+                d: [
+                    {
+                        a: 'b',
+                        b: 'c',
+                        c: 'd',
+                        e: 'f',
+                    },
+                    {
+                        a: 'a',
+                        b: 'b',
+                        c: 'c',
+                        e: 'd',
+                    },
+                ],
+                x: [
+                    {
+                        a: 'z',
+                        b: 'y',
+                        c: 'x',
+                        e: 'w',
+                    },
+                ],
+            },
+        },
+    ]);
+
+    it('has proper types', () => {
+        enum TestEnum {
+            First = 'first',
+            Second = 'second',
+        }
+
+        const testEntries = [
+            {
+                a: 1,
+                b: 'hello there',
+            },
+            {
+                a: 2,
+                b: 'good bye',
+            },
+            {
+                a: 1,
+                b: 'hello again',
+            },
+        ];
+
+        assertTypeOf(
+            groupArrayBy(testEntries, (entry) => {
+                if (entry.a === 1) {
+                    return TestEnum.First;
+                } else {
+                    return TestEnum.Second;
+                }
+            }),
+        ).toEqualTypeOf<Record<TestEnum, {a: number; b: string}[]>>();
     });
 });
