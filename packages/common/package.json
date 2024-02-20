@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/common",
-    "version": "23.3.4",
+    "version": "23.4.0",
     "homepage": "https://github.com/electrovir/augment-vir/tree/main/packages/common",
     "bugs": {
         "url": "https://github.com/electrovir/augment-vir/issues"
