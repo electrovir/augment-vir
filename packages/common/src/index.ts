@@ -1,5 +1,6 @@
 export * from './augments/ansi';
-export * from './augments/array';
+export * from './augments/array/array';
+export * from './augments/array/remove-duplicates';
 export * from './augments/async';
 export * from './augments/boolean';
 export * from './augments/common-number';

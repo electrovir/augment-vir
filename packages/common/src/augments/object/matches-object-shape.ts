@@ -1,4 +1,4 @@
-import {AtLeastOneEntryArray} from '../array';
+import {AtLeastOneEntryArray} from '../array/array';
 import {isTruthy} from '../boolean';
 import {extractErrorMessage} from '../error';
 import {NoInfer} from '../type';

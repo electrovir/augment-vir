@@ -1,6 +1,6 @@
-import {typedObjectFromEntries} from './object/object-entries';
-import {AtLeastTuple} from './tuple';
-import {ArrayElement} from './type';
+import {typedObjectFromEntries} from '../object/object-entries';
+import {AtLeastTuple} from '../tuple';
+import {ArrayElement} from '../type';
 
 export function filterOutIndexes<T>(array: ReadonlyArray<T>, indexes: ReadonlyArray<number>): T[] {
     return array.filter((_, index) => !indexes.includes(index));
