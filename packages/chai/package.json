@@ -25,7 +25,7 @@
     "dependencies": {
         "@augment-vir/common": "^23.4.0",
         "@augment-vir/testing": "^23.4.0",
-        "type-fest": "^4.10.2"
+        "type-fest": "^4.10.3"
     },
     "devDependencies": {
         "typescript": "5.3.3"

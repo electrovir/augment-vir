@@ -27,7 +27,7 @@
         "@augment-vir/node-js": "^23.4.0",
         "@electrovir/nyc": "^15.1.0-fix0",
         "@istanbuljs/nyc-config-typescript": "^1.0.2",
-        "@types/chai": "^4.3.11",
+        "@types/chai": "^4.3.12",
         "@types/mocha": "^10.0.6",
         "chai": "^4.3.10",
         "istanbul-smart-text-reporter": "^1.1.4",
@@ -35,7 +35,7 @@
         "mocha-spec-reporter-with-file-names": "^0.0.3",
         "run-time-assertions": "^1.0.0",
         "ts-node": "^10.9.2",
-        "type-fest": "^4.10.2",
+        "type-fest": "^4.10.3",
         "typescript": "5.3.3"
     }
 }

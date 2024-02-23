@@ -25,12 +25,12 @@
     "dependencies": {
         "@augment-vir/common": "^23.4.0",
         "expect-type": "^0.15.0",
-        "type-fest": "^4.10.2"
+        "type-fest": "^4.10.3"
     },
     "devDependencies": {
         "@electrovir/nyc": "^15.1.0-fix0",
         "@istanbuljs/nyc-config-typescript": "^1.0.2",
-        "@types/chai": "^4.3.11",
+        "@types/chai": "^4.3.12",
         "@types/mocha": "^10.0.6",
         "chai": "^4.3.10",
         "istanbul-smart-text-reporter": "^1.1.4",

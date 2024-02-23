@@ -20,15 +20,15 @@
     "devDependencies": {
         "@electrovir/nyc": "^15.1.0-fix0",
         "@istanbuljs/nyc-config-typescript": "^1.0.2",
-        "@types/chai": "^4.3.11",
+        "@types/chai": "^4.3.12",
         "@types/mocha": "^10.0.6",
-        "@types/node": "^20.11.19",
+        "@types/node": "^20.11.20",
         "chai": "^4.3.10",
         "istanbul-smart-text-reporter": "^1.1.4",
         "mocha": "^10.3.0",
         "mocha-spec-reporter-with-file-names": "^0.0.3",
         "ts-node": "^10.9.2",
-        "type-fest": "^4.10.2",
+        "type-fest": "^4.10.3",
         "typescript": "5.3.3"
     }
 }
