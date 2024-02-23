@@ -3,8 +3,9 @@ import {Constructor} from 'type-fest';
 export function extractEventTarget<ExpectedTargetClassConstructor extends Constructor<Element>>(
     event: Event,
     expectedTargetClass: ExpectedTargetClassConstructor,
+    useDefaultTarget?: boolean,
 ): InstanceType<ExpectedTargetClassConstructor> {
-    const target = event.currentTarget;
+    const target = useDefaultTarget ? event.target : event.currentTarget;
 
     if (!(target instanceof expectedTargetClass)) {
         throw new Error(
