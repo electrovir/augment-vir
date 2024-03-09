@@ -35,7 +35,6 @@ export * from './augments/regexp';
 export * from './augments/string/prefixes';
 export * from './augments/string/search-params';
 export * from './augments/string/suffixes';
-export * from './augments/string/url';
 export * from './augments/string/uuid';
 export * from './augments/time';
 export * from './augments/truncate-number';
