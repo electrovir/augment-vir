@@ -181,88 +181,98 @@ describe(wrapInTry.name, () => {
     itCases(wrapInTry, [
         {
             it: 'returns the callback return if it does not error',
-            input: {
-                callback() {
+            inputs: [
+                () => {
                     return 'success!';
                 },
-                fallbackValue: 'failed',
-            },
+                {fallbackValue: 'failed'},
+            ],
             expect: 'success!',
         },
         {
             it: 'returns the fallback if the callback does error',
-            input: {
-                callback() {
+            inputs: [
+                () => {
                     throw new Error('errored');
                 },
-                fallbackValue: 'failed',
-            },
+                {fallbackValue: 'failed'},
+            ],
             expect: 'failed',
         },
         {
             it: 'calls the catchCallback if the callback does error',
-            input: {
-                callback() {
+            inputs: [
+                () => {
                     throw new Error('errored');
                 },
-                catchCallback(error) {
-                    return 'got the catchCallback';
+                {
+                    catchCallback(error) {
+                        return 'got the catchCallback';
+                    },
                 },
-            },
+            ],
             expect: 'got the catchCallback',
         },
         {
             it: 'works with async callbacks and a fallback',
-            input: {
-                async callback() {
+            inputs: [
+                async () => {
                     await wait(1);
                     throw new Error('yikes');
                 },
-                fallbackValue: 'got the fallbackValue',
-            },
+                {fallbackValue: 'got the fallbackValue'},
+            ],
             expect: 'got the fallbackValue',
         },
         {
             it: 'works with async callbacks and catchCallback',
-            input: {
-                async callback() {
+            inputs: [
+                async () => {
                     await wait(1);
                     throw new Error('yikes');
                 },
-                catchCallback(error) {
-                    return 'got the catchCallback';
+                {
+                    catchCallback(error) {
+                        return 'got the catchCallback';
+                    },
                 },
-            },
+            ],
             expect: 'got the catchCallback',
         },
     ]);
 
     it('has proper types', () => {
         assertTypeOf(
-            wrapInTry({
-                callback() {
+            wrapInTry(
+                () => {
                     return 'hello';
                 },
-                fallbackValue: 4,
-            }),
+                {
+                    fallbackValue: 4,
+                },
+            ),
         ).toEqualTypeOf<number | string>();
         assertTypeOf(
-            wrapInTry({
-                callback() {
+            wrapInTry(
+                () => {
                     return 'hello';
                 },
-                catchCallback() {
-                    return 5;
+                {
+                    catchCallback() {
+                        return 5;
+                    },
                 },
-            }),
+            ),
         ).toEqualTypeOf<number | string>();
         assertTypeOf(
-            wrapInTry({
-                async callback() {
+            wrapInTry(
+                async () => {
                     return 'hello' as const;
                 },
-                fallbackValue: 'bye' as const,
-            }),
+                {
+                    fallbackValue: 'bye' as const,
+                },
+            ),
         ).toEqualTypeOf<Promise<'hello'> | 'bye'>();
     });
 });

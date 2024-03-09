@@ -62,18 +62,17 @@ export function ensureErrorAndPrependMessage(maybeError: unknown, prependMessage
     return error;
 }
 
-export type TryWrapInputs<CallbackReturn, FallbackReturn> = {
-    callback: () => CallbackReturn;
-} & RequireExactlyOne<{
+export type TryWrapConfig<FallbackReturn> = RequireExactlyOne<{
     fallbackValue: FallbackReturn;
     catchCallback: (error: unknown) => FallbackReturn;
 }>;
 
 export function wrapInTry<CallbackReturn, FallbackReturn>(
-    inputs: TryWrapInputs<CallbackReturn, FallbackReturn>,
+    callback: () => CallbackReturn,
+    inputs: TryWrapConfig<FallbackReturn>,
 ): FallbackReturn | CallbackReturn {
     try {
-        const returnValue = inputs.callback();
+        const returnValue = callback();
 
         if (returnValue instanceof Promise) {
             return returnValue.catch((error) => {
