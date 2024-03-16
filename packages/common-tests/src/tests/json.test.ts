@@ -1,7 +1,6 @@
 import {itCases} from '@augment-vir/chai';
-import {areJsonEqual, parseJson, stringifyJson} from '@augment-vir/common';
-import {assert, expect} from 'chai';
-import {describe, it} from 'mocha';
+import {parseJson, stringifyJson} from '@augment-vir/common';
+import {describe} from 'mocha';
 
 describe(parseJson.name, () => {
     itCases(parseJson, [
@@ -72,98 +71,6 @@ describe(parseJson.name, () => {
                 shapeMatcher: {numberKey: 52, stringKey: '', thisKeyIsMissing: ''},
             },
             throws: Error,
-        },
-    ]);
-});
-
-describe(areJsonEqual.name, () => {
-    it('should pass for different object references', () => {
-        const objectA: Record<string, number> = {
-            a: 1,
-            c: 3,
-        };
-        const objectB: Readonly<Record<string, number>> = {
-            a: 1,
-            b: 2,
-            c: 3,
-        };
-
-        objectA.b = 2;
-
-        expect(areJsonEqual(objectA, objectB)).to.equal(true);
-    });
-
-    it('should pass for same object references', () => {
-        const objectA: Record<string, number> = {
-            a: 1,
-            c: 3,
-        };
-
-        expect(areJsonEqual(objectA, objectA)).to.equal(true);
-    });
-
-    it('should pass for non object inputs', () => {
-        expect(areJsonEqual('hello', 'hello')).to.equal(true);
-        assert.isTrue(areJsonEqual(undefined, undefined));
-        assert.isFalse(areJsonEqual(undefined, {}));
-    });
-
-    it('should not pass if objects are different', () => {
-        const objectA: Record<string, number> = {
-            a: 1,
-            b: 2.1,
-            c: 3,
-        };
-        const objectB: Record<string, number> = {
-            a: 1,
-            b: 2,
-            c: 3,
-        };
-
-        expect(areJsonEqual(objectA, objectB)).to.equal(false);
-        expect(areJsonEqual({...objectA, b: 2}, objectB)).to.equal(true);
-    });
-
-    itCases(areJsonEqual, [
-        {
-            it: 'passes for nested unordered object keys',
-            inputs: [
-                {
-                    b: {
-                        first: 1,
-                        second: 2,
-                    },
-                    a: 'hi',
-                },
-                {
-                    b: {
-                        second: 2,
-                        first: 1,
-                    },
-                    a: 'hi',
-                },
-            ],
-            expect: true,
-        },
-        {
-            it: 'ignore non-serializable properties',
-            inputs: [
-                {
-                    b: {
-                        first: 1,
-                        second: 2,
-                    },
-                    a: 'hi',
-                },
-                {
-                    b: {
-                        second: 2,
-                        first: 1,
-                    },
-                    a: 'hi',
-                },
-            ],
-            expect: true,
         },
     ]);
 });
