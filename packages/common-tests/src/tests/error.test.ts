@@ -3,15 +3,11 @@ import {
     combineErrorMessages,
     combineErrors,
     ensureError,
-    executeAndReturnError,
     extractErrorMessage,
     typedMap,
-    wait,
-    wrapInTry,
 } from '@augment-vir/common';
 import {assert, expect} from 'chai';
 import {describe, it} from 'mocha';
-import {assertTypeOf} from 'run-time-assertions';
 
 describe(extractErrorMessage.name, () => {
     it('should extract message from error object', () => {
@@ -173,143 +169,6 @@ describe(ensureError.name, () => {
             it: 'should return error of given string',
             input: 'hello',
             expect: new Error('hello'),
-        },
-    ]);
-});
-
-describe(wrapInTry.name, () => {
-    itCases(wrapInTry, [
-        {
-            it: 'returns the callback return if it does not error',
-            inputs: [
-                () => {
-                    return 'success!';
-                },
-                {fallbackValue: 'failed'},
-            ],
-            expect: 'success!',
-        },
-        {
-            it: 'returns the fallback if the callback does error',
-            inputs: [
-                () => {
-                    throw new Error('errored');
-                },
-                {fallbackValue: 'failed'},
-            ],
-            expect: 'failed',
-        },
-        {
-            it: 'calls the catchCallback if the callback does error',
-            inputs: [
-                () => {
-                    throw new Error('errored');
-                },
-                {
-                    catchCallback(error) {
-                        return 'got the catchCallback';
-                    },
-                },
-            ],
-            expect: 'got the catchCallback',
-        },
-        {
-            it: 'works with async callbacks and a fallback',
-            inputs: [
-                async () => {
-                    await wait(1);
-                    throw new Error('yikes');
-                },
-                {fallbackValue: 'got the fallbackValue'},
-            ],
-            expect: 'got the fallbackValue',
-        },
-        {
-            it: 'works with async callbacks and catchCallback',
-            inputs: [
-                async () => {
-                    await wait(1);
-                    throw new Error('yikes');
-                },
-                {
-                    catchCallback(error) {
-                        return 'got the catchCallback';
-                    },
-                },
-            ],
-            expect: 'got the catchCallback',
-        },
-    ]);
-
-    it('has proper types', () => {
-        assertTypeOf(
-            wrapInTry(
-                () => {
-                    return 'hello';
-                },
-                {
-                    fallbackValue: 4,
-                },
-            ),
-        ).toEqualTypeOf<number | string>();
-        assertTypeOf(
-            wrapInTry(
-                () => {
-                    return 'hello';
-                },
-                {
-                    catchCallback() {
-                        return 5;
-                    },
-                },
-            ),
-        ).toEqualTypeOf<number | string>();
-        assertTypeOf(
-            wrapInTry(
-                async () => {
-                    return 'hello' as const;
-                },
-                {
-                    fallbackValue: 'bye' as const,
-                },
-            ),
-        ).toEqualTypeOf<Promise<'hello'> | 'bye'>();
-    });
-});
-
-describe(executeAndReturnError.name, () => {
-    it('should have correct return types', async () => {
-        const syncResult: Error | void = executeAndReturnError(() => {});
-        const asyncResult: Promise<Error | void> = executeAndReturnError(async () => {});
-    });
-
-    itCases(executeAndReturnError, [
-        {
-            it: 'should return undefined if no error is thrown',
-            input: () => {},
-            expect: undefined,
-        },
-        {
-            it: 'should handle an async input without errors',
-            input: async () => {
-                await wait(0);
-            },
-            expect: undefined,
-        },
-        {
-            it: 'should catch a synchronous error',
-            input: () => {
-                throw new Error('test error');
-            },
-            expect: new Error('test error'),
-        },
-        {
-            it: 'should catch an asynchronous error',
-            input: async () => {
-                await wait(0);
-                throw new Error('test error');
-            },
-            expect: new Error('test error'),
         },
     ]);
 });

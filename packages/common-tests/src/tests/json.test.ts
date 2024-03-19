@@ -84,27 +84,48 @@ describe(stringifyJson.name, () => {
     itCases(stringifyJson, [
         {
             it: 'handles a basic object',
-            input: {source: {thing: 'a'}},
+            inputs: [
+                {thing: 'a'},
+                {},
+            ],
             expect: '{"thing":"a"}',
         },
         {
             it: 'inserts whitespace',
-            input: {source: {thing: 'a'}, whitespace: 4},
+            inputs: [
+                {thing: 'a'},
+                {whitespace: 4},
+            ],
             expect: '{\n    "thing": "a"\n}',
         },
         {
             it: 'handles a stringify failure with the errorHandler',
-            input: {
-                source: recursiveObject,
-                errorHandler() {
-                    return 'failure';
+            inputs: [
+                recursiveObject,
+                {
+                    handleError() {
+                        return 'failure';
+                    },
                 },
-            },
+            ],
             expect: 'failure',
         },
         {
+            it: 'handles a stringify failure with the fallback value',
+            inputs: [
+                recursiveObject,
+                {
+                    fallbackValue: 'fallback',
+                },
+            ],
+            expect: 'fallback',
+        },
+        {
             it: 'throws an error on stringify failure without an errorHandler',
-            input: {source: recursiveObject},
+            inputs: [
+                recursiveObject,
+                {},
+            ],
             throws: Error,
         },
     ]);

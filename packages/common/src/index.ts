@@ -39,3 +39,4 @@ export * from './augments/time';
 export * from './augments/truncate-number';
 export * from './augments/tuple';
 export * from './augments/type';
+export * from './augments/wrap-in-try';

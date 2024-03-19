@@ -1,5 +1,5 @@
 import {itCases} from '@augment-vir/chai';
-import {executeAndReturnError} from '@augment-vir/common';
+import {wrapInTry} from '@augment-vir/common';
 import {assert, expect} from 'chai';
 import {existsSync} from 'fs';
 import {remove} from 'fs-extra';
@@ -51,9 +51,7 @@ describe(createSymLink.name, () => {
             const existsBeforeTest = existsSync(symlinkPath);
             await writeFile(symlinkPath, '');
             const existsAfterFileCreation = existsSync(symlinkPath);
-            const thrownError = await executeAndReturnError(() =>
-                createSymLink(__dirname, symlinkPath, true),
-            );
+            const thrownError = await wrapInTry(() => createSymLink(__dirname, symlinkPath, true));
             await remove(symlinkPath);
             const existsAfterFileDeletion = existsSync(symlinkPath);
 

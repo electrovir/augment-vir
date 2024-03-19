@@ -1,5 +1,7 @@
 import {assertRunTimeType, getRunTimeType, isRunTimeType} from 'run-time-assertions';
+import {JsonCompatibleValue} from './json-compatible';
 import {assertMatchesObjectShape} from './object/matches-object-shape';
+import {WrapInTryOptions, wrapInTry} from './wrap-in-try';
 
 export function parseJson<ParsedJsonGeneric>({
     jsonString,
@@ -31,24 +33,20 @@ export function parseJson<ParsedJsonGeneric>({
     }
 }
 
-export function stringifyJson({
-    source,
-    whitespace,
-    errorHandler,
-}: {
-    source: unknown;
-    whitespace?: number;
-    errorHandler?: (error: unknown) => string | never;
-}): string {
-    try {
-        const stringifiedJson = JSON.stringify(source, undefined, whitespace);
+export function stringifyJson(
+    jsonValue: JsonCompatibleValue,
+    {
+        whitespace,
+        ...tryOptions
+    }: {
+        whitespace?: number;
+    } & WrapInTryOptions<string> = {},
+): string {
+    const result = wrapInTry(() => JSON.stringify(jsonValue, undefined, whitespace), tryOptions);
 
-        return stringifiedJson;
-    } catch (error) {
-        if (errorHandler) {
-            return errorHandler(error);
-        } else {
-            throw error;
-        }
+    if (result instanceof Error) {
+        throw result;
+    } else {
+        return result;
     }
 }

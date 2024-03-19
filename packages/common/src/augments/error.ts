@@ -1,8 +1,5 @@
-import {RequireExactlyOne} from 'type-fest';
 import {isTruthy} from './boolean';
-import {NoInputsFunction} from './function';
 import {typedHasProperty} from './object/typed-has-property';
-import {isPromiseLike} from './promise/promise';
 import {AtLeastTuple} from './tuple';
 
 export function combineErrors(errors: AtLeastTuple<Error, 1>): Error;
@@ -60,71 +57,4 @@ export function ensureErrorAndPrependMessage(maybeError: unknown, prependMessage
     const error = ensureError(maybeError);
     error.message = `${prependMessage}: ${error.message}`;
     return error;
-}
-
-export type TryWrapConfig<FallbackReturn> = RequireExactlyOne<{
-    fallbackValue: FallbackReturn;
-    catchCallback: (error: unknown) => FallbackReturn;
-}>;
-
-export function wrapInTry<CallbackReturn, FallbackReturn>(
-    callback: () => CallbackReturn,
-    inputs: TryWrapConfig<FallbackReturn>,
-): FallbackReturn | CallbackReturn {
-    try {
-        const returnValue = callback();
-
-        if (returnValue instanceof Promise) {
-            return returnValue.catch((error) => {
-                if (inputs.catchCallback) {
-                    return inputs.catchCallback(error);
-                } else {
-                    return inputs.fallbackValue;
-                }
-            }) as FallbackReturn | CallbackReturn;
-        } else {
-            return returnValue;
-        }
-    } catch (error) {
-        if (inputs.catchCallback) {
-            return inputs.catchCallback(error);
-        } else {
-            return inputs.fallbackValue;
-        }
-    }
-}
-
-export function executeAndReturnError<CallbackGeneric extends NoInputsFunction<PromiseLike<any>>>(
-    callback: CallbackGeneric,
-): Promise<Error | Awaited<ReturnType<CallbackGeneric>>>;
-export function executeAndReturnError<CallbackGeneric extends NoInputsFunction>(
-    callback: CallbackGeneric,
-): Error | ReturnType<CallbackGeneric>;
-export function executeAndReturnError<CallbackGeneric extends NoInputsFunction>(
-    callback: CallbackGeneric,
-): Promise<Error | Awaited<ReturnType<CallbackGeneric>>> | Error | ReturnType<CallbackGeneric> {
-    let caughtError: Error | undefined;
-
-    try {
-        const result: ReturnType<CallbackGeneric> = callback();
-
-        if (isPromiseLike(result)) {
-            return new Promise<Error | ReturnType<CallbackGeneric>>(async (resolve) => {
-                try {
-                    const output = await result;
-                    return resolve(output);
-                } catch (error) {
-                    caughtError = ensureError(error);
-                }
-
-                return resolve(caughtError);
-            });
-        } else {
-            return result;
-        }
-    } catch (error) {
-        caughtError = ensureError(error);
-    }
-
-    return caughtError;
 }
