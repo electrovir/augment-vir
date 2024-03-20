@@ -123,5 +123,3 @@ export function randomString(inputLength: number = 16): string {
     }
     return stringBuilder;
 }
-
-console.log(randomString());
