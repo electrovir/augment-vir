@@ -10,8 +10,6 @@ function accessCrypto(): Crypto {
 
 const crypto = accessCrypto();
 
-// can't get this coverage to work
-/* c8 ignore start */
 /**
  * Creates a random integer (decimal points are all cut off) between the given min and max
  * (inclusive).
@@ -70,24 +68,60 @@ export function createUuid() {
     return crypto.randomUUID();
 }
 
+const validStringCharacters = [
+    'a',
+    'b',
+    'c',
+    'd',
+    'e',
+    'f',
+    'g',
+    'h',
+    'i',
+    'j',
+    'k',
+    'l',
+    'm',
+    'n',
+    'o',
+    'p',
+    'q',
+    'r',
+    's',
+    't',
+    'u',
+    'v',
+    'w',
+    'x',
+    'y',
+    'z',
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+];
+
 /**
  * Creates a random string (including letters and numbers) of a given length.
  *
  * This function uses cryptographically secure randomness.
  */
 export function randomString(inputLength: number = 16): string {
-    const arrayLength = Math.ceil(inputLength / 2);
-    const uintArray = new Uint8Array(arrayLength);
-    crypto.getRandomValues(uintArray);
-    return (
-        Array.from(uintArray)
-            .map((value) => value.toString(16).padStart(2, '0'))
-            .join('')
-            /**
-             * Because getRandomValues works with even numbers only, we must then chop off extra
-             * characters if they exist in the even that inputLength was odd.
-             */
-            .substring(0, inputLength)
-    );
+    let stringBuilder = '';
+    for (let i = 0; i < inputLength; i++) {
+        const index = randomInteger({
+            min: 0,
+            max: validStringCharacters.length - 1,
+        });
+        stringBuilder += validStringCharacters[index];
+    }
+    return stringBuilder;
 }
-/* c8 ignore stop */
+
+console.log(randomString());

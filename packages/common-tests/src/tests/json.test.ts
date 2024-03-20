@@ -128,5 +128,17 @@ describe(stringifyJson.name, () => {
             ],
             throws: Error,
         },
+        {
+            it: 'can throw from the error handler',
+            inputs: [
+                recursiveObject,
+                {
+                    handleError() {
+                        throw new Error('better error');
+                    },
+                },
+            ],
+            throws: 'better error',
+        },
     ]);
 });
