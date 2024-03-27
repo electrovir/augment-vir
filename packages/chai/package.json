@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/chai",
-    "version": "26.1.0",
+    "version": "26.2.0",
     "homepage": "https://github.com/electrovir/augment-vir/tree/main/packages/common",
     "bugs": {
         "url": "https://github.com/electrovir/augment-vir/issues"
@@ -23,8 +23,8 @@
         "test:coverage": "npm test"
     },
     "dependencies": {
-        "@augment-vir/common": "^26.1.0",
-        "@augment-vir/testing": "^26.1.0",
+        "@augment-vir/common": "^26.2.0",
+        "@augment-vir/testing": "^26.2.0",
         "type-fest": "^4.12.0"
     },
     "devDependencies": {

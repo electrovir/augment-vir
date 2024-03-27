@@ -2,7 +2,6 @@ import {ArrayElement} from './type';
 
 export type AnyFunction<ReturnGeneric = any> = (...args: any[]) => ReturnGeneric;
 export type NoInputsFunction<ReturnGeneric = any> = () => ReturnGeneric;
-
 /**
  * Accepts an "Arguments" and "Return" generic to quickly make a function type. If "Arguments" is an
  * array, it is spread into the full function's Parameters list. If any argument should be an array,

@@ -94,3 +94,6 @@ export function ensureType<ExpectedType = never>(
 ): NoInfer<ExpectedType> {
     return input;
 }
+
+/** Picks only the public properties of a type. */
+export type Public<T> = {[P in keyof T]: T[P]};
