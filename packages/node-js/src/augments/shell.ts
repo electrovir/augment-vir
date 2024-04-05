@@ -169,7 +169,7 @@ export async function runShellCommand(
                     options.stdoutCallback(prepareChunkForLogging(chunk, false));
                 }
                 if (options.hookUpToConsole) {
-                    console.log(prepareChunkForLogging(chunk, true));
+                    process.stdout.write(prepareChunkForLogging(chunk, true));
                 }
                 stdout += chunk;
             }),
@@ -178,7 +178,7 @@ export async function runShellCommand(
                     options.stderrCallback(prepareChunkForLogging(chunk, false));
                 }
                 if (options.hookUpToConsole) {
-                    console.error(prepareChunkForLogging(chunk, true));
+                    process.stderr.write(prepareChunkForLogging(chunk, true));
                 }
                 stderr += chunk;
             }),
@@ -226,26 +226,26 @@ export async function runShellCommand(
 }
 
 export function printShellCommandOutput(
-    ShellOutput: {error?: unknown; stderr?: unknown; stdout?: unknown; exitCode?: unknown},
+    shellOutput: {error?: unknown; stderr?: string; stdout?: string; exitCode?: number},
     withLabels = false,
     ignoreError = false,
 ) {
-    if (ShellOutput.exitCode != undefined || withLabels) {
-        withLabels && console.info('exit code');
-        console.info(ShellOutput.exitCode);
+    if (shellOutput.exitCode != undefined || withLabels) {
+        withLabels && process.stdout.write('exit code');
+        process.stdout.write(String(shellOutput.exitCode || 0));
     }
-    if (!!ShellOutput.stdout || withLabels) {
-        withLabels && console.info('stdout');
-        console.info(ShellOutput.stdout);
+    if (!!shellOutput.stdout || withLabels) {
+        withLabels && process.stdout.write('stdout');
+        process.stdout.write(shellOutput.stdout || '');
     }
-    if (!!ShellOutput.stderr || withLabels) {
-        withLabels && console.info('stderr');
-        console.error(ShellOutput.stderr);
+    if (!!shellOutput.stderr || withLabels) {
+        withLabels && process.stderr.write('stderr');
+        process.stderr.write(shellOutput.stderr || '');
     }
-    if (ShellOutput.error || withLabels) {
-        withLabels && console.info('error');
+    if (shellOutput.error || withLabels) {
+        withLabels && process.stdout.write('error');
         if (!ignoreError) {
-            throw ShellOutput.error;
+            throw shellOutput.error;
         }
     }
 }
