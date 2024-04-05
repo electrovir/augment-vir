@@ -169,7 +169,7 @@ export async function runShellCommand(
                     options.stdoutCallback(prepareChunkForLogging(chunk, false));
                 }
                 if (options.hookUpToConsole) {
-                    process.stdout.write(prepareChunkForLogging(chunk, true));
+                    process.stdout.write(prepareChunkForLogging(chunk, true) + '\n');
                 }
                 stdout += chunk;
             }),
@@ -178,7 +178,7 @@ export async function runShellCommand(
                     options.stderrCallback(prepareChunkForLogging(chunk, false));
                 }
                 if (options.hookUpToConsole) {
-                    process.stderr.write(prepareChunkForLogging(chunk, true));
+                    process.stderr.write(prepareChunkForLogging(chunk, true) + '\n');
                 }
                 stderr += chunk;
             }),
