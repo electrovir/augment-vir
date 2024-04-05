@@ -8,22 +8,24 @@ export enum ColorKey {
     bold = 'bold',
     error = 'error',
     faint = 'faint',
-    normalWeight = 'normal-weight',
     info = 'info',
     mutate = 'mutate',
+    normalWeight = 'normal-weight',
     reset = 'reset',
     success = 'success',
+    warning = 'warning',
 }
 
 export const logColors: Readonly<Record<ColorKey, string>> = {
     [ColorKey.bold]: styles.bold.open,
     [ColorKey.error]: styles.red.open,
-    [ColorKey.normalWeight]: '\x1b[22m',
     [ColorKey.faint]: styles.gray.open,
     [ColorKey.info]: styles.cyan.open,
     [ColorKey.mutate]: styles.magenta.open,
+    [ColorKey.normalWeight]: '\x1b[22m',
     [ColorKey.reset]: styles.reset.open,
     [ColorKey.success]: styles.green.open,
+    [ColorKey.warning]: styles.yellow.open,
 };
 
 type ToLoggingStringInputs = {
@@ -98,6 +100,13 @@ export function createLogger(logWriters: Record<LogOutputType, Pick<Socket, 'wri
             writeLog({
                 logType: LogOutputType.standard,
                 colors: ColorKey.faint,
+                args,
+            });
+        },
+        warning(...args: ReadonlyArray<any>) {
+            writeLog({
+                logType: LogOutputType.standard,
+                colors: ColorKey.warning,
                 args,
             });
         },
