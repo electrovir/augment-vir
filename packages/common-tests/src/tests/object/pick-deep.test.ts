@@ -195,6 +195,22 @@ describe('PickDeep', () => {
         }>();
     });
 
+    it('preserves optional properties', () => {
+        assertTypeOf<
+            PickDeep<
+                {
+                    optional1?: string;
+                    optional2?: string;
+                    required1: string;
+                },
+                ['optional1' | 'required1']
+            >
+        >().toEqualTypeOf<{
+            optional1?: string;
+            required1: string;
+        }>();
+    });
+
     it('should accept valid types', () => {
         assertTypeOf<PickDeep<TestObject, ['topLevel']>>().toEqualTypeOf<{
             topLevel: string;
