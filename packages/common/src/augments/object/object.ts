@@ -1,3 +1,5 @@
+import {Writable} from 'type-fest';
+
 export type PartialAndNullable<T extends object> = {
     [Prop in keyof T]?: T[Prop] | null | undefined;
 };
@@ -12,7 +14,7 @@ export function isObject(input: any): input is NonNullable<object> {
 }
 
 /** The input here must be serializable otherwise JSON parsing errors will be thrown */
-export function copyThroughJson<T>(input: T): T {
+export function copyThroughJson<T>(input: Readonly<T>): Writable<T> {
     try {
         return JSON.parse(JSON.stringify(input));
     } catch (error) {
