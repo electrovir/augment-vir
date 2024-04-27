@@ -25,7 +25,6 @@ export async function readJson<ParsedJsonType extends JsonCompatibleValue = Json
     const contents = (await readFile(path)).toString();
     const json = parseJson({
         jsonString: contents,
-        shapeMatcher: options.shapeMatcher,
         errorHandler: (error) => {
             if (options.throwErrors) {
                 throw error;

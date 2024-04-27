@@ -1,6 +1,6 @@
 {
     "name": "augment-vir",
-    "version": "27.0.0",
+    "version": "28.0.0",
     "private": true,
     "homepage": "https://github.com/electrovir/augment-vir",
     "bugs": {
@@ -71,7 +71,6 @@
         "@augment-vir/docker": "*",
         "@augment-vir/node-js": "*",
         "@augment-vir/prisma-node-js": "*",
-        "@augment-vir/testing": "*",
-        "ip": ">1.1.8"
+        "@augment-vir/testing": "*"
     }
 }

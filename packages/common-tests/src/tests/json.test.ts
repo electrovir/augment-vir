@@ -34,44 +34,6 @@ describe(parseJson.name, () => {
             },
             throws: 'new error',
         },
-        {
-            it: 'passes valid output string assertion',
-            input: {
-                jsonString: '"should pass"',
-                shapeMatcher: '',
-                errorHandler: () => {
-                    throw new Error('new error');
-                },
-            },
-            expect: 'should pass',
-        },
-        {
-            it: 'fails invalid output string assertion',
-            input: {
-                jsonString: '456',
-                shapeMatcher: '',
-                errorHandler: () => {
-                    throw new Error('that was not a string');
-                },
-            },
-            throws: 'that was not a string',
-        },
-        {
-            it: 'passes valid output object assertion',
-            input: {
-                jsonString: '{"numberKey": -1, "stringKey": "some string"}',
-                shapeMatcher: {numberKey: 52, stringKey: ''},
-            },
-            expect: {numberKey: -1, stringKey: 'some string'},
-        },
-        {
-            it: 'fails invalid output object assertion',
-            input: {
-                jsonString: '{"numberKey": -1, "stringKey": "some string"}',
-                shapeMatcher: {numberKey: 52, stringKey: '', thisKeyIsMissing: ''},
-            },
-            throws: Error,
-        },
     ]);
 });
 
