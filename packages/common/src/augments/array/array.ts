@@ -1,3 +1,4 @@
+import {getOrSet} from '../object/get-or-set';
 import {typedObjectFromEntries} from '../object/object-entries';
 import {AtLeastTuple} from '../tuple';
 import {ArrayElement} from '../type';
@@ -69,20 +70,18 @@ export function groupArrayBy<ElementType, NewKey extends PropertyKey>(
         index: number,
         originalArray: ReadonlyArray<ElementType>,
     ) => NewKey,
-): Record<NewKey, ElementType[]> {
+): Partial<Record<NewKey, ElementType[]>> {
     return inputArray.reduce(
         (accum, entry, index, originalArray) => {
             const key = callback(entry, index, originalArray);
-            if (!(key in accum)) {
-                accum[key] = [];
-            }
+            const entryArray: ElementType[] = getOrSet(accum, key, () => [] as ElementType[]);
 
-            accum[key].push(entry);
+            entryArray.push(entry);
 
             return accum;
         },
         {} as Record<NewKey, ElementType[]>,
-    );
+    ) as Partial<Record<NewKey, ElementType[]>>;
 }
 
 /**
@@ -96,7 +95,7 @@ export function arrayToObject<ElementType, NewKey extends PropertyKey>(
         index: number,
         originalArray: ReadonlyArray<ElementType>,
     ) => NewKey,
-): Record<NewKey, ElementType> {
+): Partial<Record<NewKey, ElementType>> {
     return typedObjectFromEntries(
         inputArray.map((entry, index, originalArray) => {
             const key = callback(entry, index, originalArray);

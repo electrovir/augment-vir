@@ -412,7 +412,7 @@ describe(groupArrayBy.name, () => {
                     return TestEnum.Second;
                 }
             }),
-        ).toEqualTypeOf<Record<TestEnum, {a: number; b: string}[]>>();
+        ).toEqualTypeOf<Partial<Record<TestEnum, {a: number; b: string}[]>>>();
     });
 });
 
@@ -549,7 +549,7 @@ describe(arrayToObject.name, () => {
                     return TestEnum.Second;
                 }
             }),
-        ).toEqualTypeOf<Record<TestEnum, {a: number; b: string}>>();
+        ).toEqualTypeOf<Partial<Record<TestEnum, {a: number; b: string}>>>();
     });
 });
 
