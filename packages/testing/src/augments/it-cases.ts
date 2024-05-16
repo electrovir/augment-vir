@@ -52,8 +52,8 @@ export function itCases<FunctionToTest extends AnyFunction>(
         excludeIt: any;
     },
     functionToTest: FunctionToTest,
-    customAsserter: CustomAsserter<FunctionToTest>,
-    testCases: ReadonlyArray<FunctionTestCase<FunctionToTest>>,
+    customAsserter: CustomAsserter<typeof functionToTest>,
+    testCases: ReadonlyArray<FunctionTestCase<typeof functionToTest>>,
 ): unknown[];
 export function itCases<FunctionToTest extends AnyFunction>(
     options: {
