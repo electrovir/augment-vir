@@ -124,6 +124,13 @@ describe(collapseWhiteSpace.name, () => {
             ],
             expect: 'hello\nthere',
         },
+        {
+            it: 'replaces tabs with spaces',
+            inputs: [
+                'hello\tthere',
+            ],
+            expect: 'hello there',
+        },
     ]);
 });
 

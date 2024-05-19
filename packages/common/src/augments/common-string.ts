@@ -51,7 +51,10 @@ export function collapseWhiteSpace(
         : // sometimes \n isn't included in \s
           input.replace(/\n/g, ' ');
 
-    return newLineReplacement.trim().replace(/\s{2,}/g, ' ');
+    return newLineReplacement
+        .trim()
+        .replace(/[^\S\r\n]/g, ' ')
+        .replace(/\s{2,}/g, ' ');
 }
 
 /** Same as String.prototype.split but includes the delimiter to split by in the output array. */
