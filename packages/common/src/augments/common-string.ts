@@ -31,6 +31,14 @@ export function joinWithFinalConjunction(list: ReadonlyArray<any>, conjunction =
     return fullyJoined;
 }
 
+/** Wraps `value` on both sides with `wrapper`. */
+export function wrapString({value, wrapper}: {value: string; wrapper: string}): string {
+    return [
+        wrapper,
+        wrapper,
+    ].join(value);
+}
+
 export function removeAnsiEscapeCodes(input: string): string {
     return input.replace(ansiRegex, '');
 }
