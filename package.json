@@ -1,6 +1,6 @@
 {
     "name": "augment-vir",
-    "version": "28.0.2",
+    "version": "28.1.0",
     "private": true,
     "homepage": "https://github.com/electrovir/augment-vir",
     "bugs": {
@@ -15,8 +15,6 @@
         "name": "electrovir",
         "url": "https://github.com/electrovir"
     },
-    "main": "dist/index.js",
-    "types": "dist/index.d.ts",
     "workspaces": [
         "./packages/*"
     ],

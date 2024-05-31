@@ -32,16 +32,6 @@ export function addCommasToNumber(input: number | string): string {
     ].join('');
 }
 
-export function convertIntoNumber(input: unknown): number {
-    if (typeof input === 'number') {
-        return input;
-    } else if (typeof input === 'string') {
-        return Number(removeCommasFromNumberString(input));
-    } else {
-        return Number(input);
-    }
-}
-
 export function doesRequireScientificNotation(input: number): boolean {
     return String(input).includes('e');
 }
@@ -61,11 +51,40 @@ export function ensureMinAndMax({min, max}: {min: number; max: number}): {
     }
 }
 
-export function toEnsuredNumber(input: any): number {
-    const numeric = Number(input);
+/**
+ * Tries to convert the input into a number. Handles strings with commas. Note: this might return
+ * `NaN`.
+ */
+export function toNumber(input: unknown): number {
+    if (typeof input === 'number') {
+        return input;
+    } else if (typeof input === 'string') {
+        return Number(removeCommasFromNumberString(input));
+    } else {
+        return Number(input);
+    }
+}
+
+/** @deprecated Use {@link toNumber} instead. */
+export const convertIntoNumber = toNumber;
+
+/** Tries to convert the input into a number and throws an error if `NaN` is created. */
+export function toEnsuredNumber(input: unknown): number {
+    const numeric = toMaybeNumber(input);
+
+    if (numeric == undefined) {
+        throw new Error(`Cannot convert to a number: ${input}`);
+    } else {
+        return numeric;
+    }
+}
+
+/** Tries to convert the input into a number and returns `undefined` if `NaN` is created. */
+export function toMaybeNumber(input: unknown): number | undefined {
+    const numeric = toNumber(input);
 
     if (isNaN(numeric)) {
-        throw new Error(`Cannot convert given input to a number: ${input}`);
+        return undefined;
     } else {
         return numeric;
     }
