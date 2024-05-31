@@ -38,6 +38,18 @@ describe(wrapInTry.name, () => {
             expect: 'failed',
         },
         {
+            it: 'allows an undefined fallback',
+            inputs: [
+                () => {
+                    throw new Error('errored');
+                },
+                {
+                    fallbackValue: undefined,
+                },
+            ],
+            expect: undefined,
+        },
+        {
             it: 'calls handleError if the callback does error',
             inputs: [
                 () => {
@@ -78,6 +90,12 @@ describe(wrapInTry.name, () => {
             expect: 'got the error: yikes',
         },
     ]);
+
+    it('allows an undefined fallback value type', () => {
+        assertTypeOf(wrapInTry(() => 'yo', {fallbackValue: undefined})).toEqualTypeOf<
+            string | undefined
+        >();
+    });
 
     it('types no options', () => {
         assertTypeOf(wrapInTry(() => 'hello', {})).toEqualTypeOf<Error | string>();

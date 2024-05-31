@@ -22,7 +22,7 @@ export function wrapInTry<Value extends Promise<any>>(
     options?:
         | undefined
         | {
-              handleError?: undefined;
+              handleError?: never;
               fallbackValue?: never;
           },
 ): Promise<Error | Awaited<Value>>;
@@ -31,7 +31,7 @@ export function wrapInTry<Value>(
     options?:
         | undefined
         | {
-              handleError?: undefined;
+              handleError?: never;
               fallbackValue?: never;
           },
 ): Error | Value;
