@@ -1,3 +1,5 @@
+export * from './augments/generic-prisma-client';
 export * from './augments/prisma-clients-generation';
 export * from './augments/prisma-database';
 export * from './augments/prisma-migrations';
+export * from './augments/prisma-models';
