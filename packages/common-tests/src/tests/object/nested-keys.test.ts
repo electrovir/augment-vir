@@ -1,7 +1,9 @@
 import {itCases} from '@augment-vir/chai';
 import {
+    AnyObject,
     NestedKeys,
     NestedSequentialKeys,
+    NestedValue,
     getValueFromNestedKeys,
     randomString,
     setValueWithNestedKeys,
@@ -74,6 +76,13 @@ describe('NestedSequentialKeys', () => {
     it('does not crash on primitive arrays', () => {
         assertTypeOf<NestedSequentialKeys<ReadonlyArray<string>>>().toEqualTypeOf<[number]>();
     });
+
+    it('is not infinite', () => {
+        type TestType<
+            MyParam extends AnyObject,
+            KeyPath extends NestedSequentialKeys<MyParam>,
+        > = NestedSequentialKeys<MyParam>;
+    });
 });
 
 describe('NestedKeys', () => {
@@ -138,6 +147,13 @@ describe('NestedKeys', () => {
         };
     });
 
+    it('is not infinite', () => {
+        type TestType<
+            MyParam extends AnyObject,
+            KeyPath extends NestedKeys<MyParam>,
+        > = NestedKeys<MyParam>;
+    });
+
     it('works through arrays', () => {
         type ParentType = {
             stuff: {hello: string};
@@ -166,7 +182,53 @@ describe('NestedKeys', () => {
     });
 });
 
-describe('getValueFromNestedKeys', () => {
+describe('NestedValue', () => {
+    it('is not infinite', () => {
+        type TestType<
+            MyParam extends AnyObject,
+            KeyPath extends NestedSequentialKeys<MyParam>,
+            MyValue extends NestedValue<MyParam, KeyPath>,
+        > = unknown;
+    });
+});
+
+describe(setValueWithNestedKeys.name, () => {
+    it('should set a value', () => {
+        const myObject = {
+            a: 'hi',
+            b: {
+                c: 'hello',
+                d: {
+                    e: 'super deep',
+                },
+            },
+        };
+
+        const newValue = randomString();
+
+        setValueWithNestedKeys(
+            myObject,
+            [
+                'b',
+                'd',
+                'e',
+            ],
+            newValue,
+        );
+
+        assert.deepStrictEqual(myObject, {
+            a: 'hi',
+            b: {
+                c: 'hello',
+                d: {
+                    e: newValue,
+                },
+            },
+        });
+    });
+});
+
+describe(getValueFromNestedKeys.name, () => {
     it('should restrict types properly', () => {
         const example: ExampleObjectType = {} as any;
 

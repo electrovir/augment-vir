@@ -1,12 +1,14 @@
 import {OptionalKeysOf, RequiredKeysOf} from 'type-fest';
 import {AnyFunction} from '../function';
 import {ArrayElement} from '../type';
+import {TsRecurse, TsRecursionStart, TsRecursionTracker} from '../type-recursion';
 import {AnyObject} from './any-object';
 import {NestedKeys} from './nested-keys';
 
 export type InnerPickDeep<
     OriginalObject extends AnyObject,
     DeepKeys extends any[],
+    Depth extends TsRecursionTracker,
 > = DeepKeys extends [infer CurrentLevelPick, ...infer RemainingKeys]
     ? Extract<CurrentLevelPick, keyof OriginalObject> extends never
         ? OriginalObject
@@ -14,12 +16,12 @@ export type InnerPickDeep<
               [CurrentProp in Extract<
                   CurrentLevelPick,
                   RequiredKeysOf<OriginalObject>
-              >]: InnerPickDeepValue<OriginalObject, CurrentProp, RemainingKeys>;
+              >]: InnerPickDeepValue<OriginalObject, CurrentProp, RemainingKeys, Depth>;
           } & {
               [CurrentProp in Extract<
                   CurrentLevelPick,
                   OptionalKeysOf<OriginalObject>
-              >]?: InnerPickDeepValue<OriginalObject, CurrentProp, RemainingKeys>;
+              >]?: InnerPickDeepValue<OriginalObject, CurrentProp, RemainingKeys, Depth>;
           }
     : DeepKeys extends []
       ? OriginalObject
@@ -33,6 +35,7 @@ type InnerPickDeepValue<
     OriginalObject,
     CurrentProp extends keyof OriginalObject,
     RemainingKeys extends any[],
+    Depth extends TsRecursionTracker,
 > =
     AnyFunction extends Extract<OriginalObject[CurrentProp], AnyFunction>
         ? OriginalObject[CurrentProp] | Exclude<OriginalObject[CurrentProp], AnyFunction>
@@ -41,7 +44,8 @@ type InnerPickDeepValue<
                 | Array<
                       InnerPickDeep<
                           ArrayElement<Extract<OriginalObject[CurrentProp], Array<any>>>,
-                          RemainingKeys
+                          RemainingKeys,
+                          TsRecurse<Depth>
                       >
                   >
                 | Exclude<OriginalObject[CurrentProp], Array<any>>
@@ -50,7 +54,8 @@ type InnerPickDeepValue<
                   | ReadonlyArray<
                         InnerPickDeep<
                             ArrayElement<Extract<OriginalObject[CurrentProp], ReadonlyArray<any>>>,
-                            RemainingKeys
+                            RemainingKeys,
+                            TsRecurse<Depth>
                         >
                     >
                   | Exclude<OriginalObject[CurrentProp], ReadonlyArray<any>>
@@ -59,7 +64,8 @@ type InnerPickDeepValue<
               :
                     | InnerPickDeep<
                           Extract<OriginalObject[CurrentProp], Record<any, any>>,
-                          RemainingKeys
+                          RemainingKeys,
+                          TsRecurse<Depth>
                       >
                     | Exclude<OriginalObject[CurrentProp], Record<any, any>>;
 
@@ -70,10 +76,11 @@ type InnerPickDeepValue<
 export type PickDeepStrict<
     OriginalObject extends object,
     DeepKeys extends NestedKeys<OriginalObject>,
-> = InnerPickDeep<OriginalObject, DeepKeys>;
+> = InnerPickDeep<OriginalObject, DeepKeys, TsRecursionStart>;
 
 /** Pick nested keys. */
 export type PickDeep<OriginalObject extends object, DeepKeys extends PropertyKey[]> = InnerPickDeep<
     OriginalObject,
-    DeepKeys
+    DeepKeys,
+    TsRecursionStart
 >;

@@ -1,37 +1,64 @@
 import {isRunTimeType} from 'run-time-assertions';
 import {ArrayElement} from '../type';
+import {
+    TsRecurse,
+    TsRecursionStart,
+    TsRecursionTracker,
+    TsTooMuchRecursion,
+} from '../type-recursion';
 import {PropertyValueType, isObject} from './object';
 import {UnionToIntersection} from './old-union-to-intersection';
 import {typedHasProperty} from './typed-has-property';
 
 // produces an array type where each subsequent entry must be a key in the previous entry's object
-export type NestedSequentialKeys<ObjectGeneric extends object> =
-    NonNullable<ObjectGeneric> extends ReadonlyArray<any>
-        ? Extract<NonNullable<ObjectGeneric>[number], object> extends never
-            ? [number]
-            : NestedSequentialKeys<Extract<NonNullable<ObjectGeneric>[number], object>>
-        : PropertyValueType<{
-              [Prop in keyof ObjectGeneric]: NonNullable<ObjectGeneric[Prop]> extends object
-                  ? Readonly<
-                        [Prop, ...(NestedSequentialKeys<NonNullable<ObjectGeneric[Prop]>> | [])]
-                    >
-                  : Readonly<[Prop]>;
-          }>;
+export type NestedSequentialKeys<
+    ObjectGeneric extends object,
+    Depth extends TsRecursionTracker = TsRecursionStart,
+> = Depth extends TsTooMuchRecursion
+    ? ['Error: recursive object depth is too deep.']
+    : NonNullable<ObjectGeneric> extends ReadonlyArray<any>
+      ? Extract<NonNullable<ObjectGeneric>[number], object> extends never
+          ? [number]
+          : NestedSequentialKeys<
+                Extract<NonNullable<ObjectGeneric>[number], object>,
+                TsRecurse<Depth>
+            >
+      : PropertyValueType<{
+            [Prop in keyof ObjectGeneric]: NonNullable<ObjectGeneric[Prop]> extends object
+                ? Readonly<
+                      [
+                          Prop,
+                          ...(
+                              | NestedSequentialKeys<
+                                    NonNullable<ObjectGeneric[Prop]>,
+                                    TsRecurse<Depth>
+                                >
+                              | []
+                          ),
+                      ]
+                  >
+                : Readonly<[Prop]>;
+        }>;
 
-export type NestedKeys<ObjectGeneric extends object> =
-    ObjectGeneric extends ReadonlyArray<any>
-        ? NestedKeys<ArrayElement<ObjectGeneric>>
-        : UnionToIntersection<Extract<PropertyValueType<ObjectGeneric>, object>> extends object
-          ? [
-                keyof ObjectGeneric,
-                ...(
-                    | NestedKeys<
-                          UnionToIntersection<Extract<PropertyValueType<ObjectGeneric>, object>>
-                      >
-                    | []
-                ),
-            ]
-          : [keyof ObjectGeneric];
+export type NestedKeys<
+    ObjectGeneric extends object,
+    Depth extends TsRecursionTracker = TsRecursionStart,
+> = Depth extends TsTooMuchRecursion
+    ? ['Error: recursive object depth is too deep.']
+    : ObjectGeneric extends ReadonlyArray<any>
+      ? NestedKeys<ArrayElement<ObjectGeneric>, TsRecurse<Depth>>
+      : UnionToIntersection<Extract<PropertyValueType<ObjectGeneric>, object>> extends object
+        ? [
+              keyof ObjectGeneric,
+              ...(
+                  | NestedKeys<
+                        UnionToIntersection<Extract<PropertyValueType<ObjectGeneric>, object>>,
+                        TsRecurse<Depth>
+                    >
+                  | []
+              ),
+          ]
+        : [keyof ObjectGeneric];
 
 export type NestedValue<
     ObjectGeneric extends object,
@@ -51,20 +78,21 @@ export type NestedValue<
               : never
           : never;
 
+/** This mutates the {@link originalObject} input. */
 export function setValueWithNestedKeys<
     const ObjectGeneric extends object,
     const KeysGeneric extends NestedSequentialKeys<ObjectGeneric>,
 >(
     originalObject: ObjectGeneric,
-    nestedKeys: KeysGeneric,
-    value: NestedValue<ObjectGeneric, KeysGeneric>,
+    nestedKeys: Readonly<KeysGeneric>,
+    value: Readonly<NestedValue<ObjectGeneric, KeysGeneric>>,
 ): void {
     /**
      * Lots of as any casts in here because these types are, under the hood, pretty complex. Since
      * the inputs and outputs of this function are well typed, these internal as any casts do not
      * affect the external API of this function.
      */
-    const nestedKeysInput = nestedKeys as string[];
+    const nestedKeysInput = nestedKeys as ReadonlyArray<string>;
     const inputObject = originalObject as Record<PropertyKey, any>;
 
     if (isRunTimeType(inputObject, 'array')) {
