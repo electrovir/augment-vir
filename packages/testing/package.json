@@ -25,20 +25,20 @@
     "dependencies": {
         "@augment-vir/common": "^28.1.0",
         "expect-type": "^0.15.0",
-        "type-fest": "^4.12.0"
+        "type-fest": "^4.20.1"
     },
     "devDependencies": {
         "@electrovir/nyc": "^15.1.0-fix0",
         "@istanbuljs/nyc-config-typescript": "^1.0.2",
-        "@types/chai": "^4.3.14",
+        "@types/chai": "^4.3.16",
         "@types/mocha": "^10.0.6",
         "chai": "^4.3.10",
         "istanbul-smart-text-reporter": "^1.1.4",
-        "mocha": "^10.3.0",
+        "mocha": "^10.4.0",
         "mocha-spec-reporter-with-file-names": "^0.0.3",
-        "run-time-assertions": "^1.0.0",
+        "run-time-assertions": "^1.5.1",
         "ts-node": "^10.9.2",
-        "typescript": "5.3.3"
+        "typescript": "5.4.5"
     },
     "publishConfig": {
         "access": "public"

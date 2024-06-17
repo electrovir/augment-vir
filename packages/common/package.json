@@ -24,12 +24,12 @@
         "test:types": "tsc --noEmit"
     },
     "dependencies": {
-        "browser-or-node": "^2.1.1",
-        "run-time-assertions": "^1.0.0",
-        "type-fest": "^4.12.0"
+        "browser-or-node": "^3.0.0",
+        "run-time-assertions": "^1.5.1",
+        "type-fest": "^4.20.1"
     },
     "devDependencies": {
-        "typescript": "5.3.3"
+        "typescript": "5.4.5"
     },
     "publishConfig": {
         "access": "public"
