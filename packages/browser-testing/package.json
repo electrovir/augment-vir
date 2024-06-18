@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/browser-testing",
-    "version": "28.2.1",
+    "version": "28.2.2",
     "homepage": "https://github.com/electrovir/augment-vir/tree/main/packages/common",
     "bugs": {
         "url": "https://github.com/electrovir/augment-vir/issues"
@@ -23,8 +23,8 @@
         "test:coverage": "npm test"
     },
     "dependencies": {
-        "@augment-vir/common": "^28.2.1",
-        "@augment-vir/testing": "^28.2.1",
+        "@augment-vir/common": "^28.2.2",
+        "@augment-vir/testing": "^28.2.2",
         "@open-wc/testing": "^4.0.0",
         "@types/mocha": "^10.0.6",
         "@web/test-runner-commands": "^0.9.0",

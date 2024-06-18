@@ -1,8 +1,25 @@
 import {AnyObject} from '@augment-vir/common';
-import {EmptyObject} from 'type-fest';
 
-/** Extracts all model names from the given Prisma client. */
-export type ModelName<PrismaClient extends AnyObject> = keyof {
+/**
+ * Extracts all model names from the generated `Prisma` object.
+ *
+ * @example
+ *     import type {Prisma} from '@prisma/client';
+ *
+ *     function doThing(modelName: ModelNameFromPrismaTypeMap<Prisma.TypeMap>) {}
+ */
+export type ModelNameFromPrismaTypeMap<PrismaTypeMap extends BasePrismaTypeMap> =
+    PrismaTypeMap['meta']['modelProps'];
+
+/**
+ * Extracts all model names from the generated `PrismaClient`.
+ *
+ * @example
+ *     import type {PrismaClient} from '@prisma/client';
+ *
+ *     function doThing(modelName: ModelNameFromPrismaClient<PrismaClient>) {}
+ */
+export type ModelNameFromPrismaClient<PrismaClient extends AnyObject> = keyof {
     [Model in Extract<keyof PrismaClient, string> as PrismaClient[Model] extends {
         findFirstOrThrow: Function;
     }
@@ -10,38 +27,72 @@ export type ModelName<PrismaClient extends AnyObject> = keyof {
         : never]: boolean;
 };
 
-/** Extracts the creation data for a model from the given Prisma client. */
+/**
+ * Extracts the creation data for a model from the given `PrismaClient` type.
+ *
+ * @example
+ *     import type {PrismaClient} from '@prisma/client';
+ *
+ *     function doThing(entry: ModelCreationEntry<PrismaClient, 'User'>) {}
+ */
 export type ModelCreationEntry<
     PrismaClient extends AnyObject,
-    Model extends ModelName<PrismaClient>,
+    Model extends ModelNameFromPrismaClient<PrismaClient>,
 > =
     NonNullable<Parameters<PrismaClient[Model]['create']>[0]> extends {data?: infer Data}
         ? NonNullable<Data>
         : `ERROR: failed to infer creation entry for model '${Model}'`;
 
-/** For a given model, extract all the available "include" properties and set them all to true. */
-export type IncludeAll<PrismaClient extends AnyObject, Model extends ModelName<PrismaClient>> =
-    NonNullable<NonNullable<Parameters<PrismaClient[Model]['findFirstOrThrow']>[0]>> extends {
-        include?: infer IncludeArg;
-    }
-        ? Record<Exclude<keyof NonNullable<IncludeArg>, '_count'>, true>
-        : EmptyObject;
-
-export type BaseModel<
-    PrismaClient extends AnyObject,
-    Model extends ModelName<PrismaClient>,
-> = NonNullable<Awaited<ReturnType<PrismaClient[Model]['findFirstOrThrow']>>>;
-
-export type JoinedModel<PrismaClient extends AnyObject, Model extends ModelName<PrismaClient>> = {
-    [FieldName in Extract<keyof IncludeAll<PrismaClient, Model>, string>]: Omit<
-        ReturnType<PrismaClient[Model]['findFirstOrThrow']>,
-        'then' | 'catch' | 'finally'
-    > extends Record<FieldName, () => Promise<infer Result>>
-        ? Result
-        : `Error: failed to find relation for ${FieldName}`;
+/**
+ * A base type for `Prisma.TypeMap` because Prisma doesn't give us one. This currently only includes
+ * the properties that are used within `@augment-vir/prisma-node-js`.
+ */
+export type BasePrismaTypeMap = {
+    meta: {
+        modelProps: string;
+    };
+    model: Record<string, {payload: BasePrismaPayload}>;
 };
 
+/**
+ * A base type for Prisma model payloads because Prisma doesn't give us one. This currently only
+ * includes the properties that are used within `@augment-vir/prisma-node-js`.
+ *
+ * Note: this omits the `composites` property because I don't have any examples of what those
+ * actually are.
+ */
+export type BasePrismaPayload = {
+    name: string;
+    objects: Record<string, BasePrismaPayload | BasePrismaPayload[] | null>;
+    scalars: AnyObject;
+};
+
+/**
+ * Given a model name from your Prisma schema, this creates a type with all of the model's relations
+ * expanded into objects recursively.
+ *
+ * @example
+ *     import type {Prisma} from '@prisma/client';
+ *
+ *     function doThing(fullModel: FullModel<Prisma.TypeMap, 'User'>) {}
+ */
 export type FullModel<
-    PrismaClient extends AnyObject,
-    Model extends ModelName<PrismaClient>,
-> = JoinedModel<PrismaClient, Model> & BaseModel<PrismaClient, Model>;
+    PrismaTypeMap extends BasePrismaTypeMap,
+    Model extends ModelNameFromPrismaTypeMap<PrismaTypeMap>,
+> = ExpandPayload<PrismaTypeMap['model'][Model]['payload']>;
+
+/** Expand a Prisma payload into its scalars and recursive relations. */
+export type ExpandPayload<Payload extends BasePrismaPayload> = Payload['scalars'] & {
+    [Key in keyof Payload['objects']]:
+        | ExpandPotentialArrayPayload<NonNullable<Payload['objects'][Key]>>
+        | (null extends Payload['objects'][Key] ? null : never);
+};
+
+/** Expand a payload that might be inside of an array, keeping it inside of an array if it is. */
+export type ExpandPotentialArrayPayload<
+    PayloadWrapper extends BasePrismaPayload | BasePrismaPayload[],
+> = PayloadWrapper extends (infer ActualPayload extends BasePrismaPayload)[]
+    ? ExpandPayload<ActualPayload>[]
+    : PayloadWrapper extends BasePrismaPayload
+      ? ExpandPayload<PayloadWrapper>
+      : never;
