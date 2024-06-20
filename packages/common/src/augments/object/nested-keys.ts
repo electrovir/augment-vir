@@ -1,4 +1,5 @@
 import {isRunTimeType} from 'run-time-assertions';
+import {isLengthAtLeast} from '../tuple';
 import {ArrayElement} from '../type';
 import {
     TsRecurse,
@@ -6,6 +7,7 @@ import {
     TsRecursionTracker,
     TsTooMuchRecursion,
 } from '../type-recursion';
+import {AnyObject} from './any-object';
 import {PropertyValueType, isObject} from './object';
 import {UnionToIntersection} from './old-union-to-intersection';
 import {typedHasProperty} from './typed-has-property';
@@ -93,7 +95,7 @@ export function setValueWithNestedKeys<
      * affect the external API of this function.
      */
     const nestedKeysInput = nestedKeys as ReadonlyArray<string>;
-    const inputObject = originalObject as Record<PropertyKey, any>;
+    const inputObject = originalObject as AnyObject;
 
     if (isRunTimeType(inputObject, 'array')) {
         inputObject.forEach((entry) => {
@@ -101,22 +103,17 @@ export function setValueWithNestedKeys<
                 (setValueWithNestedKeys as any)(entry, nestedKeysInput, value);
             }
         });
-        return;
-    }
+    } else if (isLengthAtLeast(nestedKeysInput, 2)) {
+        /** If there are more keys to traverse into. */
+        const nextKey = nestedKeysInput[0];
+        if (!(nextKey in inputObject)) {
+            inputObject[nextKey] = {} as any;
+        }
+        const nextParent = inputObject[nextKey];
 
-    const nextKey = nestedKeysInput[0]!;
-    if (!(nextKey in inputObject)) {
-        inputObject[nextKey] = {} as any;
-    } else if (!isObject(inputObject[nextKey])) {
-        throw new Error(`Cannot set value at key '${String(nextKey)}' as its not an object.`);
-    }
-
-    const nextParent = inputObject[nextKey];
-
-    if (nestedKeysInput.length > 2) {
         (setValueWithNestedKeys as any)(nextParent, nestedKeysInput.slice(1), value);
-    } else {
-        (nextParent as any)[nestedKeysInput[1]!] = value;
+    } else if (isLengthAtLeast(nestedKeysInput, 1)) {
+        inputObject[nestedKeysInput[0]] = value;
     }
 }
 

@@ -4,6 +4,7 @@ import {
     NestedKeys,
     NestedSequentialKeys,
     NestedValue,
+    copyThroughJson,
     getValueFromNestedKeys,
     randomString,
     setValueWithNestedKeys,
@@ -51,7 +52,13 @@ describe(setValueWithNestedKeys.name, () => {
             newValue,
         );
 
-        assert.strictEqual(exampleOriginal.a.b.c, newValue);
+        assert.deepStrictEqual(exampleOriginal, {
+            a: {
+                b: {
+                    c: newValue,
+                },
+            },
+        });
     });
 
     it("creates keys that didn't exist", () => {
@@ -68,7 +75,105 @@ describe(setValueWithNestedKeys.name, () => {
             newValue,
         );
 
-        assert.strictEqual(missingKeys.a.b.c, newValue);
+        assert.deepStrictEqual(missingKeys, {
+            a: {
+                b: {
+                    c: newValue,
+                },
+            },
+        });
+    });
+    it('should set a value', () => {
+        const myObject = {
+            a: 'hi',
+            b: {
+                c: 'hello',
+                d: {
+                    e: 'super deep',
+                },
+            },
+        };
+
+        const newValue = randomString();
+
+        setValueWithNestedKeys(
+            myObject,
+            [
+                'b',
+                'd',
+                'e',
+            ],
+            newValue,
+        );
+
+        assert.deepStrictEqual(myObject, {
+            a: 'hi',
+            b: {
+                c: 'hello',
+                d: {
+                    e: newValue,
+                },
+            },
+        });
+    });
+    it('sets a value only one key deep', () => {
+        const myObject = {
+            a: 'hi',
+        };
+
+        const newValue = randomString();
+
+        setValueWithNestedKeys(
+            myObject,
+            [
+                'a',
+            ],
+            newValue,
+        );
+
+        assert.deepStrictEqual(myObject, {
+            a: newValue,
+        });
+    });
+    it('sets a value in an object without any keys', () => {
+        const myObject = {} as Partial<{a: string}>;
+
+        const newValue = randomString();
+
+        setValueWithNestedKeys(
+            myObject,
+            [
+                'a',
+            ],
+            newValue,
+        );
+
+        assert.deepStrictEqual(myObject, {
+            a: newValue,
+        });
+    });
+    it('does nothing with no keys', () => {
+        const myObject = {
+            a: 'hi',
+            b: {
+                c: 'hello',
+                d: {
+                    e: 'super deep',
+                },
+            },
+        };
+        const originalObject = copyThroughJson(myObject);
+
+        const newValue = randomString();
+
+        setValueWithNestedKeys(
+            myObject,
+            // @ts-expect-error: intentionally leave empty
+            [],
+            newValue,
+        );
+
+        assert.deepStrictEqual(myObject, originalObject);
     });
 });
 
@@ -189,42 +294,6 @@ describe('NestedValue', () => {
             KeyPath extends NestedSequentialKeys<MyParam>,
             MyValue extends NestedValue<MyParam, KeyPath>,
         > = unknown;
-    });
-});
-
-describe(setValueWithNestedKeys.name, () => {
-    it('should set a value', () => {
-        const myObject = {
-            a: 'hi',
-            b: {
-                c: 'hello',
-                d: {
-                    e: 'super deep',
-                },
-            },
-        };
-
-        const newValue = randomString();
-
-        setValueWithNestedKeys(
-            myObject,
-            [
-                'b',
-                'd',
-                'e',
-            ],
-            newValue,
-        );
-
-        assert.deepStrictEqual(myObject, {
-            a: 'hi',
-            b: {
-                c: 'hello',
-                d: {
-                    e: newValue,
-                },
-            },
-        });
     });
 });
 
