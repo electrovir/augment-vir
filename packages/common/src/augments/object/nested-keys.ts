@@ -65,16 +65,17 @@ export type NestedKeys<
 export type NestedValue<
     ObjectGeneric extends object,
     NestedKeysGeneric extends NestedSequentialKeys<ObjectGeneric>,
+    Depth extends TsRecursionTracker = TsRecursionStart,
 > =
     ObjectGeneric extends ReadonlyArray<any>
-        ? NestedValue<Extract<ObjectGeneric[number], object>, NestedKeysGeneric>[]
+        ? NestedValue<Extract<ObjectGeneric[number], object>, NestedKeysGeneric, TsRecurse<Depth>>[]
         : NestedKeysGeneric extends readonly [infer FirstEntry, ...infer FollowingEntries]
           ? FirstEntry extends keyof ObjectGeneric
               ? FollowingEntries extends never[]
                   ? ObjectGeneric[FirstEntry]
                   : ObjectGeneric[FirstEntry] extends object
                     ? FollowingEntries extends NestedSequentialKeys<ObjectGeneric[FirstEntry]>
-                        ? NestedValue<ObjectGeneric[FirstEntry], FollowingEntries>
+                        ? NestedValue<ObjectGeneric[FirstEntry], FollowingEntries, TsRecurse<Depth>>
                         : never
                     : never
               : never
