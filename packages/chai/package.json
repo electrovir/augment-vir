@@ -28,7 +28,7 @@
         "type-fest": "^4.20.1"
     },
     "devDependencies": {
-        "typescript": "5.4.5"
+        "typescript": "5.5.2"
     },
     "peerDependencies": {
         "chai": "^4.3.10"

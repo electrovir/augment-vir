@@ -31,14 +31,14 @@
         "@electrovir/nyc": "^15.1.0-fix0",
         "@istanbuljs/nyc-config-typescript": "^1.0.2",
         "@types/chai": "^4.3.16",
-        "@types/mocha": "^10.0.6",
+        "@types/mocha": "^10.0.7",
         "chai": "^4.3.10",
         "istanbul-smart-text-reporter": "^1.1.4",
         "mocha": "^10.4.0",
         "mocha-spec-reporter-with-file-names": "^0.0.3",
         "run-time-assertions": "^1.5.1",
         "ts-node": "^10.9.2",
-        "typescript": "5.4.5"
+        "typescript": "5.5.2"
     },
     "publishConfig": {
         "access": "public"
