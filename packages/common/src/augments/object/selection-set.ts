@@ -15,11 +15,11 @@ import {mapObjectValues} from './map-object';
 import {PropertyValueType} from './object';
 
 function shouldPreserve(input: unknown): input is SelectionTypesToPreserve {
-    return isPrimitive(input) || input instanceof RegExp;
+    return isPrimitive(input) || input instanceof RegExp || input instanceof Promise;
 }
 
 /** All types that won't be recursed into when defining a {@link SelectionSet}. */
-export type SelectionTypesToPreserve = Primitive | RegExp;
+export type SelectionTypesToPreserve = Primitive | RegExp | Promise<any>;
 
 /** A generic selection set without specific keys. */
 export type GenericSelectionSet = {
