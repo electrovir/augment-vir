@@ -1,4 +1,4 @@
-import {IsNever, Primitive} from 'type-fest';
+import {IsAny, IsNever, Primitive} from 'type-fest';
 import {
     TsRecurse,
     TsRecursionStart,
@@ -7,7 +7,9 @@ import {
 } from '../type-recursion';
 import {UnionToIntersection} from '../union';
 import {AnyObject} from './any-object';
+import {omitObjectKeys} from './filter-object';
 import {KeyCount} from './key-count';
+import {mapObjectValues} from './map-object';
 import {PropertyValueType} from './object';
 
 /** All types that won't be recursed into when defining a {@link SelectionSet}. */
@@ -29,7 +31,7 @@ export type PickSelection<
             | Exclude<Element, AnyObject>
         )[]
       : {
-            [Key in keyof Selection as Selection[Key] extends false
+            -readonly [Key in keyof Selection as Selection[Key] extends false
                 ? never
                 : Key extends keyof Full
                   ? Key
@@ -68,12 +70,48 @@ export type FirstSelectedValue<
 export type SelectionSet<
     Full extends Readonly<AnyObject>,
     Depth extends TsRecursionTracker = TsRecursionStart,
-> = Depth extends TsTooMuchRecursion
-    ? ['Error: recursive object depth is too deep.']
-    : Full extends ReadonlyArray<infer FullChild extends AnyObject>
-      ? SelectionSet<FullChild, TsRecurse<Depth>>
-      : Partial<{
-            [Key in keyof Full]: IsNever<Exclude<Full[Key], SelectionTypesToPreserve>> extends true
-                ? boolean
-                : boolean | UnionToIntersection<SelectionSet<Full[Key], TsRecurse<Depth>>>;
-        }>;
+> =
+    IsAny<Full> extends true
+        ? any
+        : Depth extends TsTooMuchRecursion
+          ? ['Error: recursive object depth is too deep.']
+          : Full extends ReadonlyArray<infer FullChild extends AnyObject>
+            ? SelectionSet<FullChild, TsRecurse<Depth>>
+            : Partial<{
+                  [Key in keyof Full]: IsNever<
+                      Exclude<Full[Key], SelectionTypesToPreserve>
+                  > extends true
+                      ? boolean
+                      : boolean | UnionToIntersection<SelectionSet<Full[Key], TsRecurse<Depth>>>;
+              }>;
+
+export function selectFrom<
+    Full extends AnyObject,
+    const Selection extends SelectionSet<NoInfer<Full>>,
+>(
+    originalObject: Readonly<Full>,
+    selectionSet: Readonly<Selection>,
+): PickSelection<Full, Selection> {
+    if (Array.isArray(originalObject)) {
+        return originalObject.map((originalEntry) =>
+            selectFrom(originalEntry, selectionSet),
+        ) as PickSelection<Full, Selection>;
+    }
+    const keysToRemove: PropertyKey[] = [];
+
+    return omitObjectKeys<any, any>(
+        mapObjectValues(originalObject, (key, value) => {
+            const selection = selectionSet[key];
+
+            if (selection === true) {
+                return value;
+            } else if (!selection) {
+                keysToRemove.push(key);
+                return undefined;
+            } else {
+                return selectFrom<any, any>(value, selection);
+            }
+        }),
+        keysToRemove,
+    ) as PickSelection<Full, Selection>;
+}
