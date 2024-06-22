@@ -2,10 +2,9 @@
 
 echo "hold on while we reinstall everything..."
 
-find . -name node_modules -type d -exec rm -rf {} \;
+find . -name @augment-vir -type d -exec rm -rf {} \; > /dev/null 2>&1
 
 set -e;
-npm i;
 
 echo "compiling common...";
 
@@ -14,6 +13,7 @@ echo "compiling common...";
 cd packages/common;
 npm run compile;
 cd -;
+npm i;
 
 sleep 1;
 echo "compiling everything else...";
