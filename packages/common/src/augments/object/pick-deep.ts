@@ -3,7 +3,6 @@ import {AnyFunction} from '../function';
 import {ArrayElement} from '../type';
 import {TsRecurse, TsRecursionStart, TsRecursionTracker} from '../type-recursion';
 import {AnyObject} from './any-object';
-import {NestedKeys} from './nested-keys';
 
 export type InnerPickDeep<
     OriginalObject extends AnyObject,
@@ -68,15 +67,6 @@ type InnerPickDeepValue<
                           TsRecurse<Depth>
                       >
                     | Exclude<OriginalObject[CurrentProp], Record<any, any>>;
-
-/**
- * Pick nested keys with more strict type parameter requirements. However, these stricter type
- * parameter requirements often lead to "excessively deep" TS compiler errors.
- */
-export type PickDeepStrict<
-    OriginalObject extends object,
-    DeepKeys extends NestedKeys<OriginalObject>,
-> = InnerPickDeep<OriginalObject, DeepKeys, TsRecursionStart>;
 
 /** Pick nested keys. */
 export type PickDeep<OriginalObject extends object, DeepKeys extends PropertyKey[]> = InnerPickDeep<

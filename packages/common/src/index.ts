@@ -21,7 +21,6 @@ export * from './augments/object/jsonify';
 export * from './augments/object/map-object';
 export * from './augments/object/merge-deep';
 export * from './augments/object/merge-property-arrays';
-export * from './augments/object/nested-keys';
 export * from './augments/object/object';
 export * from './augments/object/object-entries';
 export * from './augments/object/old-union-to-intersection';
