@@ -1,4 +1,6 @@
+import {isPrimitive} from 'run-time-assertions';
 import {IsAny, IsNever, Primitive} from 'type-fest';
+import {isLengthAtLeast} from '../tuple';
 import {
     TsRecurse,
     TsRecursionStart,
@@ -12,11 +14,17 @@ import {KeyCount} from './key-count';
 import {mapObjectValues} from './map-object';
 import {PropertyValueType} from './object';
 
+function shouldPreserve(input: unknown): input is SelectionTypesToPreserve {
+    return isPrimitive(input) || input instanceof RegExp;
+}
+
 /** All types that won't be recursed into when defining a {@link SelectionSet}. */
 export type SelectionTypesToPreserve = Primitive | RegExp;
 
 /** A generic selection set without specific keys. */
-export type GenericSelectionSet = {[Key in PropertyKey]: boolean | GenericSelectionSet};
+export type GenericSelectionSet = {
+    [Key in PropertyKey]: boolean | GenericSelectionSet | unknown;
+};
 
 /** Masks an object value with the given {@link SelectionSet}. */
 export type PickSelection<
@@ -97,6 +105,7 @@ export function selectFrom<
             selectFrom(originalEntry, selectionSet),
         ) as PickSelection<Full, Selection>;
     }
+
     const keysToRemove: PropertyKey[] = [];
 
     return omitObjectKeys<any, any>(
@@ -109,9 +118,41 @@ export function selectFrom<
                 keysToRemove.push(key);
                 return undefined;
             } else {
-                return selectFrom<any, any>(value, selection);
+                return selectFrom(value, selection);
             }
         }),
         keysToRemove,
     ) as PickSelection<Full, Selection>;
+}
+
+export function selectCollapsedFrom<
+    Full extends AnyObject,
+    const Selection extends SelectionSet<NoInfer<Full>>,
+    const Collapse extends boolean | undefined,
+>(
+    originalObject: Readonly<Full>,
+    selectionSet: Readonly<Selection>,
+    collapse?: Collapse,
+): FirstSelectedValue<Full, Selection> {
+    const selected = selectFrom(originalObject, selectionSet);
+
+    return collapseObject(selected) as FirstSelectedValue<Full, Selection>;
+}
+
+function collapseObject(input: AnyObject): AnyObject {
+    if (shouldPreserve(input)) {
+        return input;
+    }
+
+    const keys = Object.keys(input);
+
+    if (Array.isArray(input)) {
+        return input.map((innerInput) => collapseObject(innerInput));
+    } else if (isLengthAtLeast(keys, 2)) {
+        return input;
+    } else if (isLengthAtLeast(keys, 1)) {
+        return collapseObject(input[keys[0]]);
+    } else {
+        return input;
+    }
 }

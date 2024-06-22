@@ -5,6 +5,7 @@ import {
     GenericSelectionSet,
     PickSelection,
     SelectionSet,
+    selectCollapsedFrom,
     selectFrom,
 } from '@augment-vir/common';
 import {assertTypeOf} from 'run-time-assertions';
@@ -12,7 +13,71 @@ import {assertTypeOf} from 'run-time-assertions';
 describe('GenericSelectionSet', () => {
     it('is compatible with SelectionSet', () => {
         assertTypeOf<SelectionSet<AnyObject>>().toMatchTypeOf<GenericSelectionSet>();
+
+        assertTypeOf<
+            SelectionSet<{
+                hi: string;
+                bye: number;
+                parent: {
+                    child: {
+                        grandChild: {
+                            child: string;
+                            child2: number;
+                            child3: RegExp;
+                        };
+                    };
+                };
+            }>
+        >().toBeAssignableTo<GenericSelectionSet>();
     });
+});
+
+describe(selectCollapsedFrom.name, () => {
+    itCases(selectCollapsedFrom, [
+        {
+            it: 'collapses a selection',
+            inputs: [
+                {
+                    hi: 'hi',
+                    bye: 3,
+                    parent: [
+                        {
+                            child: {
+                                grandChild: {
+                                    child: 'hi',
+                                    child2: 3,
+                                    child3: /something/,
+                                },
+                            },
+                        },
+                        {
+                            child: {
+                                grandChild: {
+                                    child: 'hi',
+                                    child2: 4,
+                                    child3: /something/,
+                                },
+                            },
+                        },
+                    ],
+                },
+                {
+                    parent: {
+                        child: {
+                            grandChild: {
+                                child2: true,
+                            },
+                        },
+                    },
+                },
+                true,
+            ],
+            expect: [
+                3,
+                4,
+            ],
+        },
+    ]);
 });
 
 describe(selectFrom.name, () => {
