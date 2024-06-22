@@ -18,6 +18,7 @@ export * from './augments/object/filter-object';
 export * from './augments/object/get-or-set';
 export * from './augments/object/has-key';
 export * from './augments/object/jsonify';
+export * from './augments/object/key-count';
 export * from './augments/object/map-object';
 export * from './augments/object/merge-deep';
 export * from './augments/object/merge-property-arrays';
