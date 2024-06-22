@@ -25,6 +25,7 @@ export * from './augments/object/merge-property-arrays';
 export * from './augments/object/object';
 export * from './augments/object/object-entries';
 export * from './augments/object/pick-deep';
+export * from './augments/object/selection-set';
 export * from './augments/object/typed-has-property';
 export * from './augments/promise/deferred-promise';
 export * from './augments/promise/promise';
