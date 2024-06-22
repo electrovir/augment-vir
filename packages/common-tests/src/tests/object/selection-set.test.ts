@@ -1,8 +1,8 @@
 import {itCases} from '@augment-vir/chai';
 import {
     AnyObject,
-    FirstSelectedValue,
     GenericSelectionSet,
+    PickCollapsedSelection,
     PickSelection,
     SelectionSet,
     selectCollapsedFrom,
@@ -33,7 +33,7 @@ describe('GenericSelectionSet', () => {
 });
 
 describe(selectCollapsedFrom.name, () => {
-    itCases(selectCollapsedFrom, [
+    itCases(selectCollapsedFrom<any, any>, [
         {
             it: 'collapses a selection',
             inputs: [
@@ -70,7 +70,6 @@ describe(selectCollapsedFrom.name, () => {
                         },
                     },
                 },
-                true,
             ],
             expect: [
                 3,
@@ -475,10 +474,10 @@ describe('PickSelection', () => {
     });
 });
 
-describe('FirstSelectedValue', () => {
+describe('PickCollapsedSelection', () => {
     it('collapses selection', () => {
         assertTypeOf<
-            FirstSelectedValue<
+            PickCollapsedSelection<
                 {
                     hi: string;
                     bye: number;
@@ -514,7 +513,7 @@ describe('FirstSelectedValue', () => {
     });
     it('collapses to a primitive', () => {
         assertTypeOf<
-            FirstSelectedValue<
+            PickCollapsedSelection<
                 {
                     hi: string;
                     bye: number;
@@ -548,7 +547,7 @@ describe('FirstSelectedValue', () => {
     });
     it('preserves selections with multiple branches', () => {
         assertTypeOf<
-            FirstSelectedValue<
+            PickCollapsedSelection<
                 {
                     hi: string;
                     bye: number;

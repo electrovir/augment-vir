@@ -58,7 +58,7 @@ export type PickSelection<
  * Collapses a selected value to the first part of the selection that contains more than 1 key or
  * that is not an object.
  */
-export type FirstSelectedValue<
+export type PickCollapsedSelection<
     Full extends Readonly<AnyObject>,
     Selection extends GenericSelectionSet,
     Depth extends TsRecursionTracker = TsRecursionStart,
@@ -66,7 +66,7 @@ export type FirstSelectedValue<
     ? 'Error: recursive object depth is too deep.'
     : KeyCount<PickSelection<Full, Selection, Depth>> extends 1
       ? Selection[keyof PickSelection<Full, Selection, Depth>] extends GenericSelectionSet
-          ? FirstSelectedValue<
+          ? PickCollapsedSelection<
                 Full[keyof PickSelection<Full, Selection, Depth>],
                 Selection[keyof PickSelection<Full, Selection, Depth>],
                 TsRecurse<Depth>
@@ -128,15 +128,13 @@ export function selectFrom<
 export function selectCollapsedFrom<
     Full extends AnyObject,
     const Selection extends SelectionSet<NoInfer<Full>>,
-    const Collapse extends boolean | undefined,
 >(
     originalObject: Readonly<Full>,
     selectionSet: Readonly<Selection>,
-    collapse?: Collapse,
-): FirstSelectedValue<Full, Selection> {
+): PickCollapsedSelection<Full, Selection> {
     const selected = selectFrom(originalObject, selectionSet);
 
-    return collapseObject(selected) as FirstSelectedValue<Full, Selection>;
+    return collapseObject(selected) as PickCollapsedSelection<Full, Selection>;
 }
 
 function collapseObject(input: AnyObject): AnyObject {
