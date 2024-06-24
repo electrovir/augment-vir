@@ -12,7 +12,7 @@ import {AnyObject} from './any-object';
 import {omitObjectKeys} from './filter-object';
 import {KeyCount} from './key-count';
 import {mapObjectValues} from './map-object';
-import {PropertyValueType} from './object';
+import {isObject, PropertyValueType} from './object';
 
 function shouldPreserve(input: unknown): input is SelectionTypesToPreserve {
     return isPrimitive(input) || input instanceof RegExp || input instanceof Promise;
@@ -134,10 +134,13 @@ export function selectCollapsedFrom<
 ): PickCollapsedSelection<Full, Selection> {
     const selected = selectFrom(originalObject, selectionSet);
 
-    return collapseObject(selected) as PickCollapsedSelection<Full, Selection>;
+    return collapseObject(selected, selectionSet) as PickCollapsedSelection<Full, Selection>;
 }
 
-function collapseObject(input: AnyObject): AnyObject {
+function collapseObject(
+    input: Readonly<AnyObject>,
+    selectionSet: Readonly<GenericSelectionSet> | PropertyValueType<GenericSelectionSet>,
+): AnyObject {
     if (shouldPreserve(input)) {
         return input;
     }
@@ -145,11 +148,11 @@ function collapseObject(input: AnyObject): AnyObject {
     const keys = Object.keys(input);
 
     if (Array.isArray(input)) {
-        return input.map((innerInput) => collapseObject(innerInput));
+        return input.map((innerInput) => collapseObject(innerInput, selectionSet));
     } else if (isLengthAtLeast(keys, 2)) {
         return input;
-    } else if (isLengthAtLeast(keys, 1)) {
-        return collapseObject(input[keys[0]]);
+    } else if (isLengthAtLeast(keys, 1) && isObject(selectionSet)) {
+        return collapseObject(input[keys[0]], (selectionSet as any)[keys[0]]);
     } else {
         return input;
     }

@@ -76,6 +76,28 @@ describe(selectCollapsedFrom.name, () => {
                 4,
             ],
         },
+        {
+            it: 'does not collapse past the selected object',
+            inputs: [
+                {
+                    entries: {
+                        one: {
+                            child: 1,
+                            child2: 2,
+                        },
+                    },
+                },
+                {
+                    entries: true,
+                },
+            ],
+            expect: {
+                one: {
+                    child: 1,
+                    child2: 2,
+                },
+            },
+        },
     ]);
 });
 
