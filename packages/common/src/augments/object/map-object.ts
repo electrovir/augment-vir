@@ -25,7 +25,7 @@ export function mapObjectValuesSync<EntireInputGeneric extends object>(
     function innerMap<OutputObjectGeneric extends object>(
         mapCallback: (
             inputKey: keyof EntireInputGeneric,
-            keyValue: EntireInputGeneric[typeof inputKey],
+            keyValue: Required<EntireInputGeneric>[typeof inputKey],
             fullObject: EntireInputGeneric,
         ) => never extends PropertyValueType<OutputObjectGeneric>
             ? any
@@ -57,7 +57,7 @@ export function mapObjectValues<EntireInputGeneric extends object, MappedValueGe
     inputObject: EntireInputGeneric,
     mapCallback: (
         inputKey: keyof EntireInputGeneric,
-        keyValue: EntireInputGeneric[typeof inputKey],
+        keyValue: Required<EntireInputGeneric>[typeof inputKey],
         fullObject: EntireInputGeneric,
     ) => MappedValueGeneric,
 ): MappedValues<EntireInputGeneric, MappedValueGeneric> {

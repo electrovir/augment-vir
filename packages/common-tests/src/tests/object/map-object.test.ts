@@ -26,6 +26,16 @@ describe(mapObjectValuesSync.name, () => {
         ).toEqualTypeOf<{thing: number}>();
     });
 
+    it('properly maps a partial object', () => {
+        mapObjectValuesSync<Partial<Record<1 | 2 | 3 | 4, string>>>({})<{thing: number}>(
+            (key, value) => {
+                assertTypeOf(value).toEqualTypeOf<string>();
+
+                return 4;
+            },
+        );
+    });
+
     it('should properly map', () => {
         const startingObject = {
             a: '4',
@@ -145,6 +155,19 @@ describe(mapObjectValues.name, () => {
             expect(Number(awaitedMappedObject[key])).to.deep.equal(originalObject[key]);
             expect(String(originalObject[key])).to.deep.equal(awaitedMappedObject[key]);
         });
+    });
+
+    it('properly maps a partial object', () => {
+        const result = mapObjectValues(
+            {} as Partial<Record<1 | 2 | 3 | 4, string>>,
+            (key, value): number => {
+                assertTypeOf(value).toEqualTypeOf<string>();
+
+                return 4;
+            },
+        );
+
+        assertTypeOf(result).toEqualTypeOf<Partial<Record<1 | 2 | 3 | 4, number>>>();
     });
 
     it('should preserve properties with complex value types', () => {
