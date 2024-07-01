@@ -26,7 +26,7 @@ export function getObjectTypedKeys<ObjectGeneric extends unknown>(
 
 export function getObjectTypedValues<ObjectGeneric extends unknown>(
     input: ObjectGeneric,
-): ObjectGeneric[keyof ObjectGeneric][] {
+): Required<ObjectGeneric>[keyof ObjectGeneric][] {
     return getObjectTypedKeys(input).map(
         (key) => input[key],
     ) as ObjectGeneric[keyof ObjectGeneric][];
@@ -34,7 +34,7 @@ export function getObjectTypedValues<ObjectGeneric extends unknown>(
 
 export function getObjectTypedEntries<ObjectGeneric extends unknown>(
     input: ObjectGeneric,
-): [keyof ObjectGeneric, ObjectGeneric[keyof ObjectGeneric]][] {
+): [keyof ObjectGeneric, Required<ObjectGeneric>[keyof ObjectGeneric]][] {
     return getObjectTypedKeys(input).map((key) => [
         key,
         input[key],

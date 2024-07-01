@@ -113,7 +113,7 @@ describe(getObjectTypedEntries.name, () => {
         },
     ]);
 
-    it('has proper types', () => {
+    it('merges all entries into unions', () => {
         const exampleObject = {
             hi: 'hi',
             bye: 5,
@@ -122,6 +122,20 @@ describe(getObjectTypedEntries.name, () => {
 
         assertTypeOf(getObjectTypedEntries(exampleObject)).toEqualTypeOf<
             ['bye' | 'hi' | 'somethingElse', string | number | RegExp][]
+        >();
+    });
+
+    it('handles optional properties', () => {
+        const exampleObject = {} as Partial<Record<Planet, string>>;
+
+        assertTypeOf(getObjectTypedEntries(exampleObject)).toEqualTypeOf<[Planet, string][]>();
+    });
+
+    it('handles nullable properties', () => {
+        const exampleObject = {} as Partial<Record<Planet, string | undefined>>;
+
+        assertTypeOf(getObjectTypedEntries(exampleObject)).toEqualTypeOf<
+            [Planet, string | undefined][]
         >();
     });
 });
@@ -180,6 +194,18 @@ describe(getObjectTypedValues.name, () => {
             ],
         },
     ]);
+
+    it('handles optional properties', () => {
+        const exampleObject = {} as Partial<Record<Planet, string>>;
+
+        assertTypeOf(getObjectTypedValues(exampleObject)).toEqualTypeOf<string[]>();
+    });
+
+    it('handles nullable properties', () => {
+        const exampleObject = {} as Partial<Record<Planet, string | undefined>>;
+
+        assertTypeOf(getObjectTypedValues(exampleObject)).toEqualTypeOf<(string | undefined)[]>();
+    });
 });
 
 describe(getEntriesSortedByKey.name, () => {
