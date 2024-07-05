@@ -9,11 +9,11 @@ export type {
 
 export function itCases<FunctionToTest extends AnyFunction>(
     functionToTest: FunctionToTest,
-    customAsserter: CustomAsserter<typeof functionToTest>,
     testCases: ReadonlyArray<FunctionTestCase<typeof functionToTest>>,
 ): unknown[];
 export function itCases<FunctionToTest extends AnyFunction>(
     functionToTest: FunctionToTest,
+    customAsserter: CustomAsserter<typeof functionToTest>,
     testCases: ReadonlyArray<FunctionTestCase<typeof functionToTest>>,
 ): unknown[];
 export function itCases<FunctionToTest extends AnyFunction>(

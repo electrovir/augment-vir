@@ -138,6 +138,57 @@ describe(getObjectTypedEntries.name, () => {
             [Planet, string | undefined][]
         >();
     });
+
+    it('includes optional properties in object values', () => {
+        const exampleObject = {} as Record<
+            string,
+            {
+                label: string;
+                description: string;
+                deps?: string[] | undefined;
+                hideFromUsers?: boolean | undefined;
+            }
+        >;
+
+        const entries = getObjectTypedEntries(exampleObject);
+
+        assertTypeOf(entries).toEqualTypeOf<
+            [
+                string,
+                {
+                    label: string;
+                    description: string;
+                    deps?: string[] | undefined;
+                    hideFromUsers?: boolean | undefined;
+                },
+            ][]
+        >();
+    });
+    it('includes optional properties in object values', () => {
+        const exampleObject = {} as Record<
+            string,
+            {
+                label: string;
+                description: string;
+                deps?: string[] | undefined;
+                hideFromUsers?: boolean | undefined;
+            }
+        >;
+
+        const entries = getObjectTypedEntries(exampleObject);
+
+        assertTypeOf(entries).toEqualTypeOf<
+            [
+                string,
+                {
+                    label: string;
+                    description: string;
+                    deps?: string[] | undefined;
+                    hideFromUsers?: boolean | undefined;
+                },
+            ][]
+        >();
+    });
 });
 
 describe(getObjectTypedKeys.name, () => {

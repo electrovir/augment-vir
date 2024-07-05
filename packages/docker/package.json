@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/docker",
-    "version": "29.1.6",
+    "version": "29.1.7",
     "homepage": "https://github.com/electrovir/augment-vir/tree/main/packages/docker",
     "bugs": {
         "url": "https://github.com/electrovir/augment-vir/issues"
@@ -22,8 +22,8 @@
         "test:coverage": "npm test"
     },
     "dependencies": {
-        "@augment-vir/common": "^29.1.6",
-        "@augment-vir/node-js": "^29.1.6"
+        "@augment-vir/common": "^29.1.7",
+        "@augment-vir/node-js": "^29.1.7"
     },
     "devDependencies": {
         "typescript": "5.5.2"
