@@ -82,7 +82,7 @@ export type SelectionSet<
     IsAny<Full> extends true
         ? any
         : Depth extends TsTooMuchRecursion
-          ? ['Error: recursive object depth is too deep.']
+          ? boolean
           : Full extends ReadonlyArray<infer FullChild extends AnyObject>
             ? SelectionSet<FullChild, TsRecurse<Depth>>
             : Partial<{
@@ -90,7 +90,11 @@ export type SelectionSet<
                       Exclude<Full[Key], SelectionTypesToPreserve>
                   > extends true
                       ? boolean
-                      : boolean | UnionToIntersection<SelectionSet<Full[Key], TsRecurse<Depth>>>;
+                      :
+                            | UnionToIntersection<
+                                  SelectionSet<NonNullable<Required<Full>[Key]>, TsRecurse<Depth>>
+                              >
+                            | boolean;
               }>;
 
 export function selectFrom<

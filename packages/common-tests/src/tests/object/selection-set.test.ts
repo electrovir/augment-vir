@@ -2,6 +2,7 @@ import {itCases} from '@augment-vir/chai';
 import {
     AnyObject,
     GenericSelectionSet,
+    PartialAndUndefined,
     PickCollapsedSelection,
     PickSelection,
     SelectionSet,
@@ -364,6 +365,16 @@ describe('SelectionSet', () => {
         }>();
     });
 
+    it('allows selecting into potentially undefined properties', () => {
+        const test: SelectionSet<PartialAndUndefined<{top: {mid: {low: string[]}}}>> = {
+            top: {
+                mid: {
+                    low: true,
+                },
+            },
+        };
+    });
+
     it('combines unions', () => {
         assertTypeOf<
             SelectionSet<{
@@ -439,6 +450,28 @@ describe('PickSelection', () => {
             };
         }>();
     });
+
+    it('allows selecting into potentially undefined properties', () => {
+        assertTypeOf<
+            PickSelection<
+                PartialAndUndefined<{top: {mid: {low: string[]}}}>,
+                {
+                    top: {
+                        mid: {
+                            low: true;
+                        };
+                    };
+                }
+            >
+        >().toEqualTypeOf<{
+            top:
+                | undefined
+                | {
+                      mid: {low: string[]};
+                  };
+        }>();
+    });
+
     it('selects through arrays', () => {
         assertTypeOf<
             PickSelection<
