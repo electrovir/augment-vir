@@ -1,3 +1,4 @@
+import {RemovePartial} from './object';
 import {typedHasProperty} from './typed-has-property';
 
 /** @deprecated This is the same as hasKey */
@@ -8,7 +9,7 @@ export function isKeyof<ObjectGeneric>(
     return typedHasProperty(object, key);
 }
 
-export function getObjectTypedKeys<ObjectGeneric extends unknown>(
+export function getObjectTypedKeys<ObjectGeneric>(
     input: ObjectGeneric,
 ): Array<keyof ObjectGeneric> {
     let reflectKeys: Array<keyof ObjectGeneric> | undefined;
@@ -24,21 +25,21 @@ export function getObjectTypedKeys<ObjectGeneric extends unknown>(
     );
 }
 
-export function getObjectTypedValues<ObjectGeneric extends unknown>(
+export function getObjectTypedValues<ObjectGeneric>(
     input: ObjectGeneric,
-): Required<ObjectGeneric>[keyof ObjectGeneric][] {
+): RemovePartial<ObjectGeneric>[keyof RemovePartial<ObjectGeneric>][] {
     return getObjectTypedKeys(input).map(
         (key) => input[key],
-    ) as ObjectGeneric[keyof ObjectGeneric][];
+    ) as RemovePartial<ObjectGeneric>[keyof RemovePartial<ObjectGeneric>][];
 }
 
-export function getObjectTypedEntries<ObjectGeneric extends unknown>(
+export function getObjectTypedEntries<ObjectGeneric>(
     input: ObjectGeneric,
-): [keyof ObjectGeneric, Required<ObjectGeneric>[keyof ObjectGeneric]][] {
+): [keyof ObjectGeneric, RemovePartial<ObjectGeneric>[keyof RemovePartial<ObjectGeneric>]][] {
     return getObjectTypedKeys(input).map((key) => [
         key,
         input[key],
-    ]) as [keyof ObjectGeneric, ObjectGeneric[keyof ObjectGeneric]][];
+    ]) as [keyof ObjectGeneric, RemovePartial<ObjectGeneric>[keyof RemovePartial<ObjectGeneric>]][];
 }
 
 export function getEntriesSortedByKey(input: object): [string, unknown][] {

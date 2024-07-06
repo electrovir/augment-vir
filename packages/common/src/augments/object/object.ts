@@ -32,3 +32,8 @@ export type ExtractKeysWithMatchingValues<OriginalObject extends object, Matcher
 export type ExcludeKeysWithMatchingValues<OriginalObject extends object, Matcher> = keyof {
     [Prop in keyof OriginalObject as OriginalObject[Prop] extends Matcher ? never : Prop]: Prop;
 };
+
+export type RemovePartial<Input> =
+    Input extends Partial<Record<infer K extends PropertyKey, infer V>>
+        ? Required<Record<K, V>>
+        : Required<Input>;

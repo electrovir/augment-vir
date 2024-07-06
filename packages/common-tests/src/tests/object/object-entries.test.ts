@@ -126,9 +126,15 @@ describe(getObjectTypedEntries.name, () => {
     });
 
     it('handles optional properties', () => {
-        const exampleObject = {} as Partial<Record<Planet, string>>;
+        const example = {} as Partial<Record<Planet, string>>;
 
-        assertTypeOf(getObjectTypedEntries(exampleObject)).toEqualTypeOf<[Planet, string][]>();
+        assertTypeOf(getObjectTypedEntries(example)).toEqualTypeOf<[Planet, string][]>();
+
+        const example2 = {} as Partial<{
+            [x in string]: RegExp;
+        }>;
+
+        assertTypeOf(getObjectTypedEntries(example2)).toEqualTypeOf<[string, RegExp][]>();
     });
 
     it('handles nullable properties', () => {
@@ -250,6 +256,12 @@ describe(getObjectTypedValues.name, () => {
         const exampleObject = {} as Partial<Record<Planet, string>>;
 
         assertTypeOf(getObjectTypedValues(exampleObject)).toEqualTypeOf<string[]>();
+
+        const example2 = {} as Partial<{
+            [x in string]: RegExp;
+        }>;
+
+        assertTypeOf(getObjectTypedValues(example2)).toEqualTypeOf<RegExp[]>();
     });
 
     it('handles nullable properties', () => {
