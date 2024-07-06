@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/common",
-    "version": "29.1.9",
+    "version": "29.1.10",
     "homepage": "https://github.com/electrovir/augment-vir/tree/main/packages/common",
     "bugs": {
         "url": "https://github.com/electrovir/augment-vir/issues"
@@ -26,7 +26,7 @@
     "dependencies": {
         "browser-or-node": "^3.0.0",
         "run-time-assertions": "^1.5.1",
-        "type-fest": "^4.20.1"
+        "type-fest": "^4.21.0"
     },
     "devDependencies": {
         "typescript": "5.5.2"

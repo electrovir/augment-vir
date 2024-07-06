@@ -34,7 +34,11 @@ describe('GenericSelectionSet', () => {
 });
 
 describe(selectCollapsedFrom.name, () => {
-    itCases(selectCollapsedFrom<any, any>, [
+    function testSelectCollapsedFrom(full: AnyObject, selection: GenericSelectionSet) {
+        return selectCollapsedFrom(full, selection) as any;
+    }
+
+    itCases(testSelectCollapsedFrom, [
         {
             it: 'collapses a selection',
             inputs: [
@@ -99,7 +103,110 @@ describe(selectCollapsedFrom.name, () => {
                 },
             },
         },
+        {
+            it: 'handles an undefined mid-value',
+            inputs: [
+                {
+                    hi: 'hi',
+                    bye: 3,
+                    parent: {
+                        child: undefined,
+                        child2: {
+                            grandChild: {
+                                child: 'hi',
+                                child2: 4,
+                                child3: /something/,
+                            },
+                        },
+                    },
+                },
+                {
+                    parent: {
+                        child: {
+                            grandChild: {
+                                child2: true,
+                            },
+                        },
+                    },
+                },
+            ],
+            expect: undefined,
+        },
+        {
+            it: 'handles an undefined mid-value in array',
+            inputs: [
+                {
+                    hi: 'hi',
+                    bye: 3,
+                    parent: [
+                        {
+                            child: undefined,
+                        },
+                        {
+                            child: {
+                                grandChild: {
+                                    child: 'hi',
+                                    child2: 4,
+                                    child3: /something/,
+                                },
+                            },
+                        },
+                    ],
+                },
+                {
+                    parent: {
+                        child: {
+                            grandChild: {
+                                child2: true,
+                            },
+                        },
+                    },
+                },
+            ],
+            expect: [
+                undefined,
+                4,
+            ],
+        },
     ]);
+
+    it('has proper types', () => {
+        assertTypeOf(
+            selectCollapsedFrom(
+                {
+                    hi: 'hi',
+                    bye: 3,
+                    parent: {
+                        child: undefined as
+                            | undefined
+                            | {
+                                  grandChild: {
+                                      child: string;
+                                      child2: number;
+                                      child3: RegExp;
+                                  };
+                              },
+                        child2: {
+                            grandChild: {
+                                child: 'hi',
+                                child2: 4,
+                                child3: /something/,
+                            },
+                        },
+                    },
+                },
+                {
+                    parent: {
+                        child: {
+                            grandChild: {
+                                child2: true,
+                            },
+                        },
+                    },
+                },
+            ),
+        ).toEqualTypeOf<number | undefined>();
+    });
 });
 
 describe(selectFrom.name, () => {
@@ -566,6 +673,35 @@ describe('PickCollapsedSelection', () => {
             };
         }>();
     });
+
+    it('allows selecting into potentially undefined properties', () => {
+        assertTypeOf<
+            PickCollapsedSelection<
+                {top: {mid: {low: string[]}}},
+                {
+                    top: {
+                        mid: {
+                            low: true;
+                        };
+                    };
+                }
+            >
+        >().toEqualTypeOf<string[]>();
+
+        assertTypeOf<
+            PickCollapsedSelection<
+                PartialAndUndefined<{top: {mid: {low: string[]}}}>,
+                {
+                    top: {
+                        mid: {
+                            low: true;
+                        };
+                    };
+                }
+            >
+        >().toEqualTypeOf<undefined | string[]>();
+    });
+
     it('collapses to a primitive', () => {
         assertTypeOf<
             PickCollapsedSelection<

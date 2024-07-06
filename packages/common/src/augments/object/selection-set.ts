@@ -12,7 +12,7 @@ import {AnyObject} from './any-object';
 import {omitObjectKeys} from './filter-object';
 import {KeyCount} from './key-count';
 import {mapObjectValues} from './map-object';
-import {isObject, PropertyValueType} from './object';
+import {ExcludeEmpty, isObject, PropertyValueType} from './object';
 
 function shouldPreserve(input: unknown): input is SelectionTypesToPreserve {
     return isPrimitive(input) || input instanceof RegExp || input instanceof Promise;
@@ -64,13 +64,15 @@ export type PickCollapsedSelection<
     Depth extends TsRecursionTracker = TsRecursionStart,
 > = Depth extends TsTooMuchRecursion
     ? 'Error: recursive object depth is too deep.'
-    : KeyCount<PickSelection<Full, Selection, Depth>> extends 1
+    : KeyCount<ExcludeEmpty<NonNullable<PickSelection<Full, Selection, Depth>>>> extends 1
       ? Selection[keyof PickSelection<Full, Selection, Depth>] extends GenericSelectionSet
-          ? PickCollapsedSelection<
-                Full[keyof PickSelection<Full, Selection, Depth>],
-                Selection[keyof PickSelection<Full, Selection, Depth>],
-                TsRecurse<Depth>
-            >
+          ?
+                | PickCollapsedSelection<
+                      NonNullable<Full[keyof PickSelection<Full, Selection, Depth>]>,
+                      Selection[keyof PickSelection<Full, Selection, Depth>],
+                      TsRecurse<Depth>
+                  >
+                | Extract<Full[keyof PickSelection<Full, Selection, Depth>], undefined | null>
           : PropertyValueType<PickSelection<Full, Selection, Depth>>
       : PickSelection<Full, Selection, Depth>;
 
@@ -121,6 +123,8 @@ export function selectFrom<
             } else if (!selection) {
                 keysToRemove.push(key);
                 return undefined;
+            } else if (shouldPreserve(value)) {
+                return value;
             } else {
                 return selectFrom(value, selection);
             }

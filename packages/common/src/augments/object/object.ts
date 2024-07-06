@@ -1,4 +1,4 @@
-import {Writable} from 'type-fest';
+import {RequireAtLeastOne, Writable} from 'type-fest';
 
 export type PartialAndNullable<T extends object> = {
     [Prop in keyof T]?: T[Prop] | null | undefined;
@@ -37,3 +37,6 @@ export type RemovePartial<Input> =
     Input extends Partial<Record<infer K extends PropertyKey, infer V>>
         ? Required<Record<K, V>>
         : Required<Input>;
+
+/** Excludes empty objects from a union. */
+export type ExcludeEmpty<T> = T extends RequireAtLeastOne<T> ? T : never;
