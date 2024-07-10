@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/prisma-node-js",
-    "version": "29.2.0",
+    "version": "29.3.0",
     "homepage": "https://github.com/electrovir/augment-vir/tree/main/packages/prisma-node-js",
     "bugs": {
         "url": "https://github.com/electrovir/augment-vir/issues"
@@ -22,8 +22,8 @@
         "test:coverage": "npm test"
     },
     "dependencies": {
-        "@augment-vir/common": "^29.2.0",
-        "@augment-vir/node-js": "^29.2.0",
+        "@augment-vir/common": "^29.3.0",
+        "@augment-vir/node-js": "^29.3.0",
         "type-fest": "^4.20.1"
     },
     "devDependencies": {

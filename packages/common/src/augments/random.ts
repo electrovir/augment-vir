@@ -63,11 +63,6 @@ export function randomBoolean(percentLikelyToBeTrue: number = 50): boolean {
     );
 }
 
-/** Creates a cryptographically secure uuid. */
-export function createUuid() {
-    return crypto.randomUUID();
-}
-
 const validStringCharacters = [
     'a',
     'b',
