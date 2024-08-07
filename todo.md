@@ -1,0 +1,14 @@
+-   make a snapshot function in `@augment-vir/test` that supports both Node.js's built-in test runner's snapshot testing as well as something that works in web-test-runner.
+-   fill in package.json descriptions
+-   split `date-vir` into a mono-repo with a separate durations package that can be used in augment-vir without creating circular package dependencies
+    -   fix in the following:
+    -   `wrapPromiseInTimeout`
+    -   `wait`
+    -   `waitValue`
+    -   `waitUntilTruthy`
+    -   `Debounce`
+    -   `measureExecutionDuration`
+-   convert `Debounce` into an ListenTarget and emit events when:
+    -   execute is called with no callback
+    -   the callback is triggered
+    -   the callback is skipped
