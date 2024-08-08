@@ -1,0 +1,46 @@
+## @augment-vir/common
+
+-   `flatten2dArray`: removed. Use [`[].flat()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flat).
+-   `typedArrayIncludes`: moved to `@augment-vir/assert`.
+-   `arrayToObject`: the callback must now provide both key and value.
+-   `getEnumTypedValues`: renamed to `getEnumValues`.
+-   `getEnumTypedKeys`: removed. Use `getEnumValues` instead.
+-   `ensureEnum`: renamed to `ensureEnumValue`. The type signature was also changed.
+-   `hasKey`: moved to `@augment-vir/assert`.
+-   `isKeyof`: moved to `@augment-vir/assert`.
+-   `PartialAndNullable`: renamed to `PartialWithNullable`.
+-   `PartialAndUndefined`: renamed to `PartialWithUndefined`.
+-   `isObject`: moved to `@augment-vir/assert`.
+-   `PropertyValueType`: renamed to `Values`.
+-   `RemovePartial`: improved and renamed to `CompleteRequire`.
+-   `PickDeep`: removed. Use `PickSelection` instead.
+-   `typedHasProperty`: removed. Use `hasProperty` from `@augment-vir/assert` instead.
+-   `typedHasProperties`: removed. Use `hasProperties` from `@augment-vir/assert` instead.
+-   `createDeferredPromiseWrapper`: refactored into a class: `DeferredPromise`.
+-   `isPromiseLike`: moved to `@augment-vir/assert`.
+-   `executeWithRetries`: renamed to `callWithRetries`.
+-   `waitUntilTruthy`: removed. Use `untilTruthy` from `@augment-vir/assert` instead.
+-   `isUuid`: moved to `@augment-vir/assert`.
+-   `ansiRegex`: renamed to `ansiRegExp`.
+-   `isTruthy`: moved to `@augment-vir/assert`.
+-   `ifTruthy`: moved to `@augment-vir/assert`.
+-   `isFalsy`: moved to `@augment-vir/assert`.
+-   `ensureMinAndMax`: renamed to `ensureMinMax`
+-   `convertIntoNumber`: removed. Use `toNumber`.
+-   `removeCommasFromNumberString`: renamed to `removeCommas`.
+-   `getAllIndexesOf`: renamed to `getSubstringIndexes`.
+-   `typedSplit`: renamed to `safeSplit`.
+-   `createDebounce`: refactored into a class, `Debounce`.
+-   `isBrowser`: removed. Use `@augment-vir/env` instead.
+-   `timeCallback`: renamed to `measureExecutionDuration`.
+-   `isLengthAtLeast`: moved to `@augment-vir/assert`.
+-   `assertLengthAtLeast`: moved to `@augment-vir/assert`.
+-   `Writeable`: renamed to `Writable`.
+-   `DeepWriteable`: renamed to `WritableDeep`.
+-   `RequiredBy`: renamed to `SetRequired`.
+-   `RequiredAndNotNullBy`: renamed to `SetRequiredAndNotNull`.
+-   `IfEquals`: moved to `@augment-vir/assert`.
+-   `wrapNarrowTypeWithTypeCheck`: removed. Use TypeScript's built-in [`satisfies`](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-9.html#the-satisfies-operator) instead.
+-   `NoInfer`: removed. Use TypeScript's built-in [`NoInfer`](https://devblogs.microsoft.com/typescript/announcing-typescript-5-4/#the-noinfer-utility-type) instead, with a default type parameter of `never`.
+-   `Public`: removed.
+-   `UnionToIntersection`: removed. Import from [`type-fest`](https://www.npmjs.com/package/type-fest) instead.
