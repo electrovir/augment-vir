@@ -12,3 +12,9 @@
     -   execute is called with no callback
     -   the callback is triggered
     -   the callback is skipped
+-   deprecate run-time-assertions
+    -   create new `@augment-vir/assert` package
+    -   move all run-time-assertions into there
+    -   merge everything under a single `assert` object, like chai
+    -   include chai assertions
+    -   re-export this in `@augment-vir/test` like we're currently doing for chai
