@@ -29,6 +29,7 @@
     "dependencies": {
         "@augment-vir/assert": "^30.0.0",
         "@augment-vir/env": "^30.0.0",
+        "@date-vir/duration": "^6.0.0",
         "json5": "^2.2.3",
         "run-time-assertions": "^1.5.2",
         "type-fest": "^4.24.0"

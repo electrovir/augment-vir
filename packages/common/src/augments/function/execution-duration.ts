@@ -1,4 +1,7 @@
+import {Duration, DurationUnit} from '@date-vir/duration';
 import {ensureError} from '../error/ensure-error.js';
+
+export type ExecutionDuration = Duration<DurationUnit.Milliseconds>;
 
 /**
  * Measures how long (in milliseconds) the given callback takes to run to completion. Automatically
@@ -7,13 +10,13 @@ import {ensureError} from '../error/ensure-error.js';
  */
 export function measureExecutionDuration<T>(
     callback: () => T,
-): T extends Promise<any> ? Promise<{milliseconds: number}> : {milliseconds: number} {
+): T extends Promise<any> ? Promise<ExecutionDuration> : ExecutionDuration {
     const startTime = Date.now();
 
     const result = callback();
 
     if (result instanceof Promise) {
-        return new Promise<{milliseconds: number}>(async (resolve, reject) => {
+        return new Promise<ExecutionDuration>(async (resolve, reject) => {
             try {
                 await result;
                 const endTime = Date.now();
@@ -21,11 +24,11 @@ export function measureExecutionDuration<T>(
             } catch (caught) {
                 reject(ensureError(caught));
             }
-        }) as T extends Promise<any> ? Promise<{milliseconds: number}> : {milliseconds: number};
+        }) as T extends Promise<any> ? Promise<ExecutionDuration> : ExecutionDuration;
     }
 
     const endTime = Date.now();
     return {
         milliseconds: endTime - startTime,
-    } as T extends Promise<any> ? Promise<{milliseconds: number}> : {milliseconds: number};
+    } as T extends Promise<any> ? Promise<ExecutionDuration> : ExecutionDuration;
 }

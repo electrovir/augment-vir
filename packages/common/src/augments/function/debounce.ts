@@ -1,3 +1,4 @@
+import {AnyDuration, convertDuration, DurationUnit} from '@date-vir/duration';
 import {MaybePromise} from '../promise/maybe-promise.js';
 
 export enum DebounceStyle {
@@ -20,7 +21,7 @@ export class Debounce {
 
     constructor(
         public debounceStyle: DebounceStyle,
-        public debounceDuration: {milliseconds: number},
+        public debounceDuration: AnyDuration,
         callback?: typeof this.latestCallback | undefined,
     ) {
         if (callback) {
@@ -47,6 +48,7 @@ export class Debounce {
                 void this.latestCallback?.();
             }, this.debounceDuration.milliseconds);
         }
-        this.nextCallTimestamp = now + this.debounceDuration.milliseconds;
+        this.nextCallTimestamp =
+            now + convertDuration(this.debounceDuration, DurationUnit.Milliseconds).milliseconds;
     }
 }

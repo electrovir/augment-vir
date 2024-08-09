@@ -28,6 +28,7 @@
         "test:update": "npm test"
     },
     "dependencies": {
+        "@date-vir/duration": "^6.0.0",
         "@types/chai": "^4.3.17",
         "chai": "^5.1.1"
     },

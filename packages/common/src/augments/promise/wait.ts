@@ -1,14 +1,16 @@
+import {AnyDuration, convertDuration, DurationUnit} from '@date-vir/duration';
 import {DeferredPromise} from './deferred-promise.js';
 
-export function wait(delayMs: number): Promise<void> {
+export function wait(duration: Readonly<AnyDuration>): Promise<void> {
     const deferredPromise = new DeferredPromise();
+    const milliseconds = convertDuration(duration, DurationUnit.Milliseconds).milliseconds;
 
-    if (delayMs !== Infinity) {
+    if (milliseconds !== Infinity) {
         setTimeout(
             () => {
                 deferredPromise.resolve();
             },
-            delayMs <= 0 ? 0 : delayMs,
+            milliseconds <= 0 ? 0 : milliseconds,
         );
     }
 
@@ -16,8 +18,8 @@ export function wait(delayMs: number): Promise<void> {
 }
 
 export async function waitValue<ResolutionValue>(
-    delayMs: number,
+    duration: Readonly<AnyDuration>,
     returnValue: ResolutionValue,
 ): Promise<ResolutionValue> {
-    return wait(delayMs).then(() => returnValue);
+    return wait(duration).then(() => returnValue);
 }

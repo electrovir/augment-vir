@@ -1,23 +1,12 @@
 -   make a snapshot function in `@augment-vir/test` that supports both Node.js's built-in test runner's snapshot testing as well as something that works in web-test-runner.
 -   fill in package.json descriptions
--   split `date-vir` into a mono-repo with a separate durations package that can be used in augment-vir without creating circular package dependencies
-    -   fix in the following:
-    -   `wrapPromiseInTimeout`
-    -   `wait`
-    -   `waitValue`
-    -   `waitUntilTruthy`
-    -   `Debounce`
-    -   `measureExecutionDuration`
 -   convert `Debounce` into an ListenTarget and emit events when:
     -   execute is called with no callback
     -   the callback is triggered
     -   the callback is skipped
 -   deprecate run-time-assertions
-    -   create new `@augment-vir/assert` package
-    -   move all run-time-assertions into there
+    -   move all run-time-assertions into `@augment-vir/assert`
     -   merge everything under a single `assert` object, like chai
-    -   include chai assertions
-    -   re-export this in `@augment-vir/test` like we're currently doing for chai
 -   add a function to `@augment-vir/assert` that takes an assert function input and then spits out:
     -   an `is*` function that returns a type guard
     -   an `asserts*` function that returns a assert guard
@@ -27,4 +16,5 @@
         -   `to*`: converts directly maybe with invalid outputs
         -   `toMaybe*`: converts directly or undefined if error
         -   `toEnsured*` converts and errors if invalid
-        -
+-   add `mapObject` which accepts a callback that returns mapped value _and_ key.
+-   finish updating `date-vir`
