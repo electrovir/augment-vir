@@ -1,7 +1,7 @@
-import {assert, describe} from '@augment-vir/test';
+import {assert, describe, it} from '@augment-vir/test';
 import {allowedRandomStringLetters, randomString} from './random-string.js';
 
-describe(randomString.name, ({it}) => {
+describe(randomString.name, () => {
     it('produces unique strings', () => {
         const randomStrings = new Array(100).fill(0).map(() => {
             return randomString();

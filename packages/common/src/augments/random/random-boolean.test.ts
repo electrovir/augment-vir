@@ -1,7 +1,7 @@
-import {assert, describe} from '@augment-vir/test';
+import {assert, describe, itCases} from '@augment-vir/test';
 import {randomBoolean} from './random-boolean.js';
 
-describe(randomBoolean.name, ({itCases}) => {
+describe(randomBoolean.name, () => {
     itCases(
         (likelyTrue?: number) => {
             const counts = {

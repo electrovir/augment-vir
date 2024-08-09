@@ -1,8 +1,8 @@
-import {describe} from '@augment-vir/test';
+import {describe, it} from '@augment-vir/test';
 import {assertTypeOf} from 'run-time-assertions';
 import {TypedFunction} from './typed-function-type.js';
 
-describe('TypedFunction', ({it}) => {
+describe('TypedFunction', () => {
     it('properly assigns a single argument and a return type', () => {
         assertTypeOf<TypedFunction<string, number>>().toEqualTypeOf<(input: string) => number>();
         assertTypeOf<TypedFunction<undefined, number>>().toEqualTypeOf<

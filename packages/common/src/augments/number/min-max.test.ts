@@ -1,7 +1,7 @@
-import {describe} from '@augment-vir/test';
+import {describe, itCases} from '@augment-vir/test';
 import {ensureMinMax} from './min-max.js';
 
-describe(ensureMinMax.name, ({itCases}) => {
+describe(ensureMinMax.name, () => {
     itCases(ensureMinMax, [
         {
             it: 'returns correctly ordered min and max unchanged',

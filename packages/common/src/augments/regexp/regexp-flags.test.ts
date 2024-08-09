@@ -1,7 +1,7 @@
-import {describe} from '@augment-vir/test';
+import {describe, itCases} from '@augment-vir/test';
 import {addRegExpFlags, deDupeRegExFlags} from './regexp-flags.js';
 
-describe(deDupeRegExFlags.name, ({itCases}) => {
+describe(deDupeRegExFlags.name, () => {
     itCases(deDupeRegExFlags, [
         {
             it: 'deDupes consecutive flags',
@@ -16,7 +16,7 @@ describe(deDupeRegExFlags.name, ({itCases}) => {
     ]);
 });
 
-describe(addRegExpFlags.name, ({itCases}) => {
+describe(addRegExpFlags.name, () => {
     function testAddingRegExpFlags(...args: Parameters<typeof addRegExpFlags>) {
         const regExp = addRegExpFlags(...args);
         return regExp.flags;

@@ -1,7 +1,7 @@
-import {describe} from '@augment-vir/test';
+import {describe, itCases} from '@augment-vir/test';
 import {replaceStringAtIndex} from './replace.js';
 
-describe(replaceStringAtIndex.name, ({itCases, it}) => {
+describe(replaceStringAtIndex.name, () => {
     const exampleString = 'race the race';
 
     itCases(replaceStringAtIndex, [

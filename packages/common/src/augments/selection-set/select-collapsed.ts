@@ -1,5 +1,5 @@
+import {isLengthAtLeast} from '@augment-vir/assert';
 import {isSomeObject} from 'run-time-assertions';
-import {isLengthAtLeast} from '../array/at-least-length.js';
 import {ExcludeEmpty} from '../object/empty.js';
 import {AnyObject} from '../object/generic-object-type.js';
 import {KeyCount} from '../object/key-count.js';

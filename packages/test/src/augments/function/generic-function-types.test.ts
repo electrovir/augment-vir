@@ -1,9 +1,9 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import {assertTypeOf} from 'run-time-assertions';
 import {describe} from '../universal-testing-suite/universal-describe.js';
+import {it} from '../universal-testing-suite/universal-it.js';
 import {TypedFunction} from './generic-function-types.js';
 
-describe('TypedFunction', ({it}) => {
+describe('TypedFunction', () => {
     it('properly assigns a single argument and a return type', () => {
         assertTypeOf<TypedFunction<string, number>>().toEqualTypeOf<(input: string) => number>();
         assertTypeOf<TypedFunction<undefined, number>>().toEqualTypeOf<

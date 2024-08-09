@@ -1,6 +1,6 @@
-import {assert, describe, extractErrorMessage} from '@augment-vir/test';
+import {assert, describe, extractErrorMessage, it} from '@augment-vir/test';
 
-describe(extractErrorMessage.name, ({it}) => {
+describe(extractErrorMessage.name, () => {
     it('should extract message from error object', () => {
         assert.strictEqual(extractErrorMessage(new Error('hello there')), 'hello there');
     });

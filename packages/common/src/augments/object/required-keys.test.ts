@@ -1,9 +1,9 @@
+import {describe, it} from '@augment-vir/test';
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import {describe} from '@augment-vir/test';
 import {assertTypeOf} from 'run-time-assertions';
 import {CompleteRequire, RequiredAndNotNull, SetRequiredAndNotNull} from './required-keys.js';
 
-describe('CompleteRequire', ({it}) => {
+describe('CompleteRequire', () => {
     it('requires an indexed key', () => {
         assertTypeOf<CompleteRequire<Partial<Record<any, string>>>['hi']>().toEqualTypeOf<string>();
     });
@@ -13,7 +13,7 @@ describe('CompleteRequire', ({it}) => {
     });
 });
 
-describe('SetRequiredAndNotNull', ({it}) => {
+describe('SetRequiredAndNotNull', () => {
     const allDefined: CompleteRequire<Partial<Record<'hello' | 'yes', string>>> = {
         hello: 'there',
         yes: 'I would like one',
@@ -32,7 +32,7 @@ describe('SetRequiredAndNotNull', ({it}) => {
     });
 });
 
-describe('RequiredAndNotNull', ({it}) => {
+describe('RequiredAndNotNull', () => {
     it('has proper types', () => {
         const allDefined: RequiredAndNotNull<Partial<Record<'hello' | 'yes', string>>> = {
             hello: 'there',

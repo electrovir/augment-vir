@@ -1,7 +1,7 @@
-import {describe} from '@augment-vir/test';
+import {describe, itCases} from '@augment-vir/test';
 import {joinWithFinalConjunction} from './join.js';
 
-describe(joinWithFinalConjunction.name, ({itCases}) => {
+describe(joinWithFinalConjunction.name, () => {
     itCases(joinWithFinalConjunction, [
         {
             it: 'should return empty string when given an empty array',

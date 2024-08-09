@@ -1,7 +1,7 @@
-import {describe} from '@augment-vir/test';
+import {describe, itCases} from '@augment-vir/test';
 import {capitalizeFirstLetter} from './capitalization.js';
 
-describe(capitalizeFirstLetter.name, ({itCases}) => {
+describe(capitalizeFirstLetter.name, () => {
     itCases(capitalizeFirstLetter<any>, [
         {
             it: 'should capitalize a normal word',

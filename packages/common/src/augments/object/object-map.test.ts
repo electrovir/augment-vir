@@ -1,6 +1,7 @@
+import {describe, it} from '@augment-vir/test';
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
-import {assert, describe} from '@augment-vir/test';
+import {assert} from '@augment-vir/test';
 import {assertThrows, assertTypeOf} from 'run-time-assertions';
 import {waitValue} from '../promise/wait.js';
 import {randomString} from '../random/random-string.js';
@@ -8,7 +9,7 @@ import {getObjectTypedKeys} from './object-keys.js';
 import {mapObjectValues, mapObjectValuesSync} from './object-map.js';
 import {Values} from './object-values.js';
 
-describe(mapObjectValuesSync.name, ({it}) => {
+describe(mapObjectValuesSync.name, () => {
     it('should have proper types', () => {
         assert.notInstanceOf(
             mapObjectValuesSync({thing: 5})(async () => {
@@ -51,7 +52,7 @@ describe(mapObjectValuesSync.name, ({it}) => {
     });
 });
 
-describe(mapObjectValues.name, ({it}) => {
+describe(mapObjectValues.name, () => {
     function onlyAcceptNumbers(input: number): void {}
     function onlyAcceptStrings(input: string): void {}
 

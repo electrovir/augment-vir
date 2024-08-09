@@ -1,10 +1,9 @@
-import {ArrayElement} from './array-element.js';
-import {AtLeastTuple} from './tuple.js';
+import {Tuple} from './tuple.js';
 
-export type AtLeastOneEntryArray<ArrayGeneric extends ReadonlyArray<any>> = AtLeastTuple<
-    ArrayElement<ArrayGeneric>,
-    1
->;
+export type AtLeastTuple<ArrayElementGeneric, LengthGeneric extends number> = readonly [
+    ...Tuple<ArrayElementGeneric, LengthGeneric>,
+    ...ArrayElementGeneric[],
+];
 
 export function isLengthAtLeast<ArrayElementGeneric, LengthGeneric extends number>(
     array: ReadonlyArray<ArrayElementGeneric | undefined>,

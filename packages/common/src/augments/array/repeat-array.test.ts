@@ -1,7 +1,7 @@
-import {assert, describe} from '@augment-vir/test';
+import {assert, describe, it, itCases} from '@augment-vir/test';
 import {repeatArray} from './repeat-array.js';
 
-describe(repeatArray.name, ({itCases, it}) => {
+describe(repeatArray.name, () => {
     itCases(repeatArray, [
         {
             it: 'does nothing with an empty array',

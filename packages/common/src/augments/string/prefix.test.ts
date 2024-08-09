@@ -1,7 +1,7 @@
-import {describe} from '@augment-vir/test';
+import {describe, itCases} from '@augment-vir/test';
 import {addPrefix, removePrefix} from './prefix.js';
 
-describe(addPrefix.name, ({itCases}) => {
+describe(addPrefix.name, () => {
     itCases(addPrefix, [
         {
             it: 'adds a simple prefix',
@@ -14,7 +14,7 @@ describe(addPrefix.name, ({itCases}) => {
     ]);
 });
 
-describe(removePrefix.name, ({itCases}) => {
+describe(removePrefix.name, () => {
     itCases(removePrefix, [
         {
             it: 'removes a simple prefix',

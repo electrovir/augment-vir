@@ -1,10 +1,10 @@
-import {assert, describe} from '@augment-vir/test';
+import {assert, describe, it} from '@augment-vir/test';
 import {measureExecutionDuration} from '../../function/execution-duration.js';
 import {wait} from '../../promise/wait.js';
 import {randomString} from '../../random/random-string.js';
 import {awaitedBlockingMap} from './awaited-map.js';
 
-describe(awaitedBlockingMap.name, ({it}) => {
+describe(awaitedBlockingMap.name, () => {
     it('returns values and maintain execution order', async () => {
         const originalArray: string[] = new Array(5).fill(0).map(() => randomString());
         let totalWait = 0;

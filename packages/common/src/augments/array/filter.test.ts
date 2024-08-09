@@ -1,8 +1,8 @@
-import {assert, describe, isTruthy} from '@augment-vir/test';
+import {assert, describe, isTruthy, it, itCases} from '@augment-vir/test';
 import {assertTypeOf} from 'run-time-assertions';
 import {filterMap, filterOutIndexes} from './filter.js';
 
-describe(filterOutIndexes.name, ({itCases, it}) => {
+describe(filterOutIndexes.name, () => {
     const exampleArray = [
         'a',
         'b',
@@ -63,7 +63,7 @@ describe(filterOutIndexes.name, ({itCases, it}) => {
     });
 });
 
-describe(filterMap.name, ({itCases, it}) => {
+describe(filterMap.name, () => {
     itCases(filterMap, [
         {
             it: 'handles an empty array',

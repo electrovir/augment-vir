@@ -1,7 +1,7 @@
-import {describe} from '@augment-vir/test';
+import {describe, itCases} from '@augment-vir/test';
 import {collapseWhiteSpace} from './white-space.js';
 
-describe(collapseWhiteSpace.name, ({itCases}) => {
+describe(collapseWhiteSpace.name, () => {
     itCases(collapseWhiteSpace, [
         {
             it: 'works with single repeating spaces',

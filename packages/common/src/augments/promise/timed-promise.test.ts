@@ -1,4 +1,4 @@
-import {assert, describe} from '@augment-vir/test';
+import {assert, describe, it} from '@augment-vir/test';
 import {assertInstanceOf, assertThrows} from 'run-time-assertions';
 import {randomString} from '../random/random-string.js';
 import {DeferredPromise} from './deferred-promise.js';
@@ -7,7 +7,7 @@ import {PromiseTimeoutError, wrapPromiseInTimeout} from './timed-promise.js';
 // increase if tests are flaky in other environments, like GitHub Actions (which is typically slow)
 const promiseDelayMs = 500;
 
-describe(wrapPromiseInTimeout.name, ({it}) => {
+describe(wrapPromiseInTimeout.name, () => {
     it('should not reject a promise when it is resolved in time', async () => {
         const startTime = Date.now();
         const deferredPromiseWrapper = new DeferredPromise<number>();

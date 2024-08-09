@@ -1,9 +1,9 @@
-import {describe} from '@augment-vir/test';
+import {describe, it} from '@augment-vir/test';
 import {assertTypeOf} from 'run-time-assertions';
 import {AnyObject} from './generic-object-type.js';
 import {KeyCount} from './key-count.js';
 
-describe('KeyCount', ({it}) => {
+describe('KeyCount', () => {
     it('counts keys', () => {
         assertTypeOf<KeyCount<Record<'a' | 'b' | 'c' | 'd', any>>>().toEqualTypeOf<4>();
         const value = {a: 'hi', b: 'c'};

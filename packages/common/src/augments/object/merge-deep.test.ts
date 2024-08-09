@@ -1,7 +1,7 @@
-import {describe} from '@augment-vir/test';
+import {describe, itCases} from '@augment-vir/test';
 import {mergeDeep} from './merge-deep.js';
 
-describe(mergeDeep.name, ({itCases}) => {
+describe(mergeDeep.name, () => {
     itCases(mergeDeep, [
         {
             it: 'returns an empty object is no inputs are given',

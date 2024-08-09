@@ -18,3 +18,13 @@
     -   merge everything under a single `assert` object, like chai
     -   include chai assertions
     -   re-export this in `@augment-vir/test` like we're currently doing for chai
+-   add a function to `@augment-vir/assert` that takes an assert function input and then spits out:
+    -   an `is*` function that returns a type guard
+    -   an `asserts*` function that returns a assert guard
+    -   an `ensure*` function that returns the input or errors if it fails the assertion (maybe?)
+    -   other things?
+    -   do the the same thing for conversions, but have them spit out:
+        -   `to*`: converts directly maybe with invalid outputs
+        -   `toMaybe*`: converts directly or undefined if error
+        -   `toEnsured*` converts and errors if invalid
+        -

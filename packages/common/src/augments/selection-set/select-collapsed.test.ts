@@ -1,11 +1,11 @@
-import {describe} from '@augment-vir/test';
+import {describe, it, itCases} from '@augment-vir/test';
 import {assertTypeOf} from 'run-time-assertions';
 import {AnyObject} from '../object/generic-object-type.js';
 import {PartialWithUndefined} from '../object/partial-type.js';
 import {PickCollapsedSelection, selectCollapsedFrom} from './select-collapsed.js';
 import {GenericSelectionSet} from './selection-set.js';
 
-describe(selectCollapsedFrom.name, ({itCases, it}) => {
+describe(selectCollapsedFrom.name, () => {
     function testSelectCollapsedFrom(full: AnyObject, selection: GenericSelectionSet) {
         return selectCollapsedFrom(full, selection) as any;
     }
@@ -181,7 +181,7 @@ describe(selectCollapsedFrom.name, ({itCases, it}) => {
     });
 });
 
-describe('PickCollapsedSelection', ({it}) => {
+describe('PickCollapsedSelection', () => {
     it('collapses selection', () => {
         assertTypeOf<
             PickCollapsedSelection<

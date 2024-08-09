@@ -1,8 +1,8 @@
-import {describe} from '@augment-vir/test';
+import {describe, it, itCases} from '@augment-vir/test';
 import {assertTypeOf} from 'run-time-assertions';
 import {safeSplit, splitIncludeSplit} from './split.js';
 
-describe(splitIncludeSplit.name, ({itCases}) => {
+describe(splitIncludeSplit.name, () => {
     itCases(splitIncludeSplit, [
         {
             it: 'splits by variable length RegExp matches',
@@ -43,7 +43,7 @@ describe(splitIncludeSplit.name, ({itCases}) => {
     ]);
 });
 
-describe(safeSplit.name, ({itCases, it}) => {
+describe(safeSplit.name, () => {
     itCases(safeSplit, [
         {
             it: 'should still split like normal',

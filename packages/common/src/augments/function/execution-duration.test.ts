@@ -1,9 +1,9 @@
-import {assert, describe} from '@augment-vir/test';
+import {assert, describe, it} from '@augment-vir/test';
 import {assertTypeOf} from 'run-time-assertions';
 import {wait} from '../promise/wait.js';
 import {measureExecutionDuration} from './execution-duration.js';
 
-describe(measureExecutionDuration.name, ({it}) => {
+describe(measureExecutionDuration.name, () => {
     it('measures the time', async () => {
         const waitDuration = 100;
         const measuredTime = await measureExecutionDuration(async () => {

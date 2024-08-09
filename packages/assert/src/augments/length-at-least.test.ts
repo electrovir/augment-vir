@@ -1,8 +1,10 @@
-import {assert, describe} from '@augment-vir/test';
+import {assert} from 'chai';
 import {assertTypeOf} from 'run-time-assertions';
-import {assertLengthAtLeast, isLengthAtLeast} from './at-least-length.js';
+import {describe, it, itCases} from '../test-suite.mock.js';
+import {assertLengthAtLeast, AtLeastTuple, isLengthAtLeast} from './length-at-least.js';
+import {Tuple} from './tuple.js';
 
-describe(isLengthAtLeast.name, ({it}) => {
+describe(isLengthAtLeast.name, () => {
     it('checks length', () => {
         assert.isTrue(
             isLengthAtLeast(
@@ -64,7 +66,7 @@ describe(isLengthAtLeast.name, ({it}) => {
     });
 });
 
-describe(assertLengthAtLeast.name, ({it, itCases}) => {
+describe(assertLengthAtLeast.name, () => {
     it('is a type guard', () => {
         const anyArray: string[] = [
             'a',
@@ -100,4 +102,43 @@ describe(assertLengthAtLeast.name, ({it, itCases}) => {
             throws: {matchConstructor: Error},
         },
     ]);
+});
+
+describe('AtLeastTuple', () => {
+    it('should be assignable to from a Tuple', () => {
+        const atLeastTuple: AtLeastTuple<any, 5> = [
+            1,
+            2,
+            3,
+            4,
+            5,
+        ] as Tuple<any, 5>;
+    });
+    it('should not be assignable to a Tuple', () => {
+        // @ts-expect-error: `AtLeastTuple` can be bigger than `Tuple`
+        const strictTuple: Tuple<any, 5> = [
+            1,
+            2,
+            3,
+            4,
+            5,
+        ] as AtLeastTuple<any, 5>;
+    });
+
+    it('should match arrays with more than the expected length', () => {
+        assertTypeOf([
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+        ] as const).toBeAssignableTo<AtLeastTuple<any, 5>>();
+        assertTypeOf([
+            1,
+            2,
+            3,
+        ] as const).not.toBeAssignableTo<AtLeastTuple<any, 5>>();
+    });
 });

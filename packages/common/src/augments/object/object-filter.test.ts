@@ -1,8 +1,8 @@
-import {assert, describe} from '@augment-vir/test';
+import {assert, describe, it, itCases} from '@augment-vir/test';
 import {randomString} from '../random/random-string.js';
 import {filterObject} from './object-filter.js';
 
-describe(filterObject.name, ({it, itCases}) => {
+describe(filterObject.name, () => {
     const symbolKey = Symbol('symbol-key');
 
     const testObject = {

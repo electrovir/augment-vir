@@ -1,11 +1,11 @@
+import {describe, it} from '@augment-vir/test';
 /* eslint-disable @typescript-eslint/no-empty-object-type */
-import {describe} from '@augment-vir/test';
 import {assertTypeOf} from 'run-time-assertions';
 import {AnyObject} from '../object/generic-object-type.js';
 import {PartialWithUndefined} from '../object/partial-type.js';
 import {GenericSelectionSet, PickSelection, SelectionSet} from './selection-set.js';
 
-describe('PickSelection', ({it}) => {
+describe('PickSelection', () => {
     it('narrows to the selection set', () => {
         assertTypeOf<
             PickSelection<
@@ -128,7 +128,7 @@ describe('PickSelection', ({it}) => {
     });
 });
 
-describe('SelectionSet', ({it}) => {
+describe('SelectionSet', () => {
     it('preserves an empty object', () => {
         assertTypeOf<SelectionSet<{}>>().toEqualTypeOf<{}>();
     });
@@ -209,7 +209,7 @@ describe('SelectionSet', ({it}) => {
     });
 });
 
-describe('GenericSelectionSet', ({it}) => {
+describe('GenericSelectionSet', () => {
     it('is compatible with SelectionSet', () => {
         assertTypeOf<SelectionSet<AnyObject>>().toMatchTypeOf<GenericSelectionSet>();
 

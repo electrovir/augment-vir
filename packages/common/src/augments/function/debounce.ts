@@ -13,7 +13,7 @@ export enum DebounceStyle {
     AfterWait = 'after-wait',
 }
 
-/** ADD EXAMPLES */
+/** TODO: ADD EXAMPLES */
 export class Debounce {
     private nextCallTimestamp = 0;
     private latestCallback: (() => MaybePromise<void>) | undefined;

@@ -1,7 +1,7 @@
-import {describe} from '@augment-vir/test';
+import {describe, itCases} from '@augment-vir/test';
 import {addPercent, addPx, addSuffix, removePercent, removePx, removeSuffix} from './suffix.js';
 
-describe(addPx.name, ({itCases}) => {
+describe(addPx.name, () => {
     itCases(addPx, [
         {
             it: 'adds px',
@@ -16,7 +16,7 @@ describe(addPx.name, ({itCases}) => {
     ]);
 });
 
-describe(removePx.name, ({itCases}) => {
+describe(removePx.name, () => {
     itCases(removePx, [
         {
             it: 'removes px',
@@ -33,7 +33,7 @@ describe(removePx.name, ({itCases}) => {
     ]);
 });
 
-describe(addPercent.name, ({itCases}) => {
+describe(addPercent.name, () => {
     itCases(addPercent, [
         {
             it: 'adds percent',
@@ -48,7 +48,7 @@ describe(addPercent.name, ({itCases}) => {
     ]);
 });
 
-describe(removePercent.name, ({itCases}) => {
+describe(removePercent.name, () => {
     itCases(removePercent, [
         {
             it: 'removes percent',
@@ -65,7 +65,7 @@ describe(removePercent.name, ({itCases}) => {
     ]);
 });
 
-describe(addSuffix.name, ({itCases}) => {
+describe(addSuffix.name, () => {
     itCases(addSuffix, [
         {
             it: 'adds a simple suffix',
@@ -78,7 +78,7 @@ describe(addSuffix.name, ({itCases}) => {
     ]);
 });
 
-describe(removeSuffix.name, ({itCases}) => {
+describe(removeSuffix.name, () => {
     itCases(removeSuffix, [
         {
             it: 'removes a simple suffix',

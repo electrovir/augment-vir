@@ -1,4 +1,4 @@
-import {assert, describe} from '@augment-vir/test';
+import {assert, describe, it} from '@augment-vir/test';
 import {getEnumValues} from './enum-values.js';
 
 enum Planet {
@@ -7,7 +7,7 @@ enum Planet {
     Earth = 'earth',
 }
 
-describe(getEnumValues.name, ({it}) => {
+describe(getEnumValues.name, () => {
     it('gets basic enum values properly', () => {
         assert.deepStrictEqual(getEnumValues(Planet), [
             Planet.Mercury,

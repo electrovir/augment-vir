@@ -1,10 +1,10 @@
-import {describe} from '@augment-vir/test';
+import {describe, it, itCases} from '@augment-vir/test';
 import {assertTypeOf} from 'run-time-assertions';
 import {extractErrorMessage} from '../error/error-message.js';
 import {wait} from '../promise/wait.js';
 import {wrapInTry} from './wrap-in-try.js';
 
-describe(wrapInTry.name, ({itCases, it}) => {
+describe(wrapInTry.name, () => {
     itCases(wrapInTry<any, any>, [
         {
             it: 'returns the callback return if it does not error',

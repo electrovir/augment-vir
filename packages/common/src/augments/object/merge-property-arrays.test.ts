@@ -1,8 +1,8 @@
-import {describe} from '@augment-vir/test';
+import {describe, it, itCases} from '@augment-vir/test';
 import {assertTypeOf} from 'run-time-assertions';
 import {mergePropertyArrays} from './merge-property-arrays.js';
 
-describe(mergePropertyArrays.name, ({it, itCases}) => {
+describe(mergePropertyArrays.name, () => {
     it('has proper types', () => {
         assertTypeOf(
             mergePropertyArrays<{prop1: string[]; prop2?: string[]; prop3?: string[]}>(

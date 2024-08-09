@@ -1,8 +1,8 @@
-import {describe} from '@augment-vir/test';
+import {describe, itCases} from '@augment-vir/test';
 import {JsonCompatibleObject} from './json-compatible.js';
 import {jsonify} from './jsonify.js';
 
-describe(jsonify.name, ({itCases}) => {
+describe(jsonify.name, () => {
     const jsonCompatible: JsonCompatibleObject = {
         a: 5,
         b: 'five',

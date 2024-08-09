@@ -1,7 +1,7 @@
-import {describe} from '@augment-vir/test';
+import {describe, it} from '@augment-vir/test';
 import {Overwrite} from './overwrite-type.js';
 
-describe('Overwrite', ({it}) => {
+describe('Overwrite', () => {
     it('has proper types', () => {
         type thing1 = {a: string; b: number};
         const what: thing1 = {a: 'hello', b: 5};

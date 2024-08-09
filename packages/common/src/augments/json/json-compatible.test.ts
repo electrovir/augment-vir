@@ -1,16 +1,19 @@
-import {describe} from '@augment-vir/test';
+import {describe, it} from '@augment-vir/test';
 import {assertTypeOf} from 'run-time-assertions';
 import {
     JsonCompatibleArray,
     JsonCompatibleObject,
     JsonCompatiblePrimitiveValue,
+    JsonCompatibleValue,
 } from './json-compatible.js';
 
-describe('JsonCompatibleValue', ({it}) => {
+describe('JsonCompatibleValue', () => {
     it('has proper JsonCompatiblePrimitiveValue types', () => {
         assertTypeOf<JsonCompatiblePrimitiveValue>().toEqualTypeOf<
             string | number | boolean | null | undefined
         >();
+        assertTypeOf<JsonCompatibleObject>().toBeAssignableTo<JsonCompatibleValue>();
+        assertTypeOf<JsonCompatibleValue>().not.toBeAssignableTo<JsonCompatibleObject>();
     });
 
     it('has proper JsonCompatibleObject types', () => {

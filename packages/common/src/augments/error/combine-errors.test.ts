@@ -1,9 +1,9 @@
-import {assert, describe} from '@augment-vir/test';
+import {assert, describe, it, itCases} from '@augment-vir/test';
 import {assertTypeOf} from 'run-time-assertions';
 import {typedMap} from '../array/array-map.js';
 import {combineErrorMessages, combineErrors} from './combine-errors.js';
 
-describe(combineErrors.name, ({it}) => {
+describe(combineErrors.name, () => {
     it('has proper types', () => {
         assertTypeOf(combineErrors([])).toEqualTypeOf<Error | undefined>();
         assertTypeOf(combineErrors([new Error()])).toEqualTypeOf<Error>();
@@ -40,7 +40,7 @@ describe(combineErrors.name, ({it}) => {
     });
 });
 
-describe(combineErrorMessages.name, ({itCases}) => {
+describe(combineErrorMessages.name, () => {
     itCases(combineErrorMessages, [
         {
             it: 'combines valid string messages',

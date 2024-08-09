@@ -1,0 +1,35 @@
+{
+    "name": "@augment-vir/scripts",
+    "version": "30.0.0",
+    "private": true,
+    "homepage": "https://github.com/electrovir/augment-vir",
+    "bugs": {
+        "url": "https://github.com/electrovir/augment-vir/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/electrovir/augment-vir.git"
+    },
+    "license": "(MIT or CC0 1.0)",
+    "author": {
+        "name": "electrovir",
+        "url": "https://github.com/electrovir"
+    },
+    "type": "module",
+    "scripts": {
+        "compile": "virmator compile",
+        "exec": "tsx",
+        "test": "exit 0",
+        "test:coverage": "npm run test",
+        "test:update": "npm test"
+    },
+    "engines": {
+        "node": ">=22"
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "devDependencies": {
+        "@types/node": "^22.1.0"
+    }
+}

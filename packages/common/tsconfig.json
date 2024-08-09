@@ -11,5 +11,13 @@
         "./node_modules/",
         "./test-files/"
     ],
-    "extends": "../../configs/tsconfig.base.json"
+    "extends": "../../configs/tsconfig.base.json",
+    "references": [
+        {
+            "path": "../test"
+        },
+        {
+            "path": "../assert"
+        }
+    ]
 }

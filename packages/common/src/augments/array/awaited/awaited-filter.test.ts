@@ -1,9 +1,9 @@
-import {describe} from '@augment-vir/test';
+import {describe, it, itCases} from '@augment-vir/test';
 import {assert} from 'chai';
 import {wait} from '../../promise/wait.js';
 import {awaitedFilter} from './awaited-filter.js';
 
-describe(awaitedFilter.name, ({itCases, it}) => {
+describe(awaitedFilter.name, () => {
     itCases(awaitedFilter, [
         {
             it: 'handles boolean return values',
@@ -14,7 +14,6 @@ describe(awaitedFilter.name, ({itCases, it}) => {
                     'yo',
                 ],
                 async (entry) => {
-                    // eslint-disable-next-line unicorn/no-useless-promise-resolve-reject
                     return Promise.resolve(entry === 'yo');
                 },
             ],
@@ -33,7 +32,6 @@ describe(awaitedFilter.name, ({itCases, it}) => {
                     0,
                 ],
                 async (entry) => {
-                    // eslint-disable-next-line unicorn/no-useless-promise-resolve-reject
                     return Promise.resolve(entry);
                 },
             ],

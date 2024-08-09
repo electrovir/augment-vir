@@ -1,7 +1,7 @@
-import {describe} from '@augment-vir/test';
+import {describe, itCases} from '@augment-vir/test';
 import {addCommasToNumber, removeCommas} from './commas.js';
 
-describe(addCommasToNumber.name, ({itCases}) => {
+describe(addCommasToNumber.name, () => {
     itCases(addCommasToNumber, [
         {
             it: 'adds a comma to a thousand',
@@ -36,7 +36,7 @@ describe(addCommasToNumber.name, ({itCases}) => {
     ]);
 });
 
-describe(removeCommas.name, ({itCases}) => {
+describe(removeCommas.name, () => {
     itCases(removeCommas, [
         {
             it: 'one comma stripped',

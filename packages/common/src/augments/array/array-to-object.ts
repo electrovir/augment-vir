@@ -24,7 +24,6 @@ export function groupArrayBy<ElementType, NewKey extends PropertyKey>(
 
             return accum;
         },
-        // eslint-disable-next-line @typescript-eslint/prefer-reduce-type-parameter
         {} as Record<NewKey, ElementType[]>,
     ) as Partial<Record<NewKey, ElementType[]>>;
 }

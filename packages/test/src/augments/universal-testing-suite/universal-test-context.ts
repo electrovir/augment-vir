@@ -1,13 +1,16 @@
 import {VirEnv} from '@augment-vir/env';
-import {Context as MochaContext} from 'mocha';
-import {TestContext as NodeTestContext} from 'node:test';
+import {TestContext as NodeTestContextImport} from 'node:test';
 import {OmitIndexSignature, Simplify} from 'type-fest';
+import type {Mocha} from '../../mocha.js';
 
-export type UniversalContext = NodeTestContext | MochaContext;
+export type MochaTestContext = Mocha.Context;
+export type NodeTestContext = NodeTestContextImport;
+
+export type UniversalContext = NodeTestContext | MochaTestContext;
 
 export type ContextByEnv = {
     [VirEnv.Node]: NodeTestContext;
-    [VirEnv.Web]: MochaContext;
+    [VirEnv.Web]: Mocha.Context;
 };
 
 export function ensureTestContext<const SpecificEnv extends VirEnv>(
@@ -43,7 +46,7 @@ export function isTestContext<const SpecificEnv extends VirEnv>(
 
 type NodeOnlyTestContextKeys = Exclude<
     Simplify<keyof NodeTestContext>,
-    Simplify<keyof OmitIndexSignature<MochaContext>>
+    Simplify<keyof OmitIndexSignature<MochaTestContext>>
 >;
 
 const nodeOnlyCheckKey = 'diagnostic' satisfies NodeOnlyTestContextKeys;

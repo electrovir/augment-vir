@@ -1,5 +1,5 @@
+import {isLengthAtLeast} from '@augment-vir/assert';
 import {isTruthy} from '@augment-vir/test';
-import {isLengthAtLeast} from '../array/at-least-length.js';
 import {AtLeastTuple} from '../array/tuple.js';
 import {extractErrorMessage} from './error-message.js';
 

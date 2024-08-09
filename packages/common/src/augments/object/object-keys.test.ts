@@ -1,9 +1,10 @@
+import {describe, it, itCases} from '@augment-vir/test';
 /* eslint-disable @typescript-eslint/no-unused-expressions */
-import {assert, describe} from '@augment-vir/test';
+import {assert} from '@augment-vir/test';
 import {assertTypeOf} from 'run-time-assertions';
 import {getObjectTypedKeys, omitObjectKeys, pickObjectKeys} from './object-keys.js';
 
-describe(omitObjectKeys.name, ({it, itCases}) => {
+describe(omitObjectKeys.name, () => {
     it('should create proper types', () => {
         const exampleObject = {
             five: 'four',
@@ -45,7 +46,7 @@ describe(omitObjectKeys.name, ({it, itCases}) => {
     );
 });
 
-describe(pickObjectKeys.name, ({it, itCases}) => {
+describe(pickObjectKeys.name, () => {
     it('should pick object types', () => {
         const exampleObject = {
             five: 'four',
@@ -96,7 +97,7 @@ const greekNames: Record<Planet, string> = {
     [Planet.Earth]: 'Earth',
 };
 
-describe(getObjectTypedKeys.name, ({it}) => {
+describe(getObjectTypedKeys.name, () => {
     it('gets basic object keys', () => {
         assert.deepStrictEqual(getObjectTypedKeys(greekNames), [
             Planet.Mercury,

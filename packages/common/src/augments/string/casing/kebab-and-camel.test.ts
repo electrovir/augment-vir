@@ -1,7 +1,7 @@
-import {describe} from '@augment-vir/test';
+import {describe, itCases} from '@augment-vir/test';
 import {camelCaseToKebabCase, kebabCaseToCamelCase} from './kebab-and-camel.js';
 
-describe(kebabCaseToCamelCase.name, ({itCases}) => {
+describe(kebabCaseToCamelCase.name, () => {
     itCases(kebabCaseToCamelCase, [
         {
             it: 'should work on long string',
@@ -79,7 +79,7 @@ describe(kebabCaseToCamelCase.name, ({itCases}) => {
     ]);
 });
 
-describe(camelCaseToKebabCase.name, ({itCases}) => {
+describe(camelCaseToKebabCase.name, () => {
     itCases(camelCaseToKebabCase, [
         {
             it: 'should work with simple capitalized case',

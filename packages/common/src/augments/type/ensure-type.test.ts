@@ -1,8 +1,9 @@
+import {describe, it} from '@augment-vir/test';
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import {assert, describe} from '@augment-vir/test';
+import {assert} from '@augment-vir/test';
 import {ensureType} from './ensure-type.js';
 
-describe(ensureType.name, ({it}) => {
+describe(ensureType.name, () => {
     const placeholder = {
         what: 'nothing',
         just: 'make sure no mutations happened',

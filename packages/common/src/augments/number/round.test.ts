@@ -1,7 +1,7 @@
-import {describe} from '@augment-vir/test';
+import {describe, itCases} from '@augment-vir/test';
 import {round} from './round.js';
 
-describe(round.name, ({itCases}) => {
+describe(round.name, () => {
     itCases(round, [
         {
             it: 'rounds down with 2 decimals',

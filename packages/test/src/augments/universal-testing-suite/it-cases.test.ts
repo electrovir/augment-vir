@@ -1,15 +1,16 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import {assert} from 'chai';
 import {assertTypeOf} from 'run-time-assertions';
-import {describe} from './universal-describe.js';
 import {
     BaseTestCase,
     FunctionTestCase,
+    itCases,
     OutputTestCaseMultipleInputs,
     OutputTestCaseSingleInput,
-} from './universal-it-cases.js';
+} from './it-cases.js';
+import {describe} from './universal-describe.js';
+import {it} from './universal-it.js';
 
-describe('itCases', ({itCases}) => {
+describe('itCases', () => {
     itCases(
         () => true,
         (actual, expected) => assert.isTrue(actual === expected),
@@ -97,7 +98,7 @@ describe('itCases', ({itCases}) => {
     );
 });
 
-describe('FunctionTestCase', ({it}) => {
+describe('FunctionTestCase', () => {
     it('handles functions with no inputs', () => {
         assertTypeOf<FunctionTestCase<() => number>>().toEqualTypeOf<BaseTestCase<number>>();
         assertTypeOf<FunctionTestCase<() => string>>().not.toEqualTypeOf<BaseTestCase<number>>();

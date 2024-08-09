@@ -1,7 +1,7 @@
-import {describe} from '@augment-vir/test';
+import {describe, itCases} from '@augment-vir/test';
 import {toEnsuredNumber, toNumber} from './number-conversion.js';
 
-describe(toNumber.name, ({itCases}) => {
+describe(toNumber.name, () => {
     itCases(toNumber, [
         {
             it: 'should simply return back a number input',
@@ -46,7 +46,7 @@ describe(toNumber.name, ({itCases}) => {
     ]);
 });
 
-describe(toEnsuredNumber.name, ({itCases}) => {
+describe(toEnsuredNumber.name, () => {
     itCases(toEnsuredNumber, [
         {
             it: 'converts a string to a number',

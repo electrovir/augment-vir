@@ -1,4 +1,4 @@
-import {describe} from '@augment-vir/test';
+import {describe, it, itCases} from '@augment-vir/test';
 import {assertTypeOf} from 'run-time-assertions';
 import {getObjectTypedValues, ValueAtRequiredKey} from './object-values.js';
 
@@ -14,7 +14,7 @@ const greekNames: Record<Planet, string> = {
     [Planet.Earth]: 'Earth',
 };
 
-describe('ValueAtRequiredKey', ({it}) => {
+describe('ValueAtRequiredKey', () => {
     it('requires an indexed key', () => {
         assertTypeOf<
             ValueAtRequiredKey<Partial<Record<any, string>>, 'hi'>
@@ -22,7 +22,7 @@ describe('ValueAtRequiredKey', ({it}) => {
     });
 });
 
-describe(getObjectTypedValues.name, ({itCases, it}) => {
+describe(getObjectTypedValues.name, () => {
     itCases(getObjectTypedValues, [
         {
             it: 'gets basic values',

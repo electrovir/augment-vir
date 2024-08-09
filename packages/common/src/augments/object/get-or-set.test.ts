@@ -1,10 +1,10 @@
-import {assert, describe} from '@augment-vir/test';
+import {assert, describe, it, itCases} from '@augment-vir/test';
 import {assertInstanceOf, assertThrows, assertTypeOf} from 'run-time-assertions';
 import {randomString} from '../random/random-string.js';
 import {AnyObject} from './generic-object-type.js';
 import {getOrSet, getOrSetFromMap} from './get-or-set.js';
 
-describe(getOrSet.name, ({it, itCases}) => {
+describe(getOrSet.name, () => {
     it('does not return "| undefined" for indexed keys', () => {
         const partialObject: Record<any, string> = {};
         const result = getOrSet(partialObject, 'hi', () => 'value');
@@ -125,7 +125,7 @@ describe(getOrSet.name, ({it, itCases}) => {
     });
 });
 
-describe(getOrSetFromMap.name, ({it}) => {
+describe(getOrSetFromMap.name, () => {
     it('retrieves an existing item', () => {
         const exampleKey = {};
         const exampleValue = randomString();

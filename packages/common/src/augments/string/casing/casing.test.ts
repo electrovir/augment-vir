@@ -1,7 +1,7 @@
-import {describe} from '@augment-vir/test';
+import {describe, itCases} from '@augment-vir/test';
 import {hasCase, isCase, StringCaseEnum} from './casing.js';
 
-describe(hasCase.name, ({itCases}) => {
+describe(hasCase.name, () => {
     itCases(hasCase, [
         {
             it: 'allows a normal letter',
@@ -31,7 +31,7 @@ describe(hasCase.name, ({itCases}) => {
     ]);
 });
 
-describe(isCase.name, ({itCases}) => {
+describe(isCase.name, () => {
     itCases(isCase, [
         {
             it: 'passes a valid lower check',

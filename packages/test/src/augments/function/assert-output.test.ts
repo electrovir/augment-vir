@@ -1,7 +1,9 @@
+import {itCases} from '../universal-testing-suite/it-cases.js';
 import {describe} from '../universal-testing-suite/universal-describe.js';
+import {it} from '../universal-testing-suite/universal-it.js';
 import {assertOutput} from './assert-output.js';
 
-describe(assertOutput.name, ({itCases, it}) => {
+describe(assertOutput.name, () => {
     it('has proper types', () => {
         try {
             assertOutput(

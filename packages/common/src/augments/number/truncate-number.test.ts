@@ -1,7 +1,7 @@
-import {describe} from '@augment-vir/test';
+import {describe, itCases} from '@augment-vir/test';
 import {truncateNumber} from './truncate-number.js';
 
-describe(truncateNumber.name, ({itCases}) => {
+describe(truncateNumber.name, () => {
     const testCases: ReadonlyArray<{
         in: number;
         out: string;

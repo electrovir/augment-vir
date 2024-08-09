@@ -11,6 +11,7 @@ const baseConfig = getWebTestRunnerConfigWithCoveragePercent({
 /** @type {import('@web/test-runner').TestRunnerConfig} */
 const webTestRunnerConfig = {
     ...baseConfig,
+    port: 8002,
 };
 
 export default webTestRunnerConfig;

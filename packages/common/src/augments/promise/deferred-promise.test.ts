@@ -1,11 +1,11 @@
-import {assert, describe} from '@augment-vir/test';
+import {assert, describe, it} from '@augment-vir/test';
 import {assertThrows} from 'run-time-assertions';
 import {DeferredPromise} from './deferred-promise.js';
 
 // increase if tests are flaky in other environments, like GitHub Actions (which is typically slow)
 const promiseDelayMs = 500;
 
-describe(DeferredPromise.name, ({it}) => {
+describe(DeferredPromise.name, () => {
     it('should create a promise which can be resolved externally.', async () => {
         const resolveValue = Math.random();
 

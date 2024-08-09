@@ -1,7 +1,7 @@
-import {describe} from '@augment-vir/test';
+import {describe, itCases} from '@augment-vir/test';
 import {removeDuplicates} from './remove-duplicates.js';
 
-describe(removeDuplicates.name, ({itCases}) => {
+describe(removeDuplicates.name, () => {
     const exampleObjects: Readonly<Record<number, unknown>> = {
         4: {key: 'value'},
         61: {key: 'value'},

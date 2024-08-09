@@ -1,8 +1,8 @@
-import {assert, describe} from '@augment-vir/test';
+import {assert, describe, it} from '@augment-vir/test';
 import {randomString} from '../random/random-string.js';
 import {callAsynchronously} from './call-asynchronously.js';
 
-describe(callAsynchronously.name, ({it}) => {
+describe(callAsynchronously.name, () => {
     it('does not interrupt synchronous code order', async () => {
         const values: number[] = [];
         values.push(1);

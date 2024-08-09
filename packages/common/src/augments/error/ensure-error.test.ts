@@ -1,7 +1,7 @@
-import {describe} from '@augment-vir/test';
+import {describe, itCases} from '@augment-vir/test';
 import {ensureError} from './ensure-error.js';
 
-describe(ensureError.name, ({itCases}) => {
+describe(ensureError.name, () => {
     const validError = new Error();
 
     class SubError extends Error {}

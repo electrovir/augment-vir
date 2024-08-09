@@ -1,8 +1,8 @@
-import {describe} from '@augment-vir/test';
+import {describe, it, itCases} from '@augment-vir/test';
 import {assertTypeOf} from 'run-time-assertions';
 import {arrayToObject, groupArrayBy} from './array-to-object.js';
 
-describe(groupArrayBy.name, ({itCases, it}) => {
+describe(groupArrayBy.name, () => {
     itCases(groupArrayBy, [
         {
             it: 'handles an empty array',
@@ -155,7 +155,7 @@ describe(groupArrayBy.name, ({itCases, it}) => {
     });
 });
 
-describe(arrayToObject.name, ({it, itCases}) => {
+describe(arrayToObject.name, () => {
     itCases(arrayToObject, [
         {
             it: 'handles an empty array',

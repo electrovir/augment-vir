@@ -1,19 +1,6 @@
-export type Tuple<
-    ArrayElementGeneric,
-    LengthGeneric extends number,
-> = LengthGeneric extends LengthGeneric
-    ? number extends LengthGeneric
-        ? ArrayElementGeneric[]
-        : _TupleOf<ArrayElementGeneric, LengthGeneric, []>
-    : never;
+import {AtLeastTuple} from '@augment-vir/assert';
 
-type _TupleOf<
-    ArrayElementGeneric,
-    LengthGeneric extends number,
-    FullArrayGeneric extends unknown[],
-> = FullArrayGeneric['length'] extends LengthGeneric
-    ? FullArrayGeneric
-    : _TupleOf<ArrayElementGeneric, LengthGeneric, [ArrayElementGeneric, ...FullArrayGeneric]>;
+export type {AtLeastTuple, Tuple} from '@augment-vir/assert';
 
 export type MappedTuple<Tuple extends ReadonlyArray<any>, NewValueType> = {
     [I in keyof Tuple]: NewValueType;
@@ -27,8 +14,3 @@ export type RemoveFirstTupleEntry<T extends ReadonlyArray<unknown>> = T extends 
 ]
     ? TheRest
     : T;
-
-export type AtLeastTuple<ArrayElementGeneric, LengthGeneric extends number> = readonly [
-    ...Tuple<ArrayElementGeneric, LengthGeneric>,
-    ...ArrayElementGeneric[],
-];

@@ -1,7 +1,7 @@
-import {describe} from '@augment-vir/test';
+import {describe, itCases} from '@augment-vir/test';
 import {parseJson} from './parse-json.js';
 
-describe(parseJson.name, ({itCases}) => {
+describe(parseJson.name, () => {
     itCases(parseJson, [
         {
             it: 'parses its string input',

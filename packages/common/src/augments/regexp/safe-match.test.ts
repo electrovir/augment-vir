@@ -1,7 +1,7 @@
-import {describe} from '@augment-vir/test';
+import {describe, itCases} from '@augment-vir/test';
 import {safeMatch} from './safe-match.js';
 
-describe(safeMatch.name, ({itCases}) => {
+describe(safeMatch.name, () => {
     itCases(safeMatch, [
         {
             it: 'should match a regexp',

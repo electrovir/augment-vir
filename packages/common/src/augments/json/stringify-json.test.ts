@@ -1,7 +1,7 @@
-import {describe} from '@augment-vir/test';
+import {describe, itCases} from '@augment-vir/test';
 import {stringifyJson} from './stringify-json.js';
 
-describe(stringifyJson.name, ({itCases}) => {
+describe(stringifyJson.name, () => {
     const recursiveObject = {
         nested: '' as any,
     };

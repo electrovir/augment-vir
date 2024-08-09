@@ -1,9 +1,9 @@
-import {describe} from '@augment-vir/test';
+import {describe, it, itCases} from '@augment-vir/test';
 import {assertTypeOf} from 'run-time-assertions';
 import {selectFrom} from './select-from.js';
 import {PickSelection} from './selection-set.js';
 
-describe(selectFrom.name, ({it, itCases}) => {
+describe(selectFrom.name, () => {
     it('has proper types', () => {
         selectFrom(
             {

@@ -1,7 +1,7 @@
-import {assert, describe} from '@augment-vir/test';
+import {assert, describe, it} from '@augment-vir/test';
 import {trimArrayStrings} from './string-array.js';
 
-describe(trimArrayStrings.name, ({it}) => {
+describe(trimArrayStrings.name, () => {
     it('white space is removed', () => {
         assert.deepStrictEqual(
             trimArrayStrings(

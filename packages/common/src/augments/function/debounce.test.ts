@@ -1,9 +1,9 @@
-import {assert, describe} from '@augment-vir/test';
+import {assert, describe, it} from '@augment-vir/test';
 import {wait} from '../promise/wait.js';
 import {Debounce, DebounceStyle} from './debounce.js';
 import {measureExecutionDuration} from './execution-duration.js';
 
-describe(Debounce.name, ({it}) => {
+describe(Debounce.name, () => {
     it('debounces first then wait style', async () => {
         const debounce = new Debounce(DebounceStyle.FirstThenWait, {
             milliseconds: 500,

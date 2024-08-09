@@ -1,11 +1,11 @@
-import {assert, describe} from '@augment-vir/test';
+import {assert, describe, it} from '@augment-vir/test';
 import {wrapPromiseInTimeout} from './timed-promise.js';
 import {wait} from './wait.js';
 
 // increase if tests are flaky in other environments, like GitHub Actions (which is typically slow)
 const promiseDelayMs = 500;
 
-describe(wait.name, ({it}) => {
+describe(wait.name, () => {
     it('should create a promise which takes time to resolve.', async () => {
         const startTime = Date.now();
 

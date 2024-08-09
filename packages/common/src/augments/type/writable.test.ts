@@ -1,4 +1,4 @@
-import {assert, describe} from '@augment-vir/test';
+import {assert, describe, it} from '@augment-vir/test';
 import {assertTypeOf} from 'run-time-assertions';
 import {makeWritable} from './writable.js';
 
@@ -14,7 +14,7 @@ function runWriteAccessTests(writeAccessModifier: (input: any) => any) {
     assert.deepStrictEqual(writableExample, originalExample);
 }
 
-describe(makeWritable.name, ({it}) => {
+describe(makeWritable.name, () => {
     it('should make a type writeable', () => {
         assertTypeOf(getExampleReadonlyObject()).not.toEqualTypeOf<{a: 'five'}>();
         assertTypeOf(makeWritable(getExampleReadonlyObject())).toEqualTypeOf<{a: 'five'}>();

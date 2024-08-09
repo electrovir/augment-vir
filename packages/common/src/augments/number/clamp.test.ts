@@ -1,7 +1,7 @@
-import {describe} from '@augment-vir/test';
+import {describe, itCases} from '@augment-vir/test';
 import {clamp} from './clamp.js';
 
-describe(clamp.name, ({itCases}) => {
+describe(clamp.name, () => {
     itCases(clamp, [
         {
             it: 'does not alter a within-range value',

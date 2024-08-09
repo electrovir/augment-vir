@@ -6,7 +6,7 @@ export async function awaitedBlockingMap<OriginalGeneric, MappedGeneric>(
         wholeArray: ReadonlyArray<OriginalGeneric>,
     ) => MappedGeneric | PromiseLike<MappedGeneric>,
 ): Promise<Awaited<MappedGeneric>[]> {
-    const mappedValues = await input.reduce(
+    return await input.reduce(
         async (
             accumPromise: Promise<Awaited<MappedGeneric>[]>,
             currentElement,
@@ -20,6 +20,4 @@ export async function awaitedBlockingMap<OriginalGeneric, MappedGeneric>(
         },
         Promise.resolve([]),
     );
-
-    return mappedValues;
 }

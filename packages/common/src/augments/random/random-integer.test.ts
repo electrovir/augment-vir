@@ -1,7 +1,7 @@
-import {assert, describe} from '@augment-vir/test';
+import {assert, describe, it} from '@augment-vir/test';
 import {randomInteger} from './random-integer.js';
 
-describe(randomInteger.name, ({it}) => {
+describe(randomInteger.name, () => {
     it('produces a number', () => {
         assert.isNumber(randomInteger({min: 0, max: 10}));
     });

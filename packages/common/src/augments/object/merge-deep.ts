@@ -1,6 +1,6 @@
+import {isLengthAtLeast} from '@augment-vir/assert';
 import {isRunTimeType} from 'run-time-assertions';
 import {PartialDeep} from 'type-fest';
-import {isLengthAtLeast} from '../array/at-least-length.js';
 
 /**
  * Accepts multiple objects and merges their key-value pairs recursively. Any values set to

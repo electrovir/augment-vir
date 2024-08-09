@@ -1,4 +1,4 @@
-import {assert, describe} from '@augment-vir/test';
+import {assert, describe, it} from '@augment-vir/test';
 import {assertThrows} from 'run-time-assertions';
 import {
     assertEnumValue,
@@ -13,7 +13,7 @@ enum Planet {
     Earth = 'earth',
 }
 
-describe(isEnumValue.name, ({it}) => {
+describe(isEnumValue.name, () => {
     const testEnumValues = [
         Planet.Mercury,
         Planet.Venus,
@@ -35,13 +35,13 @@ describe(isEnumValue.name, ({it}) => {
     });
 });
 
-describe(assertEnumValue.name, ({it}) => {
+describe(assertEnumValue.name, () => {
     it('matches all correct enum values', () => {
         assertThrows(() => assertEnumValue('test value', Planet));
     });
 });
 
-describe(ensureEnumValue.name, ({it}) => {
+describe(ensureEnumValue.name, () => {
     it('has proper types', () => {
         ensureEnumValue(Planet.Mercury, Planet);
         ensureEnumValue('mercury', Planet);
@@ -56,7 +56,7 @@ describe(ensureEnumValue.name, ({it}) => {
     });
 });
 
-describe(filterToEnumValues.name, ({it}) => {
+describe(filterToEnumValues.name, () => {
     enum TestEnum {
         A = 'a',
         B = 'b',

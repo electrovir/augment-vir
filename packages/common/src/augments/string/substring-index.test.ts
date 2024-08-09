@@ -1,7 +1,7 @@
-import {describe} from '@augment-vir/test';
+import {describe, itCases} from '@augment-vir/test';
 import {getSubstringIndexes} from './substring-index.js';
 
-describe(getSubstringIndexes.name, ({itCases}) => {
+describe(getSubstringIndexes.name, () => {
     itCases(getSubstringIndexes, [
         {
             it: 'should find all substring instances in a string',

@@ -1,4 +1,4 @@
-import {assert, describe} from '@augment-vir/test';
+import {assert, describe, it, itCases} from '@augment-vir/test';
 import {assertTypeOf} from 'run-time-assertions';
 import {getEnumValues} from '../enum/enum-values.js';
 import {
@@ -13,7 +13,7 @@ enum Planet {
     Earth = 'earth',
 }
 
-describe(getObjectTypedEntries.name, ({itCases, it}) => {
+describe(getObjectTypedEntries.name, () => {
     itCases(getObjectTypedEntries, [
         {
             it: 'handles an empty object',
@@ -123,7 +123,7 @@ describe(getObjectTypedEntries.name, ({itCases, it}) => {
     });
 });
 
-describe(typedObjectFromEntries.name, ({it}) => {
+describe(typedObjectFromEntries.name, () => {
     it('should maintain types', () => {
         enum MyEnum {
             aKey = 'a',
@@ -148,7 +148,7 @@ describe(typedObjectFromEntries.name, ({it}) => {
     });
 });
 
-describe(getEntriesSortedByKey.name, ({it}) => {
+describe(getEntriesSortedByKey.name, () => {
     it("gets entries in order even if they're not assigned in order", () => {
         const testObjectA: Record<string, number> = {
             a: 2,
