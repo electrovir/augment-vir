@@ -1,6 +1,5 @@
-import {assert} from 'chai';
-import {ensureError} from '../error/ensure-error.js';
-import {AnyFunction} from './generic-function-types.js';
+import {assert} from '@augment-vir/assert';
+import {AnyFunction, ensureError} from '@augment-vir/core';
 
 export type CustomAsserter<FunctionToCall extends AnyFunction> = (
     actual: Awaited<ReturnType<FunctionToCall>>,
@@ -15,8 +14,7 @@ export function assertOutputWithDescription<FunctionToCall extends AnyFunction>(
     ...inputs: Parameters<typeof functionToCall>
 ): ReturnType<typeof functionToCall> extends Promise<any> ? Promise<void> : void {
     return assertOutputWithCustomAssertion(
-        // eslint-disable-next-line @typescript-eslint/unbound-method
-        assert.deepStrictEqual,
+        assert.deepEquals,
         functionToCall,
         expectedOutput,
         description,
@@ -40,7 +38,6 @@ export function assertOutputWithCustomAssertion<FunctionToCall extends AnyFuncti
             .join(', ')}`;
 
     if (result instanceof Promise) {
-        // eslint-disable-next-line @typescript-eslint/no-misused-promises
         return new Promise<void>(async (resolve, reject) => {
             try {
                 assertion(await result, expectedOutput, failureMessage);

@@ -1,4 +1,4 @@
-import {assert} from 'chai';
+import {assert} from '@augment-vir/assert';
 import {assertTypeOf} from 'run-time-assertions';
 import {
     BaseTestCase,

@@ -21,7 +21,7 @@ describe(filterObject.name, () => {
 
         assert.deepStrictEqual(testObject, originalObject);
         assert.deepStrictEqual(Object.keys(testObject), originalKeys);
-        assert.strictEqual(referenceCopy, testObject);
+        assert.areStrictEqual(referenceCopy, testObject);
     });
 
     itCases(filterObject, [

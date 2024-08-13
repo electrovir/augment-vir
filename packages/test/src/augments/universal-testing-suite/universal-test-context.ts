@@ -1,4 +1,4 @@
-import {VirEnv} from '@augment-vir/env';
+import {RuntimeEnv} from '@augment-vir/core';
 import {TestContext as NodeTestContextImport} from 'node:test';
 import {OmitIndexSignature, Simplify} from 'type-fest';
 import type {Mocha} from '../../mocha.js';
@@ -9,32 +9,32 @@ export type NodeTestContext = NodeTestContextImport;
 export type UniversalContext = NodeTestContext | MochaTestContext;
 
 export type ContextByEnv = {
-    [VirEnv.Node]: NodeTestContext;
-    [VirEnv.Web]: Mocha.Context;
+    [RuntimeEnv.Node]: NodeTestContext;
+    [RuntimeEnv.Web]: Mocha.Context;
 };
 
-export function ensureTestContext<const SpecificEnv extends VirEnv>(
+export function ensureTestContext<const SpecificEnv extends RuntimeEnv>(
     context: UniversalContext,
-    env: VirEnv,
+    env: RuntimeEnv,
 ): ContextByEnv[SpecificEnv] {
     assertTestContext(context, env);
 
     return context as ContextByEnv[SpecificEnv];
 }
-export function assertTestContext<const SpecificEnv extends VirEnv>(
+export function assertTestContext<const SpecificEnv extends RuntimeEnv>(
     context: UniversalContext,
-    env: VirEnv,
+    env: RuntimeEnv,
 ): asserts context is ContextByEnv[SpecificEnv] {
-    const actualEnv = determineTestContextVirEnv(context);
+    const actualEnv = determineTestContextEnv(context);
 
     if (actualEnv !== env) {
         throw new TypeError();
     }
 }
 
-export function isTestContext<const SpecificEnv extends VirEnv>(
+export function isTestContext<const SpecificEnv extends RuntimeEnv>(
     context: UniversalContext,
-    env: VirEnv,
+    env: RuntimeEnv,
 ): context is ContextByEnv[SpecificEnv] {
     try {
         assertTestContext(context, env);
@@ -51,6 +51,6 @@ type NodeOnlyTestContextKeys = Exclude<
 
 const nodeOnlyCheckKey = 'diagnostic' satisfies NodeOnlyTestContextKeys;
 
-export function determineTestContextVirEnv(context: UniversalContext): VirEnv {
-    return context[nodeOnlyCheckKey] ? VirEnv.Node : VirEnv.Web;
+export function determineTestContextEnv(context: UniversalContext): RuntimeEnv {
+    return context[nodeOnlyCheckKey] ? RuntimeEnv.Node : RuntimeEnv.Web;
 }

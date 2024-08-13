@@ -1,4 +1,4 @@
-import {PartialWithUndefined} from '../../object/partial-type.js';
+import {PartialWithUndefined} from '@augment-vir/core';
 
 export type CasingOptions = {
     capitalizeFirstLetter: boolean;

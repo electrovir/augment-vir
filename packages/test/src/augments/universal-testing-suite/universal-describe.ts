@@ -1,4 +1,4 @@
-import {isVirEnv, VirEnv} from '@augment-vir/env';
+import {isRuntimeEnv, RuntimeEnv} from '@augment-vir/core';
 import type {describe as nodeDescribe} from 'node:test';
 import type {describe as mochaDescribe} from '../../mocha.js';
 
@@ -25,7 +25,7 @@ export type UniversalBareDescribe = {
     (this: void, describeThis: string, callback: (this: void) => void): void;
 };
 
-const describes = isVirEnv(VirEnv.Node)
+const describes = isRuntimeEnv(RuntimeEnv.Node)
     ? {
           node: (await import('node:test')).describe,
       }

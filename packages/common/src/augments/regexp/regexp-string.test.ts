@@ -3,7 +3,7 @@ import {escapeStringForRegExp} from './regexp-string.js';
 
 describe(escapeStringForRegExp.name, () => {
     it('should escape regexp characters', () => {
-        assert.strictEqual(escapeStringForRegExp('[*.*]'), String.raw`\[\*\.\*\]`);
+        assert.areStrictEqual(escapeStringForRegExp('[*.*]'), String.raw`\[\*\.\*\]`);
     });
 
     it('escaped text works as a RegExp', () => {

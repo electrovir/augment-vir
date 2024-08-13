@@ -14,10 +14,7 @@
     "extends": "../../configs/tsconfig.base.json",
     "references": [
         {
-            "path": "../env"
-        },
-        {
-            "path": "../assert"
+            "path": "../core"
         }
     ]
 }

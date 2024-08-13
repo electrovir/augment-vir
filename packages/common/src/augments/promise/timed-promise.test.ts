@@ -1,7 +1,7 @@
+import {DeferredPromise} from '@augment-vir/core';
 import {assert, describe, it} from '@augment-vir/test';
 import {assertInstanceOf, assertThrows} from 'run-time-assertions';
 import {randomString} from '../random/random-string.js';
-import {DeferredPromise} from './deferred-promise.js';
 import {PromiseTimeoutError, wrapPromiseInTimeout} from './timed-promise.js';
 
 // increase if tests are flaky in other environments, like GitHub Actions (which is typically slow)
@@ -20,7 +20,7 @@ describe(wrapPromiseInTimeout.name, () => {
 
         deferredPromiseWrapper.resolve(resolutionValue);
 
-        assert.strictEqual(await promiseWithTimeout, resolutionValue);
+        assert.areStrictEqual(await promiseWithTimeout, resolutionValue);
         const endTime = Date.now();
         assert.isBelow(endTime - startTime, promiseDelayMs);
     });
@@ -44,7 +44,10 @@ describe(wrapPromiseInTimeout.name, () => {
         }
 
         assertInstanceOf(timeoutError, PromiseTimeoutError);
-        assert.strictEqual(timeoutError.message, `Promised timed out after ${promiseDelayMs} ms.`);
+        assert.areStrictEqual(
+            timeoutError.message,
+            `Promised timed out after ${promiseDelayMs} ms.`,
+        );
         const endTime = Date.now();
         assert.isAbove(
             endTime - startTime,

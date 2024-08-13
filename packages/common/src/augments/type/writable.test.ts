@@ -10,7 +10,7 @@ function runWriteAccessTests(writeAccessModifier: (input: any) => any) {
     const originalExample = getExampleReadonlyObject();
     const writableExample = writeAccessModifier(originalExample);
 
-    assert.strictEqual(writableExample, originalExample);
+    assert.areStrictEqual(writableExample, originalExample);
     assert.deepStrictEqual(writableExample, originalExample);
 }
 

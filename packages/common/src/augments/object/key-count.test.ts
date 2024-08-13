@@ -1,6 +1,6 @@
+import {AnyObject} from '@augment-vir/assert';
 import {describe, it} from '@augment-vir/test';
 import {assertTypeOf} from 'run-time-assertions';
-import {AnyObject} from './generic-object-type.js';
 import {KeyCount} from './key-count.js';
 
 describe('KeyCount', () => {

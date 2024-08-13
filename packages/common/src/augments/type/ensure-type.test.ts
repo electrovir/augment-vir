@@ -13,7 +13,7 @@ describe(ensureType.name, () => {
     it('should not actually mutate or change its input', () => {
         const output = ensureType<typeof placeholder>(placeholder);
 
-        assert.strictEqual(output, placeholder, 'object references should not have changed');
+        assert.areStrictEqual(output, placeholder, 'object references should not have changed');
         assert.deepStrictEqual(output, placeholder, 'object internals should not have changed');
     });
 

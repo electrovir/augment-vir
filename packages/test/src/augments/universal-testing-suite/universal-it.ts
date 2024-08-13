@@ -1,4 +1,4 @@
-import {isVirEnv, VirEnv} from '@augment-vir/env';
+import {isRuntimeEnv, RuntimeEnv} from '@augment-vir/core';
 import type {it as nodeIt} from 'node:test';
 import type {it as mochaIt} from '../../mocha.js';
 import {UniversalContext} from './universal-test-context.js';
@@ -33,7 +33,7 @@ export type UniversalIt = UniversalBareIt & {
     skip: UniversalBareIt;
 };
 
-const its = isVirEnv(VirEnv.Node)
+const its = isRuntimeEnv(RuntimeEnv.Node)
     ? {
           node: (await import('node:test')).it,
       }

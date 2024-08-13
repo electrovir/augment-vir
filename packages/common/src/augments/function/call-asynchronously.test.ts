@@ -24,6 +24,6 @@ describe(callAsynchronously.name, () => {
     it("returns the callback's output", async () => {
         const randomValue = randomString();
 
-        assert.strictEqual(await callAsynchronously(() => randomValue), randomValue);
+        assert.areStrictEqual(await callAsynchronously(() => randomValue), randomValue);
     });
 });

@@ -1,4 +1,4 @@
-import {MaybePromise} from '../promise/maybe-promise.js';
+import {MaybePromise} from '@augment-vir/core';
 
 /**
  * Call a function asynchronously without interrupting current synchronous execution, even if the

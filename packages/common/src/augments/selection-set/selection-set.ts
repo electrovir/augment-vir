@@ -1,6 +1,6 @@
+import {AnyObject} from '@augment-vir/assert';
 import {isPrimitive} from 'run-time-assertions';
 import {IsAny, IsNever, Primitive, UnionToIntersection} from 'type-fest';
-import {AnyObject} from '../object/generic-object-type.js';
 import {
     TsRecurse,
     TsRecursionStart,

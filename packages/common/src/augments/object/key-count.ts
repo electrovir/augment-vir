@@ -1,4 +1,4 @@
-import {AnyObject} from './generic-object-type.js';
+import {AnyObject} from '@augment-vir/assert';
 
 /**
  * Counts the number of unique keys in an object type. Note that a key of just `string` will count

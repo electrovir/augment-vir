@@ -8,7 +8,7 @@ describe(randomString.name, () => {
         });
         const randomStringSet = new Set(randomStrings);
 
-        assert.strictEqual(
+        assert.areStrictEqual(
             randomStringSet.size,
             randomStrings.length,
             'some "random" strings were removed when converting to a set, meaning there were duplicates.',

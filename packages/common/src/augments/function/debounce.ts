@@ -1,5 +1,5 @@
+import {MaybePromise} from '@augment-vir/core';
 import {AnyDuration, convertDuration, DurationUnit} from '@date-vir/duration';
-import {MaybePromise} from '../promise/maybe-promise.js';
 
 export enum DebounceStyle {
     /**

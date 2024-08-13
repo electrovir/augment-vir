@@ -1,5 +1,5 @@
+import {AnyObject} from '@augment-vir/assert';
 import {ensureError} from '../error/ensure-error.js';
-import {AnyObject} from './generic-object-type.js';
 import {getObjectTypedKeys} from './object-keys.js';
 import {Values} from './object-values.js';
 

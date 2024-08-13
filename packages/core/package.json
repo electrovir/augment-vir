@@ -1,0 +1,49 @@
+{
+    "name": "@augment-vir/core",
+    "version": "30.0.0",
+    "description": "Core augment-vir augments, especially including run-time environment determination.",
+    "keywords": [
+        "augment-vir",
+        "vir",
+        "core",
+        "env"
+    ],
+    "homepage": "https://github.com/electrovir/augment-vir",
+    "bugs": {
+        "url": "https://github.com/electrovir/augment-vir/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/electrovir/augment-vir.git"
+    },
+    "license": "(MIT or CC0 1.0)",
+    "author": {
+        "name": "electrovir",
+        "url": "https://github.com/electrovir"
+    },
+    "type": "module",
+    "main": "src/index.ts",
+    "module": "src/index.ts",
+    "types": "src/index.ts",
+    "scripts": {
+        "compile": "virmator compile",
+        "docs": "virmator docs",
+        "start": "tsx src/index.ts",
+        "test": "virmator test node",
+        "test:coverage": "npm run test",
+        "test:docs": "virmator docs check",
+        "test:update": "npm test"
+    },
+    "dependencies": {
+        "browser-or-node": "^3.0.0"
+    },
+    "devDependencies": {
+        "@types/node": "^22.1.0"
+    },
+    "engines": {
+        "node": ">=22"
+    },
+    "publishConfig": {
+        "access": "public"
+    }
+}

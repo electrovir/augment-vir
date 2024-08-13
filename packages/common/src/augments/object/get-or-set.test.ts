@@ -1,7 +1,7 @@
+import {AnyObject} from '@augment-vir/assert';
 import {assert, describe, it, itCases} from '@augment-vir/test';
 import {assertInstanceOf, assertThrows, assertTypeOf} from 'run-time-assertions';
 import {randomString} from '../random/random-string.js';
-import {AnyObject} from './generic-object-type.js';
 import {getOrSet, getOrSetFromMap} from './get-or-set.js';
 
 describe(getOrSet.name, () => {
@@ -70,23 +70,23 @@ describe(getOrSet.name, () => {
         const key = 'myKey';
         const newValue = randomString();
 
-        assert.strictEqual(
+        assert.areStrictEqual(
             getOrSet(originalObject, key, () => {
                 callCount++;
                 return newValue;
             }),
             newValue,
         );
-        assert.strictEqual(callCount, 1);
+        assert.areStrictEqual(callCount, 1);
 
-        assert.strictEqual(
+        assert.areStrictEqual(
             getOrSet(originalObject, key, () => {
                 callCount++;
                 return newValue;
             }),
             newValue,
         );
-        assert.strictEqual(callCount, 1);
+        assert.areStrictEqual(callCount, 1);
     });
     it('handles an async callback', async () => {
         const newValue = randomString();
@@ -96,7 +96,7 @@ describe(getOrSet.name, () => {
 
         assertInstanceOf(result, Promise);
 
-        assert.strictEqual(await result, newValue);
+        assert.areStrictEqual(await result, newValue);
     });
     it('requires proper types', () => {
         const myObject: {a: string; b?: number} = {a: 'hello'};
@@ -136,7 +136,7 @@ describe(getOrSetFromMap.name, () => {
             ],
         ]);
 
-        assert.strictEqual(
+        assert.areStrictEqual(
             getOrSetFromMap(exampleMap, exampleKey, () => ''),
             exampleValue,
         );
@@ -147,11 +147,11 @@ describe(getOrSetFromMap.name, () => {
         const exampleValue = randomString();
         const exampleMap = new Map();
 
-        assert.strictEqual(
+        assert.areStrictEqual(
             getOrSetFromMap(exampleMap, exampleKey, () => exampleValue),
             exampleValue,
         );
-        assert.strictEqual(exampleMap.get(exampleKey), exampleValue);
+        assert.areStrictEqual(exampleMap.get(exampleKey), exampleValue);
     });
 
     it('works with WeakMap', () => {
@@ -159,10 +159,10 @@ describe(getOrSetFromMap.name, () => {
         const exampleValue = randomString();
         const exampleMap = new WeakMap();
 
-        assert.strictEqual(
+        assert.areStrictEqual(
             getOrSetFromMap(exampleMap, exampleKey, () => exampleValue),
             exampleValue,
         );
-        assert.strictEqual(exampleMap.get(exampleKey), exampleValue);
+        assert.areStrictEqual(exampleMap.get(exampleKey), exampleValue);
     });
 });

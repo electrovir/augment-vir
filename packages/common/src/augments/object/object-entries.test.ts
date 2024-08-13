@@ -1,6 +1,6 @@
+import {getEnumValues} from '@augment-vir/core';
 import {assert, describe, it, itCases} from '@augment-vir/test';
 import {assertTypeOf} from 'run-time-assertions';
-import {getEnumValues} from '../enum/enum-values.js';
 import {
     getEntriesSortedByKey,
     getObjectTypedEntries,

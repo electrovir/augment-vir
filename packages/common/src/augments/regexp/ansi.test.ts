@@ -24,11 +24,11 @@ const removeAnsiFunctions = [
 removeAnsiFunctions.forEach((removeAnsiFunction) => {
     describe(removeAnsiFunction.name, () => {
         it('should remove all ansi escape codes', () => {
-            assert.strictEqual(removeAnsiFunction('hello\x1b[1m there\x1b[0m'), 'hello there');
+            assert.areStrictEqual(removeAnsiFunction('hello\x1b[1m there\x1b[0m'), 'hello there');
         });
 
         it('should not remove anything when there are no escape codes', () => {
-            assert.strictEqual(removeAnsiFunction('hello there'), 'hello there');
+            assert.areStrictEqual(removeAnsiFunction('hello there'), 'hello there');
         });
     });
 });

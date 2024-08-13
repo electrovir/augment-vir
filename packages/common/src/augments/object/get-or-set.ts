@@ -1,7 +1,7 @@
+import {AnyObject} from '@augment-vir/assert';
+import {MaybePromise} from '@augment-vir/core';
 import {isPromise} from 'run-time-assertions';
 import {ensureError} from '../error/ensure-error.js';
-import {MaybePromise} from '../promise/maybe-promise.js';
-import {AnyObject} from './generic-object-type.js';
 
 /**
  * Get a value from a map or call the callback and return its result and store the result in the

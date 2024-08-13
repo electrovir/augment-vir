@@ -1,7 +1,7 @@
+import {AnyObject} from '@augment-vir/assert';
+import {PartialWithUndefined} from '@augment-vir/core';
 import {describe, it, itCases} from '@augment-vir/test';
 import {assertTypeOf} from 'run-time-assertions';
-import {AnyObject} from '../object/generic-object-type.js';
-import {PartialWithUndefined} from '../object/partial-type.js';
 import {PickCollapsedSelection, selectCollapsedFrom} from './select-collapsed.js';
 import {GenericSelectionSet} from './selection-set.js';
 

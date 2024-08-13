@@ -1,8 +1,11 @@
-import {assert} from 'chai';
-import {assertThrows, ErrorMatchOptions, isRunTimeType} from 'run-time-assertions';
-import {ensureErrorAndPrependMessage} from '../error/ensure-error.js';
+import {assert, ErrorMatchOptions} from '@augment-vir/assert';
+import {
+    ensureErrorAndPrependMessage,
+    type AnyFunction,
+    type TypedFunction,
+} from '@augment-vir/core';
+import {assertThrows, isRunTimeType} from 'run-time-assertions';
 import {assertOutputWithCustomAssertion, CustomAsserter} from '../function/assert-output.js';
-import {AnyFunction, TypedFunction} from '../function/generic-function-types.js';
 import {it} from './universal-it.js';
 
 export type BaseTestCase<OutputGeneric> = {
@@ -76,8 +79,8 @@ export function itCases(
     if (!isRunTimeType(testCases, 'array')) {
         throw new TypeError('expected an array of test cases');
     }
-    // eslint-disable-next-line @typescript-eslint/unbound-method
-    const asserter = maybeTestCases ? testCasesOrCustomAsserter : assert.deepStrictEqual;
+
+    const asserter = maybeTestCases ? testCasesOrCustomAsserter : assert.deepEquals;
 
     if (typeof asserter !== 'function') {
         throw new TypeError('expected a function for the custom asserter');

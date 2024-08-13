@@ -1,0 +1,126 @@
+import type {ArrayElement} from '@augment-vir/core';
+import type {UnionToIntersection} from 'type-fest';
+import {arrayGuards} from '../assertions/array.js';
+import {booleanGuards} from '../assertions/boolean.js';
+import {enumGuards} from '../assertions/enum.js';
+import {entryEqualityGuards} from '../assertions/equality/entry-equality.js';
+import {jsonEqualityGuards} from '../assertions/equality/json-equality.js';
+import {simpleEqualityGuards} from '../assertions/equality/simple-equality.js';
+import {instanceGuards} from '../assertions/instance.js';
+import {keyGuards} from '../assertions/keys.js';
+import {nullishGuards} from '../assertions/nullish.js';
+import {numericGuards} from '../assertions/numeric.js';
+import {primitiveGuards} from '../assertions/primitive.js';
+import {promiseGuards} from '../assertions/promise.js';
+import {regexpGuards} from '../assertions/regexp.js';
+import {runtimeTypeGuards} from '../assertions/runtime-type.js';
+import {throwGuards} from '../assertions/throws.js';
+import {uuidGuards} from '../assertions/uuid.js';
+import {valueGuards} from '../assertions/values.js';
+import {AssertFunction} from '../guard-types/assert-function.js';
+import {GuardGroup} from '../guard-types/guard-group.js';
+
+export const extendableAssertions = {
+    ...arrayGuards.assertions,
+    ...booleanGuards.assertions,
+    ...entryEqualityGuards.assertions,
+    ...enumGuards.assertions,
+    ...instanceGuards.assertions,
+    ...jsonEqualityGuards.assertions,
+    ...keyGuards.assertions,
+    ...nullishGuards.assertions,
+    ...numericGuards.assertions,
+    ...primitiveGuards.assertions,
+    ...promiseGuards.assertions,
+    ...runtimeTypeGuards.assertions,
+    ...simpleEqualityGuards.assertions,
+    ...throwGuards.assertions,
+    ...uuidGuards.assertions,
+    ...valueGuards.assertions,
+    ...regexpGuards.assertions,
+} satisfies Record<PropertyKey, AssertFunction<any>>;
+
+/**
+ * These overrides are required for more complex guards because TypeScript won't allow us to
+ * maintain function type parameters when mapping such functions.
+ */
+
+export const guardOverrides = [
+    arrayGuards,
+    booleanGuards,
+    entryEqualityGuards,
+    enumGuards,
+    instanceGuards,
+    jsonEqualityGuards,
+    keyGuards,
+    nullishGuards,
+    numericGuards,
+    primitiveGuards,
+    promiseGuards,
+    runtimeTypeGuards,
+    simpleEqualityGuards,
+    throwGuards,
+    uuidGuards,
+    valueGuards,
+    regexpGuards,
+] as const satisfies GuardGroup[];
+
+export const checkOverrides: UnionToIntersection<
+    Extract<ArrayElement<typeof guardOverrides>, {checkOverrides: any}>['checkOverrides']
+> = Object.assign(
+    {},
+    ...guardOverrides
+        .map((entry) => {
+            if ('checkOverrides' in entry) {
+                return entry.checkOverrides;
+            } else {
+                return undefined;
+            }
+        })
+        .filter((entry) => !!entry),
+);
+
+export const assertWrapOverrides: UnionToIntersection<
+    Extract<ArrayElement<typeof guardOverrides>, {assertWrapOverrides: any}>['assertWrapOverrides']
+> = Object.assign(
+    {},
+    ...guardOverrides
+        .map((entry) => {
+            if ('assertWrapOverrides' in entry) {
+                return entry.assertWrapOverrides;
+            } else {
+                return undefined;
+            }
+        })
+        .filter((entry) => !!entry),
+);
+
+export const checkWrapOverrides: UnionToIntersection<
+    Extract<ArrayElement<typeof guardOverrides>, {checkWrapOverrides: any}>['checkWrapOverrides']
+> = Object.assign(
+    {},
+    ...guardOverrides
+        .map((entry) => {
+            if ('checkWrapOverrides' in entry) {
+                return entry.checkWrapOverrides;
+            } else {
+                return undefined;
+            }
+        })
+        .filter((entry) => !!entry),
+);
+
+export const waitUntilOverrides: UnionToIntersection<
+    Extract<ArrayElement<typeof guardOverrides>, {waitUntilOverrides: any}>['waitUntilOverrides']
+> = Object.assign(
+    {},
+    ...guardOverrides
+        .map((entry) => {
+            if ('waitUntilOverrides' in entry) {
+                return entry.waitUntilOverrides;
+            } else {
+                return undefined;
+            }
+        })
+        .filter((entry) => !!entry),
+);

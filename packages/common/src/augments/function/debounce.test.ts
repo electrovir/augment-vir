@@ -15,7 +15,7 @@ describe(Debounce.name, () => {
         debounce.execute(() => {
             callCount++;
         });
-        assert.strictEqual(callCount, 1);
+        assert.areStrictEqual(callCount, 1);
         const duration = await measureExecutionDuration(async () => {
             while (callCount <= 1) {
                 debounce.execute(() => {
@@ -38,7 +38,7 @@ describe(Debounce.name, () => {
         debounce.execute(() => {
             callCount++;
         });
-        assert.strictEqual(callCount, 0);
+        assert.areStrictEqual(callCount, 0);
         const duration = await measureExecutionDuration(async () => {
             while (callCount < 1) {
                 debounce.execute(() => {

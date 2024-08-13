@@ -22,29 +22,33 @@
         "compile": "virmator compile",
         "docs": "virmator docs",
         "start": "tsx src/index.ts",
-        "test": "concurrently --colors --kill-others-on-fail -c red,blue --names node,web \"virmator test node\" \"virmator test web\"",
+        "test": "virmator test node --no-deps",
         "test:coverage": "npm run test",
         "test:docs": "virmator docs check",
         "test:update": "npm test"
     },
     "dependencies": {
+        "@augment-vir/core": "^30.0.0",
         "@date-vir/duration": "^6.0.0",
-        "@types/chai": "^4.3.17",
-        "chai": "^5.1.1"
+        "deep-eql": "^5.0.2",
+        "json5": "^2.2.3",
+        "type-fest": "^4.24.0"
+    },
+    "devDependencies": {
+        "@augment-vir/test": "^30.0.0",
+        "@types/deep-eql": "^4.0.2",
+        "@web/dev-server-esbuild": "^1.0.2",
+        "@web/test-runner": "^0.18.2",
+        "@web/test-runner-commands": "^0.9.0",
+        "@web/test-runner-playwright": "^0.11.0",
+        "@web/test-runner-visual-regression": "^0.9.0",
+        "istanbul-smart-text-reporter": "^1.1.4",
+        "typescript": "^5.5.4"
     },
     "engines": {
         "node": ">=22"
     },
     "publishConfig": {
         "access": "public"
-    },
-    "devDependencies": {
-        "@open-wc/testing": "^4.0.0",
-        "@web/dev-server-esbuild": "^1.0.2",
-        "@web/test-runner": "^0.18.2",
-        "@web/test-runner-commands": "^0.9.0",
-        "@web/test-runner-playwright": "^0.11.0",
-        "@web/test-runner-visual-regression": "^0.9.0",
-        "istanbul-smart-text-reporter": "^1.1.4"
     }
 }

@@ -1,5 +1,5 @@
+import {CompleteRequire} from '@augment-vir/core';
 import {getObjectTypedKeys} from './object-keys.js';
-import {CompleteRequire} from './required-keys.js';
 
 export function getObjectTypedEntries<const ObjectGeneric>(
     input: ObjectGeneric,

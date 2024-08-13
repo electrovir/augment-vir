@@ -31,7 +31,7 @@
 -   `getAllIndexesOf`: renamed to `getSubstringIndexes`.
 -   `typedSplit`: renamed to `safeSplit`.
 -   `createDebounce`: refactored into a class, `Debounce`.
--   `isBrowser`: removed. Use `@augment-vir/env` instead.
+-   `isBrowser`: removed. Use `@augment-vir/core` instead.
 -   `timeCallback`: renamed to `measureExecutionDuration`.
 -   `isLengthAtLeast`: moved to `@augment-vir/assert`.
 -   `assertLengthAtLeast`: moved to `@augment-vir/assert`.

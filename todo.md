@@ -5,16 +5,16 @@
     -   the callback is triggered
     -   the callback is skipped
 -   deprecate run-time-assertions
-    -   move all run-time-assertions into `@augment-vir/assert`
-    -   merge everything under a single `assert` object, like chai
--   add a function to `@augment-vir/assert` that takes an assert function input and then spits out:
-    -   an `is*` function that returns a type guard
-    -   an `asserts*` function that returns a assert guard
-    -   an `ensure*` function that returns the input or errors if it fails the assertion (maybe?)
-    -   other things?
-    -   do the the same thing for conversions, but have them spit out:
-        -   `to*`: converts directly maybe with invalid outputs
-        -   `toMaybe*`: converts directly or undefined if error
-        -   `toEnsured*` converts and errors if invalid
 -   add `mapObject` which accepts a callback that returns mapped value _and_ key.
 -   finish updating `date-vir`
+-   look into using typdoc plugins
+    -   https://github.com/Gerrit0/typedoc-plugin-mdn-links
+    -   https://github.com/eyworldwide/typedoc-plugin-remove-references
+    -   https://github.com/Gerrit0/typedoc-plugin-missing-exports
+-   export all of /core in /common (but not anywhere else)
+-   remove all `run-time-assertions` imports
+-   create a `merge` or `Object.assign` variant that picks the most defined entries
+-   add more assertion methods:0
+    -   "not" versions of most assertions
+-   make all inputs readonly
+-   add a pretty diff to the assertion errors like chai has

@@ -1,23 +1,5 @@
 import {filterObject} from './object-filter.js';
 
-export function getObjectTypedKeys<const ObjectGeneric>(
-    input: ObjectGeneric,
-): Array<keyof ObjectGeneric> {
-    let reflectKeys: Array<keyof ObjectGeneric> | undefined;
-    try {
-        reflectKeys = Reflect.ownKeys(input as object) as unknown as Array<keyof ObjectGeneric>;
-    } catch {
-        // do nothing
-    }
-    return (
-        reflectKeys ??
-        ([
-            ...Object.keys(input as object),
-            ...Object.getOwnPropertySymbols(input as object),
-        ] as unknown as Array<keyof ObjectGeneric>)
-    );
-}
-
 export function omitObjectKeys<const ObjectGeneric, const KeyGeneric extends keyof ObjectGeneric>(
     inputObject: Readonly<ObjectGeneric>,
     omitTheseKeys: ReadonlyArray<KeyGeneric>,
