@@ -9,7 +9,7 @@ import {waitUntilTestOptions} from '../../test-timeout.mock.js';
 describe('strictEquals', () => {
     const actualPass: unknown = '1' as any;
     const actualReject: unknown = 1 as any;
-    const expected = '1';
+    const expected: string = '1';
     type ExpectedType = string;
     type UnexpectedType = number;
 

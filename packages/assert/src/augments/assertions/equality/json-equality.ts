@@ -22,8 +22,7 @@ function jsonEquals<const Actual, const Expected extends Actual>(
     try {
         recursiveJsonEquals(actual, expected);
     } catch (error) {
-        const leadingMessage = failureMessage ? failureMessage.replace(/\.$/, '') + ': ' : '';
-        throw new AssertionError(`${leadingMessage}${extractErrorMessage(error)}`);
+        throw new AssertionError(extractErrorMessage(error), failureMessage);
     }
 }
 
@@ -34,7 +33,7 @@ function notJsonEquals(actual: unknown, expected: unknown, failureMessage?: stri
         return;
     }
 
-    throw new AssertionError(failureMessage || `JSON values are equal.`);
+    throw new AssertionError('Values are JSON equal.', failureMessage);
 }
 
 function recursiveJsonEquals(actual: any, expected: any) {
@@ -57,14 +56,14 @@ function recursiveJsonEquals(actual: any, expected: any) {
             const areKeysEqual = baseJsonEquals(aKeys, bKeys);
 
             if (!areKeysEqual) {
-                throw new AssertionError(`JSON keys are not equal`);
+                throw new Error('Values are JSON equal.');
             }
 
             Object.keys(actual).forEach((key) => {
                 try {
                     jsonEquals((actual as AnyObject)[key], (expected as AnyObject)[key]);
                 } catch (error) {
-                    throw new AssertionError(
+                    throw new Error(
                         `JSON objects are not equal at key '${key}': ${extractErrorMessage(error)}`,
                     );
                 }
@@ -72,7 +71,7 @@ function recursiveJsonEquals(actual: any, expected: any) {
         }
     }
 
-    throw new AssertionError('JSON values are not equal.');
+    throw new Error('Values are not JSON equal.');
 }
 
 const assertions: {

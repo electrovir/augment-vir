@@ -2,12 +2,12 @@ import {AssertionError} from '../assertion.error.js';
 
 function matches(actual: string, expected: RegExp, failureMessage?: string | undefined) {
     if (!expected.test(actual)) {
-        throw new AssertionError(failureMessage || `'${actual}' does not match ${expected}`);
+        throw new AssertionError(`'${actual}' does not match ${expected}`, failureMessage);
     }
 }
 function mismatches(actual: string, expected: RegExp, failureMessage?: string | undefined) {
     if (expected.test(actual)) {
-        throw new AssertionError(failureMessage || `'${actual}' matches ${expected}`);
+        throw new AssertionError(`'${actual}' matches ${expected}`, failureMessage);
     }
 }
 

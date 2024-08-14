@@ -7,7 +7,7 @@ const allAssertions = {
     ...typeofAssertions,
     ...extendableAssertions,
     fail(failureMessage?: string | undefined) {
-        throw new AssertionError(failureMessage);
+        throw new AssertionError('Failure triggered.', failureMessage);
     },
 };
 
@@ -18,7 +18,7 @@ export type Assert = ((input: unknown, failureMessage?: string | undefined) => v
 export const assert: Assert = Object.assign(
     (input: unknown, failureMessage?: string | undefined) => {
         if (!input) {
-            throw new AssertionError(failureMessage);
+            throw new AssertionError('Assertion failed.', failureMessage);
         }
     },
     allAssertions,

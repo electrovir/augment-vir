@@ -16,7 +16,8 @@ function isLengthAtLeast<const Element, const Length extends number>(
 ): asserts array is AtLeastTuple<Element, Length> {
     if (array.length < length) {
         throw new AssertionError(
-            failureMessage || `Array has length '${array.length}' is not at least '${length}'.`,
+            `Array has length '${array.length}' is not at least '${length}'.`,
+            failureMessage,
         );
     }
 }
@@ -27,7 +28,8 @@ function isLengthExactly<const Element, const Length extends number>(
 ): asserts array is Tuple<Element, Length> {
     if (array.length !== length) {
         throw new AssertionError(
-            failureMessage || `Array has length '${array.length}' is not exactly '${length}'.`,
+            `Array has length '${array.length}' is not exactly '${length}'.`,
+            failureMessage,
         );
     }
 }

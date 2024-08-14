@@ -1,4 +1,5 @@
 import {AnyFunction, MaybePromise, UnknownObject} from '@augment-vir/core';
+import JSON5 from 'json5';
 import {AssertionError} from '../assertion.error.js';
 import type {GuardGroup} from '../guard-types/guard-group.js';
 import {autoGuard} from '../guard-types/guard-override.js';
@@ -548,8 +549,8 @@ function assertRuntimeType(
     const actualType = getRuntimeType(actual);
     if (actualType !== testType) {
         throw new AssertionError(
-            failureMessage ||
-                `Value is of type '${actualType}' but type '${testType}' was expected.`,
+            `'${JSON5.stringify(actual)}' is '${actualType}', not '${testType}'.`,
+            failureMessage,
         );
     }
 }
@@ -560,6 +561,9 @@ function assertNotRuntimeType(
 ) {
     const actualType = getRuntimeType(actual);
     if (actualType === testType) {
-        throw new AssertionError(failureMessage || `Value is of unexpected type '${actualType}'.`);
+        throw new AssertionError(
+            `'${JSON5.stringify(actual)}' is '${actualType}'.`,
+            failureMessage,
+        );
     }
 }

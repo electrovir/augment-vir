@@ -21,4 +21,3 @@
     -   `assert.tsNotTypeEquals(a,b)`
     -   `assert.tsTypeMatches(a,b)`
     -   `assert.tsNotTypeMatches(a,b)`
--   combine more failure messages so the custom message still includes the assertion failure reason

@@ -7,11 +7,11 @@ import {waitUntil} from '../../guards/wait-until.js';
 import {waitUntilTestOptions} from '../../test-timeout.mock.js';
 
 describe('entriesEqual', () => {
-    const actualPass: unknown = {
+    const actualPass: object = {
         a: 'first',
         b: 'second',
     } as any;
-    const actualReject: unknown = {
+    const actualReject: object = {
         a: 'last',
         b: 'second',
     } as any;
@@ -92,14 +92,14 @@ describe('entriesEqual', () => {
 });
 
 describe('notEntriesEqual', () => {
-    const actualPass = {
+    const actualPass: object = {
         a: 'first',
         b: 'second',
-    };
-    const actualReject: unknown = {
+    } as any;
+    const actualReject: object = {
         a: 'first',
         c: 'second',
-    };
+    } as any;
     const expected = {a: 'first', c: 'second'};
 
     describe('assert', () => {

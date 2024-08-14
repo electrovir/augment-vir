@@ -16,8 +16,8 @@ function instanceOf<const Instance>(
 ): asserts instance is Instance {
     if (!(instance instanceof constructor)) {
         throw new AssertionError(
-            failureMessage ||
-                `'${JSON5.stringify(instance)}' is not an instance of '${constructor.name}'`,
+            `'${JSON5.stringify(instance)}' is not an instance of '${constructor.name}'`,
+            failureMessage,
         );
     }
 }
@@ -28,8 +28,8 @@ function notInstanceOf<const Actual, const Instance>(
 ): asserts instance is Exclude<Actual, Instance> {
     if (instance instanceof constructor) {
         throw new AssertionError(
-            failureMessage ||
-                `'${JSON5.stringify(instance)}' is an instance of '${constructor.name}'`,
+            `'${JSON5.stringify(instance)}' is an instance of '${constructor.name}'`,
+            failureMessage,
         );
     }
 }

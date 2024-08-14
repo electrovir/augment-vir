@@ -18,9 +18,7 @@ function isPrimitive(
      * here.
      */
     if (input !== null && (typeof input === 'object' || typeof input === 'function')) {
-        throw new AssertionError(
-            failureMessage || `'${JSON5.stringify(input)}' is not a Primitive.`,
-        );
+        throw new AssertionError(`'${JSON5.stringify(input)}' is not a Primitive.`, failureMessage);
     }
 }
 function isNotPrimitive<const Actual>(
@@ -33,7 +31,7 @@ function isNotPrimitive<const Actual>(
         return;
     }
 
-    throw new AssertionError(failureMessage || `'${JSON5.stringify(input)}' is a Primitive.`);
+    throw new AssertionError(`'${JSON5.stringify(input)}' is a Primitive.`, failureMessage);
 }
 
 /** Asserts that the given value is a PropertyKey ( string | number | symbol). */
@@ -43,7 +41,8 @@ function isPropertyKey(
 ): asserts input is PropertyKey {
     if (typeof input !== 'string' && typeof input !== 'number' && typeof input !== 'symbol') {
         throw new AssertionError(
-            failureMessage || `'${JSON5.stringify(input)}' is not a PropertyKey.`,
+            `'${JSON5.stringify(input)}' is not a PropertyKey.`,
+            failureMessage,
         );
     }
 }
@@ -57,7 +56,7 @@ function isNotPropertyKey<const Actual>(
         return;
     }
 
-    throw new AssertionError(failureMessage || `'${JSON5.stringify(input)}' is a PropertyKey.`);
+    throw new AssertionError(`'${JSON5.stringify(input)}' is a PropertyKey.`, failureMessage);
 }
 
 const assertions: {

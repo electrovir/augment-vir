@@ -9,7 +9,7 @@ const uuidRegExp = /^[\d\w]{8}-[\d\w]{4}-[\d\w]{4}-[\d\w]{4}-[\d\w]{12}$/;
 /** Checks if the input string is a valid v4 UUID. */
 function isUuid(actual: unknown, failureMessage?: string | undefined): asserts actual is UuidV4 {
     if (!String(actual).match(uuidRegExp)) {
-        throw new AssertionError(failureMessage || `'${String(actual)}' is not a UUID.`);
+        throw new AssertionError(`'${String(actual)}' is not a UUID.`, failureMessage);
     }
 }
 function isNotUuid<const Actual>(
@@ -17,7 +17,7 @@ function isNotUuid<const Actual>(
     failureMessage?: string | undefined,
 ): asserts actual is Exclude<Actual, UuidV4> {
     if (String(actual).match(uuidRegExp)) {
-        throw new AssertionError(failureMessage || `'${String(actual)}' is  a UUID.`);
+        throw new AssertionError(`'${String(actual)}' is a UUID.`, failureMessage);
     }
 }
 

@@ -13,7 +13,7 @@ function isDefined<const Actual>(
     failureMessage?: string | undefined,
 ): asserts input is Exclude<Actual, undefined | null> {
     if (input == undefined) {
-        throw new AssertionError(failureMessage || `'${JSON5.stringify(input)}' is not defined.`);
+        throw new AssertionError(`'${JSON5.stringify(input)}' is not defined.`, failureMessage);
     }
 }
 
@@ -25,7 +25,7 @@ function isNullish(
     failureMessage?: string | undefined,
 ): asserts input is null | undefined {
     if (input != undefined) {
-        throw new AssertionError(failureMessage || `'${JSON5.stringify(input)}' is not a nullish.`);
+        throw new AssertionError(`'${JSON5.stringify(input)}' is not a nullish.`, failureMessage);
     }
 }
 

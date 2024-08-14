@@ -6,15 +6,17 @@ import {WaitUntilOptions} from '../../guard-types/wait-until-function.js';
 import type {NarrowToExpected} from '../narrow-type.js';
 import {strictEquals} from './simple-equality.js';
 
-function entriesEqual<const Actual, const Expected extends Actual>(
+function entriesEqual<const Actual extends object, const Expected extends Actual>(
     actual: Actual,
     expected: Expected,
     failureMessage?: string | undefined,
 ): asserts actual is Expected {
-    const trailingFailureMessage = failureMessage ? `: ${failureMessage}` : '.';
-
-    if (!actual || !expected || typeof actual !== 'object' || typeof expected !== 'object') {
-        throw new AssertionError(`Entries are objects${trailingFailureMessage}`);
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    if (!actual || typeof actual !== 'object') {
+        throw new AssertionError('Actual input is not an object.', failureMessage);
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    } else if (!expected || typeof expected !== 'object') {
+        throw new AssertionError('Expected input is not an object.', failureMessage);
     }
 
     const allKeys = Array.from(
@@ -32,20 +34,21 @@ function entriesEqual<const Actual, const Expected extends Actual>(
             strictEquals(actualValue, expectedValue);
         } catch {
             throw new AssertionError(
-                `Entries are not equal at key '${String(key)}'${trailingFailureMessage}`,
+                `Entries are not equal at key '${String(key)}'.`,
+                failureMessage,
             );
         }
     });
 }
 
-function notEntriesEqual(actual: unknown, expected: unknown, failureMessage?: string | undefined) {
+function notEntriesEqual(actual: object, expected: object, failureMessage?: string | undefined) {
     try {
         entriesEqual(actual, expected);
     } catch {
         return;
     }
 
-    throw new AssertionError(failureMessage || 'Entries are equal.');
+    throw new AssertionError('Entries are equal.', failureMessage);
 }
 
 const assertions: {

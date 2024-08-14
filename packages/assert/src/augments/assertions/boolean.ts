@@ -13,7 +13,7 @@ export type Truthy<T> = Exclude<T, FalsyValue>;
 
 function isFalsy(input: unknown, failureMessage?: string | undefined): asserts input is FalsyValue {
     if (input) {
-        throw new AssertionError(failureMessage || `'${JSON5.stringify(input)}' is not truthy.`);
+        throw new AssertionError(`'${JSON5.stringify(input)}' is not truthy.`, failureMessage);
     }
 }
 
@@ -22,19 +22,19 @@ function isTruthy<const Actual>(
     failureMessage?: string | undefined,
 ): asserts input is Truthy<Actual> {
     if (!input) {
-        throw new AssertionError(failureMessage || `'${JSON5.stringify(input)}' is not truthy.`);
+        throw new AssertionError(`'${JSON5.stringify(input)}' is not truthy.`, failureMessage);
     }
 }
 
 function isTrue(input: unknown, failureMessage?: string | undefined): asserts input is true {
     if (input !== true) {
-        throw new AssertionError(failureMessage || `'${JSON5.stringify(input)}' is not true.`);
+        throw new AssertionError(`'${JSON5.stringify(input)}' is not true.`, failureMessage);
     }
 }
 
 function isFalse(input: unknown, failureMessage?: string | undefined): asserts input is false {
     if (input !== false) {
-        throw new AssertionError(failureMessage || `'${JSON5.stringify(input)}' is not false.`);
+        throw new AssertionError(`'${JSON5.stringify(input)}' is not false.`, failureMessage);
     }
 }
 

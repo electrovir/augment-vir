@@ -22,10 +22,8 @@ function checkError(
     matchOptions?: ErrorMatchOptions | undefined,
     failureMessage?: string | undefined,
 ) {
-    const errorSuffix = failureMessage ? `\n\n${failureMessage}` : '';
-
     if (error == undefined) {
-        throw new AssertionError(`No error was thrown${errorSuffix}`);
+        throw new AssertionError('No error was thrown.', failureMessage);
     } else if (
         matchOptions?.matchConstructor &&
         !((error as any) instanceof matchOptions.matchConstructor)
@@ -33,7 +31,8 @@ function checkError(
         const constructorName = error.constructor.name;
 
         throw new AssertionError(
-            `Error constructor '${constructorName}' did not match expected constructor '${matchOptions.matchConstructor.name}'${errorSuffix}`,
+            `Error constructor '${constructorName}' did not match expected constructor '${matchOptions.matchConstructor.name}'.`,
+            failureMessage,
         );
     } else if (matchOptions?.matchMessage) {
         const message = extractErrorMessage(error);
@@ -41,12 +40,14 @@ function checkError(
         if (typeof matchOptions.matchMessage === 'string') {
             if (!message.includes(matchOptions.matchMessage)) {
                 throw new AssertionError(
-                    `Error message\n\n'${message}'\n\ndid not contain\n\n'${matchOptions.matchMessage}'${errorSuffix}`,
+                    `Error message\n\n'${message}'\n\ndoes not contain\n\n'${matchOptions.matchMessage}'.`,
+                    failureMessage,
                 );
             }
         } else if (!message.match(matchOptions.matchMessage)) {
             throw new AssertionError(
-                `Error message\n\n'${message}'\n\ndid not match RegExp\n\n'${matchOptions.matchMessage}'${errorSuffix}`,
+                `Error message\n\n'${message}'\n\ndoes not match RegExp\n\n'${matchOptions.matchMessage}'.`,
+                failureMessage,
             );
         }
     }

@@ -14,8 +14,8 @@ export function strictEquals<const Actual, const Expected extends Actual>(
 ): asserts actual is Expected {
     if (actual !== expected) {
         throw new AssertionError(
-            failureMessage ||
-                `${JSON5.stringify(actual)} does not strictly equal ${JSON5.stringify(expected)}`,
+            `${JSON5.stringify(actual)} does not strictly equal ${JSON5.stringify(expected)}`,
+            failureMessage,
         );
     }
 }
@@ -26,8 +26,8 @@ export function notStrictEquals(
 ) {
     if (actual === expected) {
         throw new AssertionError(
-            failureMessage ||
-                `${JSON5.stringify(actual)} strictly equals ${JSON5.stringify(expected)}`,
+            `${JSON5.stringify(actual)} strictly equals ${JSON5.stringify(expected)}`,
+            failureMessage,
         );
     }
 }
@@ -35,8 +35,8 @@ export function notStrictEquals(
 function looseEquals(actual: unknown, expected: unknown, failureMessage?: string | undefined) {
     if (actual != expected) {
         throw new AssertionError(
-            failureMessage ||
-                `${JSON5.stringify(actual)} does not loosely equal ${JSON5.stringify(expected)}`,
+            `${JSON5.stringify(actual)} does not loosely equal ${JSON5.stringify(expected)}`,
+            failureMessage,
         );
     }
 }
@@ -44,8 +44,8 @@ function looseEquals(actual: unknown, expected: unknown, failureMessage?: string
 function notLooseEquals(actual: unknown, expected: unknown, failureMessage?: string | undefined) {
     if (actual == expected) {
         throw new AssertionError(
-            failureMessage ||
-                `${JSON5.stringify(actual)} loosely equals ${JSON5.stringify(expected)}`,
+            `${JSON5.stringify(actual)} loosely equals ${JSON5.stringify(expected)}`,
+            failureMessage,
         );
     }
 }
@@ -57,8 +57,8 @@ function deepEquals<const Actual, const Expected extends Actual>(
 ): asserts actual is NarrowToExpected<Actual, Expected> {
     if (!deepEqual(actual, expected)) {
         throw new AssertionError(
-            failureMessage ||
-                `${JSON5.stringify(actual)} does not deeply equal ${JSON5.stringify(expected)}`,
+            `${JSON5.stringify(actual)} does not deeply equal ${JSON5.stringify(expected)}`,
+            failureMessage,
         );
     }
 }
@@ -66,8 +66,8 @@ function deepEquals<const Actual, const Expected extends Actual>(
 function notDeepEquals(actual: unknown, expected: unknown, failureMessage?: string | undefined) {
     if (deepEqual(actual, expected)) {
         throw new AssertionError(
-            failureMessage ||
-                `${JSON5.stringify(actual)} deeply equals ${JSON5.stringify(expected)}`,
+            `${JSON5.stringify(actual)} deeply equals ${JSON5.stringify(expected)}`,
+            failureMessage,
         );
     }
 }

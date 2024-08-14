@@ -2,26 +2,22 @@ import {AnyObject, MaybePromise, Values} from '@augment-vir/core';
 import JSON5 from 'json5';
 import type {EmptyObject} from 'type-fest';
 import {AssertionError} from '../assertion.error.js';
-import {combineFailureMessage} from '../guard-types/combine-failure-message.js';
 import {autoGuard} from '../guard-types/guard-override.js';
 import type {WaitUntilOptions} from '../guard-types/wait-until-function.js';
 import type {NarrowToActual, NarrowToExpected} from './narrow-type.js';
 
 /** Check if an object has the given value through reference equality. */
 function hasValue(parent: unknown, value: unknown, failureMessage?: string | undefined) {
-    const message = combineFailureMessage(
-        `'${JSON5.stringify(parent)}' does not have value '${JSON5.stringify(value)}'.`,
-        failureMessage,
-    );
+    const baseMessage = `'${JSON5.stringify(parent)}' does not have value '${JSON5.stringify(value)}'.`;
     if (!parent) {
-        throw new AssertionError(message);
+        throw new AssertionError(baseMessage, failureMessage);
     }
     const hasValue = Reflect.ownKeys(parent)
         .map((key) => parent[key as keyof typeof parent] as unknown)
         .includes(value);
 
     if (!hasValue) {
-        throw new AssertionError(message);
+        throw new AssertionError(baseMessage, failureMessage);
     }
 }
 function lacksValue(parent: unknown, value: unknown, failureMessage?: string | undefined) {
@@ -31,11 +27,10 @@ function lacksValue(parent: unknown, value: unknown, failureMessage?: string | u
         return;
     }
 
-    const message = combineFailureMessage(
+    throw new AssertionError(
         `'${JSON5.stringify(parent)}' has value '${JSON5.stringify(value)}'.`,
         failureMessage,
     );
-    throw new AssertionError(message);
 }
 
 /** Check if an object has the given value through reference equality. */
@@ -93,7 +88,7 @@ function isEmpty<const Actual extends CanBeEmpty>(
         (input instanceof Set && input.size) ||
         (input && typeof input === 'object' && Object.keys(input).length)
     ) {
-        throw new AssertionError(failureMessage || `'${JSON5.stringify(actual)}' is not empty.`);
+        throw new AssertionError(`'${JSON5.stringify(actual)}' is not empty.`, failureMessage);
     }
 }
 function isNotEmpty<const Actual extends CanBeEmpty>(
@@ -106,7 +101,7 @@ function isNotEmpty<const Actual extends CanBeEmpty>(
         return;
     }
 
-    throw new AssertionError(failureMessage || `'${JSON5.stringify(actual)}' is empty.`);
+    throw new AssertionError(`'${JSON5.stringify(actual)}' is empty.`, failureMessage);
 }
 
 const assertions: {

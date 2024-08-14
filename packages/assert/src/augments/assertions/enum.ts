@@ -13,7 +13,8 @@ function isEnumValue<const Expected extends EnumBaseType>(
     const values = getEnumValues(checkEnum);
     if (!values.includes(value as Expected[keyof Expected])) {
         throw new AssertionError(
-            failureMessage || `${String(value)} is not an enum value in '${values.join(',')}'.`,
+            `${String(value)} is not an enum value in '${values.join(',')}'.`,
+            failureMessage,
         );
     }
 }
@@ -30,7 +31,8 @@ function isNotEnumValue<const Actual, const Expected extends EnumBaseType>(
 
     const values = getEnumValues(checkEnum);
     throw new AssertionError(
-        failureMessage || `${String(value)} is an enum value in '${values.join(',')}'`,
+        `${String(value)} is an enum value in '${values.join(',')}'`,
+        failureMessage,
     );
 }
 
