@@ -1,5 +1,4 @@
 import {assert} from '@augment-vir/assert';
-import {assertTypeOf} from 'run-time-assertions';
 import {
     BaseTestCase,
     FunctionTestCase,
@@ -100,55 +99,55 @@ describe('itCases', () => {
 
 describe('FunctionTestCase', () => {
     it('handles functions with no inputs', () => {
-        assertTypeOf<FunctionTestCase<() => number>>().toEqualTypeOf<BaseTestCase<number>>();
-        assertTypeOf<FunctionTestCase<() => string>>().not.toEqualTypeOf<BaseTestCase<number>>();
-        assertTypeOf<FunctionTestCase<() => string>>().toEqualTypeOf<BaseTestCase<string>>();
+        assert.tsType<FunctionTestCase<() => number>>().equals<BaseTestCase<number>>();
+        assert.tsType<FunctionTestCase<() => string>>().notEquals<BaseTestCase<number>>();
+        assert.tsType<FunctionTestCase<() => string>>().equals<BaseTestCase<string>>();
     });
     it('handles functions with just one input', () => {
-        assertTypeOf<FunctionTestCase<(input: string) => string>>().toEqualTypeOf<
-            OutputTestCaseSingleInput<(input: string) => string>
-        >();
-        assertTypeOf<FunctionTestCase<(input?: string | undefined) => string>>().toEqualTypeOf<
-            OutputTestCaseSingleInput<(input: string | undefined) => string>
-        >();
+        assert
+            .tsType<FunctionTestCase<(input: string) => string>>()
+            .equals<OutputTestCaseSingleInput<(input: string) => string>>();
+        assert
+            .tsType<FunctionTestCase<(input?: string | undefined) => string>>()
+            .equals<OutputTestCaseSingleInput<(input: string | undefined) => string>>();
 
         const testAssignment: FunctionTestCase<(input1?: string) => string> = {} as any;
     });
     it('handles functions with multiple inputs', () => {
         const testAssignment: FunctionTestCase<(input1: string, input2: number) => string> =
             {} as any;
-        assertTypeOf(testAssignment.inputs).toEqualTypeOf<[string, number]>();
+        assert.tsType(testAssignment.inputs).equals<[string, number]>();
 
-        assertTypeOf<FunctionTestCase<(input1: string, input2: number) => string>>().toEqualTypeOf<
-            OutputTestCaseMultipleInputs<(input: string, input2: number) => string>
-        >();
-        assertTypeOf<FunctionTestCase<(input1: string, input2: number) => string>>().toEqualTypeOf<
-            OutputTestCaseMultipleInputs<(input: string, input2: number) => string>
-        >();
+        assert
+            .tsType<FunctionTestCase<(input1: string, input2: number) => string>>()
+            .equals<OutputTestCaseMultipleInputs<(input: string, input2: number) => string>>();
+        assert
+            .tsType<FunctionTestCase<(input1: string, input2: number) => string>>()
+            .equals<OutputTestCaseMultipleInputs<(input: string, input2: number) => string>>();
     });
 
     it('handles functions with rest inputs', () => {
         const testAssignment: FunctionTestCase<(...allInputs: ReadonlyArray<string>) => string> =
             {} as any;
-        assertTypeOf(testAssignment.inputs).toEqualTypeOf<string[]>();
+        assert.tsType(testAssignment.inputs).equals<string[]>();
 
-        assertTypeOf<
-            FunctionTestCase<(...allInputs: ReadonlyArray<string>) => string>
-        >().toEqualTypeOf<
-            OutputTestCaseMultipleInputs<(...allInputs: ReadonlyArray<string>) => string>
-        >();
+        assert
+            .tsType<FunctionTestCase<(...allInputs: ReadonlyArray<string>) => string>>()
+            .equals<
+                OutputTestCaseMultipleInputs<(...allInputs: ReadonlyArray<string>) => string>
+            >();
     });
 
     it('handles functions with rest inputs and non-rest inputs', () => {
         const testAssignment: FunctionTestCase<
             (input: number, ...allInputs: ReadonlyArray<string>) => string
         > = {} as any;
-        assertTypeOf(testAssignment.inputs).toEqualTypeOf<[number, ...string[]]>();
+        assert.tsType(testAssignment.inputs).equals<[number, ...string[]]>();
 
-        assertTypeOf<
-            FunctionTestCase<(...allInputs: ReadonlyArray<string>) => string>
-        >().toEqualTypeOf<
-            OutputTestCaseMultipleInputs<(...allInputs: ReadonlyArray<string>) => string>
-        >();
+        assert
+            .tsType<FunctionTestCase<(...allInputs: ReadonlyArray<string>) => string>>()
+            .equals<
+                OutputTestCaseMultipleInputs<(...allInputs: ReadonlyArray<string>) => string>
+            >();
     });
 });

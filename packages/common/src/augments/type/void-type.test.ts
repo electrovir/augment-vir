@@ -1,14 +1,14 @@
 import {describe, it} from '@augment-vir/test';
-import {assertTypeOf} from 'run-time-assertions';
+import {assert} from 'run-time-assertions';
 import {RequireNonVoid} from './void-type.js';
 
 describe('RequireNonVoid', () => {
     it('blocks void values', () => {
-        assertTypeOf<RequireNonVoid<void, 'success', 'failure'>>().toEqualTypeOf<'failure'>();
-        assertTypeOf<RequireNonVoid<void, 'success', 'failure'>>().not.toEqualTypeOf<'success'>();
+        assert.tsType<RequireNonVoid<void, 'success', 'failure'>>().equals<'failure'>();
+        assert.tsType<RequireNonVoid<void, 'success', 'failure'>>().notEquals<'success'>();
     });
     it('allows non-void values', () => {
-        assertTypeOf<RequireNonVoid<undefined, 'success', 'failure'>>().toEqualTypeOf<'success'>();
-        assertTypeOf<RequireNonVoid<undefined, 'success', 'failure'>>().toEqualTypeOf<'success'>();
+        assert.tsType<RequireNonVoid<undefined, 'success', 'failure'>>().equals<'success'>();
+        assert.tsType<RequireNonVoid<undefined, 'success', 'failure'>>().equals<'success'>();
     });
 });

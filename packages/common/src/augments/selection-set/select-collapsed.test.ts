@@ -1,7 +1,7 @@
 import {AnyObject} from '@augment-vir/assert';
 import {PartialWithUndefined} from '@augment-vir/core';
 import {describe, it, itCases} from '@augment-vir/test';
-import {assertTypeOf} from 'run-time-assertions';
+import {assert} from 'run-time-assertions';
 import {PickCollapsedSelection, selectCollapsedFrom} from './select-collapsed.js';
 import {GenericSelectionSet} from './selection-set.js';
 
@@ -143,186 +143,198 @@ describe(selectCollapsedFrom.name, () => {
     ]);
 
     it('has proper types', () => {
-        assertTypeOf(
-            selectCollapsedFrom(
-                {
-                    hi: 'hi',
-                    bye: 3,
-                    parent: {
-                        child: undefined as
-                            | undefined
-                            | {
-                                  grandChild: {
-                                      child: string;
-                                      child2: number;
-                                      child3: RegExp;
-                                  };
-                              },
-                        child2: {
-                            grandChild: {
-                                child: 'hi',
-                                child2: 4,
-                                child3: /something/,
+        assert
+            .tsType(
+                selectCollapsedFrom(
+                    {
+                        hi: 'hi',
+                        bye: 3,
+                        parent: {
+                            child: undefined as
+                                | undefined
+                                | {
+                                      grandChild: {
+                                          child: string;
+                                          child2: number;
+                                          child3: RegExp;
+                                      };
+                                  },
+                            child2: {
+                                grandChild: {
+                                    child: 'hi',
+                                    child2: 4,
+                                    child3: /something/,
+                                },
                             },
                         },
                     },
-                },
-                {
-                    parent: {
-                        child: {
-                            grandChild: {
-                                child2: true,
+                    {
+                        parent: {
+                            child: {
+                                grandChild: {
+                                    child2: true,
+                                },
                             },
                         },
                     },
-                },
-            ),
-        ).toEqualTypeOf<number | undefined>();
+                ),
+            )
+            .equals<number | undefined>();
     });
 });
 
 describe('PickCollapsedSelection', () => {
     it('collapses selection', () => {
-        assertTypeOf<
-            PickCollapsedSelection<
-                {
-                    hi: string;
-                    bye: number;
-                    parent: {
-                        child: {
-                            grandChild: {
-                                child: string;
-                                child2: number;
-                                child3: RegExp;
+        assert
+            .tsType<
+                PickCollapsedSelection<
+                    {
+                        hi: string;
+                        bye: number;
+                        parent: {
+                            child: {
+                                grandChild: {
+                                    child: string;
+                                    child2: number;
+                                    child3: RegExp;
+                                };
+                            };
+                            child2: {
+                                grandChild2: {
+                                    deep: string;
+                                    another: number;
+                                };
                             };
                         };
-                        child2: {
-                            grandChild2: {
-                                deep: string;
-                                another: number;
-                            };
+                    },
+                    {
+                        parent: {
+                            child: true;
                         };
-                    };
-                },
-                {
-                    parent: {
-                        child: true;
-                    };
-                }
-            >
-        >().toEqualTypeOf<{
-            grandChild: {
-                child: string;
-                child2: number;
-                child3: RegExp;
-            };
-        }>();
+                    }
+                >
+            >()
+            .equals<{
+                grandChild: {
+                    child: string;
+                    child2: number;
+                    child3: RegExp;
+                };
+            }>();
     });
 
     it('allows selecting into potentially undefined properties', () => {
-        assertTypeOf<
-            PickCollapsedSelection<
-                {top: {mid: {low: string[]}}},
-                {
-                    top: {
-                        mid: {
-                            low: true;
+        assert
+            .tsType<
+                PickCollapsedSelection<
+                    {top: {mid: {low: string[]}}},
+                    {
+                        top: {
+                            mid: {
+                                low: true;
+                            };
                         };
-                    };
-                }
-            >
-        >().toEqualTypeOf<string[]>();
+                    }
+                >
+            >()
+            .equals<string[]>();
 
-        assertTypeOf<
-            PickCollapsedSelection<
-                PartialWithUndefined<{top: {mid: {low: string[]}}}>,
-                {
-                    top: {
-                        mid: {
-                            low: true;
+        assert
+            .tsType<
+                PickCollapsedSelection<
+                    PartialWithUndefined<{top: {mid: {low: string[]}}}>,
+                    {
+                        top: {
+                            mid: {
+                                low: true;
+                            };
                         };
-                    };
-                }
-            >
-        >().toEqualTypeOf<undefined | string[]>();
+                    }
+                >
+            >()
+            .equals<undefined | string[]>();
     });
 
     it('collapses to a primitive', () => {
-        assertTypeOf<
-            PickCollapsedSelection<
-                {
-                    hi: string;
-                    bye: number;
-                    parent: {
-                        child: {
-                            grandChild: {
-                                child: string;
-                                child2: number;
-                                child3: RegExp;
+        assert
+            .tsType<
+                PickCollapsedSelection<
+                    {
+                        hi: string;
+                        bye: number;
+                        parent: {
+                            child: {
+                                grandChild: {
+                                    child: string;
+                                    child2: number;
+                                    child3: RegExp;
+                                };
+                            };
+                            child2: {
+                                grandChild2: {
+                                    deep: string;
+                                    another: number;
+                                };
                             };
                         };
-                        child2: {
-                            grandChild2: {
-                                deep: string;
-                                another: number;
+                    },
+                    {
+                        parent: {
+                            child: {
+                                grandChild: {
+                                    child3: true;
+                                };
                             };
                         };
-                    };
-                },
-                {
-                    parent: {
-                        child: {
-                            grandChild: {
-                                child3: true;
-                            };
-                        };
-                    };
-                }
-            >
-        >().toEqualTypeOf<RegExp>();
+                    }
+                >
+            >()
+            .equals<RegExp>();
     });
     it('preserves selections with multiple branches', () => {
-        assertTypeOf<
-            PickCollapsedSelection<
-                {
-                    hi: string;
-                    bye: number;
-                    parent: {
-                        child: {
-                            grandChild: {
-                                child: string;
-                                child2: number;
-                                child3: RegExp;
+        assert
+            .tsType<
+                PickCollapsedSelection<
+                    {
+                        hi: string;
+                        bye: number;
+                        parent: {
+                            child: {
+                                grandChild: {
+                                    child: string;
+                                    child2: number;
+                                    child3: RegExp;
+                                };
+                            };
+                            child2: {
+                                grandChild2: {
+                                    deep: string;
+                                    another: number;
+                                };
                             };
                         };
-                        child2: {
-                            grandChild2: {
-                                deep: string;
-                                another: number;
+                    },
+                    {
+                        parent: {
+                            child: {
+                                grandChild: {
+                                    child3: true;
+                                };
                             };
                         };
-                    };
-                },
-                {
-                    parent: {
-                        child: {
-                            grandChild: {
-                                child3: true;
-                            };
+                        bye: true;
+                    }
+                >
+            >()
+            .equals<{
+                bye: number;
+                parent: {
+                    child: {
+                        grandChild: {
+                            child3: RegExp;
                         };
-                    };
-                    bye: true;
-                }
-            >
-        >().toEqualTypeOf<{
-            bye: number;
-            parent: {
-                child: {
-                    grandChild: {
-                        child3: RegExp;
                     };
                 };
-            };
-        }>();
+            }>();
     });
 });

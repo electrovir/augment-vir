@@ -1,5 +1,4 @@
 import {assert, describe, it} from '@augment-vir/test';
-import {assertTypeOf} from 'run-time-assertions';
 import {makeWritable} from './writable.js';
 
 function getExampleReadonlyObject() {
@@ -16,8 +15,8 @@ function runWriteAccessTests(writeAccessModifier: (input: any) => any) {
 
 describe(makeWritable.name, () => {
     it('should make a type writeable', () => {
-        assertTypeOf(getExampleReadonlyObject()).not.toEqualTypeOf<{a: 'five'}>();
-        assertTypeOf(makeWritable(getExampleReadonlyObject())).toEqualTypeOf<{a: 'five'}>();
+        assert.tsType(getExampleReadonlyObject()).notEquals<{a: 'five'}>();
+        assert.tsType(makeWritable(getExampleReadonlyObject())).equals<{a: 'five'}>();
     });
 
     it('should not modify the object reference that was made writable', () => {

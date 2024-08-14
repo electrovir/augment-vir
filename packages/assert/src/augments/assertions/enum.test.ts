@@ -21,12 +21,12 @@ describe('isEnumValue', () => {
 
     describe('assert', () => {
         it('guards', () => {
-            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+            assert.tsType(actualPass).notEquals<ExpectedType>();
 
             assert.isEnumValue(actualPass, MyEnum);
 
-            assert.typeOf(actualPass).toEqualTypeOf<ExpectedType>();
-            assert.typeOf(actualPass).not.toEqualTypeOf<UnexpectedType>();
+            assert.tsType(actualPass).equals<ExpectedType>();
+            assert.tsType(actualPass).notEquals<UnexpectedType>();
         });
         it('rejects', () => {
             assert.throws(() => assert.isEnumValue(actualReject, MyEnum));
@@ -37,11 +37,11 @@ describe('isEnumValue', () => {
             assert.isTrue(check.isEnumValue(actualPass, MyEnum));
 
             if (check.isEnumValue(actualPass, MyEnum)) {
-                assert.typeOf(actualPass).toEqualTypeOf<ExpectedType>();
-                assert.typeOf(actualPass).not.toEqualTypeOf<UnexpectedType>();
+                assert.tsType(actualPass).equals<ExpectedType>();
+                assert.tsType(actualPass).notEquals<UnexpectedType>();
             }
 
-            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+            assert.tsType(actualPass).notEquals<ExpectedType>();
         });
         it('rejects', () => {
             assert.isFalse(check.isEnumValue(actualReject, MyEnum));
@@ -51,9 +51,9 @@ describe('isEnumValue', () => {
         it('guards', () => {
             const newValue = assertWrap.isEnumValue(actualPass, MyEnum);
 
-            assert.typeOf(newValue).toEqualTypeOf<ExpectedType>();
-            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
-            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+            assert.tsType(newValue).equals<ExpectedType>();
+            assert.tsType(newValue).notEquals<UnexpectedType>();
+            assert.tsType(actualPass).notEquals<ExpectedType>();
         });
         it('rejects', () => {
             assert.throws(() => assertWrap.isEnumValue(actualReject, MyEnum));
@@ -63,10 +63,10 @@ describe('isEnumValue', () => {
         it('guards', () => {
             const newValue = checkWrap.isEnumValue(actualPass, MyEnum);
 
-            assert.typeOf(newValue).toEqualTypeOf<ExpectedType | undefined>();
-            assert.typeOf(newValue).not.toEqualTypeOf<ExpectedType>();
-            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
-            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+            assert.tsType(newValue).equals<ExpectedType | undefined>();
+            assert.tsType(newValue).notEquals<ExpectedType>();
+            assert.tsType(newValue).notEquals<UnexpectedType>();
+            assert.tsType(actualPass).notEquals<ExpectedType>();
         });
         it('rejects', () => {
             assert.isUndefined(checkWrap.isEnumValue(actualReject, MyEnum));
@@ -81,9 +81,9 @@ describe('isEnumValue', () => {
                 'failure',
             );
 
-            assert.typeOf(newValue).toEqualTypeOf<ExpectedType>();
-            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
-            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+            assert.tsType(newValue).equals<ExpectedType>();
+            assert.tsType(newValue).notEquals<UnexpectedType>();
+            assert.tsType(actualPass).notEquals<ExpectedType>();
 
             assert.deepEquals(actualPass, newValue);
         });
@@ -110,12 +110,12 @@ describe('isNotEnumValue', () => {
 
     describe('assert', () => {
         it('guards', () => {
-            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+            assert.tsType(actualPass).notEquals<ExpectedType>();
 
             assert.isNotEnumValue(actualPass, MyEnum);
 
-            assert.typeOf(actualPass).toEqualTypeOf<ExpectedType>();
-            assert.typeOf(actualPass).not.toEqualTypeOf<UnexpectedType>();
+            assert.tsType(actualPass).equals<ExpectedType>();
+            assert.tsType(actualPass).notEquals<UnexpectedType>();
         });
         it('rejects', () => {
             assert.throws(() => assert.isNotEnumValue(actualReject, MyEnum));
@@ -126,11 +126,11 @@ describe('isNotEnumValue', () => {
             assert.isTrue(check.isNotEnumValue(actualPass, MyEnum));
 
             if (check.isNotEnumValue(actualPass, MyEnum)) {
-                assert.typeOf(actualPass).toEqualTypeOf<ExpectedType>();
-                assert.typeOf(actualPass).not.toEqualTypeOf<UnexpectedType>();
+                assert.tsType(actualPass).equals<ExpectedType>();
+                assert.tsType(actualPass).notEquals<UnexpectedType>();
             }
 
-            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+            assert.tsType(actualPass).notEquals<ExpectedType>();
         });
         it('rejects', () => {
             assert.isFalse(check.isNotEnumValue(actualReject, MyEnum));
@@ -140,9 +140,9 @@ describe('isNotEnumValue', () => {
         it('guards', () => {
             const newValue = assertWrap.isNotEnumValue(actualPass, MyEnum);
 
-            assert.typeOf(newValue).toEqualTypeOf<ExpectedType>();
-            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
-            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+            assert.tsType(newValue).equals<ExpectedType>();
+            assert.tsType(newValue).notEquals<UnexpectedType>();
+            assert.tsType(actualPass).notEquals<ExpectedType>();
         });
         it('rejects', () => {
             assert.throws(() => assertWrap.isNotEnumValue(actualReject, MyEnum));
@@ -152,10 +152,10 @@ describe('isNotEnumValue', () => {
         it('guards', () => {
             const newValue = checkWrap.isNotEnumValue(actualPass, MyEnum);
 
-            assert.typeOf(newValue).toEqualTypeOf<ExpectedType | undefined>();
-            assert.typeOf(newValue).not.toEqualTypeOf<ExpectedType>();
-            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
-            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+            assert.tsType(newValue).equals<ExpectedType | undefined>();
+            assert.tsType(newValue).notEquals<ExpectedType>();
+            assert.tsType(newValue).notEquals<UnexpectedType>();
+            assert.tsType(actualPass).notEquals<ExpectedType>();
         });
         it('rejects', () => {
             assert.isUndefined(checkWrap.isNotEnumValue(actualReject, MyEnum));
@@ -170,9 +170,9 @@ describe('isNotEnumValue', () => {
                 'failure',
             );
 
-            assert.typeOf(newValue).toEqualTypeOf<ExpectedType>();
-            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
-            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+            assert.tsType(newValue).equals<ExpectedType>();
+            assert.tsType(newValue).notEquals<UnexpectedType>();
+            assert.tsType(actualPass).notEquals<ExpectedType>();
 
             assert.deepEquals(actualPass, newValue);
         });

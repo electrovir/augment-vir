@@ -1,6 +1,5 @@
 import {getEnumValues} from '@augment-vir/core';
 import {assert, describe, it, itCases} from '@augment-vir/test';
-import {assertTypeOf} from 'run-time-assertions';
 import {
     getEntriesSortedByKey,
     getObjectTypedEntries,
@@ -46,29 +45,29 @@ describe(getObjectTypedEntries.name, () => {
             somethingElse: /regexp/,
         };
 
-        assertTypeOf(getObjectTypedEntries(exampleObject)).toEqualTypeOf<
-            ['bye' | 'hi' | 'somethingElse', string | number | RegExp][]
-        >();
+        assert
+            .tsType(getObjectTypedEntries(exampleObject))
+            .equals<['bye' | 'hi' | 'somethingElse', string | number | RegExp][]>();
     });
 
     it('handles optional properties', () => {
         const example = {} as Partial<Record<Planet, string>>;
 
-        assertTypeOf(getObjectTypedEntries(example)).toEqualTypeOf<[Planet, string][]>();
+        assert.tsType(getObjectTypedEntries(example)).equals<[Planet, string][]>();
 
         const example2 = {} as Partial<{
             [x in string]: RegExp;
         }>;
 
-        assertTypeOf(getObjectTypedEntries(example2)).toEqualTypeOf<[string, RegExp][]>();
+        assert.tsType(getObjectTypedEntries(example2)).equals<[string, RegExp][]>();
     });
 
     it('handles nullable properties', () => {
         const exampleObject = {} as Partial<Record<Planet, string | undefined>>;
 
-        assertTypeOf(getObjectTypedEntries(exampleObject)).toEqualTypeOf<
-            [Planet, string | undefined][]
-        >();
+        assert
+            .tsType(getObjectTypedEntries(exampleObject))
+            .equals<[Planet, string | undefined][]>();
     });
 
     it('includes optional properties in object values', () => {
@@ -84,7 +83,7 @@ describe(getObjectTypedEntries.name, () => {
 
         const entries = getObjectTypedEntries(exampleObject);
 
-        assertTypeOf(entries).toEqualTypeOf<
+        assert.tsType(entries).equals<
             [
                 string,
                 {
@@ -109,7 +108,7 @@ describe(getObjectTypedEntries.name, () => {
 
         const entries = getObjectTypedEntries(exampleObject);
 
-        assertTypeOf(entries).toEqualTypeOf<
+        assert.tsType(entries).equals<
             [
                 string,
                 {
@@ -139,7 +138,7 @@ describe(typedObjectFromEntries.name, () => {
 
         const formedObject = typedObjectFromEntries(entries);
 
-        assertTypeOf(formedObject).toEqualTypeOf<Record<MyEnum, string>>();
+        assert.tsType(formedObject).equals<Record<MyEnum, string>>();
 
         assert.deepStrictEqual(formedObject, {
             [MyEnum.aKey]: 'a-derp',

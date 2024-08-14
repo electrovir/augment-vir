@@ -1,5 +1,5 @@
 import {describe, it, itCases} from '@augment-vir/test';
-import {assertTypeOf} from 'run-time-assertions';
+import {assert} from 'run-time-assertions';
 import {getObjectTypedValues, ValueAtRequiredKey} from './object-values.js';
 
 enum Planet {
@@ -16,9 +16,7 @@ const greekNames: Record<Planet, string> = {
 
 describe('ValueAtRequiredKey', () => {
     it('requires an indexed key', () => {
-        assertTypeOf<
-            ValueAtRequiredKey<Partial<Record<any, string>>, 'hi'>
-        >().toEqualTypeOf<string>();
+        assert.tsType<ValueAtRequiredKey<Partial<Record<any, string>>, 'hi'>>().equals<string>();
     });
 });
 
@@ -55,18 +53,18 @@ describe(getObjectTypedValues.name, () => {
     it('handles optional properties', () => {
         const exampleObject = {} as Partial<Record<Planet, string>>;
 
-        assertTypeOf(getObjectTypedValues(exampleObject)).toEqualTypeOf<string[]>();
+        assert.tsType(getObjectTypedValues(exampleObject)).equals<string[]>();
 
         const example2 = {} as Partial<{
             [x in string]: RegExp;
         }>;
 
-        assertTypeOf(getObjectTypedValues(example2)).toEqualTypeOf<RegExp[]>();
+        assert.tsType(getObjectTypedValues(example2)).equals<RegExp[]>();
     });
 
     it('handles nullable properties', () => {
         const exampleObject = {} as Partial<Record<Planet, string | undefined>>;
 
-        assertTypeOf(getObjectTypedValues(exampleObject)).toEqualTypeOf<(string | undefined)[]>();
+        assert.tsType(getObjectTypedValues(exampleObject)).equals<(string | undefined)[]>();
     });
 });

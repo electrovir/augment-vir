@@ -1,11 +1,11 @@
+import {assert} from '@augment-vir/assert';
 import {describe, it} from '@augment-vir/test';
-import {assertTypeOf} from 'run-time-assertions';
 import {MaybePromise} from './maybe-promise.js';
 
 describe('MaybePromise', () => {
     it('wraps in a promise', () => {
-        assertTypeOf<MaybePromise<string>>().toEqualTypeOf<string | Promise<string>>();
+        assert.tsType<MaybePromise<string>>().equals<string | Promise<string>>();
         /** You have manually unwrap nested promises. */
-        assertTypeOf<MaybePromise<Promise<string>>>().not.toEqualTypeOf<string | Promise<string>>();
+        assert.tsType<MaybePromise<Promise<string>>>().notEquals<string | Promise<string>>();
     });
 });

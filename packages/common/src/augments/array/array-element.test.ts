@@ -1,19 +1,19 @@
 import {describe, it} from '@augment-vir/test';
-import {assertTypeOf} from 'run-time-assertions';
+import {assert} from 'run-time-assertions';
 import {ArrayElement, MaybeArray, MaybeReadonlyArray} from './array-element.js';
 
 describe('ArrayElement', () => {
     it('extracts array elements', () => {
-        assertTypeOf<ArrayElement<string[]>>().toEqualTypeOf<string>();
+        assert.tsType<ArrayElement<string[]>>().equals<string>();
     });
     it('works on tuples', () => {
-        assertTypeOf<ArrayElement<[string]>>().toEqualTypeOf<string>();
+        assert.tsType<ArrayElement<[string]>>().equals<string>();
     });
     it('works on union elements', () => {
-        assertTypeOf<ArrayElement<(string | number)[]>>().toEqualTypeOf<string | number>();
+        assert.tsType<ArrayElement<(string | number)[]>>().equals<string | number>();
     });
     it('works on readonly arrays', () => {
-        assertTypeOf<ArrayElement<ReadonlyArray<string>>>().toEqualTypeOf<string>();
+        assert.tsType<ArrayElement<ReadonlyArray<string>>>().equals<string>();
     });
 });
 

@@ -15,9 +15,3 @@
 -   export all of /core in /common (but not anywhere else)
 -   remove all `run-time-assertions` imports
 -   create a `merge` or `Object.assign` variant that picks the most defined entries
--   refactor `assert.typeOf` to be a single method call
-    -   don't use an external library
-    -   `assert.tsTypeEquals(a,b)`
-    -   `assert.tsNotTypeEquals(a,b)`
-    -   `assert.tsTypeMatches(a,b)`
-    -   `assert.tsNotTypeMatches(a,b)`

@@ -24,13 +24,13 @@ describe('isLengthAtLeast', () => {
 
     describe('assert', () => {
         it('guards', () => {
-            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+            assert.tsType(actualPass).notEquals<ExpectedType>();
 
             assert.isLengthAtLeast(actualPass, expected);
 
-            assert.typeOf(actualPass).toMatchTypeOf<ExpectedType>();
-            assert.typeOf(actualPass[1]).toBeString();
-            assert.typeOf(actualPass).not.toEqualTypeOf<UnexpectedType>();
+            assert.tsType(actualPass).matches<ExpectedType>();
+            assert.tsType(actualPass[1]).equals<string>();
+            assert.tsType(actualPass).notEquals<UnexpectedType>();
         });
         it('rejects', () => {
             assert.throws(() => assert.isLengthAtLeast(actualReject, expected));
@@ -41,12 +41,12 @@ describe('isLengthAtLeast', () => {
             assert.isTrue(check.isLengthAtLeast(actualPass, expected));
 
             if (check.isLengthAtLeast(actualPass, expected)) {
-                assert.typeOf(actualPass).toMatchTypeOf<ExpectedType>();
-                assert.typeOf(actualPass[1]).toBeString();
-                assert.typeOf(actualPass).not.toEqualTypeOf<UnexpectedType>();
+                assert.tsType(actualPass).matches<ExpectedType>();
+                assert.tsType(actualPass[1]).equals<string>();
+                assert.tsType(actualPass).notEquals<UnexpectedType>();
             }
 
-            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+            assert.tsType(actualPass).notEquals<ExpectedType>();
         });
         it('rejects', () => {
             assert.isFalse(check.isLengthAtLeast(actualReject, expected));
@@ -56,10 +56,10 @@ describe('isLengthAtLeast', () => {
         it('guards', () => {
             const newValue = assertWrap.isLengthAtLeast(actualPass, expected);
 
-            assert.typeOf(newValue).toEqualTypeOf<ExpectedType>();
-            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
-            assert.typeOf(newValue[1]).toBeString();
-            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+            assert.tsType(newValue).equals<ExpectedType>();
+            assert.tsType(newValue).notEquals<UnexpectedType>();
+            assert.tsType(newValue[1]).equals<string>();
+            assert.tsType(actualPass).notEquals<ExpectedType>();
         });
         it('rejects', () => {
             assert.throws(() => assertWrap.isLengthAtLeast(actualReject, expected));
@@ -69,12 +69,12 @@ describe('isLengthAtLeast', () => {
         it('guards', () => {
             const newValue = checkWrap.isLengthAtLeast(actualPass, expected);
 
-            assert.typeOf(newValue).toEqualTypeOf<ExpectedType | undefined>();
-            assert.typeOf(newValue).not.toEqualTypeOf<ExpectedType>();
-            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
+            assert.tsType(newValue).equals<ExpectedType | undefined>();
+            assert.tsType(newValue).notEquals<ExpectedType>();
+            assert.tsType(newValue).notEquals<UnexpectedType>();
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            assert.typeOf(newValue![1]).toBeString();
-            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+            assert.tsType(newValue![1]).equals<string>();
+            assert.tsType(actualPass).notEquals<ExpectedType>();
         });
         it('rejects', () => {
             assert.isUndefined(checkWrap.isLengthAtLeast(actualReject, expected));
@@ -89,10 +89,10 @@ describe('isLengthAtLeast', () => {
                 'failure',
             );
 
-            assert.typeOf(newValue).toEqualTypeOf<ExpectedType>();
-            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
-            assert.typeOf(newValue[1]).toBeString();
-            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+            assert.tsType(newValue).equals<ExpectedType>();
+            assert.tsType(newValue).notEquals<UnexpectedType>();
+            assert.tsType(newValue[1]).equals<string>();
+            assert.tsType(actualPass).notEquals<ExpectedType>();
         });
         it('rejects', async () => {
             await assert.throws(
@@ -123,13 +123,13 @@ describe('isLengthExactly', () => {
 
     describe('assert', () => {
         it('guards', () => {
-            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+            assert.tsType(actualPass).notEquals<ExpectedType>();
 
             assert.isLengthExactly(actualPass, expected);
 
-            assert.typeOf(actualPass).toMatchTypeOf<ExpectedType>();
-            assert.typeOf(actualPass[1]).toBeString();
-            assert.typeOf(actualPass).not.toEqualTypeOf<UnexpectedType>();
+            assert.tsType(actualPass).matches<ExpectedType>();
+            assert.tsType(actualPass[1]).equals<string>();
+            assert.tsType(actualPass).notEquals<UnexpectedType>();
         });
         it('rejects', () => {
             assert.throws(() => assert.isLengthExactly(actualReject, expected));
@@ -140,12 +140,12 @@ describe('isLengthExactly', () => {
             assert.isTrue(check.isLengthExactly(actualPass, expected));
 
             if (check.isLengthExactly(actualPass, expected)) {
-                assert.typeOf(actualPass).toMatchTypeOf<ExpectedType>();
-                assert.typeOf(actualPass[1]).toBeString();
-                assert.typeOf(actualPass).not.toEqualTypeOf<UnexpectedType>();
+                assert.tsType(actualPass).matches<ExpectedType>();
+                assert.tsType(actualPass[1]).equals<string>();
+                assert.tsType(actualPass).notEquals<UnexpectedType>();
             }
 
-            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+            assert.tsType(actualPass).notEquals<ExpectedType>();
         });
         it('rejects', () => {
             assert.isFalse(check.isLengthExactly(actualReject, expected));
@@ -155,10 +155,10 @@ describe('isLengthExactly', () => {
         it('guards', () => {
             const newValue = assertWrap.isLengthExactly(actualPass, expected);
 
-            assert.typeOf(newValue).toEqualTypeOf<ExpectedType>();
-            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
-            assert.typeOf(newValue[1]).toBeString();
-            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+            assert.tsType(newValue).equals<ExpectedType>();
+            assert.tsType(newValue).notEquals<UnexpectedType>();
+            assert.tsType(newValue[1]).equals<string>();
+            assert.tsType(actualPass).notEquals<ExpectedType>();
         });
         it('rejects', () => {
             assert.throws(() => assertWrap.isLengthExactly(actualReject, expected));
@@ -168,12 +168,12 @@ describe('isLengthExactly', () => {
         it('guards', () => {
             const newValue = checkWrap.isLengthExactly(actualPass, expected);
 
-            assert.typeOf(newValue).toEqualTypeOf<ExpectedType | undefined>();
-            assert.typeOf(newValue).not.toEqualTypeOf<ExpectedType>();
-            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
+            assert.tsType(newValue).equals<ExpectedType | undefined>();
+            assert.tsType(newValue).notEquals<ExpectedType>();
+            assert.tsType(newValue).notEquals<UnexpectedType>();
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            assert.typeOf(newValue![1]).toBeString();
-            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+            assert.tsType(newValue![1]).equals<string>();
+            assert.tsType(actualPass).notEquals<ExpectedType>();
         });
         it('rejects', () => {
             assert.isUndefined(checkWrap.isLengthExactly(actualReject, expected));
@@ -188,10 +188,10 @@ describe('isLengthExactly', () => {
                 'failure',
             );
 
-            assert.typeOf(newValue).toEqualTypeOf<ExpectedType>();
-            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
-            assert.typeOf(newValue[1]).toBeString();
-            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+            assert.tsType(newValue).equals<ExpectedType>();
+            assert.tsType(newValue).notEquals<UnexpectedType>();
+            assert.tsType(newValue[1]).equals<string>();
+            assert.tsType(actualPass).notEquals<ExpectedType>();
         });
         it('rejects', async () => {
             await assert.throws(
@@ -229,7 +229,7 @@ describe('AtLeastTuple', () => {
 
     it('should match arrays with more than the expected length', () => {
         assert
-            .typeOf([
+            .tsType([
                 1,
                 2,
                 3,
@@ -238,13 +238,13 @@ describe('AtLeastTuple', () => {
                 6,
                 7,
             ] as const)
-            .toBeAssignableTo<AtLeastTuple<any, 5>>();
+            .matches<AtLeastTuple<any, 5>>();
         assert
-            .typeOf([
+            .tsType([
                 1,
                 2,
                 3,
             ] as const)
-            .not.toBeAssignableTo<AtLeastTuple<any, 5>>();
+            .notMatches<AtLeastTuple<any, 5>>();
     });
 });

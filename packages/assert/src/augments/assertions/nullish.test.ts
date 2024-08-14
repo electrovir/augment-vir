@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-expressions */
 import {describe, it} from '@augment-vir/test';
 import {assertWrap} from '../guards/assert-wrap.js';
 import {assert} from '../guards/assert.js';
@@ -15,12 +14,12 @@ describe('isDefined', () => {
 
     describe('assert', () => {
         it('guards', () => {
-            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+            assert.tsType(actualPass).notEquals<ExpectedType>();
 
             assert.isDefined(actualPass);
 
-            assert.typeOf(actualPass).toEqualTypeOf<ExpectedType>();
-            assert.typeOf(actualPass).not.toEqualTypeOf<UnexpectedType>();
+            assert.tsType(actualPass).equals<ExpectedType>();
+            assert.tsType(actualPass).notEquals<UnexpectedType>();
         });
         it('rejects', () => {
             assert.throws(() => assert.isDefined(actualReject));
@@ -31,11 +30,11 @@ describe('isDefined', () => {
             assert.isTrue(check.isDefined(actualPass));
 
             if (check.isDefined(actualPass)) {
-                assert.typeOf(actualPass).toEqualTypeOf<ExpectedType>();
-                assert.typeOf(actualPass).not.toEqualTypeOf<UnexpectedType>();
+                assert.tsType(actualPass).equals<ExpectedType>();
+                assert.tsType(actualPass).notEquals<UnexpectedType>();
             }
 
-            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+            assert.tsType(actualPass).notEquals<ExpectedType>();
         });
         it('rejects', () => {
             assert.isFalse(check.isDefined(actualReject));
@@ -45,9 +44,9 @@ describe('isDefined', () => {
         it('guards', () => {
             const newValue = assertWrap.isDefined(actualPass);
 
-            assert.typeOf(newValue).toEqualTypeOf<ExpectedType>();
-            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
-            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+            assert.tsType(newValue).equals<ExpectedType>();
+            assert.tsType(newValue).notEquals<UnexpectedType>();
+            assert.tsType(actualPass).notEquals<ExpectedType>();
         });
         it('rejects', () => {
             assert.throws(() => assertWrap.isDefined(actualReject));
@@ -68,9 +67,9 @@ describe('isDefined', () => {
                 'failure',
             );
 
-            assert.typeOf(newValue).toEqualTypeOf<ExpectedType>();
-            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
-            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+            assert.tsType(newValue).equals<ExpectedType>();
+            assert.tsType(newValue).notEquals<UnexpectedType>();
+            assert.tsType(actualPass).notEquals<ExpectedType>();
 
             assert.deepEquals(actualPass, newValue);
         });
@@ -90,12 +89,12 @@ describe('isNullish', () => {
 
     describe('assert', () => {
         it('guards', () => {
-            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+            assert.tsType(actualPass).notEquals<ExpectedType>();
 
             assert.isNullish(actualPass);
 
-            assert.typeOf(actualPass).toEqualTypeOf<ExpectedType>();
-            assert.typeOf(actualPass).not.toEqualTypeOf<UnexpectedType>();
+            assert.tsType(actualPass).equals<ExpectedType>();
+            assert.tsType(actualPass).notEquals<UnexpectedType>();
         });
         it('rejects', () => {
             assert.throws(() => assert.isNullish(actualReject));
@@ -106,11 +105,11 @@ describe('isNullish', () => {
             assert.isTrue(check.isNullish(actualPass));
 
             if (check.isNullish(actualPass)) {
-                assert.typeOf(actualPass).toEqualTypeOf<ExpectedType>();
-                assert.typeOf(actualPass).not.toEqualTypeOf<UnexpectedType>();
+                assert.tsType(actualPass).equals<ExpectedType>();
+                assert.tsType(actualPass).notEquals<UnexpectedType>();
             }
 
-            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+            assert.tsType(actualPass).notEquals<ExpectedType>();
         });
         it('rejects', () => {
             assert.isFalse(check.isNullish(actualReject));
@@ -120,9 +119,9 @@ describe('isNullish', () => {
         it('guards', () => {
             const newValue = assertWrap.isNullish(actualPass);
 
-            assert.typeOf(newValue).toEqualTypeOf<ExpectedType>();
-            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
-            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+            assert.tsType(newValue).equals<ExpectedType>();
+            assert.tsType(newValue).notEquals<UnexpectedType>();
+            assert.tsType(actualPass).notEquals<ExpectedType>();
         });
         it('rejects', () => {
             assert.throws(() => assertWrap.isNullish(actualReject));
@@ -145,9 +144,9 @@ describe('isNullish', () => {
                 'failure',
             );
 
-            assert.typeOf(newValue).toEqualTypeOf<ExpectedType>();
-            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
-            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+            assert.tsType(newValue).equals<ExpectedType>();
+            assert.tsType(newValue).notEquals<UnexpectedType>();
+            assert.tsType(actualPass).notEquals<ExpectedType>();
 
             assert.deepEquals(actualPass, newValue);
         });

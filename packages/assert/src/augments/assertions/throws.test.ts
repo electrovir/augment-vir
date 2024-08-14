@@ -30,67 +30,61 @@ describe('throws', () => {
         });
 
         it('is synchronous if callback is synchronous with a message', () => {
-            assert.typeOf(assert.throws(actualPass, {}, 'yo')).toEqualTypeOf<void>();
-            assert.typeOf(assert.throws(actualPass, undefined, 'yo')).toEqualTypeOf<void>();
+            assert.tsType(assert.throws(actualPass, {}, 'yo')).equals<void>();
+            assert.tsType(assert.throws(actualPass, undefined, 'yo')).equals<void>();
             assert
-                .typeOf(assert.throws(actualPass, {matchConstructor: Error}, 'yo'))
-                .toEqualTypeOf<void>();
+                .tsType(assert.throws(actualPass, {matchConstructor: Error}, 'yo'))
+                .equals<void>();
+            assert.tsType(assert.throws(actualPass, {matchMessage: ''}, 'yo')).equals<void>();
             assert
-                .typeOf(assert.throws(actualPass, {matchMessage: ''}, 'yo'))
-                .toEqualTypeOf<void>();
-            assert
-                .typeOf(
+                .tsType(
                     assert.throws(actualPass, {matchConstructor: Error, matchMessage: ''}, 'yo'),
                 )
-                .toEqualTypeOf<void>();
+                .equals<void>();
         });
 
         it('is synchronous if callback is synchronous without a message', () => {
-            assert.typeOf(assert.throws(actualPass)).toEqualTypeOf<void>();
-            assert.typeOf(assert.throws(actualPass, {})).toEqualTypeOf<void>();
-            assert.typeOf(assert.throws(actualPass, undefined)).toEqualTypeOf<void>();
+            assert.tsType(assert.throws(actualPass)).equals<void>();
+            assert.tsType(assert.throws(actualPass, {})).equals<void>();
+            assert.tsType(assert.throws(actualPass, undefined)).equals<void>();
+            assert.tsType(assert.throws(actualPass, {matchConstructor: Error})).equals<void>();
+            assert.tsType(assert.throws(actualPass, {matchMessage: ''})).equals<void>();
             assert
-                .typeOf(assert.throws(actualPass, {matchConstructor: Error}))
-                .toEqualTypeOf<void>();
-            assert.typeOf(assert.throws(actualPass, {matchMessage: ''})).toEqualTypeOf<void>();
-            assert
-                .typeOf(assert.throws(actualPass, {matchConstructor: Error, matchMessage: ''}))
-                .toEqualTypeOf<void>();
+                .tsType(assert.throws(actualPass, {matchConstructor: Error, matchMessage: ''}))
+                .equals<void>();
         });
 
         it('is asynchronous if callback is asynchronous with a message', async () => {
-            assert.typeOf(assert.throws(actualPassAsync, {}, 'yo')).toEqualTypeOf<Promise<void>>();
+            assert.tsType(assert.throws(actualPassAsync, {}, 'yo')).equals<Promise<void>>();
+            assert.tsType(assert.throws(actualPassAsync, undefined, 'yo')).equals<Promise<void>>();
             assert
-                .typeOf(assert.throws(actualPassAsync, undefined, 'yo'))
-                .toEqualTypeOf<Promise<void>>();
+                .tsType(assert.throws(actualPassAsync, {matchConstructor: Error}, 'yo'))
+                .equals<Promise<void>>();
             assert
-                .typeOf(assert.throws(actualPassAsync, {matchConstructor: Error}, 'yo'))
-                .toEqualTypeOf<Promise<void>>();
+                .tsType(assert.throws(actualPassAsync, {matchMessage: ''}, 'yo'))
+                .equals<Promise<void>>();
             assert
-                .typeOf(assert.throws(actualPassAsync, {matchMessage: ''}, 'yo'))
-                .toEqualTypeOf<Promise<void>>();
-            assert
-                .typeOf(
+                .tsType(
                     assert.throws(
                         actualPassAsync,
                         {matchConstructor: Error, matchMessage: ''},
                         'yo',
                     ),
                 )
-                .toEqualTypeOf<Promise<void>>();
+                .equals<Promise<void>>();
         });
 
         it('is asynchronous if callback is asynchronous without a message', () => {
-            assert.typeOf(assert.throws(actualPassAsync)).toEqualTypeOf<Promise<void>>();
+            assert.tsType(assert.throws(actualPassAsync)).equals<Promise<void>>();
             assert
-                .typeOf(assert.throws(actualPassAsync, {matchConstructor: Error}))
-                .toEqualTypeOf<Promise<void>>();
+                .tsType(assert.throws(actualPassAsync, {matchConstructor: Error}))
+                .equals<Promise<void>>();
             assert
-                .typeOf(assert.throws(actualPassAsync, {matchMessage: ''}))
-                .toEqualTypeOf<Promise<void>>();
+                .tsType(assert.throws(actualPassAsync, {matchMessage: ''}))
+                .equals<Promise<void>>();
             assert
-                .typeOf(assert.throws(actualPassAsync, {matchConstructor: Error, matchMessage: ''}))
-                .toEqualTypeOf<Promise<void>>();
+                .tsType(assert.throws(actualPassAsync, {matchConstructor: Error, matchMessage: ''}))
+                .equals<Promise<void>>();
         });
 
         it('errors if no error is caught', () => {
@@ -243,27 +237,25 @@ describe('throws', () => {
             assert.isFalse(check.throws(actualReject));
         });
         it('is synchronous if callback is synchronous', () => {
-            assert.typeOf(check.throws(() => {}, {})).toEqualTypeOf<boolean>();
-            assert.typeOf(check.throws(() => {}, undefined)).toEqualTypeOf<boolean>();
+            assert.tsType(check.throws(() => {}, {})).equals<boolean>();
+            assert.tsType(check.throws(() => {}, undefined)).equals<boolean>();
+            assert.tsType(check.throws(() => {}, {matchConstructor: Error})).equals<boolean>();
+            assert.tsType(check.throws(() => {}, {matchMessage: ''})).equals<boolean>();
             assert
-                .typeOf(check.throws(() => {}, {matchConstructor: Error}))
-                .toEqualTypeOf<boolean>();
-            assert.typeOf(check.throws(() => {}, {matchMessage: ''})).toEqualTypeOf<boolean>();
-            assert
-                .typeOf(check.throws(() => {}, {matchConstructor: Error, matchMessage: ''}))
-                .toEqualTypeOf<boolean>();
+                .tsType(check.throws(() => {}, {matchConstructor: Error, matchMessage: ''}))
+                .equals<boolean>();
         });
         it('is asynchronous if callback is asynchronous', () => {
-            assert.typeOf(check.throws(async () => {})).toEqualTypeOf<Promise<boolean>>();
+            assert.tsType(check.throws(async () => {})).equals<Promise<boolean>>();
             assert
-                .typeOf(check.throws(async () => {}, {matchConstructor: Error}))
-                .toEqualTypeOf<Promise<boolean>>();
+                .tsType(check.throws(async () => {}, {matchConstructor: Error}))
+                .equals<Promise<boolean>>();
             assert
-                .typeOf(check.throws(async () => {}, {matchMessage: ''}))
-                .toEqualTypeOf<Promise<boolean>>();
+                .tsType(check.throws(async () => {}, {matchMessage: ''}))
+                .equals<Promise<boolean>>();
             assert
-                .typeOf(check.throws(async () => {}, {matchConstructor: Error, matchMessage: ''}))
-                .toEqualTypeOf<Promise<boolean>>();
+                .tsType(check.throws(async () => {}, {matchConstructor: Error, matchMessage: ''}))
+                .equals<Promise<boolean>>();
         });
 
         it('fails if no error is caught', () => {
@@ -362,7 +354,7 @@ describe('throws', () => {
         it('guards', () => {
             const newValue = assertWrap.throws(actualPass);
 
-            assert.typeOf(newValue).toEqualTypeOf<Error>();
+            assert.tsType(newValue).equals<Error>();
             assert.instanceOf(newValue, Error);
         });
         it('rejects', () => {
@@ -429,7 +421,7 @@ describe('throws', () => {
         it('guards', () => {
             const newValue = checkWrap.throws(actualPass);
 
-            assert.typeOf(newValue).toEqualTypeOf<Error | undefined>();
+            assert.tsType(newValue).equals<Error | undefined>();
         });
         it('rejects', () => {
             assert.isUndefined(checkWrap.throws(actualReject));
@@ -493,7 +485,7 @@ describe('throws', () => {
                     'failure',
                 );
 
-                assert.typeOf(newValue).toEqualTypeOf<Error>();
+                assert.tsType(newValue).equals<Error>();
 
                 assert.strictEquals(extractErrorMessage(newValue), 'fake error');
             });
@@ -506,7 +498,7 @@ describe('throws', () => {
                     'failure',
                 );
 
-                assert.typeOf(newValue).toEqualTypeOf<Error>();
+                assert.tsType(newValue).equals<Error>();
 
                 assert.strictEquals(extractErrorMessage(newValue), 'fake error');
             });
@@ -551,7 +543,7 @@ describe('throws', () => {
                     'failure',
                 );
 
-                assert.typeOf(newValue).toEqualTypeOf<Error>();
+                assert.tsType(newValue).equals<Error>();
 
                 assert.strictEquals(extractErrorMessage(newValue), 'fake error');
             });
@@ -562,7 +554,7 @@ describe('throws', () => {
                     'failure',
                 );
 
-                assert.typeOf(newValue).toEqualTypeOf<Error>();
+                assert.tsType(newValue).equals<Error>();
 
                 assert.strictEquals(extractErrorMessage(newValue), 'fake error');
             });

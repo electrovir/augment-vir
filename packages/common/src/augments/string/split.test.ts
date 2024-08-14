@@ -1,5 +1,5 @@
 import {describe, it, itCases} from '@augment-vir/test';
-import {assertTypeOf} from 'run-time-assertions';
+import {assert} from 'run-time-assertions';
 import {safeSplit, splitIncludeSplit} from './split.js';
 
 describe(splitIncludeSplit.name, () => {
@@ -63,7 +63,7 @@ describe(safeSplit.name, () => {
             first,
             second,
         ] = safeSplit('1.2', '.');
-        assertTypeOf(first).toEqualTypeOf<string>();
-        assertTypeOf(second).toEqualTypeOf<string | undefined>();
+        assert.tsType(first).equals<string>();
+        assert.tsType(second).equals<string | undefined>();
     });
 });

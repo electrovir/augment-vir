@@ -15,7 +15,7 @@ describe('waitUntil', () => {
             }
         });
 
-        assert.typeOf(result).toEqualTypeOf<true>();
+        assert.tsType(result).equals<true>();
     });
     it('resolves once a condition is true', async () => {
         let condition = false;

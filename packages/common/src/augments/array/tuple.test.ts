@@ -1,5 +1,5 @@
 import {describe, it} from '@augment-vir/test';
-import {assertTypeOf} from 'run-time-assertions';
+import {assert} from 'run-time-assertions';
 import {MappedTuple} from './tuple.js';
 
 describe('MappedTuple', () => {
@@ -14,15 +14,15 @@ describe('MappedTuple', () => {
         ] as const;
         type MappedMyArray = MappedTuple<typeof myArray, RegExp>;
 
-        assertTypeOf<MappedMyArray>().toEqualTypeOf<
-            Readonly<[RegExp, RegExp, RegExp, RegExp, RegExp, RegExp]>
-        >();
-        assertTypeOf<MappedMyArray>().not.toEqualTypeOf<
-            Readonly<[RegExp, RegExp, RegExp, RegExp, RegExp, RegExp, RegExp]>
-        >();
-        assertTypeOf<MappedMyArray>().not.toEqualTypeOf<
-            Readonly<[RegExp, RegExp, RegExp, RegExp, RegExp]>
-        >();
-        assertTypeOf<MappedMyArray>().not.toEqualTypeOf<ReadonlyArray<RegExp>>();
+        assert
+            .tsType<MappedMyArray>()
+            .equals<Readonly<[RegExp, RegExp, RegExp, RegExp, RegExp, RegExp]>>();
+        assert
+            .tsType<MappedMyArray>()
+            .notEquals<Readonly<[RegExp, RegExp, RegExp, RegExp, RegExp, RegExp, RegExp]>>();
+        assert
+            .tsType<MappedMyArray>()
+            .notEquals<Readonly<[RegExp, RegExp, RegExp, RegExp, RegExp]>>();
+        assert.tsType<MappedMyArray>().notEquals<ReadonlyArray<RegExp>>();
     });
 });

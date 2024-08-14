@@ -80,12 +80,12 @@ describe('jsonEquals', () => {
 
     describe('assert', () => {
         it('guards', () => {
-            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+            assert.tsType(actualPass).notEquals<ExpectedType>();
 
             assert.jsonEquals(actualPass, expected);
 
-            assert.typeOf(actualPass).toEqualTypeOf<ExpectedType>();
-            assert.typeOf(actualPass).not.toEqualTypeOf<UnexpectedType>();
+            assert.tsType(actualPass).equals<ExpectedType>();
+            assert.tsType(actualPass).notEquals<UnexpectedType>();
         });
         it('rejects', () => {
             assert.throws(() => assert.jsonEquals(actualReject, expected));
@@ -96,11 +96,11 @@ describe('jsonEquals', () => {
             assert.isTrue(check.jsonEquals(actualPass, expected));
 
             if (check.jsonEquals(actualPass, expected)) {
-                assert.typeOf(actualPass).toEqualTypeOf<ExpectedType>();
-                assert.typeOf(actualPass).not.toEqualTypeOf<UnexpectedType>();
+                assert.tsType(actualPass).equals<ExpectedType>();
+                assert.tsType(actualPass).notEquals<UnexpectedType>();
             }
 
-            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+            assert.tsType(actualPass).notEquals<ExpectedType>();
         });
         it('rejects', () => {
             assert.isFalse(check.jsonEquals(actualReject, expected));
@@ -110,9 +110,9 @@ describe('jsonEquals', () => {
         it('guards', () => {
             const newValue = assertWrap.jsonEquals(actualPass, expected);
 
-            assert.typeOf(newValue).toEqualTypeOf<ExpectedType>();
-            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
-            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+            assert.tsType(newValue).equals<ExpectedType>();
+            assert.tsType(newValue).notEquals<UnexpectedType>();
+            assert.tsType(actualPass).notEquals<ExpectedType>();
         });
         it('rejects', () => {
             assert.throws(() => assertWrap.jsonEquals(actualReject, expected));
@@ -122,10 +122,10 @@ describe('jsonEquals', () => {
         it('guards', () => {
             const newValue = checkWrap.jsonEquals(actualPass, expected);
 
-            assert.typeOf(newValue).toEqualTypeOf<ExpectedType | undefined>();
-            assert.typeOf(newValue).not.toEqualTypeOf<ExpectedType>();
-            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
-            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+            assert.tsType(newValue).equals<ExpectedType | undefined>();
+            assert.tsType(newValue).notEquals<ExpectedType>();
+            assert.tsType(newValue).notEquals<UnexpectedType>();
+            assert.tsType(actualPass).notEquals<ExpectedType>();
         });
         it('rejects', () => {
             assert.isUndefined(checkWrap.jsonEquals(actualReject, expected));
@@ -140,9 +140,9 @@ describe('jsonEquals', () => {
                 'failure',
             );
 
-            assert.typeOf(newValue).toEqualTypeOf<ExpectedType>();
-            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
-            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+            assert.tsType(newValue).equals<ExpectedType>();
+            assert.tsType(newValue).notEquals<UnexpectedType>();
+            assert.tsType(actualPass).notEquals<ExpectedType>();
 
             assert.deepEquals(actualPass, newValue);
         });
@@ -184,7 +184,7 @@ describe('notJsonEquals', () => {
     describe('assertWrap', () => {
         it('accepts', () => {
             const newValue = assertWrap.notJsonEquals(actualPass, expected);
-            assert.typeOf(newValue).toEqualTypeOf(actualPass);
+            assert.tsType(newValue).equals(actualPass);
             assert.deepEquals(actualPass, newValue);
         });
         it('rejects', () => {
@@ -196,7 +196,7 @@ describe('notJsonEquals', () => {
             const newValue = checkWrap.notJsonEquals(actualPass, expected);
             assert.deepEquals(newValue, actualPass);
 
-            assert.typeOf(newValue).toEqualTypeOf(actualPass);
+            assert.tsType(newValue).equals(actualPass);
         });
         it('rejects', () => {
             assert.isUndefined(checkWrap.notJsonEquals(actualReject, expected));
@@ -211,7 +211,7 @@ describe('notJsonEquals', () => {
                 'failure',
             );
 
-            assert.typeOf(newValue).toEqualTypeOf(actualPass);
+            assert.tsType(newValue).equals(actualPass);
         });
         it('rejects', async () => {
             await assert.throws(() =>

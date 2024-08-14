@@ -1,23 +1,24 @@
 import {assert, describe, it, itCases} from '@augment-vir/test';
-import {assertTypeOf} from 'run-time-assertions';
 import {typedMap} from '../array/array-map.js';
 import {combineErrorMessages, combineErrors} from './combine-errors.js';
 
 describe(combineErrors.name, () => {
     it('has proper types', () => {
-        assertTypeOf(combineErrors([])).toEqualTypeOf<Error | undefined>();
-        assertTypeOf(combineErrors([new Error()])).toEqualTypeOf<Error>();
+        assert.tsType(combineErrors([])).equals<Error | undefined>();
+        assert.tsType(combineErrors([new Error()])).equals<Error>();
 
-        assertTypeOf(
-            combineErrors([
-                new Error(),
-                new Error(),
-                new Error(),
-            ]),
-        ).toEqualTypeOf<Error>();
+        assert
+            .tsType(
+                combineErrors([
+                    new Error(),
+                    new Error(),
+                    new Error(),
+                ]),
+            )
+            .equals<Error>();
 
         const potentiallyEmptyErrorArray: Error[] = [];
-        assertTypeOf(combineErrors(potentiallyEmptyErrorArray)).toEqualTypeOf<Error | undefined>();
+        assert.tsType(combineErrors(potentiallyEmptyErrorArray)).equals<Error | undefined>();
     });
 
     it('combines multiple errors', () => {

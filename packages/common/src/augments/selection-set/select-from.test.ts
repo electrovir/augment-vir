@@ -1,5 +1,5 @@
 import {describe, it, itCases} from '@augment-vir/test';
-import {assertTypeOf} from 'run-time-assertions';
+import {assert} from 'run-time-assertions';
 import {selectFrom} from './select-from.js';
 import {PickSelection} from './selection-set.js';
 
@@ -49,47 +49,51 @@ describe(selectFrom.name, () => {
             },
         };
 
-        assertTypeOf(
-            selectFrom(entry, {
-                hi: true,
-                bye: false,
-                parent: {
-                    child: true,
-                },
-            }),
-        ).toEqualTypeOf<
-            PickSelection<
-                typeof entry,
-                {
-                    hi: true;
-                    bye: false;
+        assert
+            .tsType(
+                selectFrom(entry, {
+                    hi: true,
+                    bye: false,
                     parent: {
-                        child: true;
-                    };
-                }
-            >
-        >();
+                        child: true,
+                    },
+                }),
+            )
+            .equals<
+                PickSelection<
+                    typeof entry,
+                    {
+                        hi: true;
+                        bye: false;
+                        parent: {
+                            child: true;
+                        };
+                    }
+                >
+            >();
 
-        assertTypeOf(
-            selectFrom(entry, {
-                hi: true,
-                bye: false,
+        assert
+            .tsType(
+                selectFrom(entry, {
+                    hi: true,
+                    bye: false,
+                    parent: {
+                        child: true,
+                    },
+                }),
+            )
+            .equals<{
+                hi: string;
                 parent: {
-                    child: true,
-                },
-            }),
-        ).toEqualTypeOf<{
-            hi: string;
-            parent: {
-                child: {
-                    grandChild: {
-                        child: string;
-                        child2: number;
-                        child3: RegExp;
+                    child: {
+                        grandChild: {
+                            child: string;
+                            child2: number;
+                            child3: RegExp;
+                        };
                     };
                 };
-            };
-        }>();
+            }>();
     });
 
     itCases(selectFrom, [

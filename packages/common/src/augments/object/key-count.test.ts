@@ -1,18 +1,18 @@
 import {AnyObject} from '@augment-vir/assert';
 import {describe, it} from '@augment-vir/test';
-import {assertTypeOf} from 'run-time-assertions';
+import {assert} from 'run-time-assertions';
 import {KeyCount} from './key-count.js';
 
 describe('KeyCount', () => {
     it('counts keys', () => {
-        assertTypeOf<KeyCount<Record<'a' | 'b' | 'c' | 'd', any>>>().toEqualTypeOf<4>();
+        assert.tsType<KeyCount<Record<'a' | 'b' | 'c' | 'd', any>>>().equals<4>();
         const value = {a: 'hi', b: 'c'};
-        assertTypeOf<KeyCount<typeof value>>().toEqualTypeOf<2>();
-        assertTypeOf<KeyCount<Record<string, any>>>().toEqualTypeOf<1>();
-        assertTypeOf<KeyCount<AnyObject>>().toEqualTypeOf<3>();
+        assert.tsType<KeyCount<typeof value>>().equals<2>();
+        assert.tsType<KeyCount<Record<string, any>>>().equals<1>();
+        assert.tsType<KeyCount<AnyObject>>().equals<3>();
     });
 
     it('does not work on arrays', () => {
-        assertTypeOf<KeyCount<['hi', 'b']>>().not.toEqualTypeOf<2>();
+        assert.tsType<KeyCount<['hi', 'b']>>().notEquals<2>();
     });
 });

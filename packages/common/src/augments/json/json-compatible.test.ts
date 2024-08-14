@@ -1,5 +1,5 @@
 import {describe, it} from '@augment-vir/test';
-import {assertTypeOf} from 'run-time-assertions';
+import {assert} from 'run-time-assertions';
 import {
     JsonCompatibleArray,
     JsonCompatibleObject,
@@ -9,11 +9,11 @@ import {
 
 describe('JsonCompatibleValue', () => {
     it('has proper JsonCompatiblePrimitiveValue types', () => {
-        assertTypeOf<JsonCompatiblePrimitiveValue>().toEqualTypeOf<
-            string | number | boolean | null | undefined
-        >();
-        assertTypeOf<JsonCompatibleObject>().toBeAssignableTo<JsonCompatibleValue>();
-        assertTypeOf<JsonCompatibleValue>().not.toBeAssignableTo<JsonCompatibleObject>();
+        assert
+            .tsType<JsonCompatiblePrimitiveValue>()
+            .equals<string | number | boolean | null | undefined>();
+        assert.tsType<JsonCompatibleObject>().matches<JsonCompatibleValue>();
+        assert.tsType<JsonCompatibleValue>().notMatches<JsonCompatibleObject>();
     });
 
     it('has proper JsonCompatibleObject types', () => {

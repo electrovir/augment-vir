@@ -3,7 +3,7 @@
 
 // describe('Tuple', () => {
 //     it('has proper types', () => {
-//         assert.typeOf<[string, string]>().toEqualTypeOf<Tuple<string, 2>>();
-//         assert.typeOf<['a', 'b']>().not.toEqualTypeOf<Tuple<string, 2>>();
+//         assert.tsType<[string, string]>().equals<Tuple<string, 2>>();
+//         assert.tsType<['a', 'b']>().notEquals<Tuple<string, 2>>();
 //     });
 // });

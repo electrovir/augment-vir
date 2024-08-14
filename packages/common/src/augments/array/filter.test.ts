@@ -1,5 +1,4 @@
 import {assert, describe, isTruthy, it, itCases} from '@augment-vir/test';
-import {assertTypeOf} from 'run-time-assertions';
 import {filterMap, filterOutIndexes} from './filter.js';
 
 describe(filterOutIndexes.name, () => {
@@ -107,22 +106,22 @@ describe(filterMap.name, () => {
         const output = filterMap(
             exampleArray,
             (entry, index, originalArray) => {
-                assertTypeOf(entry).toEqualTypeOf<string>();
-                assertTypeOf(index).toEqualTypeOf<number>();
-                assertTypeOf(originalArray).toEqualTypeOf<ReadonlyArray<string>>();
+                assert.tsType(entry).equals<string>();
+                assert.tsType(index).equals<number>();
+                assert.tsType(originalArray).equals<ReadonlyArray<string>>();
 
                 return Number(entry);
             },
             (mapped, entry, index, originalArray) => {
-                assertTypeOf(mapped).toEqualTypeOf<number>();
-                assertTypeOf(entry).toEqualTypeOf<string>();
-                assertTypeOf(index).toEqualTypeOf<number>();
-                assertTypeOf(originalArray).toEqualTypeOf<ReadonlyArray<string>>();
+                assert.tsType(mapped).equals<number>();
+                assert.tsType(entry).equals<string>();
+                assert.tsType(index).equals<number>();
+                assert.tsType(originalArray).equals<ReadonlyArray<string>>();
                 return !isNaN(mapped);
             },
         );
 
-        assertTypeOf(output).toEqualTypeOf<number[]>();
+        assert.tsType(output).equals<number[]>();
 
         assert.deepStrictEqual(
             output,
@@ -157,7 +156,7 @@ describe(filterMap.name, () => {
             },
             isTruthy,
         );
-        assertTypeOf(output).toEqualTypeOf<number[]>();
+        assert.tsType(output).equals<number[]>();
         assert.deepStrictEqual(
             output,
             [

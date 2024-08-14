@@ -1,5 +1,5 @@
 import {describe, it, itCases} from '@augment-vir/test';
-import {assertTypeOf} from 'run-time-assertions';
+import {assert} from 'run-time-assertions';
 import {arrayToObject, groupArrayBy} from './array-to-object.js';
 
 describe(groupArrayBy.name, () => {
@@ -143,15 +143,17 @@ describe(groupArrayBy.name, () => {
             },
         ];
 
-        assertTypeOf(
-            groupArrayBy(testEntries, (entry) => {
-                if (entry.a === 1) {
-                    return TestEnum.First;
-                } else {
-                    return TestEnum.Second;
-                }
-            }),
-        ).toEqualTypeOf<Partial<Record<TestEnum, {a: number; b: string}[]>>>();
+        assert
+            .tsType(
+                groupArrayBy(testEntries, (entry) => {
+                    if (entry.a === 1) {
+                        return TestEnum.First;
+                    } else {
+                        return TestEnum.Second;
+                    }
+                }),
+            )
+            .equals<Partial<Record<TestEnum, {a: number; b: string}[]>>>();
     });
 });
 
@@ -289,20 +291,22 @@ describe(arrayToObject.name, () => {
             },
         ];
 
-        assertTypeOf(
-            arrayToObject(testEntries, (value) => {
-                if (value.a === 1) {
-                    return {
-                        key: TestEnum.First,
-                        value,
-                    };
-                } else {
-                    return {
-                        key: TestEnum.Second,
-                        value,
-                    };
-                }
-            }),
-        ).toEqualTypeOf<Partial<Record<TestEnum, {a: number; b: string}>>>();
+        assert
+            .tsType(
+                arrayToObject(testEntries, (value) => {
+                    if (value.a === 1) {
+                        return {
+                            key: TestEnum.First,
+                            value,
+                        };
+                    } else {
+                        return {
+                            key: TestEnum.Second,
+                            value,
+                        };
+                    }
+                }),
+            )
+            .equals<Partial<Record<TestEnum, {a: number; b: string}>>>();
     });
 });

@@ -1,8 +1,8 @@
 import {describe, it} from '@augment-vir/test';
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-/* eslint-disable @typescript-eslint/no-unused-expressions */
+
 import {assert} from '@augment-vir/test';
-import {assertThrows, assertTypeOf} from 'run-time-assertions';
+import {assertThrows} from 'run-time-assertions';
 import {waitValue} from '../promise/wait.js';
 import {randomString} from '../random/random-string.js';
 import {getObjectTypedKeys} from './object-keys.js';
@@ -18,17 +18,19 @@ describe(mapObjectValuesSync.name, () => {
             Promise,
         );
 
-        assertTypeOf(
-            mapObjectValuesSync({thing: 2})<{thing: number}>((key, value) => {
-                return 5;
-            }),
-        ).toEqualTypeOf<{thing: number}>();
+        assert
+            .tsType(
+                mapObjectValuesSync({thing: 2})<{thing: number}>((key, value) => {
+                    return 5;
+                }),
+            )
+            .equals<{thing: number}>();
     });
 
     it('properly maps a partial object', () => {
         mapObjectValuesSync<Partial<Record<1 | 2 | 3 | 4, string>>>({})<{thing: number}>(
             (key, value) => {
-                assertTypeOf(value).toEqualTypeOf<string>();
+                assert.tsType(value).equals<string>();
 
                 return 4;
             },
@@ -43,8 +45,8 @@ describe(mapObjectValuesSync.name, () => {
         } as const;
 
         const mappedObject = mapObjectValuesSync(startingObject)((key, value) => {
-            assertTypeOf(key).toEqualTypeOf<keyof typeof startingObject>();
-            assertTypeOf(value).toEqualTypeOf<Values<typeof startingObject>>();
+            assert.tsType(key).equals<keyof typeof startingObject>();
+            assert.tsType(value).equals<Values<typeof startingObject>>();
             return String(value).length;
         });
 
@@ -164,13 +166,13 @@ describe(mapObjectValues.name, () => {
         const result = mapObjectValues(
             {} as Partial<Record<1 | 2 | 3 | 4, string>>,
             (key, value): number => {
-                assertTypeOf(value).toEqualTypeOf<string>();
+                assert.tsType(value).equals<string>();
 
                 return 4;
             },
         );
 
-        assertTypeOf(result).toEqualTypeOf<Partial<Record<1 | 2 | 3 | 4, number>>>();
+        assert.tsType(result).equals<Partial<Record<1 | 2 | 3 | 4, number>>>();
     });
 
     it('should preserve properties with complex value types', () => {

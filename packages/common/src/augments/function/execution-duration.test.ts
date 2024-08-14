@@ -1,5 +1,4 @@
 import {assert, describe, it} from '@augment-vir/test';
-import {assertTypeOf} from 'run-time-assertions';
 import {wait} from '../promise/wait.js';
 import {measureExecutionDuration} from './execution-duration.js';
 
@@ -14,12 +13,12 @@ describe(measureExecutionDuration.name, () => {
     });
 
     it('has proper types', () => {
-        assertTypeOf(measureExecutionDuration(() => {})).toEqualTypeOf<{milliseconds: number}>();
-        assertTypeOf(measureExecutionDuration(async () => {})).toEqualTypeOf<
-            Promise<{milliseconds: number}>
-        >();
-        assertTypeOf(measureExecutionDuration((): void | Promise<void> => {})).toEqualTypeOf<
-            Promise<{milliseconds: number}> | {milliseconds: number}
-        >();
+        assert.tsType(measureExecutionDuration(() => {})).equals<{milliseconds: number}>();
+        assert
+            .tsType(measureExecutionDuration(async () => {}))
+            .equals<Promise<{milliseconds: number}>>();
+        assert
+            .tsType(measureExecutionDuration((): void | Promise<void> => {}))
+            .equals<Promise<{milliseconds: number}> | {milliseconds: number}>();
     });
 });

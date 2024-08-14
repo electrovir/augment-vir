@@ -1,7 +1,6 @@
 import {describe, it, itCases} from '@augment-vir/test';
-/* eslint-disable @typescript-eslint/no-unused-expressions */
+
 import {assert} from '@augment-vir/test';
-import {assertTypeOf} from 'run-time-assertions';
 import {getObjectTypedKeys, omitObjectKeys, pickObjectKeys} from './object-keys.js';
 
 describe(omitObjectKeys.name, () => {
@@ -21,9 +20,7 @@ describe(omitObjectKeys.name, () => {
 
         const output = omitObjectKeys(exampleObject, keysToRemove);
 
-        assertTypeOf(output).toBeAssignableTo<
-            Omit<typeof exampleObject, 'five' | 'somethingElse'>
-        >();
+        assert.tsType(output).matches<Omit<typeof exampleObject, 'five' | 'somethingElse'>>();
 
         // @ts-expect-error: this property was omitted
         output.five;
@@ -58,13 +55,11 @@ describe(pickObjectKeys.name, () => {
             'somethingElse',
         ] as const satisfies ReadonlyArray<keyof typeof exampleObject>;
 
-        assertTypeOf(exampleObject.another).toEqualTypeOf<'hi'>();
+        assert.tsType(exampleObject.another).equals<'hi'>();
 
         const output = pickObjectKeys(exampleObject, keysToKeep);
 
-        assertTypeOf(output).toBeAssignableTo<
-            Pick<typeof exampleObject, 'five' | 'somethingElse'>
-        >();
+        assert.tsType(output).matches<Pick<typeof exampleObject, 'five' | 'somethingElse'>>();
 
         // @ts-expect-error: this key was not picked
         output.another;

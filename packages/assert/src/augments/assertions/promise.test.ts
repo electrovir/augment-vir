@@ -15,12 +15,12 @@ describe('isPromise', () => {
 
     describe('assert', () => {
         it('guards', () => {
-            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+            assert.tsType(actualPass).notEquals<ExpectedType>();
 
             assert.isPromise(actualPass);
 
-            assert.typeOf(actualPass).toEqualTypeOf<ExpectedType>();
-            assert.typeOf(actualPass).not.toEqualTypeOf<UnexpectedType>();
+            assert.tsType(actualPass).equals<ExpectedType>();
+            assert.tsType(actualPass).notEquals<UnexpectedType>();
         });
         it('rejects', () => {
             assert.throws(() => assert.isPromise(actualReject));
@@ -31,11 +31,11 @@ describe('isPromise', () => {
             assert.isTrue(check.isPromise(actualPass));
 
             if (check.isPromise(actualPass)) {
-                assert.typeOf(actualPass).toEqualTypeOf<ExpectedType>();
-                assert.typeOf(actualPass).not.toEqualTypeOf<UnexpectedType>();
+                assert.tsType(actualPass).equals<ExpectedType>();
+                assert.tsType(actualPass).notEquals<UnexpectedType>();
             }
 
-            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+            assert.tsType(actualPass).notEquals<ExpectedType>();
         });
         it('rejects', () => {
             assert.isFalse(check.isPromise(actualReject));
@@ -45,10 +45,10 @@ describe('isPromise', () => {
         it('guards', () => {
             const newValue = assertWrap.isPromise(actualPass);
 
-            assert.typeOf(newValue).toEqualTypeOf<ExpectedType>();
-            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
-            assert.typeOf<Awaited<typeof newValue>>().not.toBeAny();
-            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+            assert.tsType(newValue).equals<ExpectedType>();
+            assert.tsType(newValue).notEquals<UnexpectedType>();
+            assert.tsType<Awaited<typeof newValue>>().notEquals<any>();
+            assert.tsType(actualPass).notEquals<ExpectedType>();
         });
         it('rejects', () => {
             void assert.throws(() => assertWrap.isPromise(actualReject));
@@ -58,10 +58,10 @@ describe('isPromise', () => {
         it('guards', () => {
             const newValue = checkWrap.isPromise(actualPass);
 
-            assert.typeOf(newValue).toEqualTypeOf<ExpectedType | undefined>();
-            assert.typeOf(newValue).not.toEqualTypeOf<ExpectedType>();
-            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
-            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+            assert.tsType(newValue).equals<ExpectedType | undefined>();
+            assert.tsType(newValue).notEquals<ExpectedType>();
+            assert.tsType(newValue).notEquals<UnexpectedType>();
+            assert.tsType(actualPass).notEquals<ExpectedType>();
         });
         it('rejects', () => {
             assert.isUndefined(checkWrap.isPromise(actualReject));
@@ -76,9 +76,9 @@ describe('isPromise', () => {
             );
 
             /** This is not a promise because the `await` in `waitUntil` unwraps the promise. */
-            assert.typeOf(newValue).toBeString();
-            assert.typeOf(newValue).not.toEqualTypeOf<Promise<string>>();
-            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+            assert.tsType(newValue).equals<string>();
+            assert.tsType(newValue).notEquals<Promise<string>>();
+            assert.tsType(actualPass).notEquals<ExpectedType>();
         });
         it('rejects', async () => {
             await assert.throws(
@@ -95,12 +95,12 @@ describe('isNotPromise', () => {
 
     describe('assert', () => {
         it('guards', () => {
-            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+            assert.tsType(actualPass).notEquals<ExpectedType>();
 
             assert.isNotPromise(actualPass);
 
-            assert.typeOf(actualPass).toEqualTypeOf<ExpectedType>();
-            assert.typeOf(actualPass).not.toEqualTypeOf<UnexpectedType>();
+            assert.tsType(actualPass).equals<ExpectedType>();
+            assert.tsType(actualPass).notEquals<UnexpectedType>();
         });
         it('rejects', () => {
             assert.throws(() => assert.isNotPromise(actualReject));
@@ -111,11 +111,11 @@ describe('isNotPromise', () => {
             assert.isTrue(check.isNotPromise(actualPass));
 
             if (check.isNotPromise(actualPass)) {
-                assert.typeOf(actualPass).toEqualTypeOf<ExpectedType>();
-                assert.typeOf(actualPass).not.toEqualTypeOf<UnexpectedType>();
+                assert.tsType(actualPass).equals<ExpectedType>();
+                assert.tsType(actualPass).notEquals<UnexpectedType>();
             }
 
-            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+            assert.tsType(actualPass).notEquals<ExpectedType>();
         });
         it('rejects', () => {
             assert.isFalse(check.isNotPromise(actualReject));
@@ -125,10 +125,10 @@ describe('isNotPromise', () => {
         it('guards', () => {
             const newValue = assertWrap.isNotPromise(actualPass);
 
-            assert.typeOf(newValue).toEqualTypeOf<ExpectedType>();
-            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
-            assert.typeOf<Awaited<typeof newValue>>().not.toBeAny();
-            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+            assert.tsType(newValue).equals<ExpectedType>();
+            assert.tsType(newValue).notEquals<UnexpectedType>();
+            assert.tsType<Awaited<typeof newValue>>().notEquals<any>();
+            assert.tsType(actualPass).notEquals<ExpectedType>();
         });
         it('rejects', () => {
             assert.throws(() => assertWrap.isNotPromise(actualReject));
@@ -138,10 +138,10 @@ describe('isNotPromise', () => {
         it('guards', () => {
             const newValue = checkWrap.isNotPromise(actualPass);
 
-            assert.typeOf(newValue).toEqualTypeOf<ExpectedType | undefined>();
-            assert.typeOf(newValue).not.toEqualTypeOf<ExpectedType>();
-            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
-            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+            assert.tsType(newValue).equals<ExpectedType | undefined>();
+            assert.tsType(newValue).notEquals<ExpectedType>();
+            assert.tsType(newValue).notEquals<UnexpectedType>();
+            assert.tsType(actualPass).notEquals<ExpectedType>();
         });
         it('rejects', () => {
             assert.isUndefined(checkWrap.isNotPromise(actualReject));
@@ -156,9 +156,9 @@ describe('isNotPromise', () => {
             );
 
             /** This is not a promise because the `await` in `waitUntil` unwraps the promise. */
-            assert.typeOf(newValue).toBeString();
-            assert.typeOf(newValue).not.toEqualTypeOf<Promise<string>>();
-            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+            assert.tsType(newValue).equals<string>();
+            assert.tsType(newValue).notEquals<Promise<string>>();
+            assert.tsType(actualPass).notEquals<ExpectedType>();
         });
         it('rejects', async () => {
             await assert.throws(
@@ -185,12 +185,12 @@ describe('isPromiseLike', () => {
 
     describe('assert', () => {
         it('guards', () => {
-            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+            assert.tsType(actualPass).notEquals<ExpectedType>();
 
             assert.isPromiseLike(actualPass);
 
-            assert.typeOf(actualPass).toEqualTypeOf<ExpectedType>();
-            assert.typeOf(actualPass).not.toEqualTypeOf<UnexpectedType>();
+            assert.tsType(actualPass).equals<ExpectedType>();
+            assert.tsType(actualPass).notEquals<UnexpectedType>();
         });
         it('rejects', () => {
             assert.throws(() => assert.isPromiseLike(actualReject));
@@ -201,11 +201,11 @@ describe('isPromiseLike', () => {
             assert.isTrue(check.isPromiseLike(actualPass));
 
             if (check.isPromiseLike(actualPass)) {
-                assert.typeOf(actualPass).toEqualTypeOf<ExpectedType>();
-                assert.typeOf(actualPass).not.toEqualTypeOf<UnexpectedType>();
+                assert.tsType(actualPass).equals<ExpectedType>();
+                assert.tsType(actualPass).notEquals<UnexpectedType>();
             }
 
-            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+            assert.tsType(actualPass).notEquals<ExpectedType>();
         });
         it('rejects', () => {
             assert.isFalse(check.isPromiseLike(actualReject));
@@ -215,10 +215,10 @@ describe('isPromiseLike', () => {
         it('guards', () => {
             const newValue = assertWrap.isPromiseLike(actualPass);
 
-            assert.typeOf(newValue).toEqualTypeOf<ExpectedType>();
-            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
-            assert.typeOf<Awaited<typeof newValue>>().not.toBeAny();
-            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+            assert.tsType(newValue).equals<ExpectedType>();
+            assert.tsType(newValue).notEquals<UnexpectedType>();
+            assert.tsType<Awaited<typeof newValue>>().notEquals<any>();
+            assert.tsType(actualPass).notEquals<ExpectedType>();
         });
         it('rejects', () => {
             assert.throws(() => assertWrap.isPromiseLike(actualReject));
@@ -228,10 +228,10 @@ describe('isPromiseLike', () => {
         it('guards', () => {
             const newValue = checkWrap.isPromiseLike(actualPass);
 
-            assert.typeOf(newValue).toEqualTypeOf<ExpectedType | undefined>();
-            assert.typeOf(newValue).not.toEqualTypeOf<ExpectedType>();
-            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
-            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+            assert.tsType(newValue).equals<ExpectedType | undefined>();
+            assert.tsType(newValue).notEquals<ExpectedType>();
+            assert.tsType(newValue).notEquals<UnexpectedType>();
+            assert.tsType(actualPass).notEquals<ExpectedType>();
         });
         it('rejects', () => {
             assert.isUndefined(checkWrap.isPromiseLike(actualReject));
@@ -242,9 +242,9 @@ describe('isPromiseLike', () => {
             // actualPass;
             const newValue = await waitUntil.isPromiseLike(() => actualPass);
             /** This is not a promise because the `await` in `waitUntil` unwraps the promise. */
-            assert.typeOf(newValue).toBeString();
-            assert.typeOf(newValue).not.toEqualTypeOf<Promise<unknown>>();
-            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+            assert.tsType(newValue).equals<string>();
+            assert.tsType(newValue).notEquals<Promise<unknown>>();
+            assert.tsType(actualPass).notEquals<ExpectedType>();
         });
         it('rejects', async () => {
             await assert.throws(
@@ -270,12 +270,12 @@ describe('isNotPromiseLike', () => {
 
     describe('assert', () => {
         it('guards', () => {
-            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+            assert.tsType(actualPass).notEquals<ExpectedType>();
 
             assert.isNotPromiseLike(actualPass);
 
-            assert.typeOf(actualPass).toEqualTypeOf<ExpectedType>();
-            assert.typeOf(actualPass).not.toEqualTypeOf<UnexpectedType>();
+            assert.tsType(actualPass).equals<ExpectedType>();
+            assert.tsType(actualPass).notEquals<UnexpectedType>();
         });
         it('rejects', () => {
             assert.throws(() => assert.isNotPromiseLike(actualReject));
@@ -286,11 +286,11 @@ describe('isNotPromiseLike', () => {
             assert.isTrue(check.isNotPromiseLike(actualPass));
 
             if (check.isNotPromiseLike(actualPass)) {
-                assert.typeOf(actualPass).toEqualTypeOf<ExpectedType>();
-                assert.typeOf(actualPass).not.toEqualTypeOf<UnexpectedType>();
+                assert.tsType(actualPass).equals<ExpectedType>();
+                assert.tsType(actualPass).notEquals<UnexpectedType>();
             }
 
-            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+            assert.tsType(actualPass).notEquals<ExpectedType>();
         });
         it('rejects', () => {
             assert.isFalse(check.isNotPromiseLike(actualReject));
@@ -300,10 +300,10 @@ describe('isNotPromiseLike', () => {
         it('guards', () => {
             const newValue = assertWrap.isNotPromiseLike(actualPass);
 
-            assert.typeOf(newValue).toEqualTypeOf<ExpectedType>();
-            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
-            assert.typeOf<Awaited<typeof newValue>>().not.toBeAny();
-            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+            assert.tsType(newValue).equals<ExpectedType>();
+            assert.tsType(newValue).notEquals<UnexpectedType>();
+            assert.tsType<Awaited<typeof newValue>>().notEquals<any>();
+            assert.tsType(actualPass).notEquals<ExpectedType>();
         });
         it('rejects', () => {
             assert.throws(() => assertWrap.isNotPromiseLike(actualReject));
@@ -313,10 +313,10 @@ describe('isNotPromiseLike', () => {
         it('guards', () => {
             const newValue = checkWrap.isNotPromiseLike(actualPass);
 
-            assert.typeOf(newValue).toEqualTypeOf<ExpectedType | undefined>();
-            assert.typeOf(newValue).not.toEqualTypeOf<ExpectedType>();
-            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
-            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+            assert.tsType(newValue).equals<ExpectedType | undefined>();
+            assert.tsType(newValue).notEquals<ExpectedType>();
+            assert.tsType(newValue).notEquals<UnexpectedType>();
+            assert.tsType(actualPass).notEquals<ExpectedType>();
         });
         it('rejects', () => {
             assert.isUndefined(checkWrap.isNotPromiseLike(actualReject));
@@ -331,9 +331,9 @@ describe('isNotPromiseLike', () => {
                 'failure',
             );
             /** This is not a promise because the `await` in `waitUntil` unwraps the promise. */
-            assert.typeOf(newValue).toBeString();
-            assert.typeOf(newValue).not.toEqualTypeOf<Promise<unknown>>();
-            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+            assert.tsType(newValue).equals<string>();
+            assert.tsType(newValue).notEquals<Promise<unknown>>();
+            assert.tsType(actualPass).notEquals<ExpectedType>();
         });
         it('rejects', async () => {
             await assert.throws(

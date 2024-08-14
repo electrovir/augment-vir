@@ -13,7 +13,6 @@ export * from './augments/assertions/primitive.js';
 export * from './augments/assertions/promise.js';
 export * from './augments/assertions/runtime-type.js';
 export * from './augments/assertions/throws.js';
-export * from './augments/assertions/type-of.js';
 export * from './augments/assertions/uuid.js';
 export * from './augments/guard-types/assert-function.js';
 export * from './augments/guard-types/assert-wrap-function.js';

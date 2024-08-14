@@ -18,12 +18,12 @@ describe('isUuid', () => {
 
     describe('assert', () => {
         it('guards', () => {
-            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+            assert.tsType(actualPass).notEquals<ExpectedType>();
 
             assert.isUuid(actualPass);
 
-            assert.typeOf(actualPass).toEqualTypeOf<ExpectedType>();
-            assert.typeOf(actualPass).not.toEqualTypeOf<UnexpectedType>();
+            assert.tsType(actualPass).equals<ExpectedType>();
+            assert.tsType(actualPass).notEquals<UnexpectedType>();
         });
         it('rejects', () => {
             assert.throws(() => assert.isUuid(actualReject));
@@ -31,7 +31,7 @@ describe('isUuid', () => {
         it('narrows', () => {
             assert.isUuid(actualPassUnion);
 
-            assert.typeOf(actualPassUnion).toEqualTypeOf<ExpectedUnionNarrowedType>();
+            assert.tsType(actualPassUnion).equals<ExpectedUnionNarrowedType>();
         });
     });
     describe('check', () => {
@@ -39,18 +39,18 @@ describe('isUuid', () => {
             assert.isTrue(check.isUuid(actualPass));
 
             if (check.isUuid(actualPass)) {
-                assert.typeOf(actualPass).toEqualTypeOf<ExpectedType>();
-                assert.typeOf(actualPass).not.toEqualTypeOf<UnexpectedType>();
+                assert.tsType(actualPass).equals<ExpectedType>();
+                assert.tsType(actualPass).notEquals<UnexpectedType>();
             }
 
-            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+            assert.tsType(actualPass).notEquals<ExpectedType>();
         });
         it('rejects', () => {
             assert.isFalse(check.isUuid(actualReject));
         });
         it('narrows', () => {
             if (check.isUuid(actualPassUnion)) {
-                assert.typeOf(actualPassUnion).toEqualTypeOf<ExpectedUnionNarrowedType>();
+                assert.tsType(actualPassUnion).equals<ExpectedUnionNarrowedType>();
             }
         });
     });
@@ -58,30 +58,30 @@ describe('isUuid', () => {
         it('guards', () => {
             const newValue = assertWrap.isUuid(actualPass);
 
-            assert.typeOf(newValue).toEqualTypeOf<ExpectedType>();
-            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
-            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+            assert.tsType(newValue).equals<ExpectedType>();
+            assert.tsType(newValue).notEquals<UnexpectedType>();
+            assert.tsType(actualPass).notEquals<ExpectedType>();
         });
         it('narrows', () => {
             const newValue = assertWrap.isUuid(actualPassUnion);
-            assert.typeOf(newValue).toEqualTypeOf<ExpectedUnionNarrowedType>();
+            assert.tsType(newValue).equals<ExpectedUnionNarrowedType>();
         });
     });
     describe('checkWrap', () => {
         it('guards', () => {
             const newValue = checkWrap.isUuid(actualPass);
 
-            assert.typeOf(newValue).toEqualTypeOf<ExpectedType | undefined>();
-            assert.typeOf(newValue).not.toEqualTypeOf<ExpectedType>();
-            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
-            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+            assert.tsType(newValue).equals<ExpectedType | undefined>();
+            assert.tsType(newValue).notEquals<ExpectedType>();
+            assert.tsType(newValue).notEquals<UnexpectedType>();
+            assert.tsType(actualPass).notEquals<ExpectedType>();
         });
         it('rejects', () => {
             assert.isUndefined(checkWrap.isUuid(actualReject));
         });
         it('narrows', () => {
             const newValue = checkWrap.isUuid(actualPassUnion);
-            assert.typeOf(newValue).toEqualTypeOf<ExpectedUnionNarrowedType | undefined>();
+            assert.tsType(newValue).equals<ExpectedUnionNarrowedType | undefined>();
         });
     });
     describe('waitUntil', () => {
@@ -92,9 +92,9 @@ describe('isUuid', () => {
                 'failure',
             );
 
-            assert.typeOf(newValue).toEqualTypeOf<ExpectedType>();
-            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
-            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+            assert.tsType(newValue).equals<ExpectedType>();
+            assert.tsType(newValue).notEquals<UnexpectedType>();
+            assert.tsType(actualPass).notEquals<ExpectedType>();
 
             assert.deepEquals(actualPass, newValue);
         });
@@ -110,7 +110,7 @@ describe('isUuid', () => {
                 'failure',
             );
 
-            assert.typeOf(newValue).toEqualTypeOf<ExpectedUnionNarrowedType>();
+            assert.tsType(newValue).equals<ExpectedUnionNarrowedType>();
         });
     });
 });
@@ -127,8 +127,8 @@ describe('isNotUuid', () => {
         it('guards', () => {
             assert.isNotUuid(actualPass);
 
-            assert.typeOf(actualPass).toEqualTypeOf<ExpectedType>();
-            assert.typeOf(actualPass).not.toEqualTypeOf<UnexpectedType>();
+            assert.tsType(actualPass).equals<ExpectedType>();
+            assert.tsType(actualPass).notEquals<UnexpectedType>();
         });
         it('rejects', () => {
             assert.throws(() => assert.isNotUuid(actualReject));
@@ -136,7 +136,7 @@ describe('isNotUuid', () => {
         it('narrows', () => {
             assert.isNotUuid(actualPassUnion);
 
-            assert.typeOf(actualPassUnion).toEqualTypeOf<ExpectedUnionNarrowedType>();
+            assert.tsType(actualPassUnion).equals<ExpectedUnionNarrowedType>();
         });
     });
     describe('check', () => {
@@ -144,8 +144,8 @@ describe('isNotUuid', () => {
             assert.isTrue(check.isNotUuid(actualPass));
 
             if (check.isNotUuid(actualPass)) {
-                assert.typeOf(actualPass).toEqualTypeOf<ExpectedType>();
-                assert.typeOf(actualPass).not.toEqualTypeOf<UnexpectedType>();
+                assert.tsType(actualPass).equals<ExpectedType>();
+                assert.tsType(actualPass).notEquals<UnexpectedType>();
             }
         });
         it('rejects', () => {
@@ -153,7 +153,7 @@ describe('isNotUuid', () => {
         });
         it('narrows', () => {
             if (check.isNotUuid(actualPassUnion)) {
-                assert.typeOf(actualPassUnion).toEqualTypeOf<ExpectedUnionNarrowedType>();
+                assert.tsType(actualPassUnion).equals<ExpectedUnionNarrowedType>();
             }
         });
     });
@@ -161,28 +161,28 @@ describe('isNotUuid', () => {
         it('guards', () => {
             const newValue = assertWrap.isNotUuid(actualPass);
 
-            assert.typeOf(newValue).toEqualTypeOf<ExpectedType>();
-            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
+            assert.tsType(newValue).equals<ExpectedType>();
+            assert.tsType(newValue).notEquals<UnexpectedType>();
         });
         it('narrows', () => {
             const newValue = assertWrap.isNotUuid(actualPassUnion);
-            assert.typeOf(newValue).toEqualTypeOf<ExpectedUnionNarrowedType>();
+            assert.tsType(newValue).equals<ExpectedUnionNarrowedType>();
         });
     });
     describe('checkWrap', () => {
         it('guards', () => {
             const newValue = checkWrap.isNotUuid(actualPass);
 
-            assert.typeOf(newValue).toEqualTypeOf<ExpectedType | undefined>();
-            assert.typeOf(newValue).not.toEqualTypeOf<ExpectedType>();
-            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
+            assert.tsType(newValue).equals<ExpectedType | undefined>();
+            assert.tsType(newValue).notEquals<ExpectedType>();
+            assert.tsType(newValue).notEquals<UnexpectedType>();
         });
         it('rejects', () => {
             assert.isUndefined(checkWrap.isNotUuid(actualReject));
         });
         it('narrows', () => {
             const newValue = checkWrap.isNotUuid(actualPassUnion);
-            assert.typeOf(newValue).toEqualTypeOf<ExpectedUnionNarrowedType | undefined>();
+            assert.tsType(newValue).equals<ExpectedUnionNarrowedType | undefined>();
         });
     });
     describe('waitUntil', () => {
@@ -193,8 +193,8 @@ describe('isNotUuid', () => {
                 'failure',
             );
 
-            assert.typeOf(newValue).toEqualTypeOf<ExpectedType>();
-            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
+            assert.tsType(newValue).equals<ExpectedType>();
+            assert.tsType(newValue).notEquals<UnexpectedType>();
 
             assert.deepEquals(actualPass, newValue);
         });
@@ -210,7 +210,7 @@ describe('isNotUuid', () => {
                 'failure',
             );
 
-            assert.typeOf(newValue).toEqualTypeOf<ExpectedUnionNarrowedType>();
+            assert.tsType(newValue).equals<ExpectedUnionNarrowedType>();
         });
     });
 });

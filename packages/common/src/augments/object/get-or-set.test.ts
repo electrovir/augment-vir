@@ -1,6 +1,6 @@
 import {AnyObject} from '@augment-vir/assert';
 import {assert, describe, it, itCases} from '@augment-vir/test';
-import {assertInstanceOf, assertThrows, assertTypeOf} from 'run-time-assertions';
+import {assertInstanceOf, assertThrows} from 'run-time-assertions';
 import {randomString} from '../random/random-string.js';
 import {getOrSet, getOrSetFromMap} from './get-or-set.js';
 
@@ -9,7 +9,7 @@ describe(getOrSet.name, () => {
         const partialObject: Record<any, string> = {};
         const result = getOrSet(partialObject, 'hi', () => 'value');
 
-        assertTypeOf(result).toEqualTypeOf<string>();
+        assert.tsType(result).equals<string>();
     });
 
     function testGetOrSet(
@@ -100,12 +100,12 @@ describe(getOrSet.name, () => {
     });
     it('requires proper types', () => {
         const myObject: {a: string; b?: number} = {a: 'hello'};
-        assertTypeOf(getOrSet(myObject, 'b', () => 5)).toEqualTypeOf<number>();
+        assert.tsType(getOrSet(myObject, 'b', () => 5)).equals<number>();
         // @ts-expect-error the "a" key requires a string type
         getOrSet(myObject, 'a', () => 5);
-        assertTypeOf(getOrSet(myObject, 'b', async () => Promise.resolve(5))).toEqualTypeOf<
-            Promise<number>
-        >();
+        assert
+            .tsType(getOrSet(myObject, 'b', async () => Promise.resolve(5)))
+            .equals<Promise<number>>();
     });
     it('re-throws callback errors', async () => {
         await assertThrows(
@@ -119,8 +119,8 @@ describe(getOrSet.name, () => {
     });
     it('works with an indexed key type', () => {
         const myObject: Record<string, number> = {a: 4};
-        assertTypeOf(getOrSet(myObject, 'a', () => 5)).toEqualTypeOf<number>();
-        assertTypeOf(getOrSet(myObject, 'b', () => 2)).toEqualTypeOf<number>();
+        assert.tsType(getOrSet(myObject, 'a', () => 5)).equals<number>();
+        assert.tsType(getOrSet(myObject, 'b', () => 2)).equals<number>();
         assert.deepStrictEqual(myObject, {a: 4, b: 2});
     });
 });

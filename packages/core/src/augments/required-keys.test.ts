@@ -1,15 +1,15 @@
 // import {describe, it} from '@augment-vir/test';
 // /* eslint-disable @typescript-eslint/ban-ts-comment */
-// import {assertTypeOf} from 'run-time-assertions';
+// import {assert.tsType} from 'run-time-assertions';
 // import {CompleteRequire, RequiredAndNotNull, SetRequiredAndNotNull} from './required-keys.js';
 
 // describe('CompleteRequire', () => {
 //     it('requires an indexed key', () => {
-//         assertTypeOf<CompleteRequire<Partial<Record<any, string>>>['hi']>().toEqualTypeOf<string>();
+//         assert.tsType<CompleteRequire<Partial<Record<any, string>>>['hi']>().equals<string>();
 //     });
 //     it('preserved key/value pairs', () => {
 //         type ExampleType = {a: string; b: number; c: RegExp};
-//         assertTypeOf<CompleteRequire<Partial<ExampleType>>>().toEqualTypeOf<ExampleType>();
+//         assert.tsType<CompleteRequire<Partial<ExampleType>>>().equals<ExampleType>();
 //     });
 // });
 
