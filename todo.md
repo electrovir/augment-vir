@@ -1,3 +1,4 @@
+-   add a pretty diff to the assertion errors like chai has
 -   make a snapshot function in `@augment-vir/test` that supports both Node.js's built-in test runner's snapshot testing as well as something that works in web-test-runner.
 -   fill in package.json descriptions
 -   convert `Debounce` into an ListenTarget and emit events when:
@@ -14,7 +15,10 @@
 -   export all of /core in /common (but not anywhere else)
 -   remove all `run-time-assertions` imports
 -   create a `merge` or `Object.assign` variant that picks the most defined entries
--   add more assertion methods:0
-    -   "not" versions of most assertions
--   make all inputs readonly
--   add a pretty diff to the assertion errors like chai has
+-   refactor `assert.typeOf` to be a single method call
+    -   don't use an external library
+    -   `assert.tsTypeEquals(a,b)`
+    -   `assert.tsNotTypeEquals(a,b)`
+    -   `assert.tsTypeMatches(a,b)`
+    -   `assert.tsNotTypeMatches(a,b)`
+-   combine more failure messages so the custom message still includes the assertion failure reason

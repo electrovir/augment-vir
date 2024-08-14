@@ -90,3 +90,75 @@ describe('entriesEqual', () => {
         });
     });
 });
+
+describe('notEntriesEqual', () => {
+    const actualPass = {
+        a: 'first',
+        b: 'second',
+    };
+    const actualReject: unknown = {
+        a: 'first',
+        c: 'second',
+    };
+    const expected = {a: 'first', c: 'second'};
+
+    describe('assert', () => {
+        it('accepts', () => {
+            assert.notEntriesEqual(actualPass, expected);
+        });
+        it('rejects', () => {
+            assert.throws(() => assert.notEntriesEqual(actualReject, expected));
+        });
+    });
+    describe('check', () => {
+        it('accepts', () => {
+            assert.isTrue(check.notEntriesEqual(actualPass, expected));
+        });
+        it('rejects', () => {
+            assert.isFalse(check.notEntriesEqual(actualReject, expected));
+        });
+    });
+    describe('assertWrap', () => {
+        it('accepts', () => {
+            const newValue = assertWrap.notEntriesEqual(actualPass, expected);
+            assert.typeOf(newValue).toEqualTypeOf(actualPass);
+            assert.deepEquals(actualPass, newValue);
+        });
+        it('rejects', () => {
+            assert.throws(() => assertWrap.notEntriesEqual(actualReject, expected));
+        });
+    });
+    describe('checkWrap', () => {
+        it('accepts', () => {
+            const newValue = checkWrap.notEntriesEqual(actualPass, expected);
+            assert.deepEquals(newValue, actualPass);
+
+            assert.typeOf(newValue).toEqualTypeOf(actualPass);
+        });
+        it('rejects', () => {
+            assert.isUndefined(checkWrap.notEntriesEqual(actualReject, expected));
+        });
+    });
+    describe('waitUntil', () => {
+        it('accepts', async () => {
+            const newValue = await waitUntil.notEntriesEqual(
+                expected,
+                () => actualPass,
+                waitUntilTestOptions,
+                'failure',
+            );
+
+            assert.typeOf(newValue).toEqualTypeOf(actualPass);
+        });
+        it('rejects', async () => {
+            await assert.throws(() =>
+                waitUntil.notEntriesEqual(
+                    expected,
+                    () => actualReject,
+                    waitUntilTestOptions,
+                    'failure',
+                ),
+            );
+        });
+    });
+});

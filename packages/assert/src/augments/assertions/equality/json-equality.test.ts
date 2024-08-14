@@ -153,3 +153,75 @@ describe('jsonEquals', () => {
         });
     });
 });
+
+describe('notJsonEquals', () => {
+    const actualPass = {
+        a: 'first',
+        b: 'second',
+    };
+    const actualReject: unknown = {
+        a: 'first',
+        c: 'second',
+    };
+    const expected = {a: 'first', c: 'second'};
+
+    describe('assert', () => {
+        it('accepts', () => {
+            assert.notJsonEquals(actualPass, expected);
+        });
+        it('rejects', () => {
+            assert.throws(() => assert.notJsonEquals(actualReject, expected));
+        });
+    });
+    describe('check', () => {
+        it('accepts', () => {
+            assert.isTrue(check.notJsonEquals(actualPass, expected));
+        });
+        it('rejects', () => {
+            assert.isFalse(check.notJsonEquals(actualReject, expected));
+        });
+    });
+    describe('assertWrap', () => {
+        it('accepts', () => {
+            const newValue = assertWrap.notJsonEquals(actualPass, expected);
+            assert.typeOf(newValue).toEqualTypeOf(actualPass);
+            assert.deepEquals(actualPass, newValue);
+        });
+        it('rejects', () => {
+            assert.throws(() => assertWrap.notJsonEquals(actualReject, expected));
+        });
+    });
+    describe('checkWrap', () => {
+        it('accepts', () => {
+            const newValue = checkWrap.notJsonEquals(actualPass, expected);
+            assert.deepEquals(newValue, actualPass);
+
+            assert.typeOf(newValue).toEqualTypeOf(actualPass);
+        });
+        it('rejects', () => {
+            assert.isUndefined(checkWrap.notJsonEquals(actualReject, expected));
+        });
+    });
+    describe('waitUntil', () => {
+        it('accepts', async () => {
+            const newValue = await waitUntil.notJsonEquals(
+                expected,
+                () => actualPass,
+                waitUntilTestOptions,
+                'failure',
+            );
+
+            assert.typeOf(newValue).toEqualTypeOf(actualPass);
+        });
+        it('rejects', async () => {
+            await assert.throws(() =>
+                waitUntil.notJsonEquals(
+                    expected,
+                    () => actualReject,
+                    waitUntilTestOptions,
+                    'failure',
+                ),
+            );
+        });
+    });
+});

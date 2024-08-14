@@ -1,4 +1,4 @@
-import type {AnyObject, Values} from '@augment-vir/core';
+import {AnyObject, MaybePromise, Values} from '@augment-vir/core';
 import JSON5 from 'json5';
 import type {EmptyObject} from 'type-fest';
 import {AssertionError} from '../assertion.error.js';
@@ -8,11 +8,7 @@ import type {WaitUntilOptions} from '../guard-types/wait-until-function.js';
 import type {NarrowToActual, NarrowToExpected} from './narrow-type.js';
 
 /** Check if an object has the given value through reference equality. */
-function hasValue<const Parent>(
-    parent: Parent,
-    value: unknown,
-    failureMessage?: string | undefined,
-) {
+function hasValue(parent: unknown, value: unknown, failureMessage?: string | undefined) {
     const message = combineFailureMessage(
         `'${JSON5.stringify(parent)}' does not have value '${JSON5.stringify(value)}'.`,
         failureMessage,
@@ -21,12 +17,25 @@ function hasValue<const Parent>(
         throw new AssertionError(message);
     }
     const hasValue = Reflect.ownKeys(parent)
-        .map((key) => parent[key as keyof Parent] as unknown)
+        .map((key) => parent[key as keyof typeof parent] as unknown)
         .includes(value);
 
     if (!hasValue) {
         throw new AssertionError(message);
     }
+}
+function lacksValue(parent: unknown, value: unknown, failureMessage?: string | undefined) {
+    try {
+        hasValue(parent, value);
+    } catch {
+        return;
+    }
+
+    const message = combineFailureMessage(
+        `'${JSON5.stringify(parent)}' has value '${JSON5.stringify(value)}'.`,
+        failureMessage,
+    );
+    throw new AssertionError(message);
 }
 
 /** Check if an object has the given value through reference equality. */
@@ -37,6 +46,13 @@ function hasValues<const Parent>(
 ) {
     values.forEach((value) => hasValue(parent, value, failureMessage));
 }
+function lacksValues(
+    parent: unknown,
+    values: ReadonlyArray<unknown>,
+    failureMessage?: string | undefined,
+) {
+    values.forEach((value) => lacksValue(parent, value, failureMessage));
+}
 
 function isIn<const Parent>(
     child: unknown,
@@ -44,6 +60,13 @@ function isIn<const Parent>(
     failureMessage?: string | undefined,
 ): asserts child is Values<Parent> {
     hasValue(parent, child, failureMessage);
+}
+function isNotIn<const Parent, const Child>(
+    child: Child,
+    parent: Parent,
+    failureMessage?: string | undefined,
+): asserts child is Exclude<Child, Values<Parent>> {
+    lacksValue(parent, child, failureMessage);
 }
 
 export type CanBeEmpty = string | Map<any, any> | Set<any> | AnyObject | any[];
@@ -70,22 +93,40 @@ function isEmpty<const Actual extends CanBeEmpty>(
         (input instanceof Set && input.size) ||
         (input && typeof input === 'object' && Object.keys(input).length)
     ) {
-        throw new AssertionError(
-            failureMessage || `Expected '${JSON5.stringify(actual)}' to be empty.`,
-        );
+        throw new AssertionError(failureMessage || `'${JSON5.stringify(actual)}' is not empty.`);
     }
+}
+function isNotEmpty<const Actual extends CanBeEmpty>(
+    actual: Actual,
+    failureMessage?: string | undefined,
+): asserts actual is Exclude<Actual, Empty> {
+    try {
+        isEmpty(actual);
+    } catch {
+        return;
+    }
+
+    throw new AssertionError(failureMessage || `'${JSON5.stringify(actual)}' is empty.`);
 }
 
 const assertions: {
     hasValue: typeof hasValue;
+    lacksValue: typeof lacksValue;
     hasValues: typeof hasValues;
+    lacksValues: typeof lacksValues;
     isIn: typeof isIn;
+    isNotIn: typeof isNotIn;
     isEmpty: typeof isEmpty;
+    isNotEmpty: typeof isNotEmpty;
 } = {
     hasValue,
+    lacksValue,
     hasValues,
+    lacksValues,
     isIn,
+    isNotIn,
     isEmpty,
+    isNotEmpty,
 };
 
 export const valueGuards = {
@@ -94,21 +135,43 @@ export const valueGuards = {
         isIn: autoGuard<
             <const Parent>(child: unknown, parent: Parent) => child is Values<Parent>
         >(),
+        isNotIn:
+            autoGuard<
+                <const Parent, const Child>(
+                    child: Child,
+                    parent: Parent,
+                    failureMessage?: string | undefined,
+                ) => child is Exclude<Child, Values<Parent>>
+            >(),
         isEmpty:
             autoGuard<
                 <const Actual extends CanBeEmpty>(
                     actual: Actual,
                 ) => actual is NarrowToActual<Actual, Empty>
             >(),
+        isNotEmpty:
+            autoGuard<
+                <const Actual extends CanBeEmpty>(
+                    actual: Actual,
+                ) => actual is Exclude<Actual, Empty>
+            >(),
     },
     assertWrapOverrides: {
         isIn: autoGuard<
-            <const Actual, const Parent>(
-                child: Actual,
+            <const Child, const Parent>(
+                child: Child,
                 parent: Parent,
                 failureMessage?: string | undefined,
-            ) => NarrowToExpected<Actual, Values<Parent>>
+            ) => NarrowToExpected<Child, Values<Parent>>
         >(),
+        isNotIn:
+            autoGuard<
+                <const Parent, const Child>(
+                    child: Child,
+                    parent: Parent,
+                    failureMessage?: string | undefined,
+                ) => Exclude<Child, Values<Parent>>
+            >(),
         isEmpty:
             autoGuard<
                 <const Actual extends CanBeEmpty>(
@@ -116,37 +179,72 @@ export const valueGuards = {
                     failureMessage?: string | undefined,
                 ) => NarrowToActual<Actual, Empty>
             >(),
+        isNotEmpty:
+            autoGuard<
+                <const Actual extends CanBeEmpty>(actual: Actual) => Exclude<Actual, Empty>
+            >(),
     },
     checkWrapOverrides: {
         isIn: autoGuard<
-            <const Actual, const Parent>(
-                child: Actual,
+            <const Child, const Parent>(
+                child: Child,
                 parent: Parent,
-            ) => NarrowToExpected<Actual, Values<Parent>> | undefined
+            ) => NarrowToExpected<Child, Values<Parent>> | undefined
         >(),
+        isNotIn:
+            autoGuard<
+                <const Parent, const Child>(
+                    child: Child,
+                    parent: Parent,
+                    failureMessage?: string | undefined,
+                ) => Exclude<Child, Values<Parent>> | undefined
+            >(),
         isEmpty:
             autoGuard<
                 <const Actual extends CanBeEmpty>(
                     actual: Actual,
                 ) => NarrowToActual<Actual, Empty> | undefined
             >(),
+        isNotEmpty:
+            autoGuard<
+                <const Actual extends CanBeEmpty>(
+                    actual: Actual,
+                ) => Exclude<Actual, Empty> | undefined
+            >(),
     },
     waitUntilOverrides: {
         isIn: autoGuard<
-            <const Actual, const Parent>(
+            <const Child, const Parent>(
                 parent: Parent,
-                callback: () => Actual,
+                callback: () => MaybePromise<Child>,
                 options?: WaitUntilOptions | undefined,
                 failureMessage?: string | undefined,
-            ) => Promise<NarrowToExpected<Actual, Values<Parent>>>
+            ) => Promise<NarrowToExpected<Child, Values<Parent>>>
         >(),
+        isNotIn:
+            autoGuard<
+                <const Child, const Parent>(
+                    parent: Parent,
+                    callback: () => MaybePromise<Child>,
+                    options?: WaitUntilOptions | undefined,
+                    failureMessage?: string | undefined,
+                ) => Promise<Exclude<Child, Values<Parent>>>
+            >(),
         isEmpty:
             autoGuard<
                 <const Actual extends CanBeEmpty>(
-                    callback: () => Actual,
+                    callback: () => MaybePromise<Actual>,
                     options?: WaitUntilOptions | undefined,
                     failureMessage?: string | undefined,
                 ) => Promise<NarrowToActual<Actual, Empty>>
+            >(),
+        isNotEmpty:
+            autoGuard<
+                <const Actual extends CanBeEmpty>(
+                    callback: () => MaybePromise<Actual>,
+                    options?: WaitUntilOptions | undefined,
+                    failureMessage?: string | undefined,
+                ) => Promise<Exclude<Actual, Empty>>
             >(),
     },
 };

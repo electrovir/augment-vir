@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-expressions */
 import {AnyFunction, AnyObject, UnknownObject} from '@augment-vir/core';
 import {describe, it} from '@augment-vir/test';
 import {assertWrap} from '../guards/assert-wrap.js';
@@ -99,39 +98,38 @@ describe('isArray', () => {
         });
     });
 });
+describe('isNotArray', () => {
+    const actualPass: Record<string, string> | string[] = {hi: 'bye'} as any;
+    const actualReject: Record<string, string> | string[] = ['two'] as any;
+    type ExpectedType = Record<string, string>;
+    type UnexpectedType = string[];
 
-describe('isBigint', () => {
-    const actualPass: unknown = 42n as any;
-    const actualReject: unknown = 42 as any;
-    type ExpectedType = bigint;
-    type UnexpectedType = number;
-
-    type ExpectedUnionNarrowedType = 42n;
-    const actualPassUnion: number | ExpectedUnionNarrowedType = 42n as any;
+    type ExpectedUnionNarrowedType = string;
+    const actualPassUnion: ('hi' | 'bye')[] | ExpectedUnionNarrowedType = 'hi' as any;
 
     describe('assert', () => {
         it('guards', () => {
             assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
 
-            assert.isBigint(actualPass);
+            assert.isNotArray(actualPass);
 
             assert.typeOf(actualPass).toEqualTypeOf<ExpectedType>();
             assert.typeOf(actualPass).not.toEqualTypeOf<UnexpectedType>();
         });
         it('rejects', () => {
-            assert.throws(() => assert.isBigint(actualReject));
+            assert.throws(() => assert.isNotArray(actualReject));
         });
         it('narrows', () => {
-            assert.isBigint(actualPassUnion);
+            assert.isNotArray(actualPassUnion);
 
             assert.typeOf(actualPassUnion).toEqualTypeOf<ExpectedUnionNarrowedType>();
         });
     });
     describe('check', () => {
         it('guards', () => {
-            assert.isTrue(check.isBigint(actualPass));
+            assert.isTrue(check.isNotArray(actualPass));
 
-            if (check.isBigint(actualPass)) {
+            if (check.isNotArray(actualPass)) {
                 assert.typeOf(actualPass).toEqualTypeOf<ExpectedType>();
                 assert.typeOf(actualPass).not.toEqualTypeOf<UnexpectedType>();
             }
@@ -139,33 +137,24 @@ describe('isBigint', () => {
             assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
         });
         it('rejects', () => {
-            assert.isFalse(check.isBigint(actualReject));
-        });
-        it('narrows', () => {
-            if (check.isBigint(actualPassUnion)) {
-                assert.typeOf(actualPassUnion).toEqualTypeOf<ExpectedUnionNarrowedType>();
-            }
+            assert.isFalse(check.isNotArray(actualReject));
         });
     });
     describe('assertWrap', () => {
         it('guards', () => {
-            const newValue = assertWrap.isBigint(actualPass);
+            const newValue = assertWrap.isNotArray(actualPass);
 
             assert.typeOf(newValue).toEqualTypeOf<ExpectedType>();
             assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
             assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
         });
         it('rejects', () => {
-            assert.throws(() => assertWrap.isBigint(actualReject));
-        });
-        it('narrows', () => {
-            const newValue = assertWrap.isBigint(actualPassUnion);
-            assert.typeOf(newValue).toEqualTypeOf<ExpectedUnionNarrowedType>();
+            assert.throws(() => assertWrap.isNotArray(actualReject));
         });
     });
     describe('checkWrap', () => {
         it('guards', () => {
-            const newValue = checkWrap.isBigint(actualPass);
+            const newValue = checkWrap.isNotArray(actualPass);
 
             assert.typeOf(newValue).toEqualTypeOf<ExpectedType | undefined>();
             assert.typeOf(newValue).not.toEqualTypeOf<ExpectedType>();
@@ -173,16 +162,12 @@ describe('isBigint', () => {
             assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
         });
         it('rejects', () => {
-            assert.isUndefined(checkWrap.isBigint(actualReject));
-        });
-        it('narrows', () => {
-            const newValue = checkWrap.isBigint(actualPassUnion);
-            assert.typeOf(newValue).toEqualTypeOf<ExpectedUnionNarrowedType | undefined>();
+            assert.isUndefined(checkWrap.isNotArray(actualReject));
         });
     });
     describe('waitUntil', () => {
         it('guards', async () => {
-            const newValue = await waitUntil.isBigint(
+            const newValue = await waitUntil.isNotArray(
                 () => actualPass,
                 waitUntilTestOptions,
                 'failure',
@@ -196,11 +181,223 @@ describe('isBigint', () => {
         });
         it('rejects', async () => {
             await assert.throws(
-                waitUntil.isBigint(() => actualReject, waitUntilTestOptions, 'failure'),
+                waitUntil.isNotArray(() => actualReject, waitUntilTestOptions, 'failure'),
+            );
+        });
+    });
+});
+
+describe('isBigInt', () => {
+    const actualPass: unknown = 42n as any;
+    const actualReject: unknown = 42 as any;
+    type ExpectedType = bigint;
+    type UnexpectedType = number;
+
+    type ExpectedUnionNarrowedType = 42n;
+    const actualPassUnion: number | ExpectedUnionNarrowedType = 42n as any;
+
+    describe('assert', () => {
+        it('guards', () => {
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+
+            assert.isBigInt(actualPass);
+
+            assert.typeOf(actualPass).toEqualTypeOf<ExpectedType>();
+            assert.typeOf(actualPass).not.toEqualTypeOf<UnexpectedType>();
+        });
+        it('rejects', () => {
+            assert.throws(() => assert.isBigInt(actualReject));
+        });
+        it('narrows', () => {
+            assert.isBigInt(actualPassUnion);
+
+            assert.typeOf(actualPassUnion).toEqualTypeOf<ExpectedUnionNarrowedType>();
+        });
+    });
+    describe('check', () => {
+        it('guards', () => {
+            assert.isTrue(check.isBigInt(actualPass));
+
+            if (check.isBigInt(actualPass)) {
+                assert.typeOf(actualPass).toEqualTypeOf<ExpectedType>();
+                assert.typeOf(actualPass).not.toEqualTypeOf<UnexpectedType>();
+            }
+
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+        });
+        it('rejects', () => {
+            assert.isFalse(check.isBigInt(actualReject));
+        });
+        it('narrows', () => {
+            if (check.isBigInt(actualPassUnion)) {
+                assert.typeOf(actualPassUnion).toEqualTypeOf<ExpectedUnionNarrowedType>();
+            }
+        });
+    });
+    describe('assertWrap', () => {
+        it('guards', () => {
+            const newValue = assertWrap.isBigInt(actualPass);
+
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedType>();
+            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+        });
+        it('rejects', () => {
+            assert.throws(() => assertWrap.isBigInt(actualReject));
+        });
+        it('narrows', () => {
+            const newValue = assertWrap.isBigInt(actualPassUnion);
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedUnionNarrowedType>();
+        });
+    });
+    describe('checkWrap', () => {
+        it('guards', () => {
+            const newValue = checkWrap.isBigInt(actualPass);
+
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedType | undefined>();
+            assert.typeOf(newValue).not.toEqualTypeOf<ExpectedType>();
+            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+        });
+        it('rejects', () => {
+            assert.isUndefined(checkWrap.isBigInt(actualReject));
+        });
+        it('narrows', () => {
+            const newValue = checkWrap.isBigInt(actualPassUnion);
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedUnionNarrowedType | undefined>();
+        });
+    });
+    describe('waitUntil', () => {
+        it('guards', async () => {
+            const newValue = await waitUntil.isBigInt(
+                () => actualPass,
+                waitUntilTestOptions,
+                'failure',
+            );
+
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedType>();
+            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+
+            assert.deepEquals(actualPass, newValue);
+        });
+        it('rejects', async () => {
+            await assert.throws(
+                waitUntil.isBigInt(() => actualReject, waitUntilTestOptions, 'failure'),
             );
         });
         it('narrows', async () => {
-            const newValue = await waitUntil.isBigint(
+            const newValue = await waitUntil.isBigInt(
+                () => actualPassUnion,
+                waitUntilTestOptions,
+                'failure',
+            );
+
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedUnionNarrowedType>();
+        });
+    });
+});
+describe('isNotBigInt', () => {
+    const actualPass: bigint | number = 42 as any;
+    const actualReject: bigint | number = 42n as any;
+    type ExpectedType = number;
+    type UnexpectedType = bigint;
+
+    type ExpectedUnionNarrowedType = number;
+    const actualPassUnion: 42n | ExpectedUnionNarrowedType = 42 as any;
+
+    describe('assert', () => {
+        it('guards', () => {
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+
+            assert.isNotBigInt(actualPass);
+
+            assert.typeOf(actualPass).toEqualTypeOf<ExpectedType>();
+            assert.typeOf(actualPass).not.toEqualTypeOf<UnexpectedType>();
+        });
+        it('rejects', () => {
+            assert.throws(() => assert.isNotBigInt(actualReject));
+        });
+        it('narrows', () => {
+            assert.isNotBigInt(actualPassUnion);
+
+            assert.typeOf(actualPassUnion).toEqualTypeOf<ExpectedUnionNarrowedType>();
+        });
+    });
+    describe('check', () => {
+        it('guards', () => {
+            assert.isTrue(check.isNotBigInt(actualPass));
+
+            if (check.isNotBigInt(actualPass)) {
+                assert.typeOf(actualPass).toEqualTypeOf<ExpectedType>();
+                assert.typeOf(actualPass).not.toEqualTypeOf<UnexpectedType>();
+            }
+
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+        });
+        it('rejects', () => {
+            assert.isFalse(check.isNotBigInt(actualReject));
+        });
+        it('narrows', () => {
+            if (check.isNotBigInt(actualPassUnion)) {
+                assert.typeOf(actualPassUnion).toEqualTypeOf<ExpectedUnionNarrowedType>();
+            }
+        });
+    });
+    describe('assertWrap', () => {
+        it('guards', () => {
+            const newValue = assertWrap.isNotBigInt(actualPass);
+
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedType>();
+            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+        });
+        it('rejects', () => {
+            assert.throws(() => assertWrap.isNotBigInt(actualReject));
+        });
+        it('narrows', () => {
+            const newValue = assertWrap.isNotBigInt(actualPassUnion);
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedUnionNarrowedType>();
+        });
+    });
+    describe('checkWrap', () => {
+        it('guards', () => {
+            const newValue = checkWrap.isNotBigInt(actualPass);
+
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedType | undefined>();
+            assert.typeOf(newValue).not.toEqualTypeOf<ExpectedType>();
+            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+        });
+        it('rejects', () => {
+            assert.isUndefined(checkWrap.isNotBigInt(actualReject));
+        });
+        it('narrows', () => {
+            const newValue = checkWrap.isNotBigInt(actualPassUnion);
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedUnionNarrowedType | undefined>();
+        });
+    });
+    describe('waitUntil', () => {
+        it('guards', async () => {
+            const newValue = await waitUntil.isNotBigInt(
+                () => actualPass,
+                waitUntilTestOptions,
+                'failure',
+            );
+
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedType>();
+            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+
+            assert.deepEquals(actualPass, newValue);
+        });
+        it('rejects', async () => {
+            await assert.throws(
+                waitUntil.isNotBigInt(() => actualReject, waitUntilTestOptions, 'failure'),
+            );
+        });
+        it('narrows', async () => {
+            const newValue = await waitUntil.isNotBigInt(
                 () => actualPassUnion,
                 waitUntilTestOptions,
                 'failure',
@@ -309,6 +506,113 @@ describe('isBoolean', () => {
         });
         it('narrows', async () => {
             const newValue = await waitUntil.isBoolean(
+                () => actualPassUnion,
+                waitUntilTestOptions,
+                'failure',
+            );
+
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedUnionNarrowedType>();
+        });
+    });
+});
+describe('isNotBoolean', () => {
+    const actualPass: boolean | string = 'true' as any;
+    const actualReject: boolean | string = true as any;
+    type ExpectedType = string;
+    type UnexpectedType = boolean;
+
+    type ExpectedUnionNarrowedType = 0 | 1;
+    const actualPassUnion: true | ExpectedUnionNarrowedType = 0 as any;
+
+    describe('assert', () => {
+        it('guards', () => {
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+
+            assert.isNotBoolean(actualPass);
+
+            assert.typeOf(actualPass).toEqualTypeOf<ExpectedType>();
+            assert.typeOf(actualPass).not.toEqualTypeOf<UnexpectedType>();
+        });
+        it('rejects', () => {
+            assert.throws(() => assert.isNotBoolean(actualReject));
+        });
+        it('narrows', () => {
+            assert.isNotBoolean(actualPassUnion);
+
+            assert.typeOf(actualPassUnion).toEqualTypeOf<ExpectedUnionNarrowedType>();
+        });
+    });
+    describe('check', () => {
+        it('guards', () => {
+            assert.isTrue(check.isNotBoolean(actualPass));
+
+            if (check.isNotBoolean(actualPass)) {
+                assert.typeOf(actualPass).toEqualTypeOf<ExpectedType>();
+                assert.typeOf(actualPass).not.toEqualTypeOf<UnexpectedType>();
+            }
+
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+        });
+        it('rejects', () => {
+            assert.isFalse(check.isNotBoolean(actualReject));
+        });
+        it('narrows', () => {
+            if (check.isNotBoolean(actualPassUnion)) {
+                assert.typeOf(actualPassUnion).toEqualTypeOf<ExpectedUnionNarrowedType>();
+            }
+        });
+    });
+    describe('assertWrap', () => {
+        it('guards', () => {
+            const newValue = assertWrap.isNotBoolean(actualPass);
+
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedType>();
+            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+        });
+        it('narrows', () => {
+            const newValue = assertWrap.isNotBoolean(actualPassUnion);
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedUnionNarrowedType>();
+        });
+    });
+    describe('checkWrap', () => {
+        it('guards', () => {
+            const newValue = checkWrap.isNotBoolean(actualPass);
+
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedType | undefined>();
+            assert.typeOf(newValue).not.toEqualTypeOf<ExpectedType>();
+            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+        });
+        it('rejects', () => {
+            assert.isUndefined(checkWrap.isNotBoolean(actualReject));
+        });
+        it('narrows', () => {
+            const newValue = checkWrap.isNotBoolean(actualPassUnion);
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedUnionNarrowedType | undefined>();
+        });
+    });
+    describe('waitUntil', () => {
+        it('guards', async () => {
+            const newValue = await waitUntil.isNotBoolean(
+                () => actualPass,
+                waitUntilTestOptions,
+                'failure',
+            );
+
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedType>();
+            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+
+            assert.deepEquals(actualPass, newValue);
+        });
+        it('rejects', async () => {
+            await assert.throws(
+                waitUntil.isNotBoolean(() => actualReject, waitUntilTestOptions, 'failure'),
+            );
+        });
+        it('narrows', async () => {
+            const newValue = await waitUntil.isNotBoolean(
                 () => actualPassUnion,
                 waitUntilTestOptions,
                 'failure',
@@ -429,6 +733,116 @@ describe('isFunction', () => {
         });
     });
 });
+describe('isNotFunction', () => {
+    const actualPass: AnyFunction | Record<string, string> = {} as any;
+    const actualReject: AnyFunction | Record<string, string> = (() => {}) as any;
+    type ExpectedType = Record<string, string>;
+    type UnexpectedType = AnyFunction;
+
+    type ExpectedUnionNarrowedType = Record<string, string>;
+    const actualPassUnion: (() => string) | ExpectedUnionNarrowedType = {} as any;
+
+    describe('assert', () => {
+        it('guards', () => {
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+
+            assert.isNotFunction(actualPass);
+
+            assert.typeOf(actualPass).toEqualTypeOf<ExpectedType>();
+            assert.typeOf(actualPass).not.toEqualTypeOf<UnexpectedType>();
+        });
+        it('rejects', () => {
+            assert.throws(() => assert.isNotFunction(actualReject));
+        });
+        it('narrows', () => {
+            assert.isNotFunction(actualPassUnion);
+
+            assert.typeOf(actualPassUnion).toEqualTypeOf<ExpectedUnionNarrowedType>();
+        });
+    });
+    describe('check', () => {
+        it('guards', () => {
+            assert.isTrue(check.isNotFunction(actualPass));
+
+            if (check.isNotFunction(actualPass)) {
+                assert.typeOf(actualPass).toEqualTypeOf<ExpectedType>();
+                assert.typeOf(actualPass).not.toEqualTypeOf<UnexpectedType>();
+            }
+
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+        });
+        it('rejects', () => {
+            assert.isFalse(check.isNotFunction(actualReject));
+        });
+        it('narrows', () => {
+            if (check.isNotFunction(actualPassUnion)) {
+                assert.typeOf(actualPassUnion).toEqualTypeOf<ExpectedUnionNarrowedType>();
+            }
+        });
+    });
+    describe('assertWrap', () => {
+        it('guards', () => {
+            const newValue = assertWrap.isNotFunction(actualPass);
+
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedType>();
+            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+        });
+        it('rejects', () => {
+            assert.throws(() => assertWrap.isNotFunction(actualReject));
+        });
+        it('narrows', () => {
+            const newValue = assertWrap.isNotFunction(actualPassUnion);
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedUnionNarrowedType>();
+        });
+    });
+    describe('checkWrap', () => {
+        it('guards', () => {
+            const newValue = checkWrap.isNotFunction(actualPass);
+
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedType | undefined>();
+            assert.typeOf(newValue).not.toEqualTypeOf<ExpectedType>();
+            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+        });
+        it('rejects', () => {
+            assert.isUndefined(checkWrap.isNotFunction(actualReject));
+        });
+        it('narrows', () => {
+            const newValue = checkWrap.isNotFunction(actualPassUnion);
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedUnionNarrowedType | undefined>();
+        });
+    });
+    describe('waitUntil', () => {
+        it('guards', async () => {
+            const newValue = await waitUntil.isNotFunction(
+                () => actualPass,
+                waitUntilTestOptions,
+                'failure',
+            );
+
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedType>();
+            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+
+            assert.deepEquals(actualPass, newValue);
+        });
+        it('rejects', async () => {
+            await assert.throws(
+                waitUntil.isNotFunction(() => actualReject, waitUntilTestOptions, 'failure'),
+            );
+        });
+        it('narrows', async () => {
+            const newValue = await waitUntil.isNotFunction(
+                () => actualPassUnion,
+                waitUntilTestOptions,
+                'failure',
+            );
+
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedUnionNarrowedType>();
+        });
+    });
+});
 
 describe('isNull', () => {
     const actualPass: unknown = null as any;
@@ -531,6 +945,115 @@ describe('isNull', () => {
         });
         it('narrows', async () => {
             const newValue = await waitUntil.isNull(
+                () => actualPassUnion,
+                waitUntilTestOptions,
+                'failure',
+            );
+
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedUnionNarrowedType>();
+        });
+    });
+});
+describe('isNotNull', () => {
+    const actualPass: null | undefined = undefined as any;
+    const actualReject: null | undefined = null as any;
+    type ExpectedType = undefined;
+    type UnexpectedType = null;
+
+    type ExpectedUnionNarrowedType = string;
+    const actualPassUnion: null | ExpectedUnionNarrowedType = 'hi' as any;
+
+    describe('assert', () => {
+        it('guards', () => {
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+
+            assert.isNotNull(actualPass);
+
+            assert.typeOf(actualPass).toEqualTypeOf<ExpectedType>();
+            assert.typeOf(actualPass).not.toEqualTypeOf<UnexpectedType>();
+        });
+        it('rejects', () => {
+            assert.throws(() => assert.isNotNull(actualReject));
+        });
+        it('narrows', () => {
+            assert.isNotNull(actualPassUnion);
+
+            assert.typeOf(actualPassUnion).toEqualTypeOf<ExpectedUnionNarrowedType>();
+        });
+    });
+    describe('check', () => {
+        it('guards', () => {
+            assert.isTrue(check.isNotNull(actualPass));
+
+            if (check.isNotNull(actualPass)) {
+                assert.typeOf(actualPass).toEqualTypeOf<ExpectedType>();
+                assert.typeOf(actualPass).not.toEqualTypeOf<UnexpectedType>();
+            }
+
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+        });
+        it('rejects', () => {
+            assert.isFalse(check.isNotNull(actualReject));
+        });
+        it('narrows', () => {
+            if (check.isNotNull(actualPassUnion)) {
+                assert.typeOf(actualPassUnion).toEqualTypeOf<ExpectedUnionNarrowedType>();
+            }
+        });
+    });
+    describe('assertWrap', () => {
+        it('guards', () => {
+            const newValue = assertWrap.isNotNull(actualPass);
+
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedType>();
+            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+        });
+        it('rejects', () => {
+            assert.throws(() => assertWrap.isNotNull(actualReject));
+        });
+        it('narrows', () => {
+            const newValue = assertWrap.isNotNull(actualPassUnion);
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedUnionNarrowedType>();
+        });
+    });
+    describe('checkWrap', () => {
+        it('guards', () => {
+            const newValue = checkWrap.isNotNull(actualPass);
+
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedType>();
+            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+        });
+        it('rejects', () => {
+            assert.isUndefined(checkWrap.isNotNull(actualReject));
+        });
+        it('narrows', () => {
+            const newValue = checkWrap.isNotNull(actualPassUnion);
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedUnionNarrowedType | undefined>();
+        });
+    });
+    describe('waitUntil', () => {
+        it('guards', async () => {
+            const newValue = await waitUntil.isNotNull(
+                () => actualPass,
+                waitUntilTestOptions,
+                'failure',
+            );
+
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedType>();
+            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+
+            assert.deepEquals(actualPass, newValue);
+        });
+        it('rejects', async () => {
+            await assert.throws(
+                waitUntil.isNotNull(() => actualReject, waitUntilTestOptions, 'failure'),
+            );
+        });
+        it('narrows', async () => {
+            const newValue = await waitUntil.isNotNull(
                 () => actualPassUnion,
                 waitUntilTestOptions,
                 'failure',
@@ -651,6 +1174,116 @@ describe('isNumber', () => {
         });
     });
 });
+describe('isNotNumber', () => {
+    const actualPass: number | string = '42' as any;
+    const actualReject: number | string = 42 as any;
+    type ExpectedType = string;
+    type UnexpectedType = number;
+
+    type ExpectedUnionNarrowedType = '42';
+    const actualPassUnion: 42 | ExpectedUnionNarrowedType = '42' as any;
+
+    describe('assert', () => {
+        it('guards', () => {
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+
+            assert.isNotNumber(actualPass);
+
+            assert.typeOf(actualPass).toEqualTypeOf<ExpectedType>();
+            assert.typeOf(actualPass).not.toEqualTypeOf<UnexpectedType>();
+        });
+        it('rejects', () => {
+            assert.throws(() => assert.isNotNumber(actualReject));
+        });
+        it('narrows', () => {
+            assert.isNotNumber(actualPassUnion);
+
+            assert.typeOf(actualPassUnion).toEqualTypeOf<ExpectedUnionNarrowedType>();
+        });
+    });
+    describe('check', () => {
+        it('guards', () => {
+            assert.isTrue(check.isNotNumber(actualPass));
+
+            if (check.isNotNumber(actualPass)) {
+                assert.typeOf(actualPass).toEqualTypeOf<ExpectedType>();
+                assert.typeOf(actualPass).not.toEqualTypeOf<UnexpectedType>();
+            }
+
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+        });
+        it('rejects', () => {
+            assert.isFalse(check.isNotNumber(actualReject));
+        });
+        it('narrows', () => {
+            if (check.isNotNumber(actualPassUnion)) {
+                assert.typeOf(actualPassUnion).toEqualTypeOf<ExpectedUnionNarrowedType>();
+            }
+        });
+    });
+    describe('assertWrap', () => {
+        it('guards', () => {
+            const newValue = assertWrap.isNotNumber(actualPass);
+
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedType>();
+            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+        });
+        it('rejects', () => {
+            assert.throws(() => assertWrap.isNotNumber(actualReject));
+        });
+        it('narrows', () => {
+            const newValue = assertWrap.isNotNumber(actualPassUnion);
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedUnionNarrowedType>();
+        });
+    });
+    describe('checkWrap', () => {
+        it('guards', () => {
+            const newValue = checkWrap.isNotNumber(actualPass);
+
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedType | undefined>();
+            assert.typeOf(newValue).not.toEqualTypeOf<ExpectedType>();
+            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+        });
+        it('rejects', () => {
+            assert.isUndefined(checkWrap.isNotNumber(actualReject));
+        });
+        it('narrows', () => {
+            const newValue = checkWrap.isNotNumber(actualPassUnion);
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedUnionNarrowedType | undefined>();
+        });
+    });
+    describe('waitUntil', () => {
+        it('guards', async () => {
+            const newValue = await waitUntil.isNotNumber(
+                () => actualPass,
+                waitUntilTestOptions,
+                'failure',
+            );
+
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedType>();
+            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+
+            assert.deepEquals(actualPass, newValue);
+        });
+        it('rejects', async () => {
+            await assert.throws(
+                waitUntil.isNotNumber(() => actualReject, waitUntilTestOptions, 'failure'),
+            );
+        });
+        it('narrows', async () => {
+            const newValue = await waitUntil.isNotNumber(
+                () => actualPassUnion,
+                waitUntilTestOptions,
+                'failure',
+            );
+
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedUnionNarrowedType>();
+        });
+    });
+});
 
 describe('isObject', () => {
     const actualPass: unknown = {} as any;
@@ -762,6 +1395,116 @@ describe('isObject', () => {
         });
     });
 });
+describe('isNotObject', () => {
+    const actualPass: UnknownObject | unknown[] = [] as any;
+    const actualReject: UnknownObject | unknown[] = {} as any;
+    type ExpectedType = unknown[];
+    type UnexpectedType = UnknownObject;
+
+    type ExpectedUnionNarrowedType = string[];
+    const actualPassUnion: {hi: string} | ExpectedUnionNarrowedType = [] as any;
+
+    describe('assert', () => {
+        it('guards', () => {
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+
+            assert.isNotObject(actualPass);
+
+            assert.typeOf(actualPass).toEqualTypeOf<ExpectedType>();
+            assert.typeOf(actualPass).not.toEqualTypeOf<UnexpectedType>();
+        });
+        it('rejects', () => {
+            assert.throws(() => assert.isNotObject(actualReject));
+        });
+        it('narrows', () => {
+            assert.isNotObject(actualPassUnion);
+
+            assert.typeOf(actualPassUnion).toEqualTypeOf<ExpectedUnionNarrowedType>();
+        });
+    });
+    describe('check', () => {
+        it('guards', () => {
+            assert.isTrue(check.isNotObject(actualPass));
+
+            if (check.isNotObject(actualPass)) {
+                assert.typeOf(actualPass).toEqualTypeOf<ExpectedType>();
+                assert.typeOf(actualPass).not.toEqualTypeOf<UnexpectedType>();
+            }
+
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+        });
+        it('rejects', () => {
+            assert.isFalse(check.isNotObject(actualReject));
+        });
+        it('narrows', () => {
+            if (check.isNotObject(actualPassUnion)) {
+                assert.typeOf(actualPassUnion).toEqualTypeOf<ExpectedUnionNarrowedType>();
+            }
+        });
+    });
+    describe('assertWrap', () => {
+        it('guards', () => {
+            const newValue = assertWrap.isNotObject(actualPass);
+
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedType>();
+            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+        });
+        it('rejects', () => {
+            assert.throws(() => assertWrap.isNotObject(actualReject));
+        });
+        it('narrows', () => {
+            const newValue = assertWrap.isNotObject(actualPassUnion);
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedUnionNarrowedType>();
+        });
+    });
+    describe('checkWrap', () => {
+        it('guards', () => {
+            const newValue = checkWrap.isNotObject(actualPass);
+
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedType | undefined>();
+            assert.typeOf(newValue).not.toEqualTypeOf<ExpectedType>();
+            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+        });
+        it('rejects', () => {
+            assert.isUndefined(checkWrap.isNotObject(actualReject));
+        });
+        it('narrows', () => {
+            const newValue = checkWrap.isNotObject(actualPassUnion);
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedUnionNarrowedType | undefined>();
+        });
+    });
+    describe('waitUntil', () => {
+        it('guards', async () => {
+            const newValue = await waitUntil.isNotObject(
+                () => actualPass,
+                waitUntilTestOptions,
+                'failure',
+            );
+
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedType>();
+            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+
+            assert.deepEquals(actualPass, newValue);
+        });
+        it('rejects', async () => {
+            await assert.throws(
+                waitUntil.isNotObject(() => actualReject, waitUntilTestOptions, 'failure'),
+            );
+        });
+        it('narrows', async () => {
+            const newValue = await waitUntil.isNotObject(
+                () => actualPassUnion,
+                waitUntilTestOptions,
+                'failure',
+            );
+
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedUnionNarrowedType>();
+        });
+    });
+});
 
 describe('isString', () => {
     const actualPass: unknown = '4' as any;
@@ -864,6 +1607,116 @@ describe('isString', () => {
         });
         it('narrows', async () => {
             const newValue = await waitUntil.isString(
+                () => actualPassUnion,
+                waitUntilTestOptions,
+                'failure',
+            );
+
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedUnionNarrowedType>();
+        });
+    });
+});
+describe('isNotString', () => {
+    const actualPass: string | number = 4 as any;
+    const actualReject: string | number = '4' as any;
+    type ExpectedType = number;
+    type UnexpectedType = string;
+
+    type ExpectedUnionNarrowedType = 32;
+    const actualPassUnion: 'hello' | ExpectedUnionNarrowedType = 32 as any;
+
+    describe('assert', () => {
+        it('guards', () => {
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+
+            assert.isNotString(actualPass);
+
+            assert.typeOf(actualPass).toEqualTypeOf<ExpectedType>();
+            assert.typeOf(actualPass).not.toEqualTypeOf<UnexpectedType>();
+        });
+        it('rejects', () => {
+            assert.throws(() => assert.isNotString(actualReject));
+        });
+        it('narrows', () => {
+            assert.isNotString(actualPassUnion);
+
+            assert.typeOf(actualPassUnion).toEqualTypeOf<ExpectedUnionNarrowedType>();
+        });
+    });
+    describe('check', () => {
+        it('guards', () => {
+            assert.isTrue(check.isNotString(actualPass));
+
+            if (check.isNotString(actualPass)) {
+                assert.typeOf(actualPass).toEqualTypeOf<ExpectedType>();
+                assert.typeOf(actualPass).not.toEqualTypeOf<UnexpectedType>();
+            }
+
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+        });
+        it('rejects', () => {
+            assert.isFalse(check.isNotString(actualReject));
+        });
+        it('narrows', () => {
+            if (check.isNotString(actualPassUnion)) {
+                assert.typeOf(actualPassUnion).toEqualTypeOf<ExpectedUnionNarrowedType>();
+            }
+        });
+    });
+    describe('assertWrap', () => {
+        it('guards', () => {
+            const newValue = assertWrap.isNotString(actualPass);
+
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedType>();
+            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+        });
+        it('rejects', () => {
+            assert.throws(() => assertWrap.isNotString(actualReject));
+        });
+        it('narrows', () => {
+            const newValue = assertWrap.isNotString(actualPassUnion);
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedUnionNarrowedType>();
+        });
+    });
+    describe('checkWrap', () => {
+        it('guards', () => {
+            const newValue = checkWrap.isNotString(actualPass);
+
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedType | undefined>();
+            assert.typeOf(newValue).not.toEqualTypeOf<ExpectedType>();
+            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+        });
+        it('rejects', () => {
+            assert.isUndefined(checkWrap.isNotString(actualReject));
+        });
+        it('narrows', () => {
+            const newValue = checkWrap.isNotString(actualPassUnion);
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedUnionNarrowedType | undefined>();
+        });
+    });
+    describe('waitUntil', () => {
+        it('guards', async () => {
+            const newValue = await waitUntil.isNotString(
+                () => actualPass,
+                waitUntilTestOptions,
+                'failure',
+            );
+
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedType>();
+            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+
+            assert.deepEquals(actualPass, newValue);
+        });
+        it('rejects', async () => {
+            await assert.throws(
+                waitUntil.isNotString(() => actualReject, waitUntilTestOptions, 'failure'),
+            );
+        });
+        it('narrows', async () => {
+            const newValue = await waitUntil.isNotString(
                 () => actualPassUnion,
                 waitUntilTestOptions,
                 'failure',
@@ -1003,6 +1856,126 @@ describe('isSymbol', () => {
         });
     });
 });
+describe('isNotSymbol', () => {
+    const actualPass: symbol | string = '4' as any;
+    const actualReject: symbol | string = Symbol('4') as any;
+    type ExpectedType = string;
+    type UnexpectedType = symbol;
+
+    const unionSymbol = Symbol('hi');
+    type ExpectedUnionNarrowedType = 'hi';
+    const actualPassUnion: Readonly<typeof unionSymbol> | ExpectedUnionNarrowedType = 'hi' as any;
+
+    describe('assert', () => {
+        it('guards', () => {
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+
+            assert.isNotSymbol(actualPass);
+
+            assert.typeOf(actualPass).toEqualTypeOf<ExpectedType>();
+            assert.typeOf(actualPass).not.toEqualTypeOf<UnexpectedType>();
+        });
+        it('rejects', () => {
+            assert.throws(() => assert.isNotSymbol(actualReject));
+        });
+        it('narrows', () => {
+            assert.isNotSymbol(actualPassUnion);
+
+            assert.typeOf(actualPassUnion).toEqualTypeOf<ExpectedUnionNarrowedType>();
+        });
+    });
+    describe('check', () => {
+        it('guards', () => {
+            assert.isTrue(check.isNotSymbol(actualPass));
+
+            if (check.isNotSymbol(actualPass)) {
+                assert.typeOf(actualPass).toEqualTypeOf<ExpectedType>();
+                assert.typeOf(actualPass).not.toEqualTypeOf<UnexpectedType>();
+            }
+
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+        });
+        it('rejects', () => {
+            assert.isFalse(check.isNotSymbol(actualReject));
+        });
+        it('narrows', () => {
+            if (check.isNotSymbol(actualPassUnion)) {
+                assert.typeOf(actualPassUnion).toEqualTypeOf<ExpectedUnionNarrowedType>();
+            }
+        });
+    });
+    describe('assertWrap', () => {
+        it('guards', () => {
+            const newValue = assertWrap.isNotSymbol(actualPass);
+
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedType>();
+            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+        });
+        it('rejects', () => {
+            assert.throws(() => assertWrap.isNotSymbol(actualReject));
+        });
+        it('narrows', () => {
+            const reAssignment = unionSymbol;
+
+            assert.typeOf(reAssignment).not.toEqualTypeOf<ExpectedUnionNarrowedType>();
+            assert.typeOf(reAssignment).toBeSymbol();
+
+            assert
+                .typeOf(assertWrap.isNotSymbol(actualPassUnion))
+                .toEqualTypeOf<ExpectedUnionNarrowedType>();
+
+            const newValue = assertWrap.isNotSymbol(actualPassUnion);
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedUnionNarrowedType>();
+        });
+    });
+    describe('checkWrap', () => {
+        it('guards', () => {
+            const newValue = checkWrap.isNotSymbol(actualPass);
+
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedType | undefined>();
+            assert.typeOf(newValue).not.toEqualTypeOf<ExpectedType>();
+            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+        });
+        it('rejects', () => {
+            assert.isUndefined(checkWrap.isNotSymbol(actualReject));
+        });
+        it('narrows', () => {
+            const newValue = checkWrap.isNotSymbol(actualPassUnion);
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedUnionNarrowedType | undefined>();
+        });
+    });
+    describe('waitUntil', () => {
+        it('guards', async () => {
+            const newValue = await waitUntil.isNotSymbol(
+                () => actualPass,
+                waitUntilTestOptions,
+                'failure',
+            );
+
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedType>();
+            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+
+            assert.deepEquals(actualPass, newValue);
+        });
+        it('rejects', async () => {
+            await assert.throws(
+                waitUntil.isNotSymbol(() => actualReject, waitUntilTestOptions, 'failure'),
+            );
+        });
+        it('narrows', async () => {
+            const newValue = await waitUntil.isNotSymbol(
+                () => actualPassUnion,
+                waitUntilTestOptions,
+                'failure',
+            );
+
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedUnionNarrowedType>();
+        });
+    });
+});
 
 describe('isUndefined', () => {
     const actualPass: unknown = undefined as any;
@@ -1095,6 +2068,106 @@ describe('isUndefined', () => {
         });
         it('narrows', async () => {
             const newValue = await waitUntil.isUndefined(
+                () => actualPassUnion,
+                waitUntilTestOptions,
+                'failure',
+            );
+
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedUnionNarrowedType>();
+        });
+    });
+});
+describe('isNotUndefined', () => {
+    const actualPass: undefined | null = null as any;
+    const actualReject: undefined | null = undefined as any;
+    type ExpectedType = null;
+    type UnexpectedType = undefined;
+
+    type ExpectedUnionNarrowedType = null | false;
+    const actualPassUnion: undefined | ExpectedUnionNarrowedType = null as any;
+
+    describe('assert', () => {
+        it('guards', () => {
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+
+            assert.isNotUndefined(actualPass);
+
+            assert.typeOf(actualPass).toEqualTypeOf<ExpectedType>();
+            assert.typeOf(actualPass).not.toEqualTypeOf<UnexpectedType>();
+        });
+        it('rejects', () => {
+            assert.throws(() => assert.isNotUndefined(actualReject));
+        });
+        it('narrows', () => {
+            assert.isNotUndefined(actualPassUnion);
+
+            assert.typeOf(actualPassUnion).toEqualTypeOf<ExpectedUnionNarrowedType>();
+        });
+    });
+    describe('check', () => {
+        it('guards', () => {
+            assert.isTrue(check.isNotUndefined(actualPass));
+
+            if (check.isNotUndefined(actualPass)) {
+                assert.typeOf(actualPass).toEqualTypeOf<ExpectedType>();
+                assert.typeOf(actualPass).not.toEqualTypeOf<UnexpectedType>();
+            }
+
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+        });
+        it('rejects', () => {
+            assert.isFalse(check.isNotUndefined(actualReject));
+        });
+        it('narrows', () => {
+            if (check.isNotUndefined(actualPassUnion)) {
+                assert.typeOf(actualPassUnion).toEqualTypeOf<ExpectedUnionNarrowedType>();
+            }
+        });
+    });
+    describe('assertWrap', () => {
+        it('guards', () => {
+            const newValue = assertWrap.isNotUndefined(actualPass);
+
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedType>();
+            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+        });
+        it('rejects', () => {
+            assert.throws(() => assertWrap.isNotUndefined(actualReject));
+        });
+        it('narrows', () => {
+            const newValue = assertWrap.isNotUndefined(actualPassUnion);
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedUnionNarrowedType>();
+        });
+    });
+    describe('checkWrap', () => {
+        it('does not exist', () => {
+            // @ts-expect-error: checkWrap.isNotUndefined does not exist
+            assert.isUndefined(checkWrap.isNotUndefined);
+            checkWrap;
+        });
+    });
+    describe('waitUntil', () => {
+        it('guards', async () => {
+            const newValue = await waitUntil.isNotUndefined(
+                () => actualPass,
+                waitUntilTestOptions,
+                'failure',
+            );
+
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedType>();
+            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+
+            assert.deepEquals(actualPass, newValue);
+        });
+        it('rejects', async () => {
+            await assert.throws(
+                waitUntil.isNotUndefined(() => actualReject, waitUntilTestOptions, 'failure'),
+            );
+        });
+        it('narrows', async () => {
+            const newValue = await waitUntil.isNotUndefined(
                 () => actualPassUnion,
                 waitUntilTestOptions,
                 'failure',

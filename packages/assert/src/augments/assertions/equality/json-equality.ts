@@ -1,4 +1,4 @@
-import {extractErrorMessage, type AnyObject} from '@augment-vir/core';
+import {AnyObject, extractErrorMessage, MaybePromise} from '@augment-vir/core';
 import {AssertionError} from '../../assertion.error.js';
 import type {GuardGroup} from '../../guard-types/guard-group.js';
 import {autoGuard} from '../../guard-types/guard-override.js';
@@ -14,7 +14,7 @@ function baseJsonEquals(a: unknown, b: unknown): boolean {
  *
  * @throws `JsonStringifyError` if the inputs fail when passed to `JSON.stringify`.
  */
-export function jsonEquals<Actual, Expected extends Actual>(
+function jsonEquals<const Actual, const Expected extends Actual>(
     actual: Actual,
     expected: Expected,
     failureMessage?: string | undefined,
@@ -25,6 +25,16 @@ export function jsonEquals<Actual, Expected extends Actual>(
         const leadingMessage = failureMessage ? failureMessage.replace(/\.$/, '') + ': ' : '';
         throw new AssertionError(`${leadingMessage}${extractErrorMessage(error)}`);
     }
+}
+
+function notJsonEquals(actual: unknown, expected: unknown, failureMessage?: string | undefined) {
+    try {
+        jsonEquals(actual, expected);
+    } catch {
+        return;
+    }
+
+    throw new AssertionError(failureMessage || `JSON values are equal.`);
 }
 
 function recursiveJsonEquals(actual: any, expected: any) {
@@ -67,8 +77,10 @@ function recursiveJsonEquals(actual: any, expected: any) {
 
 const assertions: {
     jsonEquals: typeof jsonEquals;
+    notJsonEquals: typeof notJsonEquals;
 } = {
     jsonEquals,
+    notJsonEquals,
 };
 
 export const jsonEqualityGuards = {
@@ -106,7 +118,7 @@ export const jsonEqualityGuards = {
             autoGuard<
                 <Actual, Expected extends Actual>(
                     expected: Expected,
-                    callback: () => Actual,
+                    callback: () => MaybePromise<Actual>,
                     options?: WaitUntilOptions | undefined,
                     failureMessage?: string | undefined,
                 ) => Promise<NarrowToExpected<Actual, Expected>>

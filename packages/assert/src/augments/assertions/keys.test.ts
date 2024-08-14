@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-expressions */
 import type {AnyFunction, UnknownObject} from '@augment-vir/core';
 import {describe, it, itCases} from '@augment-vir/test';
 import {assertWrap} from '../guards/assert-wrap.js';
@@ -159,6 +158,161 @@ describe('isKeyOf', () => {
         it('rejects', async () => {
             await assert.throws(
                 waitUntil.isKeyOf(expected, () => actualReject, waitUntilTestOptions, 'failure'),
+            );
+        });
+    });
+});
+describe('isNotKeyOf', () => {
+    const actualPass: 'one' | 'two' = 'one' as any;
+    const actualReject: 'one' | 'two' = 'two' as any;
+    const expected = {
+        two: 2,
+        three: 3,
+    };
+    type ExpectedType = 'one';
+    type UnexpectedType = 'two';
+
+    describe('assert', () => {
+        it('guards', () => {
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+
+            assert.isNotKeyOf(actualPass, expected);
+
+            assert.typeOf(actualPass).toEqualTypeOf<ExpectedType>();
+            assert.typeOf(actualPass).not.toEqualTypeOf<UnexpectedType>();
+        });
+        it('rejects', () => {
+            assert.throws(() => assert.isNotKeyOf(actualReject, expected));
+        });
+    });
+    describe('check', () => {
+        const symbolKey = Symbol('example');
+        const stringKey = 'some string here';
+        const numberKey = 48;
+
+        itCases(check.isNotKeyOf, [
+            {
+                it: 'rejects with a string prop on an object',
+                inputs: [
+                    stringKey,
+                    {[stringKey]: 0},
+                ],
+                expect: false,
+            },
+            {
+                it: 'rejects with a symbol prop on an object',
+                inputs: [
+                    symbolKey,
+                    {[symbolKey]: 0},
+                ],
+                expect: false,
+            },
+            {
+                it: 'rejects with a numeric prop on an object',
+                inputs: [
+                    numberKey,
+                    {[numberKey]: 0},
+                ],
+                expect: false,
+            },
+            {
+                it: 'rejects with a prop from a function',
+                inputs: [
+                    'name',
+                    () => {},
+                ],
+                expect: false,
+            },
+            {
+                it: 'accepts with a string key that does not exists in a function',
+                inputs: [
+                    stringKey,
+                    () => {},
+                ],
+                expect: true,
+            },
+            {
+                it: 'accepts with a string key that does not exists in a object',
+                inputs: [
+                    stringKey,
+                    {},
+                ],
+                expect: true,
+            },
+            {
+                it: 'accepts with a numeric key that does not exists in a object',
+                inputs: [
+                    numberKey,
+                    {},
+                ],
+                expect: true,
+            },
+            {
+                it: 'accepts with a symbol key that does not exists in a object',
+                inputs: [
+                    symbolKey,
+                    {},
+                ],
+                expect: true,
+            },
+        ]);
+        it('guards', () => {
+            assert.isTrue(check.isNotKeyOf(actualPass, expected));
+
+            if (check.isNotKeyOf(actualPass, expected)) {
+                assert.typeOf(actualPass).toEqualTypeOf<ExpectedType>();
+                assert.typeOf(actualPass).not.toEqualTypeOf<UnexpectedType>();
+            }
+
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+        });
+        it('rejects', () => {
+            assert.isFalse(check.isNotKeyOf(actualReject, expected));
+        });
+    });
+    describe('assertWrap', () => {
+        it('guards', () => {
+            const newValue = assertWrap.isNotKeyOf(actualPass, expected);
+
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedType>();
+            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+        });
+        it('rejects', () => {
+            assert.throws(() => assertWrap.isNotKeyOf(actualReject, expected));
+        });
+    });
+    describe('checkWrap', () => {
+        it('guards', () => {
+            const newValue = checkWrap.isNotKeyOf(actualPass, expected);
+
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedType | undefined>();
+            assert.typeOf(newValue).not.toEqualTypeOf<ExpectedType>();
+            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+        });
+        it('rejects', () => {
+            assert.isUndefined(checkWrap.isNotKeyOf(actualReject, expected));
+        });
+    });
+    describe('waitUntil', () => {
+        it('guards', async () => {
+            const newValue = await waitUntil.isNotKeyOf(
+                expected,
+                () => actualPass,
+                waitUntilTestOptions,
+                'failure',
+            );
+
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedType>();
+            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+
+            assert.deepEquals(actualPass, newValue);
+        });
+        it('rejects', async () => {
+            await assert.throws(
+                waitUntil.isNotKeyOf(expected, () => actualReject, waitUntilTestOptions, 'failure'),
             );
         });
     });
@@ -409,6 +563,146 @@ describe('hasKey', () => {
         });
     });
 });
+describe('lacksKey', () => {
+    const actualPass: {one: number} | {two: number} = {
+        one: 1,
+    } as any;
+    const actualReject: {one: number} | {two: number} = {
+        two: 2,
+    } as any;
+    const expected = 'two';
+    type ExpectedType = {one: number};
+    type UnexpectedType = {one: number} | {two: number};
+
+    describe('assert', () => {
+        it('guards', () => {
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+
+            assert.lacksKey(actualPass, expected);
+
+            assert.typeOf(actualPass).toEqualTypeOf<ExpectedType>();
+            assert.typeOf(actualPass).not.toEqualTypeOf<UnexpectedType>();
+        });
+        it('rejects', () => {
+            assert.throws(() => assert.lacksKey(actualReject, expected));
+        });
+        it('works on arrays', () => {
+            assert.lacksKey(
+                [
+                    1,
+                    2,
+                    3,
+                ],
+                10,
+            );
+            assert.throws(() =>
+                assert.lacksKey(
+                    [
+                        1,
+                        2,
+                        3,
+                    ],
+                    0,
+                ),
+            );
+        });
+    });
+    describe('check', () => {
+        itCases(check.lacksKey, [
+            {
+                it: 'rejects function keys',
+                inputs: [
+                    () => {},
+                    'name',
+                ],
+                expect: false,
+            },
+            {
+                it: 'accepts missing functions keys',
+                inputs: [
+                    () => {},
+                    'concat',
+                ],
+                expect: true,
+            },
+            {
+                it: 'rejects string object keys',
+                inputs: [
+                    'hello there',
+                    'concat',
+                ],
+                expect: false,
+            },
+            {
+                it: 'accepts missing string object keys',
+                inputs: [
+                    'hello there',
+                    'name',
+                ],
+                expect: true,
+            },
+        ]);
+        it('guards', () => {
+            assert.isTrue(check.lacksKey(actualPass, expected));
+
+            if (check.lacksKey(actualPass, expected)) {
+                assert.typeOf(actualPass).toEqualTypeOf<ExpectedType>();
+                assert.typeOf(actualPass).not.toEqualTypeOf<UnexpectedType>();
+            }
+
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+        });
+        it('rejects', () => {
+            assert.isFalse(check.lacksKey(actualReject, expected));
+        });
+    });
+    describe('assertWrap', () => {
+        it('guards', () => {
+            const newValue = assertWrap.lacksKey(actualPass, expected);
+
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedType>();
+            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+        });
+        it('rejects', () => {
+            assert.throws(() => assertWrap.lacksKey(actualReject, expected));
+        });
+    });
+    describe('checkWrap', () => {
+        it('guards', () => {
+            const newValue = checkWrap.lacksKey(actualPass, expected);
+
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedType | undefined>();
+            assert.typeOf(newValue).not.toEqualTypeOf<ExpectedType>();
+            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+        });
+        it('rejects', () => {
+            assert.isUndefined(checkWrap.lacksKey(actualReject, expected));
+        });
+    });
+    describe('waitUntil', () => {
+        it('guards', async () => {
+            const newValue = await waitUntil.lacksKey(
+                expected,
+                () => actualPass,
+                waitUntilTestOptions,
+                'failure',
+            );
+
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedType>();
+            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+
+            assert.deepEquals(actualPass, newValue);
+        });
+        it('rejects', async () => {
+            await assert.throws(
+                waitUntil.lacksKey(expected, () => actualReject, waitUntilTestOptions, 'failure'),
+            );
+        });
+    });
+});
 
 describe('hasKeys', () => {
     const actualPass: UnknownObject = {
@@ -546,6 +840,95 @@ describe('hasKeys', () => {
         it('rejects', async () => {
             await assert.throws(
                 waitUntil.hasKeys(expected, () => actualReject, waitUntilTestOptions, 'failure'),
+            );
+        });
+    });
+});
+describe('lacksKeys', () => {
+    const actualPass: {one: number} | {two: number} | {three: number} = {
+        one: 1,
+    } as any;
+    const actualReject: {one: number} | {two: number} | {three: number} = {
+        two: 2,
+    } as any;
+    const expected = [
+        'two',
+        'three',
+    ] as const;
+    type ExpectedType = {one: number};
+    type UnexpectedType = {one: number} | {two: number} | {three: number};
+
+    describe('assert', () => {
+        it('guards', () => {
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+
+            assert.lacksKeys(actualPass, expected);
+
+            assert.typeOf(actualPass).toEqualTypeOf<ExpectedType>();
+            assert.typeOf(actualPass).not.toEqualTypeOf<UnexpectedType>();
+        });
+        it('rejects', () => {
+            assert.throws(() => assert.lacksKeys(actualReject, expected));
+        });
+    });
+    describe('check', () => {
+        it('guards', () => {
+            assert.isTrue(check.lacksKeys(actualPass, expected));
+
+            if (check.lacksKeys(actualPass, expected)) {
+                assert.typeOf(actualPass).toEqualTypeOf<ExpectedType>();
+                assert.typeOf(actualPass).not.toEqualTypeOf<UnexpectedType>();
+            }
+
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+        });
+        it('rejects', () => {
+            assert.isFalse(check.lacksKeys(actualReject, expected));
+        });
+    });
+    describe('assertWrap', () => {
+        it('guards', () => {
+            const newValue = assertWrap.lacksKeys(actualPass, expected);
+
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedType>();
+            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+        });
+        it('rejects', () => {
+            assert.throws(() => assertWrap.lacksKeys(actualReject, expected));
+        });
+    });
+    describe('checkWrap', () => {
+        it('guards', () => {
+            const newValue = checkWrap.lacksKeys(actualPass, expected);
+
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedType | undefined>();
+            assert.typeOf(newValue).not.toEqualTypeOf<ExpectedType>();
+            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+        });
+        it('rejects', () => {
+            assert.isUndefined(checkWrap.lacksKeys(actualReject, expected));
+        });
+    });
+    describe('waitUntil', () => {
+        it('guards', async () => {
+            const newValue = await waitUntil.lacksKeys(
+                expected,
+                () => actualPass,
+                waitUntilTestOptions,
+                'failure',
+            );
+
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedType>();
+            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+
+            assert.deepEquals(actualPass, newValue);
+        });
+        it('rejects', async () => {
+            await assert.throws(
+                waitUntil.lacksKeys(expected, () => actualReject, waitUntilTestOptions, 'failure'),
             );
         });
     });

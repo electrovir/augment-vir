@@ -6,17 +6,29 @@ import {autoGuard} from '../guard-types/guard-override.js';
 import {createWaitUntil, WaitUntilOptions} from '../guard-types/wait-until-function.js';
 
 function isPromiseLike(
-    input: unknown,
+    actual: unknown,
     failureMessage?: string | undefined,
-): asserts input is PromiseLike<any> {
+): asserts actual is PromiseLike<any> {
     if (
-        !(input instanceof Promise) &&
-        !(hasProperty(input, 'then') && typeof input.then === 'function')
+        !(actual instanceof Promise) &&
+        !(hasProperty(actual, 'then') && typeof actual.then === 'function')
     ) {
         throw new AssertionError(
-            failureMessage || `'${JSON5.stringify(input)}' is not a PromiseLike.`,
+            failureMessage || `'${JSON5.stringify(actual)}' is not a PromiseLike.`,
         );
     }
+}
+function isNotPromiseLike<const Actual>(
+    actual: Actual,
+    failureMessage?: string | undefined,
+): asserts actual is Exclude<Actual, PromiseLike<any>> {
+    try {
+        isPromiseLike(actual);
+    } catch {
+        return;
+    }
+
+    throw new AssertionError(failureMessage || `'${JSON5.stringify(actual)}' is a PromiseLike.`);
 }
 
 /**
@@ -24,54 +36,124 @@ function isPromiseLike(
  * `instanceof Promise`, but it makes checking a bit more ergonomic.
  */
 function isPromise(
-    input: unknown,
+    actual: unknown,
     failureMessage?: string | undefined,
-): asserts input is Promise<any> {
-    if (!(input instanceof Promise)) {
-        throw new AssertionError(failureMessage || `'${JSON5.stringify(input)}' is not a Promise.`);
+): asserts actual is Promise<any> {
+    if (!(actual instanceof Promise)) {
+        throw new AssertionError(
+            failureMessage || `'${JSON5.stringify(actual)}' is not a Promise.`,
+        );
+    }
+}
+function isNotPromise<const Actual>(
+    actual: Actual,
+    failureMessage?: string | undefined,
+): asserts actual is Exclude<Actual, Promise<any>> {
+    if (actual instanceof Promise) {
+        throw new AssertionError(failureMessage || `'${JSON5.stringify(actual)}' is a Promise.`);
     }
 }
 
 const assertions: {
     isPromiseLike: typeof isPromiseLike;
+    isNotPromiseLike: typeof isNotPromiseLike;
     isPromise: typeof isPromise;
+    isNotPromise: typeof isNotPromise;
 } = {
     isPromiseLike,
+    isNotPromiseLike,
     isPromise,
+    isNotPromise,
 };
 
 export const promiseGuards = {
     assertions,
+    checkOverrides: {
+        isNotPromise:
+            autoGuard<
+                <const Actual>(
+                    actual: Actual,
+                    failureMessage?: string | undefined,
+                ) => actual is Exclude<Actual, Promise<any>>
+            >(),
+        isNotPromiseLike:
+            autoGuard<
+                <const Actual>(
+                    actual: Actual,
+                    failureMessage?: string | undefined,
+                ) => actual is Exclude<Actual, PromiseLike<any>>
+            >(),
+    },
     assertWrapOverrides: {
         isPromise:
             autoGuard<
                 <const Actual>(
-                    input: Actual,
+                    actual: Actual,
                     failureMessage?: string | undefined,
                 ) => Extract<Actual, Promise<any>>
+            >(),
+        isNotPromise:
+            autoGuard<
+                <const Actual>(
+                    actual: Actual,
+                    failureMessage?: string | undefined,
+                ) => Exclude<Actual, Promise<any>>
             >(),
         isPromiseLike:
             autoGuard<
                 <const Actual>(
-                    input: Actual,
+                    actual: Actual,
                     failureMessage?: string | undefined,
                 ) => Extract<Actual, PromiseLike<any>>
             >(),
+        isNotPromiseLike:
+            autoGuard<
+                <const Actual>(
+                    actual: Actual,
+                    failureMessage?: string | undefined,
+                ) => Exclude<Actual, PromiseLike<any>>
+            >(),
     },
+    checkWrapOverrides: {
+        isNotPromise:
+            autoGuard<
+                <const Actual>(
+                    actual: Actual,
+                    failureMessage?: string | undefined,
+                ) => Exclude<Actual, Promise<any>> | undefined
+            >(),
+        isNotPromiseLike:
+            autoGuard<
+                <const Actual>(
+                    actual: Actual,
+                    failureMessage?: string | undefined,
+                ) => Exclude<Actual, PromiseLike<any>> | undefined
+            >(),
+    },
+    /**
+     * These overrides must explicitly use `createWaitUntil` so they can pass in `true` for the
+     * second parameter, `requireSynchronousResult`.
+     */
     waitUntilOverrides: {
         isPromise: createWaitUntil(isPromise, true) as <const Actual>(
             callback: () => Actual,
             options?: WaitUntilOptions | undefined,
             failureMessage?: string | undefined,
         ) => Promise<Extract<Actual, Promise<any>>>,
+        isNotPromise: createWaitUntil(isNotPromise, true) as <const Actual>(
+            callback: () => Actual,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<Exclude<Actual, Promise<any>>>,
         isPromiseLike: createWaitUntil(isPromiseLike, true) as <const Actual>(
             callback: () => Actual,
             options?: WaitUntilOptions | undefined,
             failureMessage?: string | undefined,
         ) => Promise<Extract<Actual, PromiseLike<any>>>,
+        isNotPromiseLike: createWaitUntil(isNotPromiseLike, true) as <const Actual>(
+            callback: () => Actual,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<Exclude<Actual, PromiseLike<any>>>,
     },
 } satisfies GuardGroup;
-
-export function isPromiseLike2(input: any): any {
-    return input;
-}

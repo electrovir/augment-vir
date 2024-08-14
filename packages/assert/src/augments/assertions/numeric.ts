@@ -34,15 +34,23 @@ function isAtMost(actual: number, expected: number, failureMessage?: string | un
     }
 }
 
-function isNaNGuard(input: number, failureMessage?: string | undefined) {
-    if (!isNaN(input)) {
-        throw new AssertionError(combineFailureMessage(`${input} is not NaN`, failureMessage));
+function isNaNGuard(actual: number, failureMessage?: string | undefined) {
+    if (!isNaN(actual)) {
+        throw new AssertionError(combineFailureMessage(`${actual} is not NaN`, failureMessage));
     }
 }
 
-function isFinite(input: number, failureMessage?: string | undefined) {
-    if (isNaN(input) || input === Infinity || input === -Infinity) {
-        throw new AssertionError(combineFailureMessage(`${input} is not finite`, failureMessage));
+function isFinite(actual: number, failureMessage?: string | undefined) {
+    if (isNaN(actual) || actual === Infinity || actual === -Infinity) {
+        throw new AssertionError(combineFailureMessage(`${actual} is not finite`, failureMessage));
+    }
+}
+
+function isInfinite(actual: number, failureMessage?: string | undefined) {
+    if (actual !== Infinity && actual !== -Infinity) {
+        throw new AssertionError(
+            combineFailureMessage(`${actual} is not infinite`, failureMessage),
+        );
     }
 }
 
@@ -62,6 +70,19 @@ function isApproximately(
     }
 }
 
+function isNotApproximately(
+    actual: number,
+    expected: number,
+    delta: number,
+    failureMessage?: string | undefined,
+) {
+    if (actual >= expected - delta && actual <= expected + delta) {
+        throw new AssertionError(
+            combineFailureMessage(`${actual} is within ±${delta} of ${expected}`, failureMessage),
+        );
+    }
+}
+
 const assertions: {
     isAbove: typeof isAbove;
     isAtLeast: typeof isAtLeast;
@@ -69,7 +90,9 @@ const assertions: {
     isAtMost: typeof isAtMost;
     isNaN: typeof isNaNGuard;
     isFinite: typeof isFinite;
+    isInfinite: typeof isInfinite;
     isApproximately: typeof isApproximately;
+    isNotApproximately: typeof isNotApproximately;
 } = {
     isAbove,
     isAtLeast,
@@ -77,7 +100,11 @@ const assertions: {
     isAtMost,
     isNaN: isNaNGuard,
     isFinite,
+    isInfinite,
     isApproximately,
+    isNotApproximately,
 };
 
-export const numericGuards = {assertions} satisfies GuardGroup;
+export const numericGuards = {
+    assertions,
+} satisfies GuardGroup;

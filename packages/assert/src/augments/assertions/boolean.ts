@@ -1,3 +1,4 @@
+import {MaybePromise} from '@augment-vir/core';
 import JSON5 from 'json5';
 import {AssertionError} from '../assertion.error.js';
 import type {GuardGroup} from '../guard-types/guard-group.js';
@@ -16,7 +17,10 @@ function isFalsy(input: unknown, failureMessage?: string | undefined): asserts i
     }
 }
 
-function isTruthy<T>(input: T, failureMessage?: string | undefined): asserts input is Truthy<T> {
+function isTruthy<const Actual>(
+    input: Actual,
+    failureMessage?: string | undefined,
+): asserts input is Truthy<Actual> {
     if (!input) {
         throw new AssertionError(failureMessage || `'${JSON5.stringify(input)}' is not truthy.`);
     }
@@ -62,19 +66,19 @@ export const booleanGuards = {
     waitUntilOverrides: {
         isFalsy:
             autoGuard<
-                <T>(
-                    callback: () => T,
+                <Actual>(
+                    callback: () => MaybePromise<Actual>,
                     options?: WaitUntilOptions | undefined,
                     failureMessage?: string | undefined,
-                ) => Promise<Falsy<T>>
+                ) => Promise<Falsy<Actual>>
             >(),
         isTruthy:
             autoGuard<
-                <T>(
-                    callback: () => T,
+                <Actual>(
+                    callback: () => MaybePromise<Actual>,
                     options?: WaitUntilOptions | undefined,
                     failureMessage?: string | undefined,
-                ) => Promise<Truthy<T>>
+                ) => Promise<Truthy<Actual>>
             >(),
     },
 } satisfies GuardGroup;

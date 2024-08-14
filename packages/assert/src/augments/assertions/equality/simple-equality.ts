@@ -1,3 +1,4 @@
+import {MaybePromise} from '@augment-vir/core';
 import deepEqual from 'deep-eql';
 import JSON5 from 'json5';
 import {AssertionError} from '../../assertion.error.js';
@@ -6,7 +7,7 @@ import {autoGuard} from '../../guard-types/guard-override.js';
 import {WaitUntilOptions} from '../../guard-types/wait-until-function.js';
 import {NarrowToExpected} from '../narrow-type.js';
 
-export function strictEquals<Actual, Expected extends Actual>(
+export function strictEquals<const Actual, const Expected extends Actual>(
     actual: Actual,
     expected: Expected,
     failureMessage?: string | undefined,
@@ -15,6 +16,18 @@ export function strictEquals<Actual, Expected extends Actual>(
         throw new AssertionError(
             failureMessage ||
                 `${JSON5.stringify(actual)} does not strictly equal ${JSON5.stringify(expected)}`,
+        );
+    }
+}
+export function notStrictEquals(
+    actual: unknown,
+    expected: unknown,
+    failureMessage?: string | undefined,
+) {
+    if (actual === expected) {
+        throw new AssertionError(
+            failureMessage ||
+                `${JSON5.stringify(actual)} strictly equals ${JSON5.stringify(expected)}`,
         );
     }
 }
@@ -28,11 +41,20 @@ function looseEquals(actual: unknown, expected: unknown, failureMessage?: string
     }
 }
 
-function deepEquals<Actual, Expected extends Actual>(
+function notLooseEquals(actual: unknown, expected: unknown, failureMessage?: string | undefined) {
+    if (actual == expected) {
+        throw new AssertionError(
+            failureMessage ||
+                `${JSON5.stringify(actual)} loosely equals ${JSON5.stringify(expected)}`,
+        );
+    }
+}
+
+function deepEquals<const Actual, const Expected extends Actual>(
     actual: Actual,
     expected: Expected,
     failureMessage?: string | undefined,
-): asserts actual is Expected {
+): asserts actual is NarrowToExpected<Actual, Expected> {
     if (!deepEqual(actual, expected)) {
         throw new AssertionError(
             failureMessage ||
@@ -41,14 +63,29 @@ function deepEquals<Actual, Expected extends Actual>(
     }
 }
 
+function notDeepEquals(actual: unknown, expected: unknown, failureMessage?: string | undefined) {
+    if (deepEqual(actual, expected)) {
+        throw new AssertionError(
+            failureMessage ||
+                `${JSON5.stringify(actual)} deeply equals ${JSON5.stringify(expected)}`,
+        );
+    }
+}
+
 const assertions: {
     strictEquals: typeof strictEquals;
+    notStrictEquals: typeof notStrictEquals;
     looseEquals: typeof looseEquals;
+    notLooseEquals: typeof notLooseEquals;
     deepEquals: typeof deepEquals;
+    notDeepEquals: typeof notDeepEquals;
 } = {
     strictEquals,
+    notStrictEquals,
     looseEquals,
+    notLooseEquals,
     deepEquals,
+    notDeepEquals,
 };
 
 export const simpleEqualityGuards = {
@@ -108,7 +145,7 @@ export const simpleEqualityGuards = {
             autoGuard<
                 <Actual, Expected extends Actual>(
                     expected: Expected,
-                    callback: () => Actual,
+                    callback: () => MaybePromise<Actual>,
                     options?: WaitUntilOptions | undefined,
                     failureMessage?: string | undefined,
                 ) => Promise<NarrowToExpected<Actual, Expected>>
@@ -117,7 +154,7 @@ export const simpleEqualityGuards = {
             autoGuard<
                 <Actual, Expected extends Actual>(
                     expected: Expected,
-                    callback: () => Actual,
+                    callback: () => MaybePromise<Actual>,
                     options?: WaitUntilOptions | undefined,
                     failureMessage?: string | undefined,
                 ) => Promise<NarrowToExpected<Actual, Expected>>

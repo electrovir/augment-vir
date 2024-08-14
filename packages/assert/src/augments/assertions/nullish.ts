@@ -1,3 +1,4 @@
+import {MaybePromise} from '@augment-vir/core';
 import JSON5 from 'json5';
 import {AssertionError} from '../assertion.error.js';
 import type {GuardGroup} from '../guard-types/guard-group.js';
@@ -5,7 +6,7 @@ import {autoGuard} from '../guard-types/guard-override.js';
 import {WaitUntilOptions} from '../guard-types/wait-until-function.js';
 
 /** Asserts that the given input is defined (not null and not undefined) */
-function isDefined<Actual>(
+function isDefined<const Actual>(
     /** The value to check. */
     input: Actual,
     /** Message to include in error message if this assertion fails. */
@@ -60,7 +61,7 @@ export const nullishGuards = {
         isDefined:
             autoGuard<
                 <Actual>(
-                    callback: () => Actual,
+                    callback: () => MaybePromise<Actual>,
                     options?: WaitUntilOptions | undefined,
                     failureMessage?: string | undefined,
                 ) => Promise<Exclude<Actual, undefined | null>>

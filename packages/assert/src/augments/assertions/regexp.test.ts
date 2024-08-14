@@ -130,3 +130,126 @@ describe('matches', () => {
         });
     });
 });
+describe('mismatches', () => {
+    const valuePass = 'a b c';
+    const regexp = /abc/;
+    const valueFail = 'abcdefg';
+
+    describe('assert', () => {
+        itCases(assert.mismatches, [
+            {
+                it: 'rejects',
+                inputs: [
+                    valuePass,
+                    regexp,
+                ],
+                throws: undefined,
+            },
+            {
+                it: 'rejects',
+                inputs: [
+                    valueFail,
+                    regexp,
+                ],
+                throws: {
+                    matchConstructor: AssertionError,
+                    matchMessage: 'matches',
+                },
+            },
+        ]);
+    });
+    describe('check', () => {
+        itCases(check.mismatches, [
+            {
+                it: 'passes',
+                inputs: [
+                    valuePass,
+                    regexp,
+                ],
+                expect: true,
+            },
+            {
+                it: 'rejects',
+                inputs: [
+                    valueFail,
+                    regexp,
+                ],
+                expect: false,
+            },
+        ]);
+    });
+    describe('assertWrap', () => {
+        itCases(assertWrap.mismatches, [
+            {
+                it: 'passes',
+                inputs: [
+                    valuePass,
+                    regexp,
+                ],
+                expect: valuePass,
+            },
+            {
+                it: 'rejects',
+                inputs: [
+                    valueFail,
+                    regexp,
+                ],
+                throws: {
+                    matchConstructor: AssertionError,
+                    matchMessage: 'matches',
+                },
+            },
+        ]);
+    });
+    describe('checkWrap', () => {
+        itCases(checkWrap.mismatches, [
+            {
+                it: 'passes',
+                inputs: [
+                    valuePass,
+                    regexp,
+                ],
+                expect: valuePass,
+            },
+            {
+                it: 'rejects',
+                inputs: [
+                    valueFail,
+                    regexp,
+                ],
+                expect: undefined,
+            },
+        ]);
+    });
+    describe('waitUntil', () => {
+        it('passes', async () => {
+            let counter = 0;
+            const newValue = await waitUntil.mismatches(
+                regexp,
+                () => {
+                    ++counter;
+                    if (counter > 2) {
+                        return valuePass;
+                    } else {
+                        return valueFail;
+                    }
+                },
+                waitUntilTestOptions,
+                'failure',
+            );
+            assert.deepEquals(newValue, valuePass);
+        });
+        it('rejects', async () => {
+            await assert.throws(
+                waitUntil.mismatches(
+                    regexp,
+                    () => {
+                        return valueFail;
+                    },
+                    waitUntilTestOptions,
+                    'failure',
+                ),
+            );
+        });
+    });
+});

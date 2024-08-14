@@ -94,7 +94,73 @@ describe('strictEquals', () => {
     });
 });
 
-describe('areLooseEqual', () => {
+describe('notStrictEquals', () => {
+    const actualPass = 'first';
+    const actualReject: unknown = 'last';
+    const expected = 'last';
+
+    describe('assert', () => {
+        it('accepts', () => {
+            assert.notStrictEquals(actualPass, expected);
+        });
+        it('rejects', () => {
+            assert.throws(() => assert.notStrictEquals(actualReject, expected));
+        });
+    });
+    describe('check', () => {
+        it('accepts', () => {
+            assert.isTrue(check.notStrictEquals(actualPass, expected));
+        });
+        it('rejects', () => {
+            assert.isFalse(check.notStrictEquals(actualReject, expected));
+        });
+    });
+    describe('assertWrap', () => {
+        it('accepts', () => {
+            const newValue = assertWrap.notStrictEquals(actualPass, expected);
+            assert.typeOf(newValue).toEqualTypeOf(actualPass);
+            assert.deepEquals(actualPass, newValue);
+        });
+        it('rejects', () => {
+            assert.throws(() => assertWrap.notStrictEquals(actualReject, expected));
+        });
+    });
+    describe('checkWrap', () => {
+        it('accepts', () => {
+            const newValue = checkWrap.notStrictEquals(actualPass, expected);
+            assert.deepEquals(newValue, actualPass);
+
+            assert.typeOf(newValue).toEqualTypeOf(actualPass);
+        });
+        it('rejects', () => {
+            assert.isUndefined(checkWrap.notStrictEquals(actualReject, expected));
+        });
+    });
+    describe('waitUntil', () => {
+        it('accepts', async () => {
+            const newValue = await waitUntil.notStrictEquals(
+                expected,
+                () => actualPass,
+                waitUntilTestOptions,
+                'failure',
+            );
+
+            assert.typeOf(newValue).toEqualTypeOf(actualPass);
+        });
+        it('rejects', async () => {
+            await assert.throws(() =>
+                waitUntil.notStrictEquals(
+                    expected,
+                    () => actualReject,
+                    waitUntilTestOptions,
+                    'failure',
+                ),
+            );
+        });
+    });
+});
+
+describe('looseEquals', () => {
     const actualPass: unknown = '1' as any;
     const actualReject: unknown = 'one' as any;
     const expected = 1;
@@ -172,6 +238,72 @@ describe('areLooseEqual', () => {
         it('rejects', async () => {
             await assert.throws(
                 waitUntil.looseEquals(
+                    expected,
+                    () => actualReject,
+                    waitUntilTestOptions,
+                    'failure',
+                ),
+            );
+        });
+    });
+});
+
+describe('notLooseEquals', () => {
+    const actualPass = 'first';
+    const actualReject: unknown = 'last';
+    const expected = 'last';
+
+    describe('assert', () => {
+        it('accepts', () => {
+            assert.notLooseEquals(actualPass, expected);
+        });
+        it('rejects', () => {
+            assert.throws(() => assert.notLooseEquals(actualReject, expected));
+        });
+    });
+    describe('check', () => {
+        it('accepts', () => {
+            assert.isTrue(check.notLooseEquals(actualPass, expected));
+        });
+        it('rejects', () => {
+            assert.isFalse(check.notLooseEquals(actualReject, expected));
+        });
+    });
+    describe('assertWrap', () => {
+        it('accepts', () => {
+            const newValue = assertWrap.notLooseEquals(actualPass, expected);
+            assert.typeOf(newValue).toEqualTypeOf(actualPass);
+            assert.deepEquals(actualPass, newValue);
+        });
+        it('rejects', () => {
+            assert.throws(() => assertWrap.notLooseEquals(actualReject, expected));
+        });
+    });
+    describe('checkWrap', () => {
+        it('accepts', () => {
+            const newValue = checkWrap.notLooseEquals(actualPass, expected);
+            assert.deepEquals(newValue, actualPass);
+
+            assert.typeOf(newValue).toEqualTypeOf(actualPass);
+        });
+        it('rejects', () => {
+            assert.isUndefined(checkWrap.notLooseEquals(actualReject, expected));
+        });
+    });
+    describe('waitUntil', () => {
+        it('accepts', async () => {
+            const newValue = await waitUntil.notLooseEquals(
+                expected,
+                () => actualPass,
+                waitUntilTestOptions,
+                'failure',
+            );
+
+            assert.typeOf(newValue).toEqualTypeOf(actualPass);
+        });
+        it('rejects', async () => {
+            await assert.throws(() =>
+                waitUntil.notLooseEquals(
                     expected,
                     () => actualReject,
                     waitUntilTestOptions,
@@ -329,6 +461,78 @@ describe('deepEquals', () => {
         it('rejects', async () => {
             await assert.throws(
                 waitUntil.deepEquals(expected, () => actualReject, waitUntilTestOptions, 'failure'),
+            );
+        });
+    });
+});
+
+describe('notDeepEquals', () => {
+    const actualPass = {
+        a: 'first',
+        b: 'second',
+    };
+    const actualReject: unknown = {
+        a: 'first',
+        c: 'second',
+    };
+    const expected = {a: 'first', c: 'second'};
+
+    describe('assert', () => {
+        it('accepts', () => {
+            assert.notDeepEquals(actualPass, expected);
+        });
+        it('rejects', () => {
+            assert.throws(() => assert.notDeepEquals(actualReject, expected));
+        });
+    });
+    describe('check', () => {
+        it('accepts', () => {
+            assert.isTrue(check.notDeepEquals(actualPass, expected));
+        });
+        it('rejects', () => {
+            assert.isFalse(check.notDeepEquals(actualReject, expected));
+        });
+    });
+    describe('assertWrap', () => {
+        it('accepts', () => {
+            const newValue = assertWrap.notDeepEquals(actualPass, expected);
+            assert.typeOf(newValue).toEqualTypeOf(actualPass);
+            assert.deepEquals(actualPass, newValue);
+        });
+        it('rejects', () => {
+            assert.throws(() => assertWrap.notDeepEquals(actualReject, expected));
+        });
+    });
+    describe('checkWrap', () => {
+        it('accepts', () => {
+            const newValue = checkWrap.notDeepEquals(actualPass, expected);
+            assert.deepEquals(newValue, actualPass);
+
+            assert.typeOf(newValue).toEqualTypeOf(actualPass);
+        });
+        it('rejects', () => {
+            assert.isUndefined(checkWrap.notDeepEquals(actualReject, expected));
+        });
+    });
+    describe('waitUntil', () => {
+        it('accepts', async () => {
+            const newValue = await waitUntil.notDeepEquals(
+                expected,
+                () => actualPass,
+                waitUntilTestOptions,
+                'failure',
+            );
+
+            assert.typeOf(newValue).toEqualTypeOf(actualPass);
+        });
+        it('rejects', async () => {
+            await assert.throws(() =>
+                waitUntil.notDeepEquals(
+                    expected,
+                    () => actualReject,
+                    waitUntilTestOptions,
+                    'failure',
+                ),
             );
         });
     });

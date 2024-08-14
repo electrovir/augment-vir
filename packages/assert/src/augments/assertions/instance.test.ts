@@ -88,3 +88,91 @@ describe('instanceOf', () => {
         });
     });
 });
+
+describe('notInstanceOf', () => {
+    const actualPass: RegExp | string = 'hi' as any;
+    const actualReject: RegExp | string = /hi/ as any;
+    const expected = RegExp;
+    type ExpectedType = string;
+    type UnexpectedType = RegExp;
+
+    describe('assert', () => {
+        it('guards', () => {
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+
+            assert.notInstanceOf(actualPass, expected);
+
+            assert.typeOf(actualPass).toEqualTypeOf<ExpectedType>();
+            assert.typeOf(actualPass).not.toEqualTypeOf<UnexpectedType>();
+        });
+        it('rejects', () => {
+            assert.throws(() => assert.notInstanceOf(actualReject, expected));
+        });
+    });
+    describe('check', () => {
+        it('guards', () => {
+            assert.isTrue(check.notInstanceOf(actualPass, expected));
+
+            if (check.notInstanceOf(actualPass, expected)) {
+                assert.typeOf(actualPass).toEqualTypeOf<ExpectedType>();
+                assert.typeOf(actualPass).not.toEqualTypeOf<UnexpectedType>();
+            }
+
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+        });
+        it('rejects', () => {
+            assert.isFalse(check.notInstanceOf(actualReject, expected));
+        });
+    });
+    describe('assertWrap', () => {
+        it('guards', () => {
+            const newValue = assertWrap.notInstanceOf(actualPass, expected);
+
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedType>();
+            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+        });
+        it('rejects', () => {
+            assert.throws(() => assertWrap.notInstanceOf(actualReject, expected));
+        });
+    });
+    describe('checkWrap', () => {
+        it('guards', () => {
+            const newValue = checkWrap.notInstanceOf(actualPass, expected);
+
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedType | undefined>();
+            assert.typeOf(newValue).not.toEqualTypeOf<ExpectedType>();
+            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+        });
+        it('rejects', () => {
+            assert.isUndefined(checkWrap.notInstanceOf(actualReject, expected));
+        });
+    });
+    describe('waitUntil', () => {
+        it('guards', async () => {
+            const newValue = await waitUntil.notInstanceOf(
+                expected,
+                () => actualPass,
+                waitUntilTestOptions,
+                'failure',
+            );
+
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedType>();
+            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+
+            assert.deepEquals(actualPass, newValue);
+        });
+        it('rejects', async () => {
+            await assert.throws(
+                waitUntil.notInstanceOf(
+                    expected,
+                    () => actualReject,
+                    waitUntilTestOptions,
+                    'failure',
+                ),
+            );
+        });
+    });
+});

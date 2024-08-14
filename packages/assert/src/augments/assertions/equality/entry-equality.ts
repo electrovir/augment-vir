@@ -1,4 +1,4 @@
-import type {AnyObject} from '@augment-vir/core';
+import {AnyObject, MaybePromise} from '@augment-vir/core';
 import {AssertionError} from '../../assertion.error.js';
 import type {GuardGroup} from '../../guard-types/guard-group.js';
 import {autoGuard} from '../../guard-types/guard-override.js';
@@ -6,7 +6,7 @@ import {WaitUntilOptions} from '../../guard-types/wait-until-function.js';
 import type {NarrowToExpected} from '../narrow-type.js';
 import {strictEquals} from './simple-equality.js';
 
-function entriesEqual<Actual, Expected extends Actual>(
+function entriesEqual<const Actual, const Expected extends Actual>(
     actual: Actual,
     expected: Expected,
     failureMessage?: string | undefined,
@@ -38,10 +38,22 @@ function entriesEqual<Actual, Expected extends Actual>(
     });
 }
 
+function notEntriesEqual(actual: unknown, expected: unknown, failureMessage?: string | undefined) {
+    try {
+        entriesEqual(actual, expected);
+    } catch {
+        return;
+    }
+
+    throw new AssertionError(failureMessage || 'Entries are equal.');
+}
+
 const assertions: {
     entriesEqual: typeof entriesEqual;
+    notEntriesEqual: typeof notEntriesEqual;
 } = {
-    entriesEqual: entriesEqual,
+    entriesEqual,
+    notEntriesEqual,
 };
 
 export const entryEqualityGuards = {
@@ -79,7 +91,7 @@ export const entryEqualityGuards = {
             autoGuard<
                 <Actual, Expected extends Actual>(
                     expected: Expected,
-                    callback: () => Actual,
+                    callback: () => MaybePromise<Actual>,
                     options?: WaitUntilOptions | undefined,
                     failureMessage?: string | undefined,
                 ) => Promise<NarrowToExpected<Actual, Expected>>

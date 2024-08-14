@@ -870,6 +870,137 @@ describe('isFinite', () => {
         });
     });
 });
+describe('isInfinite', () => {
+    describe('assert', () => {
+        itCases(assert.isInfinite, [
+            {
+                it: 'rejects a number',
+                inputs: [5],
+                throws: {
+                    matchConstructor: AssertionError,
+                    matchMessage: '5 is not infinite',
+                },
+            },
+            {
+                it: 'rejects NaN',
+                inputs: [NaN],
+                throws: {
+                    matchConstructor: AssertionError,
+                    matchMessage: 'NaN is not infinite',
+                },
+            },
+            {
+                it: 'accepts Infinity',
+                inputs: [Infinity],
+                throws: undefined,
+            },
+            {
+                it: 'accepts -Infinity',
+                inputs: [-Infinity],
+                throws: undefined,
+            },
+        ]);
+    });
+    describe('check', () => {
+        itCases(check.isInfinite, [
+            {
+                it: 'rejects a number',
+                input: 5,
+                expect: false,
+            },
+            {
+                it: 'rejects NaN',
+                input: NaN,
+                expect: false,
+            },
+            {
+                it: 'accepts Infinity',
+                input: Infinity,
+                expect: true,
+            },
+            {
+                it: 'accepts -Infinity',
+                input: -Infinity,
+                expect: true,
+            },
+        ]);
+    });
+    describe('assertWrap', () => {
+        itCases(assertWrap.isInfinite, [
+            {
+                it: 'rejects a number',
+                inputs: [5],
+                throws: {
+                    matchConstructor: AssertionError,
+                    matchMessage: '5 is not infinite',
+                },
+            },
+            {
+                it: 'rejects NaN',
+                inputs: [NaN],
+                throws: {
+                    matchConstructor: AssertionError,
+                    matchMessage: 'NaN is not infinite',
+                },
+            },
+            {
+                it: 'accepts Infinity',
+                inputs: [Infinity],
+                expect: Infinity,
+            },
+            {
+                it: 'accepts -Infinity',
+                inputs: [-Infinity],
+                expect: -Infinity,
+            },
+        ]);
+    });
+    describe('checkWrap', () => {
+        itCases(checkWrap.isInfinite, [
+            {
+                it: 'rejects a number',
+                inputs: [5],
+                expect: undefined,
+            },
+            {
+                it: 'rejects NaN',
+                inputs: [NaN],
+                expect: undefined,
+            },
+            {
+                it: 'accepts Infinity',
+                inputs: [Infinity],
+                expect: Infinity,
+            },
+            {
+                it: 'accepts -Infinity',
+                inputs: [-Infinity],
+                expect: -Infinity,
+            },
+        ]);
+    });
+    describe('waitUntil', () => {
+        it('passes', async () => {
+            let value = 0;
+            const result = await waitUntil.isInfinite(() => {
+                ++value;
+                if (value > 3) {
+                    return Infinity;
+                } else {
+                    return value;
+                }
+            }, waitUntilTestOptions);
+            assert.strictEquals(result, Infinity);
+        });
+        it('rejects', async () => {
+            await assert.throws(
+                waitUntil.isInfinite(() => {
+                    return 3;
+                }, waitUntilTestOptions),
+            );
+        });
+    });
+});
 
 describe('isApproximately', () => {
     describe('assert', () => {
@@ -1025,6 +1156,165 @@ describe('isApproximately', () => {
             const value = 0;
             await assert.throws(() =>
                 waitUntil.isApproximately(
+                    5,
+                    1,
+                    () => {
+                        return value;
+                    },
+                    waitUntilTestOptions,
+                ),
+            );
+        });
+    });
+});
+describe('isNotApproximately', () => {
+    describe('assert', () => {
+        itCases(assert.isNotApproximately, [
+            {
+                it: 'rejects within range',
+                inputs: [
+                    1,
+                    5,
+                    10,
+                ],
+                throws: {
+                    matchConstructor: AssertionError,
+                    matchMessage: '1 is within ±10 of 5',
+                },
+            },
+            {
+                it: 'accepts below range',
+                inputs: [
+                    1,
+                    5,
+                    1,
+                ],
+                throws: undefined,
+            },
+            {
+                it: 'accepts above range',
+                inputs: [
+                    10,
+                    5,
+                    1,
+                ],
+                throws: undefined,
+            },
+        ]);
+    });
+    describe('check', () => {
+        itCases(check.isNotApproximately, [
+            {
+                it: 'rejects within range',
+                inputs: [
+                    1,
+                    5,
+                    10,
+                ],
+                expect: false,
+            },
+            {
+                it: 'accepts below range',
+                inputs: [
+                    1,
+                    5,
+                    1,
+                ],
+                expect: true,
+            },
+            {
+                it: 'accepts above range',
+                inputs: [
+                    10,
+                    5,
+                    1,
+                ],
+                expect: true,
+            },
+        ]);
+    });
+    describe('assertWrap', () => {
+        itCases(assertWrap.isNotApproximately, [
+            {
+                it: 'rejects within range',
+                inputs: [
+                    1,
+                    5,
+                    10,
+                ],
+                throws: {
+                    matchConstructor: AssertionError,
+                    matchMessage: '1 is within ±10 of 5',
+                },
+            },
+            {
+                it: 'accepts below range',
+                inputs: [
+                    1,
+                    5,
+                    1,
+                ],
+                expect: 1,
+            },
+            {
+                it: 'accepts above range',
+                inputs: [
+                    10,
+                    5,
+                    1,
+                ],
+                expect: 10,
+            },
+        ]);
+    });
+    describe('checkWrap', () => {
+        itCases(checkWrap.isNotApproximately, [
+            {
+                it: 'rejects within range',
+                inputs: [
+                    1,
+                    5,
+                    10,
+                ],
+                expect: undefined,
+            },
+            {
+                it: 'accepts below range',
+                inputs: [
+                    1,
+                    5,
+                    1,
+                ],
+                expect: 1,
+            },
+            {
+                it: 'accepts above range',
+                inputs: [
+                    10,
+                    5,
+                    1,
+                ],
+                expect: 10,
+            },
+        ]);
+    });
+    describe('waitUntil', () => {
+        it('passes', async () => {
+            let value = 5;
+            const result = await waitUntil.isNotApproximately(
+                5,
+                1,
+                () => {
+                    return ++value;
+                },
+                waitUntilTestOptions,
+            );
+            assert.strictEquals(result, 7);
+        });
+        it('rejects', async () => {
+            const value = 5;
+            await assert.throws(() =>
+                waitUntil.isNotApproximately(
                     5,
                     1,
                     () => {

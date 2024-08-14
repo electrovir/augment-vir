@@ -240,6 +240,244 @@ describe('hasValue', () => {
         });
     });
 });
+describe('lacksValue', () => {
+    const a = 'a';
+    const b = 'b';
+    const parentObject = {
+        stringKey: a,
+        [Symbol('symbolKey')]: b,
+    };
+    const parentArray = [
+        a,
+        b,
+    ];
+
+    describe('assert', () => {
+        itCases(assert.lacksValue, [
+            {
+                it: 'rejects on a string key',
+                inputs: [
+                    parentObject,
+                    a,
+                ],
+                throws: {
+                    matchConstructor: AssertionError,
+                    matchMessage: 'has value',
+                },
+            },
+            {
+                it: 'rejects on a symbol key',
+                inputs: [
+                    parentObject,
+                    b,
+                ],
+                throws: {
+                    matchConstructor: AssertionError,
+                    matchMessage: 'has value',
+                },
+            },
+            {
+                it: 'rejects on an array',
+                inputs: [
+                    parentArray,
+                    a,
+                ],
+                throws: {
+                    matchConstructor: AssertionError,
+                    matchMessage: 'has value',
+                },
+            },
+            {
+                it: 'passes on an object',
+                inputs: [
+                    parentObject,
+                    'c',
+                ],
+                throws: undefined,
+            },
+            {
+                it: 'passes on an array',
+                inputs: [
+                    parentArray,
+                    'c',
+                ],
+                throws: undefined,
+            },
+        ]);
+    });
+    describe('check', () => {
+        itCases(check.lacksValue, [
+            {
+                it: 'rejects on a string key',
+                inputs: [
+                    parentObject,
+                    a,
+                ],
+                expect: false,
+            },
+            {
+                it: 'rejects on a symbol key',
+                inputs: [
+                    parentObject,
+                    b,
+                ],
+                expect: false,
+            },
+            {
+                it: 'rejects on an array',
+                inputs: [
+                    parentArray,
+                    a,
+                ],
+                expect: false,
+            },
+            {
+                it: 'passes on an object',
+                inputs: [
+                    parentObject,
+                    'c',
+                ],
+                expect: true,
+            },
+            {
+                it: 'passes on an array',
+                inputs: [
+                    parentArray,
+                    'c',
+                ],
+                expect: true,
+            },
+        ]);
+    });
+    describe('assertWrap', () => {
+        itCases(assertWrap.lacksValue, [
+            {
+                it: 'rejects on a string key',
+                inputs: [
+                    parentObject,
+                    a,
+                ],
+                throws: {
+                    matchConstructor: AssertionError,
+                    matchMessage: 'has value',
+                },
+            },
+            {
+                it: 'rejects on a symbol key',
+                inputs: [
+                    parentObject,
+                    b,
+                ],
+                throws: {
+                    matchConstructor: AssertionError,
+                    matchMessage: 'has value',
+                },
+            },
+            {
+                it: 'rejects on an array',
+                inputs: [
+                    parentArray,
+                    a,
+                ],
+                throws: {
+                    matchConstructor: AssertionError,
+                    matchMessage: 'has value',
+                },
+            },
+            {
+                it: 'passes on an object',
+                inputs: [
+                    parentObject,
+                    'c',
+                ],
+                expect: parentObject,
+            },
+            {
+                it: 'passes on an array',
+                inputs: [
+                    parentArray,
+                    'c',
+                ],
+                expect: parentArray,
+            },
+        ]);
+    });
+    describe('checkWrap', () => {
+        itCases(checkWrap.lacksValue, [
+            {
+                it: 'rejects on a string key',
+                inputs: [
+                    parentObject,
+                    a,
+                ],
+                expect: undefined,
+            },
+            {
+                it: 'rejects on a symbol key',
+                inputs: [
+                    parentObject,
+                    b,
+                ],
+                expect: undefined,
+            },
+            {
+                it: 'rejects on an array',
+                inputs: [
+                    parentArray,
+                    a,
+                ],
+                expect: undefined,
+            },
+            {
+                it: 'passes on an object',
+                inputs: [
+                    parentObject,
+                    'c',
+                ],
+                expect: parentObject,
+            },
+            {
+                it: 'passes on an array',
+                inputs: [
+                    parentArray,
+                    'c',
+                ],
+                expect: parentArray,
+            },
+        ]);
+    });
+    describe('waitUntil', () => {
+        it('accepts', async () => {
+            let counter = 0;
+            const newValue = await waitUntil.lacksValue(
+                a,
+                () => {
+                    ++counter;
+                    if (counter < 2) {
+                        return parentObject;
+                    } else {
+                        return {};
+                    }
+                },
+                waitUntilTestOptions,
+                'failure',
+            );
+            assert.deepEquals(newValue, {});
+        });
+        it('rejects', async () => {
+            await assert.throws(
+                waitUntil.lacksValue(
+                    a,
+                    () => {
+                        return parentObject;
+                    },
+                    waitUntilTestOptions,
+                    'failure',
+                ),
+            );
+        });
+    });
+});
 
 describe('hasValues', () => {
     const a = 'a';
@@ -471,6 +709,235 @@ describe('hasValues', () => {
         });
     });
 });
+describe('lacksValues', () => {
+    const a = 'a';
+    const b = 'b';
+    const parentObject = {
+        stringKey: a,
+        [Symbol('symbolKey')]: b,
+    };
+    const parentArray = [
+        a,
+        b,
+    ];
+
+    describe('assert', () => {
+        itCases(assert.lacksValues, [
+            {
+                it: 'rejects on an object',
+                inputs: [
+                    parentObject,
+                    [
+                        a,
+                        b,
+                    ],
+                ],
+                throws: {
+                    matchConstructor: AssertionError,
+                    matchMessage: 'has value',
+                },
+            },
+            {
+                it: 'rejects on an array',
+                inputs: [
+                    parentArray,
+                    [
+                        a,
+                        b,
+                    ],
+                ],
+                throws: {
+                    matchConstructor: AssertionError,
+                    matchMessage: 'has value',
+                },
+            },
+            {
+                it: 'passes on an object',
+                inputs: [
+                    parentObject,
+                    ['c'],
+                ],
+                throws: undefined,
+            },
+            {
+                it: 'passes on an array',
+                inputs: [
+                    parentArray,
+                    ['c'],
+                ],
+                throws: undefined,
+            },
+        ]);
+    });
+    describe('check', () => {
+        itCases(check.lacksValues, [
+            {
+                it: 'rejects on an object',
+                inputs: [
+                    parentObject,
+                    [
+                        a,
+                        b,
+                    ],
+                ],
+                expect: false,
+            },
+            {
+                it: 'rejects on an array',
+                inputs: [
+                    parentArray,
+                    [
+                        a,
+                        b,
+                    ],
+                ],
+                expect: false,
+            },
+            {
+                it: 'passes on an object',
+                inputs: [
+                    parentObject,
+                    ['c'],
+                ],
+                expect: true,
+            },
+            {
+                it: 'passes on an array',
+                inputs: [
+                    parentArray,
+                    ['c'],
+                ],
+                expect: true,
+            },
+        ]);
+    });
+    describe('assertWrap', () => {
+        itCases(assertWrap.lacksValues, [
+            {
+                it: 'rejects on a string key',
+                inputs: [
+                    parentObject,
+                    [
+                        a,
+                        b,
+                    ],
+                ],
+                throws: {
+                    matchConstructor: AssertionError,
+                    matchMessage: 'has value',
+                },
+            },
+            {
+                it: 'rejects on an array',
+                inputs: [
+                    parentArray,
+                    [
+                        a,
+                        b,
+                    ],
+                ],
+                throws: {
+                    matchConstructor: AssertionError,
+                    matchMessage: 'has value',
+                },
+            },
+            {
+                it: 'passes on an object',
+                inputs: [
+                    parentObject,
+                    ['c'],
+                ],
+                expect: parentObject,
+            },
+            {
+                it: 'passes on an array',
+                inputs: [
+                    parentArray,
+                    ['c'],
+                ],
+                expect: parentArray,
+            },
+        ]);
+    });
+    describe('checkWrap', () => {
+        itCases(checkWrap.lacksValues, [
+            {
+                it: 'rejects on a string key',
+                inputs: [
+                    parentObject,
+                    [
+                        a,
+                        b,
+                    ],
+                ],
+                expect: undefined,
+            },
+            {
+                it: 'rejects on an array',
+                inputs: [
+                    parentArray,
+                    [
+                        a,
+                        b,
+                    ],
+                ],
+                expect: undefined,
+            },
+            {
+                it: 'passes on an object',
+                inputs: [
+                    parentObject,
+                    ['c'],
+                ],
+                expect: parentObject,
+            },
+            {
+                it: 'passes on an array',
+                inputs: [
+                    parentArray,
+                    ['c'],
+                ],
+                expect: parentArray,
+            },
+        ]);
+    });
+    describe('waitUntil', () => {
+        it('passes', async () => {
+            let counter = 0;
+            const newValue = await waitUntil.lacksValues(
+                [
+                    a,
+                ],
+                () => {
+                    ++counter;
+                    if (counter < 2) {
+                        return parentObject;
+                    } else {
+                        return {};
+                    }
+                },
+                waitUntilTestOptions,
+                'failure',
+            );
+            assert.deepEquals(newValue, {});
+        });
+        it('rejects', async () => {
+            await assert.throws(
+                waitUntil.lacksValues(
+                    [
+                        a,
+                        'c',
+                    ],
+                    () => {
+                        return [a];
+                    },
+                    waitUntilTestOptions,
+                    'failure',
+                ),
+            );
+        });
+    });
+});
 
 describe('isIn', () => {
     const actualPass: 'yo' | 'missing' = 'yo' as any;
@@ -610,6 +1077,144 @@ describe('isIn', () => {
         });
     });
 });
+describe('isNotIn', () => {
+    const actualPass: 'yo' | 'missing' = 'missing' as any;
+    const actualReject: 'yo' | 'missing' = 'yo' as any;
+    const expected = [
+        'yo',
+        'hello',
+        'hi',
+    ] as const;
+    type ExpectedType = 'missing';
+    type UnexpectedType = 'yo';
+    const expectedObject = {
+        a: 'yo',
+        b: 'hello',
+        c: 'hi',
+    } as const;
+
+    describe('assert', () => {
+        it('guards an array', () => {
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+
+            assert.isNotIn(actualPass, expected);
+
+            assert.typeOf(actualPass).toEqualTypeOf<ExpectedType>();
+            assert.typeOf(actualPass).not.toEqualTypeOf<UnexpectedType>();
+        });
+        it('guards on object', () => {
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+
+            assert.isNotIn(actualPass, expectedObject);
+
+            assert.typeOf(actualPass).toEqualTypeOf<ExpectedType>();
+            assert.typeOf(actualPass).not.toEqualTypeOf<UnexpectedType>();
+        });
+        it('rejects', () => {
+            assert.throws(() => assert.isNotIn(actualReject, expected));
+        });
+    });
+    describe('check', () => {
+        it('guards an array', () => {
+            assert.isTrue(check.isNotIn(actualPass, expected));
+
+            if (check.isNotIn(actualPass, expected)) {
+                assert.typeOf(actualPass).toEqualTypeOf<ExpectedType>();
+                assert.typeOf(actualPass).not.toEqualTypeOf<UnexpectedType>();
+            }
+
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+        });
+        it('guards on object', () => {
+            assert.isTrue(check.isNotIn(actualPass, expectedObject));
+
+            if (check.isNotIn(actualPass, expectedObject)) {
+                assert.typeOf(actualPass).toEqualTypeOf<ExpectedType>();
+                assert.typeOf(actualPass).not.toEqualTypeOf<UnexpectedType>();
+            }
+
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+        });
+        it('rejects', () => {
+            assert.isFalse(check.isNotIn(actualReject, expected));
+        });
+    });
+    describe('assertWrap', () => {
+        it('guards an array', () => {
+            const newValue = assertWrap.isNotIn(actualPass, expected);
+
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedType>();
+            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+        });
+        it('guards on object', () => {
+            const newValue = assertWrap.isNotIn(actualPass, expectedObject);
+
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedType>();
+            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+        });
+        it('rejects', () => {
+            assert.throws(() => assertWrap.isNotIn(actualReject, expected));
+        });
+    });
+    describe('checkWrap', () => {
+        it('guards an array', () => {
+            const newValue = checkWrap.isNotIn(actualPass, expected);
+
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedType | undefined>();
+            assert.typeOf(newValue).not.toEqualTypeOf<ExpectedType>();
+            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+        });
+        it('guards on object', () => {
+            const newValue = checkWrap.isNotIn(actualPass, expectedObject);
+
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedType | undefined>();
+            assert.typeOf(newValue).not.toEqualTypeOf<ExpectedType>();
+            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+        });
+        it('rejects', () => {
+            assert.isUndefined(checkWrap.isNotIn(actualReject, expected));
+        });
+    });
+    describe('waitUntil', () => {
+        it('guards an array', async () => {
+            const newValue = await waitUntil.isNotIn(
+                expected,
+                () => actualPass,
+                waitUntilTestOptions,
+                'failure',
+            );
+
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedType>();
+            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+
+            assert.deepEquals(actualPass, newValue);
+        });
+        it('guards on object', async () => {
+            const newValue = await waitUntil.isNotIn(
+                expectedObject,
+                () => actualPass,
+                waitUntilTestOptions,
+                'failure',
+            );
+
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedType>();
+            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+
+            assert.deepEquals(actualPass, newValue);
+        });
+        it('rejects', async () => {
+            await assert.throws(
+                waitUntil.isNotIn(expected, () => actualReject, waitUntilTestOptions, 'failure'),
+            );
+        });
+    });
+});
 
 describe('isEmpty', () => {
     const actualPass = [] as unknown[];
@@ -695,6 +1300,97 @@ describe('isEmpty', () => {
         it('rejects', async () => {
             await assert.throws(
                 waitUntil.isEmpty(() => actualReject, waitUntilTestOptions, 'failure'),
+            );
+        });
+    });
+});
+describe('isNotEmpty', () => {
+    const actualPass: [string] | [] = ['a'] as any;
+    const actualReject = [] as unknown[];
+    type ExpectedType = [string];
+    type UnexpectedType = [];
+
+    type ExpectedUnionNarrowedType = {a: 'hi'};
+    const actualPassUnion: EmptyObject | ExpectedUnionNarrowedType = {a: 'hi'} as any;
+
+    describe('assert', () => {
+        it('guards', () => {
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+
+            assert.isNotEmpty(actualPass);
+
+            assert.typeOf(actualPass).toEqualTypeOf<ExpectedType>();
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType | UnexpectedType>();
+            assert.typeOf(actualPass).not.toEqualTypeOf<UnexpectedType>();
+        });
+        it('rejects', () => {
+            assert.throws(() => assert.isNotEmpty(actualReject));
+        });
+        it('narrows', () => {
+            assert.typeOf(actualPassUnion).not.toEqualTypeOf<ExpectedUnionNarrowedType>();
+
+            assert.isNotEmpty(actualPassUnion);
+
+            assert.typeOf(actualPassUnion).toEqualTypeOf<ExpectedUnionNarrowedType>();
+        });
+    });
+    describe('check', () => {
+        it('guards', () => {
+            assert.isTrue(check.isNotEmpty(actualPass));
+
+            if (check.isNotEmpty(actualPass)) {
+                assert.typeOf(actualPass).toEqualTypeOf<ExpectedType>();
+                assert.typeOf(actualPass).not.toEqualTypeOf<UnexpectedType>();
+            }
+
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+        });
+        it('rejects', () => {
+            assert.isFalse(check.isNotEmpty(actualReject));
+        });
+    });
+    describe('assertWrap', () => {
+        it('guards', () => {
+            const newValue = assertWrap.isNotEmpty(actualPass);
+
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedType>();
+            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+        });
+        it('rejects', () => {
+            assert.throws(() => assertWrap.isNotEmpty(actualReject));
+        });
+    });
+    describe('checkWrap', () => {
+        it('guards', () => {
+            const newValue = checkWrap.isNotEmpty(actualPass);
+
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedType | undefined>();
+            assert.typeOf(newValue).not.toEqualTypeOf<ExpectedType>();
+            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+        });
+        it('rejects', () => {
+            assert.isUndefined(checkWrap.isNotEmpty(actualReject));
+        });
+    });
+    describe('waitUntil', () => {
+        it('guards', async () => {
+            const newValue = await waitUntil.isNotEmpty(
+                () => actualPass,
+                waitUntilTestOptions,
+                'failure',
+            );
+
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedType>();
+            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+
+            assert.deepEquals(actualPass, newValue);
+        });
+        it('rejects', async () => {
+            await assert.throws(
+                waitUntil.isNotEmpty(() => actualReject, waitUntilTestOptions, 'failure'),
             );
         });
     });

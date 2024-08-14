@@ -527,6 +527,20 @@ describe('throws', () => {
                     ),
                 );
             });
+            it('rejects with async callback', async () => {
+                await assert.throws(
+                    waitUntil.throws(
+                        {matchConstructor: AssertionError},
+                        async () => {
+                            return await new Promise((resolve, reject) => {
+                                reject(new Error('fake error'));
+                            });
+                        },
+                        waitUntilTestOptions,
+                        'failure',
+                    ),
+                );
+            });
         });
         describe('with promise', () => {
             it('guards with match', async () => {

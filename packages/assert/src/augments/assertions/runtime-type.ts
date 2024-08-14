@@ -1,48 +1,115 @@
-import {UnknownObject, type AnyFunction} from '@augment-vir/core';
+import {AnyFunction, MaybePromise, UnknownObject} from '@augment-vir/core';
 import {AssertionError} from '../assertion.error.js';
 import type {GuardGroup} from '../guard-types/guard-group.js';
 import {autoGuard} from '../guard-types/guard-override.js';
 import {WaitUntilOptions} from '../guard-types/wait-until-function.js';
 import {NarrowToActual, NarrowToExpected} from './narrow-type.js';
 
-function isArray(input: unknown, failureMessage?: string | undefined): asserts input is unknown[] {
-    assertRuntimeType(input, 'array', failureMessage);
+function isNotArray<const Actual>(
+    actual: Actual,
+    failureMessage?: string | undefined,
+): asserts actual is Exclude<Actual, ReadonlyArray<unknown>> {
+    assertNotRuntimeType(actual, 'array', failureMessage);
 }
-function isBigint(input: unknown, failureMessage?: string | undefined): asserts input is bigint {
-    assertRuntimeType(input, 'bigint', failureMessage);
+function isNotBigInt<const Actual>(
+    actual: Actual,
+    failureMessage?: string | undefined,
+): asserts actual is Exclude<Actual, bigint> {
+    assertNotRuntimeType(actual, 'bigint', failureMessage);
 }
-function isBoolean(input: unknown, failureMessage?: string | undefined): asserts input is boolean {
-    assertRuntimeType(input, 'boolean', failureMessage);
+function isNotBoolean<const Actual>(
+    actual: Actual,
+    failureMessage?: string | undefined,
+): asserts actual is Exclude<Actual, boolean> {
+    assertNotRuntimeType(actual, 'boolean', failureMessage);
+}
+function isNotFunction<const Actual>(
+    actual: Actual,
+    failureMessage?: string | undefined,
+): asserts actual is Exclude<Actual, AnyFunction> {
+    assertNotRuntimeType(actual, 'function', failureMessage);
+}
+function isNotNumber<const Actual>(
+    actual: Actual,
+    failureMessage?: string | undefined,
+): asserts actual is Exclude<Actual, number> {
+    assertNotRuntimeType(actual, 'number', failureMessage);
+}
+function isNotObject<const Actual>(
+    actual: Actual,
+    failureMessage?: string | undefined,
+): asserts actual is Exclude<Actual, UnknownObject> {
+    assertNotRuntimeType(actual, 'object', failureMessage);
+}
+function isNotString<const Actual>(
+    actual: Actual,
+    failureMessage?: string | undefined,
+): asserts actual is Exclude<Actual, string> {
+    assertNotRuntimeType(actual, 'string', failureMessage);
+}
+function isNotSymbol<const Actual>(
+    actual: Actual,
+    failureMessage?: string | undefined,
+): asserts actual is Exclude<Actual, symbol> {
+    assertNotRuntimeType(actual, 'symbol', failureMessage);
+}
+function isNotUndefined<const Actual>(
+    actual: Actual,
+    failureMessage?: string | undefined,
+): asserts actual is Exclude<Actual, undefined> {
+    assertNotRuntimeType(actual, 'undefined', failureMessage);
+}
+function isNotNull<const Actual>(
+    actual: Actual,
+    failureMessage?: string | undefined,
+): asserts actual is Exclude<Actual, null> {
+    assertNotRuntimeType(actual, 'null', failureMessage);
+}
+
+function isArray(
+    actual: unknown,
+    failureMessage?: string | undefined,
+): asserts actual is unknown[] {
+    assertRuntimeType(actual, 'array', failureMessage);
+}
+function isBigInt(actual: unknown, failureMessage?: string | undefined): asserts actual is bigint {
+    assertRuntimeType(actual, 'bigint', failureMessage);
+}
+function isBoolean(
+    actual: unknown,
+    failureMessage?: string | undefined,
+): asserts actual is boolean {
+    assertRuntimeType(actual, 'boolean', failureMessage);
 }
 function isFunction<const Actual>(
-    input: Actual,
+    actual: Actual,
     failureMessage?: string | undefined,
-): asserts input is NarrowToActual<Actual, AnyFunction> {
-    assertRuntimeType(input, 'function', failureMessage);
+): asserts actual is NarrowToActual<Actual, AnyFunction> {
+    assertRuntimeType(actual, 'function', failureMessage);
 }
-function isNumber(input: unknown, failureMessage?: string | undefined): asserts input is number {
-    assertRuntimeType(input, 'number', failureMessage);
+function isNumber(actual: unknown, failureMessage?: string | undefined): asserts actual is number {
+    assertRuntimeType(actual, 'number', failureMessage);
 }
 function isObject(
-    input: unknown,
+    actual: unknown,
     failureMessage?: string | undefined,
-): asserts input is UnknownObject {
-    assertRuntimeType(input, 'object', failureMessage);
+): asserts actual is UnknownObject {
+    assertRuntimeType(actual, 'object', failureMessage);
 }
-function isString(input: unknown, failureMessage?: string | undefined): asserts input is string {
-    assertRuntimeType(input, 'string', failureMessage);
+function isString(actual: unknown, failureMessage?: string | undefined): asserts actual is string {
+    assertRuntimeType(actual, 'string', failureMessage);
 }
-function isSymbol(input: unknown, failureMessage?: string | undefined): asserts input is symbol {
-    assertRuntimeType(input, 'symbol', failureMessage);
+function isSymbol(actual: unknown, failureMessage?: string | undefined): asserts actual is symbol {
+    assertRuntimeType(actual, 'symbol', failureMessage);
 }
 function isUndefined(
-    input: unknown,
+    actual: unknown,
     failureMessage?: string | undefined,
-): asserts input is undefined {
-    assertRuntimeType(input, 'undefined', failureMessage);
+): asserts actual is undefined {
+    assertRuntimeType(actual, 'undefined', failureMessage);
 }
-function isNull(input: unknown, failureMessage?: string | undefined): asserts input is null {
-    assertRuntimeType(input, 'null', failureMessage);
+function isNull(actual: unknown, failureMessage?: string | undefined): asserts actual is null {
+    assertRuntimeType(actual, 'null', failureMessage);
 }
 
 const assertions: {
@@ -52,7 +119,7 @@ const assertions: {
      *     Assertions require every name in the call target to be declared with an explicit type annotation.ts(2775)
      */
     isArray: typeof isArray;
-    isBigint: typeof isBigint;
+    isBigInt: typeof isBigInt;
     isBoolean: typeof isBoolean;
     isFunction: typeof isFunction;
     isNull: typeof isNull;
@@ -61,9 +128,19 @@ const assertions: {
     isString: typeof isString;
     isSymbol: typeof isSymbol;
     isUndefined: typeof isUndefined;
+    isNotArray: typeof isNotArray;
+    isNotBigInt: typeof isNotBigInt;
+    isNotBoolean: typeof isNotBoolean;
+    isNotFunction: typeof isNotFunction;
+    isNotNumber: typeof isNotNumber;
+    isNotObject: typeof isNotObject;
+    isNotString: typeof isNotString;
+    isNotSymbol: typeof isNotSymbol;
+    isNotUndefined: typeof isNotUndefined;
+    isNotNull: typeof isNotNull;
 } = {
     isArray,
-    isBigint,
+    isBigInt,
     isBoolean,
     isFunction,
     isNull,
@@ -72,6 +149,16 @@ const assertions: {
     isString,
     isSymbol,
     isUndefined,
+    isNotArray,
+    isNotBigInt,
+    isNotBoolean,
+    isNotFunction,
+    isNotNumber,
+    isNotObject,
+    isNotString,
+    isNotSymbol,
+    isNotUndefined,
+    isNotNull,
 };
 
 export const runtimeTypeGuards = {
@@ -80,16 +167,86 @@ export const runtimeTypeGuards = {
         isFunction:
             autoGuard<
                 <const Actual>(
-                    input: Actual,
+                    actual: Actual,
                     failureMessage?: string | undefined,
-                ) => input is NarrowToActual<Actual, AnyFunction>
+                ) => actual is NarrowToActual<Actual, AnyFunction>
+            >(),
+        isNotArray:
+            autoGuard<
+                <const Actual>(
+                    actual: Actual,
+                    failureMessage?: string | undefined,
+                ) => actual is Exclude<Actual, ReadonlyArray<unknown>>
+            >(),
+        isNotBigInt:
+            autoGuard<
+                <const Actual>(
+                    actual: Actual,
+                    failureMessage?: string | undefined,
+                ) => actual is Exclude<Actual, bigint>
+            >(),
+        isNotBoolean:
+            autoGuard<
+                <const Actual>(
+                    actual: Actual,
+                    failureMessage?: string | undefined,
+                ) => actual is Exclude<Actual, boolean>
+            >(),
+        isNotFunction:
+            autoGuard<
+                <const Actual>(
+                    actual: Actual,
+                    failureMessage?: string | undefined,
+                ) => actual is Exclude<Actual, AnyFunction>
+            >(),
+        isNotNull:
+            autoGuard<
+                <const Actual>(
+                    actual: Actual,
+                    failureMessage?: string | undefined,
+                ) => actual is Exclude<Actual, null>
+            >(),
+        isNotNumber:
+            autoGuard<
+                <const Actual>(
+                    actual: Actual,
+                    failureMessage?: string | undefined,
+                ) => actual is Exclude<Actual, number>
+            >(),
+        isNotObject:
+            autoGuard<
+                <const Actual>(
+                    actual: Actual,
+                    failureMessage?: string | undefined,
+                ) => actual is Exclude<Actual, UnknownObject>
+            >(),
+        isNotString:
+            autoGuard<
+                <const Actual>(
+                    actual: Actual,
+                    failureMessage?: string | undefined,
+                ) => actual is Exclude<Actual, string>
+            >(),
+        isNotUndefined:
+            autoGuard<
+                <const Actual>(
+                    actual: Actual,
+                    failureMessage?: string | undefined,
+                ) => actual is Exclude<Actual, undefined>
+            >(),
+        isNotSymbol:
+            autoGuard<
+                <const Actual>(
+                    actual: Actual,
+                    failureMessage?: string | undefined,
+                ) => actual is Exclude<Actual, symbol>
             >(),
     },
     assertWrapOverrides: {
         isFunction:
             autoGuard<
                 <const Actual>(
-                    input: Actual,
+                    actual: Actual,
                     failureMessage?: string | undefined,
                 ) => NarrowToActual<Actual, AnyFunction>
             >(),
@@ -106,15 +263,85 @@ export const runtimeTypeGuards = {
         isSymbol:
             autoGuard<
                 <const Actual>(
-                    input: Actual,
+                    actual: Actual,
                     failureMessage?: string | undefined,
                 ) => NarrowToExpected<Actual, symbol>
+            >(),
+        isNotArray:
+            autoGuard<
+                <const Actual>(
+                    actual: Actual,
+                    failureMessage?: string | undefined,
+                ) => Exclude<Actual, ReadonlyArray<unknown>>
+            >(),
+        isNotBigInt:
+            autoGuard<
+                <const Actual>(
+                    actual: Actual,
+                    failureMessage?: string | undefined,
+                ) => Exclude<Actual, bigint>
+            >(),
+        isNotBoolean:
+            autoGuard<
+                <const Actual>(
+                    actual: Actual,
+                    failureMessage?: string | undefined,
+                ) => Exclude<Actual, boolean>
+            >(),
+        isNotFunction:
+            autoGuard<
+                <const Actual>(
+                    actual: Actual,
+                    failureMessage?: string | undefined,
+                ) => Exclude<Actual, AnyFunction>
+            >(),
+        isNotNull:
+            autoGuard<
+                <const Actual>(
+                    actual: Actual,
+                    failureMessage?: string | undefined,
+                ) => Exclude<Actual, null>
+            >(),
+        isNotNumber:
+            autoGuard<
+                <const Actual>(
+                    actual: Actual,
+                    failureMessage?: string | undefined,
+                ) => Exclude<Actual, number>
+            >(),
+        isNotObject:
+            autoGuard<
+                <const Actual>(
+                    actual: Actual,
+                    failureMessage?: string | undefined,
+                ) => Exclude<Actual, UnknownObject>
+            >(),
+        isNotString:
+            autoGuard<
+                <const Actual>(
+                    actual: Actual,
+                    failureMessage?: string | undefined,
+                ) => Exclude<Actual, string>
+            >(),
+        isNotUndefined:
+            autoGuard<
+                <const Actual>(
+                    actual: Actual,
+                    failureMessage?: string | undefined,
+                ) => Exclude<Actual, undefined>
+            >(),
+        isNotSymbol:
+            autoGuard<
+                <const Actual>(
+                    actual: Actual,
+                    failureMessage?: string | undefined,
+                ) => Exclude<Actual, symbol>
             >(),
     },
     checkWrapOverrides: {
         isFunction:
             autoGuard<
-                <const Actual>(input: Actual) => NarrowToActual<Actual, AnyFunction> | undefined
+                <const Actual>(actual: Actual) => NarrowToActual<Actual, AnyFunction> | undefined
             >(),
         /**
          * It doesn't make any sense for `checkWrap.isUndefined` to exist. If the input is
@@ -122,15 +349,163 @@ export const runtimeTypeGuards = {
          * `undefined`.
          */
         isUndefined: undefined,
+        /**
+         * It doesn't make any sense for `checkWrap.isNotUndefined` to exist. If the input is not
+         * `undefined`, then it still returns `undefined`.
+         */
+        isNotUndefined: undefined,
+        isNotArray:
+            autoGuard<
+                <const Actual>(
+                    actual: Actual,
+                    failureMessage?: string | undefined,
+                ) => Exclude<Actual, ReadonlyArray<unknown>> | undefined
+            >(),
+        isNotBigInt:
+            autoGuard<
+                <const Actual>(
+                    actual: Actual,
+                    failureMessage?: string | undefined,
+                ) => Exclude<Actual, bigint> | undefined
+            >(),
+        isNotBoolean:
+            autoGuard<
+                <const Actual>(
+                    actual: Actual,
+                    failureMessage?: string | undefined,
+                ) => Exclude<Actual, boolean> | undefined
+            >(),
+        isNotFunction:
+            autoGuard<
+                <const Actual>(
+                    actual: Actual,
+                    failureMessage?: string | undefined,
+                ) => Exclude<Actual, AnyFunction> | undefined
+            >(),
+        isNotNull:
+            autoGuard<
+                <const Actual>(
+                    actual: Actual,
+                    failureMessage?: string | undefined,
+                ) => Exclude<Actual, null> | undefined
+            >(),
+        isNotNumber:
+            autoGuard<
+                <const Actual>(
+                    actual: Actual,
+                    failureMessage?: string | undefined,
+                ) => Exclude<Actual, number> | undefined
+            >(),
+        isNotObject:
+            autoGuard<
+                <const Actual>(
+                    actual: Actual,
+                    failureMessage?: string | undefined,
+                ) => Exclude<Actual, UnknownObject> | undefined
+            >(),
+        isNotString:
+            autoGuard<
+                <const Actual>(
+                    actual: Actual,
+                    failureMessage?: string | undefined,
+                ) => Exclude<Actual, string> | undefined
+            >(),
+        isNotSymbol:
+            autoGuard<
+                <const Actual>(
+                    actual: Actual,
+                    failureMessage?: string | undefined,
+                ) => Exclude<Actual, symbol> | undefined
+            >(),
     },
     waitUntilOverrides: {
         isFunction:
             autoGuard<
                 <const Actual>(
-                    callback: () => Actual,
+                    callback: () => MaybePromise<Actual>,
                     options?: WaitUntilOptions | undefined,
                     failureMessage?: string | undefined,
                 ) => Promise<NarrowToActual<Actual, AnyFunction>>
+            >(),
+        isNotArray:
+            autoGuard<
+                <const Actual>(
+                    callback: () => MaybePromise<Actual>,
+                    options?: WaitUntilOptions | undefined,
+                    failureMessage?: string | undefined,
+                ) => Promise<Exclude<Actual, ReadonlyArray<unknown>>>
+            >(),
+        isNotBigInt:
+            autoGuard<
+                <const Actual>(
+                    callback: () => MaybePromise<Actual>,
+                    options?: WaitUntilOptions | undefined,
+                    failureMessage?: string | undefined,
+                ) => Promise<Exclude<Actual, bigint>>
+            >(),
+        isNotBoolean:
+            autoGuard<
+                <const Actual>(
+                    callback: () => MaybePromise<Actual>,
+                    options?: WaitUntilOptions | undefined,
+                    failureMessage?: string | undefined,
+                ) => Promise<Exclude<Actual, boolean>>
+            >(),
+        isNotFunction:
+            autoGuard<
+                <const Actual>(
+                    callback: () => MaybePromise<Actual>,
+                    options?: WaitUntilOptions | undefined,
+                    failureMessage?: string | undefined,
+                ) => Promise<Exclude<Actual, AnyFunction>>
+            >(),
+        isNotNull:
+            autoGuard<
+                <const Actual>(
+                    callback: () => MaybePromise<Actual>,
+                    options?: WaitUntilOptions | undefined,
+                    failureMessage?: string | undefined,
+                ) => Promise<Exclude<Actual, null>>
+            >(),
+        isNotNumber:
+            autoGuard<
+                <const Actual>(
+                    callback: () => MaybePromise<Actual>,
+                    options?: WaitUntilOptions | undefined,
+                    failureMessage?: string | undefined,
+                ) => Promise<Exclude<Actual, number>>
+            >(),
+        isNotObject:
+            autoGuard<
+                <const Actual>(
+                    callback: () => MaybePromise<Actual>,
+                    options?: WaitUntilOptions | undefined,
+                    failureMessage?: string | undefined,
+                ) => Promise<Exclude<Actual, UnknownObject>>
+            >(),
+        isNotString:
+            autoGuard<
+                <const Actual>(
+                    callback: () => MaybePromise<Actual>,
+                    options?: WaitUntilOptions | undefined,
+                    failureMessage?: string | undefined,
+                ) => Promise<Exclude<Actual, string>>
+            >(),
+        isNotUndefined:
+            autoGuard<
+                <const Actual>(
+                    callback: () => MaybePromise<Actual>,
+                    options?: WaitUntilOptions | undefined,
+                    failureMessage?: string | undefined,
+                ) => Promise<Exclude<Actual, undefined>>
+            >(),
+        isNotSymbol:
+            autoGuard<
+                <const Actual>(
+                    callback: () => MaybePromise<Actual>,
+                    options?: WaitUntilOptions | undefined,
+                    failureMessage?: string | undefined,
+                ) => Promise<Exclude<Actual, symbol>>
             >(),
     },
 } satisfies GuardGroup;
@@ -151,29 +526,40 @@ type RawTypeOf = ReturnType<typeof rawGetTypeOf>;
  */
 export type RuntimeType = RawTypeOf | 'array' | 'null';
 
-export function getRuntimeType(input: unknown): RuntimeType {
-    if (input === null) {
+export function getRuntimeType(actual: unknown): RuntimeType {
+    if (actual === null) {
         return 'null';
-    } else if (Array.isArray(input)) {
+    } else if (Array.isArray(actual)) {
         return 'array';
     } else {
-        return typeof input;
+        return typeof actual;
     }
 }
 
 /**
- * Asserts that the given input matches the given test type. Note that an name for the input must be
- * provided for error messaging purposes.
+ * Asserts that the given actual matches the given test type. Note that an name for the actual must
+ * be provided for error messaging purposes.
  */
 function assertRuntimeType(
-    input: unknown,
+    actual: unknown,
     testType: RuntimeType,
     failureMessage?: string | undefined,
 ) {
-    if (getRuntimeType(input) !== testType) {
+    const actualType = getRuntimeType(actual);
+    if (actualType !== testType) {
         throw new AssertionError(
             failureMessage ||
-                `Value is of type '${getRuntimeType(input)}' but type '${testType}' was expected.`,
+                `Value is of type '${actualType}' but type '${testType}' was expected.`,
         );
+    }
+}
+function assertNotRuntimeType(
+    actual: unknown,
+    testType: RuntimeType,
+    failureMessage?: string | undefined,
+) {
+    const actualType = getRuntimeType(actual);
+    if (actualType === testType) {
+        throw new AssertionError(failureMessage || `Value is of unexpected type '${actualType}'.`);
     }
 }

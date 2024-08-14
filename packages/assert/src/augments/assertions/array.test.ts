@@ -107,6 +107,105 @@ describe('isLengthAtLeast', () => {
     });
 });
 
+describe('isLengthExactly', () => {
+    const actualPass: string[] = [
+        'a',
+        'b',
+        'c',
+    ] as any;
+    const actualReject: string[] = [
+        'a',
+        'c',
+    ] as any;
+    const expected = 3;
+    type ExpectedType = Tuple<string, 3>;
+    type UnexpectedType = string[];
+
+    describe('assert', () => {
+        it('guards', () => {
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+
+            assert.isLengthExactly(actualPass, expected);
+
+            assert.typeOf(actualPass).toMatchTypeOf<ExpectedType>();
+            assert.typeOf(actualPass[1]).toBeString();
+            assert.typeOf(actualPass).not.toEqualTypeOf<UnexpectedType>();
+        });
+        it('rejects', () => {
+            assert.throws(() => assert.isLengthExactly(actualReject, expected));
+        });
+    });
+    describe('check', () => {
+        it('guards', () => {
+            assert.isTrue(check.isLengthExactly(actualPass, expected));
+
+            if (check.isLengthExactly(actualPass, expected)) {
+                assert.typeOf(actualPass).toMatchTypeOf<ExpectedType>();
+                assert.typeOf(actualPass[1]).toBeString();
+                assert.typeOf(actualPass).not.toEqualTypeOf<UnexpectedType>();
+            }
+
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+        });
+        it('rejects', () => {
+            assert.isFalse(check.isLengthExactly(actualReject, expected));
+        });
+    });
+    describe('assertWrap', () => {
+        it('guards', () => {
+            const newValue = assertWrap.isLengthExactly(actualPass, expected);
+
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedType>();
+            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
+            assert.typeOf(newValue[1]).toBeString();
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+        });
+        it('rejects', () => {
+            assert.throws(() => assertWrap.isLengthExactly(actualReject, expected));
+        });
+    });
+    describe('checkWrap', () => {
+        it('guards', () => {
+            const newValue = checkWrap.isLengthExactly(actualPass, expected);
+
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedType | undefined>();
+            assert.typeOf(newValue).not.toEqualTypeOf<ExpectedType>();
+            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            assert.typeOf(newValue![1]).toBeString();
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+        });
+        it('rejects', () => {
+            assert.isUndefined(checkWrap.isLengthExactly(actualReject, expected));
+        });
+    });
+    describe('waitUntil', () => {
+        it('guards', async () => {
+            const newValue = await waitUntil.isLengthExactly(
+                expected,
+                () => actualPass,
+                waitUntilTestOptions,
+                'failure',
+            );
+
+            assert.typeOf(newValue).toEqualTypeOf<ExpectedType>();
+            assert.typeOf(newValue).not.toEqualTypeOf<UnexpectedType>();
+            assert.typeOf(newValue[1]).toBeString();
+            assert.typeOf(actualPass).not.toEqualTypeOf<ExpectedType>();
+        });
+        it('rejects', async () => {
+            await assert.throws(
+                waitUntil.isLengthExactly(
+                    expected,
+                    () => actualReject,
+                    waitUntilTestOptions,
+                    'failure',
+                ),
+            );
+        });
+    });
+});
+
 describe('AtLeastTuple', () => {
     it('should be assignable to from a Tuple', () => {
         const atLeastTuple: AtLeastTuple<any, 5> = [
