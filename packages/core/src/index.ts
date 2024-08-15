@@ -17,3 +17,5 @@ export * from './augments/runtime-env.js';
 export * from './augments/tuple.js';
 export * from './augments/uuid.js';
 export * from './augments/wait.js';
+
+export * from '@augment-vir/core';
