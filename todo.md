@@ -6,13 +6,15 @@
     -   the callback is triggered
     -   the callback is skipped
 -   deprecate run-time-assertions
--   add `mapObject` which accepts a callback that returns mapped value _and_ key.
 -   finish updating `date-vir`
+-   100% test coverage
+-   fix v30 changelog file
+-   add other v29 augment-vir package
+-   create a single docs output
 -   look into using typdoc plugins
     -   https://github.com/Gerrit0/typedoc-plugin-mdn-links
     -   https://github.com/eyworldwide/typedoc-plugin-remove-references
     -   https://github.com/Gerrit0/typedoc-plugin-missing-exports
 -   export all of /core in /common (but not anywhere else)
--   remove all `run-time-assertions` imports
 -   create a `merge` or `Object.assign` variant that picks the most defined entries
 -   add `parseJsonWithShape` to `object-shape-tester`

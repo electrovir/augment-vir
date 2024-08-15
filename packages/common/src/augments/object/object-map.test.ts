@@ -1,10 +1,10 @@
-import {describe, it} from '@augment-vir/test';
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 
 import {assert} from '@augment-vir/assert';
-import {getObjectTypedKeys, waitValue, type Values} from '@augment-vir/core';
+import {getObjectTypedKeys, wait, waitValue, type Values} from '@augment-vir/core';
+import {describe, it, itCases} from '@augment-vir/test';
 import {randomString} from '../random/random-string.js';
-import {mapObjectValues, mapObjectValuesSync} from './object-map.js';
+import {mapObject, mapObjectValues, mapObjectValuesSync} from './object-map.js';
 
 describe(mapObjectValuesSync.name, () => {
     it('should have proper types', () => {
@@ -203,5 +203,111 @@ describe(mapObjectValues.name, () => {
         onlyAcceptStrings(mappedObject.a);
         // @ts-expect-error
         mappedObject.q;
+    });
+});
+
+describe(mapObject.name, () => {
+    const originalObject = {
+        a: 'b',
+        c: 'd',
+        d: 'e',
+    };
+
+    itCases(mapObject<typeof originalObject, string, string>, [
+        {
+            it: 'omits an undefined output',
+            inputs: [
+                originalObject,
+                (key, value) => {
+                    if (key === 'a') {
+                        return undefined;
+                    } else {
+                        return {
+                            key: key + '1',
+                            value: value + '1',
+                        };
+                    }
+                },
+            ],
+            expect: {
+                c1: 'd1',
+                d1: 'e1',
+            },
+        },
+        {
+            it: 'omits an undefined promise',
+            inputs: [
+                originalObject,
+                async (key, value) => {
+                    await wait({milliseconds: 0});
+                    if (key === 'a') {
+                        return undefined;
+                    } else {
+                        return {
+                            key: key + '1',
+                            value: value + '1',
+                        };
+                    }
+                },
+            ],
+            expect: {
+                c1: 'd1',
+                d1: 'e1',
+            },
+        },
+        {
+            it: 'maps an object',
+            inputs: [
+                originalObject,
+                (key, value) => {
+                    return {
+                        key: key + '1',
+                        value: value + '1',
+                    };
+                },
+            ],
+            expect: {
+                a1: 'b1',
+                c1: 'd1',
+                d1: 'e1',
+            },
+        },
+    ]);
+
+    it('correctly types an async callback', async () => {
+        const result = mapObject(originalObject, async (key, value) => {
+            await wait({milliseconds: 0});
+            return {
+                key: key + '1',
+                value: value + '1',
+            };
+        });
+
+        assert.isPromise(result);
+        assert.tsType(result).equals<Promise<Record<string, string>>>();
+
+        assert.deepEquals(await result, {
+            a1: 'b1',
+            c1: 'd1',
+            d1: 'e1',
+        });
+    });
+
+    it('correctly types a sync callback', () => {
+        const result = mapObject(originalObject, (key, value) => {
+            return {
+                key: key + '1',
+                value: value + '1',
+            };
+        });
+
+        assert.isNotPromise(result);
+        assert.tsType(result).notEquals<Promise<Record<string, string>>>();
+
+        assert.deepEquals(result, {
+            a1: 'b1',
+            c1: 'd1',
+            d1: 'e1',
+        });
     });
 });

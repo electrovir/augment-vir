@@ -1,4 +1,12 @@
-import {type AnyObject, type Values, ensureError, getObjectTypedKeys} from '@augment-vir/core';
+import {check} from '@augment-vir/assert';
+import {
+    type AnyObject,
+    type MaybePromise,
+    type Values,
+    ensureError,
+    getObjectTypedKeys,
+} from '@augment-vir/core';
+import {getObjectTypedEntries, typedObjectFromEntries} from './object-entries.js';
 
 export type InnerMappedValues<EntireInputGeneric extends object, MappedValueGeneric> = {
     [MappedProp in keyof EntireInputGeneric]: MappedValueGeneric;
@@ -89,5 +97,80 @@ export function mapObjectValues<EntireInputGeneric extends object, MappedValueGe
         ) as MappedValues<EntireInputGeneric, MappedValueGeneric>;
     } else {
         return mappedObject as unknown as MappedValues<EntireInputGeneric, MappedValueGeneric>;
+    }
+}
+
+export function mapObject<const OriginalObject, const NewKey extends PropertyKey, const NewValue>(
+    inputObject: OriginalObject,
+    mapCallback: (
+        originalKey: keyof OriginalObject,
+        originalValue: Values<OriginalObject>,
+        originalObject: OriginalObject,
+    ) => Promise<{key: NewKey; value: NewValue} | undefined>,
+): Promise<Record<NewKey, NewValue>>;
+export function mapObject<const OriginalObject, const NewKey extends PropertyKey, const NewValue>(
+    inputObject: OriginalObject,
+    mapCallback: (
+        originalKey: keyof OriginalObject,
+        originalValue: Values<OriginalObject>,
+        originalObject: OriginalObject,
+    ) => {key: NewKey; value: NewValue} | undefined,
+): Record<NewKey, NewValue>;
+export function mapObject<const OriginalObject, const NewKey extends PropertyKey, const NewValue>(
+    inputObject: OriginalObject,
+    mapCallback: (
+        originalKey: keyof OriginalObject,
+        originalValue: Values<OriginalObject>,
+        originalObject: OriginalObject,
+    ) => MaybePromise<{key: NewKey; value: NewValue} | undefined>,
+): MaybePromise<Record<NewKey, NewValue>>;
+export function mapObject<
+    const OriginalObject extends object,
+    const NewKey extends PropertyKey,
+    const NewValue,
+>(
+    originalObject: OriginalObject,
+    mapCallback: (
+        originalKey: keyof OriginalObject,
+        originalValue: Values<OriginalObject>,
+        originalObject: OriginalObject,
+    ) => MaybePromise<{key: NewKey; value: NewValue} | undefined>,
+): MaybePromise<Record<NewKey, NewValue>> {
+    let gotAPromise = false as boolean;
+
+    const mappedEntries = getObjectTypedEntries(originalObject)
+        .map(
+            ([
+                originalKey,
+                originalValue,
+            ]) => {
+                const output = mapCallback(originalKey, originalValue, originalObject);
+                if (output instanceof Promise) {
+                    gotAPromise = true;
+                    return output;
+                } else if (output) {
+                    return [
+                        output.key,
+                        output.value,
+                    ];
+                } else {
+                    return undefined;
+                }
+            },
+        )
+        .filter(check.isTruthy);
+
+    if (gotAPromise) {
+        return new Promise<Record<NewKey, NewValue>>(async (resolve, reject) => {
+            try {
+                const entries = (await Promise.all(mappedEntries)).filter(check.isTruthy);
+
+                resolve(typedObjectFromEntries(entries as [NewKey, NewValue][]));
+            } catch (error) {
+                reject(ensureError(error));
+            }
+        });
+    } else {
+        return typedObjectFromEntries(mappedEntries as [NewKey, NewValue][]);
     }
 }
