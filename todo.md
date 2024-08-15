@@ -15,3 +15,4 @@
 -   export all of /core in /common (but not anywhere else)
 -   remove all `run-time-assertions` imports
 -   create a `merge` or `Object.assign` variant that picks the most defined entries
+-   add `parseJsonWithShape` to `object-shape-tester`
