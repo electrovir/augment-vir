@@ -1,7 +1,6 @@
-import {getObjectTypedKeys} from '@augment-vir/common';
+import {check} from '@augment-vir/assert';
+import {getObjectTypedKeys} from '@augment-vir/core';
 import {PartialDeep} from 'type-fest';
-import {isInstanceOf} from '../assertions';
-import {isRunTimeType} from '../run-time-types';
 
 /**
  * Extract all nested object keys and values that are different between the two given objects.
@@ -32,11 +31,11 @@ export function diffObjects<
 
             if (!(objectKey in object0)) {
                 accum[1][objectKey] = diffOutput[1];
-            } else if (!(objectKey in object1)) {
-                accum[0][objectKey] = diffOutput[0];
-            } else {
+            } else if (objectKey in object1) {
                 accum[0][objectKey] = diffOutput[0];
                 accum[1][objectKey] = diffOutput[1];
+            } else {
+                accum[0][objectKey] = diffOutput[0];
             }
 
             return accum;
@@ -132,20 +131,20 @@ const orderedValueDiffs: ReadonlyArray<
     (value0: unknown, value1: unknown) => undefined | [] | [unknown, unknown]
 > = [
     (value0, value1) => {
-        if (!isRunTimeType(value0, 'array') || !isRunTimeType(value1, 'array')) {
+        if (!check.isArray(value0) || !check.isArray(value1)) {
             return undefined;
         }
         return diffArrays(value0, value1);
     },
     (value0, value1) => {
-        if (!isInstanceOf(value0, RegExp) || !isInstanceOf(value1, RegExp)) {
+        if (!check.instanceOf(value0, RegExp) || !check.instanceOf(value1, RegExp)) {
             return undefined;
         }
         /** Special case RegExps because they should be checked for equality as strings. */
         return diffBasic(value0, value1, (a, b) => String(a) === String(b));
     },
     (value0, value1) => {
-        if (!isRunTimeType(value0, 'object') || !isRunTimeType(value1, 'object')) {
+        if (!check.isObject(value0) || !check.isObject(value1)) {
             return undefined;
         }
         return diffObjects(value0, value1);
@@ -169,5 +168,5 @@ export function diffValues<T0, T1>(value0: T0, value1: T1): [T0, T1] | [] {
     }
 
     /** Fallback to the basic diff. */
-    return diffBasic(value0, value1) as [T0, T1] | [];
+    return diffBasic(value0, value1);
 }

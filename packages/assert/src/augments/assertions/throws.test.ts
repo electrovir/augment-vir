@@ -96,7 +96,7 @@ describe('throws', () => {
             }
 
             assert.isDefined(caughtError);
-            assert.strictEquals(extractErrorMessage(caughtError), 'No error was thrown');
+            assert.strictEquals(extractErrorMessage(caughtError), 'No Error was thrown.');
         });
 
         it('errors if no error is caught from an async callback', async () => {
@@ -108,7 +108,7 @@ describe('throws', () => {
             }
 
             assert.isDefined(caughtError);
-            assert.strictEquals(extractErrorMessage(caughtError), 'No error was thrown');
+            assert.strictEquals(extractErrorMessage(caughtError), 'No Error was thrown.');
         });
 
         it('passes if an error is caught', () => {
@@ -151,7 +151,7 @@ describe('throws', () => {
             assert.isDefined(caughtError);
             assert.strictEquals(
                 extractErrorMessage(caughtError),
-                "Error constructor 'Error' did not match expected constructor 'AssertionError'",
+                "Error constructor 'Error' did not match expected constructor 'AssertionError'.",
             );
         });
 
@@ -174,7 +174,7 @@ describe('throws', () => {
             assert.isDefined(caughtError);
             assert.strictEquals(
                 extractErrorMessage(caughtError),
-                "Error message\n\n''\n\ndid not contain\n\n'this is a message'\n\nwith a message",
+                "with a message: Error message\n\n''\n\ndoes not contain\n\n'this is a message'.",
             );
         });
 
@@ -196,7 +196,7 @@ describe('throws', () => {
             assert.isDefined(caughtError);
             assert.strictEquals(
                 extractErrorMessage(caughtError),
-                "Error message\n\n''\n\ndid not match RegExp\n\n'/this is a message/'",
+                "Error message\n\n''\n\ndoes not match RegExp\n\n'/this is a message/'.",
             );
         });
 
@@ -220,7 +220,7 @@ describe('throws', () => {
             }
 
             assert.isDefined(caughtError);
-            assert.strictEquals(extractErrorMessage(caughtError), 'No error was thrown');
+            assert.strictEquals(extractErrorMessage(caughtError), 'No Error was thrown.');
         });
 
         it('passes a promise that rejects', async () => {
@@ -369,7 +369,7 @@ describe('throws', () => {
         });
         it('rejects a non-throwing sync callback error', () => {
             assert.throws(() => assertWrap.throws(() => {}), {
-                matchMessage: 'No error was thrown',
+                matchMessage: 'No Error was thrown.',
             });
         });
         it('catches an async callback error', async () => {
@@ -390,7 +390,7 @@ describe('throws', () => {
                         });
                     }),
                 {
-                    matchMessage: 'No error was thrown',
+                    matchMessage: 'No Error was thrown.',
                 },
             );
         });
@@ -412,7 +412,7 @@ describe('throws', () => {
                         }),
                     ),
                 {
-                    matchMessage: 'No error was thrown',
+                    matchMessage: 'No Error was thrown.',
                 },
             );
         });
@@ -573,6 +573,97 @@ describe('throws', () => {
                     ),
                 );
             });
+        });
+    });
+});
+describe('isError', () => {
+    const actualPass: unknown = new TypeError('hi');
+    const actualReject: unknown = 'hi' as any;
+    type ExpectedType = TypeError;
+    type UnexpectedType = string;
+
+    type ExpectedUnionNarrowedType = TypeError;
+    const actualPassUnion: string | ExpectedUnionNarrowedType = new TypeError('hi') as any;
+
+    describe('assert', () => {
+        it('guards', () => {
+            assert.tsType(actualPass).notEquals<ExpectedType>();
+
+            assert.isError(actualPass);
+
+            assert.tsType(actualPass).equals<ExpectedType>();
+            assert.tsType(actualPass).notEquals<UnexpectedType>();
+        });
+        it('rejects', () => {
+            assert.throws(() => assert.isError(actualReject));
+        });
+        it('narrows', () => {
+            assert.isError(actualPassUnion);
+
+            assert.tsType(actualPassUnion).equals<ExpectedUnionNarrowedType>();
+        });
+    });
+    describe('check', () => {
+        it('guards', () => {
+            assert.isTrue(check.isError(actualPass));
+
+            if (check.isError(actualPass)) {
+                assert.tsType(actualPass).equals<ExpectedType>();
+                assert.tsType(actualPass).notEquals<UnexpectedType>();
+            }
+
+            assert.tsType(actualPass).notEquals<ExpectedType>();
+        });
+        it('rejects', () => {
+            assert.isFalse(check.isError(actualReject));
+        });
+    });
+    describe('assertWrap', () => {
+        it('guards', () => {
+            const newValue = assertWrap.isError(actualPass);
+
+            assert.tsType(newValue).equals<ExpectedType>();
+            assert.tsType(newValue).notEquals<UnexpectedType>();
+            assert.tsType(actualPass).notEquals<ExpectedType>();
+        });
+        it('rejects', () => {
+            assert.throws(() => assertWrap.isError(actualReject));
+        });
+    });
+    describe('checkWrap', () => {
+        it('guards', () => {
+            const newValue = checkWrap.isError(actualPass);
+
+            assert.tsType(newValue).equals<ExpectedType | undefined>();
+            assert.tsType(newValue).notEquals<ExpectedType>();
+            assert.tsType(newValue).notEquals<UnexpectedType>();
+            assert.tsType(actualPass).notEquals<ExpectedType>();
+        });
+        it('rejects', () => {
+            assert.isUndefined(checkWrap.isError(actualReject));
+        });
+    });
+    describe('waitUntil', () => {
+        it('guards', async () => {
+            const newValue = await waitUntil.isError(
+                {
+                    matchConstructor: TypeError,
+                },
+                () => actualPass,
+                waitUntilTestOptions,
+                'failure',
+            );
+
+            assert.tsType(newValue).equals<ExpectedType>();
+            assert.tsType(newValue).notEquals<UnexpectedType>();
+            assert.tsType(actualPass).notEquals<ExpectedType>();
+
+            assert.deepEquals(actualPass, newValue);
+        });
+        it('rejects', async () => {
+            await assert.throws(
+                waitUntil.isError({}, () => actualReject, waitUntilTestOptions, 'failure'),
+            );
         });
     });
 });

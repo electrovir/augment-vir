@@ -1,6 +1,6 @@
 // import {describe, it} from '@augment-vir/test';
 // /* eslint-disable @typescript-eslint/ban-ts-comment */
-// import {assert.tsType} from 'run-time-assertions';
+// import {assert.tsType} from '@augment-vir/assert';
 // import {CompleteRequire, RequiredAndNotNull, SetRequiredAndNotNull} from './required-keys.js';
 
 // describe('CompleteRequire', () => {

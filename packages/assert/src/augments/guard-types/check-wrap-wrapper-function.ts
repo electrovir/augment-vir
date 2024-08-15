@@ -1,5 +1,5 @@
 import {ExtractKeysWithMatchingValues, Overwrite} from '@augment-vir/core';
-import {NarrowToExpected} from '../assertions/narrow-type.js';
+import {type NarrowToActual} from '../assertions/narrow-type.js';
 import {AssertFunction} from './assert-function.js';
 import {AssertWrapOverridesBase} from './assert-wrap-function.js';
 import {pickOverride} from './guard-override.js';
@@ -7,7 +7,7 @@ import {pickOverride} from './guard-override.js';
 export type CheckWrapFunction<Output> = <Input>(
     input: Input,
     ...extraInputs: any[]
-) => NarrowToExpected<Input, Output> | undefined;
+) => NarrowToActual<Input, Output> | undefined;
 
 export type CheckWrapGroup<
     Asserts extends Readonly<Record<string, AssertFunction<any>>>,

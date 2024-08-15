@@ -31,11 +31,11 @@
         "@augment-vir/core": "^30.0.0",
         "@date-vir/duration": "^6.0.0",
         "deep-eql": "^5.0.2",
+        "expect-type": "^0.19.0",
         "json5": "^2.2.3",
         "type-fest": "^4.24.0"
     },
     "devDependencies": {
-        "@augment-vir/test": "^30.0.0",
         "@types/deep-eql": "^4.0.2",
         "@web/dev-server-esbuild": "^1.0.2",
         "@web/test-runner": "^0.18.2",

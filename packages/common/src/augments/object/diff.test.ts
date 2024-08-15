@@ -1,5 +1,5 @@
-import {itCases} from '@augment-vir/browser-testing';
-import {diffArrays, diffObjects, diffValues} from './diff';
+import {describe, itCases} from '@augment-vir/test';
+import {diffArrays, diffObjects, diffValues} from './diff.js';
 
 describe(diffObjects.name, () => {
     itCases(diffObjects, [

@@ -975,6 +975,9 @@ describe('isIn', () => {
         it('rejects', () => {
             assert.throws(() => assert.isIn(actualReject, expected));
         });
+        it('works on strings', () => {
+            assert.isIn('a', 'abc');
+        });
     });
     describe('check', () => {
         it('guards an array', () => {
@@ -1000,6 +1003,14 @@ describe('isIn', () => {
         it('rejects', () => {
             assert.isFalse(check.isIn(actualReject, expected));
         });
+        it('works on strings', () => {
+            const child: string = 'a' as any;
+            assert.isTrue(check.isIn(child, 'abc'));
+
+            if (check.isIn(child, 'abc')) {
+                assert.tsType(child).equals<string>();
+            }
+        });
     });
     describe('assertWrap', () => {
         it('guards an array', () => {
@@ -1018,6 +1029,12 @@ describe('isIn', () => {
         });
         it('rejects', () => {
             assert.throws(() => assertWrap.isIn(actualReject, expected));
+        });
+        it('works on strings', () => {
+            const child: string = 'a' as any;
+            const newValue = assertWrap.isIn(child, 'abc');
+
+            assert.tsType(newValue).equals<string>();
         });
     });
     describe('checkWrap', () => {
@@ -1039,6 +1056,12 @@ describe('isIn', () => {
         });
         it('rejects', () => {
             assert.isUndefined(checkWrap.isIn(actualReject, expected));
+        });
+        it('works on strings', () => {
+            const child: string = 'a' as any;
+            const newValue = checkWrap.isIn(child, 'abc');
+
+            assert.tsType(newValue).equals<string | undefined>();
         });
     });
     describe('waitUntil', () => {
@@ -1074,6 +1097,16 @@ describe('isIn', () => {
             await assert.throws(
                 waitUntil.isIn(expected, () => actualReject, waitUntilTestOptions, 'failure'),
             );
+        });
+        it('works on strings', async () => {
+            const newValue = await waitUntil.isIn(
+                'abc',
+                () => 'a',
+                waitUntilTestOptions,
+                'failure',
+            );
+
+            assert.tsType(newValue).equals<string>();
         });
     });
 });

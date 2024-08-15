@@ -1,18 +1,18 @@
+import {assert} from '@augment-vir/assert';
 import {DeferredPromise} from '@augment-vir/core';
-import {assert, describe, it} from '@augment-vir/test';
-import {assertInstanceOf, assertThrows} from 'run-time-assertions';
+import {describe, it} from '@augment-vir/test';
 import {randomString} from '../random/random-string.js';
 import {PromiseTimeoutError, wrapPromiseInTimeout} from './timed-promise.js';
 
 // increase if tests are flaky in other environments, like GitHub Actions (which is typically slow)
-const promiseDelayMs = 500;
+const promiseDelay = {milliseconds: 500};
 
 describe(wrapPromiseInTimeout.name, () => {
     it('should not reject a promise when it is resolved in time', async () => {
         const startTime = Date.now();
         const deferredPromiseWrapper = new DeferredPromise<number>();
         const promiseWithTimeout = wrapPromiseInTimeout(
-            promiseDelayMs,
+            promiseDelay,
             deferredPromiseWrapper.promise,
         );
 
@@ -20,20 +20,20 @@ describe(wrapPromiseInTimeout.name, () => {
 
         deferredPromiseWrapper.resolve(resolutionValue);
 
-        assert.areStrictEqual(await promiseWithTimeout, resolutionValue);
+        assert.strictEquals(await promiseWithTimeout, resolutionValue);
         const endTime = Date.now();
-        assert.isBelow(endTime - startTime, promiseDelayMs);
+        assert.isBelow(endTime - startTime, promiseDelay.milliseconds);
     });
 
     it('should reject when the promise is not resolved in time', async () => {
         const startTime = Date.now();
         const deferredPromiseWrapper = new DeferredPromise<number>();
         const promiseWithTimeout = wrapPromiseInTimeout(
-            promiseDelayMs,
+            promiseDelay,
             deferredPromiseWrapper.promise,
         );
 
-        await assertThrows(() => promiseWithTimeout, {
+        await assert.throws(() => promiseWithTimeout, {
             matchConstructor: PromiseTimeoutError,
         });
         let timeoutError;
@@ -43,15 +43,12 @@ describe(wrapPromiseInTimeout.name, () => {
             timeoutError = internalError;
         }
 
-        assertInstanceOf(timeoutError, PromiseTimeoutError);
-        assert.areStrictEqual(
-            timeoutError.message,
-            `Promised timed out after ${promiseDelayMs} ms.`,
-        );
+        assert.instanceOf(timeoutError, PromiseTimeoutError);
+        assert.strictEquals(timeoutError.message, `Promised timed out after ${promiseDelay} ms.`);
         const endTime = Date.now();
         assert.isAbove(
             endTime - startTime,
-            promiseDelayMs -
+            promiseDelay.milliseconds -
                 // small buffer
                 10,
         );
@@ -60,8 +57,11 @@ describe(wrapPromiseInTimeout.name, () => {
     it('should reject if the given promise rejects', async () => {
         const testErrorMessage = randomString();
 
-        await assertThrows(
-            wrapPromiseInTimeout(Infinity, Promise.reject(new Error(testErrorMessage))),
+        await assert.throws(
+            wrapPromiseInTimeout(
+                {milliseconds: Infinity},
+                Promise.reject(new Error(testErrorMessage)),
+            ),
             {
                 matchMessage: testErrorMessage,
             },

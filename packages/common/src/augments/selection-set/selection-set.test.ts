@@ -1,8 +1,8 @@
-import {describe, it} from '@augment-vir/test';
 /* eslint-disable @typescript-eslint/no-empty-object-type */
-import {AnyObject} from '@augment-vir/assert';
-import {PartialWithUndefined} from '@augment-vir/core';
-import {assert} from 'run-time-assertions';
+
+import {assert} from '@augment-vir/assert';
+import {PartialWithUndefined, type AnyObject} from '@augment-vir/core';
+import {describe, it} from '@augment-vir/test';
 import {GenericSelectionSet, PickSelection, SelectionSet} from './selection-set.js';
 
 describe('PickSelection', () => {
@@ -44,7 +44,7 @@ describe('PickSelection', () => {
                     child: {
                         grandChild: {
                             child: string;
-                            childe2: number;
+                            child2: number;
                             child3: RegExp;
                         };
                     };
@@ -200,10 +200,12 @@ describe('SelectionSet', () => {
             .equals<{
                 child?:
                     | boolean
-                    | {
-                          grandChild?: boolean;
-                          differentGrandChild?: boolean;
-                      };
+                    | (Partial<{
+                          grandChild: boolean;
+                      }> &
+                          Partial<{
+                              differentGrandChild: boolean;
+                          }>);
             }>();
     });
 
@@ -217,10 +219,12 @@ describe('SelectionSet', () => {
             .equals<{
                 child?:
                     | boolean
-                    | {
-                          grandChild?: boolean;
-                          differentGrandChild?: boolean;
-                      };
+                    | (Partial<{
+                          grandChild: boolean;
+                      }> &
+                          Partial<{
+                              differentGrandChild: boolean;
+                          }>);
             }>();
     });
 });

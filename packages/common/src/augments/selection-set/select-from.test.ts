@@ -1,5 +1,5 @@
+import {assert} from '@augment-vir/assert';
 import {describe, it, itCases} from '@augment-vir/test';
-import {assert} from 'run-time-assertions';
 import {selectFrom} from './select-from.js';
 import {PickSelection} from './selection-set.js';
 

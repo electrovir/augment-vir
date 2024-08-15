@@ -1,6 +1,7 @@
-import {describe, it} from '@augment-vir/test';
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import {assert} from '@augment-vir/test';
+
+import {assert} from '@augment-vir/assert';
+import {describe, it} from '@augment-vir/test';
 import {ensureType} from './ensure-type.js';
 
 describe(ensureType.name, () => {
@@ -13,8 +14,8 @@ describe(ensureType.name, () => {
     it('should not actually mutate or change its input', () => {
         const output = ensureType<typeof placeholder>(placeholder);
 
-        assert.areStrictEqual(output, placeholder, 'object references should not have changed');
-        assert.deepStrictEqual(output, placeholder, 'object internals should not have changed');
+        assert.strictEquals(output, placeholder, 'object references should not have changed');
+        assert.deepEquals(output, placeholder, 'object internals should not have changed');
     });
 
     it('should enforce type safety', () => {

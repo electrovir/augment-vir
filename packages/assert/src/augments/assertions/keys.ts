@@ -49,18 +49,18 @@ export type RequiredKeysOf<BaseType> = Exclude<
     }[keyof BaseType],
     undefined
 >;
-/** Helper type for `hasProperty`. */
+/** Helper type for `hasKey`. */
 type ExtractValue<Key extends PropertyKey, Parent> = Key extends keyof Parent
     ? SetRequired<Parent, Key>[Key]
     : Key extends keyof Extract<Parent, Record<Key, any>>
       ? SetRequired<Extract<Parent, Record<Key, any>>, Key>[Key]
       : never;
 
-/** Helper type for `hasProperty`. */
+/** Helper type for `hasKey`. */
 type CombinedParentValue<Key extends PropertyKey, Parent> =
     ExtractValue<Key, Parent> extends never ? unknown : ExtractValue<Key, Parent>;
 
-/** Helper type for `hasProperty`. */
+/** Helper type for `hasKey`. */
 type CombineTypeWithKey<Key extends PropertyKey, Parent> = Parent &
     Record<Key, CombinedParentValue<Key, Parent>>;
 

@@ -1,4 +1,5 @@
-import {assert, describe, it} from '@augment-vir/test';
+import {assert} from '@augment-vir/assert';
+import {describe, it} from '@augment-vir/test';
 import {allowedRandomStringLetters, randomString} from './random-string.js';
 
 describe(randomString.name, () => {
@@ -8,7 +9,7 @@ describe(randomString.name, () => {
         });
         const randomStringSet = new Set(randomStrings);
 
-        assert.areStrictEqual(
+        assert.strictEquals(
             randomStringSet.size,
             randomStrings.length,
             'some "random" strings were removed when converting to a set, meaning there were duplicates.',
@@ -16,7 +17,7 @@ describe(randomString.name, () => {
     });
 
     it('uses the given length parameter', () => {
-        assert.lengthOf(randomString(4), 4);
+        assert.isLengthAtLeast(randomString(4), 4);
     });
 
     it('does not favor any one letter', () => {
@@ -45,7 +46,7 @@ describe(randomString.name, () => {
 
         const letterEntries = Object.entries(letters);
 
-        assert.lengthOf(letterEntries, allowedRandomStringLetters.length);
+        assert.isLengthExactly(letterEntries, allowedRandomStringLetters.length);
 
         const expectedAmount = (iterationCount * stringLength) / allowedRandomStringLetters.length;
 
@@ -55,7 +56,7 @@ describe(randomString.name, () => {
                     ,
                     letterCount,
                 ]) => {
-                    assert.approximately(letterCount, expectedAmount, expectedAmount * 0.008);
+                    assert.isApproximately(letterCount, expectedAmount, expectedAmount * 0.008);
                 },
             );
         } catch (error) {

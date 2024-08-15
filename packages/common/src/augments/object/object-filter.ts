@@ -1,5 +1,4 @@
-import {getObjectTypedKeys} from './object-keys.js';
-import {Values} from './object-values.js';
+import {getObjectTypedKeys, type Values} from '@augment-vir/core';
 
 export function filterObject<ObjectGeneric>(
     inputObject: ObjectGeneric,

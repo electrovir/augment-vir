@@ -1,5 +1,4 @@
 export * from './augments/assertion.error.js';
-export * from './augments/assertions/array.js';
 export * from './augments/assertions/boolean.js';
 export * from './augments/assertions/enum.js';
 export * from './augments/assertions/equality/entry-equality.js';
@@ -7,6 +6,7 @@ export * from './augments/assertions/equality/json-equality.js';
 export * from './augments/assertions/equality/simple-equality.js';
 export * from './augments/assertions/instance.js';
 export * from './augments/assertions/keys.js';
+export * from './augments/assertions/length.js';
 export * from './augments/assertions/narrow-type.js';
 export * from './augments/assertions/nullish.js';
 export * from './augments/assertions/primitive.js';

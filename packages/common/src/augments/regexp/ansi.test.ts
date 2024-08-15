@@ -1,11 +1,12 @@
-import {assert, describe, it} from '@augment-vir/test';
+import {assert} from '@augment-vir/assert';
+import {describe, it} from '@augment-vir/test';
 import {ansiRegExp, removeAnsiEscapeCodes, removeColor} from './ansi.js';
 import {safeMatch} from './safe-match.js';
 
 describe('ansiRegExp', () => {
     it('should match all ansi codes in a string', () => {
         const matches = safeMatch('hello\x1b[1m there\x1b[0m', ansiRegExp);
-        assert.deepStrictEqual(matches, [
+        assert.deepEquals(matches, [
             '\x1b[1m',
             '\x1b[0m',
         ]);
@@ -24,11 +25,11 @@ const removeAnsiFunctions = [
 removeAnsiFunctions.forEach((removeAnsiFunction) => {
     describe(removeAnsiFunction.name, () => {
         it('should remove all ansi escape codes', () => {
-            assert.areStrictEqual(removeAnsiFunction('hello\x1b[1m there\x1b[0m'), 'hello there');
+            assert.strictEquals(removeAnsiFunction('hello\x1b[1m there\x1b[0m'), 'hello there');
         });
 
         it('should not remove anything when there are no escape codes', () => {
-            assert.areStrictEqual(removeAnsiFunction('hello there'), 'hello there');
+            assert.strictEquals(removeAnsiFunction('hello there'), 'hello there');
         });
     });
 });

@@ -1,4 +1,4 @@
-import {wrapInTry, WrapInTryOptions} from '../function/wrap-in-try.js';
+import {wrapInTry, type WrapInTryOptions} from '../function/wrap-in-try.js';
 
 export function stringifyJson(
     jsonValue: unknown,

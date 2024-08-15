@@ -1,19 +1,16 @@
 import {describe, it} from '@augment-vir/test';
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 
-import {assert} from '@augment-vir/test';
-import {assertThrows} from 'run-time-assertions';
-import {waitValue} from '../promise/wait.js';
+import {assert} from '@augment-vir/assert';
+import {getObjectTypedKeys, waitValue, type Values} from '@augment-vir/core';
 import {randomString} from '../random/random-string.js';
-import {getObjectTypedKeys} from './object-keys.js';
 import {mapObjectValues, mapObjectValuesSync} from './object-map.js';
-import {Values} from './object-values.js';
 
 describe(mapObjectValuesSync.name, () => {
     it('should have proper types', () => {
         assert.notInstanceOf(
             mapObjectValuesSync({thing: 5})(async () => {
-                return await waitValue(40, 0);
+                return await waitValue({milliseconds: 40}, 0);
             }),
             Promise,
         );
@@ -50,7 +47,7 @@ describe(mapObjectValuesSync.name, () => {
             return String(value).length;
         });
 
-        assert.deepStrictEqual(mappedObject, {a: 1, b: 2, c: 13});
+        assert.deepEquals(mappedObject, {a: 1, b: 2, c: 13});
     });
 });
 
@@ -83,17 +80,14 @@ describe(mapObjectValues.name, () => {
         // @ts-expect-error
         mappedObject.q;
 
-        assert.deepStrictEqual(
-            getObjectTypedKeys(originalObject),
-            getObjectTypedKeys(mappedObject),
-        );
+        assert.deepEquals(getObjectTypedKeys(originalObject), getObjectTypedKeys(mappedObject));
 
         getObjectTypedKeys(originalObject).forEach((key) => {
             assert.isTrue(originalObject.hasOwnProperty(key));
             assert.isTrue(mappedObject.hasOwnProperty(key));
 
-            assert.deepStrictEqual(Number(mappedObject[key]), originalObject[key]);
-            assert.deepStrictEqual(String(originalObject[key]), mappedObject[key]);
+            assert.deepEquals(Number(mappedObject[key]), originalObject[key]);
+            assert.deepEquals(String(originalObject[key]), mappedObject[key]);
         });
     });
 
@@ -108,7 +102,7 @@ describe(mapObjectValues.name, () => {
 
         const errorMessage = randomString();
 
-        await assertThrows(
+        await assert.throws(
             mapObjectValues(originalObject, async (key, value): Promise<any> => {
                 return Promise.reject(new Error(errorMessage));
             }),
@@ -148,7 +142,7 @@ describe(mapObjectValues.name, () => {
         // @ts-expect-error
         awaitedMappedObject.q;
 
-        assert.deepStrictEqual(
+        assert.deepEquals(
             getObjectTypedKeys(originalObject),
             getObjectTypedKeys(awaitedMappedObject),
         );
@@ -157,8 +151,8 @@ describe(mapObjectValues.name, () => {
             assert.isTrue(originalObject.hasOwnProperty(key));
             assert.isTrue(awaitedMappedObject.hasOwnProperty(key));
 
-            assert.deepStrictEqual(Number(awaitedMappedObject[key]), originalObject[key]);
-            assert.deepStrictEqual(String(originalObject[key]), awaitedMappedObject[key]);
+            assert.deepEquals(Number(awaitedMappedObject[key]), originalObject[key]);
+            assert.deepEquals(String(originalObject[key]), awaitedMappedObject[key]);
         });
     });
 

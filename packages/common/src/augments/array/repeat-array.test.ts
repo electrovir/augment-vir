@@ -1,4 +1,5 @@
-import {assert, describe, it, itCases} from '@augment-vir/test';
+import {assert} from '@augment-vir/assert';
+import {describe, it, itCases} from '@augment-vir/test';
 import {repeatArray} from './repeat-array.js';
 
 describe(repeatArray.name, () => {
@@ -69,6 +70,6 @@ describe(repeatArray.name, () => {
         const repeatedArray = repeatArray(2, originalArray);
 
         assert.isFalse(repeatedArray === originalArray);
-        assert.notDeepEqual(repeatedArray, originalArray);
+        assert.notDeepEquals(repeatedArray, originalArray);
     });
 });

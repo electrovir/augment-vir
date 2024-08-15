@@ -1,10 +1,9 @@
-import {assert, ErrorMatchOptions} from '@augment-vir/assert';
+import {assert, check, ErrorMatchOptions} from '@augment-vir/assert';
 import {
     ensureErrorAndPrependMessage,
     type AnyFunction,
     type TypedFunction,
 } from '@augment-vir/core';
-import {assertThrows, isRunTimeType} from 'run-time-assertions';
 import {assertOutputWithCustomAssertion, CustomAsserter} from '../function/assert-output.js';
 import {it} from './universal-it.js';
 
@@ -76,7 +75,7 @@ export function itCases(
 ): unknown[] {
     const testCases: ReadonlyArray<BaseTestCase<unknown>> | undefined = (maybeTestCases ||
         testCasesOrCustomAsserter) as ReadonlyArray<BaseTestCase<unknown>> | undefined;
-    if (!isRunTimeType(testCases, 'array')) {
+    if (!check.isArray(testCases)) {
         throw new TypeError('expected an array of test cases');
     }
 
@@ -132,7 +131,7 @@ export function itCases(
                         `${functionToTest.name} threw an unexpected error`,
                     );
                 } else if (expectsAnError) {
-                    assertThrows(
+                    assert.throws(
                         errorThrower,
                         testCase.throws,
                         'Caught error did not match expectations',

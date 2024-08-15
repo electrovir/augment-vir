@@ -6,7 +6,7 @@ import {checkWrap} from '../guards/check-wrap.js';
 import {check} from '../guards/check.js';
 import {waitUntil} from '../guards/wait-until.js';
 import {waitUntilTestOptions} from '../test-timeout.mock.js';
-import type {AtLeastTuple} from './array.js';
+import type {AtLeastTuple} from './length.js';
 
 describe('isLengthAtLeast', () => {
     const actualPass: string[] = [
@@ -35,6 +35,9 @@ describe('isLengthAtLeast', () => {
         it('rejects', () => {
             assert.throws(() => assert.isLengthAtLeast(actualReject, expected));
         });
+        it('works on strings', () => {
+            assert.isLengthAtLeast('hi', 1);
+        });
     });
     describe('check', () => {
         it('guards', () => {
@@ -51,6 +54,9 @@ describe('isLengthAtLeast', () => {
         it('rejects', () => {
             assert.isFalse(check.isLengthAtLeast(actualReject, expected));
         });
+        it('works on strings', () => {
+            assert.isTrue(check.isLengthAtLeast('hi', 1));
+        });
     });
     describe('assertWrap', () => {
         it('guards', () => {
@@ -63,6 +69,10 @@ describe('isLengthAtLeast', () => {
         });
         it('rejects', () => {
             assert.throws(() => assertWrap.isLengthAtLeast(actualReject, expected));
+        });
+        it('works on strings', () => {
+            const newValue = assertWrap.isLengthAtLeast('hi', 1);
+            assert.tsType(newValue).equals<'hi'>();
         });
     });
     describe('checkWrap', () => {
@@ -78,6 +88,10 @@ describe('isLengthAtLeast', () => {
         });
         it('rejects', () => {
             assert.isUndefined(checkWrap.isLengthAtLeast(actualReject, expected));
+        });
+        it('works on strings', () => {
+            const newValue = checkWrap.isLengthAtLeast('hi', 1);
+            assert.tsType(newValue).equals<'hi' | undefined>();
         });
     });
     describe('waitUntil', () => {
@@ -103,6 +117,17 @@ describe('isLengthAtLeast', () => {
                     'failure',
                 ),
             );
+        });
+        it('works on strings', async () => {
+            const newValue = await waitUntil.isLengthAtLeast(
+                1,
+                () => 'hi',
+                waitUntilTestOptions,
+                'failure',
+            );
+
+            assert.strictEquals(newValue, 'hi');
+            assert.tsType(newValue).equals<'hi'>();
         });
     });
 });
@@ -134,6 +159,9 @@ describe('isLengthExactly', () => {
         it('rejects', () => {
             assert.throws(() => assert.isLengthExactly(actualReject, expected));
         });
+        it('works on strings', () => {
+            assert.isLengthExactly('hi', 2);
+        });
     });
     describe('check', () => {
         it('guards', () => {
@@ -150,6 +178,9 @@ describe('isLengthExactly', () => {
         it('rejects', () => {
             assert.isFalse(check.isLengthExactly(actualReject, expected));
         });
+        it('works on strings', () => {
+            assert.isTrue(check.isLengthExactly('hi', 2));
+        });
     });
     describe('assertWrap', () => {
         it('guards', () => {
@@ -162,6 +193,10 @@ describe('isLengthExactly', () => {
         });
         it('rejects', () => {
             assert.throws(() => assertWrap.isLengthExactly(actualReject, expected));
+        });
+        it('works on strings', () => {
+            assert.strictEquals(assertWrap.isLengthExactly('hi', 2), 'hi');
+            assert.tsType(assertWrap.isLengthExactly('hi', 2)).equals<'hi'>();
         });
     });
     describe('checkWrap', () => {
@@ -177,6 +212,10 @@ describe('isLengthExactly', () => {
         });
         it('rejects', () => {
             assert.isUndefined(checkWrap.isLengthExactly(actualReject, expected));
+        });
+        it('works on strings', () => {
+            assert.strictEquals(assertWrap.isLengthExactly('hi', 2), 'hi');
+            assert.tsType(checkWrap.isLengthExactly('hi', 2)).equals<'hi' | undefined>();
         });
     });
     describe('waitUntil', () => {
@@ -202,6 +241,17 @@ describe('isLengthExactly', () => {
                     'failure',
                 ),
             );
+        });
+        it('works on strings', async () => {
+            const newValue = await waitUntil.isLengthExactly(
+                2,
+                () => 'hi',
+                waitUntilTestOptions,
+                'failure',
+            );
+
+            assert.strictEquals(newValue, 'hi');
+            assert.tsType(newValue).equals<'hi'>();
         });
     });
 });

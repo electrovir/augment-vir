@@ -1,5 +1,5 @@
 // import {assert, describe, it} from '@augment-vir/test';
-// import {assertThrows} from 'run-time-assertions';
+// import {assertThrows} from '@augment-vir/assert';
 // import {DeferredPromise} from './deferred-promise.js';
 
 // // increase if tests are flaky in other environments, like GitHub Actions (which is typically slow)
@@ -14,7 +14,7 @@
 //             deferredPromise.resolve(resolveValue);
 //         }, promiseDelayMs);
 
-//         assert.areStrictEqual(await deferredPromise.promise, resolveValue);
+//         assert.strictEquals(await deferredPromise.promise, resolveValue);
 //     });
 
 //     it('should create a promise that can be rejected externally.', async () => {

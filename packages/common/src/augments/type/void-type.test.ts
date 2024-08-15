@@ -1,5 +1,5 @@
+import {assert} from '@augment-vir/assert';
 import {describe, it} from '@augment-vir/test';
-import {assert} from 'run-time-assertions';
 import {RequireNonVoid} from './void-type.js';
 
 describe('RequireNonVoid', () => {

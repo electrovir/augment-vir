@@ -1,4 +1,5 @@
-import {assert, describe, it, itCases} from '@augment-vir/test';
+import {assert} from '@augment-vir/assert';
+import {describe, it, itCases} from '@augment-vir/test';
 import {randomString} from '../random/random-string.js';
 import {filterObject} from './object-filter.js';
 
@@ -19,9 +20,9 @@ describe(filterObject.name, () => {
         const originalKeys = Object.keys(testObject);
         filterObject(originalKeys, () => false);
 
-        assert.deepStrictEqual(testObject, originalObject);
-        assert.deepStrictEqual(Object.keys(testObject), originalKeys);
-        assert.areStrictEqual(referenceCopy, testObject);
+        assert.deepEquals(testObject, originalObject);
+        assert.deepEquals(Object.keys(testObject), originalKeys);
+        assert.strictEquals(referenceCopy, testObject);
     });
 
     itCases(filterObject, [

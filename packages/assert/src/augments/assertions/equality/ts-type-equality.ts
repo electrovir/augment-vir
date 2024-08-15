@@ -2,10 +2,10 @@ import {ExpectTypeOf} from 'expect-type';
 import type {GuardGroup} from '../../guard-types/guard-group.js';
 
 type AssertTypeOf<TestingType> = {
-    equals: ExpectTypeOf<TestingType, true>['toEqualTypeOf'];
-    notEquals: ExpectTypeOf<TestingType, false>['toEqualTypeOf'];
-    matches: ExpectTypeOf<TestingType, true>['toMatchTypeOf'];
-    notMatches: ExpectTypeOf<TestingType, false>['toMatchTypeOf'];
+    equals: ExpectTypeOf<TestingType, {positive: true}>['toEqualTypeOf'];
+    notEquals: ExpectTypeOf<TestingType, {positive: false}>['toEqualTypeOf'];
+    matches: ExpectTypeOf<TestingType, {positive: true}>['toMatchTypeOf'];
+    notMatches: ExpectTypeOf<TestingType, {positive: false}>['toMatchTypeOf'];
 };
 
 function tsType<Actual>(

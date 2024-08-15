@@ -1,12 +1,11 @@
-import {isLengthAtLeast} from '@augment-vir/assert';
-import {isTruthy} from '@augment-vir/test';
+import {check} from '@augment-vir/assert';
+import {extractErrorMessage} from '@augment-vir/core';
 import {AtLeastTuple} from '../array/tuple.js';
-import {extractErrorMessage} from './error-message.js';
 
 export function combineErrors(errors: AtLeastTuple<Error, 1>): Error;
 export function combineErrors(errors: ReadonlyArray<Error>): Error | undefined;
 export function combineErrors(errors: ReadonlyArray<Error>): Error | undefined {
-    if (!isLengthAtLeast(errors, 1)) {
+    if (!check.isLengthAtLeast(errors, 1)) {
         return undefined;
     }
 
@@ -24,5 +23,5 @@ export function combineErrorMessages(
         return '';
     }
 
-    return errors.map(extractErrorMessage).filter(isTruthy).join('\n');
+    return errors.map(extractErrorMessage).filter(check.isTruthy).join('\n');
 }

@@ -1,4 +1,4 @@
-import {AnyObject} from '@augment-vir/assert';
+import type {AnyObject} from '@augment-vir/core';
 
 /**
  * Counts the number of unique keys in an object type. Note that a key of just `string` will count

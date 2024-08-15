@@ -1,4 +1,5 @@
-import {assert, describe, isTruthy, it, itCases} from '@augment-vir/test';
+import {assert, check} from '@augment-vir/assert';
+import {describe, it, itCases} from '@augment-vir/test';
 import {filterMap, filterOutIndexes} from './filter.js';
 
 describe(filterOutIndexes.name, () => {
@@ -50,7 +51,7 @@ describe(filterOutIndexes.name, () => {
                 6,
             ],
         );
-        assert.deepStrictEqual(exampleArray, [
+        assert.deepEquals(exampleArray, [
             'a',
             'b',
             'c',
@@ -123,7 +124,7 @@ describe(filterMap.name, () => {
 
         assert.tsType(output).equals<number[]>();
 
-        assert.deepStrictEqual(
+        assert.deepEquals(
             output,
             [
                 1,
@@ -154,10 +155,10 @@ describe(filterMap.name, () => {
                 const numeric = Number(entry);
                 return numeric % 2 ? numeric : undefined;
             },
-            isTruthy,
+            check.isTruthy,
         );
         assert.tsType(output).equals<number[]>();
-        assert.deepStrictEqual(
+        assert.deepEquals(
             output,
             [
                 1,

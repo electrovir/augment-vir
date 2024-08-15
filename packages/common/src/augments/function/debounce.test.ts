@@ -1,5 +1,6 @@
-import {assert, describe, it} from '@augment-vir/test';
-import {wait} from '../promise/wait.js';
+import {assert} from '@augment-vir/assert';
+import {wait} from '@augment-vir/core';
+import {describe, it} from '@augment-vir/test';
 import {Debounce, DebounceStyle} from './debounce.js';
 import {measureExecutionDuration} from './execution-duration.js';
 
@@ -15,13 +16,13 @@ describe(Debounce.name, () => {
         debounce.execute(() => {
             callCount++;
         });
-        assert.areStrictEqual(callCount, 1);
+        assert.strictEquals(callCount, 1);
         const duration = await measureExecutionDuration(async () => {
             while (callCount <= 1) {
                 debounce.execute(() => {
                     callCount++;
                 });
-                await wait(100);
+                await wait({milliseconds: 100});
             }
         });
         assert.isAbove(duration.milliseconds, 450);
@@ -38,13 +39,13 @@ describe(Debounce.name, () => {
         debounce.execute(() => {
             callCount++;
         });
-        assert.areStrictEqual(callCount, 0);
+        assert.strictEquals(callCount, 0);
         const duration = await measureExecutionDuration(async () => {
             while (callCount < 1) {
                 debounce.execute(() => {
                     callCount++;
                 });
-                await wait(100);
+                await wait({milliseconds: 100});
             }
         });
         assert.isAbove(duration.milliseconds, 450);

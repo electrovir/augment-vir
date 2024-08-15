@@ -1,4 +1,4 @@
-import {AnyObject} from '@augment-vir/assert';
+import type {AnyObject} from '@augment-vir/core';
 import {omitObjectKeys} from '../object/object-keys.js';
 import {mapObjectValues} from '../object/object-map.js';
 import {PickSelection, SelectionSet, shouldPreserveInSelectionSet} from './selection-set.js';

@@ -1,6 +1,7 @@
 import {AtLeastTuple} from '@augment-vir/assert';
 
-export type {AtLeastTuple, Tuple} from '@augment-vir/assert';
+export type {AtLeastTuple} from '@augment-vir/assert';
+export type {Tuple} from '@augment-vir/core';
 
 export type MappedTuple<Tuple extends ReadonlyArray<any>, NewValueType> = {
     [I in keyof Tuple]: NewValueType;

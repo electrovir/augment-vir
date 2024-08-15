@@ -1,5 +1,4 @@
-import {isLengthAtLeast} from '@augment-vir/assert';
-import {isRunTimeType} from 'run-time-assertions';
+import {check} from '@augment-vir/assert';
 import {PartialDeep} from 'type-fest';
 
 /**
@@ -15,7 +14,7 @@ export function mergeDeep<const T extends object>(
         | Readonly<Partial<T>>
     )[]
 ): T {
-    if (!isLengthAtLeast(inputs, 1)) {
+    if (!check.isLengthAtLeast(inputs, 1)) {
         // nothing to merge if no inputs
         return {} as T;
     }
@@ -29,11 +28,11 @@ export function mergeDeep<const T extends object>(
     const mergeProps: Record<PropertyKey, any[]> = {};
 
     inputs.forEach((individualInput) => {
-        if (!isRunTimeType(individualInput, 'object')) {
+        if (!check.isObject(individualInput)) {
             /** If not an object, we can't merge. So overwrite instead. */
             result = individualInput;
             return;
-        } else if (!isRunTimeType(result, 'object')) {
+        } else if (!check.isObject(result)) {
             /** If result isn't an object then we need to make it into one. */
             result = {...individualInput};
         }
@@ -51,7 +50,7 @@ export function mergeDeep<const T extends object>(
         );
     });
 
-    if (isRunTimeType(result, 'object')) {
+    if (check.isObject(result)) {
         Object.entries(mergeProps).forEach(
             ([
                 key,

@@ -1,4 +1,5 @@
-import {assert, describe, itCases} from '@augment-vir/test';
+import {assert} from '@augment-vir/assert';
+import {describe, itCases} from '@augment-vir/test';
 import {randomBoolean} from './random-boolean.js';
 
 describe(randomBoolean.name, () => {
@@ -18,7 +19,7 @@ describe(randomBoolean.name, () => {
             return (counts.true / (counts.true + counts.false)) * 100;
         },
         (actual, expected) => {
-            assert.approximately(actual, expected, 0.5);
+            assert.isApproximately(actual, expected, 0.5);
         },
         [
             {

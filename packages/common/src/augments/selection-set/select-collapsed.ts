@@ -1,8 +1,7 @@
-import {AnyObject, isLengthAtLeast} from '@augment-vir/assert';
-import {isSomeObject} from 'run-time-assertions';
+import {check} from '@augment-vir/assert';
+import type {AnyObject, Values} from '@augment-vir/core';
 import {ExcludeEmpty} from '../object/empty.js';
 import {KeyCount} from '../object/key-count.js';
-import {Values} from '../object/object-values.js';
 import {
     TsRecurse,
     TsRecursionStart,
@@ -38,9 +37,9 @@ function collapseObject(input: Readonly<AnyObject>, selectionSet: unknown): AnyO
 
     if (Array.isArray(input)) {
         return input.map((innerInput) => collapseObject(innerInput, selectionSet));
-    } else if (isLengthAtLeast(keys, 2)) {
+    } else if (check.isLengthAtLeast(keys, 2)) {
         return input;
-    } else if (isLengthAtLeast(keys, 1) && isSomeObject(selectionSet)) {
+    } else if (check.isLengthAtLeast(keys, 1) && check.isObject(selectionSet)) {
         return collapseObject(input[keys[0]], (selectionSet as any)[keys[0]]);
     } else {
         return input;

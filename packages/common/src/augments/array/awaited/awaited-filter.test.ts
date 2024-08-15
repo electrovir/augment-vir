@@ -1,6 +1,6 @@
+import {assert} from '@augment-vir/assert';
+import {wait} from '@augment-vir/core';
 import {describe, it, itCases} from '@augment-vir/test';
-import {assert} from 'chai';
-import {wait} from '../../promise/wait.js';
 import {awaitedFilter} from './awaited-filter.js';
 
 describe(awaitedFilter.name, () => {
@@ -50,7 +50,7 @@ describe(awaitedFilter.name, () => {
                     0,
                 ],
                 async (entry) => {
-                    await wait(1);
+                    await wait({milliseconds: 1});
                     return entry;
                 },
             ],
@@ -64,13 +64,13 @@ describe(awaitedFilter.name, () => {
         await awaitedFilter(
             arrayToFilter,
             async (entry) => {
-                await wait(entry);
+                await wait({milliseconds: entry});
                 executionOrder.push(entry);
                 return true;
             },
             {blocking: true},
         );
 
-        assert.deepStrictEqual(executionOrder, arrayToFilter);
+        assert.deepEquals(executionOrder, arrayToFilter);
     });
 });

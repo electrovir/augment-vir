@@ -119,6 +119,30 @@ describe('isTruthy', () => {
         it('rejects', () => {
             assert.isFalse(check.isTruthy(actualReject));
         });
+        it('works in a filter', () => {
+            assert
+                .tsType(
+                    [
+                        'a',
+                        undefined,
+                    ].filter(check.isTruthy),
+                )
+                .equals<string[]>();
+            assert
+                .tsType(
+                    [
+                        'a',
+                        undefined,
+                    ].filter(check.isTruthy),
+                )
+                .notEquals<(string | undefined)[]>();
+            assert
+                .tsType([
+                    'a',
+                    undefined,
+                ])
+                .equals<(string | undefined)[]>();
+        });
     });
     describe('assertWrap', () => {
         it('guards', () => {

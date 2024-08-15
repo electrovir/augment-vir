@@ -1,7 +1,5 @@
-import {AnyObject} from '@augment-vir/assert';
-import {MaybePromise} from '@augment-vir/core';
-import {isPromise} from 'run-time-assertions';
-import {ensureError} from '../error/ensure-error.js';
+import {check} from '@augment-vir/assert';
+import {ensureError, MaybePromise, type AnyObject} from '@augment-vir/core';
 
 /**
  * Get a value from a map or call the callback and return its result and store the result in the
@@ -77,7 +75,7 @@ export function getOrSet<OriginalObject extends AnyObject, Key extends keyof Ori
         return originalObject[key];
     } else {
         const createdValue = createCallback();
-        if (isPromise(createdValue)) {
+        if (check.isPromise(createdValue)) {
             return new Promise<OriginalObject[Key]>(async (resolve, reject) => {
                 try {
                     const awaitedValue = await createdValue;

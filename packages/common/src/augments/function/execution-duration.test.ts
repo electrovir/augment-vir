@@ -1,12 +1,13 @@
-import {assert, describe, it} from '@augment-vir/test';
-import {wait} from '../promise/wait.js';
+import {assert} from '@augment-vir/assert';
+import {wait} from '@augment-vir/core';
+import {describe, it} from '@augment-vir/test';
 import {measureExecutionDuration} from './execution-duration.js';
 
 describe(measureExecutionDuration.name, () => {
     it('measures the time', async () => {
         const waitDuration = 100;
         const measuredTime = await measureExecutionDuration(async () => {
-            await wait(waitDuration);
+            await wait({milliseconds: waitDuration});
         });
 
         assert.isAbove(measuredTime.milliseconds, waitDuration - 20);

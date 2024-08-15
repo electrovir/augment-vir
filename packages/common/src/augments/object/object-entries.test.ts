@@ -1,5 +1,6 @@
+import {assert} from '@augment-vir/assert';
 import {getEnumValues} from '@augment-vir/core';
-import {assert, describe, it, itCases} from '@augment-vir/test';
+import {describe, it, itCases} from '@augment-vir/test';
 import {
     getEntriesSortedByKey,
     getObjectTypedEntries,
@@ -140,7 +141,7 @@ describe(typedObjectFromEntries.name, () => {
 
         assert.tsType(formedObject).equals<Record<MyEnum, string>>();
 
-        assert.deepStrictEqual(formedObject, {
+        assert.deepEquals(formedObject, {
             [MyEnum.aKey]: 'a-derp',
             [MyEnum.bKey]: 'b-derp',
         });
@@ -157,7 +158,7 @@ describe(getEntriesSortedByKey.name, () => {
             c: 4,
         };
 
-        assert.deepStrictEqual(getEntriesSortedByKey(testObjectA), [
+        assert.deepEquals(getEntriesSortedByKey(testObjectA), [
             [
                 'a',
                 2,
@@ -182,7 +183,7 @@ describe(getEntriesSortedByKey.name, () => {
 
         testObjectA.aaa = 6;
 
-        assert.deepStrictEqual(getEntriesSortedByKey(testObjectA), [
+        assert.deepEquals(getEntriesSortedByKey(testObjectA), [
             [
                 'a',
                 2,

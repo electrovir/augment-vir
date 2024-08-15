@@ -1,10 +1,11 @@
-import {assert, describe, it} from '@augment-vir/test';
+import {assert} from '@augment-vir/assert';
+import {describe, it} from '@augment-vir/test';
 import {toNumber} from '../number/number-conversion.js';
 import {typedMap} from './array-map.js';
 
 describe(typedMap.name, () => {
     it('maps', () => {
-        assert.deepStrictEqual(
+        assert.deepEquals(
             typedMap(
                 [
                     '1',

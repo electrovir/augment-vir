@@ -1,7 +1,4 @@
-import {AnyObject} from '@augment-vir/assert';
-import {ensureError} from '../error/ensure-error.js';
-import {getObjectTypedKeys} from './object-keys.js';
-import {Values} from './object-values.js';
+import {type AnyObject, type Values, ensureError, getObjectTypedKeys} from '@augment-vir/core';
 
 export type InnerMappedValues<EntireInputGeneric extends object, MappedValueGeneric> = {
     [MappedProp in keyof EntireInputGeneric]: MappedValueGeneric;

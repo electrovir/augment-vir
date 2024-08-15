@@ -1,5 +1,5 @@
-import {AnyObject} from '@augment-vir/assert';
-import {isPrimitive} from 'run-time-assertions';
+import {check} from '@augment-vir/assert';
+import type {AnyObject} from '@augment-vir/core';
 import {IsAny, IsNever, Primitive, UnionToIntersection} from 'type-fest';
 import {
     TsRecurse,
@@ -9,7 +9,7 @@ import {
 } from '../type/type-recursion.js';
 
 export function shouldPreserveInSelectionSet(input: unknown): input is SelectionTypesToPreserve {
-    return isPrimitive(input) || input instanceof RegExp || input instanceof Promise;
+    return check.isPrimitive(input) || input instanceof RegExp || input instanceof Promise;
 }
 
 /** All types that won't be recursed into when defining a {@link SelectionSet}. */

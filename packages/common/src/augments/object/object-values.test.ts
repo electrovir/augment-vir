@@ -1,6 +1,7 @@
+import {assert} from '@augment-vir/assert';
+import type {ValueAtRequiredKey} from '@augment-vir/core';
 import {describe, it, itCases} from '@augment-vir/test';
-import {assert} from 'run-time-assertions';
-import {getObjectTypedValues, ValueAtRequiredKey} from './object-values.js';
+import {getObjectTypedValues} from './object-values.js';
 
 enum Planet {
     Mercury = 'mercury',

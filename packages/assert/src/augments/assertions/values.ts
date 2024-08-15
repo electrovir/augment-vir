@@ -54,7 +54,13 @@ function isIn<const Parent>(
     parent: Parent,
     failureMessage?: string | undefined,
 ): asserts child is Values<Parent> {
-    hasValue(parent, child, failureMessage);
+    if (typeof parent === 'string' && typeof child === 'string') {
+        if (!parent.includes(child)) {
+            throw new AssertionError(`'${child}' is not in '${parent}'.`, failureMessage);
+        }
+    } else {
+        hasValue(parent, child, failureMessage);
+    }
 }
 function isNotIn<const Parent, const Child>(
     child: Child,

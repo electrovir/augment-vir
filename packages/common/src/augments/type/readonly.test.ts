@@ -1,4 +1,5 @@
-import {assert, describe, it} from '@augment-vir/test';
+import {assert} from '@augment-vir/assert';
+import {describe, it} from '@augment-vir/test';
 import {makeReadonly} from './readonly.js';
 import {makeWritable} from './writable.js';
 
@@ -10,8 +11,8 @@ function runWriteAccessTests(writeAccessModifier: (input: any) => any) {
     const originalExample = getExampleReadonlyObject();
     const writableExample = writeAccessModifier(originalExample);
 
-    assert.areStrictEqual(writableExample, originalExample);
-    assert.deepStrictEqual(writableExample, originalExample);
+    assert.strictEquals(writableExample, originalExample);
+    assert.deepEquals(writableExample, originalExample);
 }
 
 describe(makeReadonly.name, () => {

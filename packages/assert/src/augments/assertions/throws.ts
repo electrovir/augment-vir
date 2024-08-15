@@ -6,6 +6,7 @@ import {
     TypedFunction,
     type AnyFunction,
 } from '@augment-vir/core';
+import JSON5 from 'json5';
 import {AssertionError} from '../assertion.error.js';
 import type {GuardGroup} from '../guard-types/guard-group.js';
 import {createWaitUntil, WaitUntilOptions} from '../guard-types/wait-until-function.js';
@@ -17,25 +18,63 @@ enum ThrowsCheckType {
     Check = 'check',
 }
 
-function checkError(
-    error: undefined | Error,
+function assertError(
+    actual: unknown,
     matchOptions?: ErrorMatchOptions | undefined,
     failureMessage?: string | undefined,
-) {
-    if (error == undefined) {
-        throw new AssertionError('No error was thrown.', failureMessage);
+): asserts actual is Error {
+    internalAssertError(
+        actual,
+        {
+            noError: 'No error.',
+            notInstance: `'${JSON5.stringify(actual)}' is not an error instance.`,
+        },
+        matchOptions,
+        failureMessage,
+    );
+}
+
+function assertThrownError(
+    actual: unknown,
+    matchOptions?: ErrorMatchOptions | undefined,
+    failureMessage?: string | undefined,
+): asserts actual is Error {
+    internalAssertError(
+        actual,
+        {
+            noError: 'No Error was thrown.',
+            notInstance: `Thrown value '${JSON5.stringify(actual)}' is not an error instance.`,
+        },
+        matchOptions,
+        failureMessage,
+    );
+}
+
+function internalAssertError(
+    actual: unknown,
+    errorMessages: {
+        noError: string;
+        notInstance: string;
+    },
+    matchOptions?: ErrorMatchOptions | undefined,
+    failureMessage?: string | undefined,
+): asserts actual is Error {
+    if (!actual) {
+        throw new AssertionError(errorMessages.noError, failureMessage);
+    } else if (!(actual instanceof Error)) {
+        throw new AssertionError(errorMessages.notInstance, failureMessage);
     } else if (
         matchOptions?.matchConstructor &&
-        !((error as any) instanceof matchOptions.matchConstructor)
+        !((actual as any) instanceof matchOptions.matchConstructor)
     ) {
-        const constructorName = error.constructor.name;
+        const constructorName = actual.constructor.name;
 
         throw new AssertionError(
             `Error constructor '${constructorName}' did not match expected constructor '${matchOptions.matchConstructor.name}'.`,
             failureMessage,
         );
     } else if (matchOptions?.matchMessage) {
-        const message = extractErrorMessage(error);
+        const message = extractErrorMessage(actual);
 
         if (typeof matchOptions.matchMessage === 'string') {
             if (!message.includes(matchOptions.matchMessage)) {
@@ -74,14 +113,13 @@ function internalThrowsCheck(
                 }
 
                 try {
-                    checkError(caughtError, matchOptions, failureMessage);
+                    assertThrownError(caughtError, matchOptions, failureMessage);
                     if (checkType === ThrowsCheckType.Assert) {
                         (resolve as AnyFunction)();
                     } else if (checkType === ThrowsCheckType.Check) {
                         resolve(true);
                     } else {
-                        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                        resolve(caughtError!);
+                        resolve(caughtError);
                     }
                 } catch (error) {
                     if (checkType === ThrowsCheckType.CheckWrap) {
@@ -99,12 +137,11 @@ function internalThrowsCheck(
     }
 
     try {
-        checkError(caughtError, matchOptions, failureMessage);
+        assertThrownError(caughtError, matchOptions, failureMessage);
         if (checkType === ThrowsCheckType.Check) {
             return true;
         } else if (checkType !== ThrowsCheckType.Assert) {
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            return caughtError!;
+            return caughtError;
         }
         return;
     } catch (error) {
@@ -254,7 +291,7 @@ function throwsCheckWrap(
     ) as MaybePromise<Error | undefined>;
 }
 
-const internalWaitUntilThrows = createWaitUntil(checkError);
+const internalWaitUntilThrows = createWaitUntil(assertError);
 
 function throwsWaitUntil(
     callbackOrPromise: TypedFunction<void, any> | Promise<any>,
@@ -305,13 +342,19 @@ function throwsWaitUntil(
         },
         options,
         actualFailureMessage,
-    ) as Promise<Error>;
+    );
 }
 
+const assertions: {
+    isError: typeof assertError;
+    throws: typeof throws;
+} = {
+    throws,
+    isError: assertError,
+};
+
 export const throwGuards = {
-    assertions: {
-        throws,
-    },
+    assertions,
     checkOverrides: {
         throws: throwsCheck,
     },

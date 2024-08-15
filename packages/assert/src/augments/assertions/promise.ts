@@ -1,5 +1,4 @@
 import JSON5 from 'json5';
-import {hasProperty} from 'run-time-assertions';
 import {AssertionError} from '../assertion.error.js';
 import type {GuardGroup} from '../guard-types/guard-group.js';
 import {autoGuard} from '../guard-types/guard-override.js';
@@ -11,7 +10,12 @@ function isPromiseLike(
 ): asserts actual is PromiseLike<any> {
     if (
         !(actual instanceof Promise) &&
-        !(hasProperty(actual, 'then') && typeof actual.then === 'function')
+        !(
+            actual &&
+            typeof actual === 'object' &&
+            'then' in actual &&
+            typeof actual.then === 'function'
+        )
     ) {
         throw new AssertionError(
             `'${JSON5.stringify(actual)}' is not a PromiseLike.`,

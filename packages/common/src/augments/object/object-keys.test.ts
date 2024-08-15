@@ -1,7 +1,6 @@
+import {assert} from '@augment-vir/assert';
 import {describe, it, itCases} from '@augment-vir/test';
-
-import {assert} from '@augment-vir/test';
-import {getObjectTypedKeys, omitObjectKeys, pickObjectKeys} from './object-keys.js';
+import {omitObjectKeys, pickObjectKeys} from './object-keys.js';
 
 describe(omitObjectKeys.name, () => {
     it('should create proper types', () => {
@@ -78,41 +77,4 @@ describe(pickObjectKeys.name, () => {
             },
         ],
     );
-});
-
-enum Planet {
-    Mercury = 'mercury',
-    Venus = 'venus',
-    Earth = 'earth',
-}
-
-const greekNames: Record<Planet, string> = {
-    [Planet.Mercury]: 'Hermes',
-    [Planet.Venus]: 'Aphrodite',
-    [Planet.Earth]: 'Earth',
-};
-
-describe(getObjectTypedKeys.name, () => {
-    it('gets basic object keys', () => {
-        assert.deepStrictEqual(getObjectTypedKeys(greekNames), [
-            Planet.Mercury,
-            Planet.Venus,
-            Planet.Earth,
-        ]);
-    });
-
-    it('falls back to using Object.keys', () => {
-        assert.isEmpty(getObjectTypedKeys(String('')));
-    });
-
-    it('includes symbols', () => {
-        const mySymbol = Symbol('derp');
-
-        assert.deepStrictEqual(getObjectTypedKeys({[mySymbol]: 'nothing', ...greekNames}), [
-            Planet.Mercury,
-            Planet.Venus,
-            Planet.Earth,
-            mySymbol,
-        ]);
-    });
 });

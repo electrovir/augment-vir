@@ -1,4 +1,5 @@
-import {assert, describe, it} from '@augment-vir/test';
+import {assert} from '@augment-vir/assert';
+import {describe, it} from '@augment-vir/test';
 import {randomString} from '../random/random-string.js';
 import {callAsynchronously} from './call-asynchronously.js';
 
@@ -11,7 +12,7 @@ describe(callAsynchronously.name, () => {
         });
         values.push(2);
         await asyncOutput;
-        assert.deepStrictEqual(
+        assert.deepEquals(
             values,
             [
                 1,
@@ -24,6 +25,6 @@ describe(callAsynchronously.name, () => {
     it("returns the callback's output", async () => {
         const randomValue = randomString();
 
-        assert.areStrictEqual(await callAsynchronously(() => randomValue), randomValue);
+        assert.strictEquals(await callAsynchronously(() => randomValue), randomValue);
     });
 });

@@ -1,5 +1,5 @@
+import {assert} from '@augment-vir/assert';
 import {describe, it, itCases} from '@augment-vir/test';
-import {assert} from 'run-time-assertions';
 import {mergePropertyArrays} from './merge-property-arrays.js';
 
 describe(mergePropertyArrays.name, () => {

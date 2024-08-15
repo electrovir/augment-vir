@@ -1,4 +1,5 @@
-import {assert, describe, it} from '@augment-vir/test';
+import {assert} from '@augment-vir/assert';
+import {describe, it} from '@augment-vir/test';
 import {randomInteger} from './random-integer.js';
 
 describe(randomInteger.name, () => {
@@ -24,7 +25,7 @@ describe(randomInteger.name, () => {
 
         assert.isAbove(minValue, -0.1);
         assert.isBelow(maxValue, 10.1);
-        assert.approximately(
+        assert.isApproximately(
             average,
             5,
             0.5,

@@ -1,4 +1,5 @@
-import {assert, describe, it, itCases} from '@augment-vir/test';
+import {assert} from '@augment-vir/assert';
+import {describe, it, itCases} from '@augment-vir/test';
 import {typedMap} from '../array/array-map.js';
 import {combineErrorMessages, combineErrors} from './combine-errors.js';
 
@@ -36,7 +37,7 @@ describe(combineErrors.name, () => {
 
         errors.forEach((error) => {
             assert.instanceOf(error, Error);
-            assert.include(combinedErrors.message, error.message);
+            assert.isIn(combinedErrors.message, error.message);
         });
     });
 });

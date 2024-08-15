@@ -1,6 +1,5 @@
 import type {ArrayElement} from '@augment-vir/core';
 import type {UnionToIntersection} from 'type-fest';
-import {arrayGuards} from '../assertions/array.js';
 import {booleanGuards} from '../assertions/boolean.js';
 import {enumGuards} from '../assertions/enum.js';
 import {entryEqualityGuards} from '../assertions/equality/entry-equality.js';
@@ -8,6 +7,7 @@ import {jsonEqualityGuards} from '../assertions/equality/json-equality.js';
 import {simpleEqualityGuards} from '../assertions/equality/simple-equality.js';
 import {instanceGuards} from '../assertions/instance.js';
 import {keyGuards} from '../assertions/keys.js';
+import {lengthGuards} from '../assertions/length.js';
 import {nullishGuards} from '../assertions/nullish.js';
 import {numericGuards} from '../assertions/numeric.js';
 import {primitiveGuards} from '../assertions/primitive.js';
@@ -21,7 +21,7 @@ import {AssertFunction} from '../guard-types/assert-function.js';
 import {GuardGroup} from '../guard-types/guard-group.js';
 
 export const extendableAssertions = {
-    ...arrayGuards.assertions,
+    ...lengthGuards.assertions,
     ...booleanGuards.assertions,
     ...entryEqualityGuards.assertions,
     ...enumGuards.assertions,
@@ -46,7 +46,7 @@ export const extendableAssertions = {
  */
 
 export const guardOverrides = [
-    arrayGuards,
+    lengthGuards,
     booleanGuards,
     entryEqualityGuards,
     enumGuards,

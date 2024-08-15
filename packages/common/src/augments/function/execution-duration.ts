@@ -1,5 +1,5 @@
+import {ensureError} from '@augment-vir/core';
 import {Duration, DurationUnit} from '@date-vir/duration';
-import {ensureError} from '../error/ensure-error.js';
 
 export type ExecutionDuration = Duration<DurationUnit.Milliseconds>;
 

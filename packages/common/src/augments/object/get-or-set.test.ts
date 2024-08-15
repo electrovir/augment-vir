@@ -1,6 +1,6 @@
-import {AnyObject} from '@augment-vir/assert';
-import {assert, describe, it, itCases} from '@augment-vir/test';
-import {assertInstanceOf, assertThrows} from 'run-time-assertions';
+import {assert} from '@augment-vir/assert';
+import type {AnyObject} from '@augment-vir/core';
+import {describe, it, itCases} from '@augment-vir/test';
 import {randomString} from '../random/random-string.js';
 import {getOrSet, getOrSetFromMap} from './get-or-set.js';
 
@@ -70,23 +70,23 @@ describe(getOrSet.name, () => {
         const key = 'myKey';
         const newValue = randomString();
 
-        assert.areStrictEqual(
+        assert.strictEquals(
             getOrSet(originalObject, key, () => {
                 callCount++;
                 return newValue;
             }),
             newValue,
         );
-        assert.areStrictEqual(callCount, 1);
+        assert.strictEquals(callCount, 1);
 
-        assert.areStrictEqual(
+        assert.strictEquals(
             getOrSet(originalObject, key, () => {
                 callCount++;
                 return newValue;
             }),
             newValue,
         );
-        assert.areStrictEqual(callCount, 1);
+        assert.strictEquals(callCount, 1);
     });
     it('handles an async callback', async () => {
         const newValue = randomString();
@@ -94,9 +94,9 @@ describe(getOrSet.name, () => {
             return await Promise.resolve(newValue);
         });
 
-        assertInstanceOf(result, Promise);
+        assert.instanceOf(result, Promise);
 
-        assert.areStrictEqual(await result, newValue);
+        assert.strictEquals(await result, newValue);
     });
     it('requires proper types', () => {
         const myObject: {a: string; b?: number} = {a: 'hello'};
@@ -108,7 +108,7 @@ describe(getOrSet.name, () => {
             .equals<Promise<number>>();
     });
     it('re-throws callback errors', async () => {
-        await assertThrows(
+        await assert.throws(
             async () => {
                 await getOrSet({} as AnyObject, 'myKey', async () => {
                     return Promise.reject(new Error('test error'));
@@ -121,7 +121,7 @@ describe(getOrSet.name, () => {
         const myObject: Record<string, number> = {a: 4};
         assert.tsType(getOrSet(myObject, 'a', () => 5)).equals<number>();
         assert.tsType(getOrSet(myObject, 'b', () => 2)).equals<number>();
-        assert.deepStrictEqual(myObject, {a: 4, b: 2});
+        assert.deepEquals(myObject, {a: 4, b: 2});
     });
 });
 
@@ -136,7 +136,7 @@ describe(getOrSetFromMap.name, () => {
             ],
         ]);
 
-        assert.areStrictEqual(
+        assert.strictEquals(
             getOrSetFromMap(exampleMap, exampleKey, () => ''),
             exampleValue,
         );
@@ -147,11 +147,11 @@ describe(getOrSetFromMap.name, () => {
         const exampleValue = randomString();
         const exampleMap = new Map();
 
-        assert.areStrictEqual(
+        assert.strictEquals(
             getOrSetFromMap(exampleMap, exampleKey, () => exampleValue),
             exampleValue,
         );
-        assert.areStrictEqual(exampleMap.get(exampleKey), exampleValue);
+        assert.strictEquals(exampleMap.get(exampleKey), exampleValue);
     });
 
     it('works with WeakMap', () => {
@@ -159,10 +159,10 @@ describe(getOrSetFromMap.name, () => {
         const exampleValue = randomString();
         const exampleMap = new WeakMap();
 
-        assert.areStrictEqual(
+        assert.strictEquals(
             getOrSetFromMap(exampleMap, exampleKey, () => exampleValue),
             exampleValue,
         );
-        assert.areStrictEqual(exampleMap.get(exampleKey), exampleValue);
+        assert.strictEquals(exampleMap.get(exampleKey), exampleValue);
     });
 });
