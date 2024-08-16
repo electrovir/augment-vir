@@ -1,4 +1,5 @@
-import {getObjectTypedKeys, type Values} from '@augment-vir/core';
+import {type Values} from '@augment-vir/core';
+import {getObjectTypedEntries, typedObjectFromEntries} from './object-entries.js';
 
 export function filterObject<ObjectGeneric>(
     inputObject: ObjectGeneric,
@@ -8,12 +9,13 @@ export function filterObject<ObjectGeneric>(
         fullObject: ObjectGeneric,
     ) => boolean,
 ): Partial<ObjectGeneric> {
-    const filteredKeys = getObjectTypedKeys(inputObject).filter((key) => {
-        const value = inputObject[key];
-        return callback(key, value, inputObject);
-    });
-    return filteredKeys.reduce<Partial<ObjectGeneric>>((accum, key) => {
-        accum[key] = inputObject[key];
-        return accum;
-    }, {});
+    const filteredEntries = getObjectTypedEntries(inputObject).filter(
+        ([
+            key,
+            value,
+        ]) => {
+            return callback(key, value, inputObject);
+        },
+    );
+    return typedObjectFromEntries(filteredEntries) as Partial<ObjectGeneric>;
 }

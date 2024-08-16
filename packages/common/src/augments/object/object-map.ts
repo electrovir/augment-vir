@@ -6,6 +6,7 @@ import {
     ensureError,
     getObjectTypedKeys,
 } from '@augment-vir/core';
+import {filterMap} from '../array/filter.js';
 import {getObjectTypedEntries, typedObjectFromEntries} from './object-entries.js';
 
 export type InnerMappedValues<EntireInputGeneric extends object, MappedValueGeneric> = {
@@ -152,7 +153,7 @@ export function mapObject<
                     return [
                         output.key,
                         output.value,
-                    ];
+                    ] as [NewKey, NewValue];
                 } else {
                     return undefined;
                 }
@@ -163,9 +164,24 @@ export function mapObject<
     if (gotAPromise) {
         return new Promise<Record<NewKey, NewValue>>(async (resolve, reject) => {
             try {
-                const entries = (await Promise.all(mappedEntries)).filter(check.isTruthy);
+                const entries: [NewKey, NewValue][] = filterMap(
+                    await Promise.all(mappedEntries),
+                    (entry) => {
+                        if (!entry) {
+                            return undefined;
+                        } else if (Array.isArray(entry)) {
+                            return entry;
+                        } else {
+                            return [
+                                entry.key,
+                                entry.value,
+                            ] as [NewKey, NewValue];
+                        }
+                    },
+                    check.isTruthy,
+                );
 
-                resolve(typedObjectFromEntries(entries as [NewKey, NewValue][]));
+                resolve(typedObjectFromEntries(entries));
             } catch (error) {
                 reject(ensureError(error));
             }

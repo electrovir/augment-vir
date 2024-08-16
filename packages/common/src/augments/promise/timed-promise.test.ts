@@ -44,7 +44,10 @@ describe(wrapPromiseInTimeout.name, () => {
         }
 
         assert.instanceOf(timeoutError, PromiseTimeoutError);
-        assert.strictEquals(timeoutError.message, `Promised timed out after ${promiseDelay} ms.`);
+        assert.strictEquals(
+            timeoutError.message,
+            `Promised timed out after ${promiseDelay.milliseconds} ms.`,
+        );
         const endTime = Date.now();
         assert.isAbove(
             endTime - startTime,

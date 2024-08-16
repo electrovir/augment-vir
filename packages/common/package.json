@@ -21,8 +21,8 @@
     "scripts": {
         "compile": "virmator compile",
         "docs": "virmator docs",
-        "test": "concurrently --colors --kill-others-on-fail -c red,blue --names node,web \"virmator test node\" \"virmator test web\"",
-        "test:coverage": "virmator test web coverage",
+        "test": "concurrently --colors --kill-others-on-fail -c red,blue --names node,web \"virmator test node --no-deps\" \"virmator test web --no-deps\"",
+        "test:coverage": "virmator --no-deps test web coverage",
         "test:docs": "virmator docs check",
         "test:update": "npm test"
     },
@@ -36,10 +36,11 @@
     "devDependencies": {
         "@augment-vir/test": "^30.0.0",
         "@web/dev-server-esbuild": "^1.0.2",
-        "@web/test-runner": "^0.18.2",
+        "@web/test-runner": "^0.18.3",
         "@web/test-runner-commands": "^0.9.0",
         "@web/test-runner-playwright": "^0.11.0",
         "@web/test-runner-visual-regression": "^0.9.0",
+        "c8": "^10.1.2",
         "concurrently": "^8.2.2",
         "istanbul-smart-text-reporter": "^1.1.4"
     },

@@ -37,7 +37,7 @@ describe(combineErrors.name, () => {
 
         errors.forEach((error) => {
             assert.instanceOf(error, Error);
-            assert.isIn(combinedErrors.message, error.message);
+            assert.isIn(error.message, combinedErrors.message);
         });
     });
 });
