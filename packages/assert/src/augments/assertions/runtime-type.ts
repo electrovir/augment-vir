@@ -512,7 +512,7 @@ export const runtimeTypeGuards = {
 } satisfies GuardGroup;
 
 /** This function is not used at run time, it's only here for types. */
-/* c8 ignore next 3 */
+/* /* node:coverage ignore next 4 */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function rawGetTypeOf(x: any) {
     return typeof x;

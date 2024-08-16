@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+
 import {getObjectTypedKeys, MaybePromise, Tuple, type AnyObject} from '@augment-vir/core';
 import {AssertionError} from '../assertion.error.js';
 import type {GuardGroup} from '../guard-types/guard-group.js';
@@ -72,6 +73,9 @@ const assertions: {
     isLengthAtLeast,
     isLengthExactly,
 };
+
+/** These functions are not used at run time, they're only here for types. */
+/* node:coverage disable */
 
 function checkIsLengthAtLeast<Element, Length extends number>(
     actual: ReadonlyArray<Element | undefined>,
@@ -192,6 +196,7 @@ function waitUntilIsLengthExactly(
 ): unknown {
     return false;
 }
+/* node:coverage enable */
 
 export const lengthGuards = {
     assertions,

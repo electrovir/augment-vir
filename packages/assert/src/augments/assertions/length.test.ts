@@ -57,6 +57,18 @@ describe('isLengthAtLeast', () => {
         it('works on strings', () => {
             assert.isTrue(check.isLengthAtLeast('hi', 1));
         });
+        it('works on objects', () => {
+            assert.isTrue(
+                check.isLengthAtLeast(
+                    {
+                        a: 'b',
+                        c: 'd',
+                        e: 'f',
+                    },
+                    2,
+                ),
+            );
+        });
     });
     describe('assertWrap', () => {
         it('guards', () => {
@@ -180,6 +192,18 @@ describe('isLengthExactly', () => {
         });
         it('works on strings', () => {
             assert.isTrue(check.isLengthExactly('hi', 2));
+        });
+        it('works on objects', () => {
+            assert.isTrue(
+                check.isLengthExactly(
+                    {
+                        a: 'b',
+                        c: 'd',
+                        e: 'f',
+                    },
+                    3,
+                ),
+            );
         });
     });
     describe('assertWrap', () => {

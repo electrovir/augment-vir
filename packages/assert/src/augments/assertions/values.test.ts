@@ -112,6 +112,15 @@ describe('hasValue', () => {
                 ],
                 expect: false,
             },
+            {
+                it: 'rejects undefined',
+                inputs: [
+                    // @ts-expect-error: invalid input
+                    undefined,
+                    'c',
+                ],
+                expect: false,
+            },
         ]);
     });
     describe('assertWrap', () => {
@@ -977,6 +986,7 @@ describe('isIn', () => {
         });
         it('works on strings', () => {
             assert.isIn('a', 'abc');
+            assert.throws(() => assert.isIn('a', 'z'));
         });
     });
     describe('check', () => {
@@ -1275,8 +1285,80 @@ describe('isEmpty', () => {
 
             assert.tsType(actualPassUnion).equals<ExpectedUnionNarrowedType>();
         });
+        it('fails on invalid inputs', () => {
+            assert.throws(
+                () =>
+                    assert.isEmpty(
+                        // @ts-expect-error: intentionally incorrect input
+                        4,
+                    ),
+                {
+                    matchMessage: 'Cannot check',
+                },
+            );
+        });
     });
     describe('check', () => {
+        itCases(check.isEmpty, [
+            {
+                it: 'rejects a non-empty string',
+                input: 'hi',
+                expect: false,
+            },
+            {
+                it: 'rejects a non-empty array',
+                input: ['hi'],
+                expect: false,
+            },
+            {
+                it: 'rejects a non-empty Map',
+                input: new Map([
+                    [
+                        'hi',
+                        'hi',
+                    ],
+                ]),
+                expect: false,
+            },
+            {
+                it: 'rejects a non-empty Set',
+                input: new Set([
+                    'hi',
+                ]),
+                expect: false,
+            },
+            {
+                it: 'rejects a non-empty object',
+                input: {hi: 'hi'},
+                expect: false,
+            },
+            {
+                it: 'accepts an empty string',
+                input: '',
+                expect: true,
+            },
+            {
+                it: 'accepts an empty array',
+                input: [],
+                expect: true,
+            },
+            {
+                it: 'accepts an empty Map',
+                input: new Map(),
+                expect: true,
+            },
+            {
+                it: 'accepts an empty Set',
+                input: new Set(),
+                expect: true,
+            },
+            {
+                it: 'accepts an empty object',
+                input: {},
+                expect: true,
+            },
+        ]);
+
         it('guards', () => {
             assert.isTrue(check.isEmpty(actualPass));
 

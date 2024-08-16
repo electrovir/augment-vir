@@ -1,4 +1,4 @@
-import {describe, it} from '@augment-vir/test';
+import {describe, it, itCases} from '@augment-vir/test';
 import {assertWrap} from '../../guards/assert-wrap.js';
 import {assert} from '../../guards/assert.js';
 import {checkWrap} from '../../guards/check-wrap.js';
@@ -105,6 +105,25 @@ describe('jsonEquals', () => {
         it('rejects', () => {
             assert.isFalse(check.jsonEquals(actualReject, expected));
         });
+
+        itCases(check.jsonEquals, [
+            {
+                it: 'handles empty first arg',
+                inputs: [
+                    {},
+                    {a: 'b'},
+                ],
+                expect: false,
+            },
+            {
+                it: 'handles empty last arg',
+                inputs: [
+                    {a: 'b'},
+                    {},
+                ],
+                expect: false,
+            },
+        ]);
     });
     describe('assertWrap', () => {
         it('guards', () => {
@@ -153,7 +172,6 @@ describe('jsonEquals', () => {
         });
     });
 });
-
 describe('notJsonEquals', () => {
     const actualPass = {
         a: 'first',

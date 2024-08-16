@@ -81,12 +81,9 @@ function hasKey<const Key extends PropertyKey, const Parent>(
     failureMessage?: string | undefined,
 ): asserts parent is CombineTypeWithKey<Key, Parent> {
     const message = `'${JSON5.stringify(parent)}' does not have key '${String(key)}'.`;
-    if (!parent) {
-        throw new AssertionError(message, failureMessage);
-    }
     const doesHaveKey = hasKeyAttempts.some((attemptCallback) => {
         try {
-            return attemptCallback(parent, key);
+            return attemptCallback(parent as object, key);
         } catch {
             return false;
         }

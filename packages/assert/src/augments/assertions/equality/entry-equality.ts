@@ -1,4 +1,5 @@
 import {AnyObject, MaybePromise} from '@augment-vir/core';
+import JSON5 from 'json5';
 import {AssertionError} from '../../assertion.error.js';
 import type {GuardGroup} from '../../guard-types/guard-group.js';
 import {autoGuard} from '../../guard-types/guard-override.js';
@@ -13,10 +14,10 @@ function entriesEqual<const Actual extends object, const Expected extends Actual
 ): asserts actual is Expected {
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (!actual || typeof actual !== 'object') {
-        throw new AssertionError('Actual input is not an object.', failureMessage);
+        throw new AssertionError(`${JSON5.stringify(actual)} is not an object.`, failureMessage);
         // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     } else if (!expected || typeof expected !== 'object') {
-        throw new AssertionError('Expected input is not an object.', failureMessage);
+        throw new AssertionError(`${JSON5.stringify(expected)} is not an object.`, failureMessage);
     }
 
     const allKeys = Array.from(

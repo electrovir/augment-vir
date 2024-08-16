@@ -212,5 +212,27 @@ describe('isNotUuid', () => {
 
             assert.tsType(newValue).equals<ExpectedUnionNarrowedType>();
         });
+        it('handles missing callback', async () => {
+            await assert.throws(
+                waitUntil.isNotUuid(
+                    // @ts-expect-error: intentionally wrong input
+                    {},
+                ),
+                {
+                    matchMessage: 'Missing waitUntil callback.',
+                },
+            );
+        });
+        it('handles unexpected input type', async () => {
+            await assert.throws(
+                waitUntil.isNotUuid(
+                    // @ts-expect-error: intentionally wrong input
+                    4,
+                ),
+                {
+                    matchMessage: 'Unexpected waitUntil arg',
+                },
+            );
+        });
     });
 });

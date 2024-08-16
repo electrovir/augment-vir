@@ -6,8 +6,10 @@ import {autoGuard} from '../guard-types/guard-override.js';
 import type {WaitUntilOptions} from '../guard-types/wait-until-function.js';
 import type {NarrowToActual, NarrowToExpected} from './narrow-type.js';
 
+export type ValueParentBase = object | string;
+
 /** Check if an object has the given value through reference equality. */
-function hasValue(parent: unknown, value: unknown, failureMessage?: string | undefined) {
+function hasValue(parent: object, value: unknown, failureMessage?: string | undefined) {
     const baseMessage = `'${JSON5.stringify(parent)}' does not have value '${JSON5.stringify(value)}'.`;
     if (!parent) {
         throw new AssertionError(baseMessage, failureMessage);
@@ -20,7 +22,7 @@ function hasValue(parent: unknown, value: unknown, failureMessage?: string | und
         throw new AssertionError(baseMessage, failureMessage);
     }
 }
-function lacksValue(parent: unknown, value: unknown, failureMessage?: string | undefined) {
+function lacksValue(parent: object, value: unknown, failureMessage?: string | undefined) {
     try {
         hasValue(parent, value);
     } catch {
@@ -34,40 +36,52 @@ function lacksValue(parent: unknown, value: unknown, failureMessage?: string | u
 }
 
 /** Check if an object has the given value through reference equality. */
-function hasValues<const Parent>(
-    parent: Parent,
+function hasValues(
+    parent: object,
     values: ReadonlyArray<unknown>,
     failureMessage?: string | undefined,
 ) {
     values.forEach((value) => hasValue(parent, value, failureMessage));
 }
 function lacksValues(
-    parent: unknown,
+    parent: object,
     values: ReadonlyArray<unknown>,
     failureMessage?: string | undefined,
 ) {
     values.forEach((value) => lacksValue(parent, value, failureMessage));
 }
 
-function isIn<const Parent>(
+function isIn<const Parent extends ValueParentBase>(
     child: unknown,
     parent: Parent,
     failureMessage?: string | undefined,
 ): asserts child is Values<Parent> {
-    if (typeof parent === 'string' && typeof child === 'string') {
-        if (!parent.includes(child)) {
-            throw new AssertionError(`'${child}' is not in '${parent}'.`, failureMessage);
+    if (typeof parent === 'string') {
+        if (!parent.includes(child as string)) {
+            throw new AssertionError(
+                `${JSON5.stringify(child)} is not in '${parent}'.`,
+                failureMessage,
+            );
         }
     } else {
         hasValue(parent, child, failureMessage);
     }
 }
-function isNotIn<const Parent, const Child>(
+function isNotIn<const Parent extends ValueParentBase, const Child>(
     child: Child,
     parent: Parent,
     failureMessage?: string | undefined,
 ): asserts child is Exclude<Child, Values<Parent>> {
-    lacksValue(parent, child, failureMessage);
+    try {
+        isIn(child, parent);
+    } catch {
+        return;
+    }
+
+    throw new AssertionError(
+        `${JSON5.stringify(child)} is not in ${JSON5.stringify(parent)}.`,
+        failureMessage,
+    );
 }
 
 export type CanBeEmpty = string | Map<any, any> | Set<any> | AnyObject | any[];
@@ -79,13 +93,9 @@ function isEmpty<const Actual extends CanBeEmpty>(
 ): asserts actual is NarrowToActual<Actual, Empty> {
     const input = actual;
 
-    if (
-        !input ||
-        (typeof input !== 'string' &&
-            typeof input !== 'object' &&
-            !(input instanceof Map) &&
-            !(input instanceof Set))
-    ) {
+    if (!input) {
+        return;
+    } else if (typeof input !== 'string' && typeof input !== 'object') {
         throw new TypeError(`Cannot check if '${JSON5.stringify(input)}' is empty.`);
     } else if (
         (typeof input === 'string' && input) ||

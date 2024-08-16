@@ -8,6 +8,7 @@ import type {
     RequiredAndNotNull,
 } from '@augment-vir/core';
 import {
+    ensureError,
     ensureErrorAndPrependMessage,
     ExtractKeysWithMatchingValues,
     Overwrite,
@@ -48,14 +49,14 @@ async function executeWaitUntil<const Assert extends AssertFunction<any>>(
     const interval = convertDuration(options.interval, DurationUnit.Milliseconds);
 
     let lastCallbackOutput: unknown = notSetSymbol;
-    let lastError: unknown = notSetSymbol;
+    let lastError: Error | undefined = undefined;
     async function checkCondition() {
         try {
             lastCallbackOutput = requireSynchronousResult ? callback() : await callback();
             assert(lastCallbackOutput, ...extraAssertionArgs);
         } catch (error) {
             lastCallbackOutput = notSetSymbol;
-            lastError = error;
+            lastError = ensureError(error);
         }
     }
     const startTime = Date.now();
@@ -66,11 +67,7 @@ async function executeWaitUntil<const Assert extends AssertFunction<any>>(
         if (Date.now() - startTime >= timeout) {
             const message = failureMessage ? `${failureMessage}: ` : '';
             const preMessage = `${message}Timeout of '${timeout}' milliseconds exceeded waiting for callback value to match expectations.`;
-            if (lastError === notSetSymbol) {
-                throw new Error(preMessage);
-            } else {
-                throw ensureErrorAndPrependMessage(lastError, preMessage);
-            }
+            throw ensureErrorAndPrependMessage(lastError, preMessage);
         }
     }
 

@@ -1,4 +1,4 @@
-import {describe, it} from '@augment-vir/test';
+import {describe, it, itCases} from '@augment-vir/test';
 import {assertWrap} from '../../guards/assert-wrap.js';
 import {assert} from '../../guards/assert.js';
 import {checkWrap} from '../../guards/check-wrap.js';
@@ -29,6 +29,28 @@ describe('entriesEqual', () => {
         it('rejects', () => {
             assert.throws(() => assert.entriesEqual(actualReject, expected));
         });
+        itCases(assert.entriesEqual, [
+            {
+                it: 'handles a non-object first arg',
+                inputs: [
+                    'hi' as any,
+                    {a: 'hi'},
+                ],
+                throws: {
+                    matchMessage: 'is not an object',
+                },
+            },
+            {
+                it: 'handles a non-object second arg',
+                inputs: [
+                    {a: 'hi'},
+                    'hi' as any,
+                ],
+                throws: {
+                    matchMessage: 'is not an object',
+                },
+            },
+        ]);
     });
     describe('check', () => {
         it('guards', () => {

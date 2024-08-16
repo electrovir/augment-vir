@@ -11,6 +11,7 @@
 
 ## Before v30 release
 
+-   `PickSelection` seems to not be supporting auto complete in the second type parameter
 -   fill in package.json descriptions
 -   convert `Debounce` into an ListenTarget and emit events when:
     -   execute is called with no callback
