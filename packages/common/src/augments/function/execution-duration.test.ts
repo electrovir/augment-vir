@@ -13,6 +13,15 @@ describe(measureExecutionDuration.name, () => {
         assert.isAbove(measuredTime.milliseconds, waitDuration - 20);
     });
 
+    it('passes through a promise rejects', async () => {
+        await assert.throws(
+            measureExecutionDuration(async () => {
+                await wait({milliseconds: 0});
+                throw new Error('hi');
+            }),
+        );
+    });
+
     it('has proper types', () => {
         assert.tsType(measureExecutionDuration(() => {})).equals<{milliseconds: number}>();
         assert

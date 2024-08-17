@@ -137,56 +137,60 @@ export function mapObject<
         originalObject: OriginalObject,
     ) => MaybePromise<{key: NewKey; value: NewValue} | undefined>,
 ): MaybePromise<Record<NewKey, NewValue>> {
-    let gotAPromise = false as boolean;
+    try {
+        let gotAPromise = false as boolean;
 
-    const mappedEntries = getObjectTypedEntries(originalObject)
-        .map(
-            ([
-                originalKey,
-                originalValue,
-            ]) => {
-                const output = mapCallback(originalKey, originalValue, originalObject);
-                if (output instanceof Promise) {
-                    gotAPromise = true;
-                    return output;
-                } else if (output) {
-                    return [
-                        output.key,
-                        output.value,
-                    ] as [NewKey, NewValue];
-                } else {
-                    return undefined;
+        const mappedEntries = getObjectTypedEntries(originalObject)
+            .map(
+                ([
+                    originalKey,
+                    originalValue,
+                ]) => {
+                    const output = mapCallback(originalKey, originalValue, originalObject);
+                    if (output instanceof Promise) {
+                        gotAPromise = true;
+                        return output;
+                    } else if (output) {
+                        return [
+                            output.key,
+                            output.value,
+                        ] as [NewKey, NewValue];
+                    } else {
+                        return undefined;
+                    }
+                },
+            )
+            .filter(check.isTruthy);
+
+        if (gotAPromise) {
+            return new Promise<Record<NewKey, NewValue>>(async (resolve, reject) => {
+                try {
+                    const entries: [NewKey, NewValue][] = filterMap(
+                        await Promise.all(mappedEntries),
+                        (entry) => {
+                            if (!entry) {
+                                return undefined;
+                            } else if (Array.isArray(entry)) {
+                                return entry;
+                            } else {
+                                return [
+                                    entry.key,
+                                    entry.value,
+                                ] as [NewKey, NewValue];
+                            }
+                        },
+                        check.isTruthy,
+                    );
+
+                    resolve(typedObjectFromEntries(entries));
+                } catch (error) {
+                    reject(ensureError(error));
                 }
-            },
-        )
-        .filter(check.isTruthy);
-
-    if (gotAPromise) {
-        return new Promise<Record<NewKey, NewValue>>(async (resolve, reject) => {
-            try {
-                const entries: [NewKey, NewValue][] = filterMap(
-                    await Promise.all(mappedEntries),
-                    (entry) => {
-                        if (!entry) {
-                            return undefined;
-                        } else if (Array.isArray(entry)) {
-                            return entry;
-                        } else {
-                            return [
-                                entry.key,
-                                entry.value,
-                            ] as [NewKey, NewValue];
-                        }
-                    },
-                    check.isTruthy,
-                );
-
-                resolve(typedObjectFromEntries(entries));
-            } catch (error) {
-                reject(ensureError(error));
-            }
-        });
-    } else {
-        return typedObjectFromEntries(mappedEntries as [NewKey, NewValue][]);
+            });
+        } else {
+            return typedObjectFromEntries(mappedEntries as [NewKey, NewValue][]);
+        }
+    } catch (error) {
+        throw ensureError(error);
     }
 }

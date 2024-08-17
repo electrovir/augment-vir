@@ -6,6 +6,11 @@ describe(randomInteger.name, () => {
     it('produces a number', () => {
         assert.isNumber(randomInteger({min: 0, max: 10}));
     });
+    it('errors instead of crashing on too high of a number', () => {
+        assert.throws(() => randomInteger({min: -999e305, max: 999e305}), {
+            matchMessage: 'Cannot create a random integer so large',
+        });
+    });
     it('meets expected stats after a million calls', () => {
         let maxValue = -Infinity;
         let minValue = Infinity;

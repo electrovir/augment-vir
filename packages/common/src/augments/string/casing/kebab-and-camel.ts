@@ -33,8 +33,8 @@ export function camelCaseToKebabCase(rawCamelCase: string) {
             const nextLetter: string =
                 index < originalString.length - 1 ? originalString[index + 1] || '' : '';
             const possibleWordBoundary =
-                isCase(previousLetter, StringCaseEnum.Lower, {blockNoCaseCharacters: true}) ||
-                isCase(nextLetter, StringCaseEnum.Lower, {blockNoCaseCharacters: true});
+                isCase(previousLetter, StringCaseEnum.Lower, {failOnNoCaseCharacters: true}) ||
+                isCase(nextLetter, StringCaseEnum.Lower, {failOnNoCaseCharacters: true});
 
             if (
                 currentLetter === currentLetter.toLowerCase() ||

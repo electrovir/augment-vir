@@ -1,8 +1,15 @@
 import {ensureErrorAndPrependMessage, MaybePromise} from '@augment-vir/core';
 
-export function callWithRetries<T>(maxRetries: number, callback: () => Promise<T>): Promise<T>;
-export function callWithRetries<T>(maxRetries: number, callback: () => T): T;
-export function callWithRetries<T>(
+export function callWithRetries<const T>(
+    maxRetries: number,
+    callback: () => Promise<T>,
+): Promise<T>;
+export function callWithRetries<const T>(maxRetries: number, callback: () => T): T;
+export function callWithRetries<const T>(
+    maxRetries: number,
+    callback: () => MaybePromise<T>,
+): MaybePromise<T>;
+export function callWithRetries<const T>(
     maxRetries: number,
     callback: () => MaybePromise<T>,
 ): MaybePromise<T> {

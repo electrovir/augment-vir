@@ -33,7 +33,7 @@ export function getSubstringIndexes<IncludeLength extends boolean | undefined>({
             const matchIndex: string | number | undefined = matchResults[matchResults.length - 2];
 
             // this is used as a type safety catch and cannot actually be triggered on purpose
-            // istanbul ignore next
+            /* node:coverage ignore next 5 */
             if (typeof matchIndex !== 'number') {
                 throw new TypeError(
                     `Match index "${matchIndex}" is not a number. Searching for "${searchFor}" in "${searchIn}".`,
@@ -43,7 +43,7 @@ export function getSubstringIndexes<IncludeLength extends boolean | undefined>({
             const regExpMatch: string | number | undefined = matchResults[0];
 
             // this is used as a type safety catch and cannot actually be triggered on purpose
-            // istanbul ignore next
+            /* node:coverage ignore next 5 */
             if (typeof regExpMatch !== 'string') {
                 throw new TypeError(
                     `regExpMatch should've been a string but was ${typeof regExpMatch}!`,
@@ -56,7 +56,7 @@ export function getSubstringIndexes<IncludeLength extends boolean | undefined>({
             const originalMatch = matchResults[0];
 
             // this is used as a type safety catch and cannot actually be triggered on purpose
-            // istanbul ignore next
+            /* node:coverage ignore next 5 */
             if (typeof originalMatch !== 'string') {
                 throw new TypeError(
                     `Original match when searching for "${searchFor}" in "${searchIn}" at index ${matchIndex} is not a string.`,

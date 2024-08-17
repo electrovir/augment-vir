@@ -14,26 +14,26 @@ export enum DebounceStyle {
     AfterWait = 'after-wait',
 }
 
-/** TODO: ADD EXAMPLES */
 export class Debounce {
-    private nextCallTimestamp = 0;
-    private latestCallback: (() => MaybePromise<void>) | undefined;
+    public nextCallTimestamp = 0;
+    public callback: (() => MaybePromise<void>) | undefined;
 
     constructor(
         public debounceStyle: DebounceStyle,
         public debounceDuration: AnyDuration,
-        callback?: typeof this.latestCallback | undefined,
+        callback?: typeof this.callback | undefined,
     ) {
         if (callback) {
-            this.latestCallback = callback;
+            this.callback = callback;
         }
     }
 
-    public execute(callback?: typeof this.latestCallback | undefined) {
-        if (!callback) {
+    public execute(callback?: typeof this.callback | undefined) {
+        if (callback) {
+            this.callback = callback;
+        } else if (!this.callback) {
             return;
         }
-        this.latestCallback = callback;
         const now = Date.now();
 
         if (this.nextCallTimestamp > now) {
@@ -41,11 +41,11 @@ export class Debounce {
         }
 
         if (this.debounceStyle === DebounceStyle.FirstThenWait) {
-            void this.latestCallback();
+            void this.callback();
         } else {
             setTimeout(() => {
                 /** Use whatever the latest latestCallback is. */
-                void this.latestCallback?.();
+                void this.callback?.();
             }, this.debounceDuration.milliseconds);
         }
         this.nextCallTimestamp =

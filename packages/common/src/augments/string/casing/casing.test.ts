@@ -78,14 +78,23 @@ describe(isCase.name, () => {
             inputs: [
                 '',
                 StringCaseEnum.Upper,
-                {blockNoCaseCharacters: true},
+                {failOnNoCaseCharacters: true},
             ],
             expect: false,
         },
         {
-            it: 'normally allows an empty string',
+            it: 'fails letter with no case',
             inputs: [
-                '',
+                '√',
+                StringCaseEnum.Upper,
+                {failOnNoCaseCharacters: true},
+            ],
+            expect: false,
+        },
+        {
+            it: 'passes letter with no case',
+            inputs: [
+                '√',
                 StringCaseEnum.Upper,
             ],
             expect: true,

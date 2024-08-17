@@ -75,6 +75,14 @@ describe(addSuffix.name, () => {
             },
             expect: 'stuff is here and here',
         },
+        {
+            it: 'does not add an existing suffix',
+            input: {
+                value: 'stuff is here',
+                suffix: 'here',
+            },
+            expect: 'stuff is here',
+        },
     ]);
 });
 

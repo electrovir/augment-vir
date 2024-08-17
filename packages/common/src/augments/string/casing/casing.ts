@@ -20,10 +20,10 @@ export function hasCase(input: string): boolean {
 
 export type IsCaseOptions = {
     /**
-     * Block characters that don't have different upper and lower case versions (such as
-     * punctuation).
+     * Fail on characters that don't have different upper and lower case versions (such as
+     * punctuation, like `'.'` or symbols, like `'√'`).
      */
-    blockNoCaseCharacters: boolean;
+    failOnNoCaseCharacters: boolean;
 };
 
 /**
@@ -39,15 +39,13 @@ export function isCase(
     caseType: StringCaseEnum,
     options?: PartialWithUndefined<IsCaseOptions>,
 ): boolean {
-    if (!input && options?.blockNoCaseCharacters) {
+    if (!input && options?.failOnNoCaseCharacters) {
         return false;
     }
 
-    for (const element of input) {
-        const letter = element || '';
-
+    for (const letter of input) {
         if (!hasCase(letter)) {
-            if (options?.blockNoCaseCharacters) {
+            if (options?.failOnNoCaseCharacters) {
                 return false;
             } else {
                 continue;

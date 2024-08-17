@@ -6,10 +6,18 @@ describe(addPrefix.name, () => {
         {
             it: 'adds a simple prefix',
             input: {
-                prefix: 'and ',
                 value: 'hello there',
+                prefix: 'and ',
             },
             expect: 'and hello there',
+        },
+        {
+            it: 'does not add existing prefix',
+            input: {
+                value: 'pre post',
+                prefix: 'pre',
+            },
+            expect: 'pre post',
         },
     ]);
 });
@@ -19,10 +27,18 @@ describe(removePrefix.name, () => {
         {
             it: 'removes a simple prefix',
             input: {
-                prefix: 'and ',
                 value: 'and hello there',
+                prefix: 'and ',
             },
             expect: 'hello there',
+        },
+        {
+            it: 'does nothing for missing prefix',
+            input: {
+                value: 'pre post',
+                prefix: 'something',
+            },
+            expect: 'pre post',
         },
     ]);
 });

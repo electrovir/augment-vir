@@ -73,7 +73,7 @@ describe(wrapInTry.name, () => {
             expect: 'got the fallbackValue',
         },
         {
-            it: 'works with async callback',
+            it: 'works with async callback and handle error',
             inputs: [
                 async () => {
                     await wait({milliseconds: 1});
@@ -87,6 +87,16 @@ describe(wrapInTry.name, () => {
             ],
             expect: 'got the error: yikes',
         },
+        {
+            it: 'works with async callback',
+            inputs: [
+                async () => {
+                    await wait({milliseconds: 1});
+                    throw new Error('yikes');
+                },
+            ],
+            expect: new Error('yikes'),
+        },
     ]);
 
     it('allows an undefined fallback value type', () => {
@@ -98,7 +108,21 @@ describe(wrapInTry.name, () => {
     it('types no options', () => {
         assert.tsType(wrapInTry(() => 'hello', {})).equals<Error | string>();
         assert.tsType(wrapInTry(() => 'hello')).equals<Error | string>();
-        assert.tsType(wrapInTry(async () => 'hello', {})).equals<Promise<Error | string>>();
-        assert.tsType(wrapInTry(async () => 'hello')).equals<Promise<Error | string>>();
+        assert
+            .tsType(
+                wrapInTry(async () => {
+                    await wait({milliseconds: 0});
+                    return 'hello';
+                }, {}),
+            )
+            .equals<Promise<Error | string>>();
+        assert
+            .tsType(
+                wrapInTry(async () => {
+                    await wait({milliseconds: 0});
+                    return 'hello';
+                }),
+            )
+            .equals<Promise<Error | string>>();
     });
 });

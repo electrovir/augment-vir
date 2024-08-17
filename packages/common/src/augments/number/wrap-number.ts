@@ -1,4 +1,4 @@
-import {MinMax} from './min-max.js';
+import {ensureMinMax, MinMax} from './min-max.js';
 
 /**
  * If the given value is outside the given min/max bounds, instead of clamping the number (as the
@@ -8,7 +8,9 @@ import {MinMax} from './min-max.js';
  * @example
  *     wrapNumber({min: 0, max: 100, value: 101}) == 0;
  */
-export function wrapNumber(value: number, {max, min}: MinMax): number {
+export function wrapNumber(value: number, minMax: MinMax): number {
+    const {min, max} = ensureMinMax(minMax);
+
     if (value > max) {
         return min;
     } else if (value < min) {

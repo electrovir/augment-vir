@@ -272,6 +272,75 @@ describe(mapObject.name, () => {
                 d1: 'e1',
             },
         },
+        {
+            it: 'maps an object with async callback',
+            inputs: [
+                originalObject,
+                async (key, value) => {
+                    await wait({milliseconds: 0});
+                    return {
+                        key: key + '1',
+                        value: value + '1',
+                    };
+                },
+            ],
+            expect: {
+                a1: 'b1',
+                c1: 'd1',
+                d1: 'e1',
+            },
+        },
+        {
+            it: 'handles a callback that is sometimes async',
+            inputs: [
+                originalObject,
+                (key, value) => {
+                    if (key === 'a') {
+                        return {
+                            key: key + '1',
+                            value: value + '1',
+                        };
+                    } else {
+                        return new Promise((resolve) => {
+                            resolve({
+                                key: key + '1',
+                                value: value + '1',
+                            });
+                        });
+                    }
+                },
+            ],
+            expect: {
+                a1: 'b1',
+                c1: 'd1',
+                d1: 'e1',
+            },
+        },
+        {
+            it: 'handles a sync error',
+            inputs: [
+                originalObject,
+                () => {
+                    throw new Error('fake error');
+                },
+            ],
+            throws: {
+                matchMessage: 'fake error',
+            },
+        },
+        {
+            it: 'handles an async error',
+            inputs: [
+                originalObject,
+                async () => {
+                    await wait({milliseconds: 0});
+                    throw new Error('fake error');
+                },
+            ],
+            throws: {
+                matchMessage: 'fake error',
+            },
+        },
     ]);
 
     it('correctly types an async callback', async () => {

@@ -1,5 +1,5 @@
 {
-    "name": "@augment-vir/common",
+    "name": "@augment-vir/node-js",
     "version": "30.0.0",
     "homepage": "https://github.com/electrovir/augment-vir",
     "bugs": {
@@ -22,7 +22,7 @@
         "compile": "virmator compile",
         "docs": "virmator docs",
         "test": "concurrently --colors --kill-others-on-fail -c red,blue --names node,web \"virmator --no-deps test node\" \"virmator --no-deps test web\"",
-        "test:coverage": "virmator --no-deps test web coverage",
+        "test:coverage": "virmator test node coverage",
         "test:docs": "virmator docs check",
         "test:update": "npm test"
     },
@@ -35,11 +35,13 @@
     },
     "devDependencies": {
         "@augment-vir/test": "^30.0.0",
+        "@types/node": "^22.2.0",
         "@web/dev-server-esbuild": "^1.0.2",
         "@web/test-runner": "^0.18.3",
         "@web/test-runner-commands": "^0.9.0",
         "@web/test-runner-playwright": "^0.11.0",
         "@web/test-runner-visual-regression": "^0.9.0",
+        "c8": "^10.1.2",
         "concurrently": "^8.2.2",
         "istanbul-smart-text-reporter": "^1.1.4"
     },

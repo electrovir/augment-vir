@@ -50,4 +50,38 @@ describe(Debounce.name, () => {
         });
         assert.isAbove(duration.milliseconds, 450);
     });
+
+    it('accepts a callback on construction', async () => {
+        let callCount = 0;
+        const debounce = new Debounce(
+            DebounceStyle.AfterWait,
+            {
+                milliseconds: 500,
+            },
+            () => {
+                ++callCount;
+            },
+        );
+        debounce.execute();
+        debounce.execute();
+        assert.strictEquals(callCount, 0);
+        const duration = await measureExecutionDuration(async () => {
+            while (callCount < 1) {
+                debounce.execute(() => {
+                    callCount++;
+                });
+                await wait({milliseconds: 100});
+            }
+        });
+        assert.isAbove(duration.milliseconds, 450);
+    });
+    it('skips execution if missing callback', async () => {
+        const debounce = new Debounce(DebounceStyle.FirstThenWait, {
+            milliseconds: 500,
+        });
+        debounce.execute();
+        debounce.execute();
+        assert.strictEquals(debounce.nextCallTimestamp, 0);
+        assert.isUndefined(debounce.callback);
+    });
 });

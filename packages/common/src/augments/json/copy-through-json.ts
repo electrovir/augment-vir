@@ -1,10 +1,10 @@
-import JSON5 from 'json5';
-import {Writable} from 'type-fest';
+import {Jsonify, Writable} from 'type-fest';
 
-/** The input here must be serializable otherwise JSON parsing errors will be thrown */
-export function copyThroughJson<T>(input: Readonly<T>): Writable<T> {
+/** The input here must be serializable otherwise the output will not match the input. */
+export function copyThroughJson<const T>(input: Readonly<T>): Writable<Jsonify<T>> {
     try {
-        return JSON5.parse(JSON5.stringify(input));
+        return JSON.parse(JSON.stringify(input));
+        /* node:coverage ignore next 4 */
     } catch (error) {
         console.error(`Failed to JSON copy for`, input);
         throw error;

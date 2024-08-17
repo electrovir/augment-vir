@@ -53,6 +53,57 @@ describe(selectCollapsedFrom.name, () => {
             ],
         },
         {
+            it: 'stops collapsing if there are more than 1 key',
+            inputs: [
+                {
+                    hi: 'hi',
+                    bye: 3,
+                    parent: {
+                        child: {
+                            grandChild: {
+                                child: 'hi',
+                                child2: 3,
+                                child3: /something/,
+                            },
+                        },
+                        child2: {
+                            grandChild: {
+                                child: 'hi',
+                                child2: 4,
+                                child3: /something/,
+                            },
+                        },
+                    },
+                },
+                {
+                    parent: {
+                        child: {
+                            grandChild: {
+                                child: true,
+                            },
+                        },
+                        child2: {
+                            grandChild: {
+                                child2: true,
+                            },
+                        },
+                    },
+                },
+            ],
+            expect: {
+                child: {
+                    grandChild: {
+                        child: 'hi',
+                    },
+                },
+                child2: {
+                    grandChild: {
+                        child2: 4,
+                    },
+                },
+            },
+        },
+        {
             it: 'does not collapse past the selected object',
             inputs: [
                 {

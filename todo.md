@@ -18,9 +18,10 @@
     -   the callback is triggered
     -   the callback is skipped
 -   100% test coverage
--   fix v30 changelog
--   add other v29 augment-vir packages
+-   re-review v30 changelog
+-   add other augment-vir packages from v29
 -   create a single documentation output
+-   add debounce examples
 
 ## Immediately after v30 release
 

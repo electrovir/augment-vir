@@ -1,7 +1,6 @@
-/** Wraps `value` on both sides with `wrapper`. */
+import {addPrefix} from './prefix.js';
+import {addSuffix} from './suffix.js';
+
 export function wrapString({value, wrapper}: {value: string; wrapper: string}): string {
-    return [
-        wrapper,
-        wrapper,
-    ].join(value);
+    return addPrefix({value: addSuffix({value, suffix: wrapper}), prefix: wrapper});
 }

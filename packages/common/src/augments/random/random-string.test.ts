@@ -15,11 +15,9 @@ describe(randomString.name, () => {
             'some "random" strings were removed when converting to a set, meaning there were duplicates.',
         );
     });
-
     it('uses the given length parameter', () => {
         assert.isLengthAtLeast(randomString(4), 4);
     });
-
     it('does not favor any one letter', () => {
         const letters: Record<string, number> = {};
         const iterationCount = 1_000_000;
