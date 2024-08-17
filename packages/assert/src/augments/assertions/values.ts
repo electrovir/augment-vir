@@ -10,16 +10,20 @@ export type ValueParentBase = object | string;
 
 /** Check if an object has the given value through reference equality. */
 function hasValue(parent: object, value: unknown, failureMessage?: string | undefined) {
-    const baseMessage = `'${JSON5.stringify(parent)}' does not have value '${JSON5.stringify(value)}'.`;
-    if (!parent) {
-        throw new AssertionError(baseMessage, failureMessage);
-    }
-    const hasValue = Reflect.ownKeys(parent)
-        .map((key) => parent[key as keyof typeof parent] as unknown)
-        .includes(value);
+    /** Wrap this in a try/catch because `Reflect.ownKeys` can fail depending on what its input is. */
+    try {
+        const hasValue = Reflect.ownKeys(parent)
+            .map((key) => parent[key as keyof typeof parent] as unknown)
+            .includes(value);
 
-    if (!hasValue) {
-        throw new AssertionError(baseMessage, failureMessage);
+        if (!hasValue) {
+            throw new Error('fail');
+        }
+    } catch {
+        throw new AssertionError(
+            `'${JSON5.stringify(parent)}' does not have value '${JSON5.stringify(value)}'.`,
+            failureMessage,
+        );
     }
 }
 function lacksValue(parent: object, value: unknown, failureMessage?: string | undefined) {

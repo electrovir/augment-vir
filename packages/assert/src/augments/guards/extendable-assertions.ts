@@ -1,6 +1,7 @@
 import type {ArrayElement} from '@augment-vir/core';
 import type {UnionToIntersection} from 'type-fest';
 import {booleanGuards} from '../assertions/boolean.js';
+import {boundaryGuards} from '../assertions/boundary.js';
 import {enumGuards} from '../assertions/enum.js';
 import {entryEqualityGuards} from '../assertions/equality/entry-equality.js';
 import {jsonEqualityGuards} from '../assertions/equality/json-equality.js';
@@ -21,23 +22,24 @@ import {AssertFunction} from '../guard-types/assert-function.js';
 import {GuardGroup} from '../guard-types/guard-group.js';
 
 export const extendableAssertions = {
-    ...lengthGuards.assertions,
     ...booleanGuards.assertions,
+    ...boundaryGuards.assertions,
     ...entryEqualityGuards.assertions,
     ...enumGuards.assertions,
     ...instanceGuards.assertions,
     ...jsonEqualityGuards.assertions,
     ...keyGuards.assertions,
+    ...lengthGuards.assertions,
     ...nullishGuards.assertions,
     ...numericGuards.assertions,
     ...primitiveGuards.assertions,
     ...promiseGuards.assertions,
+    ...regexpGuards.assertions,
     ...runtimeTypeGuards.assertions,
     ...simpleEqualityGuards.assertions,
     ...throwGuards.assertions,
     ...uuidGuards.assertions,
     ...valueGuards.assertions,
-    ...regexpGuards.assertions,
 } satisfies Record<PropertyKey, AssertFunction<any>>;
 
 /**
@@ -46,23 +48,24 @@ export const extendableAssertions = {
  */
 
 export const guardOverrides = [
-    lengthGuards,
     booleanGuards,
+    boundaryGuards,
     entryEqualityGuards,
     enumGuards,
     instanceGuards,
     jsonEqualityGuards,
     keyGuards,
+    lengthGuards,
     nullishGuards,
     numericGuards,
     primitiveGuards,
     promiseGuards,
+    regexpGuards,
     runtimeTypeGuards,
     simpleEqualityGuards,
     throwGuards,
     uuidGuards,
     valueGuards,
-    regexpGuards,
 ] as const satisfies GuardGroup[];
 
 export const checkOverrides: UnionToIntersection<
