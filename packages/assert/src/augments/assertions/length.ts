@@ -1,15 +1,16 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
-import {getObjectTypedKeys, MaybePromise, Tuple, type AnyObject} from '@augment-vir/core';
+import {
+    getObjectTypedKeys,
+    MaybePromise,
+    Tuple,
+    type AnyObject,
+    type AtLeastTuple,
+} from '@augment-vir/core';
 import {AssertionError} from '../assertion.error.js';
 import type {GuardGroup} from '../guard-types/guard-group.js';
 import {autoGuard} from '../guard-types/guard-override.js';
 import {WaitUntilOptions} from '../guard-types/wait-until-function.js';
-
-export type AtLeastTuple<ArrayElementGeneric, LengthGeneric extends number> = readonly [
-    ...Tuple<ArrayElementGeneric, LengthGeneric>,
-    ...ArrayElementGeneric[],
-];
 
 function isLengthAtLeast<const Element, const Length extends number>(
     actual: ReadonlyArray<Element | undefined>,

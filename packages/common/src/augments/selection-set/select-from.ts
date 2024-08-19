@@ -1,6 +1,6 @@
 import type {AnyObject} from '@augment-vir/core';
+import {mapObjectValues} from '../object/map-values.js';
 import {omitObjectKeys} from '../object/object-keys.js';
-import {mapObjectValues} from '../object/object-map.js';
 import {PickSelection, SelectionSet, shouldPreserveInSelectionSet} from './selection-set.js';
 
 export function selectFrom<

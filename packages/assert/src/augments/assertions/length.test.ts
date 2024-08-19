@@ -1,4 +1,4 @@
-import type {Tuple} from '@augment-vir/core';
+import type {AtLeastTuple, Tuple} from '@augment-vir/core';
 import {describe, it} from '@augment-vir/test';
 import {assertWrap} from '../guards/assert-wrap.js';
 import {assert} from '../guards/assert.js';
@@ -6,7 +6,6 @@ import {checkWrap} from '../guards/check-wrap.js';
 import {check} from '../guards/check.js';
 import {waitUntil} from '../guards/wait-until.js';
 import {waitUntilTestOptions} from '../test-timeout.mock.js';
-import type {AtLeastTuple} from './length.js';
 
 describe('isLengthAtLeast', () => {
     const actualPass: string[] = [

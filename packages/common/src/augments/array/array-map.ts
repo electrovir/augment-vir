@@ -1,5 +1,5 @@
+import type {ArrayElement} from '@augment-vir/core';
 import {Writable} from '../type/writable.js';
-import {ArrayElement} from './array-element.js';
 
 /**
  * This type should not be used outside of this file. This is used to match the

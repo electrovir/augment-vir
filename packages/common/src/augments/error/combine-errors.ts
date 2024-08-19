@@ -1,6 +1,5 @@
 import {check} from '@augment-vir/assert';
-import {extractErrorMessage} from '@augment-vir/core';
-import {AtLeastTuple} from '../array/tuple.js';
+import {extractErrorMessage, type AtLeastTuple} from '@augment-vir/core';
 
 export function combineErrors(errors: AtLeastTuple<Error, 1>): Error;
 export function combineErrors(errors: ReadonlyArray<Error>): Error | undefined;

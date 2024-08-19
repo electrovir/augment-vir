@@ -1,6 +1,10 @@
 import {check} from '@augment-vir/assert';
-import {ensureError, type MaybePromise, type PartialWithUndefined} from '@augment-vir/core';
-import type {NoInputsFunction} from './generic-function-types.js';
+import {
+    ensureError,
+    type MaybePromise,
+    type NoInputsFunction,
+    type PartialWithUndefined,
+} from '@augment-vir/core';
 
 export type WrapInTryOptions<FallbackValue> = PartialWithUndefined<{
     /**

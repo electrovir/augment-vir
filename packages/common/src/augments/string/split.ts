@@ -1,4 +1,4 @@
-import {AtLeastTuple} from '../array/tuple.js';
+import type {AtLeastTuple} from '@augment-vir/core';
 import {makeCaseInsensitiveRegExp} from '../regexp/regexp-flags.js';
 import {getSubstringIndexes} from './substring-index.js';
 

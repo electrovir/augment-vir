@@ -17,11 +17,3 @@ export function pickObjectKeys<const ObjectGeneric, const KeyGeneric extends key
         return pickTheseKeys.includes(currentKey as KeyGeneric);
     }) as Pick<ObjectGeneric, KeyGeneric>;
 }
-
-export type ExtractKeysWithMatchingValues<OriginalObject extends object, Matcher> = keyof {
-    [Prop in keyof OriginalObject as OriginalObject[Prop] extends Matcher ? Prop : never]: Prop;
-};
-
-export type ExcludeKeysWithMatchingValues<OriginalObject extends object, Matcher> = keyof {
-    [Prop in keyof OriginalObject as OriginalObject[Prop] extends Matcher ? never : Prop]: Prop;
-};

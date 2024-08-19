@@ -1,9 +1,7 @@
 .*
 .not-committed/
-*.book-helper.*
 *.book.*
 *.d.ts.map
-*.test-helper.*
 *.test.*
 *.tgz
 **/*/readme-examples/
