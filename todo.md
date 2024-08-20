@@ -20,10 +20,15 @@
 -   fill in package.json descriptions
 -   re-review v30 changelog
 -   add other augment-vir packages from v29
+    -   put node-only prisma augments into `@augment-vir/node`
+    -   transfer type-only prisma augments to `@augment-vir/prisma`
+    -   transfer scripts (private)
+    -   transfer `@augment-vir/browser` to `@augment-vir/web`
 -   create a single documentation output
 -   add debounce examples
 -   add script that ensure we export all augments
 -   write a script that produces a `HttpStatusCode` enum from parsing this page: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status#information_responses
+-   add `BasePrismaModel` type that's like `FullModel` but doesn't include relations
 
 ## Immediately after v30 release
 

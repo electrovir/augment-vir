@@ -1,4 +1,5 @@
 export * from './augments/console/log.js';
+export * from './augments/docker.js';
 export * from './augments/download.js';
 export * from './augments/fs/json.js';
 export * from './augments/fs/read-dir.js';

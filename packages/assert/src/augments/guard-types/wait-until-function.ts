@@ -66,7 +66,7 @@ async function executeWaitUntil<const Assert extends AssertFunction<any>>(
         await wait(interval);
         if (Date.now() - startTime >= timeout) {
             const message = failureMessage ? `${failureMessage}: ` : '';
-            const preMessage = `${message}Timeout of '${timeout}' milliseconds exceeded waiting for callback value to match expectations.`;
+            const preMessage = `${message}Timeout of '${timeout}' milliseconds exceeded waiting for callback value to match expectations`;
             throw ensureErrorAndPrependMessage(lastError, preMessage);
         }
     }
@@ -160,6 +160,9 @@ function parseWaitUntilArgs(rawArgs: unknown[]) {
             args.failureMessage = arg;
         } else if (typeof arg === 'object') {
             args.options = arg as AnyObject;
+        } else if (arg === undefined) {
+            // skip
+            return;
         } else {
             throw new TypeError(`Unexpected waitUntil arg: ${JSON.stringify(arg)}`);
         }
