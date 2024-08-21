@@ -1,7 +1,7 @@
 import {assert} from '@augment-vir/assert';
-import {isElementFocused} from '@augment-vir/web';
-import {nextFrame} from '@open-wc/testing';
 import {clickElement} from './click-element.js';
+import {waitForAnimationFrame} from './symlinked/animation-frame.js';
+import {isElementFocused} from './symlinked/element-focus.js';
 
 export async function focusElement(element: Element, maxAttemptCount: number = 20) {
     let attempts = 0;
@@ -11,7 +11,7 @@ export async function focusElement(element: Element, maxAttemptCount: number = 2
             await clickElement(element);
         }
         if (!isElementFocused(element)) {
-            await nextFrame();
+            await waitForAnimationFrame();
         }
     }
     assert.isBelow(

@@ -36,3 +36,7 @@ export const runtimeEnv = determineRuntimeEnv();
 export function isRuntimeEnv(itItThisEnv: RuntimeEnv): boolean {
     return runtimeEnv === itItThisEnv;
 }
+
+export class RuntimeEnvError extends Error {
+    public override readonly name = 'RuntimeEnvError';
+}

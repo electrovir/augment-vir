@@ -1,28 +1,28 @@
 import {DeferredPromise, wrapPromiseInTimeout} from '@augment-vir/common';
-import {describe, it} from '@augment-vir/test';
-import {fixture} from '@open-wc/testing';
 import {html, listen} from 'element-vir';
-import {clickElement, moveToElement} from './click-element.js';
+import {describe} from '../universal-testing-suite/universal-describe.js';
+import {it} from '../universal-testing-suite/universal-it.js';
+import {testWeb} from './index.js';
 
-describe(clickElement.name, () => {
+describe(testWeb.click.name, () => {
     it('clicks an element', async () => {
         const deferredClick = new DeferredPromise<void>();
 
-        const element = await fixture(html`
+        const element = await testWeb.render(html`
             <button ${listen('click', () => deferredClick.resolve())}></button>
         `);
 
-        await clickElement(element);
+        await testWeb.click(element);
 
         await wrapPromiseInTimeout({seconds: 5}, deferredClick.promise);
     });
 });
 
-describe(moveToElement.name, () => {
+describe(testWeb.moveMouseTo.name, () => {
     it('moves to an element', async () => {
         const deferredMove = new DeferredPromise<void>();
 
-        const element = await fixture(html`
+        const element = await testWeb.render(html`
             <button
                 ${listen('mouseenter', (event) => {
                     deferredMove.resolve();
@@ -30,7 +30,7 @@ describe(moveToElement.name, () => {
             ></button>
         `);
 
-        await moveToElement(element);
+        await testWeb.moveMouseTo(element);
 
         await wrapPromiseInTimeout({seconds: 5}, deferredMove.promise);
     });

@@ -4,7 +4,7 @@ import {
     type AnyFunction,
     type TypedFunction,
 } from '@augment-vir/core';
-import {assertOutputWithCustomAssertion, CustomAsserter} from '../function/assert-output.js';
+import {assertOutputWithCustomAssertion, CustomAsserter} from './assert-output.js';
 import {it} from './universal-it.js';
 
 export type BaseTestCase<OutputGeneric> = {

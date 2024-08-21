@@ -1,5 +1,5 @@
-import {getCenterOfElement} from '@augment-vir/web';
 import {sendMouse} from '@web/test-runner-commands';
+import {getCenterOfElement} from './symlinked/element-position.js';
 
 async function sendMouseToMiddleOfElement(
     element: Element,

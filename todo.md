@@ -27,9 +27,11 @@
 -   add script that ensure we export all augments
 -   write a script that produces a `HttpStatusCode` enum from parsing this page: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status#information_responses
 -   remove punctuation at end of exiting message in `prepend error message` method
+-   move `assertOutput` to `@augment-vir/assert`
 
 ## Immediately after v30 release
 
+-   update `html-spec-tags`
 -   add `parseJsonWithShape` to `object-shape-tester`
 -   rename `runtimeType` in `object-shape-tester`
 -   finish updating `date-vir`
