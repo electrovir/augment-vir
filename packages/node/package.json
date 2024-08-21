@@ -21,8 +21,8 @@
     "scripts": {
         "compile": "virmator compile",
         "docs": "virmator docs",
-        "test": "virmator --no-deps test node",
-        "test:coverage": "virmator test node coverage",
+        "test": "virmator --no-deps test node --test-concurrency 1",
+        "test:coverage": "virmator test node coverage --test-concurrency 1",
         "test:docs": "virmator docs check",
         "test:update": "npm test"
     },
@@ -33,11 +33,13 @@
         "@date-vir/duration": "^6.0.0",
         "ansi-styles": "^6.2.1",
         "json5": "^2.2.3",
+        "terminate": "^2.8.0",
         "type-fest": "^4.24.0",
         "typed-event-target": "^3.4.0"
     },
     "devDependencies": {
         "@augment-vir/test": "^30.0.0",
+        "@prisma/client": "^5.18.0",
         "@types/node": "^22.2.0",
         "@web/dev-server-esbuild": "^1.0.2",
         "@web/test-runner": "^0.18.3",
@@ -46,7 +48,8 @@
         "@web/test-runner-visual-regression": "^0.9.0",
         "c8": "^10.1.2",
         "concurrently": "^8.2.2",
-        "istanbul-smart-text-reporter": "^1.1.4"
+        "istanbul-smart-text-reporter": "^1.1.4",
+        "prisma": "^5.18.0"
     },
     "engines": {
         "node": ">=22"

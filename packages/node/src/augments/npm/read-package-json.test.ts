@@ -1,18 +1,18 @@
 import {describe, itCases} from '@augment-vir/test';
 import {join} from 'node:path';
-import {augmentVirRepoDirPath, invalidPackageDirPath} from '../../file-paths.mock.js';
+import {invalidPackageDirPath, monoRepoDirPath} from '../../file-paths.mock.js';
 import {readPackageJson} from './read-package-json.js';
 
 describe(readPackageJson.name, () => {
     itCases(readPackageJson, [
         {
             it: 'reads a valid package.json file',
-            input: augmentVirRepoDirPath,
+            input: monoRepoDirPath,
             throws: undefined,
         },
         {
             it: 'errors on a missing package.json file',
-            input: join(augmentVirRepoDirPath, 'packages'),
+            input: join(monoRepoDirPath, 'packages'),
             throws: {
                 matchConstructor: TypeError,
             },

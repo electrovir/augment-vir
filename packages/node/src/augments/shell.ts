@@ -106,8 +106,8 @@ export type RunShellCommandParams = {
     /** Automatically hook up stdout and stderr printing to the caller's console methods. */
     hookUpToConsole?: boolean | undefined;
     rejectOnError?: boolean | undefined;
-    stdoutCallback?: (stdout: string) => MaybePromise<void> | undefined;
-    stderrCallback?: (stderr: string) => MaybePromise<void> | undefined;
+    stdoutCallback?: (stdout: string, childProcess: ChildProcess) => MaybePromise<void> | undefined;
+    stderrCallback?: (stderr: string, childProcess: ChildProcess) => MaybePromise<void> | undefined;
 };
 
 function prepareChunkForLogging(chunk: string | Buffer, trimEndingLine: boolean): string {
@@ -135,7 +135,10 @@ export async function runShellCommand(
 
         shellTarget.listen(ShellStdoutEvent, ({detail: chunk}) => {
             if (options.stdoutCallback) {
-                void options.stdoutCallback(prepareChunkForLogging(chunk, false));
+                void options.stdoutCallback(
+                    prepareChunkForLogging(chunk, false),
+                    shellTarget.childProcess,
+                );
             }
             if (options.hookUpToConsole) {
                 process.stdout.write(prepareChunkForLogging(chunk, true) + '\n');
@@ -144,7 +147,10 @@ export async function runShellCommand(
         });
         shellTarget.listen(ShellStderrEvent, ({detail: chunk}) => {
             if (options.stderrCallback) {
-                void options.stderrCallback(prepareChunkForLogging(chunk, false));
+                void options.stderrCallback(
+                    prepareChunkForLogging(chunk, false),
+                    shellTarget.childProcess,
+                );
             }
             if (options.hookUpToConsole) {
                 process.stderr.write(prepareChunkForLogging(chunk, true) + '\n');

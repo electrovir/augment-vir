@@ -1,18 +1,14 @@
 import {describe, it} from '@augment-vir/test';
 import {rm, writeFile} from 'node:fs/promises';
 import {dirname, join} from 'node:path';
-import {
-    augmentVirRepoDirPath,
-    nodePackageDir,
-    tempWorkspaceQueryFile,
-} from '../../file-paths.mock.js';
+import {monoRepoDirPath, nodePackageDir, tempWorkspaceQueryFile} from '../../file-paths.mock.js';
 import {interpolationSafeWindowsPath, toPosixPath} from '../path.js';
 import {runShellCommand} from '../shell.js';
 import {queryNpmWorkspace} from './query-workspace.js';
 
 describe(queryNpmWorkspace.name, () => {
     it('reads proper types', async () => {
-        const data = await queryNpmWorkspace(augmentVirRepoDirPath);
+        const data = await queryNpmWorkspace(monoRepoDirPath);
 
         const stringifiedData = JSON.stringify(data, null, 4);
 
