@@ -1,0 +1,48 @@
+{
+    "name": "@augment-vir/web-test",
+    "version": "30.0.0",
+    "homepage": "https://github.com/electrovir/augment-vir",
+    "bugs": {
+        "url": "https://github.com/electrovir/augment-vir/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/electrovir/augment-vir.git"
+    },
+    "license": "(MIT or CC0 1.0)",
+    "author": {
+        "name": "electrovir",
+        "url": "https://github.com/electrovir"
+    },
+    "type": "module",
+    "main": "src/index.ts",
+    "module": "src/index.ts",
+    "types": "src/index.ts",
+    "scripts": {
+        "compile": "virmator compile",
+        "docs": "virmator docs",
+        "test": "virmator --no-deps test web",
+        "test:coverage": "virmator --no-deps test web coverage",
+        "test:docs": "virmator docs check",
+        "test:update": "npm test"
+    },
+    "dependencies": {
+        "@augment-vir/assert": "^30.0.0",
+        "@augment-vir/web": "^30.0.0"
+    },
+    "devDependencies": {
+        "@augment-vir/common": "^30.0.0",
+        "@augment-vir/test": "^30.0.0",
+        "element-vir": "^22.2.2"
+    },
+    "peerDependencies": {
+        "@open-wc/testing": ">=4.0.0",
+        "@web/test-runner-commands": ">=0.9.0"
+    },
+    "engines": {
+        "node": ">=22"
+    },
+    "publishConfig": {
+        "access": "public"
+    }
+}
