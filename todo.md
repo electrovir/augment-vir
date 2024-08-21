@@ -13,6 +13,7 @@
     -   the callback is triggered
     -   the callback is skipped
 -   make more node.js augments compatible with common
+-   make `isElementVisible` work in more situations (see its stackoverflow link)
 
 ## Before v30 release
 

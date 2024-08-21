@@ -1,6 +1,6 @@
 import {check} from '@augment-vir/assert';
 import {runShellCommand} from '../../augments/shell.js';
-import {updateImage} from '../image.js';
+import {updateImage} from '../docker-image.js';
 import {waitUntilContainerRunning} from './container-status.js';
 import {
     DockerEnvMap,

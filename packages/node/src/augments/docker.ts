@@ -16,12 +16,12 @@ import {killContainer} from '../docker/containers/kill-container.js';
 import {runContainerCommand} from '../docker/containers/run-command.js';
 import {runContainer} from '../docker/containers/run-container.js';
 import {tryOrKillContainer} from '../docker/containers/try-or-kill-container.js';
-import {isDockerRunning, startDocker} from '../docker/docker-startup.js';
 import {
     isImageInLocalRegistry,
     removeImageFromLocalRegistry,
     updateImage,
-} from '../docker/image.js';
+} from '../docker/docker-image.js';
+import {isDockerRunning, startDocker} from '../docker/docker-startup.js';
 
 export {
     DockerContainerStatusEnum,
