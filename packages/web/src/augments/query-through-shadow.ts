@@ -1,6 +1,6 @@
 import {check} from '@augment-vir/assert';
 import type {PartialWithUndefined} from '@augment-vir/common';
-import JSON5 from 'json5';
+import {stringify} from '@augment-vir/core';
 
 export type QueryThroughShadowOptions = PartialWithUndefined<{
     all: boolean;
@@ -96,7 +96,7 @@ function handleNestedQueries(
     /* node:coverage ignore next 7 */
     if (!firstQuery) {
         throw new Error(
-            `Somehow the first query was empty in '[${queries.join(',')}]' for query '${JSON5.stringify(originalQuery)}'`,
+            `Somehow the first query was empty in '[${queries.join(',')}]' for query '${stringify(originalQuery)}'`,
         );
     }
     const results = queryThroughShadow(element, firstQuery, options);

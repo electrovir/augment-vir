@@ -18,7 +18,7 @@ export * from './augments/function/call-with-retries.js';
 export * from './augments/function/debounce.js';
 export * from './augments/function/execution-duration.js';
 export * from './augments/function/wrap-in-try.js';
-export * from './augments/http/https-status.js';
+export * from './augments/http/http-status.js';
 export * from './augments/json/copy-through-json.js';
 export * from './augments/json/json-compatible.js';
 export * from './augments/json/jsonify.js';

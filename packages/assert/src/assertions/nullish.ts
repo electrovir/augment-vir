@@ -1,5 +1,4 @@
-import {MaybePromise} from '@augment-vir/core';
-import JSON5 from 'json5';
+import {MaybePromise, stringify} from '@augment-vir/core';
 import {AssertionError} from '../augments/assertion.error.js';
 import type {GuardGroup} from '../augments/guard-types/guard-group.js';
 import {autoGuard} from '../augments/guard-types/guard-override.js';
@@ -13,7 +12,7 @@ function isDefined<const Actual>(
     failureMessage?: string | undefined,
 ): asserts input is Exclude<Actual, undefined | null> {
     if (input == undefined) {
-        throw new AssertionError(`'${JSON5.stringify(input)}' is not defined.`, failureMessage);
+        throw new AssertionError(`'${stringify(input)}' is not defined.`, failureMessage);
     }
 }
 
@@ -25,7 +24,7 @@ function isNullish(
     failureMessage?: string | undefined,
 ): asserts input is null | undefined {
     if (input != undefined) {
-        throw new AssertionError(`'${JSON5.stringify(input)}' is not a nullish.`, failureMessage);
+        throw new AssertionError(`'${stringify(input)}' is not a nullish.`, failureMessage);
     }
 }
 

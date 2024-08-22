@@ -1,6 +1,6 @@
+import {stringify} from '@augment-vir/core';
 import {describe, itCases, testWeb} from '@augment-vir/test';
 import {defineElementNoInputs, html} from 'element-vir';
-import JSON5 from 'json5';
 import {queryThroughShadow} from '../query-through-shadow.js';
 import {toTagOrDefinition} from './tag-or-definition.js';
 
@@ -24,7 +24,7 @@ async function runToTagOrDefinitionTest(query: string | {tagName: string}) {
     const foundChild = queryThroughShadow(rendered, query, {all: true})[0];
 
     if (!foundChild) {
-        throw new Error(`Found no children by query: ${JSON5.stringify(query)}`);
+        throw new Error(`Found no children by query: ${stringify(query)}`);
     }
 
     return toTagOrDefinition(foundChild);

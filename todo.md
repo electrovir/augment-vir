@@ -22,9 +22,9 @@
 -   re-review v30 changelog
 -   create a single documentation output
 -   add debounce examples
--   write a script that produces a `HttpStatusCode` enum from parsing this page: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status#information_responses
 -   remove punctuation at end of exiting message in `prepend error message` method
 -   move `assertOutput` to `@augment-vir/assert`
+-   move `isHttpStatusCategory`to `@augment-vir/assert` (maybe?)
 
 ## Immediately after v30 release
 

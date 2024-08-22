@@ -3,9 +3,9 @@ import {
     MaybePromise,
     NarrowToActual,
     NarrowToExpected,
+    stringify,
     UnknownObject,
 } from '@augment-vir/core';
-import JSON5 from 'json5';
 import {AssertionError} from '../augments/assertion.error.js';
 import type {GuardGroup} from '../augments/guard-types/guard-group.js';
 import {autoGuard} from '../augments/guard-types/guard-override.js';
@@ -554,7 +554,7 @@ function assertRuntimeType(
     const actualType = getRuntimeType(actual);
     if (actualType !== testType) {
         throw new AssertionError(
-            `'${JSON5.stringify(actual)}' is '${actualType}', not '${testType}'.`,
+            `'${stringify(actual)}' is '${actualType}', not '${testType}'.`,
             failureMessage,
         );
     }
@@ -566,9 +566,6 @@ function assertNotRuntimeType(
 ) {
     const actualType = getRuntimeType(actual);
     if (actualType === testType) {
-        throw new AssertionError(
-            `'${JSON5.stringify(actual)}' is '${actualType}'.`,
-            failureMessage,
-        );
+        throw new AssertionError(`'${stringify(actual)}' is '${actualType}'.`, failureMessage);
     }
 }

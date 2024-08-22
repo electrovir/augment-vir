@@ -1,5 +1,4 @@
-import {MaybePromise, NarrowToExpected} from '@augment-vir/core';
-import JSON5 from 'json5';
+import {MaybePromise, NarrowToExpected, stringify} from '@augment-vir/core';
 import {AssertionError} from '../augments/assertion.error.js';
 import type {GuardGroup} from '../augments/guard-types/guard-group.js';
 import {autoGuard} from '../augments/guard-types/guard-override.js';
@@ -12,7 +11,7 @@ export type Truthy<T> = Exclude<T, FalsyValue>;
 
 function isFalsy(input: unknown, failureMessage?: string | undefined): asserts input is FalsyValue {
     if (input) {
-        throw new AssertionError(`'${JSON5.stringify(input)}' is not truthy.`, failureMessage);
+        throw new AssertionError(`'${stringify(input)}' is not truthy.`, failureMessage);
     }
 }
 
@@ -21,19 +20,19 @@ function isTruthy<const Actual>(
     failureMessage?: string | undefined,
 ): asserts input is Truthy<Actual> {
     if (!input) {
-        throw new AssertionError(`'${JSON5.stringify(input)}' is not truthy.`, failureMessage);
+        throw new AssertionError(`'${stringify(input)}' is not truthy.`, failureMessage);
     }
 }
 
 function isTrue(input: unknown, failureMessage?: string | undefined): asserts input is true {
     if (input !== true) {
-        throw new AssertionError(`'${JSON5.stringify(input)}' is not true.`, failureMessage);
+        throw new AssertionError(`'${stringify(input)}' is not true.`, failureMessage);
     }
 }
 
 function isFalse(input: unknown, failureMessage?: string | undefined): asserts input is false {
     if (input !== false) {
-        throw new AssertionError(`'${JSON5.stringify(input)}' is not false.`, failureMessage);
+        throw new AssertionError(`'${stringify(input)}' is not false.`, failureMessage);
     }
 }
 

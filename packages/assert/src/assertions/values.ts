@@ -1,6 +1,5 @@
 import type {NarrowToActual, NarrowToExpected} from '@augment-vir/core';
-import {AnyObject, MaybePromise, Values} from '@augment-vir/core';
-import JSON5 from 'json5';
+import {AnyObject, MaybePromise, stringify, Values} from '@augment-vir/core';
 import type {EmptyObject} from 'type-fest';
 import {AssertionError} from '../augments/assertion.error.js';
 import {autoGuard} from '../augments/guard-types/guard-override.js';
@@ -21,7 +20,7 @@ function hasValue(parent: object, value: unknown, failureMessage?: string | unde
         }
     } catch {
         throw new AssertionError(
-            `'${JSON5.stringify(parent)}' does not have value '${JSON5.stringify(value)}'.`,
+            `'${stringify(parent)}' does not have value '${stringify(value)}'.`,
             failureMessage,
         );
     }
@@ -34,7 +33,7 @@ function lacksValue(parent: object, value: unknown, failureMessage?: string | un
     }
 
     throw new AssertionError(
-        `'${JSON5.stringify(parent)}' has value '${JSON5.stringify(value)}'.`,
+        `'${stringify(parent)}' has value '${stringify(value)}'.`,
         failureMessage,
     );
 }
@@ -62,10 +61,7 @@ function isIn<const Parent extends ValueParentBase>(
 ): asserts child is Values<Parent> {
     if (typeof parent === 'string') {
         if (!parent.includes(child as string)) {
-            throw new AssertionError(
-                `${JSON5.stringify(child)} is not in '${parent}'.`,
-                failureMessage,
-            );
+            throw new AssertionError(`${stringify(child)} is not in '${parent}'.`, failureMessage);
         }
     } else {
         hasValue(parent, child, failureMessage);
@@ -82,10 +78,7 @@ function isNotIn<const Parent extends ValueParentBase, const Child>(
         return;
     }
 
-    throw new AssertionError(
-        `${JSON5.stringify(child)} is not in ${JSON5.stringify(parent)}.`,
-        failureMessage,
-    );
+    throw new AssertionError(`${stringify(child)} is not in ${stringify(parent)}.`, failureMessage);
 }
 
 export type CanBeEmpty = string | Map<any, any> | Set<any> | AnyObject | any[];
@@ -100,7 +93,7 @@ function isEmpty<const Actual extends CanBeEmpty>(
     if (!input) {
         return;
     } else if (typeof input !== 'string' && typeof input !== 'object') {
-        throw new TypeError(`Cannot check if '${JSON5.stringify(input)}' is empty.`);
+        throw new TypeError(`Cannot check if '${stringify(input)}' is empty.`);
     } else if (
         (typeof input === 'string' && input) ||
         (Array.isArray(input) && input.length) ||
@@ -108,7 +101,7 @@ function isEmpty<const Actual extends CanBeEmpty>(
         (input instanceof Set && input.size) ||
         (input && typeof input === 'object' && Object.keys(input).length)
     ) {
-        throw new AssertionError(`'${JSON5.stringify(actual)}' is not empty.`, failureMessage);
+        throw new AssertionError(`'${stringify(actual)}' is not empty.`, failureMessage);
     }
 }
 function isNotEmpty<const Actual extends CanBeEmpty>(
@@ -121,7 +114,7 @@ function isNotEmpty<const Actual extends CanBeEmpty>(
         return;
     }
 
-    throw new AssertionError(`'${JSON5.stringify(actual)}' is empty.`, failureMessage);
+    throw new AssertionError(`'${stringify(actual)}' is empty.`, failureMessage);
 }
 
 const assertions: {

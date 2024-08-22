@@ -1,5 +1,4 @@
-import {MaybePromise} from '@augment-vir/core';
-import JSON5 from 'json5';
+import {MaybePromise, stringify} from '@augment-vir/core';
 import {Constructor} from 'type-fest';
 import {AssertionError} from '../augments/assertion.error.js';
 import type {GuardGroup} from '../augments/guard-types/guard-group.js';
@@ -16,7 +15,7 @@ function instanceOf<const Instance>(
 ): asserts instance is Instance {
     if (!(instance instanceof constructor)) {
         throw new AssertionError(
-            `'${JSON5.stringify(instance)}' is not an instance of '${constructor.name}'`,
+            `'${stringify(instance)}' is not an instance of '${constructor.name}'`,
             failureMessage,
         );
     }
@@ -28,7 +27,7 @@ function notInstanceOf<const Actual, const Instance>(
 ): asserts instance is Exclude<Actual, Instance> {
     if (instance instanceof constructor) {
         throw new AssertionError(
-            `'${JSON5.stringify(instance)}' is an instance of '${constructor.name}'`,
+            `'${stringify(instance)}' is an instance of '${constructor.name}'`,
             failureMessage,
         );
     }

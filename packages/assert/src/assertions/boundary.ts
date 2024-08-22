@@ -1,9 +1,9 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import {MaybePromise} from '@augment-vir/core';
-import JSON5 from 'json5';
+import {MaybePromise, stringify} from '@augment-vir/core';
 import {AssertionError} from '../augments/assertion.error.js';
 import {autoGuard} from '../augments/guard-types/guard-override.js';
 import {WaitUntilOptions} from '../augments/guard-types/wait-until-function.js';
+
+/* eslint-disable @typescript-eslint/no-unused-vars */
 
 function endsWith<const ArrayElement>(
     parent: ReadonlyArray<ArrayElement>,
@@ -22,7 +22,7 @@ function endsWith<const ArrayElement>(
     child: string | ArrayElement,
     failureMessage?: string | undefined,
 ): void {
-    const message = `${JSON5.stringify(parent)} does not end with ${JSON5.stringify(child)}}`;
+    const message = `${stringify(parent)} does not end with ${stringify(child)}}`;
     if (typeof parent === 'string') {
         if (!parent.endsWith(child as string)) {
             throw new AssertionError(message, failureMessage);
@@ -138,7 +138,7 @@ function endsWithout<const ArrayElement>(
     child: string | ArrayElement,
     failureMessage?: string | undefined,
 ): void {
-    const message = `${JSON5.stringify(parent)} ends with ${JSON5.stringify(child)}}`;
+    const message = `${stringify(parent)} ends with ${stringify(child)}}`;
     if (typeof parent === 'string') {
         if (parent.endsWith(child as string)) {
             throw new AssertionError(message, failureMessage);
@@ -165,7 +165,7 @@ function startsWith<const ArrayElement>(
     child: string | ArrayElement,
     failureMessage?: string | undefined,
 ): void {
-    const message = `${JSON5.stringify(parent)} does not start with ${JSON5.stringify(child)}}`;
+    const message = `${stringify(parent)} does not start with ${stringify(child)}}`;
     if (typeof parent === 'string') {
         if (!parent.startsWith(child as string)) {
             throw new AssertionError(message, failureMessage);
@@ -192,7 +192,7 @@ function startsWithout<const ArrayElement>(
     child: string | ArrayElement,
     failureMessage?: string | undefined,
 ): void {
-    const message = `${JSON5.stringify(parent)} starts with ${JSON5.stringify(child)}}`;
+    const message = `${stringify(parent)} starts with ${stringify(child)}}`;
     if (typeof parent === 'string') {
         if (parent.startsWith(child as string)) {
             throw new AssertionError(message, failureMessage);

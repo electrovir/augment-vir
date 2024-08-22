@@ -1,7 +1,7 @@
 import {existsSync} from 'node:fs';
 import {mkdir, rename} from 'node:fs/promises';
 import {dirname, join} from 'node:path';
-import {monoRepoNodeModulesDirPath, packages} from '../file-paths.js';
+import {monoRepoNodeModulesDirPath, packagePaths} from '../file-paths.js';
 
 async function fixMochaNodeModule() {
     const monoRepoMochaDirPath = join(monoRepoNodeModulesDirPath, '@types', 'mocha');
@@ -11,7 +11,7 @@ async function fixMochaNodeModule() {
     }
 
     console.info('moving node_modules/@types/mocha already into the correct location.');
-    const newMochaDirPath = join(packages.testDirPath, 'node_modules', '@types', 'mocha');
+    const newMochaDirPath = join(packagePaths.test, 'node_modules', '@types', 'mocha');
 
     await mkdir(dirname(newMochaDirPath), {recursive: true});
 

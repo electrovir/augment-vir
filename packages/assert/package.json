@@ -32,13 +32,12 @@
         "@date-vir/duration": "^6.0.0",
         "deep-eql": "^5.0.2",
         "expect-type": "^0.20.0",
-        "json5": "^2.2.3",
-        "type-fest": "^4.24.0"
+        "type-fest": "^4.25.0"
     },
     "devDependencies": {
         "@types/deep-eql": "^4.0.2",
         "@web/dev-server-esbuild": "^1.0.2",
-        "@web/test-runner": "^0.18.2",
+        "@web/test-runner": "^0.18.3",
         "@web/test-runner-commands": "^0.9.0",
         "@web/test-runner-playwright": "^0.11.0",
         "@web/test-runner-visual-regression": "^0.9.0",

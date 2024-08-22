@@ -1,5 +1,4 @@
-import {MaybePromise, NarrowToExpected, type RequiredKeysOf} from '@augment-vir/core';
-import JSON5 from 'json5';
+import {MaybePromise, NarrowToExpected, stringify, type RequiredKeysOf} from '@augment-vir/core';
 import {SetRequired} from 'type-fest';
 import {AssertionError} from '../augments/assertion.error.js';
 import {createCheck} from '../augments/guard-types/check-function.js';
@@ -16,7 +15,7 @@ function isKeyOf<const Parent>(
         hasKey(parent, key);
     } catch {
         throw new AssertionError(
-            `'${String(key)}' is not a key of '${JSON5.stringify(parent)}'.`,
+            `'${String(key)}' is not a key of '${stringify(parent)}'.`,
             failureMessage,
         );
     }
@@ -33,7 +32,7 @@ function isNotKeyOf<const Key extends PropertyKey, const Parent>(
     }
 
     throw new AssertionError(
-        `'${String(key)}' is a key of '${JSON5.stringify(parent)}'.`,
+        `'${String(key)}' is a key of '${stringify(parent)}'.`,
         failureMessage,
     );
 }
@@ -69,7 +68,7 @@ function hasKey<const Key extends PropertyKey, const Parent>(
     key: Key,
     failureMessage?: string | undefined,
 ): asserts parent is CombineTypeWithKey<Key, Parent> {
-    const message = `'${JSON5.stringify(parent)}' does not have key '${String(key)}'.`;
+    const message = `'${stringify(parent)}' does not have key '${String(key)}'.`;
     const doesHaveKey = hasKeyAttempts.some((attemptCallback) => {
         try {
             return attemptCallback(parent as object, key);
@@ -93,10 +92,7 @@ function lacksKey<const Parent, const Key extends PropertyKey>(
         return;
     }
 
-    throw new AssertionError(
-        `'${JSON5.stringify(parent)}' has key '${String(key)}'.`,
-        failureMessage,
-    );
+    throw new AssertionError(`'${stringify(parent)}' has key '${String(key)}'.`, failureMessage);
 }
 
 const checkHasKey = createCheck(hasKey);
@@ -111,7 +107,7 @@ function hasKeys<const Keys extends PropertyKey, const Parent>(
 
     if (missingKeys.length) {
         throw new AssertionError(
-            `'${JSON5.stringify(parent)}' does not have keys '${missingKeys.join(',')}'.`,
+            `'${stringify(parent)}' does not have keys '${missingKeys.join(',')}'.`,
             failureMessage,
         );
     }
@@ -125,7 +121,7 @@ function lacksKeys<const Parent, const Key extends PropertyKey>(
 
     if (existingKeys.length) {
         throw new AssertionError(
-            `'${JSON5.stringify(parent)}' does not lack keys '${existingKeys.join(',')}'.`,
+            `'${stringify(parent)}' does not lack keys '${existingKeys.join(',')}'.`,
             failureMessage,
         );
     }

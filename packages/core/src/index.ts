@@ -11,6 +11,7 @@ export * from './augments/object/generic-object-type.js';
 export * from './augments/object/object-keys.js';
 export * from './augments/object/object-value-types.js';
 export * from './augments/object/required-keys.js';
+export * from './augments/object/stringify';
 export * from './augments/overwrite-type.js';
 export * from './augments/partial-type.js';
 export * from './augments/promise/deferred-promise.js';

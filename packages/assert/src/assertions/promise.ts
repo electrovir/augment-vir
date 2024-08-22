@@ -1,4 +1,4 @@
-import JSON5 from 'json5';
+import {stringify} from '@augment-vir/core';
 import {AssertionError} from '../augments/assertion.error.js';
 import type {GuardGroup} from '../augments/guard-types/guard-group.js';
 import {autoGuard} from '../augments/guard-types/guard-override.js';
@@ -17,10 +17,7 @@ function isPromiseLike(
             typeof actual.then === 'function'
         )
     ) {
-        throw new AssertionError(
-            `'${JSON5.stringify(actual)}' is not a PromiseLike.`,
-            failureMessage,
-        );
+        throw new AssertionError(`'${stringify(actual)}' is not a PromiseLike.`, failureMessage);
     }
 }
 function isNotPromiseLike<const Actual>(
@@ -33,7 +30,7 @@ function isNotPromiseLike<const Actual>(
         return;
     }
 
-    throw new AssertionError(`'${JSON5.stringify(actual)}' is a PromiseLike.`, failureMessage);
+    throw new AssertionError(`'${stringify(actual)}' is a PromiseLike.`, failureMessage);
 }
 
 /**
@@ -45,7 +42,7 @@ function isPromise(
     failureMessage?: string | undefined,
 ): asserts actual is Promise<any> {
     if (!(actual instanceof Promise)) {
-        throw new AssertionError(`'${JSON5.stringify(actual)}' is not a Promise.`, failureMessage);
+        throw new AssertionError(`'${stringify(actual)}' is not a Promise.`, failureMessage);
     }
 }
 function isNotPromise<const Actual>(
@@ -53,7 +50,7 @@ function isNotPromise<const Actual>(
     failureMessage?: string | undefined,
 ): asserts actual is Exclude<Actual, Promise<any>> {
     if (actual instanceof Promise) {
-        throw new AssertionError(`'${JSON5.stringify(actual)}' is a Promise.`, failureMessage);
+        throw new AssertionError(`'${stringify(actual)}' is a Promise.`, failureMessage);
     }
 }
 

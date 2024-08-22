@@ -3,10 +3,10 @@ import {
     extractErrorMessage,
     MaybePromise,
     PartialWithNullable,
+    stringify,
     TypedFunction,
     type AnyFunction,
 } from '@augment-vir/core';
-import JSON5 from 'json5';
 import {AssertionError} from '../augments/assertion.error.js';
 import type {GuardGroup} from '../augments/guard-types/guard-group.js';
 import {createWaitUntil, WaitUntilOptions} from '../augments/guard-types/wait-until-function.js';
@@ -27,7 +27,7 @@ function assertError(
         actual,
         {
             noError: 'No error.',
-            notInstance: `'${JSON5.stringify(actual)}' is not an error instance.`,
+            notInstance: `'${stringify(actual)}' is not an error instance.`,
         },
         matchOptions,
         failureMessage,
@@ -43,7 +43,7 @@ function assertThrownError(
         actual,
         {
             noError: 'No Error was thrown.',
-            notInstance: `Thrown value '${JSON5.stringify(actual)}' is not an error instance.`,
+            notInstance: `Thrown value '${stringify(actual)}' is not an error instance.`,
         },
         matchOptions,
         failureMessage,
