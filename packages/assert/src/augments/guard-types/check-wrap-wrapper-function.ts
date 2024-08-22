@@ -1,5 +1,4 @@
-import {ExtractKeysWithMatchingValues, Overwrite} from '@augment-vir/core';
-import {type NarrowToActual} from '../assertions/narrow-type.js';
+import {ExtractKeysWithMatchingValues, Overwrite, type NarrowToActual} from '@augment-vir/core';
 import {AssertFunction} from './assert-function.js';
 import {AssertWrapOverridesBase} from './assert-wrap-function.js';
 import {pickOverride} from './guard-override.js';

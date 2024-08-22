@@ -1,5 +1,9 @@
-import {AnyFunction, ExtractKeysWithMatchingValues, Overwrite} from '@augment-vir/core';
-import {NarrowToExpected} from '../assertions/narrow-type.js';
+import {
+    AnyFunction,
+    ExtractKeysWithMatchingValues,
+    NarrowToExpected,
+    Overwrite,
+} from '@augment-vir/core';
 import {AssertFunction} from './assert-function.js';
 import {pickOverride} from './guard-override.js';
 

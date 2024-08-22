@@ -1,6 +1,6 @@
 import type {AnyFunction} from '@augment-vir/core';
+import {tsTypeGuards} from '../../assertions/equality/ts-type-equality.js';
 import {AssertionError} from '../assertion.error.js';
-import {tsTypeGuards} from '../assertions/equality/ts-type-equality.js';
 import {extendableAssertions} from './extendable-assertions.js';
 
 const allAssertions = {

@@ -23,13 +23,18 @@
         "test:coverage": "npm run test",
         "test:update": "npm test"
     },
+    "dependencies": {
+        "@augment-vir/assert": "*",
+        "@augment-vir/core": "*"
+    },
+    "devDependencies": {
+        "@augment-vir/test": "*",
+        "@types/node": "^22.1.0"
+    },
     "engines": {
         "node": ">=22"
     },
     "publishConfig": {
         "access": "public"
-    },
-    "devDependencies": {
-        "@types/node": "^22.1.0"
     }
 }

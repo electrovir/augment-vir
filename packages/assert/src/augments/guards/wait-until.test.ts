@@ -1,5 +1,5 @@
 import {describe, it} from '@augment-vir/test';
-import {waitUntilTestOptions} from '../test-timeout.mock.js';
+import {waitUntilTestOptions} from '../../test-timeout.mock.js';
 import {assert} from './assert.js';
 import {waitUntil} from './wait-until.js';
 

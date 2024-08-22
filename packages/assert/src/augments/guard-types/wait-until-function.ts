@@ -2,6 +2,7 @@ import type {
     AnyFunction,
     AnyObject,
     MaybePromise,
+    NarrowToExpected,
     PartialWithUndefined,
     RemoveFirstTupleEntry,
     RemoveLastTupleEntry,
@@ -15,7 +16,6 @@ import {
     wait,
 } from '@augment-vir/core';
 import {AnyDuration, convertDuration, DurationUnit} from '@date-vir/duration';
-import {NarrowToExpected} from '../assertions/narrow-type.js';
 import type {AssertFunction} from '../guard-types/assert-function.js';
 import {pickOverride} from './guard-override.js';
 
@@ -161,7 +161,7 @@ function parseWaitUntilArgs(rawArgs: unknown[]) {
         } else if (typeof arg === 'object') {
             args.options = arg as AnyObject;
         } else if (arg === undefined) {
-            // skip
+            /** Skip an undefined arg. */
             return;
         } else {
             throw new TypeError(`Unexpected waitUntil arg: ${JSON.stringify(arg)}`);

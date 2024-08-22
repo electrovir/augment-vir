@@ -17,6 +17,9 @@
             "path": "../core"
         },
         {
+            "path": "../test"
+        },
+        {
             "path": "../assert"
         }
     ]

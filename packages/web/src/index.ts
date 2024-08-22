@@ -6,6 +6,7 @@ export * from './augments/elements/element-position.js';
 export * from './augments/elements/element-text.js';
 export * from './augments/elements/element-visibility.js';
 export * from './augments/elements/overflow-parent.js';
+export * from './augments/elements/tag-or-definition.js';
 export * from './augments/elements/text-dimensions.js';
 export * from './augments/event-target.js';
 export * from './augments/image.js';

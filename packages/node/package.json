@@ -29,7 +29,6 @@
     "dependencies": {
         "@augment-vir/assert": "^30.0.0",
         "@augment-vir/common": "^30.0.0",
-        "@augment-vir/core": "^30.0.0",
         "@date-vir/duration": "^6.0.0",
         "ansi-styles": "^6.2.1",
         "json5": "^2.2.3",
