@@ -27,12 +27,13 @@
         "test:docs": "virmator docs check",
         "test:node": "virmator test --no-deps node 'src/augments/universal-testing-suite/**/*.test.ts'",
         "test:update": "npm test",
-        "test:web": "virmator test --no-deps web 'src/augments/test-web/**/*.test.ts'"
+        "test:web": "virmator test --no-deps web 'src/test-web/**/*.test.ts'"
     },
     "dependencies": {
         "@augment-vir/assert": "^30.0.0",
         "@augment-vir/common": "^30.0.0",
-        "@open-wc/testing-helpers": "^3.0.1"
+        "@open-wc/testing-helpers": "^3.0.1",
+        "type-fest": "^4.25.0"
     },
     "devDependencies": {
         "@types/node": "^22.5.0",

@@ -1,5 +1,7 @@
 import {assert} from '@augment-vir/assert';
+import type {AnyObject} from '@augment-vir/core';
 import {describe, it} from '@augment-vir/test';
+import type {EmptyObject} from 'type-fest';
 import {
     JsonCompatibleArray,
     JsonCompatibleObject,
@@ -42,7 +44,8 @@ describe('JsonCompatibleValue', () => {
         acceptArray([] as ReadonlyArray<number>);
         acceptArray([] as number[]);
         acceptArray([] as Array<number>);
-        acceptArray([] as Array<{}>);
+        acceptArray([] as Array<AnyObject>);
+        acceptArray([] as Array<EmptyObject>);
         acceptArray([] as Array<{derp: string}>);
         acceptArray([] as Array<JsonCompatiblePrimitiveValue>);
         acceptArray([] as Array<JsonCompatibleObject>);

@@ -18,9 +18,7 @@ export type UniversalItCallback = (this: void, context: UniversalContext) => Pro
  *
  * @category Testing:Common
  */
-export type UniversalBareIt = {
-    (this: void, doesThis: string, callback: UniversalItCallback): void;
-};
+export type UniversalBareIt = (this: void, doesThis: string, callback: UniversalItCallback) => void;
 
 /**
  * A minimal interface for `it` that is compatible with both Mocha ({@link mochaIt}) and Node.js's

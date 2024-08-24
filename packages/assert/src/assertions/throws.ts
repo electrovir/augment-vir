@@ -158,7 +158,7 @@ function internalThrowsCheck(
 /** Matching options for a thrown error constructor or message string. */
 export type ErrorMatchOptions = PartialWithNullable<{
     matchMessage: string | RegExp;
-    matchConstructor: ErrorConstructor | {new (...args: any[]): Error};
+    matchConstructor: ErrorConstructor | (new (...args: any[]) => Error);
 }>;
 
 function throws(
@@ -172,7 +172,6 @@ function throws(
     failureMessage?: string | undefined,
 ): Promise<void>;
 function throws(
-    // eslint-disable-next-line @typescript-eslint/unified-signatures
     callback: TypedFunction<void, any>,
     matchOptions?: ErrorMatchOptions | undefined,
     failureMessage?: string | undefined,
@@ -204,7 +203,6 @@ function throwsCheck(
     matchOptions?: ErrorMatchOptions | undefined,
 ): Promise<boolean>;
 function throwsCheck(
-    // eslint-disable-next-line @typescript-eslint/unified-signatures
     callback: TypedFunction<void, any>,
     matchOptions?: ErrorMatchOptions | undefined,
 ): boolean;
@@ -234,7 +232,6 @@ function throwsAssertWrap(
     failureMessage?: string | undefined,
 ): Promise<Error>;
 function throwsAssertWrap(
-    // eslint-disable-next-line @typescript-eslint/unified-signatures
     callback: TypedFunction<void, any>,
     matchOptions?: ErrorMatchOptions | undefined,
     failureMessage?: string | undefined,
@@ -268,7 +265,6 @@ function throwsCheckWrap(
     failureMessage?: string | undefined,
 ): Promise<Error | undefined>;
 function throwsCheckWrap(
-    // eslint-disable-next-line @typescript-eslint/unified-signatures
     callback: TypedFunction<void, any>,
     matchOptions?: ErrorMatchOptions | undefined,
     failureMessage?: string | undefined,

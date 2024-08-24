@@ -151,7 +151,7 @@ function parseWaitUntilArgs(rawArgs: unknown[]) {
         failureMessage: undefined,
     };
 
-    rawArgs.reverse().forEach((arg) => {
+    rawArgs.toReversed().forEach((arg) => {
         if (args.callback) {
             args.extraAssertionArgs.push(arg);
         } else if (typeof arg === 'function') {
@@ -178,7 +178,7 @@ function parseWaitUntilArgs(rawArgs: unknown[]) {
             interval: args.options?.interval || defaultWaitUntilOptions.interval,
             timeout: args.options?.timeout || defaultWaitUntilOptions.timeout,
         } satisfies RequiredAndNotNull<WaitUntilOptions>,
-        extraAssertionArgs: args.extraAssertionArgs.reverse(),
+        extraAssertionArgs: args.extraAssertionArgs.toReversed(),
         failureMessage: args.failureMessage,
     };
 }

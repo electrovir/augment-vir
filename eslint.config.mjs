@@ -9,6 +9,7 @@ export default [
     {
         ignores: [
             /** Add file globs that should be ignored. */
+            'packages/test/src/mocha.d.ts',
         ],
     },
     {

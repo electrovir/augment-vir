@@ -56,7 +56,7 @@ export function mergeDeep<const T extends object>(
                 key,
                 mergeValues,
             ]) => {
-                const newValue = mergeDeep(...mergeValues);
+                const newValue = mergeDeep(...mergeValues) as unknown;
                 if (newValue === undefined && key in result) {
                     delete result[key];
                 } else if (newValue !== undefined) {

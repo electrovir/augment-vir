@@ -6,7 +6,7 @@ import {
     HttpStatusByCategory,
     HttpStatusCategory,
     isHttpStatusCategory,
-} from './http-status';
+} from './http-status.js';
 
 describe(isHttpStatusCategory.name, () => {
     it('type guards inputs', () => {

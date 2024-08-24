@@ -11,19 +11,31 @@ export function mapEnumToObject<const Enum extends EnumBaseType, const Value>(
 export function mapEnumToObject<const Enum extends EnumBaseType, const Value>(
     enumInput: Enum,
     callback: (enumValue: Values<Enum>, wholeEnum: Enum) => Value,
-): EnumMap<Enum, Value>;
-export function mapEnumToObject<const Enum extends EnumBaseType, const Value>(
-    enumInput: Enum,
-    callback: (enumValue: Values<Enum>, wholeEnum: Enum) => MaybePromise<Value>,
-): MaybePromise<EnumMap<Enum, Value>>;
+): Value extends Promise<any>
+    ? Promise<any> extends Value
+        ? Promise<EnumMap<Enum, Awaited<Value>>>
+        : MaybePromise<EnumMap<Enum, Awaited<Value>>>
+    : EnumMap<Enum, Value>;
 export function mapEnumToObject<const Enum extends EnumBaseType, const Value>(
     enumInput: Enum,
     callback: (enumValue: Values<Enum>, wholeEnum: Enum) => MaybePromise<Value>,
 ): MaybePromise<EnumMap<Enum, Value>> {
     return mapObject(enumInput, (enumKey, enumValue) => {
-        return {
-            key: enumValue as PropertyKey,
-            value: callback(enumValue, enumInput),
-        };
+        const key = enumValue as PropertyKey;
+        const value = callback(enumValue, enumInput);
+
+        if (value instanceof Promise) {
+            return value.then((resolvedValue) => {
+                return {
+                    key,
+                    value: resolvedValue,
+                };
+            });
+        } else {
+            return {
+                key,
+                value,
+            };
+        }
     }) as MaybePromise<EnumMap<Enum, Value>>;
 }

@@ -505,9 +505,7 @@ declare namespace Mocha {
      * @returns {undefined} Bdd `Suite`
      * @returns {undefined} Tdd `void`
      */
-    interface PendingSuiteFunction {
-        (title: string, fn: (this: Suite) => void): Suite | void;
-    }
+    type PendingSuiteFunction = (title: string, fn: (this: Suite) => void) => Suite | void;
 
     interface TestFunction {
         /**
@@ -2279,9 +2277,7 @@ declare namespace Mocha {
 
     type TestInterface = (suite: Suite) => void;
 
-    interface ReporterConstructor {
-        new (runner: Runner, options: MochaOptions): reporters.Base;
-    }
+    type ReporterConstructor = new (runner: Runner, options: MochaOptions) => reporters.Base;
 
     type Done = (err?: any) => void;
 

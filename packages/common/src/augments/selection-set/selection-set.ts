@@ -23,7 +23,7 @@ export type GenericSelectionSet = {
 /** Masks an object value with the given {@link SelectionSet}. */
 export type PickSelection<
     Full extends Readonly<AnyObject>,
-    Selection extends GenericSelectionSet,
+    Selection extends SelectionSet<Full>,
     Depth extends TsRecursionTracker = TsRecursionStart,
 > = Depth extends TsTooMuchRecursion
     ? ['Error: recursive object depth is too deep.']

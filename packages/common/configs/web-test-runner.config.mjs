@@ -12,6 +12,8 @@ const baseConfig = defineConfig({
 const webTestRunnerConfig = {
     ...baseConfig,
     port: 8002,
+    /** Needed so that imports from packages/test/src/test-web/symlinked work. */
+    preserveSymlinks: true,
 };
 
 export default webTestRunnerConfig;

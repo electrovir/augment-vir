@@ -25,6 +25,7 @@ export async function calculateTextDimensions(
     textWrapperElement.style.opacity = '0';
     textWrapperElement.style.pointerEvents = 'none';
     textWrapperElement.style.userSelect = 'none';
+    // eslint-disable-next-line sonarjs/deprecation
     textWrapperElement.style.webkitUserSelect = 'none';
     textWrapperElement.style.animation = 'none';
     textWrapperElement.style.transition = 'none';

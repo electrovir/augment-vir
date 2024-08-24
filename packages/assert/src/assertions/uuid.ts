@@ -4,7 +4,7 @@ import {GuardGroup} from '../augments/guard-types/guard-group.js';
 import {autoGuard} from '../augments/guard-types/guard-override.js';
 import {WaitUntilOptions} from '../augments/guard-types/wait-until-function.js';
 
-const uuidRegExp = /^[\d\w]{8}-[\d\w]{4}-[\d\w]{4}-[\d\w]{4}-[\d\w]{12}$/;
+const uuidRegExp = /^\w{8}-\w{4}-\w{4}-\w{4}-\w{12}$/;
 
 /** Checks if the input string is a valid v4 UUID. */
 function isUuid(actual: unknown, failureMessage?: string | undefined): asserts actual is UuidV4 {

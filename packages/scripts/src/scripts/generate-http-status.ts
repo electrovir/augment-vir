@@ -13,8 +13,7 @@ import {writeFileAndDir} from '@augment-vir/node';
 import {JSDOM} from 'jsdom';
 import {existsSync} from 'node:fs';
 import {readFile, writeFile} from 'node:fs/promises';
-import {httpStatusOutputPath} from '../file-paths';
-import {mdnDownloadCachePath} from '../file-paths.js';
+import {httpStatusOutputPath, mdnDownloadCachePath} from '../file-paths.js';
 
 const mdnUrl = 'https://developer.mozilla.org/en-US/docs/Web/HTTP/Status#information_responses';
 
@@ -91,8 +90,6 @@ function parseStatusEntries(htmlString: string) {
                 url,
             };
 
-            const category = determineStatusCategory;
-
             statuses.push(newStatus);
         } else if (element.tagName.toLowerCase() === 'dd') {
             const latestStatus = statuses[statuses.length - 1];
@@ -117,7 +114,7 @@ function parseStatusEntries(htmlString: string) {
     });
 
     return mapObjectValues(statusesByCategory, (key, values) =>
-        values.sort((a, b) => a.number - b.number),
+        values.toSorted((a, b) => a.number - b.number),
     );
 }
 

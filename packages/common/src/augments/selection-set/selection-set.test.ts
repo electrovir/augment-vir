@@ -125,6 +125,7 @@ describe('PickSelection', () => {
                     {
                         child: {a: string} | {b: number};
                     },
+                    // @ts-expect-error: intentionally wrong selection set
                     {
                         something: {
                             totally: {

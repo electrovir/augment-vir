@@ -7,6 +7,7 @@
 -   `getEnumTypedKeys`: removed. Use `getEnumValues` instead.
 -   `ensureEnum`: renamed to `ensureEnumValue`. The type signature was also changed.
 -   `hasKey`: moved to `@augment-vir/assert`.
+<!-- cspell:disable-next-line -->
 -   `isKeyof`: moved to `@augment-vir/assert`.
 -   `PartialAndNullable`: renamed to `PartialWithNullable`.
 -   `PartialAndUndefined`: renamed to `PartialWithUndefined`.

@@ -10,7 +10,7 @@ type AssertTypeOf<TestingType> = {
 
 function tsType<Actual>(
     /** Run-time value to type check. */
-    // eslint-disable-next-line @typescript-eslint/unified-signatures
+
     input: Actual,
 ): AssertTypeOf<Actual>;
 /** Uses the expect-type package to assert type matching. */

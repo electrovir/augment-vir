@@ -4,7 +4,7 @@
 
 -   add a pretty diff to the assertion errors like chai has
 -   make a snapshot function in `@augment-vir/test` that supports both Node.js's built-in test runner's snapshot testing as well as something that works in web-test-runner.
--   look into using typdoc plugins
+-   look into using typedoc plugins
     -   https://github.com/Gerrit0/typedoc-plugin-mdn-links
     -   https://github.com/eyworldwide/typedoc-plugin-remove-references
     -   https://github.com/Gerrit0/typedoc-plugin-missing-exports
@@ -25,6 +25,8 @@
 -   remove punctuation at end of exiting message in `prepend error message` method
 -   move `assertOutput` to `@augment-vir/assert`
 -   move `isHttpStatusCategory`to `@augment-vir/assert` (maybe?)
+    -   and http status into the core package
+-   add back docs test
 
 ## Immediately after v30 release
 

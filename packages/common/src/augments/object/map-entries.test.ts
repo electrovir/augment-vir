@@ -1,5 +1,5 @@
 import {assert} from '@augment-vir/assert';
-import {wait} from '@augment-vir/core';
+import {wait, type MaybePromise} from '@augment-vir/core';
 import {describe, it, itCases} from '@augment-vir/test';
 import {mapObject} from './map-entries.js';
 
@@ -98,11 +98,9 @@ describe(mapObject.name, () => {
                             value: value + '1',
                         };
                     } else {
-                        return new Promise((resolve) => {
-                            resolve({
-                                key: key + '1',
-                                value: value + '1',
-                            });
+                        return Promise.resolve({
+                            key: key + '1',
+                            value: value + '1',
                         });
                     }
                 },
@@ -149,8 +147,8 @@ describe(mapObject.name, () => {
             };
         });
 
-        assert.isPromise(result);
         assert.tsType(result).equals<Promise<Record<string, string>>>();
+        assert.isPromise(result);
 
         assert.deepEquals(await result, {
             a1: 'b1',
@@ -167,8 +165,30 @@ describe(mapObject.name, () => {
             };
         });
 
-        assert.isNotPromise(result);
         assert.tsType(result).notEquals<Promise<Record<string, string>>>();
+        assert.tsType(result).equals<Record<string, string>>();
+        assert.isNotPromise(result);
+
+        assert.deepEquals(result, {
+            a1: 'b1',
+            c1: 'd1',
+            d1: 'e1',
+        });
+    });
+
+    it('correctly types a maybe async callback', () => {
+        const result = mapObject(
+            originalObject,
+            (key, value): MaybePromise<{key: string; value: string}> => {
+                return {
+                    key: key + '1',
+                    value: value + '1',
+                };
+            },
+        );
+
+        assert.tsType(result).equals<MaybePromise<Record<string, string>>>();
+        assert.isNotPromise(result);
 
         assert.deepEquals(result, {
             a1: 'b1',

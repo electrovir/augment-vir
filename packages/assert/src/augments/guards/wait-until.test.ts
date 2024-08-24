@@ -49,9 +49,7 @@ describe('waitUntil', () => {
         }, 1000);
         assert.isFalse(condition);
         await waitUntil.isTrue(async () => {
-            return new Promise((resolve) => {
-                resolve(condition);
-            });
+            return Promise.resolve(condition);
         });
     });
 

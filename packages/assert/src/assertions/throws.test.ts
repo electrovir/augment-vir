@@ -54,7 +54,7 @@ describe('throws', () => {
                 .equals<void>();
         });
 
-        it('is asynchronous if callback is asynchronous with a message', async () => {
+        it('is asynchronous if callback is asynchronous with a message', () => {
             assert.tsType(assert.throws(actualPassAsync, {}, 'yo')).equals<Promise<void>>();
             assert.tsType(assert.throws(actualPassAsync, undefined, 'yo')).equals<Promise<void>>();
             assert
@@ -374,9 +374,7 @@ describe('throws', () => {
         });
         it('catches an async callback error', async () => {
             const result = await assertWrap.throws(() => {
-                return new Promise((resolve, reject) => {
-                    reject(new Error('fake error'));
-                });
+                return Promise.reject(new Error('fake error'));
             });
             assert.instanceOf(result, Error);
             assert.strictEquals(extractErrorMessage(result), 'fake error');
@@ -385,9 +383,7 @@ describe('throws', () => {
             await assert.throws(
                 () =>
                     assertWrap.throws(() => {
-                        return new Promise((resolve, reject) => {
-                            resolve('hi');
-                        });
+                        return Promise.resolve('hi');
                     }),
                 {
                     matchMessage: 'No Error was thrown.',
@@ -395,26 +391,14 @@ describe('throws', () => {
             );
         });
         it('catches a promise rejection', async () => {
-            const result = await assertWrap.throws(
-                new Promise((resolve, reject) => {
-                    reject(new Error('fake error'));
-                }),
-            );
+            const result = await assertWrap.throws(Promise.reject(new Error('fake error')));
             assert.instanceOf(result, Error);
             assert.strictEquals(extractErrorMessage(result), 'fake error');
         });
         it('rejects a non-rejecting promise', async () => {
-            await assert.throws(
-                () =>
-                    assertWrap.throws(
-                        new Promise((resolve, reject) => {
-                            resolve('hi');
-                        }),
-                    ),
-                {
-                    matchMessage: 'No Error was thrown.',
-                },
-            );
+            await assert.throws(() => assertWrap.throws(Promise.resolve('hi')), {
+                matchMessage: 'No Error was thrown.',
+            });
         });
     });
     describe('checkWrap', () => {
@@ -438,9 +422,7 @@ describe('throws', () => {
         });
         it('catches an async callback error', async () => {
             const result = await checkWrap.throws(() => {
-                return new Promise((resolve, reject) => {
-                    reject(new Error('fake error'));
-                });
+                return Promise.reject(new Error('fake error'));
             });
             assert.instanceOf(result, Error);
             assert.strictEquals(extractErrorMessage(result), 'fake error');
@@ -448,34 +430,22 @@ describe('throws', () => {
         it('rejects a non-throwing async callback error', async () => {
             assert.isUndefined(
                 await checkWrap.throws(() => {
-                    return new Promise((resolve, reject) => {
-                        resolve('hi');
-                    });
+                    return Promise.resolve('hi');
                 }),
             );
         });
         it('catches a promise rejection', async () => {
-            const result = await checkWrap.throws(
-                new Promise((resolve, reject) => {
-                    reject(new Error('fake error'));
-                }),
-            );
+            const result = await checkWrap.throws(Promise.reject(new Error('fake error')));
             assert.instanceOf(result, Error);
             assert.strictEquals(extractErrorMessage(result), 'fake error');
         });
         it('rejects a non-rejecting promise', async () => {
-            assert.isUndefined(
-                await checkWrap.throws(
-                    new Promise((resolve, reject) => {
-                        resolve('hi');
-                    }),
-                ),
-            );
+            assert.isUndefined(await checkWrap.throws(Promise.resolve('hi')));
         });
     });
     describe('waitUntil', () => {
         describe('with callback', () => {
-            it.only('guards with match', async () => {
+            it('guards with match', async () => {
                 const newValue = await waitUntil.throws(
                     {matchConstructor: Error},
                     () => {
@@ -524,9 +494,7 @@ describe('throws', () => {
                     waitUntil.throws(
                         {matchConstructor: AssertionError},
                         async () => {
-                            return await new Promise((resolve, reject) => {
-                                reject(new Error('fake error'));
-                            });
+                            return await Promise.reject(new Error('fake error'));
                         },
                         waitUntilTestOptions,
                         'failure',

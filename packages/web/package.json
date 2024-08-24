@@ -30,7 +30,8 @@
         "@augment-vir/assert": "^30.0.0",
         "@augment-vir/common": "^30.0.0",
         "@date-vir/duration": "^6.0.0",
-        "html-spec-tags": "^2.2.0"
+        "html-spec-tags": "^2.2.0",
+        "type-fest": "^4.25.0"
     },
     "devDependencies": {
         "@augment-vir/test": "^30.0.0",

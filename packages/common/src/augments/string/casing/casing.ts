@@ -50,11 +50,10 @@ export function isCase(
             } else {
                 continue;
             }
-        }
-
-        if (caseType === StringCaseEnum.Upper && letter !== letter.toUpperCase()) {
-            return false;
-        } else if (caseType === StringCaseEnum.Lower && letter !== letter.toLowerCase()) {
+        } else if (
+            (caseType === StringCaseEnum.Upper && letter !== letter.toUpperCase()) ||
+            (caseType === StringCaseEnum.Lower && letter !== letter.toLowerCase())
+        ) {
             return false;
         }
     }

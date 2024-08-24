@@ -35,8 +35,10 @@
         "test:update": "npm test"
     },
     "dependencies": {
+        "@date-vir/duration": "^6.0.0",
         "browser-or-node": "^3.0.0",
-        "json5": "^2.2.3"
+        "json5": "^2.2.3",
+        "type-fest": "^4.25.0"
     },
     "devDependencies": {
         "@types/node": "^22.5.0"

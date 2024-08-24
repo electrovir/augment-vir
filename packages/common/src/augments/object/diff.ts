@@ -73,7 +73,9 @@ export function diffArrays<T0, T1>(
 
     const diffArrays = allArrayIndexes.reduce(
         (accum, arrayIndex) => {
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             const value0 = array0[arrayIndex]!;
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             const value1 = array1[arrayIndex]!;
 
             const diffOutput = diffValues(value0, value1);

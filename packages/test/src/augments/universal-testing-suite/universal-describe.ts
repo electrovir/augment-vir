@@ -21,9 +21,11 @@ export type UniversalDescribe = UniversalBareDescribe & {
  *
  * @category Testing:Common
  */
-export type UniversalBareDescribe = {
-    (this: void, describeThis: string, callback: (this: void) => void): void;
-};
+export type UniversalBareDescribe = (
+    this: void,
+    describeThis: string,
+    callback: (this: void) => void,
+) => void;
 
 const describes = isRuntimeEnv(RuntimeEnv.Node)
     ? {

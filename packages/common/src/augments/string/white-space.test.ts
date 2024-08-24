@@ -26,12 +26,12 @@ describe(collapseWhiteSpace.name, () => {
         {
             it: 'can preserve newlines',
             inputs: [
-                '   \n  hello \n  there   \n\n  ',
+                '   \n  hello \n  there   \n\n  with            spaces',
                 {
                     keepNewLines: true,
                 },
             ],
-            expect: 'hello\nthere',
+            expect: 'hello\nthere\nwith spaces',
         },
         {
             it: 'replaces tabs with spaces',

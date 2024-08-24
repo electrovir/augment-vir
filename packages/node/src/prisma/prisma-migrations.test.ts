@@ -91,7 +91,7 @@ describe(prisma.migration.create.name, () => {
     });
 });
 
-describe.only(prisma.migration.applyDev.name, () => {
+describe(prisma.migration.applyDev.name, () => {
     it('applies migrations', async () => {
         await clearTestDatabaseOutputs();
         await prisma.database.resetDev(testPrismaSchemaPath);

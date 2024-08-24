@@ -47,12 +47,7 @@ export function queryThroughShadow(
         return queryThroughShadow(element.shadowRoot, query, options);
     }
 
-    const shadowRootChildren = Array.from(element.querySelectorAll('*'))
-        .filter(
-            (child): child is Element & {shadowRoot: NonNullable<Element['shadowRoot']>} =>
-                !!child.shadowRoot,
-        )
-        .map((child) => child.shadowRoot);
+    const shadowRootChildren = getShadowRootChildren(element);
 
     if (options.all) {
         const outerResults = Array.from(element.querySelectorAll(query));
@@ -79,6 +74,15 @@ export function queryThroughShadow(
             return undefined;
         }
     }
+}
+
+function getShadowRootChildren(element: Element | ShadowRoot) {
+    return Array.from(element.querySelectorAll('*'))
+        .filter(
+            (child): child is Element & {shadowRoot: NonNullable<Element['shadowRoot']>} =>
+                !!child.shadowRoot,
+        )
+        .map((child) => child.shadowRoot);
 }
 
 function handleNestedQueries(

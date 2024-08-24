@@ -12,7 +12,6 @@ function endsWith<const ArrayElement>(
 ): void;
 function endsWith(parent: string, child: string, failureMessage?: string | undefined): void;
 function endsWith(
-    // eslint-disable-next-line @typescript-eslint/unified-signatures
     parent: string | ReadonlyArray<string>,
     child: string,
     failureMessage?: string | undefined,
@@ -40,7 +39,6 @@ function boundaryCheck<const ArrayElement>(
 ): boolean;
 function boundaryCheck(parent: string, child: string, failureMessage?: string | undefined): boolean;
 function boundaryCheck(
-    // eslint-disable-next-line @typescript-eslint/unified-signatures
     parent: string | ReadonlyArray<string>,
     child: string,
     failureMessage?: string | undefined,
@@ -62,7 +60,6 @@ function boundaryAssertWrap(
     failureMessage?: string | undefined,
 ): typeof parent;
 function boundaryAssertWrap(
-    // eslint-disable-next-line @typescript-eslint/unified-signatures
     parent: string | ReadonlyArray<string>,
     child: string,
     failureMessage?: string | undefined,
@@ -84,7 +81,6 @@ function boundaryCheckWrap(
     failureMessage?: string | undefined,
 ): typeof parent | undefined;
 function boundaryCheckWrap(
-    // eslint-disable-next-line @typescript-eslint/unified-signatures
     parent: string | ReadonlyArray<string>,
     child: string,
     failureMessage?: string | undefined,
@@ -128,7 +124,6 @@ function endsWithout<const ArrayElement>(
 ): void;
 function endsWithout(parent: string, child: string, failureMessage?: string | undefined): void;
 function endsWithout(
-    // eslint-disable-next-line @typescript-eslint/unified-signatures
     parent: string | ReadonlyArray<string>,
     child: string,
     failureMessage?: string | undefined,
@@ -155,7 +150,6 @@ function startsWith<const ArrayElement>(
 ): void;
 function startsWith(parent: string, child: string, failureMessage?: string | undefined): void;
 function startsWith(
-    // eslint-disable-next-line @typescript-eslint/unified-signatures
     parent: string | ReadonlyArray<string>,
     child: string,
     failureMessage?: string | undefined,
@@ -182,7 +176,6 @@ function startsWithout<const ArrayElement>(
 ): void;
 function startsWithout(parent: string, child: string, failureMessage?: string | undefined): void;
 function startsWithout(
-    // eslint-disable-next-line @typescript-eslint/unified-signatures
     parent: string | ReadonlyArray<string>,
     child: string,
     failureMessage?: string | undefined,

@@ -4,9 +4,11 @@ module.exports = {
     ...baseConfig,
     ignorePaths: [
         ...baseConfig.ignorePaths,
+        'packages/test/src/mocha.d.ts',
     ],
     words: [
         ...baseConfig.words,
         'nocheck',
+        'propstat',
     ],
 };

@@ -52,7 +52,7 @@ function collapseObject(input: Readonly<AnyObject>, selectionSet: unknown): AnyO
  */
 export type PickCollapsedSelection<
     Full extends Readonly<AnyObject>,
-    Selection extends GenericSelectionSet,
+    Selection extends SelectionSet<Full>,
     Depth extends TsRecursionTracker = TsRecursionStart,
 > = Depth extends TsTooMuchRecursion
     ? 'Error: recursive object depth is too deep.'

@@ -75,7 +75,7 @@ describe(Debounce.name, () => {
         });
         assert.isAbove(duration.milliseconds, 450);
     });
-    it('skips execution if missing callback', async () => {
+    it('skips execution if missing callback', () => {
         const debounce = new Debounce(DebounceStyle.FirstThenWait, {
             milliseconds: 500,
         });

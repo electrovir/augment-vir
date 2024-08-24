@@ -31,7 +31,7 @@ function isNaNGuard(actual: number, failureMessage?: string | undefined) {
     }
 }
 
-function isFinite(actual: number, failureMessage?: string | undefined) {
+function isFiniteGuard(actual: number, failureMessage?: string | undefined) {
     if (isNaN(actual) || actual === Infinity || actual === -Infinity) {
         throw new AssertionError(`${actual} is not finite`, failureMessage);
     }
@@ -74,7 +74,7 @@ const assertions: {
     isBelow: typeof isBelow;
     isAtMost: typeof isAtMost;
     isNaN: typeof isNaNGuard;
-    isFinite: typeof isFinite;
+    isFinite: typeof isFiniteGuard;
     isInfinite: typeof isInfinite;
     isApproximately: typeof isApproximately;
     isNotApproximately: typeof isNotApproximately;
@@ -84,7 +84,7 @@ const assertions: {
     isBelow,
     isAtMost,
     isNaN: isNaNGuard,
-    isFinite,
+    isFinite: isFiniteGuard,
     isInfinite,
     isApproximately,
     isNotApproximately,
