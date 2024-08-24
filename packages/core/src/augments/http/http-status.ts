@@ -1,10 +1,10 @@
-import {check} from '@augment-vir/assert';
+import type {ArrayElement} from '../array/array.js';
 
 /**
  * All standardized HTTP status codes.
  *
  * These values are automatically parsed from https://developer.mozilla.org/docs/Web/HTTP/Status via
- * https://github.com/electrovir/augment-vir/blob/dev/packages/scripts/src/scripts/generate-http-status.ts
+ * https://github.com/electrovir/augment-vir/blob/dev/packages/scripts/src/scripts/generate-http-status.script.ts
  */
 export enum HttpStatus {
     /** 100 level codes (information) */
@@ -138,7 +138,7 @@ export enum HttpStatus {
      */
     MovedPermanently = 301,
     /**
-     * This response code means that the URI of requested resource has been changed temporarily .
+     * This response code means that the URI of requested resource has been changed temporarily.
      * Further changes in the URI might be made in the future. Therefore, this same URI should be
      * used by the client in future requests.
      *
@@ -222,7 +222,7 @@ export enum HttpStatus {
     PaymentRequired = 402,
     /**
      * The client does not have access rights to the content; that is, it is unauthorized, so the
-     * server is refusing to give the requested resource. Unlike 401 Unauthorized , the client's
+     * server is refusing to give the requested resource. Unlike 401 Unauthorized, the client's
      * identity is known to the server.
      *
      * See https://developer.mozilla.org/docs/Web/HTTP/Status/403
@@ -246,8 +246,8 @@ export enum HttpStatus {
      */
     MethodNotAllowed = 405,
     /**
-     * This response is sent when the web server, after performing server-driven content negotiation
-     * , doesn't find any content that conforms to the criteria given by the user agent.
+     * This response is sent when the web server, after performing server-driven content
+     * negotiation, doesn't find any content that conforms to the criteria given by the user agent.
      *
      * See https://developer.mozilla.org/docs/Web/HTTP/Status/406
      */
@@ -379,8 +379,8 @@ export enum HttpStatus {
     UpgradeRequired = 426,
     /**
      * The origin server requires the request to be conditional. This response is intended to
-     * prevent the 'lost update' problem, where a client GET s a resource's state, modifies it and
-     * PUT s it back to the server, when meanwhile a third party has modified the state on the
+     * prevent the 'lost update' problem, where a client GETs a resource's state, modifies it and
+     * PUTs it back to the server, when meanwhile a third party has modified the state on the
      * server, leading to a conflict.
      *
      * See https://developer.mozilla.org/docs/Web/HTTP/Status/428
@@ -418,7 +418,7 @@ export enum HttpStatus {
     /**
      * The request method is not supported by the server and cannot be handled. The only methods
      * that servers are required to support (and therefore that must not return this code) are GET
-     * and HEAD .
+     * and HEAD.
      *
      * See https://developer.mozilla.org/docs/Web/HTTP/Status/501
      */
@@ -574,15 +574,6 @@ export const httpStatusByCategory = {
     ],
 } as const;
 
-export type HttpStatusByCategory<Category extends HttpStatusCategory> =
-    (typeof httpStatusByCategory)[Category];
-
-export function isHttpStatusCategory<const Category extends HttpStatusCategory>(
-    status: unknown,
-    category: Category,
-): status is HttpStatusByCategory<Category> {
-    if (!check.isEnumValue(status, HttpStatus)) {
-        return false;
-    }
-    return check.isIn(status, httpStatusByCategory[category]);
-}
+export type HttpStatusByCategory<Category extends HttpStatusCategory> = ArrayElement<
+    (typeof httpStatusByCategory)[Category]
+>;

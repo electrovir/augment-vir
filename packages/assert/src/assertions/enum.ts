@@ -5,7 +5,7 @@ import type {GuardGroup} from '../augments/guard-types/guard-group.js';
 import {autoGuard} from '../augments/guard-types/guard-override.js';
 import {WaitUntilOptions} from '../augments/guard-types/wait-until-function.js';
 
-function isEnumValue<const Expected extends EnumBaseType>(
+export function isEnumValue<const Expected extends EnumBaseType>(
     value: unknown,
     checkEnum: Expected,
     failureMessage?: string | undefined,

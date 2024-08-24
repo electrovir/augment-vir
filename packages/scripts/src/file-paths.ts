@@ -7,13 +7,13 @@ export const monoRepoNodeModulesDirPath = join(monoRepoDirPath, 'node_modules');
 export const packagesDirPath = join(monoRepoDirPath, 'packages');
 export const packagePaths = {
     test: join(packagesDirPath, 'test'),
-    common: join(packagesDirPath, 'common'),
+    core: join(packagesDirPath, 'core'),
 };
 const notCommittedDir = join(monoRepoDirPath, '.not-committed');
 const downloadCacheDir = join(notCommittedDir, 'cache');
 export const mdnDownloadCachePath = join(downloadCacheDir, 'http-status.html');
 export const httpStatusOutputPath = join(
-    packagePaths.common,
+    packagePaths.core,
     'src',
     'augments',
     'http',

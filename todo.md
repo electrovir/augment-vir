@@ -24,8 +24,6 @@
 -   add debounce examples
 -   remove punctuation at end of exiting message in `prepend error message` method
 -   move `assertOutput` to `@augment-vir/assert`
--   move `isHttpStatusCategory`to `@augment-vir/assert` (maybe?)
-    -   and http status into the core package
 -   add back docs test
 
 ## Immediately after v30 release

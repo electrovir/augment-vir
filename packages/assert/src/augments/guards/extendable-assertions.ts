@@ -6,6 +6,7 @@ import {enumGuards} from '../../assertions/enum.js';
 import {entryEqualityGuards} from '../../assertions/equality/entry-equality.js';
 import {jsonEqualityGuards} from '../../assertions/equality/json-equality.js';
 import {simpleEqualityGuards} from '../../assertions/equality/simple-equality.js';
+import {httpGuards} from '../../assertions/http.js';
 import {instanceGuards} from '../../assertions/instance.js';
 import {keyGuards} from '../../assertions/keys.js';
 import {lengthGuards} from '../../assertions/length.js';
@@ -40,6 +41,7 @@ export const extendableAssertions = {
     ...throwGuards.assertions,
     ...uuidGuards.assertions,
     ...valueGuards.assertions,
+    ...httpGuards.assertions,
 } satisfies Record<PropertyKey, AssertFunction<any>>;
 
 /**
@@ -66,6 +68,7 @@ export const guardOverrides = [
     throwGuards,
     uuidGuards,
     valueGuards,
+    httpGuards,
 ] as const satisfies GuardGroup[];
 
 export const checkOverrides: UnionToIntersection<

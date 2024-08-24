@@ -22,7 +22,7 @@
     "scripts": {
         "compile": "virmator compile",
         "format": "virmator format",
-        "postinstall": "npm run exec --workspace @augment-vir/scripts src/scripts/fix-mocha-node-module.ts",
+        "postinstall": "npm run exec --workspace @augment-vir/scripts src/scripts/fix-mocha-node-module.script.ts",
         "lint": "virmator lint fix",
         "publish": "virmator publish npm run test:all",
         "test": "mono-vir for-each npm run test",
@@ -30,7 +30,7 @@
         "test:coverage": "mono-vir for-each npm run test:coverage",
         "test:deps": "virmator deps check",
         "test:docs": "virmator docs check",
-        "test:exports": "npm run exec --workspace @augment-vir/scripts src/scripts/verify-exports.ts",
+        "test:exports": "npm run exec --workspace @augment-vir/scripts src/scripts/verify-exports.script.ts",
         "test:format": "virmator format check",
         "test:lint": "virmator lint",
         "test:spelling": "virmator spellcheck",

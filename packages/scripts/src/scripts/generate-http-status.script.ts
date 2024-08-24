@@ -1,4 +1,8 @@
-/** This generates `http-status.ts` in `@augment-vir/common` based on MDN documentation. */
+/**
+ * This generates `http-status.ts` in `@augment-vir/common` based on MDN documentation.
+ *
+ * How to run: cd packages/scripts; npx tsx src/scripts/generate-http-status.script.ts
+ */
 
 import {assert} from '@augment-vir/assert';
 import {
@@ -9,11 +13,12 @@ import {
     removePrefix,
     toEnsuredNumber,
 } from '@augment-vir/common';
-import {writeFileAndDir} from '@augment-vir/node';
+import {log, writeFileAndDir} from '@augment-vir/node';
 import {JSDOM} from 'jsdom';
 import {existsSync} from 'node:fs';
-import {readFile, writeFile} from 'node:fs/promises';
-import {httpStatusOutputPath, mdnDownloadCachePath} from '../file-paths.js';
+import {readFile} from 'node:fs/promises';
+import {relative} from 'node:path';
+import {httpStatusOutputPath, mdnDownloadCachePath, monoRepoDirPath} from '../file-paths.js';
 
 const mdnUrl = 'https://developer.mozilla.org/en-US/docs/Web/HTTP/Status#information_responses';
 
@@ -172,13 +177,13 @@ async function writeStatuses(statusesByCategory: StatusesByCategory) {
     });
 
     const finalString = [
-        `import {check} from '@augment-vir/assert';
+        `import type {ArrayElement} from '../array/array.js';
 
 /**
  * All standardized HTTP status codes.
  *
  * These values are automatically parsed from https://developer.mozilla.org/docs/Web/HTTP/Status via
- * https://github.com/electrovir/augment-vir/blob/dev/packages/scripts/src/scripts/generate-http-status.ts
+ * https://github.com/electrovir/augment-vir/blob/dev/packages/scripts/src/scripts/generate-http-status.script.ts
  */
 export enum HttpStatus {`,
         statusesInternals,
@@ -196,22 +201,15 @@ export const httpStatusByCategory = {`,
         statusByCategoryString,
         `} as const;
 
-export type HttpStatusByCategory<Category extends HttpStatusCategory> =
-    (typeof httpStatusByCategory)[Category];
-
-export function isHttpStatusCategory<const Category extends HttpStatusCategory>(
-    status: unknown,
-    category: Category,
-): status is HttpStatusByCategory<Category> {
-    if (!check.isEnumValue(status, HttpStatus)) {
-        return false;
-    }
-    return check.isIn(status, httpStatusByCategory[category]);
-}`,
+export type HttpStatusByCategory<Category extends HttpStatusCategory> = ArrayElement<
+    (typeof httpStatusByCategory)[Category]
+>;
+`,
         '\n',
     ].join('');
 
-    await writeFile(httpStatusOutputPath, finalString);
+    await writeFileAndDir(httpStatusOutputPath, finalString);
+    log.success(`Wrote to '${relative(monoRepoDirPath, httpStatusOutputPath)}'`);
 }
 
 async function generateHttpStatus() {

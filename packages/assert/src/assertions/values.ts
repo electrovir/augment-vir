@@ -54,7 +54,7 @@ function lacksValues(
     values.forEach((value) => lacksValue(parent, value, failureMessage));
 }
 
-function isIn<const Parent extends ValueParentBase>(
+export function isIn<const Parent extends ValueParentBase>(
     child: unknown,
     parent: Parent,
     failureMessage?: string | undefined,
