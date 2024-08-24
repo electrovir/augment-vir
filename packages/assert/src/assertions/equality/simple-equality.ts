@@ -44,7 +44,7 @@ function notLooseEquals(actual: unknown, expected: unknown, failureMessage?: str
     }
 }
 
-function deepEquals<const Actual, const Expected extends Actual>(
+export function deepEquals<const Actual, const Expected extends Actual>(
     actual: Actual,
     expected: Expected,
     failureMessage?: string | undefined,

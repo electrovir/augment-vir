@@ -23,7 +23,6 @@
 -   create a single documentation output
 -   add debounce examples
 -   remove punctuation at end of exiting message in `prepend error message` method
--   move `assertOutput` to `@augment-vir/assert`
 -   add back docs test
 
 ## Immediately after v30 release

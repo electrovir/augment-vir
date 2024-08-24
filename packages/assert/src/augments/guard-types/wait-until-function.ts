@@ -174,11 +174,17 @@ function parseWaitUntilArgs(rawArgs: unknown[]) {
 
     return {
         callback: args.callback,
-        options: {
-            interval: args.options?.interval || defaultWaitUntilOptions.interval,
-            timeout: args.options?.timeout || defaultWaitUntilOptions.timeout,
-        } satisfies RequiredAndNotNull<WaitUntilOptions>,
+        options: parseWaitUntilOptions(args.options?.interval),
         extraAssertionArgs: args.extraAssertionArgs.toReversed(),
         failureMessage: args.failureMessage,
+    };
+}
+
+export function parseWaitUntilOptions(
+    rawOptions: WaitUntilOptions | undefined,
+): RequiredAndNotNull<WaitUntilOptions> {
+    return {
+        interval: rawOptions?.interval || defaultWaitUntilOptions.interval,
+        timeout: rawOptions?.timeout || defaultWaitUntilOptions.timeout,
     };
 }

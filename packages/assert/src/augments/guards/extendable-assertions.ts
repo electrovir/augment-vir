@@ -12,6 +12,7 @@ import {keyGuards} from '../../assertions/keys.js';
 import {lengthGuards} from '../../assertions/length.js';
 import {nullishGuards} from '../../assertions/nullish.js';
 import {numericGuards} from '../../assertions/numeric.js';
+import {outputGuards} from '../../assertions/output.js';
 import {primitiveGuards} from '../../assertions/primitive.js';
 import {promiseGuards} from '../../assertions/promise.js';
 import {regexpGuards} from '../../assertions/regexp.js';
@@ -42,6 +43,7 @@ export const extendableAssertions = {
     ...uuidGuards.assertions,
     ...valueGuards.assertions,
     ...httpGuards.assertions,
+    ...outputGuards.assertions,
 } satisfies Record<PropertyKey, AssertFunction<any>>;
 
 /**
@@ -69,6 +71,7 @@ export const guardOverrides = [
     uuidGuards,
     valueGuards,
     httpGuards,
+    outputGuards,
 ] as const satisfies GuardGroup[];
 
 export const checkOverrides: UnionToIntersection<

@@ -2,13 +2,20 @@
 export class AssertionError extends Error {
     public override name = 'AssertionError';
     constructor(baseMessage: string, userCustomizedMessage: string | undefined) {
-        super(
-            [
-                userCustomizedMessage,
-                baseMessage,
-            ]
-                .filter((entry) => !!entry)
-                .join(': ') || 'Assertion failed.',
-        );
+        super(combineAssertionMessages(baseMessage, userCustomizedMessage));
     }
+}
+
+export function combineAssertionMessages(
+    baseMessage: string,
+    userCustomizedMessage: string | undefined,
+) {
+    return (
+        [
+            userCustomizedMessage,
+            baseMessage,
+        ]
+            .filter((entry) => !!entry)
+            .join(': ') || 'Assertion failed.'
+    );
 }

@@ -26,7 +26,7 @@
         "lint": "virmator lint fix",
         "publish": "virmator publish npm run test:all",
         "test": "mono-vir for-each npm run test",
-        "test:all": "npm run compile && concurrently --colors --kill-others-on-fail -c auto --names tests,spelling,format,docs,deps,lint,exports \"npm run test:coverage\" \"npm run test:spelling\" \"npm run test:format\" \"npm run test:deps\" \"npm run test:lint\" \"npm run test:exports\"",
+        "test:all": "npm run compile && concurrently --colors --kill-others-on-fail -c auto --names tests,spelling,format,deps,lint,exports \"npm run test:coverage\" \"npm run test:spelling\" \"npm run test:format\" \"npm run test:deps\" \"npm run test:lint\" \"npm run test:exports\"",
         "test:coverage": "mono-vir for-each npm run test:coverage",
         "test:deps": "virmator deps check",
         "test:docs": "virmator docs check",

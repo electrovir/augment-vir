@@ -1,5 +1,5 @@
 import {assert, waitUntil} from '@augment-vir/assert';
-import {assertOutput, describe, it, testWeb} from '@augment-vir/test';
+import {describe, it, testWeb} from '@augment-vir/test';
 import {html} from 'element-vir';
 import {
     appendPositionDebugDiv,
@@ -25,8 +25,8 @@ describe(checkIfEntirelyInScrollView.name, () => {
         assert.instanceOf(firstElement, HTMLDivElement);
         assert.instanceOf(lastElement, HTMLDivElement);
 
-        await assertOutput(checkIfEntirelyInScrollView, true, firstElement);
-        await assertOutput(checkIfEntirelyInScrollView, false, lastElement);
+        await assert.output(checkIfEntirelyInScrollView, [firstElement], true);
+        await assert.output(checkIfEntirelyInScrollView, [lastElement], false);
 
         lastElement.scrollIntoView({behavior: 'instant'});
 
@@ -38,11 +38,11 @@ describe(checkIfEntirelyInScrollView.name, () => {
 
 describe(getCenterOfElement.name, () => {
     it('correctly gets the center', async () => {
-        const fixture = await testWeb.render(html`
+        const element = await testWeb.render(html`
             <div style="height: 100px; width: 100px;"></div>
         `);
 
-        assertOutput(getCenterOfElement, {x: 58, y: 58}, fixture);
+        assert.output(getCenterOfElement, [element], {x: 58, y: 58});
     });
 });
 

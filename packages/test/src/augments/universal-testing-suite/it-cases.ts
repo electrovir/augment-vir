@@ -1,10 +1,10 @@
-import {assert, check, ErrorMatchOptions} from '@augment-vir/assert';
+import {assert, check, ErrorMatchOptions, type CustomAsserter} from '@augment-vir/assert';
 import {
     ensureErrorAndPrependMessage,
     type AnyFunction,
+    type MaybePromise,
     type TypedFunction,
 } from '@augment-vir/core';
-import {assertOutputWithCustomAssertion, CustomAsserter} from './assert-output.js';
 import {it} from './universal-it.js';
 
 export type BaseTestCase<OutputGeneric> = {
@@ -97,13 +97,13 @@ export function itCases(
                         ([] as unknown[]);
 
             if ('expect' in testCase) {
-                await assertOutputWithCustomAssertion(
+                await (assert.output(
                     asserter,
                     functionToTest,
+                    functionInputs,
                     testCase.expect,
                     testCase.it,
-                    ...functionInputs,
-                );
+                ) as MaybePromise<any>);
             } else {
                 let caughtError: unknown = unsetError;
                 try {
