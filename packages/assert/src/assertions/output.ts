@@ -1,5 +1,6 @@
 import {
     AnyFunction,
+    combineErrorMessages,
     ensureError,
     ensureErrorAndPrependMessage,
     extractErrorMessage,
@@ -9,7 +10,7 @@ import {
 } from '@augment-vir/core';
 import {convertDuration, DurationUnit} from '@date-vir/duration';
 import type {IsAny} from 'type-fest';
-import {AssertionError, combineAssertionMessages} from '../augments/assertion.error.js';
+import {AssertionError} from '../augments/assertion.error.js';
 import type {GuardGroup} from '../augments/guard-types/guard-group.js';
 import {
     parseWaitUntilOptions,
@@ -423,9 +424,9 @@ export async function waitUntilOutput(
         if (Date.now() - startTime >= timeout) {
             throw ensureErrorAndPrependMessage(
                 lastError,
-                combineAssertionMessages(
-                    `Timeout of '${timeout}' milliseconds exceeded waiting for callback value to match expectations`,
+                combineErrorMessages(
                     failureMessage,
+                    `Timeout of '${timeout}' milliseconds exceeded waiting for callback value to match expectations`,
                 ),
             );
         }

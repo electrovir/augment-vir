@@ -30,7 +30,7 @@
         "docs": "virmator docs",
         "start": "tsx src/index.ts",
         "test": "virmator test node",
-        "test:coverage": "npm run test",
+        "test:coverage": "npm run test coverage",
         "test:docs": "virmator docs check",
         "test:update": "npm test"
     },

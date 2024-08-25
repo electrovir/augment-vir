@@ -1,4 +1,4 @@
-import {extractErrorMessage} from './error-message.js';
+import {combineErrorMessages, extractErrorMessage} from './error-message.js';
 
 export function ensureError(maybeError: unknown): Error {
     if (maybeError instanceof Error) {
@@ -10,6 +10,6 @@ export function ensureError(maybeError: unknown): Error {
 
 export function ensureErrorAndPrependMessage(maybeError: unknown, prependMessage: string): Error {
     const error = ensureError(maybeError);
-    error.message = `${prependMessage}: ${error.message}`;
+    error.message = combineErrorMessages(prependMessage, error.message);
     return error;
 }

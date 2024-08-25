@@ -1,4 +1,4 @@
-import {combineErrorMessages, combineErrors} from '@augment-vir/common';
+import {combineErrors} from '@augment-vir/common';
 import type {MaybePromise, PartialWithUndefined, RequiredAndNotNull} from '@augment-vir/core';
 import {ChildProcess, ExecException, spawn} from 'node:child_process';
 import {defineTypedCustomEvent, ListenTarget} from 'typed-event-target';
@@ -179,12 +179,12 @@ export async function runShellCommand(
 
             shellTarget.destroy();
 
-            const rejectionErrorMessage: string = combineErrorMessages([
+            const rejectionErrorMessage: Error = combineErrors([
+                new Error(stderr),
                 ...errors,
-                stderr,
             ]);
             /** Reject now because the "done" listener won't get fired after killing the process. */
-            reject(new Error(rejectionErrorMessage));
+            reject(rejectionErrorMessage);
         });
         shellTarget.listen(ShellDoneEvent, ({detail: {exitCode, exitSignal}}) => {
             shellTarget.destroy();
