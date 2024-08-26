@@ -21,15 +21,18 @@
     "scripts": {
         "compile": "virmator compile",
         "docs": "virmator docs",
-        "test": "concurrently --colors --kill-others-on-fail -c red,blue --names node,web \"virmator --no-deps test node\" \"virmator --no-deps test web\"",
+        "test": "concurrently --colors --kill-others-on-fail -c red,blue --names node,web \"npm run test:node\" \"npm run test:web\"",
         "test:coverage": "virmator --no-deps test web coverage",
         "test:docs": "virmator docs check",
-        "test:update": "npm test"
+        "test:node": "virmator --no-deps test node",
+        "test:update": "npm test",
+        "test:web": "virmator --no-deps test web"
     },
     "dependencies": {
         "@augment-vir/assert": "^30.0.0",
         "@augment-vir/core": "^30.0.0",
         "@date-vir/duration": "^6.0.0",
+        "ansi-styles": "^6.2.1",
         "json5": "^2.2.3",
         "type-fest": "^4.25.0"
     },
@@ -40,6 +43,7 @@
         "@web/test-runner-playwright": "^0.11.0",
         "@web/test-runner-visual-regression": "^0.9.0",
         "concurrently": "^8.2.2",
+        "execute-in-browser": "^1.0.3",
         "istanbul-smart-text-reporter": "^1.1.4"
     },
     "engines": {

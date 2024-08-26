@@ -1,5 +1,5 @@
 import {AssertionError} from '../augments/assertion.error.js';
-import type {GuardGroup} from '../augments/guard-types/guard-group.js';
+import type {GuardGroup} from '../guard-types/guard-group.js';
 
 function isAbove(actual: number, expected: number, failureMessage?: string | undefined) {
     if (actual <= expected) {

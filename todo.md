@@ -3,6 +3,7 @@
 ## Not now
 
 -   add a pretty diff to the assertion errors like chai has
+    -   or at least include functions in the stringify output
 -   make a snapshot function in `@augment-vir/test` that supports both Node.js's built-in test runner's snapshot testing as well as something that works in web-test-runner.
 -   look into using typedoc plugins
     -   https://github.com/Gerrit0/typedoc-plugin-mdn-links
@@ -15,11 +16,9 @@
 -   fill in package.json descriptions
 -   re-review v30 changelog
 -   create a single documentation output
--   make more node.js augments compatible with common
-    -   log
-    -   appendJson
+    -   add back docs test
 -   add debounce examples
--   add back docs test
+-   research different Uuid versions
 
 ## Immediately after v30 release
 

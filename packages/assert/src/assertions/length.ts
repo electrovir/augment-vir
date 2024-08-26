@@ -8,9 +8,9 @@ import {
     type AtLeastTuple,
 } from '@augment-vir/core';
 import {AssertionError} from '../augments/assertion.error.js';
-import type {GuardGroup} from '../augments/guard-types/guard-group.js';
-import {autoGuard} from '../augments/guard-types/guard-override.js';
-import {WaitUntilOptions} from '../augments/guard-types/wait-until-function.js';
+import type {GuardGroup} from '../guard-types/guard-group.js';
+import {autoGuard} from '../guard-types/guard-override.js';
+import {WaitUntilOptions} from '../guard-types/wait-until-function.js';
 
 function isLengthAtLeast<const Element, const Length extends number>(
     actual: ReadonlyArray<Element | undefined>,

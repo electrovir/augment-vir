@@ -12,7 +12,7 @@ export enum RuntimeEnv {
 
 /**
  * Determine the current {@link RuntimeEnv} value. Usually you shouldn't need to call this, you can
- * simply import {@link runtimeEnv} directly.
+ * simply import {@link currentRuntimeEnv} directly.
  *
  * @category Env
  */
@@ -25,7 +25,7 @@ export function determineRuntimeEnv(): RuntimeEnv {
  *
  * @category Env
  */
-export const runtimeEnv = determineRuntimeEnv();
+export const currentRuntimeEnv = determineRuntimeEnv();
 
 /**
  * Checks if the given {@link RuntimeEnv} value is the current {@link RuntimeEnv} value.
@@ -34,9 +34,13 @@ export const runtimeEnv = determineRuntimeEnv();
  * @returns `true` if the given {@link RuntimeEnv} is the current {@link RuntimeEnv}.
  */
 export function isRuntimeEnv(itItThisEnv: RuntimeEnv): boolean {
-    return runtimeEnv === itItThisEnv;
+    return currentRuntimeEnv === itItThisEnv;
 }
 
 export class RuntimeEnvError extends Error {
     public override readonly name = 'RuntimeEnvError';
+}
+
+export function forEachEnv<T>(perEnv: Record<RuntimeEnv, () => T>): T {
+    return perEnv[currentRuntimeEnv]();
 }

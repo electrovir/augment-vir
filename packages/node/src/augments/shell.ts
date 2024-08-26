@@ -1,8 +1,7 @@
-import {combineErrors} from '@augment-vir/common';
+import {combineErrors, log, type Logger} from '@augment-vir/common';
 import type {MaybePromise, PartialWithUndefined, RequiredAndNotNull} from '@augment-vir/core';
 import {ChildProcess, ExecException, spawn} from 'node:child_process';
 import {defineTypedCustomEvent, ListenTarget} from 'typed-event-target';
-import {log, type Logger} from './console/log.js';
 
 export type ShellOutput = {
     error: undefined | Error;

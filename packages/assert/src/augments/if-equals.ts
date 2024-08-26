@@ -1,6 +1,10 @@
 import type {IsEqual} from 'type-fest';
 
-/** If type T = type U, then type Y. Else type N. */
-export type IfEquals<T, U, Y = unknown, N = never> = IsEqual<T, U> extends true ? Y : N;
+/** If `Actual` === `Expected`, then `Yes`. Else `No`. */
+export type IfEquals<Actual, Expected, Yes = unknown, No = never> =
+    IsEqual<Actual, Expected> extends true ? Yes : No;
 
-export type IfExtends<T, U, Y = unknown, N = never> = T extends U ? Y : N;
+/** If `Actual` extends `Expected`, then `Yes`. Else type `N`. */
+export type IfExtends<Actual, Expected, Yes = unknown, No = never> = Actual extends Expected
+    ? Yes
+    : No;

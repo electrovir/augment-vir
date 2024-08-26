@@ -1,4 +1,5 @@
 import {assert} from '@augment-vir/assert';
+import {createLoggerWithStoredLogs} from '@augment-vir/common';
 import {PartialWithUndefined} from '@augment-vir/core';
 import {describe, it, itCases} from '@augment-vir/test';
 import {join} from 'node:path';
@@ -7,8 +8,7 @@ import {
     longRunningFileWithStderr,
     nodePackageDir,
 } from '../file-paths.mock.js';
-import {createLoggerWithStoredLogs} from './console/log.js';
-import {interpolationSafeWindowsPath, toPosixPath} from './path.js';
+import {interpolationSafeWindowsPath, toPosixPath} from './path/os-path.js';
 import {logShellOutput, LogShellOutputOptions, runShellCommand, type ShellOutput} from './shell.js';
 
 describe(runShellCommand.name, () => {
@@ -129,7 +129,7 @@ describe(logShellOutput.name, () => {
         options: Omit<LogShellOutputOptions, 'logger'>,
         shellOutputOverride: PartialWithUndefined<Omit<ShellOutput, 'exitSignal'>> = {},
     ) {
-        const {logger, logs} = createLoggerWithStoredLogs({removeColors: true});
+        const {logger, logs} = createLoggerWithStoredLogs({omitColors: true});
 
         logShellOutput(
             {
@@ -158,16 +158,16 @@ describe(logShellOutput.name, () => {
             ],
             expect: {
                 stdout: [
-                    'exit code\n',
-                    '1\n',
-                    'stdout\n',
-                    'hi out\n',
-                    'stderr\n',
-                    'error\n',
+                    'exit code',
+                    '1',
+                    'stdout',
+                    'hi out',
+                    'stderr',
+                    'error',
                 ],
                 stderr: [
-                    'hi err\n',
-                    'fake error\n',
+                    'hi err',
+                    'fake error',
                 ],
             },
         },
@@ -181,14 +181,14 @@ describe(logShellOutput.name, () => {
             ],
             expect: {
                 stdout: [
-                    'exit code\n',
-                    '1\n',
-                    'stdout\n',
-                    'hi out\n',
-                    'stderr\n',
+                    'exit code',
+                    '1',
+                    'stdout',
+                    'hi out',
+                    'stderr',
                 ],
                 stderr: [
-                    'hi err\n',
+                    'hi err',
                 ],
             },
         },
@@ -197,12 +197,12 @@ describe(logShellOutput.name, () => {
             inputs: [{}],
             expect: {
                 stdout: [
-                    '1\n',
-                    'hi out\n',
+                    '1',
+                    'hi out',
                 ],
                 stderr: [
-                    'hi err\n',
-                    'fake error\n',
+                    'hi err',
+                    'fake error',
                 ],
             },
         },

@@ -20,8 +20,8 @@ import {runtimeTypeGuards} from '../../assertions/runtime-type.js';
 import {throwGuards} from '../../assertions/throws.js';
 import {uuidGuards} from '../../assertions/uuid.js';
 import {valueGuards} from '../../assertions/values.js';
-import {AssertFunction} from '../guard-types/assert-function.js';
-import {GuardGroup} from '../guard-types/guard-group.js';
+import {AssertFunction} from '../../guard-types/assert-function.js';
+import {GuardGroup} from '../../guard-types/guard-group.js';
 
 export const extendableAssertions = {
     ...booleanGuards.assertions,

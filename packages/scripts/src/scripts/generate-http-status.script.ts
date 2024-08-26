@@ -9,11 +9,12 @@ import {
     capitalizeFirstLetter,
     collapseWhiteSpace,
     kebabCaseToCamelCase,
+    log,
     mapObjectValues,
     removePrefix,
     toEnsuredNumber,
 } from '@augment-vir/common';
-import {log, writeFileAndDir} from '@augment-vir/node';
+import {writeFileAndDir} from '@augment-vir/node';
 import {JSDOM} from 'jsdom';
 import {existsSync} from 'node:fs';
 import {readFile} from 'node:fs/promises';

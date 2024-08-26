@@ -1,10 +1,10 @@
 import {MaybePromise, NarrowToExpected, stringify, type RequiredKeysOf} from '@augment-vir/core';
 import {SetRequired} from 'type-fest';
 import {AssertionError} from '../augments/assertion.error.js';
-import {createCheck} from '../augments/guard-types/check-function.js';
-import type {GuardGroup} from '../augments/guard-types/guard-group.js';
-import {autoGuard} from '../augments/guard-types/guard-override.js';
-import {WaitUntilOptions} from '../augments/guard-types/wait-until-function.js';
+import {createCheck} from '../guard-types/check-function.js';
+import type {GuardGroup} from '../guard-types/guard-group.js';
+import {autoGuard} from '../guard-types/guard-override.js';
+import {WaitUntilOptions} from '../guard-types/wait-until-function.js';
 
 function isKeyOf<const Parent>(
     key: PropertyKey,

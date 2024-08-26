@@ -1,6 +1,12 @@
 import {check} from '@augment-vir/assert';
-import {awaitedBlockingMap, collapseWhiteSpace, safeMatch} from '@augment-vir/common';
-import {log, logColors, readDirRecursive} from '@augment-vir/node';
+import {
+    awaitedBlockingMap,
+    collapseWhiteSpace,
+    log,
+    logColors,
+    safeMatch,
+} from '@augment-vir/common';
+import {readDirRecursive} from '@augment-vir/node';
 import {existsSync} from 'node:fs';
 import {readFile} from 'node:fs/promises';
 import {basename, join, relative} from 'node:path';

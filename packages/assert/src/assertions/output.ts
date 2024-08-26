@@ -11,11 +11,8 @@ import {
 import {convertDuration, DurationUnit} from '@date-vir/duration';
 import type {IsAny} from 'type-fest';
 import {AssertionError} from '../augments/assertion.error.js';
-import type {GuardGroup} from '../augments/guard-types/guard-group.js';
-import {
-    parseWaitUntilOptions,
-    WaitUntilOptions,
-} from '../augments/guard-types/wait-until-function.js';
+import type {GuardGroup} from '../guard-types/guard-group.js';
+import {parseWaitUntilOptions, WaitUntilOptions} from '../guard-types/wait-until-function.js';
 import {deepEquals} from './equality/simple-equality.js';
 
 export type CustomAsserter<FunctionToCall extends AnyFunction> = (

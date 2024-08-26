@@ -1,7 +1,7 @@
 import {MaybePromise, stringify} from '@augment-vir/core';
 import {AssertionError} from '../augments/assertion.error.js';
-import {autoGuard} from '../augments/guard-types/guard-override.js';
-import {WaitUntilOptions} from '../augments/guard-types/wait-until-function.js';
+import {autoGuard} from '../guard-types/guard-override.js';
+import {WaitUntilOptions} from '../guard-types/wait-until-function.js';
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
 

@@ -8,9 +8,9 @@ import {
     type NarrowToExpected,
 } from '@augment-vir/core';
 import {AssertionError} from '../augments/assertion.error.js';
-import {GuardGroup} from '../augments/guard-types/guard-group.js';
-import {autoGuard} from '../augments/guard-types/guard-override.js';
-import type {WaitUntilOptions} from '../augments/guard-types/wait-until-function.js';
+import {GuardGroup} from '../guard-types/guard-group.js';
+import {autoGuard} from '../guard-types/guard-override.js';
+import type {WaitUntilOptions} from '../guard-types/wait-until-function.js';
 import {isEnumValue} from './enum.js';
 import {isIn} from './values.js';
 

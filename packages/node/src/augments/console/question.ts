@@ -1,6 +1,6 @@
+import {log} from '@augment-vir/common';
 import {convertDuration, DurationUnit, type AnyDuration} from '@date-vir/duration';
 import {createInterface} from 'node:readline';
-import {log} from './log.js';
 
 /** Can't test requiring user input. */
 /* node:coverage disable */

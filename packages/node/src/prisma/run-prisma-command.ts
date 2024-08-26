@@ -1,4 +1,4 @@
-import {log} from '../augments/console/log.js';
+import {log} from '@augment-vir/common';
 import {runShellCommand, type ShellOutput} from '../augments/shell.js';
 import {PrismaSchemaError} from './prisma-errors.js';
 

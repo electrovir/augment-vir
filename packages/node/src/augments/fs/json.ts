@@ -1,12 +1,13 @@
-import {check, getRuntimeType} from '@augment-vir/assert';
 import {
+    appendJson,
     JsonCompatibleArray,
     JsonCompatibleObject,
     type JsonCompatibleValue,
 } from '@augment-vir/common';
 import type {PartialWithUndefined} from '@augment-vir/core';
-import {mkdir, readFile, writeFile} from 'node:fs/promises';
+import {mkdir, readFile} from 'node:fs/promises';
 import {dirname} from 'node:path';
+import {writeFileAndDir} from './write.js';
 
 export async function readJsonFile(path: string): Promise<JsonCompatibleValue | undefined> {
     try {
@@ -30,7 +31,7 @@ export async function writeJsonFile(
 
     const trailingNewLine = options.includeTrailingNewLine ? '\n' : '';
 
-    await writeFile(path, JSON.stringify(data, null, 4) + trailingNewLine);
+    await writeFileAndDir(path, JSON.stringify(data, null, 4) + trailingNewLine);
 }
 
 export async function appendJsonFile(
@@ -38,37 +39,7 @@ export async function appendJsonFile(
     newData: JsonCompatibleObject | JsonCompatibleArray,
     options: WriteJsonOptions = {},
 ): Promise<void> {
-    await mkdir(dirname(path), {recursive: true});
     const fileJson = await readJsonFile(path);
 
-    if (fileJson === undefined) {
-        await writeJsonFile(path, newData, options);
-
-        return;
-    }
-
-    const original = typeof fileJson === 'object' ? fileJson : [fileJson];
-
-    const withAppendedData: JsonCompatibleObject | JsonCompatibleArray | undefined =
-        check.isArray(original) && check.isArray(newData)
-            ? [
-                  ...original,
-                  ...newData,
-              ]
-            : check.isObject(original) && check.isObject(newData)
-              ? {
-                    ...original,
-                    ...newData,
-                }
-              : undefined;
-
-    if (!withAppendedData) {
-        throw new TypeError(
-            `Type mismatch between new JSON data to append and current JSON data at '${path}': current file is '${getRuntimeType(
-                original,
-            )}' and new data is '${getRuntimeType(newData)}'`,
-        );
-    }
-
-    await writeJsonFile(path, withAppendedData, options);
+    await writeJsonFile(path, appendJson(fileJson, newData), options);
 }

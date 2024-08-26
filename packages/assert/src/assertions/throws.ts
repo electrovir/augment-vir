@@ -8,8 +8,8 @@ import {
     type AnyFunction,
 } from '@augment-vir/core';
 import {AssertionError} from '../augments/assertion.error.js';
-import type {GuardGroup} from '../augments/guard-types/guard-group.js';
-import {createWaitUntil, WaitUntilOptions} from '../augments/guard-types/wait-until-function.js';
+import type {GuardGroup} from '../guard-types/guard-group.js';
+import {createWaitUntil, WaitUntilOptions} from '../guard-types/wait-until-function.js';
 
 enum ThrowsCheckType {
     Assert = 'assert',

@@ -2,8 +2,8 @@ import type {NarrowToActual, NarrowToExpected} from '@augment-vir/core';
 import {AnyObject, MaybePromise, stringify, Values} from '@augment-vir/core';
 import type {EmptyObject} from 'type-fest';
 import {AssertionError} from '../augments/assertion.error.js';
-import {autoGuard} from '../augments/guard-types/guard-override.js';
-import type {WaitUntilOptions} from '../augments/guard-types/wait-until-function.js';
+import {autoGuard} from '../guard-types/guard-override.js';
+import type {WaitUntilOptions} from '../guard-types/wait-until-function.js';
 
 export type ValueParentBase = object | string;
 

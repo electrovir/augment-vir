@@ -1,7 +1,6 @@
 import {check} from '@augment-vir/assert';
-import {safeMatch, toEnsuredNumber} from '@augment-vir/common';
+import {log, safeMatch, toEnsuredNumber} from '@augment-vir/common';
 import terminate from 'terminate';
-import {log} from '../augments/console/log.js';
 import {runShellCommand} from '../augments/shell.js';
 import {PrismaMigrationNeededError, PrismaResetNeededError} from './prisma-errors.js';
 import {runPrismaCommand, verifyOutput} from './run-prisma-command.js';

@@ -1,4 +1,4 @@
-import type {AnyObject, CompleteRequire, PartialWithNullable} from '@augment-vir/core';
+import type {AnyObject, PartialWithNullable} from '@augment-vir/core';
 import {getObjectTypedEntries} from './object-entries.js';
 
 /**
@@ -6,19 +6,23 @@ import {getObjectTypedEntries} from './object-entries.js';
  * missing. This only merges objects at the top level, it is not a deep merge.
  */
 export function mergeDefinedProperties<const T extends AnyObject>(
-    fallback: CompleteRequire<T>,
-    ...overrides: ReadonlyArray<PartialWithNullable<T>>
-): CompleteRequire<T> {
-    const finalObject = {...fallback};
+    original: T,
+    ...overrides: ReadonlyArray<PartialWithNullable<NoInfer<T>> | undefined>
+): T {
+    const finalObject = {...original};
 
     overrides.forEach((entry) => {
+        if (!entry) {
+            return;
+        }
+
         getObjectTypedEntries(entry).forEach(
             ([
                 key,
                 value,
             ]) => {
                 if (value != undefined) {
-                    finalObject[key] = value;
+                    finalObject[key] = value as T[keyof T];
                 }
             },
         );

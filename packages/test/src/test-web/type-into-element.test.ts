@@ -45,7 +45,7 @@ describe(testWeb.typeIntoInput.name, () => {
 
         await assert.throws(testWeb.typeIntoInput('hello there', element), {
             matchConstructor: AssertionError,
-            matchMessage: 'times to focus the given input element.',
+            matchMessage: 'times to focus the given input element',
         });
     });
 });

@@ -1,9 +1,9 @@
 import {MaybePromise, NarrowToExpected, stringify} from '@augment-vir/core';
 import deepEqual from 'deep-eql';
 import {AssertionError} from '../../augments/assertion.error.js';
-import type {GuardGroup} from '../../augments/guard-types/guard-group.js';
-import {autoGuard} from '../../augments/guard-types/guard-override.js';
-import {WaitUntilOptions} from '../../augments/guard-types/wait-until-function.js';
+import type {GuardGroup} from '../../guard-types/guard-group.js';
+import {autoGuard} from '../../guard-types/guard-override.js';
+import {WaitUntilOptions} from '../../guard-types/wait-until-function.js';
 
 export function strictEquals<const Actual, const Expected extends Actual>(
     actual: Actual,
@@ -12,7 +12,7 @@ export function strictEquals<const Actual, const Expected extends Actual>(
 ): asserts actual is Expected {
     if (actual !== expected) {
         throw new AssertionError(
-            `${stringify(actual)} does not strictly equal ${stringify(expected)}`,
+            `\n\n${stringify(actual)}\n\ndoes not strictly equal\n\n${stringify(expected)}\n\n`,
             failureMessage,
         );
     }
@@ -20,7 +20,7 @@ export function strictEquals<const Actual, const Expected extends Actual>(
 function notStrictEquals(actual: unknown, expected: unknown, failureMessage?: string | undefined) {
     if (actual === expected) {
         throw new AssertionError(
-            `${stringify(actual)} strictly equals ${stringify(expected)}`,
+            `\n\n${stringify(actual)}\n\nstrictly equals\n\n${stringify(expected)}\n\n`,
             failureMessage,
         );
     }
@@ -29,7 +29,7 @@ function notStrictEquals(actual: unknown, expected: unknown, failureMessage?: st
 function looseEquals(actual: unknown, expected: unknown, failureMessage?: string | undefined) {
     if (actual != expected) {
         throw new AssertionError(
-            `${stringify(actual)} does not loosely equal ${stringify(expected)}`,
+            `\n\n${stringify(actual)}\n\ndoes not loosely equal\n\n${stringify(expected)}\n\n`,
             failureMessage,
         );
     }
@@ -38,7 +38,7 @@ function looseEquals(actual: unknown, expected: unknown, failureMessage?: string
 function notLooseEquals(actual: unknown, expected: unknown, failureMessage?: string | undefined) {
     if (actual == expected) {
         throw new AssertionError(
-            `${stringify(actual)} loosely equals ${stringify(expected)}`,
+            `\n\n${stringify(actual)}\n\nloosely equals\n\n${stringify(expected)}\n\n`,
             failureMessage,
         );
     }
@@ -51,7 +51,7 @@ export function deepEquals<const Actual, const Expected extends Actual>(
 ): asserts actual is NarrowToExpected<Actual, Expected> {
     if (!deepEqual(actual, expected)) {
         throw new AssertionError(
-            `${stringify(actual)} does not deeply equal ${stringify(expected)}`,
+            `\n\n${stringify(actual)}\n\ndoes not deeply equal\n\n${stringify(expected)}\n\n`,
             failureMessage,
         );
     }
@@ -60,7 +60,7 @@ export function deepEquals<const Actual, const Expected extends Actual>(
 function notDeepEquals(actual: unknown, expected: unknown, failureMessage?: string | undefined) {
     if (deepEqual(actual, expected)) {
         throw new AssertionError(
-            `${stringify(actual)} deeply equals ${stringify(expected)}`,
+            `\n\n${stringify(actual)}\n\ndeeply equals\n\n${stringify(expected)}\n\n`,
             failureMessage,
         );
     }

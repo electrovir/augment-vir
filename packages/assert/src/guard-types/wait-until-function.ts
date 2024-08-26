@@ -16,7 +16,7 @@ import {
     wait,
 } from '@augment-vir/core';
 import {AnyDuration, convertDuration, DurationUnit} from '@date-vir/duration';
-import type {AssertFunction} from '../guard-types/assert-function.js';
+import type {AssertFunction} from './assert-function.js';
 import {pickOverride} from './guard-override.js';
 
 export type WaitUntilOptions = PartialWithUndefined<{
@@ -139,7 +139,7 @@ export function createWaitUntil<const Assert extends AssertFunction<any>>(
     }) as AnyFunction as WaitUntilFunction<Assert>;
 }
 
-function parseWaitUntilArgs(rawArgs: unknown[]) {
+export function parseWaitUntilArgs(rawArgs: unknown[]) {
     const args: {
         extraAssertionArgs: unknown[];
         callback?: AnyFunction;
@@ -174,7 +174,7 @@ function parseWaitUntilArgs(rawArgs: unknown[]) {
 
     return {
         callback: args.callback,
-        options: parseWaitUntilOptions(args.options?.interval),
+        options: parseWaitUntilOptions(args.options),
         extraAssertionArgs: args.extraAssertionArgs.toReversed(),
         failureMessage: args.failureMessage,
     };
