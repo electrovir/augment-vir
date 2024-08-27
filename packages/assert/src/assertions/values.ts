@@ -5,9 +5,6 @@ import {AssertionError} from '../augments/assertion.error.js';
 import {autoGuard} from '../guard-types/guard-override.js';
 import type {WaitUntilOptions} from '../guard-types/wait-until-function.js';
 
-export type ValueParentBase = object | string;
-
-/** Check if an object has the given value through reference equality. */
 function hasValue(parent: object, value: unknown, failureMessage?: string | undefined) {
     /** Wrap this in a try/catch because `Reflect.ownKeys` can fail depending on what its input is. */
     try {
@@ -38,7 +35,6 @@ function lacksValue(parent: object, value: unknown, failureMessage?: string | un
     );
 }
 
-/** Check if an object has the given value through reference equality. */
 function hasValues(
     parent: object,
     values: ReadonlyArray<unknown>,
@@ -54,7 +50,7 @@ function lacksValues(
     values.forEach((value) => lacksValue(parent, value, failureMessage));
 }
 
-export function isIn<const Parent extends ValueParentBase>(
+export function isIn<const Parent extends object | string>(
     child: unknown,
     parent: Parent,
     failureMessage?: string | undefined,
@@ -67,7 +63,7 @@ export function isIn<const Parent extends ValueParentBase>(
         hasValue(parent, child, failureMessage);
     }
 }
-function isNotIn<const Parent extends ValueParentBase, const Child>(
+function isNotIn<const Parent extends object | string, const Child>(
     child: Child,
     parent: Parent,
     failureMessage?: string | undefined,
@@ -81,7 +77,22 @@ function isNotIn<const Parent extends ValueParentBase, const Child>(
     throw new AssertionError(`${stringify(child)} is not in ${stringify(parent)}.`, failureMessage);
 }
 
+/**
+ * All types that can be checked for emptiness. The empty variants of these types are represented in
+ * {@link Empty}.
+ *
+ * @category Assert : Util
+ * @package @augment-vir/assert
+ */
 export type CanBeEmpty = string | Map<any, any> | Set<any> | AnyObject | any[];
+/**
+ * Empty versions of {@link CanBeEmpty}. Note that there is no way to distinguish an empty `Set` or
+ * `Map` from their non-empty counterparts in TypeScript (so you will get no emptiness type safety
+ * for them.)
+ *
+ * @category Assert : Util
+ * @package @augment-vir/assert
+ */
 export type Empty = '' | EmptyObject | [] | Map<any, any> | Set<any>;
 
 function isEmpty<const Actual extends CanBeEmpty>(
@@ -118,13 +129,53 @@ function isNotEmpty<const Actual extends CanBeEmpty>(
 }
 
 const assertions: {
+    /**
+     * Check if an object/array includes the given value through reference equality.
+     *
+     * Performs no type guarding.
+     */
     hasValue: typeof hasValue;
+    /**
+     * Check if an object/array does _not_ include the given value through reference equality.
+     *
+     * Performs no type guarding.
+     */
     lacksValue: typeof lacksValue;
+    /**
+     * Check if an object/array includes the given values through reference equality.
+     *
+     * Performs no type guarding.
+     */
     hasValues: typeof hasValues;
+    /**
+     * Check if an object/array does _not_ include the given values through reference equality.
+     *
+     * Performs no type guarding.
+     */
     lacksValues: typeof lacksValues;
+    /**
+     * Check if a child value is contained within a parent object, array, or string.
+     *
+     * Type guards the child when possible.
+     */
     isIn: typeof isIn;
+    /**
+     * Check if a child value is _not_ contained within a parent object, array, or string.
+     *
+     * Type guards the child when possible.
+     */
     isNotIn: typeof isNotIn;
+    /**
+     * Check if a value is empty.
+     *
+     * Type guards the value.
+     */
     isEmpty: typeof isEmpty;
+    /**
+     * Check if a value is not empty.
+     *
+     * Type guards the value.
+     */
     isNotEmpty: typeof isNotEmpty;
 } = {
     hasValue,

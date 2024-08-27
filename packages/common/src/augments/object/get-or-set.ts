@@ -41,15 +41,17 @@ export function getOrSetFromMap<MapKey, MapValue>(
  *
  * @category Object:Common
  * @example
- *     // instead of doing this
- *     if (!myObject[myKey]) {
- *         myObject[myKey] = myValue;
- *     }
- *     // notice the not null assertion here
- *     retrievedValue![nextKey] = 'some value';
  *
- *     // do this
- *     getOrSetInObject(myObject, myKey, () => myValue);
+ * ```ts
+ * // instead of doing this
+ * if (!myObject[myKey]) {
+ *     myObject[myKey] = {};
+ * }
+ * myObject[myKey]![nextKey] = 'some value';
+ *
+ * // do this
+ * getOrSetInObject(myObject, myKey, () => {});
+ * ```
  */
 export function getOrSet<OriginalObject extends AnyObject, Key extends keyof OriginalObject>(
     originalObject: OriginalObject,

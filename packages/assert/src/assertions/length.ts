@@ -67,14 +67,6 @@ function isLengthExactly(
     }
 }
 
-const assertions: {
-    isLengthAtLeast: typeof isLengthAtLeast;
-    isLengthExactly: typeof isLengthExactly;
-} = {
-    isLengthAtLeast,
-    isLengthExactly,
-};
-
 /** These functions are not used at run time, they're only here for types. */
 /* node:coverage disable */
 
@@ -198,6 +190,24 @@ function waitUntilIsLengthExactly(
     return false;
 }
 /* node:coverage enable */
+
+const assertions: {
+    /**
+     * Check if an array has at least the given length.
+     *
+     * Type guards the array into an {@link AtLeastTuple}.
+     */
+    isLengthAtLeast: typeof isLengthAtLeast;
+    /**
+     * Check if an array has exactly the given length.
+     *
+     * Type guards the array into a {@link Tuple}.
+     */
+    isLengthExactly: typeof isLengthExactly;
+} = {
+    isLengthAtLeast,
+    isLengthExactly,
+};
 
 export const lengthGuards = {
     assertions,

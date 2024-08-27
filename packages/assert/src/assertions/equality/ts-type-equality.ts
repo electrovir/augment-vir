@@ -29,7 +29,25 @@ function tsType<Actual>(
     } satisfies Record<keyof AssertTypeOf<any>, () => void> as AssertTypeOf<Actual>;
 }
 
-const assertions: {tsType: typeof tsType} = {
+const assertions: {
+    /**
+     * Check if a value or type matches type expectations. Use this to write type tests.
+     *
+     * This should not be used in production code. It won't cause any issues there, but it also
+     * provides no value there.
+     *
+     * Performs no type guarding.
+     *
+     * @example
+     *
+     * ```ts
+     * import {assert} from '@augment-vir/assert';
+     *
+     * assert.tsType('hello').equals<string>();
+     * ```
+     */
+    tsType: typeof tsType;
+} = {
     tsType,
 };
 

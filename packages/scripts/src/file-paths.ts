@@ -8,6 +8,7 @@ export const packagesDirPath = join(monoRepoDirPath, 'packages');
 export const packagePaths = {
     test: join(packagesDirPath, 'test'),
     core: join(packagesDirPath, 'core'),
+    scripts: join(packagesDirPath, 'scripts'),
 };
 const notCommittedDir = join(monoRepoDirPath, '.not-committed');
 const downloadCacheDir = join(notCommittedDir, 'cache');
@@ -19,8 +20,9 @@ export const httpStatusOutputPath = join(
     'http',
     'http-status.ts',
 );
+export const eslintTsconfigPath = join(monoRepoDirPath, 'configs', 'tsconfig.eslint.json');
 
-export async function getAllPackageDirPaths(): Promise<ReadonlyArray<string>> {
+export async function getAllPackageDirPaths(): Promise<string[]> {
     const packageNames = await readdir(packagesDirPath);
 
     const packageDirPaths = packageNames.map((packageName) => join(packagesDirPath, packageName));
@@ -32,7 +34,7 @@ export async function getAllPackageDirPaths(): Promise<ReadonlyArray<string>> {
     return packageDirPaths.filter((path, index) => areFolders[index]);
 }
 
-export async function getAllPublicPackageDirPaths(): Promise<ReadonlyArray<string>> {
+export async function getAllPublicPackageDirPaths(): Promise<string[]> {
     const packageDirPaths = await getAllPackageDirPaths();
 
     const packagePublicity = await Promise.all(

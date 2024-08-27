@@ -2,10 +2,7 @@ import {ensureError} from '@augment-vir/core';
 import {runShellCommand} from '../augments/shell.js';
 
 export async function updateImage(
-    /**
-     * @example
-     *     'alpine:3.20.2';
-     */
+    /** @example 'alpine:3.20.2' */
     imageName: string,
 ) {
     if (await isImageInLocalRegistry(imageName)) {
@@ -19,10 +16,7 @@ export async function updateImage(
 }
 
 export async function isImageInLocalRegistry(
-    /**
-     * @example
-     *     'alpine:3.20.2';
-     */
+    /** @example 'alpine:3.20.2' */
     imageName: string,
 ): Promise<boolean> {
     const output = await runShellCommand(`docker inspect '${imageName}'`);
@@ -31,10 +25,7 @@ export async function isImageInLocalRegistry(
 }
 
 export async function removeImageFromLocalRegistry(
-    /**
-     * @example
-     *     'alpine:3.20.2';
-     */
+    /** @example 'alpine:3.20.2' */
     imageName: string,
 ) {
     try {

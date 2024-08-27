@@ -120,29 +120,124 @@ function isNull(actual: unknown, failureMessage?: string | undefined): asserts a
 
 const assertions: {
     /**
-     * This gross duplicate code is because of the following TypeScript Compiler limitation:
+     * Check if a value is an array.
      *
-     *     Assertions require every name in the call target to be declared with an explicit type annotation.ts(2775)
+     * Type guards the value.
      */
     isArray: typeof isArray;
+    /**
+     * Check if a value is a bigint.
+     *
+     * Type guards the value.
+     */
     isBigInt: typeof isBigInt;
+    /**
+     * Check if a value is a boolean.
+     *
+     * Type guards the value.
+     */
     isBoolean: typeof isBoolean;
+    /**
+     * Check if a value is a function.
+     *
+     * Type guards the value.
+     */
     isFunction: typeof isFunction;
+    /**
+     * Check if a value is null.
+     *
+     * Type guards the value.
+     */
     isNull: typeof isNull;
+    /**
+     * Check if a value is a number.
+     *
+     * Type guards the value.
+     */
     isNumber: typeof isNumber;
+    /**
+     * Check if a value is an object.
+     *
+     * Type guards the value.
+     */
     isObject: typeof isObject;
+    /**
+     * Check if a value is a string.
+     *
+     * Type guards the value.
+     */
     isString: typeof isString;
+    /**
+     * Check if a value is a symbol.
+     *
+     * Type guards the value.
+     */
     isSymbol: typeof isSymbol;
+    /**
+     * Check if a value is undefined.
+     *
+     * Type guards the value.
+     */
     isUndefined: typeof isUndefined;
+    /**
+     * Check if a value not an array.
+     *
+     * Type guards the value.
+     */
     isNotArray: typeof isNotArray;
+    /**
+     * Check if a value is not a bigint.
+     *
+     * Type guards the value.
+     */
     isNotBigInt: typeof isNotBigInt;
+    /**
+     * Check if a value is not a boolean.
+     *
+     * Type guards the value.
+     */
     isNotBoolean: typeof isNotBoolean;
+    /**
+     * Check if a value is not a function.
+     *
+     * Type guards the value.
+     */
     isNotFunction: typeof isNotFunction;
+    /**
+     * Check if a value is not a number.
+     *
+     * Type guards the value.
+     */
     isNotNumber: typeof isNotNumber;
+    /**
+     * Check if a value is not an object.
+     *
+     * Type guards the value.
+     */
     isNotObject: typeof isNotObject;
+    /**
+     * Check if a value is not a string.
+     *
+     * Type guards the value.
+     */
     isNotString: typeof isNotString;
+    /**
+     * Check if a value is not a symbol.
+     *
+     * Type guards the value.
+     */
     isNotSymbol: typeof isNotSymbol;
+    /**
+     * Check if a value is not undefined.
+     *
+     * Type guards the value.
+     */
     isNotUndefined: typeof isNotUndefined;
+    /**
+     * Check if a value not Null.
+     *
+     * Type guards the value.
+     */
     isNotNull: typeof isNotNull;
 } = {
     isArray,
@@ -262,9 +357,8 @@ export const runtimeTypeGuards = {
          *
          * For some reason `checkWrap` does not suffer from this issue though.
          *
-         * @example
-         *     const mySymbol = Symbol('mine');
-         *     const mySymbol2 = mySymbol; // this is no longer `unique symbol`
+         * @example Const mySymbol = Symbol('mine'); const mySymbol2 = mySymbol; // this is no
+         * longer `unique symbol`
          */
         isSymbol:
             autoGuard<
@@ -516,29 +610,68 @@ export const runtimeTypeGuards = {
     },
 } satisfies GuardGroup;
 
-/** This function is not used at run time, it's only here for types. */
-/* /* node:coverage ignore next 4 */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function rawGetTypeOf(x: any) {
-    return typeof x;
+/**
+ * An enum representing the possible values returned by {@link getRuntimeType}. These values are
+ * similar to the output of the built-in
+ * [`typeof`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/typeof) operator
+ * except that this includes new types `array` and `null`, that `typeof` does not have, which are
+ * both distinct from `object`.
+ *
+ * @category Assert : Util
+ * @package @augment-vir/assert
+ */
+export enum RuntimeType {
+    String = 'string',
+    Number = 'number',
+    Bigint = 'bigint',
+    Boolean = 'boolean',
+    Symbol = 'symbol',
+    Undefined = 'undefined',
+    Object = 'object',
+    Function = 'function',
+    /**
+     * This is not included in {@link RuntimeType.Object}. (Compared to
+     * [`typeof`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/typeof)
+     * which _does_ include `null` in the `'object'` type.)
+     */
+    Array = 'array',
+    /**
+     * This is not included in {@link RuntimeType.Object}. (Compared to
+     * [`typeof`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/typeof)
+     * which _does_ include `null` in the `'object'` type.)
+     */
+    Null = 'null',
 }
 
-/** Raw outputs from the typeof operator. */
-type RawTypeOf = ReturnType<typeof rawGetTypeOf>;
-
 /**
- * The available run-time type options. In addition to the options returned by the built-in `typeof`
- * operator, this adds `'array'` and `'null'` as type strings.
+ * Determines the {@link RuntimeType} of a variable. This is similar to the built-in
+ * [`typeof`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/typeof) operator
+ * except in the following ways:
+ *
+ * - This returns an enum value ({@link RuntimeType}) rather than just a string (though the enum values
+ *   are strings anyway).
+ * - This includes new types `array` and `null`, that `typeof` does not have, which are both distinct
+ *   from `object`.
+ *
+ * @category Assert : Util
+ * @example
+ *
+ * ```ts
+ * import {getRuntimeType} from '@augment-vir/assert';
+ *
+ * getRuntimeType(['a']); // RuntimeType.Array
+ * getRuntimeType({a: 'a'}); // RuntimeType.Object
+ * ```
+ *
+ * @package @augment-vir/assert
  */
-export type RuntimeType = RawTypeOf | 'array' | 'null';
-
 export function getRuntimeType(actual: unknown): RuntimeType {
     if (actual === null) {
-        return 'null';
+        return RuntimeType.Null;
     } else if (Array.isArray(actual)) {
-        return 'array';
+        return RuntimeType.Array;
     } else {
-        return typeof actual;
+        return typeof actual as RuntimeType;
     }
 }
 
@@ -548,7 +681,7 @@ export function getRuntimeType(actual: unknown): RuntimeType {
  */
 function assertRuntimeType(
     actual: unknown,
-    testType: RuntimeType,
+    testType: RuntimeType | `${RuntimeType}`,
     failureMessage?: string | undefined,
 ) {
     const actualType = getRuntimeType(actual);
@@ -561,7 +694,7 @@ function assertRuntimeType(
 }
 function assertNotRuntimeType(
     actual: unknown,
-    testType: RuntimeType,
+    testType: RuntimeType | `${RuntimeType}`,
     failureMessage?: string | undefined,
 ) {
     const actualType = getRuntimeType(actual);

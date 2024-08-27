@@ -10,16 +10,13 @@ import {randomInteger} from './random-integer.js';
  * This function uses cryptographically secure randomness.
  *
  * @example
- *     randomBoolean(50); // 50% chance to return true
  *
- * @example
- *     randomBoolean(0); // always false, 0% chance of being true
- *
- * @example
- *     randomBoolean(100); // always true, 100% chance of being true
- *
- * @example
- *     randomBoolean(59.67); // 59% chance of being true
+ * ```ts
+ * randomBoolean(50); // 50% chance to return true
+ * randomBoolean(0); // always false, 0% chance of being true
+ * randomBoolean(100); // always true, 100% chance of being true
+ * randomBoolean(59.67); // 59% chance of being true
+ * ```
  */
 export function randomBoolean(percentLikelyToBeTrue: number = 50): boolean {
     return (

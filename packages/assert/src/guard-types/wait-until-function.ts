@@ -16,13 +16,29 @@ import {
     wait,
 } from '@augment-vir/core';
 import {AnyDuration, convertDuration, DurationUnit} from '@date-vir/duration';
+import type {AssertionError} from '../augments/assertion.error.js';
 import type {AssertFunction} from './assert-function.js';
 import {pickOverride} from './guard-override.js';
 
+/**
+ * Options for configuring the timing of `waitUntil`.
+ *
+ * @category Assert : Util
+ * @package @augment-vir/assert
+ */
 export type WaitUntilOptions = PartialWithUndefined<{
-    /** @default {milliseconds: 100} */
+    /**
+     * The duration between attempts.
+     *
+     * @default {milliseconds: 100}
+     */
     interval: AnyDuration;
-    /** @default {seconds: 10} */
+    /**
+     * The maximum duration to keep trying. If the `waitUntil` expectations are still not met by
+     * this time, an {@link AssertionError} will be thrown.
+     *
+     * @default {seconds: 10}
+     */
     timeout: AnyDuration;
 }>;
 

@@ -55,9 +55,32 @@ function isNotPromise<const Actual>(
 }
 
 const assertions: {
+    /**
+     * Check if a value is a `PromiseLike`. `PromiseLike` is TypeScript built-in type that simply
+     * includes a `.then` method. This enables the use of third-party promise implementations that
+     * aren't instances of the built-in `Promise` class.
+     *
+     * Type guards the value.
+     */
     isPromiseLike: typeof isPromiseLike;
+    /**
+     * Check if a value is _not_ a `PromiseLike`. `PromiseLike` is TypeScript built-in type that
+     * simply includes a `.then` method.
+     *
+     * Type guards the value.
+     */
     isNotPromiseLike: typeof isNotPromiseLike;
+    /**
+     * Check if a value is an instance of the built-in `Promise` class.
+     *
+     * Type guards the value.
+     */
     isPromise: typeof isPromise;
+    /**
+     * Check if a value is _not_ an instance of the built-in `Promise` class.
+     *
+     * Type guards the value.
+     */
     isNotPromise: typeof isNotPromise;
 } = {
     isPromiseLike,

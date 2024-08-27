@@ -34,7 +34,17 @@ function notInstanceOf<const Actual, const Instance>(
 }
 
 const assertions: {
+    /**
+     * Check if a value is an instance of the given class constructor.
+     *
+     * Type guards the value.
+     */
     instanceOf: typeof instanceOf;
+    /**
+     * Check if a value is _not_ an instance of the given class constructor.
+     *
+     * Type guards the value when possible.
+     */
     notInstanceOf: typeof notInstanceOf;
 } = {
     instanceOf,

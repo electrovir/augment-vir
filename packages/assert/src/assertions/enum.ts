@@ -6,38 +6,48 @@ import {autoGuard} from '../guard-types/guard-override.js';
 import {WaitUntilOptions} from '../guard-types/wait-until-function.js';
 
 export function isEnumValue<const Expected extends EnumBaseType>(
-    value: unknown,
+    child: unknown,
     checkEnum: Expected,
     failureMessage?: string | undefined,
-): asserts value is Expected[keyof Expected] {
+): asserts child is Expected[keyof Expected] {
     const values = getEnumValues(checkEnum);
-    if (!values.includes(value as Expected[keyof Expected])) {
+    if (!values.includes(child as Expected[keyof Expected])) {
         throw new AssertionError(
-            `${String(value)} is not an enum value in '${values.join(',')}'.`,
+            `${String(child)} is not an enum value in '${values.join(',')}'.`,
             failureMessage,
         );
     }
 }
 function isNotEnumValue<const Actual, const Expected extends EnumBaseType>(
-    value: Actual,
+    child: Actual,
     checkEnum: Expected,
     failureMessage?: string | undefined,
-): asserts value is Exclude<Actual, Expected[keyof Expected] | `${Expected[keyof Expected]}`> {
+): asserts child is Exclude<Actual, Expected[keyof Expected] | `${Expected[keyof Expected]}`> {
     try {
-        isEnumValue(value, checkEnum);
+        isEnumValue(child, checkEnum);
     } catch {
         return;
     }
 
     const values = getEnumValues(checkEnum);
     throw new AssertionError(
-        `${String(value)} is an enum value in '${values.join(',')}'`,
+        `${String(child)} is an enum value in '${values.join(',')}'`,
         failureMessage,
     );
 }
 
 const assertions: {
+    /**
+     * Check if a child value is a valid member of a specific enum.
+     *
+     * Type guards the child value.
+     */
     isEnumValue: typeof isEnumValue;
+    /**
+     * Check if a child value is _not_ a valid member of a specific enum.
+     *
+     * Type guards the child value when possible.
+     */
     isNotEnumValue: typeof isNotEnumValue;
 } = {
     isEnumValue,
@@ -50,16 +60,16 @@ export const enumGuards = {
         isEnumValue:
             autoGuard<
                 <const Expected extends EnumBaseType>(
-                    value: unknown,
+                    child: unknown,
                     checkEnum: Expected,
-                ) => value is Expected[keyof Expected]
+                ) => child is Expected[keyof Expected]
             >(),
         isNotEnumValue:
             autoGuard<
                 <const Actual, const Expected extends EnumBaseType>(
-                    value: Actual,
+                    child: Actual,
                     checkEnum: Expected,
-                ) => value is Exclude<
+                ) => child is Exclude<
                     Actual,
                     Expected[keyof Expected] | `${Expected[keyof Expected]}`
                 >
@@ -69,7 +79,7 @@ export const enumGuards = {
         isEnumValue:
             autoGuard<
                 <const Actual, const Expected extends EnumBaseType>(
-                    value: Actual,
+                    child: Actual,
                     checkEnum: Expected,
                     failureMessage?: string | undefined,
                 ) => NarrowToExpected<Actual, Expected[keyof Expected]>
@@ -77,7 +87,7 @@ export const enumGuards = {
         isNotEnumValue:
             autoGuard<
                 <const Actual, const Expected extends EnumBaseType>(
-                    value: Actual,
+                    child: Actual,
                     checkEnum: Expected,
                     failureMessage?: string | undefined,
                 ) => Exclude<Actual, Expected[keyof Expected] | `${Expected[keyof Expected]}`>
@@ -87,14 +97,14 @@ export const enumGuards = {
         isEnumValue:
             autoGuard<
                 <const Actual, const Expected extends EnumBaseType>(
-                    value: Actual,
+                    child: Actual,
                     checkEnum: Expected,
                 ) => NarrowToExpected<Actual, Expected[keyof Expected]> | undefined
             >(),
         isNotEnumValue:
             autoGuard<
                 <const Actual, const Expected extends EnumBaseType>(
-                    value: Actual,
+                    child: Actual,
                     checkEnum: Expected,
                 ) =>
                     | Exclude<Actual, Expected[keyof Expected] | `${Expected[keyof Expected]}`>

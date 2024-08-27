@@ -4,9 +4,12 @@ import type {AnyFunction, AnyObject} from '@augment-vir/core';
  * Extracts all model names from a generated `Prisma` object.
  *
  * @example
- *     import type {Prisma} from '@prisma/client';
  *
- *     function doThing(modelName: ModelNameFromPrismaTypeMap<Prisma.TypeMap>) {}
+ * ```ts
+ * import type {Prisma} from '@prisma/client';
+ *
+ * function doThing(modelName: ModelNameFromPrismaTypeMap<Prisma.TypeMap>) {}
+ * ```
  */
 export type ModelNameFromPrismaTypeMap<PrismaTypeMap extends BasePrismaTypeMap> =
     PrismaTypeMap['meta']['modelProps'];
@@ -15,9 +18,12 @@ export type ModelNameFromPrismaTypeMap<PrismaTypeMap extends BasePrismaTypeMap> 
  * Extracts all model names from a generated `PrismaClient`.
  *
  * @example
- *     import type {PrismaClient} from '@prisma/client';
  *
- *     function doThing(modelName: ModelNameFromPrismaClient<PrismaClient>) {}
+ * ```ts
+ * import type {PrismaClient} from '@prisma/client';
+ *
+ * function doThing(modelName: ModelNameFromPrismaClient<PrismaClient>) {}
+ * ```
  */
 export type ModelNameFromPrismaClient<PrismaClient extends AnyObject> = keyof {
     [Model in Extract<keyof PrismaClient, string> as PrismaClient[Model] extends {
@@ -31,9 +37,12 @@ export type ModelNameFromPrismaClient<PrismaClient extends AnyObject> = keyof {
  * Extracts the creation data for a model from the given `PrismaClient` type.
  *
  * @example
- *     import type {PrismaClient} from '@prisma/client';
  *
- *     function doThing(entry: ModelCreationEntry<PrismaClient, 'User'>) {}
+ * ```ts
+ * import type {PrismaClient} from '@prisma/client';
+ *
+ * function doThing(entry: ModelCreationEntry<PrismaClient, 'User'>) {}
+ * ```
  */
 export type PrismaModelCreationEntry<
     PrismaClient extends AnyObject,
@@ -71,9 +80,12 @@ export type BasePrismaPayload = {
  * A full model entry with all relations from the given Prisma type map and model name.
  *
  * @example
- *     import type {Prisma} from '@prisma/client';
  *
- *     function doThing(fullModel: FullModel<Prisma.TypeMap, 'User'>) {}
+ * ```ts
+ * import type {Prisma} from '@prisma/client';
+ *
+ * function doThing(fullModel: FullModel<Prisma.TypeMap, 'User'>) {}
+ * ```
  */
 export type FullPrismaModel<
     PrismaTypeMap extends BasePrismaTypeMap,
@@ -85,9 +97,12 @@ export type FullPrismaModel<
  * name.
  *
  * @example
- *     import type {Prisma} from '@prisma/client';
  *
- *     function doThing(fullModel: BaseModel<Prisma.TypeMap, 'User'>) {}
+ * ```ts
+ * import type {Prisma} from '@prisma/client';
+ *
+ * function doThing(fullModel: BaseModel<Prisma.TypeMap, 'User'>) {}
+ * ```
  */
 export type BasePrismaModel<
     PrismaTypeMap extends BasePrismaTypeMap,

@@ -74,7 +74,21 @@ function recursiveJsonEquals(actual: any, expected: any) {
 }
 
 const assertions: {
+    /**
+     * Check that two values are deeply equal when stringified into JSON. This will fail or may not
+     * make any sense if the given values are not valid JSON. This internally sorts all given object
+     * keys so it is insensitive to object key order.
+     *
+     * Type guards the first value.
+     */
     jsonEquals: typeof jsonEquals;
+    /**
+     * Check that two values are _not_ deeply equal when stringified into JSON. This will fail or
+     * may not make any sense if the given values are not valid JSON. This internally sorts all
+     * given object keys so it is insensitive to object key order.
+     *
+     * Performs no type guarding.
+     */
     notJsonEquals: typeof notJsonEquals;
 } = {
     jsonEquals,

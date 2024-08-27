@@ -57,9 +57,33 @@ function isNotPropertyKey<const Actual>(
 }
 
 const assertions: {
+    /**
+     * Check if a value is a valid `PropertyKey`. `PropertyKey` is a built-in TypeScript type which
+     * refers to all possible key types for a JavaScript object.
+     *
+     * Type guards the value.
+     */
     isPropertyKey: typeof isPropertyKey;
+    /**
+     * Check if a value is _not_ a valid `PropertyKey`. `PropertyKey` is a built-in TypeScript type
+     * which refers to all possible key types for a JavaScript object.
+     *
+     * Type guards the value.
+     */
     isNotPropertyKey: typeof isNotPropertyKey;
+    /**
+     * Check if a value is a JavaScript
+     * [primitive](https://developer.mozilla.org/en-US/docs/Glossary/Primitive).
+     *
+     * Type guards the value.
+     */
     isPrimitive: typeof isPrimitive;
+    /**
+     * Check if a value is _not_ a JavaScript
+     * [primitive](https://developer.mozilla.org/en-US/docs/Glossary/Primitive).
+     *
+     * Type guards the value.
+     */
     isNotPrimitive: typeof isNotPrimitive;
 } = {
     isPropertyKey,

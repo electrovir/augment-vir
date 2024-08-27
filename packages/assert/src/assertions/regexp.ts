@@ -12,7 +12,17 @@ function mismatches(actual: string, expected: RegExp, failureMessage?: string | 
 }
 
 const assertions: {
+    /**
+     * Checks if a string (`actual`) matches a RegExp (`expected`).
+     *
+     * Performs no type guarding.
+     */
     matches: typeof matches;
+    /**
+     * Checks if a string (`actual`) does _not_ match a RegExp (`expected`).
+     *
+     * Performs no type guarding.
+     */
     mismatches: typeof mismatches;
 } = {
     matches,

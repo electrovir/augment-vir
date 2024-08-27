@@ -1,4 +1,4 @@
-import {assert, check, ErrorMatchOptions, type CustomAsserter} from '@augment-vir/assert';
+import {assert, check, ErrorMatchOptions, type CustomOutputAsserter} from '@augment-vir/assert';
 import {
     ensureErrorAndPrependMessage,
     type AnyFunction,
@@ -56,20 +56,20 @@ export function itCases<FunctionToTest extends AnyFunction>(
 ): unknown[];
 export function itCases<FunctionToTest extends AnyFunction>(
     functionToTest: FunctionToTest,
-    customAsserter: CustomAsserter<typeof functionToTest>,
+    customAsserter: CustomOutputAsserter<typeof functionToTest>,
     testCases: ReadonlyArray<FunctionTestCase<typeof functionToTest>>,
 ): unknown[];
 export function itCases<FunctionToTest extends AnyFunction>(
     functionToTest: FunctionToTest,
     testCasesOrCustomAsserter:
-        | CustomAsserter<typeof functionToTest>
+        | CustomOutputAsserter<typeof functionToTest>
         | ReadonlyArray<FunctionTestCase<typeof functionToTest>>,
     maybeTestCases?: ReadonlyArray<FunctionTestCase<typeof functionToTest>> | undefined,
 ): unknown[];
 export function itCases(
     functionToTest: AnyFunction,
     testCasesOrCustomAsserter:
-        | CustomAsserter<typeof functionToTest>
+        | CustomOutputAsserter<typeof functionToTest>
         | ReadonlyArray<FunctionTestCase<typeof functionToTest>>,
     maybeTestCases?: ReadonlyArray<FunctionTestCase<typeof functionToTest>> | undefined,
 ): unknown[] {

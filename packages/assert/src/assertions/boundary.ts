@@ -196,9 +196,33 @@ function startsWithout<const ArrayElement>(
 }
 
 const assertions: {
+    /**
+     * Check if a string or array parent value ends with a specific child value. This uses
+     * referential equality when the parent value is an array.
+     *
+     * Performs no type guarding.
+     */
     endsWith: typeof endsWith;
+    /**
+     * Check if a string or array parent value does _not_ end with a specific child value. This uses
+     * referential equality when the parent value is an array.
+     *
+     * Performs no type guarding.
+     */
     endsWithout: typeof endsWithout;
+    /**
+     * Check if a string or array parent value starts with a specific child value. This uses
+     * referential equality when the parent value is an array.
+     *
+     * Performs no type guarding.
+     */
     startsWith: typeof startsWith;
+    /**
+     * Check if a string or array parent value does _not_ start with a specific child value. This
+     * uses referential equality when the parent value is an array.
+     *
+     * Performs no type guarding.
+     */
     startsWithout: typeof startsWithout;
 } = {
     endsWith,

@@ -4,7 +4,7 @@ import {GuardGroup} from '../guard-types/guard-group.js';
 import {autoGuard} from '../guard-types/guard-override.js';
 import {WaitUntilOptions} from '../guard-types/wait-until-function.js';
 
-const uuidRegExp = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-8][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+const uuidRegExp = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
 /** Checks if the input string is a valid v4 UUID. */
 function isUuid(actual: unknown, failureMessage?: string | undefined): asserts actual is Uuid {
@@ -22,7 +22,18 @@ function isNotUuid<const Actual>(
 }
 
 const assertions: {
+    /**
+     * Check if the given string is a valid UUID. This supports UUID versions 1-8 and does _not_
+     * support the Nil UUID (all zeros) or the Max UUID (all Fs).
+     *
+     * Type guards the input.
+     */
     isUuid: typeof isUuid;
+    /**
+     * Check if the given string is _not_ a valid UUID.
+     *
+     * Type guards the input.
+     */
     isNotUuid: typeof isNotUuid;
 } = {
     isUuid,

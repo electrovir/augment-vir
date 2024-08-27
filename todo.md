@@ -13,14 +13,18 @@
 -   reverse engineer how web-test-runner calculates code coverage, because it works really well, and apply it to node test coverage
 -   enforce all overrides in `GuardGroup` have (by a `Partial`) matching keys with the given `assertions` object.
     -   this might not be practical/possible because typescript has very strict rules on defining types for assert guards
+-   add type guards to the boundary assertions on strings (like `assert.endsWith`)
 
 ## Before v30 release
 
+-   remove `requiredToBeDocumented: []`
 -   fill in package.json descriptions
 -   re-review v30 changelog
 -   create a single documentation output
     -   add back docs test
+-   fill in docs with examples for every single export
 -   add debounce examples
+-   fill out mono-repo root README
 
 ## Immediately after v30 release
 

@@ -37,7 +37,7 @@
     },
     "devDependencies": {
         "@augment-vir/test": "^30.0.0",
-        "@prisma/client": "^5.18.0",
+        "@prisma/client": "^5.19.0",
         "@types/node": "^22.5.0",
         "@web/dev-server-esbuild": "^1.0.2",
         "@web/test-runner": "^0.18.3",
@@ -47,7 +47,7 @@
         "c8": "^10.1.2",
         "concurrently": "^8.2.2",
         "istanbul-smart-text-reporter": "^1.1.4",
-        "prisma": "^5.18.0"
+        "prisma": "^5.19.0"
     },
     "engines": {
         "node": ">=22"

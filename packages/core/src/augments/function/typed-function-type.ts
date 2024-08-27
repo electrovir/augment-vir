@@ -5,19 +5,14 @@
  * void to "Arguments". If you need an optional argument, pass it inside of a tuple.
  *
  * @example
- *     TypedFunction<string, number>; // (input: string) => number
  *
- * @example
- *     TypedFunction<string[], number>; // (...inputs: string[]) => number
- *
- * @example
- *     TypedFunction<[string[]], number>; // (input: string[]) => number
- *
- * @example
- *     TypedFunction<[string, number], number>; // (input1: string, input2: number) => number
- *
- * @example
- *     TypedFunction<[string | undefined], number>; // (input1: string|undefined) => number
+ * ```ts
+ * TypedFunction<string, number>; // (input: string) => number
+ * TypedFunction<string[], number>; // (...inputs: string[]) => number
+ * TypedFunction<[string[]], number>; // (input: string[]) => number
+ * TypedFunction<[string, number], number>; // (input1: string, input2: number) => number
+ * TypedFunction<[string | undefined], number>; // (input1: string|undefined) => number
+ * ```
  */
 export type TypedFunction<Arguments, Return> = Arguments extends readonly any[]
     ? number extends Arguments['length']

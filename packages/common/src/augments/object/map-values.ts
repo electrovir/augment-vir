@@ -16,7 +16,10 @@ export type MappedValues<EntireInputGeneric extends object, MappedValueGeneric> 
  * to explicitly state the return type.
  *
  * @example
- *     mapObjectValuesSync({objectToIterateOver: 'initial value'})(callback);
+ *
+ * ```ts
+ * mapObjectValuesSync({objectToIterateOver: 'initial value'})(callback);
+ * ```
  */
 export function mapObjectValuesSync<EntireInputGeneric extends object>(
     inputObject: EntireInputGeneric,

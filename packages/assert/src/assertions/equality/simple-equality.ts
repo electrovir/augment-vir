@@ -67,11 +67,61 @@ function notDeepEquals(actual: unknown, expected: unknown, failureMessage?: stri
 }
 
 const assertions: {
+    /**
+     * Check that two values are strictly equal (using
+     * [`===`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness#strict_equality_using)).
+     *
+     * Type guards the first value.
+     */
     strictEquals: typeof strictEquals;
+    /**
+     * Check that two values are _not_ strictly equal (using
+     * [`===`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness#strict_equality_using)).
+     *
+     * Performs no type guarding.
+     */
     notStrictEquals: typeof notStrictEquals;
+    /**
+     * Check that two values are loosely equal (using
+     * [`==`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness#loose_equality_using)).
+     *
+     * Performs no type guarding.
+     */
     looseEquals: typeof looseEquals;
+    /**
+     * Check that two values are _not_ loosely equal (using
+     * [`==`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness#loose_equality_using)).
+     *
+     * Performs no type guarding.
+     */
     notLooseEquals: typeof notLooseEquals;
+    /**
+     * Check that two values are deeply equal using the
+     * [deep-eql](https://www.npmjs.com/package/deep-eql) package.
+     *
+     * Note that this check will be _expensive_. Whenever possible, use simpler equality checks
+     * instead, such as:
+     *
+     * - `.strictEquals()`
+     * - `.entriesEqual()`
+     * - `.jsonEquals()`
+     *
+     * Type guards the first value.
+     */
     deepEquals: typeof deepEquals;
+    /**
+     * Check that two values are _not_ deeply equal using the
+     * [deep-eql](https://www.npmjs.com/package/deep-eql) package.
+     *
+     * Note that this check will be _expensive_. Whenever possible, use simpler equality checks
+     * instead, such as:
+     *
+     * - `.notStrictEquals()`
+     * - `.notEntriesEqual()`
+     * - `.notJsonEquals()`
+     *
+     * Performs no type guarding.
+     */
     notDeepEquals: typeof notDeepEquals;
 } = {
     strictEquals,

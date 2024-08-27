@@ -52,7 +52,23 @@ function notEntriesEqual(actual: object, expected: object, failureMessage?: stri
 }
 
 const assertions: {
+    /**
+     * Check that two objects are deeply equal by checking only their top-level values for strict
+     * (non-deep, referential, using
+     * [`===`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness#strict_equality_using))
+     * equality.
+     *
+     * Type guards the first value.
+     */
     entriesEqual: typeof entriesEqual;
+    /**
+     * Check that two objects are _not_ deeply equal by checking only their top-level values for
+     * strict (non-deep, referential, using
+     * [`===`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness#strict_equality_using))
+     * equality.
+     *
+     * Performs no type guarding.
+     */
     notEntriesEqual: typeof notEntriesEqual;
 } = {
     entriesEqual,

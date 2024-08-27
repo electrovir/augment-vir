@@ -18,7 +18,7 @@ enum ThrowsCheckType {
     Check = 'check',
 }
 
-function assertError(
+function isError(
     actual: unknown,
     matchOptions?: ErrorMatchOptions | undefined,
     failureMessage?: string | undefined,
@@ -155,9 +155,51 @@ function internalThrowsCheck(
     }
 }
 
-/** Matching options for a thrown error constructor or message string. */
+/**
+ * A type that represents possible error matching patterns. This is used by the `.throws` and
+ * `isError`, guards in `@augment-vir/assert` as well as `itCases` in `@augment-vir/test`. Each
+ * property is optional, and whichever properties are provided will be checked.
+ *
+ * @category Assert : Util
+ * @example
+ *
+ * ```ts
+ * import {assert, type ErrorMatchOptions} from '@augment-vir/assert';
+ *
+ * // define the options
+ * const matchOptions: ErrorMatchOptions = {
+ *     matchConstructor: Error,
+ *     matchMessage: 'some error',
+ * };
+ *
+ * assert.throws(
+ *     () => {
+ *         throw new Error('some error');
+ *     },
+ *     // use the options
+ *     matchOptions,
+ * ); // this assertion will pass
+ * ```
+ *
+ * @package @augment-vir/assert
+ */
 export type ErrorMatchOptions = PartialWithNullable<{
+    /**
+     * A string or RegExp that an error's message will be compared with.
+     *
+     * - If this is a string, the error's message will checked for _containing_ the given string (not
+     *   strictly equalling it): `error.message.includes(options.matchMessage)`
+     * - If this is a RegExp, the error's message will be tested against it:
+     *   `error.message.match(options.matchMessage)`
+     *
+     * If this property is omitted, the error message won't be checked at all.
+     */
     matchMessage: string | RegExp;
+    /**
+     * A constructor that the error will be compared to with `instanceof`: `error instanceof
+     * options.matchConstructor`. If this property is omitted, the error's constructor or
+     * inheritance will not be checked.
+     */
     matchConstructor: ErrorConstructor | (new (...args: any[]) => Error);
 }>;
 
@@ -287,7 +329,7 @@ function throwsCheckWrap(
     ) as MaybePromise<Error | undefined>;
 }
 
-const internalWaitUntilThrows = createWaitUntil(assertError);
+const internalWaitUntilThrows = createWaitUntil(isError);
 
 function throwsWaitUntil(
     callbackOrPromise: TypedFunction<void, any> | Promise<any>,
@@ -341,11 +383,33 @@ function throwsWaitUntil(
 }
 
 const assertions: {
-    isError: typeof assertError;
+    /**
+     * Checks that the input is an instance of the built-in `Error` class and compares it to the
+     * given {@link ErrorMatchOptions}, if provided.
+     *
+     * Type guards the input.
+     */
+    isError: typeof isError;
+    /**
+     * If a function input is provided:
+     *
+     * Calls that function and checks that the function throw an error, comparing the error with the
+     * given {@link ErrorMatchOptions}, if provided.
+     *
+     * If a promise is provided:
+     *
+     * Awaits the promise and checks that the promise rejected with an error, comparing the error
+     * with the given {@link ErrorMatchOptions}, if provided.
+     *
+     * This method will automatically type itself as async vs async based on the input. (A promise
+     * or async function inputs results in async. Otherwise, sync.)
+     *
+     * Performs no type guarding.
+     */
     throws: typeof throws;
 } = {
     throws,
-    isError: assertError,
+    isError: isError,
 };
 
 export const throwGuards = {

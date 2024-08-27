@@ -45,7 +45,20 @@ function isHttpStatusCategory<const Actual, const Category extends HttpStatusCat
 }
 
 const assertions: {
+    /**
+     * Checks that a value is a standardized HTTP status code. See {@link HttpStatus} for the
+     * statuses.
+     *
+     * Type guards the value.
+     */
     isHttpStatus: typeof isHttpStatus;
+    /**
+     * Checks that a value is a standardized HTTP status code within the given category of HTTP
+     * status codes. See {@link HttpStatus} for the statuses and {@link HttpStatusCategory} for the
+     * categories.
+     *
+     * Type guards the value.
+     */
     isHttpStatusCategory: typeof isHttpStatusCategory;
 } = {
     isHttpStatus,

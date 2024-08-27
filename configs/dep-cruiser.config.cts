@@ -11,6 +11,11 @@ const baseConfig = defineConfig({
                 'src/test-web/symlinked/element-focus.ts',
             ],
         },
+        'not-to-unresolvable': {
+            to: [
+                'typedoc',
+            ],
+        },
     },
     omitRules: [
         // enter rule names here to omit

@@ -6,7 +6,10 @@ import {ensureMinMax, MinMax} from './min-max.js';
  *
  * @category Number:Common
  * @example
- *     wrapNumber({min: 0, max: 100, value: 101}) == 0;
+ *
+ * ```ts
+ * wrapNumber({min: 0, max: 100, value: 101}); // 0
+ * ```
  */
 export function wrapNumber(value: number, minMax: MinMax): number {
     const {min, max} = ensureMinMax(minMax);

@@ -4,7 +4,6 @@ import type {GuardGroup} from '../guard-types/guard-group.js';
 import {autoGuard} from '../guard-types/guard-override.js';
 import {WaitUntilOptions} from '../guard-types/wait-until-function.js';
 
-/** Asserts that the given input is defined (not null and not undefined) */
 function isDefined<const Actual>(
     /** The value to check. */
     input: Actual,
@@ -16,7 +15,6 @@ function isDefined<const Actual>(
     }
 }
 
-/** Asserts that the given input is null or undefined */
 function isNullish(
     /** The value to check. */
     input: unknown,
@@ -29,7 +27,17 @@ function isNullish(
 }
 
 const assertions: {
+    /**
+     * Checks that a value is defined (not `null` and not `undefined`).
+     *
+     * Type guards the value.
+     */
     isDefined: typeof isDefined;
+    /**
+     * Checks that a value is nullish (`null` or `undefined`).
+     *
+     * Type guards the value.
+     */
     isNullish: typeof isNullish;
 } = {
     isDefined,

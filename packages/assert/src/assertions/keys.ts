@@ -128,11 +128,41 @@ function lacksKeys<const Parent, const Key extends PropertyKey>(
 }
 
 const assertions: {
+    /**
+     * Check if a key (or property) is contained within a parent value.
+     *
+     * Type guards the key.
+     */
     isKeyOf: typeof isKeyOf;
+    /**
+     * Check if a key (or property) is _not_ contained within a parent value.
+     *
+     * Type guards the key.
+     */
     isNotKeyOf: typeof isNotKeyOf;
+    /**
+     * Check if a parent value has a key (or property).
+     *
+     * Type guards the parent value.
+     */
     hasKey: typeof hasKey;
+    /**
+     * Check if a parent value does _not_ have a key (or property).
+     *
+     * Type guards the parent value when possible.
+     */
     lacksKey: typeof lacksKey;
+    /**
+     * Check if a parent value has multiple keys (or properties).
+     *
+     * Type guards the parent value.
+     */
     hasKeys: typeof hasKeys;
+    /**
+     * Check if a parent value does _not_ have multiple keys (or properties).
+     *
+     * Type guards the parent value when possible.
+     */
     lacksKeys: typeof lacksKeys;
 } = {
     isKeyOf,

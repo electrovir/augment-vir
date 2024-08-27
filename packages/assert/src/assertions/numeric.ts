@@ -69,14 +69,60 @@ function isNotApproximately(
 }
 
 const assertions: {
+    /**
+     * Check if a number is above the expectation (`actual > expected`).
+     *
+     * Performs no type guarding.
+     */
     isAbove: typeof isAbove;
+    /**
+     * Check if a number is at least the expectation (`actual >= expected`).
+     *
+     * Performs no type guarding.
+     */
     isAtLeast: typeof isAtLeast;
+    /**
+     * Check if a number is below the expectation (`actual < expected`).
+     *
+     * Performs no type guarding.
+     */
     isBelow: typeof isBelow;
+    /**
+     * Check if a number is at most the expectation (`actual <= expected`).
+     *
+     * Performs no type guarding.
+     */
     isAtMost: typeof isAtMost;
+    /**
+     * Check if a number is
+     * [`NaN`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NaN).
+     *
+     * Performs no type guarding.
+     */
     isNaN: typeof isNaNGuard;
+    /**
+     * Check if a number is finite: meaning, not `NaN` and not `Infinity` or `-Infinity`.
+     *
+     * Performs no type guarding.
+     */
     isFinite: typeof isFiniteGuard;
+    /**
+     * Check if a number is either `Infinity` or `-Infinity`.
+     *
+     * Performs no type guarding.
+     */
     isInfinite: typeof isInfinite;
+    /**
+     * Check if a number is with ±`delta` of the expectation.
+     *
+     * Performs no type guarding.
+     */
     isApproximately: typeof isApproximately;
+    /**
+     * Check if a number is outside ±`delta` of the expectation.
+     *
+     * Performs no type guarding.
+     */
     isNotApproximately: typeof isNotApproximately;
 } = {
     isAbove,

@@ -15,7 +15,40 @@ import type {GuardGroup} from '../guard-types/guard-group.js';
 import {parseWaitUntilOptions, WaitUntilOptions} from '../guard-types/wait-until-function.js';
 import {deepEquals} from './equality/simple-equality.js';
 
-export type CustomAsserter<FunctionToCall extends AnyFunction> = (
+/**
+ * A customer asserter for `.output` guards (`assert.output`, `check.output`, etc.). This is
+ * typically not necessary, as the `.output` guards already perform deep equality checks by
+ * default.
+ *
+ * @category Assert : Util
+ * @example
+ *
+ * ```ts
+ * import {assert, AssertionError, CustomOutputAsserter} from '@augment-vir/assert';
+ *
+ * function myFunctionToTest(name: string) {
+ *     return `Hello there ${name}`;
+ * }
+ *
+ * const myCustomAsserter: CustomOutputAsserter<typeof myFunctionToTest> = (
+ *     actual,
+ *     expected,
+ *     failureMessage,
+ * ) => {
+ *     // Write your assertion in an `if`.
+ *     if (!actual.startsWith('hello there') || actual.endsWith(expected)) {
+ *         // Throw an `AssertionError` if the `if` fails.
+ *         throw new AssertionError('', failureMessage);
+ *     }
+ * };
+ * // Use your custom asserter as the first input to any `.output` guard.
+ * assert.output(myCustomAsserter, myFunctionToTest, ['John'], 'John', 'Name insertion failed');
+ * ```
+ *
+ * @param FunctionToCall The function type that your custom asserter will be run on.
+ * @package @augment-vir/assert
+ */
+export type CustomOutputAsserter<FunctionToCall extends AnyFunction> = (
     actual: Awaited<ReturnType<FunctionToCall>>,
     expected: Awaited<ReturnType<FunctionToCall>>,
     failureMessage?: string | undefined,
@@ -35,7 +68,7 @@ export type OutputAssertWithoutAsserter = <const FunctionToCall extends AnyFunct
     failureMessage?: string | undefined,
 ) => OutputReturn<NoInfer<FunctionToCall>, void>;
 export type OutputAssertWithAsserter = <const FunctionToCall extends AnyFunction>(
-    asserter: CustomAsserter<NoInfer<FunctionToCall>>,
+    asserter: CustomOutputAsserter<NoInfer<FunctionToCall>>,
     functionToCall: FunctionToCall,
     inputs: Parameters<NoInfer<FunctionToCall>>,
     expectedOutput: Awaited<ReturnType<NoInfer<FunctionToCall>>>,
@@ -49,14 +82,14 @@ function assertOutput<const FunctionToCall extends AnyFunction>(
     failureMessage?: string | undefined,
 ): OutputReturn<NoInfer<FunctionToCall>, void>;
 function assertOutput<const FunctionToCall extends AnyFunction>(
-    asserter: CustomAsserter<NoInfer<FunctionToCall>>,
+    asserter: CustomOutputAsserter<NoInfer<FunctionToCall>>,
     functionToCall: FunctionToCall,
     inputs: Parameters<NoInfer<FunctionToCall>>,
     expectedOutput: Awaited<ReturnType<NoInfer<FunctionToCall>>>,
     failureMessage?: string | undefined,
 ): OutputReturn<NoInfer<FunctionToCall>, void>;
 function assertOutput(
-    functionToCallOrAsserter: CustomAsserter<AnyFunction> | AnyFunction,
+    functionToCallOrAsserter: CustomOutputAsserter<AnyFunction> | AnyFunction,
     inputsOrFunctionToCall: unknown[] | AnyFunction,
     expectedOutputOrInputs: unknown,
     failureMessageOrExpectedOutput?: unknown,
@@ -75,7 +108,7 @@ function assertOutput(
 }
 
 function extractOutputArgs(
-    functionToCallOrAsserter: CustomAsserter<AnyFunction> | AnyFunction,
+    functionToCallOrAsserter: CustomOutputAsserter<AnyFunction> | AnyFunction,
     inputsOrFunctionToCall: unknown[] | AnyFunction,
     expectedOutputOrInputs: unknown,
     failureMessageOrExpectedOutput?: unknown,
@@ -83,8 +116,8 @@ function extractOutputArgs(
 ) {
     const usingCustomAsserter = Array.isArray(expectedOutputOrInputs);
 
-    const asserter: CustomAsserter<AnyFunction> = usingCustomAsserter
-        ? (functionToCallOrAsserter as CustomAsserter<AnyFunction>)
+    const asserter: CustomOutputAsserter<AnyFunction> = usingCustomAsserter
+        ? (functionToCallOrAsserter as CustomOutputAsserter<AnyFunction>)
         : deepEquals;
     const functionToCall: AnyFunction = usingCustomAsserter
         ? (inputsOrFunctionToCall as AnyFunction)
@@ -109,7 +142,7 @@ function extractOutputArgs(
 }
 
 function innerAssertOutput<const ShouldReturnResult extends boolean>(
-    asserter: CustomAsserter<AnyFunction>,
+    asserter: CustomOutputAsserter<AnyFunction>,
     functionToCall: AnyFunction,
     inputs: unknown[],
     expectedOutput: unknown,
@@ -161,7 +194,7 @@ export type OutputCheckWithoutAsserter = <const FunctionToCall extends AnyFuncti
     failureMessage?: string | undefined,
 ) => OutputReturn<NoInfer<FunctionToCall>, boolean>;
 export type OutputCheckWithAsserter = <const FunctionToCall extends AnyFunction>(
-    asserter: CustomAsserter<NoInfer<FunctionToCall>>,
+    asserter: CustomOutputAsserter<NoInfer<FunctionToCall>>,
     functionToCall: FunctionToCall,
     inputs: Parameters<NoInfer<FunctionToCall>>,
     expectedOutput: Awaited<ReturnType<NoInfer<FunctionToCall>>>,
@@ -175,14 +208,14 @@ function checkOutput<const FunctionToCall extends AnyFunction>(
     failureMessage?: string | undefined,
 ): OutputReturn<FunctionToCall, boolean>;
 function checkOutput<const FunctionToCall extends AnyFunction>(
-    asserter: CustomAsserter<NoInfer<FunctionToCall>>,
+    asserter: CustomOutputAsserter<NoInfer<FunctionToCall>>,
     functionToCall: FunctionToCall,
     inputs: Parameters<NoInfer<FunctionToCall>>,
     expectedOutput: Awaited<ReturnType<NoInfer<FunctionToCall>>>,
     failureMessage?: string | undefined,
 ): OutputReturn<FunctionToCall, boolean>;
 function checkOutput(
-    functionToCallOrAsserter: CustomAsserter<AnyFunction> | AnyFunction,
+    functionToCallOrAsserter: CustomOutputAsserter<AnyFunction> | AnyFunction,
     inputsOrFunctionToCall: unknown[] | AnyFunction,
     expectedOutputOrInputs: unknown,
     failureMessageOrExpectedOutput?: unknown,
@@ -223,7 +256,7 @@ export type OutputAssertWrapWithoutAsserter = <const FunctionToCall extends AnyF
     failureMessage?: string | undefined,
 ) => OutputReturn<NoInfer<FunctionToCall>, Awaited<ReturnType<NoInfer<FunctionToCall>>>>;
 export type OutputAssertWrapWithAsserter = <const FunctionToCall extends AnyFunction>(
-    asserter: CustomAsserter<NoInfer<FunctionToCall>>,
+    asserter: CustomOutputAsserter<NoInfer<FunctionToCall>>,
     functionToCall: FunctionToCall,
     inputs: Parameters<NoInfer<FunctionToCall>>,
     expectedOutput: Awaited<ReturnType<NoInfer<FunctionToCall>>>,
@@ -237,14 +270,14 @@ function assertWrapOutput<const FunctionToCall extends AnyFunction>(
     failureMessage?: string | undefined,
 ): OutputReturn<FunctionToCall, Awaited<ReturnType<NoInfer<FunctionToCall>>>>;
 function assertWrapOutput<const FunctionToCall extends AnyFunction>(
-    asserter: CustomAsserter<NoInfer<FunctionToCall>>,
+    asserter: CustomOutputAsserter<NoInfer<FunctionToCall>>,
     functionToCall: FunctionToCall,
     inputs: Parameters<NoInfer<FunctionToCall>>,
     expectedOutput: Awaited<ReturnType<NoInfer<FunctionToCall>>>,
     failureMessage?: string | undefined,
 ): OutputReturn<FunctionToCall, Awaited<ReturnType<NoInfer<FunctionToCall>>>>;
 function assertWrapOutput(
-    functionToCallOrAsserter: CustomAsserter<AnyFunction> | AnyFunction,
+    functionToCallOrAsserter: CustomOutputAsserter<AnyFunction> | AnyFunction,
     inputsOrFunctionToCall: unknown[] | AnyFunction,
     expectedOutputOrInputs: unknown,
     failureMessageOrExpectedOutput?: unknown,
@@ -272,7 +305,7 @@ export type OutputCheckWrapWithoutAsserter = <const FunctionToCall extends AnyFu
     Awaited<ReturnType<NoInfer<FunctionToCall>>> | undefined
 >;
 export type OutputCheckWrapWithAsserter = <const FunctionToCall extends AnyFunction>(
-    asserter: CustomAsserter<NoInfer<FunctionToCall>>,
+    asserter: CustomOutputAsserter<NoInfer<FunctionToCall>>,
     functionToCall: FunctionToCall,
     inputs: Parameters<NoInfer<FunctionToCall>>,
     expectedOutput: Awaited<ReturnType<NoInfer<FunctionToCall>>>,
@@ -289,14 +322,14 @@ function checkWrapOutput<const FunctionToCall extends AnyFunction>(
     failureMessage?: string | undefined,
 ): OutputReturn<FunctionToCall, Awaited<ReturnType<NoInfer<FunctionToCall>>> | undefined>;
 function checkWrapOutput<const FunctionToCall extends AnyFunction>(
-    asserter: CustomAsserter<NoInfer<FunctionToCall>>,
+    asserter: CustomOutputAsserter<NoInfer<FunctionToCall>>,
     functionToCall: FunctionToCall,
     inputs: Parameters<NoInfer<FunctionToCall>>,
     expectedOutput: Awaited<ReturnType<NoInfer<FunctionToCall>>>,
     failureMessage?: string | undefined,
 ): OutputReturn<FunctionToCall, Awaited<ReturnType<NoInfer<FunctionToCall>>> | undefined>;
 function checkWrapOutput(
-    functionToCallOrAsserter: CustomAsserter<AnyFunction> | AnyFunction,
+    functionToCallOrAsserter: CustomOutputAsserter<AnyFunction> | AnyFunction,
     inputsOrFunctionToCall: unknown[] | AnyFunction,
     expectedOutputOrInputs: unknown,
     failureMessageOrExpectedOutput?: unknown,
@@ -337,7 +370,7 @@ export type OutputWaitUntilWithoutAsserter = <const FunctionToCall extends AnyFu
     failureMessage?: string | undefined,
 ) => Promise<Awaited<ReturnType<NoInfer<FunctionToCall>>>>;
 export type OutputWaitUntilWithAsserter = <const FunctionToCall extends AnyFunction>(
-    asserter: CustomAsserter<NoInfer<FunctionToCall>>,
+    asserter: CustomOutputAsserter<NoInfer<FunctionToCall>>,
     functionToCall: FunctionToCall,
     inputs: Parameters<NoInfer<FunctionToCall>>,
     expectedOutput: Awaited<ReturnType<NoInfer<FunctionToCall>>>,
@@ -355,7 +388,7 @@ export async function waitUntilOutput<const FunctionToCall extends AnyFunction>(
     failureMessage?: string | undefined,
 ): Promise<Awaited<ReturnType<NoInfer<FunctionToCall>>>>;
 export async function waitUntilOutput<const FunctionToCall extends AnyFunction>(
-    asserter: CustomAsserter<NoInfer<FunctionToCall>>,
+    asserter: CustomOutputAsserter<NoInfer<FunctionToCall>>,
     functionToCall: FunctionToCall,
     inputs: Parameters<NoInfer<FunctionToCall>>,
     expectedOutput: Awaited<ReturnType<NoInfer<FunctionToCall>>>,
@@ -363,7 +396,7 @@ export async function waitUntilOutput<const FunctionToCall extends AnyFunction>(
     failureMessage?: string | undefined,
 ): Promise<Awaited<ReturnType<NoInfer<FunctionToCall>>>>;
 export async function waitUntilOutput(
-    functionToCallOrAsserter: CustomAsserter<AnyFunction> | AnyFunction,
+    functionToCallOrAsserter: CustomOutputAsserter<AnyFunction> | AnyFunction,
     inputsOrFunctionToCall: unknown[] | AnyFunction,
     expectedOutputOrInputs: unknown,
     optionsOrExpectedOutput?: unknown,
@@ -372,8 +405,8 @@ export async function waitUntilOutput(
 ): Promise<unknown> {
     const usingCustomAsserter = Array.isArray(expectedOutputOrInputs);
 
-    const asserter: CustomAsserter<AnyFunction> = usingCustomAsserter
-        ? (functionToCallOrAsserter as CustomAsserter<AnyFunction>)
+    const asserter: CustomOutputAsserter<AnyFunction> = usingCustomAsserter
+        ? (functionToCallOrAsserter as CustomOutputAsserter<AnyFunction>)
         : deepEquals;
     const functionToCall: AnyFunction = usingCustomAsserter
         ? (inputsOrFunctionToCall as AnyFunction)
@@ -433,6 +466,13 @@ export async function waitUntilOutput(
 }
 
 const assertions: {
+    /**
+     * Checks that the output of the given function deeply equals expectations. A custom asserter
+     * can optionally be provided as the first argument to change the expectation checking from
+     * "deeply equals" to whatever you want.
+     *
+     * Performs no type guarding.
+     */
     output: typeof assertOutput;
 } = {
     output: assertOutput,

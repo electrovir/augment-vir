@@ -1,12 +1,9 @@
-import {
-    mapEnumToObject,
-    mergeDefinedProperties,
-    type PartialWithUndefined,
-} from '@augment-vir/common';
-import {defaultLogColorConfig, LogColorKey} from './log-colors.js';
+import type {PartialWithUndefined} from '@augment-vir/core';
+import {mapEnumToObject} from '../object/map-enum.js';
+import {mergeDefinedProperties} from '../object/merge-defined-properties.js';
+import {defaultLogColorConfig, LogColorKey, LogOutputType} from './log-colors.js';
 import {toLogString, ToLogStringParams, type LoggerOptions} from './log-string.js';
 import {type LogWriters} from './log-writer.js';
-import {emptyLog} from './log.js';
 
 export type LoggerLogs = Readonly<Record<LogColorKey, (...args: ReadonlyArray<unknown>) => void>>;
 
@@ -16,6 +13,11 @@ export const defaultLoggerOptions: LoggerOptions = {
     colorConfig: defaultLogColorConfig,
     omitColors: false,
 };
+
+export const emptyLog: Logger = createLogger({
+    [LogOutputType.Error]() {},
+    [LogOutputType.Standard]() {},
+});
 
 export function createLogger(
     logWriters: LogWriters,

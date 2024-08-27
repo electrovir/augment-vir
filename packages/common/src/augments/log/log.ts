@@ -1,5 +1,5 @@
-import {addPrefix, PartialWithUndefined, RuntimeEnv} from '@augment-vir/common';
-import {isRuntimeEnv} from '@augment-vir/core';
+import {isRuntimeEnv, RuntimeEnv, type PartialWithUndefined} from '@augment-vir/core';
+import {addPrefix} from '../string/prefix.js';
 import {LogOutputType} from './log-colors.js';
 import {LoggerOptions} from './log-string.js';
 import {LogWriters} from './log-writer.js';
@@ -27,11 +27,6 @@ export const defaultLogWriters: LogWriters =
                   console.log(addPrefix({value: text, prefix: '%c'}), css);
               },
           };
-
-export const emptyLog: Logger = createLogger({
-    [LogOutputType.Error]() {},
-    [LogOutputType.Standard]() {},
-});
 
 export const log: Logger = createLogger(defaultLogWriters);
 
