@@ -1,13 +1,13 @@
-import {MaybePromise, UuidV4} from '@augment-vir/core';
+import {MaybePromise, Uuid} from '@augment-vir/core';
 import {AssertionError} from '../augments/assertion.error.js';
 import {GuardGroup} from '../guard-types/guard-group.js';
 import {autoGuard} from '../guard-types/guard-override.js';
 import {WaitUntilOptions} from '../guard-types/wait-until-function.js';
 
-const uuidRegExp = /^\w{8}-\w{4}-\w{4}-\w{4}-\w{12}$/;
+const uuidRegExp = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-8][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
 /** Checks if the input string is a valid v4 UUID. */
-function isUuid(actual: unknown, failureMessage?: string | undefined): asserts actual is UuidV4 {
+function isUuid(actual: unknown, failureMessage?: string | undefined): asserts actual is Uuid {
     if (!String(actual).match(uuidRegExp)) {
         throw new AssertionError(`'${String(actual)}' is not a UUID.`, failureMessage);
     }
@@ -15,7 +15,7 @@ function isUuid(actual: unknown, failureMessage?: string | undefined): asserts a
 function isNotUuid<const Actual>(
     actual: Actual,
     failureMessage?: string | undefined,
-): asserts actual is Exclude<Actual, UuidV4> {
+): asserts actual is Exclude<Actual, Uuid> {
     if (String(actual).match(uuidRegExp)) {
         throw new AssertionError(`'${String(actual)}' is a UUID.`, failureMessage);
     }
@@ -37,7 +37,7 @@ export const uuidGuards = {
                 <const Actual>(
                     actual: Actual,
                     failureMessage?: string | undefined,
-                ) => actual is Exclude<Actual, UuidV4>
+                ) => actual is Exclude<Actual, Uuid>
             >(),
     },
     assertWrapOverrides: {
@@ -46,7 +46,7 @@ export const uuidGuards = {
                 <const Actual>(
                     actual: Actual,
                     failureMessage?: string | undefined,
-                ) => Exclude<Actual, UuidV4>
+                ) => Exclude<Actual, Uuid>
             >(),
     },
     checkWrapOverrides: {
@@ -55,7 +55,7 @@ export const uuidGuards = {
                 <const Actual>(
                     actual: Actual,
                     failureMessage?: string | undefined,
-                ) => Exclude<Actual, UuidV4> | undefined
+                ) => Exclude<Actual, Uuid> | undefined
             >(),
     },
     waitUntilOverrides: {
@@ -65,7 +65,7 @@ export const uuidGuards = {
                     callback: () => MaybePromise<Actual>,
                     options?: WaitUntilOptions | undefined,
                     failureMessage?: string | undefined,
-                ) => Promise<Exclude<Actual, UuidV4>>
+                ) => Promise<Exclude<Actual, Uuid>>
             >(),
     },
 } satisfies GuardGroup;

@@ -15,6 +15,11 @@ describe(appendJson.name, () => {
             ],
         },
         {
+            it: 'falls back to empty object without inputs',
+            inputs: [],
+            expect: {},
+        },
+        {
             it: 'appends subsequent raw strings into an array',
             inputs: [
                 'a',

@@ -1,3 +1,6 @@
+/* node:coverage disable */
+/** C8 fails in type-only files. */
+
 import type {AssertFunction} from './assert-function.js';
 import type {AssertWrapOverridesBase} from './assert-wrap-function.js';
 import type {CheckOverridesBase} from './check-function.js';

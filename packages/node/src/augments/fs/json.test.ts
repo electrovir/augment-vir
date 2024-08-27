@@ -81,7 +81,7 @@ describe(appendJsonFile.name, () => {
             await rm(tempOutFilePath, {force: true});
         }
     });
-    it.only('appends to non object data', async () => {
+    it('appends to non object data', async () => {
         try {
             await writeJsonFile(tempOutFilePath, 'a');
             await appendJsonFile(tempOutFilePath, ['b']);

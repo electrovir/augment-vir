@@ -1,4 +1,4 @@
-import {createUuid, type UuidV4} from '@augment-vir/core';
+import {createUuidV4, type Uuid} from '@augment-vir/core';
 import {describe, it} from '@augment-vir/test';
 import {assertWrap} from '../augments/guards/assert-wrap.js';
 import {assert} from '../augments/guards/assert.js';
@@ -8,13 +8,13 @@ import {waitUntil} from '../augments/guards/wait-until.js';
 import {waitUntilTestOptions} from '../test-timeout.mock.js';
 
 describe('isUuid', () => {
-    const actualPass: unknown = createUuid() as any;
-    const actualReject: unknown = (createUuid() + 'invalid') as any;
-    type ExpectedType = UuidV4;
+    const actualPass: unknown = createUuidV4() as any;
+    const actualReject: unknown = (createUuidV4() + 'invalid') as any;
+    type ExpectedType = Uuid;
     type UnexpectedType = string;
 
-    type ExpectedUnionNarrowedType = UuidV4;
-    const actualPassUnion: 'hi' | ExpectedUnionNarrowedType = createUuid() as any;
+    type ExpectedUnionNarrowedType = Uuid;
+    const actualPassUnion: 'hi' | ExpectedUnionNarrowedType = createUuidV4() as any;
 
     describe('assert', () => {
         it('guards', () => {
@@ -115,13 +115,13 @@ describe('isUuid', () => {
     });
 });
 describe('isNotUuid', () => {
-    const actualPass: string = (createUuid() + 'invalid') as any;
-    const actualReject: string = createUuid() as any;
+    const actualPass: string = (createUuidV4() + 'invalid') as any;
+    const actualReject: string = createUuidV4() as any;
     type ExpectedType = string;
-    type UnexpectedType = UuidV4;
+    type UnexpectedType = Uuid;
 
     type ExpectedUnionNarrowedType = 'hi';
-    const actualPassUnion: UuidV4 | ExpectedUnionNarrowedType = (createUuid() + 'invalid') as any;
+    const actualPassUnion: Uuid | ExpectedUnionNarrowedType = (createUuidV4() + 'invalid') as any;
 
     describe('assert', () => {
         it('guards', () => {

@@ -129,7 +129,7 @@ describe(logShellOutput.name, () => {
         options: Omit<LogShellOutputOptions, 'logger'>,
         shellOutputOverride: PartialWithUndefined<Omit<ShellOutput, 'exitSignal'>> = {},
     ) {
-        const {logger, logs} = createLoggerWithStoredLogs({omitColors: true});
+        const {log, logs} = createLoggerWithStoredLogs({omitColors: true});
 
         logShellOutput(
             {
@@ -142,7 +142,7 @@ describe(logShellOutput.name, () => {
             },
             {
                 ...options,
-                logger,
+                logger: log,
             },
         );
         return logs;

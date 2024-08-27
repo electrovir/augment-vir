@@ -20,6 +20,8 @@ type ToLogString = (params: Readonly<ToLogStringParams>) => LogWriterParams;
 
 async function createToLogString(): Promise<ToLogString> {
     return await forEachEnv<MaybePromise<ToLogString>>({
+        /** We calculate coverage in web, so the node code will never run in coverage tests. */
+        /* node:coverage disable  */
         async [RuntimeEnv.Node]() {
             const {inspect} = await import('node:util');
 
@@ -47,6 +49,10 @@ async function createToLogString(): Promise<ToLogString> {
                 return {text, css: undefined};
             };
         },
+        /**
+         * We have no way to test color output in the browser console so this block is ignored in
+         * coverage as well.
+         */
         [RuntimeEnv.Web]() {
             return ({args, colorKey, options}) => {
                 const css = options.omitColors
@@ -79,6 +85,7 @@ async function createToLogString(): Promise<ToLogString> {
                 return {text, css};
             };
         },
+        /* node:coverage enable  */
     });
 }
 

@@ -21,6 +21,22 @@ if (isRuntimeEnv(RuntimeEnv.Node)) {
                 },
             );
         });
+        it('omits colors to strings', () => {
+            assert.deepEquals(
+                toLogString({
+                    colorKey: LogColorKey.Error,
+                    args: ['hi'],
+                    options: {
+                        ...defaultLoggerOptions,
+                        omitColors: true,
+                    },
+                }),
+                {
+                    text: 'hi',
+                    css: undefined,
+                },
+            );
+        });
         it('converts objects to string', () => {
             assert.deepEquals(
                 toLogString({
@@ -55,28 +71,28 @@ if (isRuntimeEnv(RuntimeEnv.Node)) {
         };
 
         it('creates a logger', () => {
-            const {logger, logs} = createLoggerWithStoredLogs();
+            const {log, logs} = createLoggerWithStoredLogs();
 
             getEnumValues(LogColorKey).forEach((key) => {
-                logger[key](key);
+                log[key](key);
             });
 
             assert.deepEquals(logs, allExpectedLogs);
         });
         it('logs if true', () => {
-            const {logger, logs} = createLoggerWithStoredLogs();
+            const {log, logs} = createLoggerWithStoredLogs();
 
             getEnumValues(LogColorKey).forEach((key) => {
-                logger.if(true)[key](key);
+                log.if(true)[key](key);
             });
 
             assert.deepEquals(logs, allExpectedLogs);
         });
         it('skips logging if false', () => {
-            const {logger, logs} = createLoggerWithStoredLogs();
+            const {log, logs} = createLoggerWithStoredLogs();
 
             getEnumValues(LogColorKey).forEach((key) => {
-                logger.if(false)[key](key);
+                log.if(false)[key](key);
             });
 
             assert.deepEquals(logs, {
@@ -86,3 +102,27 @@ if (isRuntimeEnv(RuntimeEnv.Node)) {
         });
     });
 }
+
+describe(createLoggerWithStoredLogs.name, () => {
+    it('stores logs', () => {
+        const {log, logs} = createLoggerWithStoredLogs();
+
+        log.error('this is an error');
+        log.plain('this is a log');
+        log.if(false).error('missing error');
+        log.if(true).error('not missing error');
+        log.if(false).plain('missing log');
+        log.if(true).plain('not missing log');
+
+        assert.deepEquals(logs, {
+            stderr: [
+                'this is an error',
+                'not missing error',
+            ],
+            stdout: [
+                'this is a log',
+                'not missing log',
+            ],
+        });
+    });
+});

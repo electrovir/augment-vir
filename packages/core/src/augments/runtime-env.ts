@@ -17,6 +17,8 @@ export enum RuntimeEnv {
  * @category Env
  */
 export function determineRuntimeEnv(): RuntimeEnv {
+    /** Coverage in this package is only run in Node. */
+    /* node:coverage ignore next */
     return isNode ? RuntimeEnv.Node : RuntimeEnv.Web;
 }
 

@@ -17,9 +17,11 @@ export function wait(duration: Readonly<AnyDuration>): Promise<void> {
     return deferredPromise.promise;
 }
 
-export async function waitValue<ResolutionValue>(
+export async function waitValue<Value>(
     duration: Readonly<AnyDuration>,
-    returnValue: ResolutionValue,
-): Promise<ResolutionValue> {
-    return wait(duration).then(() => returnValue);
+    value: Value,
+): Promise<Value> {
+    await wait(duration);
+
+    return value;
 }

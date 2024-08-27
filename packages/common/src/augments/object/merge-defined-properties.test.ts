@@ -1,5 +1,5 @@
 import {assert} from '@augment-vir/assert';
-import {describe, it} from '@augment-vir/test';
+import {describe, it, itCases} from '@augment-vir/test';
 import {copyThroughJson} from '../json/copy-through-json.js';
 import {mergeDefinedProperties} from './merge-defined-properties.js';
 
@@ -17,4 +17,14 @@ describe(mergeDefinedProperties.name, () => {
 
         assert.deepEquals(original, originalCopy, 'should not have mutated the original object');
     });
+    itCases(mergeDefinedProperties, [
+        {
+            it: 'handles undefined',
+            inputs: [
+                {a: 'b'},
+                undefined,
+            ],
+            expect: {a: 'b'},
+        },
+    ]);
 });

@@ -10,6 +10,9 @@
     -   https://github.com/eyworldwide/typedoc-plugin-remove-references
     -   https://github.com/Gerrit0/typedoc-plugin-missing-exports
 -   make `isElementVisible` work in more situations (see its stackoverflow link)
+-   reverse engineer how web-test-runner calculates code coverage, because it works really well, and apply it to node test coverage
+-   enforce all overrides in `GuardGroup` have (by a `Partial`) matching keys with the given `assertions` object.
+    -   this might not be practical/possible because typescript has very strict rules on defining types for assert guards
 
 ## Before v30 release
 
@@ -18,7 +21,6 @@
 -   create a single documentation output
     -   add back docs test
 -   add debounce examples
--   research different Uuid versions
 
 ## Immediately after v30 release
 

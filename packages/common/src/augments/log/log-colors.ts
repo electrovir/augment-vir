@@ -31,6 +31,8 @@ export type LogColorConfig = Readonly<
 
 async function determineDefaultLogColors(): Promise<Record<LogColorKey, string>> {
     return await forEachEnv({
+        /** We calculate coverage in web, so the node code will never run in coverage tests. */
+        /* node:coverage disable  */
         async [RuntimeEnv.Node]() {
             const styles = (await import('ansi-styles')).default;
 
@@ -47,6 +49,7 @@ async function determineDefaultLogColors(): Promise<Record<LogColorKey, string>>
                 [LogColorKey.Warning]: styles.yellow.open,
             };
         },
+        /* node:coverage enable  */
         [RuntimeEnv.Web]() {
             return Promise.resolve({
                 [LogColorKey.Bold]: 'font-weight: bold',

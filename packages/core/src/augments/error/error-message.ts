@@ -1,4 +1,5 @@
-import {endsWithPunctuationRegExp} from '../string/punctuation.js';
+import {stringify} from '../object/stringify.js';
+import {removeEndingPunctuation} from '../string/punctuation.js';
 
 export function extractErrorMessage(maybeError: unknown): string {
     if (!maybeError) {
@@ -9,8 +10,10 @@ export function extractErrorMessage(maybeError: unknown): string {
         return maybeError.message;
     } else if (typeof maybeError === 'object' && 'message' in maybeError) {
         return String(maybeError.message);
+    } else if (typeof maybeError === 'string') {
+        return maybeError;
     } else {
-        return String(maybeError);
+        return stringify(maybeError);
     }
 }
 
@@ -19,30 +22,27 @@ export function combineErrorMessages(messages: ReadonlyArray<string | undefined>
 export function combineErrorMessages(
     ...rawMessages: [ReadonlyArray<string | undefined>] | ReadonlyArray<string | undefined>
 ): string {
-    const messages: ReadonlyArray<string | undefined> = (
+    const messages: ReadonlyArray<string> = (
         Array.isArray(rawMessages[0]) ? rawMessages[0] : rawMessages
-    ).filter((message) => message);
+    ).filter((message) => {
+        return message && removeEndingPunctuation(message);
+    });
 
     if (messages.length === 1) {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         return messages[0]!;
+    } else if (!messages.length) {
+        return '';
     }
 
-    const unPunctuatedMessages = messages
-        .map((message, index) => {
-            if (index === messages.length - 1) {
-                /** Preserve punctuation on the last message. */
-                return message;
-            } else {
-                return message?.replace(endsWithPunctuationRegExp, '');
-            }
-        })
-        .filter((message) => message);
-
-    if (unPunctuatedMessages.length === 1) {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        return unPunctuatedMessages[0]!;
-    }
+    const unPunctuatedMessages = messages.map((message, index) => {
+        if (index === messages.length - 1) {
+            /** Preserve punctuation on the last message. */
+            return message;
+        } else {
+            return removeEndingPunctuation(message);
+        }
+    });
 
     return unPunctuatedMessages.join(': ');
 }

@@ -1854,7 +1854,7 @@ describe('isSymbol', () => {
         });
     });
 });
-describe.only('isNotSymbol', () => {
+describe('isNotSymbol', () => {
     const actualPass: symbol | string = '4' as any;
     const actualReject: symbol | string = Symbol('4') as any;
     type ExpectedType = string;

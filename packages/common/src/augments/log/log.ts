@@ -5,24 +5,28 @@ import {LoggerOptions} from './log-string.js';
 import {LogWriters} from './log-writer.js';
 import {createLogger, type Logger} from './logger.js';
 
-export const defaultLogWriters: LogWriters = isRuntimeEnv(RuntimeEnv.Node)
-    ? {
-          [LogOutputType.Error]({text}) {
-              process.stderr.write(text + '\n');
-          },
-          [LogOutputType.Standard]({text}) {
-              process.stdout.write(text + '\n');
-          },
-      }
-    : {
-          [LogOutputType.Error]({text, css}) {
-              console.error(addPrefix({value: text, prefix: '%c'}), css);
-          },
-          [LogOutputType.Standard]({text, css}) {
-              // eslint-disable-next-line no-console
-              console.log(addPrefix({value: text, prefix: '%c'}), css);
-          },
-      };
+export const defaultLogWriters: LogWriters =
+    /** We calculate coverage in web, so the node code will never run in coverage tests. */
+    /* node:coverage disable  */
+    isRuntimeEnv(RuntimeEnv.Node)
+        ? {
+              [LogOutputType.Error]({text}) {
+                  process.stderr.write(text + '\n');
+              },
+              [LogOutputType.Standard]({text}) {
+                  process.stdout.write(text + '\n');
+              },
+          }
+        : /* node:coverage enable  */
+          {
+              [LogOutputType.Error]({text, css}) {
+                  console.error(addPrefix({value: text, prefix: '%c'}), css);
+              },
+              [LogOutputType.Standard]({text, css}) {
+                  // eslint-disable-next-line no-console
+                  console.log(addPrefix({value: text, prefix: '%c'}), css);
+              },
+          };
 
 export const emptyLog: Logger = createLogger({
     [LogOutputType.Error]() {},
@@ -38,7 +42,7 @@ export function createLoggerWithStoredLogs(
         stdout: [] as string[],
         stderr: [] as string[],
     };
-    const logger = createLogger(
+    const log = createLogger(
         {
             stderr({text}) {
                 logs.stderr.push(text);
@@ -50,5 +54,5 @@ export function createLoggerWithStoredLogs(
         options,
     );
 
-    return {logger, logs};
+    return {log, logs};
 }

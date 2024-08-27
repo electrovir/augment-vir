@@ -1,7 +1,7 @@
 import {assert} from '@augment-vir/assert';
 import {wrapPromiseInTimeout} from '@augment-vir/common';
 import {describe, it} from '@augment-vir/test';
-import {wait} from './wait.js';
+import {wait, waitValue} from './wait.js';
 
 // increase if tests are flaky in other environments, like GitHub Actions (which is typically slow)
 const promiseDelayMs = 500;
@@ -45,5 +45,12 @@ describe(wait.name, () => {
             endTime - startTime,
             timeoutSoTestActuallyFinishes - 10, // small buffer,
         );
+    });
+});
+
+describe(waitValue.name, () => {
+    it('returns a value', async () => {
+        const value = {};
+        assert.strictEquals(await waitValue({milliseconds: 1}, value), value);
     });
 });

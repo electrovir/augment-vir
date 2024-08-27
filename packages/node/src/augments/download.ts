@@ -8,6 +8,10 @@ import type {ReadableStream} from 'node:stream/web';
 export async function downloadFile({url, writePath}: {url: string; writePath: string}) {
     const response = await fetch(url);
 
+    if (!response.ok) {
+        throw new Error(`${response.status}: ${response.statusText}`);
+    }
+
     /** Idk how to actually trigger a response with no body. */
     /* node:coverage ignore next 3 */
     if (!response.body) {
