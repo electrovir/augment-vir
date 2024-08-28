@@ -1,16 +1,16 @@
 import {RuntimeEnv} from '@augment-vir/core';
 import {TestContext as NodeTestContextImport} from 'node:test';
 import {OmitIndexSignature, Simplify} from 'type-fest';
-import type {Mocha} from '../../mocha.js';
+import type {MochaContext} from '../../mocha-types.js';
 
-export type MochaTestContext = Mocha.Context;
+export type MochaTestContext = MochaContext;
 export type NodeTestContext = NodeTestContextImport;
 
 export type UniversalContext = NodeTestContext | MochaTestContext;
 
 export type ContextByEnv = {
     [RuntimeEnv.Node]: NodeTestContext;
-    [RuntimeEnv.Web]: Mocha.Context;
+    [RuntimeEnv.Web]: MochaContext;
 };
 
 export function ensureTestContext<const SpecificEnv extends RuntimeEnv>(

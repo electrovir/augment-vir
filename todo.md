@@ -5,6 +5,7 @@
 -   add a pretty diff to the assertion errors like chai has
     -   or at least include functions in the stringify output
 -   make a snapshot function in `@augment-vir/test` that supports both Node.js's built-in test runner's snapshot testing as well as something that works in web-test-runner.
+    -   add `itSnapshots`
 -   look into using typedoc plugins
     -   https://github.com/Gerrit0/typedoc-plugin-mdn-links
     -   https://github.com/eyworldwide/typedoc-plugin-remove-references
@@ -25,6 +26,13 @@
 -   fill in docs with examples for every single export
 -   add debounce examples
 -   fill out mono-repo root README
+-   move virmator's dir-contents augments into `@augment-vir/node`
+-   move path transforms to `@augment-vir/common` (like `toPosixPath`)
+-   add script to generate docs for `@augment-vir/assert`'s readme
+    -   use typedoc to generate json
+    -   parse the JSON into a README friendly format
+    -   one entry per assert method
+    -   a table in each entry for which parent assertions it's a part of (`assert`, `check`, etc.)
 
 ## Immediately after v30 release
 
