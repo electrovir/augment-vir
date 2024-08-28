@@ -20,11 +20,9 @@
     "types": "src/index.ts",
     "scripts": {
         "compile": "virmator compile",
-        "docs": "virmator docs",
         "start": "tsx src/index.ts",
         "test": "concurrently --colors --kill-others-on-fail -c green,blue --names node,web \"npm run test:node\" \"npm run test:web\"",
         "test:coverage": "npm run test",
-        "test:docs": "virmator docs check",
         "test:node": "virmator test --no-deps node 'src/augments/universal-testing-suite/**/*.test.ts'",
         "test:update": "npm test",
         "test:web": "virmator test --no-deps web 'src/test-web/**/*.test.ts'"

@@ -37,7 +37,9 @@ export type FalsyValue = undefined | null | false | 0 | '' | -0 | 0n;
  * @param T The original type to narrow.
  * @package @augment-vir/assert
  */
-export type Falsy<T> = NarrowToExpected<T, FalsyValue>; /**
+export type Falsy<T> = NarrowToExpected<T, FalsyValue>;
+
+/**
  * Narrows the given type parameter `T` to all its truthy sub-types.
  *
  * @category Assert : Util

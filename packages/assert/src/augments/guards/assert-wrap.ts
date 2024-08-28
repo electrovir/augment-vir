@@ -1,5 +1,8 @@
 import {assertWrapOverrides, extendableAssertions} from '../../assertions/extendable-assertions.js';
 import {createAssertWrapGroup} from '../../guard-types/assert-wrap-function.js';
+import {AssertionError} from '../assertion.error.js';
+
+const assertWrapGroup = createAssertWrapGroup(extendableAssertions, assertWrapOverrides);
 
 /**
  * A group of guard methods that do the following:
@@ -7,6 +10,9 @@ import {createAssertWrapGroup} from '../../guard-types/assert-wrap-function.js';
  * 1. Run the method's assertion on the given inputs.
  * 2. If the assertion fails, throws an error.
  * 3. If the assertion succeeds, the first input is returned and (when possible) type guarded.
+ *
+ * This can also be called as a standalone assertion function which asserts that its input is truthy
+ * and returns it if so.
  *
  * @category Assert
  * @example
@@ -30,4 +36,14 @@ import {createAssertWrapGroup} from '../../guard-types/assert-wrap-function.js';
  * @throws {@link AssertionError} When the assertion fails.
  * @package @augment-vir/assert
  */
-export const assertWrap = createAssertWrapGroup(extendableAssertions, assertWrapOverrides);
+export const assertWrap: (<T>(input: T, failureMessage?: string | undefined) => T) &
+    typeof assertWrapGroup = Object.assign(
+    <T>(input: T, failureMessage?: string | undefined): T => {
+        if (!input) {
+            throw new AssertionError('Assertion failed.', failureMessage);
+        }
+
+        return input;
+    },
+    assertWrapGroup,
+);

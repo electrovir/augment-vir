@@ -1,7 +1,8 @@
+import {AnyFunction} from '@augment-vir/core';
 import {checkWrapOverrides, extendableAssertions} from '../../assertions/extendable-assertions.js';
 import {createCheckWrapGroup} from '../../guard-types/check-wrap-wrapper-function.js';
-import type {assertWrap} from './assert-wrap.js';
-import type {check} from './check.js';
+
+const checkWrapGroup = createCheckWrapGroup(extendableAssertions, checkWrapOverrides);
 
 /**
  * A group of guard methods that do the following:
@@ -10,7 +11,8 @@ import type {check} from './check.js';
  * 2. If the assertion fails, return `undefined`.
  * 3. If the assertion succeeds, the first input is returned and (when possible) type guarded.
  *
- * This is a combination of {@link assertWrap} and {@link check}.
+ * This can also be called as a standalone check function which checks that its input is truthy and
+ * returns it if so, else `undefined`.
  *
  * @category Assert
  * @example
@@ -34,7 +36,12 @@ import type {check} from './check.js';
  *   `undefined`.
  * @package @augment-vir/assert
  */
-export const checkWrap = createCheckWrapGroup(extendableAssertions, checkWrapOverrides);
+export const checkWrap: (<T>(input: T) => undefined | T) &
+    typeof checkWrapGroup &
+    Record<keyof AnyFunction, never> = Object.assign(<T>(input: T) => {
+    if (!input) {
+        return undefined;
+    }
 
-/** Type of {@link checkWrap}. */
-export type CheckWrap = typeof checkWrap;
+    return input;
+}, checkWrapGroup);

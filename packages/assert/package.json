@@ -20,11 +20,9 @@
     "types": "src/index.ts",
     "scripts": {
         "compile": "virmator compile",
-        "docs": "virmator docs",
         "start": "tsx src/index.ts",
         "test": "virmator test node --no-deps",
         "test:coverage": "npm run test coverage",
-        "test:docs": "virmator docs check",
         "test:update": "npm test"
     },
     "dependencies": {

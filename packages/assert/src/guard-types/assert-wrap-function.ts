@@ -5,14 +5,16 @@ import {
     Overwrite,
 } from '@augment-vir/core';
 import {AssertFunction} from './assert-function.js';
-import {pickOverride} from './guard-override.js';
+import {autoGuardSymbol, pickOverride} from './guard-override.js';
 
 export type AssertWrapFunction<Output> = <Input>(
     input: Input,
     ...extraInputs: any[]
 ) => NarrowToExpected<Input, Output>;
 
-export type AssertWrapOverridesBase = Readonly<Record<string, AnyFunction | undefined>>;
+export type AssertWrapOverridesBase = Readonly<
+    Record<string, AnyFunction | undefined | typeof autoGuardSymbol>
+>;
 
 export type AssertWrapGroup<
     Asserts extends Readonly<Record<string, AssertFunction<any>>>,
@@ -26,7 +28,15 @@ export type AssertWrapGroup<
                 ? AssertWrapFunction<Output>
                 : never;
         },
-        AssertWrapOverrides
+        {
+            [Name in keyof AssertWrapOverrides]: AssertWrapOverrides[Name] extends typeof autoGuardSymbol
+                ? Name extends keyof Asserts
+                    ? Asserts[Name] extends AssertFunction<infer Output>
+                        ? AssertWrapFunction<Output>
+                        : never
+                    : never
+                : AssertWrapOverrides[Name];
+        }
     >,
     ExtractKeysWithMatchingValues<AssertWrapOverrides, undefined>
 >;

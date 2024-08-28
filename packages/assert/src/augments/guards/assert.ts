@@ -1,4 +1,3 @@
-import type {AnyFunction} from '@augment-vir/core';
 import {tsTypeGuards} from '../../assertions/equality/ts-type-equality.js';
 import {extendableAssertions} from '../../assertions/extendable-assertions.js';
 import {AssertionError} from '../assertion.error.js';
@@ -6,13 +5,17 @@ import {AssertionError} from '../assertion.error.js';
 const allAssertions = {
     ...tsTypeGuards.assertions,
     ...extendableAssertions,
-    fail(failureMessage?: string | undefined) {
+    /** Immediately throw an assertion error. */
+    fail: (failureMessage?: string | undefined) => {
         throw new AssertionError('Failure triggered.', failureMessage);
     },
 };
 
 /**
  * A group of guard methods that assert their conditions and do nothing else.
+ *
+ * This can also be called as a standalone assertion function which asserts that its input is
+ * truthy.
  *
  * @category Assert
  * @example
@@ -29,12 +32,8 @@ const allAssertions = {
  * @package @augment-vir/assert
  */
 export const assert: ((input: unknown, failureMessage?: string | undefined) => void) &
-    typeof allAssertions &
-    Record<keyof AnyFunction, never> = Object.assign(
-    (input: unknown, failureMessage?: string | undefined) => {
-        if (!input) {
-            throw new AssertionError('Assertion failed.', failureMessage);
-        }
-    },
-    allAssertions,
-);
+    typeof allAssertions = Object.assign((input: unknown, failureMessage?: string | undefined) => {
+    if (!input) {
+        throw new AssertionError('Assertion failed.', failureMessage);
+    }
+}, allAssertions);

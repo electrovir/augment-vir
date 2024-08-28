@@ -30,6 +30,7 @@ async function main() {
             '@returns',
             '@template',
             '@throws',
+            '@see',
 
             /** Custom tags we've added. */
             '@package',

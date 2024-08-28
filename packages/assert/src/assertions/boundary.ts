@@ -252,6 +252,12 @@ export const boundaryGuards = {
         startsWithout: autoGuard<typeof boundaryCheckWrap>(),
     },
     waitUntilOverrides: {
+        /**
+         * Check if a string or array parent value ends with a specific child value. This uses
+         * referential equality when the parent value is an array.
+         *
+         * Performs no type guarding.
+         */
         endsWith: autoGuard<typeof boundaryWaitUntil>(),
         endsWithout: autoGuard<typeof boundaryWaitUntil>(),
         startsWith: autoGuard<typeof boundaryWaitUntil>(),

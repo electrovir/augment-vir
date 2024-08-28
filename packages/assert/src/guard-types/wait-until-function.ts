@@ -18,7 +18,7 @@ import {
 import {AnyDuration, convertDuration, DurationUnit} from '@date-vir/duration';
 import type {AssertionError} from '../augments/assertion.error.js';
 import type {AssertFunction} from './assert-function.js';
-import {pickOverride} from './guard-override.js';
+import {autoGuardSymbol, pickOverride} from './guard-override.js';
 
 /**
  * Options for configuring the timing of `waitUntil`.
@@ -90,7 +90,7 @@ async function executeWaitUntil<const Assert extends AssertFunction<any>>(
     return lastCallbackOutput as ReturnType<WaitUntilFunction<Assert>>;
 }
 
-export type WaitUntilOverridesBase = Readonly<Record<string, AnyFunction>>;
+export type WaitUntilOverridesBase = Readonly<Record<string, AnyFunction | typeof autoGuardSymbol>>;
 
 export type WaitUntilFunctionParameters<Assert extends AssertFunction<any>, Input> = [
     ...RemoveFirstTupleEntry<RemoveLastTupleEntry<Parameters<Assert>>>,
@@ -118,7 +118,15 @@ type WaitUntilGroup<
                 ? Name
                 : never]: WaitUntilFunction<Asserts[Name]>;
         },
-        WaitUntilOverrides
+        {
+            [Name in keyof WaitUntilOverrides]: WaitUntilOverrides[Name] extends typeof autoGuardSymbol
+                ? Name extends keyof Asserts
+                    ? Asserts[Name] extends AssertFunction<any>
+                        ? WaitUntilFunction<Asserts[Name]>
+                        : never
+                    : never
+                : WaitUntilOverrides[Name];
+        }
     >,
     ExtractKeysWithMatchingValues<WaitUntilOverrides, undefined>
 >;

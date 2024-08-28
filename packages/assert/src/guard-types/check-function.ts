@@ -6,7 +6,7 @@ import {
     RemoveLastTupleEntry,
 } from '@augment-vir/core';
 import {AssertFunction} from './assert-function.js';
-import {pickOverride} from './guard-override.js';
+import {pickOverride, type autoGuardSymbol} from './guard-override.js';
 
 export type CheckFunction<Output> = (input: any, ...extraInputs: any[]) => input is Output;
 export type GenericCheckFunction = (
@@ -15,7 +15,7 @@ export type GenericCheckFunction = (
 ) => MaybePromise<boolean> | never;
 
 export type CheckOverridesBase = Readonly<
-    Record<string, CheckFunction<any> | GenericCheckFunction | undefined>
+    Record<string, CheckFunction<any> | GenericCheckFunction | undefined | typeof autoGuardSymbol>
 >;
 
 export type CheckGroup<
@@ -35,7 +35,20 @@ export type CheckGroup<
                   ) => input is Output
                 : never;
         },
-        CheckOverrides
+        {
+            [Name in keyof CheckOverrides]: CheckOverrides[Name] extends typeof autoGuardSymbol
+                ? Name extends keyof Asserts
+                    ? Asserts[Name] extends AssertFunction<infer Output>
+                        ? (
+                              input: Parameters<Asserts[Name]>[0],
+                              ...params: RemoveLastTupleEntry<
+                                  RemoveFirstTupleEntry<Parameters<Asserts[Name]>>
+                              >
+                          ) => input is Output
+                        : never
+                    : never
+                : CheckOverrides[Name];
+        }
     >,
     ExtractKeysWithMatchingValues<CheckOverrides, undefined>
 >;

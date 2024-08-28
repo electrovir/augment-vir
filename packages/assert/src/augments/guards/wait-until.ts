@@ -1,10 +1,20 @@
 import {extendableAssertions, waitUntilOverrides} from '../../assertions/extendable-assertions.js';
-import {createWaitUntilGroup, WaitUntilOptions} from '../../guard-types/wait-until-function.js';
+import {
+    createWaitUntil,
+    createWaitUntilGroup,
+    WaitUntilOptions,
+} from '../../guard-types/wait-until-function.js';
+import {AssertionError} from '../assertion.error.js';
+
+const waitUntilGroup = createWaitUntilGroup(extendableAssertions, waitUntilOverrides);
 
 /**
  * A group of guard methods that run the given callback multiple times until its return value
  * matches expectations. Callback interval and timeout can be customized with
  * {@link WaitUntilOptions}.
+ *
+ * This can also be called as a standalone wait until function which waits until the callback's
+ * returned value is truthy.
  *
  * @category Assert
  * @example
@@ -32,4 +42,16 @@ import {createWaitUntilGroup, WaitUntilOptions} from '../../guard-types/wait-unt
  * @throws {@link AssertionError} When the assertion fails.
  * @package @augment-vir/assert
  */
-export const waitUntil = createWaitUntilGroup(extendableAssertions, waitUntilOverrides);
+export const waitUntil: ((
+    callback: () => unknown,
+    options?: WaitUntilOptions | undefined,
+    failureMessage?: string | undefined,
+) => void) &
+    typeof waitUntilGroup = Object.assign(
+    createWaitUntil((input: unknown, failureMessage?: string | undefined) => {
+        if (!input) {
+            throw new AssertionError('Assertion failed.', failureMessage);
+        }
+    }),
+    waitUntilGroup,
+);
