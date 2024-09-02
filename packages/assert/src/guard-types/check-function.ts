@@ -14,8 +14,8 @@ export type GenericCheckFunction = (
     ...extraInputs: any[]
 ) => MaybePromise<boolean> | never;
 
-export type CheckOverridesBase = Readonly<
-    Record<string, CheckFunction<any> | GenericCheckFunction | undefined | typeof autoGuardSymbol>
+export type CheckOverridesBase<Keys extends PropertyKey = string> = Readonly<
+    Record<Keys, CheckFunction<any> | GenericCheckFunction | undefined | typeof autoGuardSymbol>
 >;
 
 export type CheckGroup<

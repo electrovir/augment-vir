@@ -504,42 +504,15 @@ describe('throws', () => {
         });
         describe('with promise', () => {
             it('guards with match', async () => {
-                const newValue = await waitUntil.throws(
-                    {matchConstructor: Error},
-                    Promise.reject(new Error('fake error')),
-                    waitUntilTestOptions,
-                    'failure',
-                );
-
-                assert.tsType(newValue).equals<Error>();
-
-                assert.strictEquals(extractErrorMessage(newValue), 'fake error');
-            });
-            it('guards without match', async () => {
-                const newValue = await waitUntil.throws(
-                    Promise.reject(new Error('fake error')),
-                    waitUntilTestOptions,
-                    'failure',
-                );
-
-                assert.tsType(newValue).equals<Error>();
-
-                assert.strictEquals(extractErrorMessage(newValue), 'fake error');
-            });
-            it('rejects', async () => {
-                await assert.throws(
-                    waitUntil.throws(Promise.resolve('hi'), waitUntilTestOptions, 'failure'),
-                );
-            });
-            it('rejects with match', async () => {
-                await assert.throws(
-                    waitUntil.throws(
-                        {matchConstructor: AssertionError},
+                await assert.throws(async () => {
+                    await waitUntil.throws(
+                        {matchConstructor: Error},
+                        // @ts-expect-error: promises are not allowed with `waitUntil`
                         Promise.reject(new Error('fake error')),
                         waitUntilTestOptions,
                         'failure',
-                    ),
-                );
+                    );
+                });
             });
         });
     });

@@ -46,11 +46,48 @@ const assertions: {
      * assert.tsType('hello').equals<string>();
      * ```
      */
+
+    /**
+     * Asserts within the TypeScript type system that a given type or value matches type
+     * expectations (using the [`expect-type`](https://www.npmjs.com/package/expect-type) package.
+     * Make sure to call a method on the first call to actually assert anything.
+     *
+     * Use this to write type tests. Don't use this in production code. It won't cause issues, but
+     * it's a useless no-op at run-time (it's not even a type guard).
+     *
+     * Performs no type guarding.
+     *
+     * @example
+     *
+     * ```ts
+     * import {assert} from '@augment-vir/assert';
+     *
+     * assert.tsType('hello').equals<string>();
+     * assert.tsType<'hello>().equals<'hello'>();
+     * assert.tsType<'hello>().notEquals<string>();
+     * assert.tsType('hello').notEquals<number>();
+     * ```
+     *
+     * @returns Never returns anything.
+     * @throws Never throws anything.
+     */
     tsType: typeof tsType;
 } = {
     tsType,
 };
 
 export const tsTypeGuards = {
-    assertions,
-} satisfies GuardGroup;
+    assert: assertions,
+    assertWrap: {
+        tsType: undefined,
+    },
+    check: {
+        tsType: undefined,
+    },
+    checkWrap: {
+        tsType: undefined,
+    },
+    waitUntil: {
+        tsType: undefined,
+    },
+} satisfies GuardGroup<typeof assertions>;

@@ -12,8 +12,8 @@ export type AssertWrapFunction<Output> = <Input>(
     ...extraInputs: any[]
 ) => NarrowToExpected<Input, Output>;
 
-export type AssertWrapOverridesBase = Readonly<
-    Record<string, AnyFunction | undefined | typeof autoGuardSymbol>
+export type AssertWrapOverridesBase<Keys extends PropertyKey = string> = Readonly<
+    Record<Keys, AnyFunction | undefined | typeof autoGuardSymbol>
 >;
 
 export type AssertWrapGroup<

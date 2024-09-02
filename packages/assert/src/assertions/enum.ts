@@ -38,15 +38,51 @@ function isNotEnumValue<const Actual, const Expected extends EnumBaseType>(
 
 const assertions: {
     /**
-     * Check if a child value is a valid member of a specific enum.
+     * Asserts that a child value is an enum member.
      *
      * Type guards the child value.
+     *
+     * @example
+     *
+     * ```ts
+     * import {assert} from '@augment-vir/assert';
+     *
+     * enum MyEnum {
+     *     A = 'a',
+     *     B = 'b',
+     * }
+     *
+     * assert.isEnumValue('a', MyEnum); // passes
+     * assert.isEnumValue('A', MyEnum); // fails
+     * ```
+     *
+     * @throws {@link AssertionError} If the child is not an enum member.
+     * @see
+     * - {@link assert.isNotEnumValue} : the opposite assertion.
      */
     isEnumValue: typeof isEnumValue;
     /**
-     * Check if a child value is _not_ a valid member of a specific enum.
+     * Asserts that a child value is _not_ an enum member.
      *
-     * Type guards the child value when possible.
+     * Type guards the child value.
+     *
+     * @example
+     *
+     * ```ts
+     * import {assert} from '@augment-vir/assert';
+     *
+     * enum MyEnum {
+     *     A = 'a',
+     *     B = 'b',
+     * }
+     *
+     * assert.isNotEnumValue('a', MyEnum); // fails
+     * assert.isNotEnumValue('A', MyEnum); // passes
+     * ```
+     *
+     * @throws {@link AssertionError} If the child is an enum member.
+     * @see
+     * - {@link assert.isEnumValue} : the opposite assertion.
      */
     isNotEnumValue: typeof isNotEnumValue;
 } = {
@@ -55,8 +91,30 @@ const assertions: {
 };
 
 export const enumGuards = {
-    assertions,
-    checkOverrides: {
+    assert: assertions,
+    check: {
+        /**
+         * Checks that a child value is an enum member.
+         *
+         * Type guards the child value.
+         *
+         * @example
+         *
+         * ```ts
+         * import {check} from '@augment-vir/assert';
+         *
+         * enum MyEnum {
+         *     A = 'a',
+         *     B = 'b',
+         * }
+         *
+         * check.isEnumValue('a', MyEnum); // returns `true`
+         * check.isEnumValue('A', MyEnum); // returns `false`
+         * ```
+         *
+         * @see
+         * - {@link check.isNotEnumValue} : the opposite check.
+         */
         isEnumValue:
             autoGuard<
                 <const Expected extends EnumBaseType>(
@@ -64,6 +122,28 @@ export const enumGuards = {
                     checkEnum: Expected,
                 ) => child is Expected[keyof Expected]
             >(),
+        /**
+         * Checks that a child value is _not_ an enum member.
+         *
+         * Type guards the child value.
+         *
+         * @example
+         *
+         * ```ts
+         * import {check} from '@augment-vir/assert';
+         *
+         * enum MyEnum {
+         *     A = 'a',
+         *     B = 'b',
+         * }
+         *
+         * check.isNotEnumValue('a', MyEnum); // returns `false`
+         * check.isNotEnumValue('A', MyEnum); // returns `true`
+         * ```
+         *
+         * @see
+         * - {@link check.isEnumValue} : the opposite check.
+         */
         isNotEnumValue:
             autoGuard<
                 <const Actual, const Expected extends EnumBaseType>(
@@ -75,7 +155,32 @@ export const enumGuards = {
                 >
             >(),
     },
-    assertWrapOverrides: {
+    assertWrap: {
+        /**
+         * Asserts that a child value is an enum member. Returns the child value if the assertion
+         * passes.
+         *
+         * Type guards the child value.
+         *
+         * @example
+         *
+         * ```ts
+         * import {assertWrap} from '@augment-vir/assert';
+         *
+         * enum MyEnum {
+         *     A = 'a',
+         *     B = 'b',
+         * }
+         *
+         * assertWrap.isEnumValue('a', MyEnum); // returns `'a'`
+         * assertWrap.isEnumValue('A', MyEnum); // throws an error
+         * ```
+         *
+         * @returns The child value if it is an enum member.
+         * @throws {@link AssertionError} If the child is not an enum member.
+         * @see
+         * - {@link assertWrap.isNotEnumValue} : the opposite assertion.
+         */
         isEnumValue:
             autoGuard<
                 <const Actual, const Expected extends EnumBaseType>(
@@ -84,6 +189,31 @@ export const enumGuards = {
                     failureMessage?: string | undefined,
                 ) => NarrowToExpected<Actual, Expected[keyof Expected]>
             >(),
+        /**
+         * Asserts that a child value is _not_ an enum member. Returns the child value if the
+         * assertion passes.
+         *
+         * Type guards the child value.
+         *
+         * @example
+         *
+         * ```ts
+         * import {assertWrap} from '@augment-vir/assert';
+         *
+         * enum MyEnum {
+         *     A = 'a',
+         *     B = 'b',
+         * }
+         *
+         * assertWrap.isNotEnumValue('a', MyEnum); // throws an error
+         * assertWrap.isNotEnumValue('A', MyEnum); // returns `'A'`
+         * ```
+         *
+         * @returns The child value if it is not an enum member.
+         * @throws {@link AssertionError} If the child is an enum member.
+         * @see
+         * - {@link assertWrap.isEnumValue} : the opposite assertion.
+         */
         isNotEnumValue:
             autoGuard<
                 <const Actual, const Expected extends EnumBaseType>(
@@ -93,7 +223,31 @@ export const enumGuards = {
                 ) => Exclude<Actual, Expected[keyof Expected] | `${Expected[keyof Expected]}`>
             >(),
     },
-    checkWrapOverrides: {
+    checkWrap: {
+        /**
+         * Checks that a child value is an enum member. Returns the child value if the check passes,
+         * otherwise `undefined`.
+         *
+         * Type guards the child value.
+         *
+         * @example
+         *
+         * ```ts
+         * import {checkWrap} from '@augment-vir/assert';
+         *
+         * enum MyEnum {
+         *     A = 'a',
+         *     B = 'b',
+         * }
+         *
+         * checkWrap.isEnumValue('a', MyEnum); // returns `'a'`
+         * checkWrap.isEnumValue('A', MyEnum); // returns `undefined`
+         * ```
+         *
+         * @returns The child value if the check passes, otherwise `undefined`.
+         * @see
+         * - {@link checkWrap.isNotEnumValue} : the opposite check.
+         */
         isEnumValue:
             autoGuard<
                 <const Actual, const Expected extends EnumBaseType>(
@@ -101,6 +255,30 @@ export const enumGuards = {
                     checkEnum: Expected,
                 ) => NarrowToExpected<Actual, Expected[keyof Expected]> | undefined
             >(),
+        /**
+         * Checks that a child value is _not_ an enum member. Returns the child value if the check
+         * passes, otherwise `undefined`.
+         *
+         * Type guards the child value.
+         *
+         * @example
+         *
+         * ```ts
+         * import {checkWrap} from '@augment-vir/assert';
+         *
+         * enum MyEnum {
+         *     A = 'a',
+         *     B = 'b',
+         * }
+         *
+         * checkWrap.isNotEnumValue('a', MyEnum); // returns `undefined`
+         * checkWrap.isNotEnumValue('A', MyEnum); // returns `'A'`
+         * ```
+         *
+         * @returns The child value if the check passes, otherwise `undefined`.
+         * @see
+         * - {@link checkWrap.isEnumValue} : the opposite check.
+         */
         isNotEnumValue:
             autoGuard<
                 <const Actual, const Expected extends EnumBaseType>(
@@ -111,7 +289,32 @@ export const enumGuards = {
                     | undefined
             >(),
     },
-    waitUntilOverrides: {
+    waitUntil: {
+        /**
+         * Repeatedly calls a callback until its output is an enum member. Once the callback output
+         * passes, it is returned. If the attempts time out, an error is thrown.
+         *
+         * Performs no type guarding.
+         *
+         * @example
+         *
+         * ```ts
+         * import {waitUntil} from '@augment-vir/assert';
+         *
+         * enum MyEnum {
+         *     A = 'a',
+         *     B = 'b',
+         * }
+         *
+         * await waitUntil.isEnumValue(MyEnum, () => 'a'); // returns `'a'`
+         * await waitUntil.isEnumValue(MyEnum, () => 'A'); // throws an error
+         * ```
+         *
+         * @returns The callback output once it passes.
+         * @throws {@link AssertionError} On timeout.
+         * @see
+         * - {@link waitUntil.isNotEnumValue} : the opposite assertion.
+         */
         isEnumValue:
             autoGuard<
                 <const Actual, const Expected extends EnumBaseType>(
@@ -121,6 +324,31 @@ export const enumGuards = {
                     failureMessage?: string | undefined,
                 ) => Promise<NarrowToExpected<Actual, Expected[keyof Expected]>>
             >(),
+        /**
+         * Repeatedly calls a callback until its output is _not_ an enum member. Once the callback
+         * output passes, it is returned. If the attempts time out, an error is thrown.
+         *
+         * Performs no type guarding.
+         *
+         * @example
+         *
+         * ```ts
+         * import {waitUntil} from '@augment-vir/assert';
+         *
+         * enum MyEnum {
+         *     A = 'a',
+         *     B = 'b',
+         * }
+         *
+         * await waitUntil.isNotEnumValue(MyEnum, () => 'a'); // throws an error
+         * await waitUntil.isNotEnumValue(MyEnum, () => 'A'); // returns `'A'`
+         * ```
+         *
+         * @returns The callback output once it passes.
+         * @throws {@link AssertionError} On timeout.
+         * @see
+         * - {@link waitUntil.isEnumValue} : the opposite assertion.
+         */
         isNotEnumValue:
             autoGuard<
                 <const Actual, const Expected extends EnumBaseType>(
@@ -133,4 +361,4 @@ export const enumGuards = {
                 >
             >(),
     },
-} satisfies GuardGroup;
+} satisfies GuardGroup<typeof assertions>;

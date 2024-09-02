@@ -3,9 +3,21 @@ import {extendableAssertions} from '../../assertions/extendable-assertions.js';
 import {AssertionError} from '../assertion.error.js';
 
 const allAssertions = {
-    ...tsTypeGuards.assertions,
+    ...tsTypeGuards.assert,
     ...extendableAssertions,
-    /** Immediately throw an assertion error. */
+    /**
+     * Immediately throw an assertion error.
+     *
+     * @example
+     *
+     * ```ts
+     * import {assert} from '@augment-vir/assert';
+     *
+     * assert.fail(); // throws an `AssertionError`
+     * ```
+     *
+     * @throws {@link AssertionError}
+     */
     fail: (failureMessage?: string | undefined) => {
         throw new AssertionError('Failure triggered.', failureMessage);
     },

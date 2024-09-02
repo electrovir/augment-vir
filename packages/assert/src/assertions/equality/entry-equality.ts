@@ -54,7 +54,7 @@ function notEntriesEqual(actual: object, expected: object, failureMessage?: stri
 const assertions: {
     /**
      * Asserts that two objects are deeply equal by checking only their top-level values for strict
-     * (non-deep, referential, using
+     * (non-deep, reference, using
      * [`===`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness#strict_equality_using))
      * equality.
      *
@@ -82,7 +82,7 @@ const assertions: {
     entriesEqual: typeof entriesEqual;
     /**
      * Asserts that two objects are _not_ deeply equal by checking only their top-level values for
-     * strict (non-deep, referential, using
+     * strict (non-deep, reference, using
      * [`===`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness#strict_equality_using))
      * equality.
      *
@@ -114,11 +114,11 @@ const assertions: {
 };
 
 export const entryEqualityGuards = {
-    assertions,
-    checkOverrides: {
+    assert: assertions,
+    check: {
         /**
          * Checks that two objects are deeply equal by checking only their top-level values for
-         * strict (non-deep, referential, using
+         * strict (non-deep, reference, using
          * [`===`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness#strict_equality_using))
          * equality.
          *
@@ -151,7 +151,7 @@ export const entryEqualityGuards = {
             >(),
         /**
          * Checks that two objects are _not_ deeply equal by checking only their top-level values
-         * for strict (non-deep, referential, using
+         * for strict (non-deep, reference, using
          * [`===`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness#strict_equality_using))
          * equality.
          *
@@ -177,10 +177,10 @@ export const entryEqualityGuards = {
          */
         notEntriesEqual: autoGuardSymbol,
     },
-    assertWrapOverrides: {
+    assertWrap: {
         /**
          * Asserts that two objects are deeply equal by checking only their top-level values for
-         * strict (non-deep, referential, using
+         * strict (non-deep, reference, using
          * [`===`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness#strict_equality_using))
          * equality and, if so, returns the first object.
          *
@@ -199,6 +199,7 @@ export const entryEqualityGuards = {
          * assertWrap.entriesEqual({a: bExample}, {a: bExample}); // returns `{a: {b: 'b'}}`
          * ```
          *
+         * @returns The first input if the assertion passes.
          * @throws {@link AssertionError} If both inputs are not equal.
          * @see
          * - {@link assertWrap.notEntriesEqual} : the opposite assertion.
@@ -215,7 +216,7 @@ export const entryEqualityGuards = {
             >(),
         /**
          * Asserts that two objects are _not_ deeply equal by checking only their top-level values
-         * for strict (non-deep, referential, using
+         * for strict (non-deep, reference, using
          * [`===`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness#strict_equality_using))
          * equality and, if so, returns the first object.
          *
@@ -234,6 +235,7 @@ export const entryEqualityGuards = {
          * assertWrap.notEntriesEqual({a: bExample}, {a: bExample}); // throws an error
          * ```
          *
+         * @returns The first input if the assertion passes.
          * @throws {@link AssertionError} If both inputs are equal.
          * @see
          * - {@link assertWrap.entriesEqual} : the opposite assertion.
@@ -242,10 +244,10 @@ export const entryEqualityGuards = {
          */
         notEntriesEqual: autoGuardSymbol,
     },
-    checkWrapOverrides: {
+    checkWrap: {
         /**
          * Checks that two objects are deeply equal by checking only their top-level values for
-         * strict (non-deep, referential, using
+         * strict (non-deep, reference, using
          * [`===`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness#strict_equality_using))
          * equality. If the check passes the first object is returned. If not, `undefined` is
          * returned.
@@ -265,6 +267,7 @@ export const entryEqualityGuards = {
          * checkWrap.entriesEqual({a: bExample}, {a: bExample}); // returns `{a: {b: 'b'}}`
          * ```
          *
+         * @returns The first input if the assertion passes, otherwise `undefined`.
          * @see
          * - {@link checkWrap.notEntriesEqual} : the opposite check.
          * - {@link checkWrap.jsonEquals} : another deep equality check.
@@ -280,7 +283,7 @@ export const entryEqualityGuards = {
 
         /**
          * Checks that two objects are _not_ deeply equal by checking only their top-level values
-         * for strict (non-deep, referential, using
+         * for strict (non-deep, reference, using
          * [`===`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness#strict_equality_using))
          * equality. If the check passes the first object is returned. If not, `undefined` is
          * returned.
@@ -300,6 +303,7 @@ export const entryEqualityGuards = {
          * checkWrap.notEntriesEqual({a: bExample}, {a: bExample}); // returns `undefined`
          * ```
          *
+         * @returns The first input if the assertion passes, otherwise `undefined`.
          * @see
          * - {@link checkWrap.entriesEqual} : the opposite check.
          * - {@link checkWrap.notJsonEquals} : another not deep equality check.
@@ -307,13 +311,13 @@ export const entryEqualityGuards = {
          */
         notEntriesEqual: autoGuardSymbol,
     },
-    waitUntilOverrides: {
+    waitUntil: {
         /**
-         * Repeatedly asserts that two objects are deeply equal by checking only their top-level
-         * values for strict (non-deep, referential, using
+         * Repeatedly calls a callback until its output is deeply equal to the first input by
+         * checking only their top-level values for strict (non-deep, reference, using
          * [`===`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness#strict_equality_using))
-         * equality. If the assertion passes, the first object is returned. If the attempts time
-         * out, an error is thrown.
+         * equality. Once the callback output passes, it is returned. If the attempts time out, an
+         * error is thrown.
          *
          * Type guards the first value.
          *
@@ -323,18 +327,16 @@ export const entryEqualityGuards = {
          * import {waitUntil} from '@augment-vir/assert';
          *
          * await waitUntil.entriesEqual({a: 'a'}, () => {
-         *     a: 'a';
+         *     return {a: 'a'};
          * }); // returns `{a: 'a'}`
          *
          * await waitUntil.entriesEqual({a: {b: 'b'}}, () => {
-         *     a: {
-         *         b: 'b';
-         *     }
+         *     return {a: {b: 'b'}};
          * }); // throws an error
          *
          * const bExample = {b: 'b'};
          * await waitUntil.entriesEqual({a: bExample}, () => {
-         *     a: bExample;
+         *     return {a: bExample};
          * }); // returns `{a: {b: 'b'}}`
          * ```
          *
@@ -355,11 +357,11 @@ export const entryEqualityGuards = {
             >(),
 
         /**
-         * Repeatedly asserts that two objects are _not_ deeply equal by checking only their
-         * top-level values for strict (non-deep, referential, using
+         * Repeatedly calls a callback until its output is _not_ deeply equal to the first input by
+         * checking only their top-level values for strict (non-deep, reference, using
          * [`===`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness#strict_equality_using))
-         * equality. If the assertion passes, the first object is returned. If the attempts time
-         * out, an error is thrown.
+         * equality. Once the callback output passes, it is returned. If the attempts time out, an
+         * error is thrown.
          *
          * Performs no type guarding.
          *
@@ -369,27 +371,26 @@ export const entryEqualityGuards = {
          * import {waitUntil} from '@augment-vir/assert';
          *
          * await waitUntil.notEntriesEqual({a: 'a'}, () => {
-         *     a: 'a';
+         *     return {a: 'a'};
          * }); // throws an error
          *
          * await waitUntil.notEntriesEqual({a: {b: 'b'}}, () => {
-         *     a: {
-         *         b: 'b';
-         *     }
+         *     return {a: {b: 'b'}};
          * }); // returns `{a: {b: 'b'}}`
          *
          * const bExample = {b: 'b'};
          * await waitUntil.notEntriesEqual({a: bExample}, () => {
-         *     a: bExample;
+         *     return {a: bExample};
          * }); // throws an error
          * ```
          *
+         * @returns The callback output once it passes.
          * @throws {@link AssertionError} If both inputs are equal.
          * @see
-         * - {@link assert.entriesEqual} : the opposite assertion.
-         * - {@link assert.notJsonEquals} : another not deep equality assertion.
-         * - {@link assert.notDeepEquals} : the most thorough (but also slow) not deep equality assertion.
+         * - {@link waitUntil.entriesEqual} : the opposite assertion.
+         * - {@link waitUntil.notJsonEquals} : another not deep equality assertion.
+         * - {@link waitUntil.notDeepEquals} : the most thorough (but also slow) not deep equality assertion.
          */
         notEntriesEqual: autoGuardSymbol,
     },
-} satisfies GuardGroup;
+} satisfies GuardGroup<typeof assertions>;

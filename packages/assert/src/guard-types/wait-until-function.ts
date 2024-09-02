@@ -90,7 +90,9 @@ async function executeWaitUntil<const Assert extends AssertFunction<any>>(
     return lastCallbackOutput as ReturnType<WaitUntilFunction<Assert>>;
 }
 
-export type WaitUntilOverridesBase = Readonly<Record<string, AnyFunction | typeof autoGuardSymbol>>;
+export type WaitUntilOverridesBase<Keys extends PropertyKey = string> = Readonly<
+    Record<Keys, AnyFunction | typeof autoGuardSymbol | undefined>
+>;
 
 export type WaitUntilFunctionParameters<Assert extends AssertFunction<any>, Input> = [
     ...RemoveFirstTupleEntry<RemoveLastTupleEntry<Parameters<Assert>>>,

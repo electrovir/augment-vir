@@ -9,6 +9,7 @@ import {
 } from '@augment-vir/core';
 import {AssertionError} from '../augments/assertion.error.js';
 import type {GuardGroup} from '../guard-types/guard-group.js';
+import {autoGuardSymbol} from '../guard-types/guard-override.js';
 import {createWaitUntil, WaitUntilOptions} from '../guard-types/wait-until-function.js';
 
 enum ThrowsCheckType {
@@ -332,46 +333,42 @@ function throwsCheckWrap(
 const internalWaitUntilThrows = createWaitUntil(isError);
 
 function throwsWaitUntil(
-    callbackOrPromise: TypedFunction<void, any> | Promise<any>,
+    callback: TypedFunction<void, any>,
     options?: WaitUntilOptions | undefined,
     failureMessage?: string | undefined,
 ): Promise<Error>;
 function throwsWaitUntil(
     matchOptions: ErrorMatchOptions,
-    callbackOrPromise: TypedFunction<void, any> | Promise<any>,
+    callback: TypedFunction<void, any>,
     options?: WaitUntilOptions | undefined,
     failureMessage?: string | undefined,
 ): Promise<Error>;
 function throwsWaitUntil(
-    matchOptionsOrCallbackOrPromise: ErrorMatchOptions | TypedFunction<void, any> | Promise<any>,
-    callbackOrPromiseOrOptions?: TypedFunction<void, any> | Promise<any> | WaitUntilOptions,
+    matchOptionsOrCallback: ErrorMatchOptions | TypedFunction<void, any>,
+    callbackOrOptions?: TypedFunction<void, any> | WaitUntilOptions,
     optionsOrFailureMessage?: WaitUntilOptions | string | undefined,
     failureMessage?: string | undefined,
 ): Promise<Error> {
     const matchOptions: ErrorMatchOptions | undefined =
-        typeof matchOptionsOrCallbackOrPromise === 'function' ||
-        matchOptionsOrCallbackOrPromise instanceof Promise
+        typeof matchOptionsOrCallback === 'function' || matchOptionsOrCallback instanceof Promise
             ? undefined
-            : matchOptionsOrCallbackOrPromise;
-    const callbackOrPromise = (
-        matchOptions ? callbackOrPromiseOrOptions : matchOptionsOrCallbackOrPromise
-    ) as TypedFunction<void, any> | Promise<any>;
+            : matchOptionsOrCallback;
+    const callback = (matchOptions ? callbackOrOptions : matchOptionsOrCallback) as TypedFunction<
+        void,
+        any
+    >;
     const actualFailureMessage =
         typeof optionsOrFailureMessage === 'object' ? failureMessage : optionsOrFailureMessage;
     const waitUntilOptions =
         typeof optionsOrFailureMessage === 'object'
             ? optionsOrFailureMessage
-            : (callbackOrPromiseOrOptions as WaitUntilOptions);
+            : (callbackOrOptions as WaitUntilOptions);
 
     return internalWaitUntilThrows(
         matchOptions,
         async () => {
             try {
-                if (typeof callbackOrPromise === 'function') {
-                    await callbackOrPromise();
-                } else {
-                    await callbackOrPromise;
-                }
+                await callback();
                 return undefined;
             } catch (error) {
                 return ensureError(error);
@@ -384,46 +381,292 @@ function throwsWaitUntil(
 
 const assertions: {
     /**
-     * Checks that the input is an instance of the built-in `Error` class and compares it to the
-     * given {@link ErrorMatchOptions}, if provided.
-     *
-     * Type guards the input.
-     */
-    isError: typeof isError;
-    /**
      * If a function input is provided:
      *
-     * Calls that function and checks that the function throw an error, comparing the error with the
-     * given {@link ErrorMatchOptions}, if provided.
+     * Calls that function and asserts that the function throw an error, comparing the error with
+     * the given {@link ErrorMatchOptions}, if provided.
      *
      * If a promise is provided:
      *
-     * Awaits the promise and checks that the promise rejected with an error, comparing the error
+     * Awaits the promise and asserts that the promise rejected with an error, comparing the error
      * with the given {@link ErrorMatchOptions}, if provided.
      *
-     * This method will automatically type itself as async vs async based on the input. (A promise
-     * or async function inputs results in async. Otherwise, sync.)
+     * This assertion will automatically type itself as async vs async based on the input. (A
+     * promise or async function inputs results in async. Otherwise, sync.)
      *
      * Performs no type guarding.
+     *
+     * @example
+     *
+     * ```ts
+     * import {assert} from '@augment-vir/assert';
+     *
+     * assert.throws(() => {
+     *     throw new Error();
+     * }); // passes
+     * assert.throws(
+     *     () => {
+     *         throw new Error();
+     *     },
+     *     {matchMessage: 'hi'},
+     * ); // fails
+     * await assert.throws(Promise.reject()); // passes
+     * assert.throws(() => {}); // fails
+     * ```
+     *
+     * @throws {@link AssertionError} If the assertion fails.
      */
     throws: typeof throws;
+    /**
+     * Asserts that a value is an instance of the built-in `Error` class and compares it to the
+     * given {@link ErrorMatchOptions}, if provided.
+     *
+     * Type guards the input.
+     *
+     * @example
+     *
+     * ```ts
+     * import {assert} from '@augment-vir/assert';
+     *
+     * assert.isError(new Error()); // passes
+     * assert.isError(new Error(), {matchMessage: 'hi'}); // fails
+     * assert.isError({message: 'not an error'}); // fails
+     * ```
+     *
+     * @throws {@link AssertionError} If the assertion fails.
+     */
+    isError: typeof isError;
 } = {
     throws,
     isError: isError,
 };
 
 export const throwGuards = {
-    assertions,
-    checkOverrides: {
+    assert: assertions,
+    check: {
+        /**
+         * If a function input is provided:
+         *
+         * Calls that function and checks that the function throw an error, comparing the error with
+         * the given {@link ErrorMatchOptions}, if provided.
+         *
+         * If a promise is provided:
+         *
+         * Awaits the promise and checks that the promise rejected with an error, comparing the
+         * error with the given {@link ErrorMatchOptions}, if provided.
+         *
+         * This assertion will automatically type itself as async vs async based on the input. (A
+         * promise or async function inputs results in async. Otherwise, sync.)
+         *
+         * Performs no type guarding.
+         *
+         * @example
+         *
+         * ```ts
+         * import {check} from '@augment-vir/assert';
+         *
+         * check.throws(() => {
+         *     throw new Error();
+         * }); // returns `true`
+         * check.throws(
+         *     () => {
+         *         throw new Error();
+         *     },
+         *     {matchMessage: 'hi'},
+         * ); // returns `false`
+         * await check.throws(Promise.reject()); // returns `true`
+         * check.throws(() => {}); // returns `false`
+         * ```
+         */
         throws: throwsCheck,
+        /**
+         * Checks that a value is an instance of the built-in `Error` class and compares it to the
+         * given {@link ErrorMatchOptions}, if provided.
+         *
+         * Type guards the input.
+         *
+         * @example
+         *
+         * ```ts
+         * import {check} from '@augment-vir/assert';
+         *
+         * check.isError(new Error()); // returns `true`
+         * check.isError(new Error(), {matchMessage: 'hi'}); // returns `false`
+         * check.isError({message: 'not an error'}); // returns `false`
+         * ```
+         */
+        isError: autoGuardSymbol,
     },
-    assertWrapOverrides: {
+    assertWrap: {
+        /**
+         * If a function input is provided:
+         *
+         * Calls that function and asserts that the function throw an error, comparing the error
+         * with the given {@link ErrorMatchOptions}, if provided. Returns the Error if the assertion
+         * passes.
+         *
+         * If a promise is provided:
+         *
+         * Awaits the promise and asserts that the promise rejected with an error, comparing the
+         * error with the given {@link ErrorMatchOptions}, if provided. Returns the Error if the
+         * assertion passes.
+         *
+         * This assertion will automatically type itself as async vs async based on the input. (A
+         * promise or async function inputs results in async. Otherwise, sync.)
+         *
+         * Performs no type guarding.
+         *
+         * @example
+         *
+         * ```ts
+         * import {assertWrap} from '@augment-vir/assert';
+         *
+         * assertWrap.throws(() => {
+         *     throw new Error();
+         * }); // returns the thrown error
+         * assertWrap.throws(
+         *     () => {
+         *         throw new Error();
+         *     },
+         *     {matchMessage: 'hi'},
+         * ); // throws an error
+         * await assertWrap.throws(Promise.reject()); // returns the rejection
+         * assertWrap.throws(() => {}); // throws an error
+         * ```
+         *
+         * @returns The Error if the assertion passes.
+         * @throws {@link AssertionError} If the assertion fails.
+         */
         throws: throwsAssertWrap,
+        /**
+         * Asserts that a value is an instance of the built-in `Error` class and compares it to the
+         * given {@link ErrorMatchOptions}, if provided.
+         *
+         * Type guards the input.
+         *
+         * @example
+         *
+         * ```ts
+         * import {assertWrap} from '@augment-vir/assert';
+         *
+         * assertWrap.isError(new Error()); // returns the error instance
+         * assertWrap.isError(new Error(), {matchMessage: 'hi'}); // throws an error
+         * assertWrap.isError({message: 'not an error'}); // throws an error
+         * ```
+         *
+         * @returns The value if the assertion passes.
+         * @throws {@link AssertionError} If the assertion fails.
+         */
+        isError: autoGuardSymbol,
     },
-    checkWrapOverrides: {
+    checkWrap: {
+        /**
+         * If a function input is provided:
+         *
+         * Calls that function and checks that the function throw an error, comparing the error with
+         * the given {@link ErrorMatchOptions}, if provided. Returns the error if the check passes,
+         * otherwise `undefined`.
+         *
+         * If a promise is provided:
+         *
+         * Awaits the promise and checks that the promise rejected with an error, comparing the
+         * error with the given {@link ErrorMatchOptions}, if provided. Returns the error if the
+         * check passes, otherwise `undefined`.
+         *
+         * This assertion will automatically type itself as async vs async based on the input. (A
+         * promise or async function inputs results in async. Otherwise, sync.)
+         *
+         * Performs no type guarding.
+         *
+         * @example
+         *
+         * ```ts
+         * import {checkWrap} from '@augment-vir/assert';
+         *
+         * checkWrap.throws(() => {
+         *     throw new Error();
+         * }); // returns the thrown error
+         * await checkWrap.throws(Promise.reject()); // returns the rejection
+         * checkWrap.throws(() => {}); // returns `undefined`
+         * ```
+         *
+         * @returns The Error if the check passes, otherwise `undefined`.
+         */
         throws: throwsCheckWrap,
+        /**
+         * Checks that a value is an instance of the built-in `Error` class and compares it to the
+         * given {@link ErrorMatchOptions}, if provided. Returns the error if the check passes,
+         * otherwise `undefined`.
+         *
+         * Type guards the input.
+         *
+         * @example
+         *
+         * ```ts
+         * import {checkWrap} from '@augment-vir/assert';
+         *
+         * checkWrap.isError(new Error()); // returns the Error
+         * checkWrap.isError(new Error(), {matchMessage: 'hi'}); // returns `undefined`
+         * checkWrap.isError({message: 'not an error'}); // returns `undefined`
+         * ```
+         *
+         * @returns The Error if the check passes, otherwise `undefined`.
+         */
+        isError: autoGuardSymbol,
     },
-    waitUntilOverrides: {
+    waitUntil: {
+        /**
+         * Repeatedly calls a callback until it throws an error, comparing the error with the given
+         * {@link ErrorMatchOptions}, if provided (as the first input). Once the callback throws an
+         * Error, that Error is returned. If the attempts time out, an error is thrown.
+         *
+         * This assertion will automatically type itself as async vs async based on the input. (A
+         * promise or async function inputs results in async. Otherwise, sync.)
+         *
+         * Unlike the other `.throws` guards, `waitUntil.throws` does not allow a Promise input,
+         * only a callback input.
+         *
+         * Performs no type guarding.
+         *
+         * @example
+         *
+         * ```ts
+         * import {waitUntil} from '@augment-vir/assert';
+         *
+         * await waitUntil.throws(() => {
+         *     throw new Error();
+         * }); // returns the thrown error
+         * await waitUntil.throws(Promise.reject()); // not allowed
+         * await waitUntil.throws(() => {}); // throws an error
+         * await waitUntil.throws({matchMessage: 'hi'}, () => {
+         *     throw new Error('bye');
+         * }); // throws an error
+         * ```
+         *
+         * @returns The Error once it passes.
+         * @throws {@link AssertionError} On timeout.
+         */
         throws: throwsWaitUntil,
+        /**
+         * Repeatedly calls a callback until is output is an instance of the built-in `Error` class
+         * and compares it to the given {@link ErrorMatchOptions}, if provided. Once the callback
+         * output passes, that Error is returned. If the attempts time out, an error is thrown.
+         *
+         * Type guards the input.
+         *
+         * @example
+         *
+         * ```ts
+         * import {waitUntil} from '@augment-vir/assert';
+         *
+         * await waitUntil.isError(new Error()); // returns the error instance
+         * await waitUntil.isError(new Error(), {matchMessage: 'hi'}); // throws an error
+         * await waitUntil.isError({message: 'not an error'}); // throws an error
+         * ```
+         *
+         * @returns The callback output once it passes.
+         * @throws {@link AssertionError} On timeout.
+         */
+        isError: autoGuardSymbol,
     },
-} satisfies GuardGroup;
+} satisfies GuardGroup<typeof assertions>;

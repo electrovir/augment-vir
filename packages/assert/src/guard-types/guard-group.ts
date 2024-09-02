@@ -6,11 +6,10 @@ import type {AssertWrapOverridesBase} from './assert-wrap-function.js';
 import type {CheckOverridesBase} from './check-function.js';
 import type {WaitUntilOverridesBase} from './wait-until-function.js';
 
-export type GuardGroup = {
-    assertions: Record<string, AssertFunction<any>>;
-} & Partial<{
-    checkOverrides: CheckOverridesBase;
-    assertWrapOverrides: AssertWrapOverridesBase;
-    checkWrapOverrides: AssertWrapOverridesBase;
-    waitUntilOverrides: WaitUntilOverridesBase;
-}>;
+export type GuardGroup<Assertions extends Record<string, AssertFunction<any>>> = {
+    assert: Assertions;
+    check: CheckOverridesBase<keyof Assertions>;
+    assertWrap: AssertWrapOverridesBase<keyof Assertions>;
+    checkWrap: AssertWrapOverridesBase<keyof Assertions>;
+    waitUntil: WaitUntilOverridesBase<keyof Assertions>;
+};

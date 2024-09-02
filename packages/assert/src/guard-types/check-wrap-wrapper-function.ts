@@ -1,7 +1,7 @@
 import {ExtractKeysWithMatchingValues, Overwrite, type NarrowToActual} from '@augment-vir/core';
 import {AssertFunction} from './assert-function.js';
 import {AssertWrapOverridesBase} from './assert-wrap-function.js';
-import {pickOverride} from './guard-override.js';
+import {autoGuardSymbol, pickOverride} from './guard-override.js';
 
 export type CheckWrapFunction<Output> = <Input>(
     input: Input,
@@ -20,7 +20,15 @@ export type CheckWrapGroup<
                 ? CheckWrapFunction<Output>
                 : never;
         },
-        CheckWrapOverrides
+        {
+            [Name in keyof CheckWrapOverrides]: CheckWrapOverrides[Name] extends typeof autoGuardSymbol
+                ? Name extends keyof Asserts
+                    ? Asserts[Name] extends AssertFunction<infer Output>
+                        ? CheckWrapFunction<Output>
+                        : never
+                    : never
+                : CheckWrapOverrides[Name];
+        }
     >,
     ExtractKeysWithMatchingValues<CheckWrapOverrides, undefined>
 >;

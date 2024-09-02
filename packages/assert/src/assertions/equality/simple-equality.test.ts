@@ -402,6 +402,9 @@ describe('deepEquals', () => {
         it('rejects', () => {
             assert.throws(() => assert.deepEquals(actualReject, expected));
         });
+        it('rejects loosely equal values', () => {
+            assert.throws(() => assert.deepEquals('1', 1));
+        });
     });
     describe('check', () => {
         it('guards', () => {

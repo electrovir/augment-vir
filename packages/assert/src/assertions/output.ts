@@ -467,11 +467,23 @@ export async function waitUntilOutput(
 
 const assertions: {
     /**
-     * Checks that the output of the given function deeply equals expectations. A custom asserter
+     * Asserts that the output of the given function deeply equals expectations. A custom asserter
      * can optionally be provided as the first argument to change the expectation checking from
      * "deeply equals" to whatever you want.
      *
      * Performs no type guarding.
+     *
+     * ```ts
+     * import {assert} from '@augment-vir/assert';
+     *
+     * assert.output((input: number) => String(input), [5], '5'); // passes
+     * assert.output((input: number) => String(input), [10], '5'); // fails
+     *
+     * assert.output(assert.isLengthAtLeast, (input: number) => String(input), [5], 2); // fails
+     * assert.output(assert.isLengthAtLeast, (input: number) => String(input), [10], 2); // passes
+     * ```
+     *
+     * @throws {@link AssertionError} If the assertion fails.
      */
     output: typeof assertOutput;
 } = {
@@ -479,17 +491,104 @@ const assertions: {
 };
 
 export const outputGuards = {
-    assertions,
-    checkOverrides: {
+    assert: assertions,
+    check: {
+        /**
+         * Checks that the output of the given function deeply equals expectations. A custom
+         * asserter can optionally be provided as the first argument to change the expectation
+         * checking from the default "deeply equals" to whatever you want.
+         *
+         * Performs no type guarding.
+         *
+         * ```ts
+         * import {check} from '@augment-vir/assert';
+         *
+         * check.output((input: number) => String(input), [5], '5'); // returns `true`
+         * check.output((input: number) => String(input), [10], '5'); // returns `false`
+         *
+         * check.output(assert.isLengthAtLeast, (input: number) => String(input), [5], 2); // returns `false`
+         * check.output(assert.isLengthAtLeast, (input: number) => String(input), [10], 2); // returns `true`
+         * ```
+         */
         output: checkOutput,
     },
-    assertWrapOverrides: {
+    assertWrap: {
+        /**
+         * Asserts that the output of the given function deeply equals expectations. A custom
+         * asserter can optionally be provided as the first argument to change the expectation
+         * checking from the default "deeply equals" to whatever you want. Returns the output if the
+         * assertion passes.
+         *
+         * Performs no type guarding.
+         *
+         * ```ts
+         * import {assertWrap} from '@augment-vir/assert';
+         *
+         * assertWrap.output((input: number) => String(input), [5], '5'); // returns `'5'`
+         * assertWrap.output((input: number) => String(input), [10], '5'); // throws an error
+         *
+         * assertWrap.output(assert.isLengthAtLeast, (input: number) => String(input), [5], 2); // throws an error
+         * assertWrap.output(assert.isLengthAtLeast, (input: number) => String(input), [10], 2); // returns `10`
+         * ```
+         *
+         * @returns The output if the assertion passes.
+         * @throws {@link AssertionError} If the assertion fails.
+         */
         output: assertWrapOutput,
     },
-    checkWrapOverrides: {
+    checkWrap: {
+        /**
+         * Asserts that the output of the given function deeply equals expectations. A custom
+         * asserter can optionally be provided as the first argument to change the expectation
+         * checking from the default "deeply equals" to whatever you want. Returns the output if the
+         * check passes, otherwise `undefined`.
+         *
+         * Performs no type guarding.
+         *
+         * ```ts
+         * import {checkWrap} from '@augment-vir/assert';
+         *
+         * checkWrap.output((input: number) => String(input), [5], '5'); // returns `'5'`
+         * checkWrap.output((input: number) => String(input), [10], '5'); // returns `undefined`
+         *
+         * checkWrap.output(assert.isLengthAtLeast, (input: number) => String(input), [5], 2); // returns `undefined`
+         * checkWrap.output(assert.isLengthAtLeast, (input: number) => String(input), [10], 2); // returns `10`
+         * ```
+         *
+         * @returns The output if the assertion passes, otherwise `undefined`.
+         */
         output: checkWrapOutput,
     },
-    waitUntilOverrides: {
+    waitUntil: {
+        /**
+         * Repeatedly calls a callback until its output deeply equals expectations. A custom
+         * asserter can optionally be provided as the first argument to change the expectation
+         * checking from the default "deeply equals" to whatever you want.
+         *
+         * Performs no type guarding.
+         *
+         * ```ts
+         * import {waitUntil} from '@augment-vir/assert';
+         *
+         * await waitUntil.output((input: number) => String(input), [5], '5'); // returns `'5'`
+         * await waitUntil.output((input: number) => String(input), [10], '5'); // throws an error
+         *
+         * await waitUntil.output(
+         *     assert.isLengthAtLeast,
+         *     (input: number) => String(input),
+         *     [5],
+         *     2,
+         * ); // throws an error
+         * await waitUntil.output(
+         *     assert.isLengthAtLeast,
+         *     (input: number) => String(input),
+         *     [10],
+         *     2,
+         * ); // returns `10`
+         * ```
+         *
+         * @throws {@link AssertionError} If the assertion fails.
+         */
         output: waitUntilOutput,
     },
-} satisfies GuardGroup;
+} satisfies GuardGroup<typeof assertions>;

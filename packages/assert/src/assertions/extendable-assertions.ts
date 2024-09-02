@@ -24,26 +24,26 @@ import {uuidGuards} from './uuid.js';
 import {valueGuards} from './values.js';
 
 export const extendableAssertions = {
-    ...booleanGuards.assertions,
-    ...boundaryGuards.assertions,
-    ...entryEqualityGuards.assertions,
-    ...enumGuards.assertions,
-    ...instanceGuards.assertions,
-    ...jsonEqualityGuards.assertions,
-    ...keyGuards.assertions,
-    ...lengthGuards.assertions,
-    ...nullishGuards.assertions,
-    ...numericGuards.assertions,
-    ...primitiveGuards.assertions,
-    ...promiseGuards.assertions,
-    ...regexpGuards.assertions,
-    ...runtimeTypeGuards.assertions,
-    ...simpleEqualityGuards.assertions,
-    ...throwGuards.assertions,
-    ...uuidGuards.assertions,
-    ...valueGuards.assertions,
-    ...httpGuards.assertions,
-    ...outputGuards.assertions,
+    ...booleanGuards.assert,
+    ...boundaryGuards.assert,
+    ...entryEqualityGuards.assert,
+    ...enumGuards.assert,
+    ...instanceGuards.assert,
+    ...jsonEqualityGuards.assert,
+    ...keyGuards.assert,
+    ...lengthGuards.assert,
+    ...nullishGuards.assert,
+    ...numericGuards.assert,
+    ...primitiveGuards.assert,
+    ...promiseGuards.assert,
+    ...regexpGuards.assert,
+    ...runtimeTypeGuards.assert,
+    ...simpleEqualityGuards.assert,
+    ...throwGuards.assert,
+    ...uuidGuards.assert,
+    ...valueGuards.assert,
+    ...httpGuards.assert,
+    ...outputGuards.assert,
 } satisfies Record<PropertyKey, AssertFunction<any>>;
 
 /**
@@ -72,31 +72,30 @@ export const guardOverrides = [
     valueGuards,
     httpGuards,
     outputGuards,
-] as const satisfies GuardGroup[];
+] as const satisfies GuardGroup<any>[];
 
-export const checkOverrides: UnionToIntersection<
-    Extract<ArrayElement<typeof guardOverrides>, {checkOverrides: any}>['checkOverrides']
-> = Object.assign(
-    {},
-    ...guardOverrides
-        .map((entry) => {
-            if ('checkOverrides' in entry) {
-                return entry.checkOverrides;
-            } else {
-                return undefined;
-            }
-        })
-        .filter((entry) => !!entry),
-);
+export const checkOverrides: UnionToIntersection<ArrayElement<typeof guardOverrides>['check']> =
+    Object.assign(
+        {},
+        ...guardOverrides
+            .map((entry) => {
+                if ('check' in entry) {
+                    return entry.check;
+                } else {
+                    return undefined;
+                }
+            })
+            .filter((entry) => !!entry),
+    );
 
 export const assertWrapOverrides: UnionToIntersection<
-    Extract<ArrayElement<typeof guardOverrides>, {assertWrapOverrides: any}>['assertWrapOverrides']
+    Extract<ArrayElement<typeof guardOverrides>, {assertWrap: any}>['assertWrap']
 > = Object.assign(
     {},
     ...guardOverrides
         .map((entry) => {
-            if ('assertWrapOverrides' in entry) {
-                return entry.assertWrapOverrides;
+            if ('assertWrap' in entry) {
+                return entry.assertWrap;
             } else {
                 return undefined;
             }
@@ -105,13 +104,13 @@ export const assertWrapOverrides: UnionToIntersection<
 );
 
 export const checkWrapOverrides: UnionToIntersection<
-    Extract<ArrayElement<typeof guardOverrides>, {checkWrapOverrides: any}>['checkWrapOverrides']
+    Extract<ArrayElement<typeof guardOverrides>, {checkWrap: any}>['checkWrap']
 > = Object.assign(
     {},
     ...guardOverrides
         .map((entry) => {
-            if ('checkWrapOverrides' in entry) {
-                return entry.checkWrapOverrides;
+            if ('checkWrap' in entry) {
+                return entry.checkWrap;
             } else {
                 return undefined;
             }
@@ -120,13 +119,13 @@ export const checkWrapOverrides: UnionToIntersection<
 );
 
 export const waitUntilOverrides: UnionToIntersection<
-    Extract<ArrayElement<typeof guardOverrides>, {waitUntilOverrides: any}>['waitUntilOverrides']
+    Extract<ArrayElement<typeof guardOverrides>, {waitUntil: any}>['waitUntil']
 > = Object.assign(
     {},
     ...guardOverrides
         .map((entry) => {
-            if ('waitUntilOverrides' in entry) {
-                return entry.waitUntilOverrides;
+            if ('waitUntil' in entry) {
+                return entry.waitUntil;
             } else {
                 return undefined;
             }
