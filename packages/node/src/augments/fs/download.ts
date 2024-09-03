@@ -10,7 +10,7 @@ import type {ReadableStream} from 'node:stream/web';
  *
  * @category Node : File
  * @category Package : @augment-vir/node
- * @package @augment-vir/node
+ * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
  */
 export async function downloadFile({url, writePath}: {url: string; writePath: string}) {
     const response = await fetch(url);

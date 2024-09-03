@@ -14,7 +14,7 @@ import {MinMax} from './min-max.js';
  * const result = clamp(42, {min: 30, max: 40});
  * ```
  *
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function clamp(value: number, {min, max}: Readonly<MinMax>) {
     return Math.min(Math.max(value, min), max);

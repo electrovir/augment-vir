@@ -6,7 +6,7 @@ import {mapObject} from './map-entries.js';
  *
  * @category Object
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type EnumMap<Enum extends EnumBaseType, Value> =
     Values<Enum> extends PropertyKey ? Record<Values<Enum>, Value> : 'ERROR: invalid enum';
@@ -45,7 +45,7 @@ export function mapEnumToObject<const Enum extends EnumBaseType, const Value>(
  * // output is `{[MyEnum.A]: 'value-a', [MyEnum.B]: 'value-b'}`
  * ```
  *
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function mapEnumToObject<const Enum extends EnumBaseType, const Value>(
     enumInput: Enum,

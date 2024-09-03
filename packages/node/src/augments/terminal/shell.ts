@@ -8,7 +8,7 @@ import {defineTypedCustomEvent, ListenTarget} from 'typed-event-target';
  *
  * @category Node : Terminal : Util
  * @category Package : @augment-vir/node
- * @package @augment-vir/node
+ * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
  */
 export type ShellOutput = {
     error: undefined | Error;
@@ -23,7 +23,7 @@ export type ShellOutput = {
  *
  * @category Node : Terminal : Util
  * @category Package : @augment-vir/node
- * @package @augment-vir/node
+ * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
  */
 export class ShellStdoutEvent extends defineTypedCustomEvent<string | Buffer>()('shell-stdout') {}
 /**
@@ -31,7 +31,7 @@ export class ShellStdoutEvent extends defineTypedCustomEvent<string | Buffer>()(
  *
  * @category Node : Terminal : Util
  * @category Package : @augment-vir/node
- * @package @augment-vir/node
+ * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
  */
 export class ShellStderrEvent extends defineTypedCustomEvent<string | Buffer>()('shell-stderr') {}
 /**
@@ -41,7 +41,7 @@ export class ShellStderrEvent extends defineTypedCustomEvent<string | Buffer>()(
  *
  * @category Node : Terminal : Util
  * @category Package : @augment-vir/node
- * @package @augment-vir/node
+ * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
  */
 export class ShellDoneEvent extends defineTypedCustomEvent<{
     exitCode: number | undefined;
@@ -52,7 +52,7 @@ export class ShellDoneEvent extends defineTypedCustomEvent<{
  *
  * @category Node : Terminal : Util
  * @category Package : @augment-vir/node
- * @package @augment-vir/node
+ * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
  */
 export class ShellErrorEvent extends defineTypedCustomEvent<Error>()('shell-error') {}
 
@@ -61,7 +61,7 @@ export class ShellErrorEvent extends defineTypedCustomEvent<Error>()('shell-erro
  *
  * @category Node : Terminal : Util
  * @category Package : @augment-vir/node
- * @package @augment-vir/node
+ * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
  */
 export class ShellTarget extends ListenTarget<
     ShellStdoutEvent | ShellStderrEvent | ShellDoneEvent | ShellErrorEvent
@@ -78,7 +78,7 @@ export class ShellTarget extends ListenTarget<
  *
  * @category Node : Terminal
  * @category Package : @augment-vir/node
- * @package @augment-vir/node
+ * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
  * @see
  * - {@link runShellCommand}: a higher level and more succinct way of running a shell command.
  */
@@ -154,7 +154,7 @@ export function streamShellCommand(
  *
  * @category Node : Terminal : Util
  * @category Package : @augment-vir/node
- * @package @augment-vir/node
+ * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
  */
 export type RunShellCommandOptions = {
     cwd?: string | undefined;
@@ -180,7 +180,7 @@ function prepareChunkForLogging(chunk: string | Buffer, trimEndingLine: boolean)
  *
  * @category Node : Terminal
  * @category Package : @augment-vir/node
- * @package @augment-vir/node
+ * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
  * @see
  * - {@link streamShellCommand}: a lower level way of running a shell command that allows instant reactions to shell events.
  */
@@ -272,7 +272,7 @@ export async function runShellCommand(
  *
  * @category Node : Terminal : Util
  * @category Package : @augment-vir/node
- * @package @augment-vir/node
+ * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
  */
 export type LogShellOutputOptions = PartialWithUndefined<{
     logger: Logger;
@@ -291,7 +291,7 @@ const defaultLogShellOutputOptions: RequiredAndNotNull<LogShellOutputOptions> = 
  *
  * @category Node : Terminal : Util
  * @category Package : @augment-vir/node
- * @package @augment-vir/node
+ * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
  */
 export function logShellOutput(
     shellOutput: PartialWithUndefined<Omit<ShellOutput, 'exitSignal'>>,

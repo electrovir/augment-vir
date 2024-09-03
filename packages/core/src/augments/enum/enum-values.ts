@@ -12,7 +12,7 @@ function getEnumKeys<T extends EnumBaseType>(input: T): (keyof T)[] {
  *
  * @category Enum
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function getEnumValues<T extends EnumBaseType>(input: T): T[keyof T][] {
     const keys = getEnumKeys(input);

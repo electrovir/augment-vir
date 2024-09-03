@@ -35,7 +35,7 @@ const checkWrapGroup = createCheckWrapGroup(extendableAssertions, checkWrapOverr
  *
  * @returns The original given value (type guarded when possible) or, if the expectation fails,
  *   `undefined`.
- * @package @augment-vir/assert
+ * @package [`@augment-vir/assert`](https://www.npmjs.com/package/@augment-vir/assert)
  */
 export const checkWrap: (<T>(input: T) => undefined | T) &
     typeof checkWrapGroup &

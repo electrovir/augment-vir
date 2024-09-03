@@ -3,7 +3,7 @@ import {getObjectTypedEntries, typedObjectFromEntries} from './object-entries.js
 
 /**
  * Filters an object. Like
- * [`[].filter`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/fromEntries)
+ * [`[].filter`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object/fromEntries)
  * but for objects.
  *
  * @category Object
@@ -19,7 +19,7 @@ import {getObjectTypedEntries, typedObjectFromEntries} from './object-entries.js
  * // output is `{b: 2, c: 3}`
  * ```
  *
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function filterObject<ObjectGeneric>(
     inputObject: ObjectGeneric,

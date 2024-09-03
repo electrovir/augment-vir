@@ -5,7 +5,7 @@ import {combineErrorMessages, extractErrorMessage} from './error-message.js';
  *
  * @category Error
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function ensureError(maybeError: unknown): Error {
     if (maybeError instanceof Error) {
@@ -21,7 +21,7 @@ export function ensureError(maybeError: unknown): Error {
  *
  * @category Error
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function ensureErrorAndPrependMessage(maybeError: unknown, prependMessage: string): Error {
     const error = ensureError(maybeError);

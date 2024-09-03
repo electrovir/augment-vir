@@ -21,7 +21,7 @@ import {ensureErrorAndPrependMessage} from '@augment-vir/core';
  * });
  * ```
  *
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function callWithRetries<const T>(maxRetries: number, callback: () => T): T {
     try {

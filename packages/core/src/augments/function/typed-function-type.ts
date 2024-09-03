@@ -16,7 +16,7 @@
  * TypedFunction<[string | undefined], number>; // (input1: string|undefined) => number
  * ```
  *
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type TypedFunction<Arguments, Return> = Arguments extends readonly any[]
     ? number extends Arguments['length']

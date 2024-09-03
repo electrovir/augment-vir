@@ -41,7 +41,7 @@ const waitUntilGroup = createWaitUntilGroup(extendableAssertions, waitUntilOverr
  *
  * @returns The successful callback return value.
  * @throws {@link AssertionError} When the assertion fails.
- * @package @augment-vir/assert
+ * @package [`@augment-vir/assert`](https://www.npmjs.com/package/@augment-vir/assert)
  */
 export const waitUntil: ((
     callback: () => unknown,

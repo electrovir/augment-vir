@@ -7,7 +7,7 @@ export type {Writable, WritableDeep} from 'type-fest';
  *
  * @category Type
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function makeWritable<T>(input: T): Writable<T> {
     return input as Writable<T>;

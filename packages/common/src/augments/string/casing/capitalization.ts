@@ -5,7 +5,7 @@ import {CasingOptions} from './casing.js';
  *
  * @category String
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function maybeCapitalize(
     input: string,
@@ -19,7 +19,7 @@ export function maybeCapitalize(
  *
  * @category String
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function capitalizeFirstLetter<InputGeneric extends string>(
     input: InputGeneric,

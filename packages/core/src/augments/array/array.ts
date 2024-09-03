@@ -3,7 +3,7 @@
  *
  * @category Array
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type ArrayElement<ArrayType extends ReadonlyArray<any>> = ArrayType[number];
 
@@ -12,7 +12,7 @@ export type ArrayElement<ArrayType extends ReadonlyArray<any>> = ArrayType[numbe
  *
  * @category Array
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  * @see
  * - {@link MaybeReadonlyArray}: the readonly array version.
  */
@@ -22,7 +22,7 @@ export type MaybeArray<T> = T | T[];
  *
  * @category Array
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  * @see
  * - {@link MaybeArray}: the non-readonly array version.
  */

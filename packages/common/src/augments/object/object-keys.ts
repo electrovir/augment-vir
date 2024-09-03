@@ -14,7 +14,7 @@ import {filterObject} from './object-filter.js';
  * // output is `{b: 'b'}`
  * ```
  *
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function omitObjectKeys<const ObjectGeneric, const KeyGeneric extends keyof ObjectGeneric>(
     inputObject: Readonly<ObjectGeneric>,
@@ -39,7 +39,7 @@ export function omitObjectKeys<const ObjectGeneric, const KeyGeneric extends key
  * // output is `{a: 'a'}`
  * ```
  *
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function pickObjectKeys<const ObjectGeneric, const KeyGeneric extends keyof ObjectGeneric>(
     inputObject: Readonly<ObjectGeneric>,

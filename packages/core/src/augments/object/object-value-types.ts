@@ -5,7 +5,7 @@ import type {CompleteRequire} from './required-keys.js';
  *
  * @category Object
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type Values<T> = CompleteRequire<T>[keyof T];
 
@@ -14,6 +14,6 @@ export type Values<T> = CompleteRequire<T>[keyof T];
  *
  * @category Object
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type ValueAtRequiredKey<Parent, Key extends keyof Parent> = CompleteRequire<Parent>[Key];

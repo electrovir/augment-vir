@@ -2,7 +2,7 @@ import {awaitedBlockingMap} from './awaited-map.js';
 
 /**
  * Performs
- * [`[].forEach()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach)
+ * [`[].forEach()`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach)
  * on an array but supports an async callback. The async callback is blocking. Meaning,
  * `awaitedForEach` will wait for a callback on array element 1 to finish before moving on to array
  * element 2.
@@ -28,7 +28,7 @@ import {awaitedBlockingMap} from './awaited-map.js';
  * );
  * ```
  *
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export async function awaitedForEach<OriginalGeneric>(
     input: ReadonlyArray<OriginalGeneric>,

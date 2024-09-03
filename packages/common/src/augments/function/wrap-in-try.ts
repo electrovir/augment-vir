@@ -11,7 +11,7 @@ import {
  *
  * @category Function
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type WrapInTryOptions<FallbackValue> = PartialWithUndefined<{
     /**
@@ -146,7 +146,7 @@ export function wrapInTry<Value, FallbackValue = undefined>(
  * );
  * ```
  *
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function wrapInTry<Value, FallbackValue = undefined>(
     callback: NoInputsFunction<Value>,

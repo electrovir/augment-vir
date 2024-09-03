@@ -69,7 +69,7 @@ function notDeepEquals(actual: unknown, expected: unknown, failureMessage?: stri
 const assertions: {
     /**
      * Asserts that two values are strictly equal (using
-     * [`===`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness#strict_equality_using)).
+     * [`===`](https://developer.mozilla.org/docs/Web/JavaScript/Equality_comparisons_and_sameness#strict_equality_using)).
      *
      * Type guards the first value.
      *
@@ -96,7 +96,7 @@ const assertions: {
     strictEquals: typeof strictEquals;
     /**
      * Asserts that two values are _not_ strictly equal (using
-     * [`===`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness#strict_equality_using)).
+     * [`===`](https://developer.mozilla.org/docs/Web/JavaScript/Equality_comparisons_and_sameness#strict_equality_using)).
      *
      * Performs no type guarding.
      *
@@ -124,7 +124,7 @@ const assertions: {
 
     /**
      * Asserts that two values are loosely equal (using
-     * [`==`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness#loose_equality_using)).
+     * [`==`](https://developer.mozilla.org/docs/Web/JavaScript/Equality_comparisons_and_sameness#loose_equality_using)).
      *
      * Type guards the first value.
      *
@@ -151,7 +151,7 @@ const assertions: {
     looseEquals: typeof looseEquals;
     /**
      * Asserts that two values are _not_ loosely equal (using
-     * [`==`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness#loose_equality_using)).
+     * [`==`](https://developer.mozilla.org/docs/Web/JavaScript/Equality_comparisons_and_sameness#loose_equality_using)).
      *
      * Performs no type guarding.
      *
@@ -253,7 +253,7 @@ export const simpleEqualityGuards = {
     check: {
         /**
          * Checks that two values are strictly equal (using
-         * [`===`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness#strict_equality_using)).
+         * [`===`](https://developer.mozilla.org/docs/Web/JavaScript/Equality_comparisons_and_sameness#strict_equality_using)).
          *
          * Type guards the first value.
          *
@@ -285,7 +285,7 @@ export const simpleEqualityGuards = {
             >(),
         /**
          * Checks that two values are _not_ strictly equal (using
-         * [`===`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness#strict_equality_using)).
+         * [`===`](https://developer.mozilla.org/docs/Web/JavaScript/Equality_comparisons_and_sameness#strict_equality_using)).
          *
          * Performs no type guarding.
          *
@@ -311,7 +311,7 @@ export const simpleEqualityGuards = {
         notStrictEquals: autoGuardSymbol,
         /**
          * Checks that two values are loosely equal (using
-         * [`==`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness#loose_equality_using)).
+         * [`==`](https://developer.mozilla.org/docs/Web/JavaScript/Equality_comparisons_and_sameness#loose_equality_using)).
          *
          * Type guards the first value.
          *
@@ -337,7 +337,7 @@ export const simpleEqualityGuards = {
         looseEquals: autoGuardSymbol,
         /**
          * Checks that two values are _not_ loosely equal (using
-         * [`==`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness#loose_equality_using)).
+         * [`==`](https://developer.mozilla.org/docs/Web/JavaScript/Equality_comparisons_and_sameness#loose_equality_using)).
          *
          * Performs no type guarding.
          *
@@ -431,7 +431,7 @@ export const simpleEqualityGuards = {
     assertWrap: {
         /**
          * Asserts that two values are strictly equal (using
-         * [`===`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness#strict_equality_using)).
+         * [`===`](https://developer.mozilla.org/docs/Web/JavaScript/Equality_comparisons_and_sameness#strict_equality_using)).
          * Returns the first value if the assertion passes.
          *
          * Type guards the first value.
@@ -466,7 +466,7 @@ export const simpleEqualityGuards = {
             >(),
         /**
          * Asserts that two values are _not_ strictly equal (using
-         * [`===`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness#strict_equality_using)).
+         * [`===`](https://developer.mozilla.org/docs/Web/JavaScript/Equality_comparisons_and_sameness#strict_equality_using)).
          * Returns the first value if the assertion passes.
          *
          * Performs no type guarding.
@@ -494,7 +494,7 @@ export const simpleEqualityGuards = {
         notStrictEquals: autoGuardSymbol,
         /**
          * Asserts that two values are loosely equal (using
-         * [`==`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness#loose_equality_using)).
+         * [`==`](https://developer.mozilla.org/docs/Web/JavaScript/Equality_comparisons_and_sameness#loose_equality_using)).
          * Returns the first value if the assertion passes.
          *
          * Type guards the first value.
@@ -522,7 +522,7 @@ export const simpleEqualityGuards = {
         looseEquals: autoGuardSymbol,
         /**
          * Asserts that two values are _not_ loosely equal (using
-         * [`==`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness#loose_equality_using)).
+         * [`==`](https://developer.mozilla.org/docs/Web/JavaScript/Equality_comparisons_and_sameness#loose_equality_using)).
          * Returns the first value if the assertion passes.
          *
          * Performs no type guarding.
@@ -624,7 +624,7 @@ export const simpleEqualityGuards = {
     checkWrap: {
         /**
          * Checks that two values are strictly equal (using
-         * [`===`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness#strict_equality_using)).
+         * [`===`](https://developer.mozilla.org/docs/Web/JavaScript/Equality_comparisons_and_sameness#strict_equality_using)).
          * Returns the first value if the check passes, otherwise `undefined`.
          *
          * Type guards the first value.
@@ -658,7 +658,7 @@ export const simpleEqualityGuards = {
             >(),
         /**
          * Checks that two values are _not_ strictly equal (using
-         * [`===`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness#strict_equality_using)).
+         * [`===`](https://developer.mozilla.org/docs/Web/JavaScript/Equality_comparisons_and_sameness#strict_equality_using)).
          * Returns the first value if the check passes, otherwise `undefined`.
          *
          * Performs no type guarding.
@@ -686,7 +686,7 @@ export const simpleEqualityGuards = {
         notStrictEquals: autoGuardSymbol,
         /**
          * Checks that two values are loosely equal (using
-         * [`==`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness#loose_equality_using)).
+         * [`==`](https://developer.mozilla.org/docs/Web/JavaScript/Equality_comparisons_and_sameness#loose_equality_using)).
          * Returns the first value if the check passes, otherwise `undefined`.
          *
          * Type guards the first value.
@@ -714,7 +714,7 @@ export const simpleEqualityGuards = {
         looseEquals: autoGuardSymbol,
         /**
          * Checks that two values are _not_ loosely equal (using
-         * [`==`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness#loose_equality_using)).
+         * [`==`](https://developer.mozilla.org/docs/Web/JavaScript/Equality_comparisons_and_sameness#loose_equality_using)).
          * Returns the first value if the check passes, otherwise `undefined`.
          *
          * Performs no type guarding.
@@ -814,7 +814,7 @@ export const simpleEqualityGuards = {
     waitUntil: {
         /**
          * Repeatedly calls a callback until its output strictly equals (using
-         * [`===`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness#strict_equality_using))
+         * [`===`](https://developer.mozilla.org/docs/Web/JavaScript/Equality_comparisons_and_sameness#strict_equality_using))
          * the first input. Once the callback output passes, it is returned. If the attempts time
          * out, an error is thrown.
          *
@@ -854,7 +854,7 @@ export const simpleEqualityGuards = {
             >(),
         /**
          * Repeatedly calls a callback until its output does _not_ strictly equal (using
-         * [`===`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness#strict_equality_using))
+         * [`===`](https://developer.mozilla.org/docs/Web/JavaScript/Equality_comparisons_and_sameness#strict_equality_using))
          * the first input. Once the callback output passes, it is returned. If the attempts time
          * out, an error is thrown.
          *
@@ -886,7 +886,7 @@ export const simpleEqualityGuards = {
         notStrictEquals: autoGuardSymbol,
         /**
          * Repeatedly calls a callback until its output loosely equals (using
-         * [`==`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness#loose_equality_using))
+         * [`==`](https://developer.mozilla.org/docs/Web/JavaScript/Equality_comparisons_and_sameness#loose_equality_using))
          * the first input. Once the callback output passes, it is returned. If the attempts time
          * out, an error is thrown.
          *
@@ -918,7 +918,7 @@ export const simpleEqualityGuards = {
         looseEquals: autoGuardSymbol,
         /**
          * Repeatedly calls a callback until its output does _not_ loosely equal (using
-         * [`==`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness#loose_equality_using))
+         * [`==`](https://developer.mozilla.org/docs/Web/JavaScript/Equality_comparisons_and_sameness#loose_equality_using))
          * the first input. Once the callback output passes, it is returned. If the attempts time
          * out, an error is thrown.
          *

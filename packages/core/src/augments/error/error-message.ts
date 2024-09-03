@@ -7,7 +7,7 @@ import {removeEndingPunctuation} from '../string/punctuation.js';
  *
  * @category Error
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function extractErrorMessage(maybeError: unknown): string {
     if (!maybeError) {
@@ -32,7 +32,7 @@ export function combineErrorMessages(messages: ReadonlyArray<string | undefined>
  *
  * @category Error
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function combineErrorMessages(
     ...rawMessages: [ReadonlyArray<string | undefined>] | ReadonlyArray<string | undefined>

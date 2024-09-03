@@ -18,7 +18,7 @@ export async function getContainerLogs(
  *
  * @category Node : Docker : Util
  * @category Package : @augment-vir/node
- * @package @augment-vir/node
+ * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
  */
 export enum DockerContainerStatus {
     Created = 'created',
@@ -39,7 +39,7 @@ export enum DockerContainerStatus {
  *
  * @category Node : Docker : Util
  * @category Package : @augment-vir/node
- * @package @augment-vir/node
+ * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
  */
 export const exitedDockerContainerStatuses = [
     DockerContainerStatus.Dead,

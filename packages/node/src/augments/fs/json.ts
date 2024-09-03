@@ -15,7 +15,7 @@ import {writeFileAndDir} from './write.js';
  * @category Node : File
  * @category JSON : Node
  * @category Package : @augment-vir/node
- * @package @augment-vir/node
+ * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
  * @see
  *  - {@link writeJsonFile}
  *  - {@link appendJsonFile}
@@ -35,7 +35,7 @@ export async function readJsonFile(path: string): Promise<JsonCompatibleValue | 
  * @category Node : File
  * @category JSON : Node
  * @category Package : @augment-vir/node
- * @package @augment-vir/node
+ * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
  */
 export type WriteJsonOptions = PartialWithUndefined<{
     includeTrailingNewLine: boolean;
@@ -47,7 +47,7 @@ export type WriteJsonOptions = PartialWithUndefined<{
  * @category Node : File
  * @category JSON : Node
  * @category Package : @augment-vir/node
- * @package @augment-vir/node
+ * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
  * @see
  *  - {@link readJsonFile}
  *  - {@link appendJsonFile}
@@ -71,7 +71,7 @@ export async function writeJsonFile(
  * @category Node : File
  * @category JSON : Node
  * @category Package : @augment-vir/node
- * @package @augment-vir/node
+ * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
  * @see
  *  - {@link readJsonFile}
  *  - {@link writeJsonFile}

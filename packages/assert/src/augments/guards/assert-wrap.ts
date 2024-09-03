@@ -35,7 +35,7 @@ const assertWrapGroup = createAssertWrapGroup(extendableAssertions, assertWrapOv
  *
  * @returns The original value if expectations are met.
  * @throws {@link AssertionError} When the assertion fails.
- * @package @augment-vir/assert
+ * @package [`@augment-vir/assert`](https://www.npmjs.com/package/@augment-vir/assert)
  */
 export const assertWrap: (<T>(input: T, failureMessage?: string | undefined) => T) &
     typeof assertWrapGroup = Object.assign(

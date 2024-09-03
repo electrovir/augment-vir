@@ -4,7 +4,7 @@
  *
  * @category Type
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  * @see
  *  - {@link NarrowToActual}: narrowing in the other direction.
  */
@@ -23,7 +23,7 @@ export type NarrowToExpected<Actual, Expected> =
  *
  * @category Type
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  * @see
  *  - {@link NarrowToExpected}: narrowing in the other direction.
  */

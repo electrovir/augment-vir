@@ -2,12 +2,12 @@ import {setRegExpCaseSensitivity} from '../regexp/regexp-flags.js';
 
 /**
  * Finds all indexes of a `searchFor` string or RegExp in `searchIn`. Ths is similar to
- * [`''.indexOf`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/indexOf)
+ * [`''.indexOf`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String/indexOf)
  * except that it finds _all_ indexes of.
  *
  * @category String
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function findSubstringIndexes<IncludeLength extends boolean | undefined>({
     searchIn,

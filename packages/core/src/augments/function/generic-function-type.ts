@@ -3,7 +3,7 @@
  *
  * @category Function
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type NoInputsFunction<Return = any> = () => Return;
 /**
@@ -11,6 +11,6 @@ export type NoInputsFunction<Return = any> = () => Return;
  *
  * @category Function
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type AnyFunction<Return = any> = (...args: any[]) => Return;

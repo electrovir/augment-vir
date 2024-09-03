@@ -7,7 +7,7 @@ import {dirname} from 'node:path';
  *
  * @category Node : File
  * @category Package : @augment-vir/node
- * @package @augment-vir/node
+ * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
  */
 export async function writeFileAndDir(
     path: string,

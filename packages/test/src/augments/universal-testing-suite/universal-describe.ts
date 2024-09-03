@@ -9,7 +9,7 @@ import {isRuntimeEnv, RuntimeEnv} from '@augment-vir/core';
  *
  * @category Test : Util
  * @category Package : @augment-vir/test
- * @package @augment-vir/test
+ * @package [`@augment-vir/test`](https://www.npmjs.com/package/@augment-vir/test)
  */
 export type UniversalBareDescribe = (
     this: void,
@@ -26,7 +26,7 @@ export type UniversalBareDescribe = (
  *
  * @category Test : Util
  * @category Package : @augment-vir/test
- * @package @augment-vir/test
+ * @package [`@augment-vir/test`](https://www.npmjs.com/package/@augment-vir/test)
  */
 export type UniversalDescribe = UniversalBareDescribe & {
     only: UniversalBareDescribe;
@@ -66,6 +66,6 @@ const describes = isRuntimeEnv(RuntimeEnv.Node)
  * });
  * ```
  *
- * @package @augment-vir/test
+ * @package [`@augment-vir/test`](https://www.npmjs.com/package/@augment-vir/test)
  */
 export const describe = describes.mocha || describes.node;

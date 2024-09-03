@@ -62,7 +62,7 @@ async function importWebTestApi() {
  *
  * @category Test
  * @category Package : @augment-vir/test
- * @package @augment-vir/test
+ * @package [`@augment-vir/test`](https://www.npmjs.com/package/@augment-vir/test)
  */
 export const testWeb = (await importWebTestApi()) as Exclude<
     Awaited<ReturnType<typeof importWebTestApi>>,

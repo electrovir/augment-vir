@@ -18,7 +18,7 @@
  * ```
  *
  * @returns A new array (does not mutate).
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function repeatArray<T>(repeatCount: number, array: T[]): T[] {
     return Array.from({length: repeatCount}, () => [...array]).flat();

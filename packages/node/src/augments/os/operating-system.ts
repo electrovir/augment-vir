@@ -3,7 +3,7 @@
  *
  * @category Node : OS
  * @category Package : @augment-vir/node
- * @package @augment-vir/node
+ * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
  */
 export enum OperatingSystem {
     Linux = 'linux',
@@ -17,7 +17,7 @@ export enum OperatingSystem {
  *
  * @category Node : OS
  * @category Package : @augment-vir/node
- * @package @augment-vir/node
+ * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
  */
 export const currentOperatingSystem: OperatingSystem = getOperatingSystem();
 

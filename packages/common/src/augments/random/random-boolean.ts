@@ -22,7 +22,7 @@ import {randomInteger} from './random-integer.js';
  * randomBoolean(59.67); // 59% chance of being true
  * ```
  *
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function randomBoolean(percentLikelyToBeTrue: number = 50): boolean {
     return (

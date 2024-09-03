@@ -6,7 +6,7 @@ import type {IsEqual} from 'type-fest';
  *
  * @category Assert : Util
  * @category Package : @augment-vir/assert
- * @package @augment-vir/assert
+ * @package [`@augment-vir/assert`](https://www.npmjs.com/package/@augment-vir/assert)
  */
 export type IfEquals<Actual, Expected, Yes = unknown, No = never> =
     IsEqual<Actual, Expected> extends true ? Yes : No;
@@ -17,7 +17,7 @@ export type IfEquals<Actual, Expected, Yes = unknown, No = never> =
  *
  * @category Assert : Util
  * @category Package : @augment-vir/assert
- * @package @augment-vir/assert
+ * @package [`@augment-vir/assert`](https://www.npmjs.com/package/@augment-vir/assert)
  */
 export type IfExtends<Actual, Expected, Yes = unknown, No = never> = Actual extends Expected
     ? Yes

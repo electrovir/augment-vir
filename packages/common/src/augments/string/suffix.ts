@@ -5,7 +5,7 @@ import {toEnsuredNumber} from '../number/number-conversion.js';
  *
  * @category String
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type WithSuffix<Suffix extends string> = `${string}${Suffix}`;
 
@@ -14,7 +14,7 @@ export type WithSuffix<Suffix extends string> = `${string}${Suffix}`;
  *
  * @category String
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export const percentSuffix = '%';
 
@@ -23,7 +23,7 @@ export const percentSuffix = '%';
  *
  * @category String
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export const pxSuffix = 'px';
 /**
@@ -31,7 +31,7 @@ export const pxSuffix = 'px';
  *
  * @category String
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type WithPx = WithSuffix<typeof pxSuffix>;
 /**
@@ -39,7 +39,7 @@ export type WithPx = WithSuffix<typeof pxSuffix>;
  *
  * @category String
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type WithPercent = WithSuffix<typeof percentSuffix>;
 
@@ -48,7 +48,7 @@ export type WithPercent = WithSuffix<typeof percentSuffix>;
  *
  * @category String
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function addPx(input: number | string): WithPx {
     return addSuffix({value: input, suffix: pxSuffix});
@@ -60,7 +60,7 @@ export function addPx(input: number | string): WithPx {
  * @category String
  * @category Package : @augment-vir/common
  * @throws `TypeError` if the input can't be converted into a number.
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function removePx(input: string): number {
     return toEnsuredNumber(removeSuffix({value: input, suffix: pxSuffix}));
@@ -71,7 +71,7 @@ export function removePx(input: string): number {
  *
  * @category String
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function addPercent(input: number | string): WithPercent {
     return addSuffix({value: input, suffix: percentSuffix});
@@ -83,7 +83,7 @@ export function addPercent(input: number | string): WithPercent {
  * @category String
  * @category Package : @augment-vir/common
  * @throws `TypeError` if the input can't be converted into a number.
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function removePercent(input: string): number {
     return toEnsuredNumber(removeSuffix({value: input, suffix: percentSuffix}));
@@ -94,7 +94,7 @@ export function removePercent(input: string): number {
  *
  * @category String
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function addSuffix<const Suffix extends string>({
     value,
@@ -115,7 +115,7 @@ export function addSuffix<const Suffix extends string>({
  *
  * @category String
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function removeSuffix<const Suffix extends string>({
     value,

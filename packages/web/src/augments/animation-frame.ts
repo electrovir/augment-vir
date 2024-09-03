@@ -6,7 +6,7 @@ import {DeferredPromise} from '@augment-vir/common';
  *
  * @category Web
  * @category Package : @augment-vir/web
- * @package @augment-vir/web
+ * @package [`@augment-vir/web`](https://www.npmjs.com/package/@augment-vir/web)
  */
 export async function waitForAnimationFrame(frameCount: number = 1): Promise<void> {
     const deferredPromise = new DeferredPromise<void>();

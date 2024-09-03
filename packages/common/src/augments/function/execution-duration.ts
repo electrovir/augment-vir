@@ -17,7 +17,7 @@ import {Duration, DurationUnit} from '@date-vir/duration';
  * const duration2 = await measureExecutionDuration(async () => {});
  * ```
  *
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function measureExecutionDuration<T>(
     callback: () => T,

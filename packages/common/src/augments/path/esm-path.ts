@@ -20,7 +20,7 @@ import {removeSuffix} from '../string/suffix.js';
  * const {filePath, dirPath} = getEsmPath(import.meta);
  * ```
  *
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function getEsmPath(importMeta: ImportMeta): {filePath: string; dirPath: string} {
     const filePath = new URL('', importMeta.url).pathname;

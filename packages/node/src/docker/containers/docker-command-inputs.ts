@@ -7,7 +7,7 @@ import {wrapString} from '@augment-vir/common';
  *
  * @category Node : Docker : Util
  * @category Package : @augment-vir/node
- * @package @augment-vir/node
+ * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
  */
 export enum DockerVolumeMappingType {
     Cached = 'cached',
@@ -19,7 +19,7 @@ export enum DockerVolumeMappingType {
  *
  * @category Node : Docker : Util
  * @category Package : @augment-vir/node
- * @package @augment-vir/node
+ * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
  */
 export type DockerVolumeMap = {
     hostAbsolutePath: string;
@@ -44,7 +44,7 @@ export function makeVolumeFlags(volumeMapping?: ReadonlyArray<DockerVolumeMap>):
  *
  * @category Node : Docker : Util
  * @category Package : @augment-vir/node
- * @package @augment-vir/node
+ * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
  */
 export type DockerPortMap = {
     hostPort: number;
@@ -80,7 +80,7 @@ export type DockerPortMap = {
  * };
  * ```
  *
- * @package @augment-vir/node
+ * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
  */
 export type DockerEnvMap<RequiredKeys extends string = string> = Readonly<
     Record<

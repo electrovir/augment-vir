@@ -22,7 +22,7 @@ export function findAncestor(
  * @category Path : Node
  * @category Package : @augment-vir/node
  * @returns `undefined` if no matches are found.
- * @package @augment-vir/node
+ * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
  */
 export function findAncestor(
     currentPath: string,
@@ -68,7 +68,7 @@ export function findAncestor(
  * const dirs = joinFilesToDir(parentDir, await readdir(parentDir));
  * ```
  *
- * @package @augment-vir/node
+ * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
  */
 export function joinFilesToDir(
     parentDirPath: string,

@@ -1,7 +1,7 @@
 /**
  * @category Number
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type MinMax = {
     min: number;
@@ -14,7 +14,7 @@ export type MinMax = {
  *
  * @category Number
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function ensureMinMax({min, max}: MinMax): MinMax {
     if (min > max) {

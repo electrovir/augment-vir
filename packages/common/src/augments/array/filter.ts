@@ -23,7 +23,7 @@
  * ```
  *
  * @returns A new array (does not mutate).
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function filterOutIndexes<T>(array: ReadonlyArray<T>, indexes: ReadonlyArray<number>): T[] {
     return array.filter((_, index) => !indexes.includes(index));
@@ -61,9 +61,9 @@ export function filterMap<ElementType, MappedEntry>(
 ): MappedEntry[];
 /**
  * Performs
- * [`[].map()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map)
+ * [`[].map()`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array/map)
  * and
- * [`[].filter()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter)
+ * [`[].filter()`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array/filter)
  * (in that order) on an array with a single iteration.
  *
  * @category Array
@@ -91,7 +91,7 @@ export function filterMap<ElementType, MappedEntry>(
  * // result is `['value-a', 'value-b']`
  * ```
  *
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function filterMap<ElementType, MappedEntry>(
     inputArray: ReadonlyArray<ElementType>,

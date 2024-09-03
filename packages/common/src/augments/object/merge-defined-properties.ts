@@ -16,7 +16,7 @@ import {getObjectTypedEntries} from './object-entries.js';
  * // output is `{a: 'override', b: 'default'}`
  * ```
  *
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function mergeDefinedProperties<const T extends AnyObject>(
     original: T,

@@ -21,7 +21,7 @@ import {MaybePromise} from '@augment-vir/core';
  * // logs 1,2,3 in numeric order
  * ```
  *
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export async function callAsynchronously<T>(callback: () => MaybePromise<T>) {
     return await Promise.resolve().then(() => callback());

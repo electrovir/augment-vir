@@ -3,7 +3,7 @@
  *
  * @category Web : Elements
  * @category Package : @augment-vir/web
- * @package @augment-vir/web
+ * @package [`@augment-vir/web`](https://www.npmjs.com/package/@augment-vir/web)
  */
 export function getParentElement(element: Node): Element | undefined {
     if (element instanceof ShadowRoot) {
@@ -26,7 +26,7 @@ export function getParentElement(element: Node): Element | undefined {
  *
  * @category Web : Elements
  * @category Package : @augment-vir/web
- * @package @augment-vir/web
+ * @package [`@augment-vir/web`](https://www.npmjs.com/package/@augment-vir/web)
  */
 export function findMatchingAncestor(
     start: Element,

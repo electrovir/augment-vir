@@ -8,7 +8,7 @@ import {SpecTagName, ensureSpecTagName} from 'html-spec-tags';
  *
  * @category Web : Elements
  * @category Package : @augment-vir/web
- * @package @augment-vir/web
+ * @package [`@augment-vir/web`](https://www.npmjs.com/package/@augment-vir/web)
  */
 export function toTagOrDefinition(element: Element): DeclarativeElementDefinition | SpecTagName {
     if (element instanceof DeclarativeElement) {

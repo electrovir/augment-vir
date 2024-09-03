@@ -30,7 +30,7 @@ import type {copyThroughJson} from './copy-through-json.js';
  * });
  * ```
  *
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function jsonify<T>(value: T): Jsonify<T> {
     return JSON5.parse(JSON5.stringify(value));

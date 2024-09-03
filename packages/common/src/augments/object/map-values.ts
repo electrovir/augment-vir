@@ -16,7 +16,7 @@ type MappedValues<EntireInputGeneric extends object, MappedValueGeneric> =
  *
  * @category Object
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function mapObjectValuesSync<EntireInputGeneric extends object>(
     inputObject: EntireInputGeneric,
@@ -58,7 +58,7 @@ export function mapObjectValuesSync<EntireInputGeneric extends object>(
  * // output is `{a: 'key-a value-1', b: 'key-b value-2'}`
  * ```
  *
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function mapObjectValues<EntireInputGeneric extends object, MappedValueGeneric>(
     inputObject: EntireInputGeneric,

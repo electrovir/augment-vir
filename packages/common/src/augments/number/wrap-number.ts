@@ -17,7 +17,7 @@ import {ensureMinMax, MinMax} from './min-max.js';
  * wrapNumber({min: 0, max: 100, value: -1}); // 100
  * ```
  *
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function wrapNumber(value: number, minMax: Readonly<MinMax>): number {
     const {min, max} = ensureMinMax(minMax);

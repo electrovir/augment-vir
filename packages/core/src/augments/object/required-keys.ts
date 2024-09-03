@@ -8,7 +8,7 @@ export type {SetRequired} from 'type-fest';
  *
  * @category Object
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type RequiredAndNotNull<T> = {
     [P in keyof CompleteRequire<T>]-?: NonNullable<T[P]>;
@@ -20,7 +20,7 @@ export type RequiredAndNotNull<T> = {
  *
  * @category Object
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type SetRequiredAndNotNull<T, K extends keyof T> = Omit<T, K> &
     CompleteRequire<{[PropertyName in K]: NonNullable<T[PropertyName]>}>;
@@ -30,7 +30,7 @@ export type SetRequiredAndNotNull<T, K extends keyof T> = Omit<T, K> &
  *
  * @category Object
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type SetOptionalAndNullable<
     OriginalObjectGeneric,
@@ -47,7 +47,7 @@ export type SetOptionalAndNullable<
  *
  * @category Object
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type RequiredKeysOf<BaseType> = Exclude<
     {
@@ -63,7 +63,7 @@ export type RequiredKeysOf<BaseType> = Exclude<
  *
  * @category Object
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type CompleteRequire<Parent> = {
     [Prop in keyof Parent]-?: Parent extends Partial<Record<Prop, infer V>> ? V : never;

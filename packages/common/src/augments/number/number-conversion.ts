@@ -7,7 +7,7 @@ import {removeCommas} from '../string/comma.js';
  * @category Number
  * @category Package : @augment-vir/common
  * @returns The converted number or `NaN`.
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function toNumber(input: unknown): number {
     if (typeof input === 'number') {
@@ -26,7 +26,7 @@ export function toNumber(input: unknown): number {
  * @category Package : @augment-vir/common
  * @returns The converted number
  * @throws `TypeError` if the conversion resulted in `NaN`
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function toEnsuredNumber(input: unknown): number {
     const maybeNumber = toMaybeNumber(input);
@@ -44,7 +44,7 @@ export function toEnsuredNumber(input: unknown): number {
  * @category Number
  * @category Package : @augment-vir/common
  * @returns The converted number or `undefined`.
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function toMaybeNumber(input: unknown): number | undefined {
     const numeric = toNumber(input);

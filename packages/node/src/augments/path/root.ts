@@ -9,6 +9,6 @@ function getSystemRootPath() {
  *
  * @category Path : Node
  * @category Package : @augment-vir/node
- * @package @augment-vir/node
+ * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
  */
 export const systemRootPath = getSystemRootPath();

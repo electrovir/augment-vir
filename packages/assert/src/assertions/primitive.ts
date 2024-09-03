@@ -102,7 +102,7 @@ const assertions: {
 
     /**
      * Asserts that a value is a JavaScript
-     * [primitive](https://developer.mozilla.org/en-US/docs/Glossary/Primitive).
+     * [primitive](https://developer.mozilla.org/docs/Glossary/Primitive).
      *
      * Type guards the value.
      *
@@ -123,7 +123,7 @@ const assertions: {
     isPrimitive: typeof isPrimitive;
     /**
      * Asserts that a value is _not_ a JavaScript
-     * [primitive](https://developer.mozilla.org/en-US/docs/Glossary/Primitive).
+     * [primitive](https://developer.mozilla.org/docs/Glossary/Primitive).
      *
      * Type guards the value.
      *
@@ -196,7 +196,7 @@ export const primitiveGuards = {
             autoGuard<<const Actual>(input: Actual) => input is Exclude<Actual, PropertyKey>>(),
         /**
          * Checks that a value is a JavaScript
-         * [primitive](https://developer.mozilla.org/en-US/docs/Glossary/Primitive).
+         * [primitive](https://developer.mozilla.org/docs/Glossary/Primitive).
          *
          * Type guards the value.
          *
@@ -217,7 +217,7 @@ export const primitiveGuards = {
 
         /**
          * Checks that a value is _not_ a JavaScript
-         * [primitive](https://developer.mozilla.org/en-US/docs/Glossary/Primitive).
+         * [primitive](https://developer.mozilla.org/docs/Glossary/Primitive).
          *
          * Type guards the value.
          *
@@ -297,8 +297,8 @@ export const primitiveGuards = {
             >(),
         /**
          * Asserts that a value is a JavaScript
-         * [primitive](https://developer.mozilla.org/en-US/docs/Glossary/Primitive). Returns the
-         * value if the assertion passes.
+         * [primitive](https://developer.mozilla.org/docs/Glossary/Primitive). Returns the value if
+         * the assertion passes.
          *
          * Type guards the value.
          *
@@ -320,8 +320,8 @@ export const primitiveGuards = {
         isPrimitive: autoGuardSymbol,
         /**
          * Asserts that a value is _not_ a JavaScript
-         * [primitive](https://developer.mozilla.org/en-US/docs/Glossary/Primitive). Returns the
-         * value if the assertion passes.
+         * [primitive](https://developer.mozilla.org/docs/Glossary/Primitive). Returns the value if
+         * the assertion passes.
          *
          * Type guards the value.
          *
@@ -391,8 +391,8 @@ export const primitiveGuards = {
             autoGuard<<const Actual>(input: Actual) => Exclude<Actual, PropertyKey> | undefined>(),
         /**
          * Checks that a value is a JavaScript
-         * [primitive](https://developer.mozilla.org/en-US/docs/Glossary/Primitive). Returns the
-         * value if the check passes, otherwise `undefined`.
+         * [primitive](https://developer.mozilla.org/docs/Glossary/Primitive). Returns the value if
+         * the check passes, otherwise `undefined`.
          *
          * Type guards the value.
          *
@@ -413,8 +413,8 @@ export const primitiveGuards = {
         isPrimitive: autoGuardSymbol,
         /**
          * Checks that a value is _not_ a JavaScript
-         * [primitive](https://developer.mozilla.org/en-US/docs/Glossary/Primitive). Returns the
-         * value if the check passes, otherwise `undefined`.
+         * [primitive](https://developer.mozilla.org/docs/Glossary/Primitive). Returns the value if
+         * the check passes, otherwise `undefined`.
          *
          * Type guards the value.
          *
@@ -499,8 +499,8 @@ export const primitiveGuards = {
             >(),
         /**
          * Repeatedly calls a callback until its output is a JavaScript
-         * [primitive](https://developer.mozilla.org/en-US/docs/Glossary/Primitive). Once the
-         * callback output passes, it is returned. If the attempts time out, an error is thrown.
+         * [primitive](https://developer.mozilla.org/docs/Glossary/Primitive). Once the callback
+         * output passes, it is returned. If the attempts time out, an error is thrown.
          *
          * Type guards the value.
          *
@@ -522,8 +522,8 @@ export const primitiveGuards = {
         isPrimitive: autoGuardSymbol,
         /**
          * Repeatedly calls a callback until its output is _not_ a JavaScript
-         * [primitive](https://developer.mozilla.org/en-US/docs/Glossary/Primitive). Once the
-         * callback output passes, it is returned. If the attempts time out, an error is thrown.
+         * [primitive](https://developer.mozilla.org/docs/Glossary/Primitive). Once the callback
+         * output passes, it is returned. If the attempts time out, an error is thrown.
          *
          * Type guards the value.
          *

@@ -3,7 +3,7 @@ import {typedObjectFromEntries} from '../object/object-entries.js';
 
 /**
  * Polyfill for `Object.groupBy`:
- * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/groupBy
+ * https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object/groupBy
  *
  * @category Array
  * @category Object
@@ -68,7 +68,7 @@ export function groupArrayBy<ElementType, NewKey extends PropertyKey>(
  * // result is `{key-a: 'a', key-b: 'b'}`
  * ```
  *
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function arrayToObject<ElementType, NewKey extends PropertyKey, NewValue>(
     inputArray: ReadonlyArray<ElementType>,

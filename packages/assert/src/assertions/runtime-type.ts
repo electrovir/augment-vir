@@ -2406,7 +2406,7 @@ export const runtimeTypeGuards = {
  *
  * @category Assert : Util
  * @category Package : @augment-vir/assert
- * @package @augment-vir/assert
+ * @package [`@augment-vir/assert`](https://www.npmjs.com/package/@augment-vir/assert)
  */
 export enum RuntimeType {
     String = 'string',
@@ -2452,7 +2452,7 @@ export enum RuntimeType {
  * getRuntimeType({a: 'a'}); // RuntimeType.Object
  * ```
  *
- * @package @augment-vir/assert
+ * @package [`@augment-vir/assert`](https://www.npmjs.com/package/@augment-vir/assert)
  */
 export function getRuntimeType(actual: unknown): RuntimeType {
     if (actual === null) {

@@ -7,7 +7,7 @@ import {readFile} from 'node:fs/promises';
  * @category Node : File
  * @category Package : @augment-vir/node
  * @returns The file contents as a string if the file exists, otherwise `undefined`.
- * @package @augment-vir/node
+ * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
  */
 export async function readFileIfExists(path: string): Promise<string | undefined> {
     if (existsSync(path)) {

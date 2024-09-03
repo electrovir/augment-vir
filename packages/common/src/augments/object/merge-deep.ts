@@ -9,7 +9,7 @@ import {PartialDeep} from 'type-fest';
  *
  * @category Object
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function mergeDeep<const T extends object>(
     ...inputs: (

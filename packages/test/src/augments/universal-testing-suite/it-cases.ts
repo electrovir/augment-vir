@@ -12,7 +12,7 @@ import {it} from './universal-it.js';
  *
  * @category Test : Util
  * @category Package : @augment-vir/test
- * @package @augment-vir/test
+ * @package [`@augment-vir/test`](https://www.npmjs.com/package/@augment-vir/test)
  */
 export type BaseTestCase<OutputGeneric> = {
     it: string;
@@ -32,7 +32,7 @@ export type BaseTestCase<OutputGeneric> = {
  *
  * @category Test : Util
  * @category Package : @augment-vir/test
- * @package @augment-vir/test
+ * @package [`@augment-vir/test`](https://www.npmjs.com/package/@augment-vir/test)
  */
 export type FunctionTestCaseSingleInput<FunctionToTest extends AnyFunction> = {
     input: Parameters<FunctionToTest>[0];
@@ -43,7 +43,7 @@ export type FunctionTestCaseSingleInput<FunctionToTest extends AnyFunction> = {
  *
  * @category Test : Util
  * @category Package : @augment-vir/test
- * @package @augment-vir/test
+ * @package [`@augment-vir/test`](https://www.npmjs.com/package/@augment-vir/test)
  */
 export type FunctionTestCaseMultipleInputs<FunctionToTest extends AnyFunction> = {
     inputs: Parameters<FunctionToTest>['length'] extends never
@@ -61,7 +61,7 @@ export type FunctionTestCaseMultipleInputs<FunctionToTest extends AnyFunction> =
  *
  * @category Test : Util
  * @category Package : @augment-vir/test
- * @package @augment-vir/test
+ * @package [`@augment-vir/test`](https://www.npmjs.com/package/@augment-vir/test)
  */
 export type FunctionTestCase<FunctionToTest extends AnyFunction> =
     1 extends Parameters<FunctionToTest>['length']
@@ -95,7 +95,7 @@ export function itCases<const FunctionToTest extends AnyFunction>(
  *
  * @category Test
  * @category Package : @augment-vir/test
- * @package @augment-vir/test
+ * @package [`@augment-vir/test`](https://www.npmjs.com/package/@augment-vir/test)
  */
 export function itCases(
     functionToTest: AnyFunction,

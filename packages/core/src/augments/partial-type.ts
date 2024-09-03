@@ -6,7 +6,7 @@ import {AnyObject} from './object/generic-object-type.js';
  * @category Type
  * @category Object
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type PartialWithNullable<T extends AnyObject> = {
     [Prop in keyof T]?: T[Prop] | null | undefined;
@@ -18,7 +18,7 @@ export type PartialWithNullable<T extends AnyObject> = {
  * @category Type
  * @category Object
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type PartialWithUndefined<T extends AnyObject> = {
     [Prop in keyof T]?: T[Prop] | undefined;

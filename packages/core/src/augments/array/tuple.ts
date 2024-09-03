@@ -3,7 +3,7 @@
  *
  * @category Array
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type MappedTuple<OriginalTuple extends ReadonlyArray<any>, NewValueType> = {
     [I in keyof OriginalTuple]: NewValueType;
@@ -14,7 +14,7 @@ export type MappedTuple<OriginalTuple extends ReadonlyArray<any>, NewValueType> 
  *
  * @category Array
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type AtLeastTuple<Element, Length extends number> = readonly [
     ...Tuple<Element, Length>,
@@ -26,7 +26,7 @@ export type AtLeastTuple<Element, Length extends number> = readonly [
  *
  * @category Array
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type MaybeTuple<T> = T | AtLeastTuple<T, 1>;
 
@@ -35,7 +35,7 @@ export type MaybeTuple<T> = T | AtLeastTuple<T, 1>;
  *
  * @category Array
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type RemoveLastTupleEntry<T extends any[]> = T extends [...infer Head, any?] ? Head : any[];
 
@@ -44,7 +44,7 @@ export type RemoveLastTupleEntry<T extends any[]> = T extends [...infer Head, an
  *
  * @category Array
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type RemoveFirstTupleEntry<T extends any[]> = T extends [any?, ...infer Tail] ? Tail : any[];
 
@@ -53,7 +53,7 @@ export type RemoveFirstTupleEntry<T extends any[]> = T extends [any?, ...infer T
  *
  * @category Array
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type Tuple<Element, Length extends number> = Length extends Length
     ? number extends Length

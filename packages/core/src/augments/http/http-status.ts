@@ -8,7 +8,7 @@ import type {ArrayElement} from '../array/array.js';
  *
  * @category HTTP
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export enum HttpStatus {
     /** 100 level codes (information) */
@@ -500,7 +500,7 @@ export enum HttpStatus {
  *
  * @category HTTP
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export enum HttpStatusCategory {
     Information = 'information',
@@ -515,7 +515,7 @@ export enum HttpStatusCategory {
  *
  * @category HTTP
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export const httpStatusByCategory = {
     [HttpStatusCategory.Information]: [
@@ -598,7 +598,7 @@ export const httpStatusByCategory = {
  *
  * @category HTTP
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type HttpStatusByCategory<Category extends HttpStatusCategory> = ArrayElement<
     (typeof httpStatusByCategory)[Category]

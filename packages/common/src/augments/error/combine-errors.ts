@@ -22,7 +22,7 @@ import {extractErrorMessage} from '@augment-vir/core';
  * ```
  *
  * @returns A single error.
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function combineErrors(errors: ReadonlyArray<Error>): Error {
     if (!check.isLengthAtLeast(errors, 1)) {

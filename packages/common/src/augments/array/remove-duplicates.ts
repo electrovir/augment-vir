@@ -55,7 +55,7 @@
  * ```
  *
  * @returns A new array (does not mutate).
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function removeDuplicates<const Entry>(
     originalArray: ReadonlyArray<Entry>,

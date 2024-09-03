@@ -3,7 +3,7 @@
  *
  * @category Number
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type Dimensions = {
     width: number;
@@ -14,7 +14,7 @@ export type Dimensions = {
  *
  * @category Number
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type Dimensions3d = {
     width: number;

@@ -18,7 +18,7 @@ import {combineErrorMessages} from '@augment-vir/core';
  * throw new AssertionError('The assertion failed.', 'User defined message.');
  * ```
  *
- * @package @augment-vir/assert
+ * @package [`@augment-vir/assert`](https://www.npmjs.com/package/@augment-vir/assert)
  */
 export class AssertionError extends Error {
     public override name = 'AssertionError';

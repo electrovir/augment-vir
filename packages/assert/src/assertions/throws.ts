@@ -183,7 +183,7 @@ function internalThrowsCheck(
  * ); // this assertion will pass
  * ```
  *
- * @package @augment-vir/assert
+ * @package [`@augment-vir/assert`](https://www.npmjs.com/package/@augment-vir/assert)
  */
 export type ErrorMatchOptions = PartialWithNullable<{
     /**

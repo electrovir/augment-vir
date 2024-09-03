@@ -1,11 +1,11 @@
 /**
  * Gets all keys of an object. This is similar to
- * [`Object.keys`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys)
+ * [`Object.keys`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object/keys)
  * except that it also grabs symbol keys and has better TypeScript typing.
  *
  * @category Object
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function getObjectTypedKeys<const ObjectGeneric>(
     input: ObjectGeneric,
@@ -40,7 +40,7 @@ export function getObjectTypedKeys<const ObjectGeneric>(
  * // `ExtractedKeys` is `'b'`
  * ```
  *
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type ExtractKeysWithMatchingValues<OriginalObject extends object, Matcher> = keyof {
     [Prop in keyof OriginalObject as OriginalObject[Prop] extends Matcher ? Prop : never]: Prop;
@@ -61,7 +61,7 @@ export type ExtractKeysWithMatchingValues<OriginalObject extends object, Matcher
  * // `ExcludedKeys` is `'a'`
  * ```
  *
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type ExcludeKeysWithMatchingValues<OriginalObject extends object, Matcher> = keyof {
     [Prop in keyof OriginalObject as OriginalObject[Prop] extends Matcher ? never : Prop]: Prop;

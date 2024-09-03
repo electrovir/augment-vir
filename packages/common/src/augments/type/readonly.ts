@@ -5,7 +5,7 @@ export type {ReadonlyDeep} from 'type-fest';
  *
  * @category Type
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function makeReadonly<T>(input: T): Readonly<T> {
     return input;

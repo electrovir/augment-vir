@@ -5,7 +5,7 @@ import {type LogOutputType} from './log-colors.js';
  *
  * @category Log : Util
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type LogWriterParams = {
     text: string;
@@ -19,7 +19,7 @@ export type LogWriterParams = {
  *
  * @category Log : Util
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type LogWriter = (params: Readonly<LogWriterParams>) => void;
 
@@ -28,6 +28,6 @@ export type LogWriter = (params: Readonly<LogWriterParams>) => void;
  *
  * @category Log : Util
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type LogWriters = Record<LogOutputType, LogWriter>;

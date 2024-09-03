@@ -10,7 +10,7 @@ import {createLogger, type Logger} from './logger.js';
  *
  * @category Log : Util
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export const defaultLogWriters: LogWriters =
     /** We calculate coverage in web, so the node code will never run in coverage tests. */
@@ -50,7 +50,7 @@ export const defaultLogWriters: LogWriters =
  * log.error('failure');
  * ```
  *
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export const log: Logger = createLogger(defaultLogWriters);
 
@@ -71,7 +71,7 @@ export const log: Logger = createLogger(defaultLogWriters);
  * // `logs[LogOutputType.Standard]` is now `['hi']`
  * ```
  *
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function createArrayLogger(options?: PartialWithUndefined<LoggerOptions> | undefined) {
     const logs = {

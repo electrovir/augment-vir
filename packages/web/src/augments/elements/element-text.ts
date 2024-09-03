@@ -3,7 +3,7 @@
  *
  * @category Web : Elements
  * @category Package : @augment-vir/web
- * @package @augment-vir/web
+ * @package [`@augment-vir/web`](https://www.npmjs.com/package/@augment-vir/web)
  */
 export function extractElementText(element: Element | ShadowRoot): string {
     const value = (element as HTMLInputElement).value;

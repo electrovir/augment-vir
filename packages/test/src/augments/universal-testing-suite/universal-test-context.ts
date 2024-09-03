@@ -9,7 +9,7 @@ import type {MochaContext} from '../../mocha-types.js';
  *
  * @category Test : Util
  * @category Package : @augment-vir/test
- * @package @augment-vir/test
+ * @package [`@augment-vir/test`](https://www.npmjs.com/package/@augment-vir/test)
  */
 export type MochaTestContext = MochaContext;
 /**
@@ -17,7 +17,7 @@ export type MochaTestContext = MochaContext;
  *
  * @category Test : Util
  * @category Package : @augment-vir/test
- * @package @augment-vir/test
+ * @package [`@augment-vir/test`](https://www.npmjs.com/package/@augment-vir/test)
  */
 export type NodeTestContext = NodeTestContextImport;
 
@@ -30,7 +30,7 @@ export type NodeTestContext = NodeTestContextImport;
  *
  * @category Test : Util
  * @category Package : @augment-vir/test
- * @package @augment-vir/test
+ * @package [`@augment-vir/test`](https://www.npmjs.com/package/@augment-vir/test)
  */
 export type UniversalContext = NodeTestContext | MochaTestContext;
 
@@ -41,7 +41,7 @@ export type UniversalContext = NodeTestContext | MochaTestContext;
  *
  * @category Test : Util
  * @category Package : @augment-vir/test
- * @package @augment-vir/test
+ * @package [`@augment-vir/test`](https://www.npmjs.com/package/@augment-vir/test)
  */
 export type ContextByEnv = {
     [RuntimeEnv.Node]: NodeTestContext;
@@ -53,7 +53,7 @@ export type ContextByEnv = {
  *
  * @category Test : Util
  * @category Package : @augment-vir/test
- * @package @augment-vir/test
+ * @package [`@augment-vir/test`](https://www.npmjs.com/package/@augment-vir/test)
  */
 export function ensureTestContext<const SpecificEnv extends RuntimeEnv>(
     context: UniversalContext,
@@ -69,7 +69,7 @@ export function ensureTestContext<const SpecificEnv extends RuntimeEnv>(
  *
  * @category Test : Util
  * @category Package : @augment-vir/test
- * @package @augment-vir/test
+ * @package [`@augment-vir/test`](https://www.npmjs.com/package/@augment-vir/test)
  */
 export function assertTestContext<const SpecificEnv extends RuntimeEnv>(
     context: UniversalContext,
@@ -87,7 +87,7 @@ export function assertTestContext<const SpecificEnv extends RuntimeEnv>(
  *
  * @category Test : Util
  * @category Package : @augment-vir/test
- * @package @augment-vir/test
+ * @package [`@augment-vir/test`](https://www.npmjs.com/package/@augment-vir/test)
  */
 export function isTestContext<const SpecificEnv extends RuntimeEnv>(
     context: UniversalContext,
@@ -113,7 +113,7 @@ const nodeOnlyCheckKey = 'diagnostic' satisfies NodeOnlyTestContextKeys;
  *
  * @category Test : Util
  * @category Package : @augment-vir/test
- * @package @augment-vir/test
+ * @package [`@augment-vir/test`](https://www.npmjs.com/package/@augment-vir/test)
  */
 export function determineTestContextEnv(context: UniversalContext): RuntimeEnv {
     return context[nodeOnlyCheckKey] ? RuntimeEnv.Node : RuntimeEnv.Web;

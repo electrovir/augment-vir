@@ -49,7 +49,7 @@ export function mapObject<const OriginalObject, const NewKey extends PropertyKey
  * // output is `{'key-a': 'value-1', 'key-b': 'value-2'}`
  * ```
  *
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  * @see
  * - {@link mapObjectValues}: the variant that only maps values.
  */

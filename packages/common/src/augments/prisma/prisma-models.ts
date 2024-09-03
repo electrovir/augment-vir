@@ -14,7 +14,7 @@ import type {AnyFunction, AnyObject} from '@augment-vir/core';
  * function doThing(modelName: ModelNameFromPrismaTypeMap<Prisma.TypeMap>) {}
  * ```
  *
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type ModelNameFromPrismaTypeMap<PrismaTypeMap extends BasePrismaTypeMap> =
     PrismaTypeMap['meta']['modelProps'];
@@ -33,7 +33,7 @@ export type ModelNameFromPrismaTypeMap<PrismaTypeMap extends BasePrismaTypeMap> 
  * function doThing(modelName: ModelNameFromPrismaClient<PrismaClient>) {}
  * ```
  *
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type ModelNameFromPrismaClient<PrismaClient extends AnyObject> = keyof {
     [Model in Extract<keyof PrismaClient, string> as PrismaClient[Model] extends {
@@ -57,7 +57,7 @@ export type ModelNameFromPrismaClient<PrismaClient extends AnyObject> = keyof {
  * function doThing(entry: ModelCreationEntry<PrismaClient, 'User'>) {}
  * ```
  *
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type PrismaModelCreationEntry<
     PrismaClient extends AnyObject,
@@ -73,7 +73,7 @@ export type PrismaModelCreationEntry<
  *
  * @category Prisma : Common
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type BasePrismaTypeMap = {
     meta: {
@@ -91,7 +91,7 @@ export type BasePrismaTypeMap = {
  *
  * @category Prisma : Common
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type BasePrismaPayload = {
     name: string;
@@ -113,7 +113,7 @@ export type BasePrismaPayload = {
  * function doThing(fullModel: FullModel<Prisma.TypeMap, 'User'>) {}
  * ```
  *
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type FullPrismaModel<
     PrismaTypeMap extends BasePrismaTypeMap,
@@ -135,7 +135,7 @@ export type FullPrismaModel<
  * function doThing(fullModel: BaseModel<Prisma.TypeMap, 'User'>) {}
  * ```
  *
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type BasePrismaModel<
     PrismaTypeMap extends BasePrismaTypeMap,
@@ -147,7 +147,7 @@ export type BasePrismaModel<
  *
  * @category Prisma : Common : Util
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type ExpandPrismaTypeMapPayload<Payload extends BasePrismaPayload> = Payload['scalars'] & {
     [Key in keyof Payload['objects']]:
@@ -160,7 +160,7 @@ export type ExpandPrismaTypeMapPayload<Payload extends BasePrismaPayload> = Payl
  *
  * @category Prisma : Common : Util
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type ExpandPotentialArrayPrismaTypeMapPayload<
     PayloadWrapper extends BasePrismaPayload | BasePrismaPayload[],

@@ -157,7 +157,7 @@ const assertions: {
 
     /**
      * Asserts that a number is
-     * [`NaN`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NaN).
+     * [`NaN`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/NaN).
      *
      * Performs no type guarding.
      *
@@ -359,7 +359,7 @@ export const numericGuards = {
         isAtMost: autoGuardSymbol,
         /**
          * Checks that a number is
-         * [`NaN`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NaN).
+         * [`NaN`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/NaN).
          *
          * Performs no type guarding.
          *
@@ -555,7 +555,7 @@ export const numericGuards = {
         isAtMost: autoGuardSymbol,
         /**
          * Asserts that a number is
-         * [`NaN`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NaN).
+         * [`NaN`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/NaN).
          * Returns the number if the assertion passes.
          *
          * Performs no type guarding.
@@ -762,7 +762,7 @@ export const numericGuards = {
         isAtMost: autoGuardSymbol,
         /**
          * Checks that a number is
-         * [`NaN`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NaN).
+         * [`NaN`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/NaN).
          * Returns the number if the check passes, otherwise `undefined`.
          *
          * Performs no type guarding.
@@ -972,7 +972,7 @@ export const numericGuards = {
         isAtMost: autoGuardSymbol,
         /**
          * Repeatedly calls a callback until its output is a number that is
-         * [`NaN`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NaN).
+         * [`NaN`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/NaN).
          * Once the callback output passes, it is returned. If the attempts time out, an error is
          * thrown.
          *

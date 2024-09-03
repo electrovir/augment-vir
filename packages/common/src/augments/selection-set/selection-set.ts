@@ -15,7 +15,7 @@ type SelectionTypesToPreserve = Primitive | RegExp | Promise<any>;
  *
  * @category Selection
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type GenericSelectionSet = {
     [Key in PropertyKey]: unknown;
@@ -27,7 +27,7 @@ export type GenericSelectionSet = {
  *
  * @category Selection
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type SelectFrom<
     Full extends Readonly<AnyObject>,
@@ -61,7 +61,7 @@ export type SelectFrom<
  *
  * @category Selection
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type SelectionSet<
     Full extends Readonly<AnyObject>,

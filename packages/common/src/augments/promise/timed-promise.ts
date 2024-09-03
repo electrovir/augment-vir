@@ -7,7 +7,7 @@ import {AnyDuration, convertDuration, DurationUnit} from '@date-vir/duration';
  *
  * @category Promise
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export class PromiseTimeoutError extends Error {
     public override readonly name = 'PromiseTimeoutError';
@@ -33,7 +33,7 @@ export class PromiseTimeoutError extends Error {
  *
  * @category Promise
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function wrapPromiseInTimeout<T>(
     duration: Readonly<AnyDuration>,

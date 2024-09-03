@@ -14,7 +14,7 @@ import {addSuffix} from './suffix.js';
  * wrapString({value: 'some words', wrapper: '"'}); // outputs `'"some words"'`
  * ```
  *
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function wrapString({value, wrapper}: {value: string; wrapper: string}): string {
     return addPrefix({value: addSuffix({value, suffix: wrapper}), prefix: wrapper});

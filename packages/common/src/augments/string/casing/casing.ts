@@ -5,7 +5,7 @@ import {PartialWithUndefined} from '@augment-vir/core';
  *
  * @category String
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type CasingOptions = {
     /**
@@ -21,7 +21,7 @@ export type CasingOptions = {
  *
  * @category String
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export const defaultCasingOptions: Required<CasingOptions> = {
     capitalizeFirstLetter: false,
@@ -32,7 +32,7 @@ export const defaultCasingOptions: Required<CasingOptions> = {
  *
  * @category String
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export enum StringCase {
     Upper = 'upper',
@@ -45,7 +45,7 @@ export enum StringCase {
  *
  * @category String
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function hasCase(input: string): boolean {
     return input.toLowerCase() !== input.toUpperCase();
@@ -56,7 +56,7 @@ export function hasCase(input: string): boolean {
  *
  * @category String
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type IsCaseOptions = {
     /**
@@ -78,7 +78,7 @@ export type IsCaseOptions = {
  *
  * @category String
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function isCase(
     input: string,

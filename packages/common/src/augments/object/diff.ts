@@ -9,7 +9,7 @@ import {PartialDeep} from 'type-fest';
  * @category Package : @augment-vir/common
  * @returns An empty tuple if the values are equal. Otherwise, the first tuple entry contains the
  *   changes in the first value, second entry contains the changes in the second value.
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function diffObjects<
     T0 extends Readonly<Record<PropertyKey, unknown>>,
@@ -64,7 +64,7 @@ export function diffObjects<
  * @category Package : @augment-vir/common
  * @returns An empty tuple if the values are equal. Otherwise, the first tuple entry contains the
  *   changes in the first value, second entry contains the changes in the second value.
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function diffArrays<T0, T1>(
     array0: ReadonlyArray<T0>,
@@ -117,7 +117,7 @@ export function diffArrays<T0, T1>(
  *
  * @category Object
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type AreEqualCallback<T0, T1> = (value0: T0, value1: T1) => boolean;
 
@@ -128,7 +128,7 @@ export type AreEqualCallback<T0, T1> = (value0: T0, value1: T1) => boolean;
  * @category Package : @augment-vir/common
  * @returns An empty tuple if the values are equal. Otherwise, the first tuple entry contains the
  *   changes in the first value, second entry contains the changes in the second value.
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function diffBasic<T0, T1>(
     value0: T0,
@@ -178,7 +178,7 @@ const orderedValueDiffs: ReadonlyArray<
  * @category Package : @augment-vir/common
  * @returns An empty tuple if the values are equal. Otherwise, the first tuple entry contains the
  *   changes in the first value, second entry contains the changes in the second value.
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function diffValues<T0, T1>(value0: T0, value1: T1): [T0, T1] | [] {
     let diffOutput = undefined as [] | [unknown, unknown] | undefined;

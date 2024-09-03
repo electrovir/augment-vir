@@ -5,7 +5,7 @@ import {DeferredPromise} from '@augment-vir/common';
  *
  * @category Web
  * @category Package : @augment-vir/web
- * @package @augment-vir/web
+ * @package [`@augment-vir/web`](https://www.npmjs.com/package/@augment-vir/web)
  */
 export async function loadVideo(videoUrl: string): Promise<HTMLVideoElement> {
     const deferredPromise = new DeferredPromise<HTMLVideoElement>();

@@ -42,7 +42,7 @@ const allAssertions = {
  * ```
  *
  * @throws {@link AssertionError} When the assertion fails.
- * @package @augment-vir/assert
+ * @package [`@augment-vir/assert`](https://www.npmjs.com/package/@augment-vir/assert)
  */
 export const assert: ((input: unknown, failureMessage?: string | undefined) => void) &
     typeof allAssertions = Object.assign((input: unknown, failureMessage?: string | undefined) => {

@@ -19,7 +19,7 @@ import {Jsonify, Primitive} from 'type-fest';
  *
  * @category JSON : Common
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type JsonCompatiblePrimitive = Jsonify<Primitive> | undefined;
 
@@ -28,7 +28,7 @@ export type JsonCompatiblePrimitive = Jsonify<Primitive> | undefined;
  *
  * @category JSON : Common
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type JsonCompatibleObject =
     | Partial<{
@@ -43,7 +43,7 @@ export type JsonCompatibleObject =
  *
  * @category JSON : Common
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type JsonCompatibleArray = JsonCompatibleValue[] | ReadonlyArray<JsonCompatibleValue>;
 
@@ -52,7 +52,7 @@ export type JsonCompatibleArray = JsonCompatibleValue[] | ReadonlyArray<JsonComp
  *
  * @category JSON : Common
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type JsonCompatibleValue =
     | JsonCompatiblePrimitive

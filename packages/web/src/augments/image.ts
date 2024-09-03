@@ -5,7 +5,7 @@ import {DeferredPromise} from '@augment-vir/common';
  *
  * @category Web
  * @category Package : @augment-vir/web
- * @package @augment-vir/web
+ * @package [`@augment-vir/web`](https://www.npmjs.com/package/@augment-vir/web)
  */
 export async function loadImage(imageUrl: string): Promise<HTMLImageElement> {
     const deferredPromise = new DeferredPromise<HTMLImageElement>();

@@ -9,7 +9,7 @@
  *
  * @category Web : Elements
  * @category Package : @augment-vir/web
- * @package @augment-vir/web
+ * @package [`@augment-vir/web`](https://www.npmjs.com/package/@augment-vir/web)
  */
 export function getNestedChildren(
     startingElement: Readonly<Element>,
@@ -47,7 +47,7 @@ function recursivelyGetNestedChildren(
  *
  * @category Web : Elements
  * @category Package : @augment-vir/web
- * @package @augment-vir/web
+ * @package [`@augment-vir/web`](https://www.npmjs.com/package/@augment-vir/web)
  */
 export function getDirectChildren(startingElement: Readonly<Element>): Element[] {
     return [

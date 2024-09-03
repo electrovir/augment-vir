@@ -6,7 +6,7 @@ import type {AnyObject} from '@augment-vir/core';
  *
  * @category Object
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type KeyCount<T extends AnyObject> = UnionToTuple<keyof T>['length'];
 

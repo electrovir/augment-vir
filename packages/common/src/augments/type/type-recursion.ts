@@ -174,7 +174,7 @@ type TsRecursionArray = [
  *         : SomeType<TsRecurse<Depth>>;
  * ```
  *
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type TsRecursionTracker = keyof TsRecursionArray;
 
@@ -200,7 +200,7 @@ export type TsRecursionTracker = keyof TsRecursionArray;
  *         : SomeType<TsRecurse<Depth>>;
  * ```
  *
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type TsTooMuchRecursion = 91;
 /**
@@ -225,7 +225,7 @@ export type TsTooMuchRecursion = 91;
  *         : SomeType<TsRecurse<Depth>>;
  * ```
  *
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type TsRecursionStart = 0;
 
@@ -250,7 +250,7 @@ export type TsRecursionStart = 0;
  *         : SomeType<TsRecurse<Depth>>;
  * ```
  *
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type TsRecurse<CurrentRecursion extends TsRecursionTracker> =
     TsRecursionArray[CurrentRecursion] extends TsRecursionTracker

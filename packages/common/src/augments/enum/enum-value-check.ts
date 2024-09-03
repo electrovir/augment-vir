@@ -29,7 +29,7 @@ import type {EnumBaseType} from '@augment-vir/core';
  * ```
  *
  * @returns A new array (does not mutate).
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function filterToEnumValues<const T extends EnumBaseType>(
     inputs: ReadonlyArray<unknown>,

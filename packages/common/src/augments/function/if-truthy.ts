@@ -24,7 +24,7 @@ import {check, type Falsy, type Truthy} from '@augment-vir/assert';
  * ```
  *
  * @returns The called callback's output.
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function ifTruthy<const InputType, IfTruthyType, IfFalsyType>(
     checkThis: InputType,

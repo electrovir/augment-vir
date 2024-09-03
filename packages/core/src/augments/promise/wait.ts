@@ -6,7 +6,7 @@ import {DeferredPromise} from './deferred-promise.js';
  *
  * @category Promise
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  * @see
  * - {@link waitValue} : return a value after the wait finishes.
  */
@@ -31,7 +31,7 @@ export function wait(duration: Readonly<AnyDuration>): Promise<void> {
  *
  * @category Promise
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  * @see
  * - {@link wait} : plain wait.
  */

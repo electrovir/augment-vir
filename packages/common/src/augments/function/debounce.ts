@@ -6,7 +6,7 @@ import {AnyDuration, convertDuration, DurationUnit} from '@date-vir/duration';
  *
  * @category Function
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export enum DebounceStyle {
     /**
@@ -63,7 +63,7 @@ export enum DebounceStyle {
  * debounce.execute(() => {});
  * ```
  *
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export class Debounce {
     public nextCallTimestamp = 0;

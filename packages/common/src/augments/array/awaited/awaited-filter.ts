@@ -2,7 +2,7 @@ import {awaitedBlockingMap} from './awaited-map.js';
 
 /**
  * Performs
- * [`[].filter()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter)
+ * [`[].filter()`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array/filter)
  * on an array but supports an async callback.
  *
  * @category Array
@@ -27,7 +27,7 @@ import {awaitedBlockingMap} from './awaited-map.js';
  * ```
  *
  * @returns A new array (does not mutate).
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export async function awaitedFilter<OriginalGeneric>(
     arrayInput: ReadonlyArray<OriginalGeneric>,

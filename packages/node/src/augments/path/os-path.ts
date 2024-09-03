@@ -5,7 +5,7 @@ import {sep} from 'node:path';
  *
  * @category Path : Node
  * @category Package : @augment-vir/node
- * @package @augment-vir/node
+ * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
  */
 export function replaceWithWindowsPathIfNeeded(input: string): string {
     if (sep === '/') {
@@ -22,7 +22,7 @@ export function replaceWithWindowsPathIfNeeded(input: string): string {
  *
  * @category Path : Node
  * @category Package : @augment-vir/node
- * @package @augment-vir/node
+ * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
  */
 export function toPosixPath(maybeWindowsPath: string): string {
     return maybeWindowsPath
@@ -38,7 +38,7 @@ export function toPosixPath(maybeWindowsPath: string): string {
  *
  * @category Path : Node
  * @category Package : @augment-vir/node
- * @package @augment-vir/node
+ * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
  */
 export function interpolationSafeWindowsPath(input: string): string {
     return input.replace(/\\/g, '\\\\\\\\');

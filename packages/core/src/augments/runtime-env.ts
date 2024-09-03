@@ -5,7 +5,7 @@ import {isNode} from 'browser-or-node';
  *
  * @category Env
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export enum RuntimeEnv {
     Node = 'node',
@@ -18,7 +18,7 @@ export enum RuntimeEnv {
  *
  * @category Env
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function determineRuntimeEnv(): RuntimeEnv {
     /** Coverage in this package is only run in Node. */
@@ -31,7 +31,7 @@ export function determineRuntimeEnv(): RuntimeEnv {
  *
  * @category Env
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export const currentRuntimeEnv = determineRuntimeEnv();
 
@@ -41,7 +41,7 @@ export const currentRuntimeEnv = determineRuntimeEnv();
  * @category Env
  * @category Package : @augment-vir/common
  * @returns `true` if the given {@link RuntimeEnv} is the current {@link RuntimeEnv}.
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function isRuntimeEnv(itItThisEnv: RuntimeEnv): boolean {
     return currentRuntimeEnv === itItThisEnv;
@@ -53,7 +53,7 @@ export function isRuntimeEnv(itItThisEnv: RuntimeEnv): boolean {
  *
  * @category Env
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export class RuntimeEnvError extends Error {
     public override readonly name = 'RuntimeEnvError';
@@ -65,7 +65,7 @@ export class RuntimeEnvError extends Error {
  *
  * @category Env
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function perEnv<T>(perEnv: Record<RuntimeEnv, () => T>): T {
     return perEnv[currentRuntimeEnv]();

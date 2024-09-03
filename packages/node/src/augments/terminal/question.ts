@@ -10,7 +10,7 @@ import {createInterface} from 'node:readline';
  *
  * @category Node : Terminal : Util
  * @category Package : @augment-vir/node
- * @package @augment-vir/node
+ * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
  */
 export type AskQuestionOptions = {
     timeout: AnyDuration;
@@ -28,7 +28,7 @@ const defaultAskQuestionOptions: AskQuestionOptions = {
  *
  * @category Node : Terminal
  * @category Package : @augment-vir/node
- * @package @augment-vir/node
+ * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
  * @see
  *  - {@link askQuestionUntilConditionMet}: ask a question on loop until the user provides a valid response.
  */
@@ -96,7 +96,7 @@ export async function askQuestion(
  *
  * @category Node : Terminal : Util
  * @category Package : @augment-vir/node
- * @package @augment-vir/node
+ * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
  */
 export type QuestionUntilConditionMetOptions = {
     questionToAsk: string;
@@ -113,7 +113,7 @@ export type QuestionUntilConditionMetOptions = {
  *
  * @category Node : Terminal
  * @category Package : @augment-vir/node
- * @package @augment-vir/node
+ * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
  * @see
  *  - {@link askQuestion}: ask a question and accept any response.
  */

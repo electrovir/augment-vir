@@ -26,7 +26,7 @@ import {getOrSet} from './get-or-set.js';
  * ); // output is `{a: ['a', 'b', 'c', 'd']}`
  * ```
  *
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function mergePropertyArrays<T extends Record<PropertyKey, unknown[]>>(
     ...inputs: ReadonlyArray<Readonly<T>>

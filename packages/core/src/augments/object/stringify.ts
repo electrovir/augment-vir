@@ -7,7 +7,7 @@ import JSON5 from 'json5';
  * @category Object
  * @category String
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function stringify(input: unknown) {
     try {

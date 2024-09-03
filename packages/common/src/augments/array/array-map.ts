@@ -14,7 +14,7 @@ type LibMapCallbackType<ArrayType extends ReadonlyArray<any>, OutputType> = (
 
 /**
  * Performs
- * [`[].map()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map)
+ * [`[].map()`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array/map)
  * on an array but transfers the input tuple's size to the output type.
  *
  * @category Array
@@ -39,7 +39,7 @@ type LibMapCallbackType<ArrayType extends ReadonlyArray<any>, OutputType> = (
  * ```
  *
  * @returns A new array (does not mutate).
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function typedMap<const ArrayGeneric extends ReadonlyArray<any>, const OutputType>(
     arrayToMap: ArrayGeneric,

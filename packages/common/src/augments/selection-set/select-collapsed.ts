@@ -48,7 +48,7 @@ import {GenericSelectionSet, SelectFrom, SelectionSet} from './selection-set.js'
  * // output is `[3, 4]`
  * ```
  *
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function selectCollapsedFrom<
     Full extends AnyObject,
@@ -86,7 +86,7 @@ function collapseObject(input: Readonly<AnyObject>, selectionSet: unknown): AnyO
  *
  * @category Selection
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type PickCollapsedSelection<
     Full extends Readonly<AnyObject>,

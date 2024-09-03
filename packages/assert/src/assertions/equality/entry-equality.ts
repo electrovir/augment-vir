@@ -55,7 +55,7 @@ const assertions: {
     /**
      * Asserts that two objects are deeply equal by checking only their top-level values for strict
      * (non-deep, reference, using
-     * [`===`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness#strict_equality_using))
+     * [`===`](https://developer.mozilla.org/docs/Web/JavaScript/Equality_comparisons_and_sameness#strict_equality_using))
      * equality.
      *
      * Type guards the first value.
@@ -83,7 +83,7 @@ const assertions: {
     /**
      * Asserts that two objects are _not_ deeply equal by checking only their top-level values for
      * strict (non-deep, reference, using
-     * [`===`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness#strict_equality_using))
+     * [`===`](https://developer.mozilla.org/docs/Web/JavaScript/Equality_comparisons_and_sameness#strict_equality_using))
      * equality.
      *
      * Performs no type guarding.
@@ -119,7 +119,7 @@ export const entryEqualityGuards = {
         /**
          * Checks that two objects are deeply equal by checking only their top-level values for
          * strict (non-deep, reference, using
-         * [`===`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness#strict_equality_using))
+         * [`===`](https://developer.mozilla.org/docs/Web/JavaScript/Equality_comparisons_and_sameness#strict_equality_using))
          * equality.
          *
          * Type guards the first value.
@@ -152,7 +152,7 @@ export const entryEqualityGuards = {
         /**
          * Checks that two objects are _not_ deeply equal by checking only their top-level values
          * for strict (non-deep, reference, using
-         * [`===`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness#strict_equality_using))
+         * [`===`](https://developer.mozilla.org/docs/Web/JavaScript/Equality_comparisons_and_sameness#strict_equality_using))
          * equality.
          *
          * Performs no type guarding.
@@ -181,7 +181,7 @@ export const entryEqualityGuards = {
         /**
          * Asserts that two objects are deeply equal by checking only their top-level values for
          * strict (non-deep, reference, using
-         * [`===`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness#strict_equality_using))
+         * [`===`](https://developer.mozilla.org/docs/Web/JavaScript/Equality_comparisons_and_sameness#strict_equality_using))
          * equality and, if so, returns the first object.
          *
          * Type guards the first value.
@@ -217,7 +217,7 @@ export const entryEqualityGuards = {
         /**
          * Asserts that two objects are _not_ deeply equal by checking only their top-level values
          * for strict (non-deep, reference, using
-         * [`===`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness#strict_equality_using))
+         * [`===`](https://developer.mozilla.org/docs/Web/JavaScript/Equality_comparisons_and_sameness#strict_equality_using))
          * equality and, if so, returns the first object.
          *
          * Performs no type guarding.
@@ -248,7 +248,7 @@ export const entryEqualityGuards = {
         /**
          * Checks that two objects are deeply equal by checking only their top-level values for
          * strict (non-deep, reference, using
-         * [`===`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness#strict_equality_using))
+         * [`===`](https://developer.mozilla.org/docs/Web/JavaScript/Equality_comparisons_and_sameness#strict_equality_using))
          * equality. If the check passes the first object is returned. If not, `undefined` is
          * returned.
          *
@@ -284,7 +284,7 @@ export const entryEqualityGuards = {
         /**
          * Checks that two objects are _not_ deeply equal by checking only their top-level values
          * for strict (non-deep, reference, using
-         * [`===`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness#strict_equality_using))
+         * [`===`](https://developer.mozilla.org/docs/Web/JavaScript/Equality_comparisons_and_sameness#strict_equality_using))
          * equality. If the check passes the first object is returned. If not, `undefined` is
          * returned.
          *
@@ -315,7 +315,7 @@ export const entryEqualityGuards = {
         /**
          * Repeatedly calls a callback until its output is deeply equal to the first input by
          * checking only their top-level values for strict (non-deep, reference, using
-         * [`===`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness#strict_equality_using))
+         * [`===`](https://developer.mozilla.org/docs/Web/JavaScript/Equality_comparisons_and_sameness#strict_equality_using))
          * equality. Once the callback output passes, it is returned. If the attempts time out, an
          * error is thrown.
          *
@@ -359,7 +359,7 @@ export const entryEqualityGuards = {
         /**
          * Repeatedly calls a callback until its output is _not_ deeply equal to the first input by
          * checking only their top-level values for strict (non-deep, reference, using
-         * [`===`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness#strict_equality_using))
+         * [`===`](https://developer.mozilla.org/docs/Web/JavaScript/Equality_comparisons_and_sameness#strict_equality_using))
          * equality. Once the callback output passes, it is returned. If the attempts time out, an
          * error is thrown.
          *

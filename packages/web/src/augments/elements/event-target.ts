@@ -14,7 +14,7 @@ import {Constructor} from 'type-fest';
  * });
  * ```
  *
- * @package @augment-vir/web
+ * @package [`@augment-vir/web`](https://www.npmjs.com/package/@augment-vir/web)
  */
 export function extractEventTarget<ExpectedTargetClassConstructor extends Constructor<Element>>(
     event: Event,

@@ -7,7 +7,7 @@ import type {DockerContainerStatus} from './container-status.js';
  *
  * @category Node : Docker : Util
  * @category Package : @augment-vir/node
- * @package @augment-vir/node
+ * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
  */
 export type DockerContainerInfoState = {
     Status: DockerContainerStatus;
@@ -31,7 +31,7 @@ export type DockerContainerInfoState = {
  *
  * @category Node : Docker : Util
  * @category Package : @augment-vir/node
- * @package @augment-vir/node
+ * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
  */
 export type DockerContainerInfo = Readonly<{
     Id: string;

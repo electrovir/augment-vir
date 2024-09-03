@@ -3,7 +3,7 @@
  *
  * @category String
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function removeAnsiEscapeCodes(input: string): string {
     return input.replace(ansiRegExp, '');
@@ -51,6 +51,6 @@ const patterns: string[] = [
  * @category String
  * @category RegExp
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export const ansiRegExp = new RegExp(patterns.join('|'), 'g');

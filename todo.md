@@ -27,9 +27,7 @@
 -   move virmator's dir-contents augments into `@augment-vir/node`
 -   move path transforms to `@augment-vir/common` (like `toPosixPath`)
     -   maybe
--   remove `en-US` from all mdn links
 -   try to fix `mapObjectValuesSync` so it doesn't require currying
--   update all `@package` tags to link to their given package and use monospace font (wrap in `)
 -   add a `convert` which is like `assert`
     -   `convertTo.number`, `convertToEnsured.number`, `convertToMaybe.number`, etc. for numbers, strings, etc.
     -   remove `number-conversation.ts`

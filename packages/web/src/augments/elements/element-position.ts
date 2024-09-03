@@ -6,7 +6,7 @@ import type {Coords} from '@augment-vir/common';
  *
  * @category Web : Elements
  * @category Package : @augment-vir/web
- * @package @augment-vir/web
+ * @package [`@augment-vir/web`](https://www.npmjs.com/package/@augment-vir/web)
  */
 export async function checkIfEntirelyInScrollView(element: Element) {
     return checkIfInScrollView(element, 1);
@@ -17,7 +17,7 @@ export async function checkIfEntirelyInScrollView(element: Element) {
  *
  * @category Web : Elements
  * @category Package : @augment-vir/web
- * @package @augment-vir/web
+ * @package [`@augment-vir/web`](https://www.npmjs.com/package/@augment-vir/web)
  */
 export async function checkIfInScrollView(
     element: Element,
@@ -36,12 +36,12 @@ export async function checkIfInScrollView(
 
 /**
  * Get the center of the current element. This is a relatively expensive operation as it uses
- * [`.getBoundingClientRect()`](https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect)
+ * [`.getBoundingClientRect()`](https://developer.mozilla.org/docs/Web/API/Element/getBoundingClientRect)
  * so this should not be called excessively.
  *
  * @category Web : Elements
  * @category Package : @augment-vir/web
- * @package @augment-vir/web
+ * @package [`@augment-vir/web`](https://www.npmjs.com/package/@augment-vir/web)
  */
 export function getCenterOfElement(element: Element): Coords {
     const rect = element.getBoundingClientRect();
@@ -58,7 +58,7 @@ export function getCenterOfElement(element: Element): Coords {
  *
  * @category Web : Elements
  * @category Package : @augment-vir/web
- * @package @augment-vir/web
+ * @package [`@augment-vir/web`](https://www.npmjs.com/package/@augment-vir/web)
  */
 export function appendPositionDebugDiv(position: Coords): HTMLDivElement {
     const div = document.createElement('div');

@@ -30,7 +30,7 @@ import {Jsonify, Writable} from 'type-fest';
  * });
  * ```
  *
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function copyThroughJson<const T>(input: T): Writable<Jsonify<T>> {
     try {

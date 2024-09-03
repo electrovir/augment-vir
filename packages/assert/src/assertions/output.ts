@@ -47,7 +47,7 @@ import {deepEquals} from './equality/simple-equality.js';
  * ```
  *
  * @param FunctionToCall The function type that your custom asserter will be run on.
- * @package @augment-vir/assert
+ * @package [`@augment-vir/assert`](https://www.npmjs.com/package/@augment-vir/assert)
  */
 export type CustomOutputAsserter<FunctionToCall extends AnyFunction> = (
     actual: Awaited<ReturnType<FunctionToCall>>,

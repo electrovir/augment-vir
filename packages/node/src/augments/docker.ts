@@ -46,7 +46,7 @@ export {type RunDockerContainerParams} from '../docker/containers/run-container.
  *
  * @category Node : Docker
  * @category Package : @augment-vir/node
- * @package @augment-vir/node
+ * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
  */
 export const docker = {
     /** Detects if the Docker service is running. */

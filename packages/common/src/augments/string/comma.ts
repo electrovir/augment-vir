@@ -5,7 +5,7 @@ import {safeMatch} from '../regexp/match.js';
  *
  * @category String
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function removeCommas(input: string): string {
     return input.replace(/,/g, '');
@@ -26,7 +26,7 @@ export function removeCommas(input: string): string {
  * // output is `'1,000,123.456'`
  * ```
  *
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function addCommasToNumber(input: number | string): string {
     if (typeof input === 'string' && isNaN(Number(input))) {

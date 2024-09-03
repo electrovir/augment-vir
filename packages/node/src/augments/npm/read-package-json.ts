@@ -10,7 +10,7 @@ import {readJsonFile} from '../fs/json.js';
  * @category Package : @augment-vir/node
  * @throws `TypeError` if the given directory has no `package.json` or the `package.json` is
  *   invalid.
- * @package @augment-vir/node
+ * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
  */
 export async function readPackageJson(dirPath: string): Promise<PackageJson> {
     const packageJsonPath = join(dirPath, 'package.json');

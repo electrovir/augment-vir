@@ -4,7 +4,7 @@
  *
  * @category Prisma : Node : Util
  * @category Package : @augment-vir/node
- * @package @augment-vir/node
+ * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
  */
 export class PrismaSchemaError extends Error {
     public override readonly name = 'PrismaSchemaError';
@@ -20,7 +20,7 @@ export class PrismaSchemaError extends Error {
  *
  * @category Prisma : Node : Util
  * @category Package : @augment-vir/node
- * @package @augment-vir/node
+ * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
  */
 export class PrismaMigrationNeededError extends Error {
     public override readonly name = 'PrismaMigrationNeededError';
@@ -35,7 +35,7 @@ export class PrismaMigrationNeededError extends Error {
  *
  * @category Prisma : Node : Util
  * @category Package : @augment-vir/node
- * @package @augment-vir/node
+ * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
  */
 export class PrismaResetNeededError extends Error {
     public override readonly name = 'PrismaResetNeededError';

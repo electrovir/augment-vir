@@ -20,7 +20,7 @@ import {WaitUntilOptions} from '../guard-types/wait-until-function.js';
  * const falsy: FalsyValue = 0;
  * ```
  *
- * @package @augment-vir/assert
+ * @package [`@augment-vir/assert`](https://www.npmjs.com/package/@augment-vir/assert)
  */
 export type FalsyValue = undefined | null | false | 0 | '' | -0 | 0n;
 /**
@@ -37,7 +37,7 @@ export type FalsyValue = undefined | null | false | 0 | '' | -0 | 0n;
  * ```
  *
  * @param T The original type to narrow.
- * @package @augment-vir/assert
+ * @package [`@augment-vir/assert`](https://www.npmjs.com/package/@augment-vir/assert)
  */
 export type Falsy<T> = NarrowToExpected<T, FalsyValue>;
 
@@ -55,7 +55,7 @@ export type Falsy<T> = NarrowToExpected<T, FalsyValue>;
  * ```
  *
  * @param T The original type to narrow.
- * @package @augment-vir/assert
+ * @package [`@augment-vir/assert`](https://www.npmjs.com/package/@augment-vir/assert)
  */
 export type Truthy<T> = Exclude<T, FalsyValue>;
 

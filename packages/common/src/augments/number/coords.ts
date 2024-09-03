@@ -3,7 +3,7 @@
  *
  * @category Number
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type Coords = {x: number; y: number};
 /**
@@ -11,6 +11,6 @@ export type Coords = {x: number; y: number};
  *
  * @category Number
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type Coords3d = {x: number; y: number; z: number};

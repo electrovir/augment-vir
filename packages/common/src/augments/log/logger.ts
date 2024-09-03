@@ -10,7 +10,7 @@ import {type LogWriters} from './log-writer.js';
  *
  * @category Log : Util
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type LoggerLogs = Readonly<Record<LogColorKey, (...args: ReadonlyArray<unknown>) => void>>;
 
@@ -19,7 +19,7 @@ export type LoggerLogs = Readonly<Record<LogColorKey, (...args: ReadonlyArray<un
  *
  * @category Log : Util
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type Logger = LoggerLogs & {
     /**
@@ -44,7 +44,7 @@ export type Logger = LoggerLogs & {
  *
  * @category Log : Util
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export const defaultLoggerOptions: LoggerOptions = {
     colorConfig: defaultLogColorConfig,
@@ -56,7 +56,7 @@ export const defaultLoggerOptions: LoggerOptions = {
  *
  * @category Log
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export const emptyLog: Logger = createLogger({
     [LogOutputType.Error]() {},
@@ -68,7 +68,7 @@ export const emptyLog: Logger = createLogger({
  *
  * @category Log
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function createLogger(
     logWriters: LogWriters,

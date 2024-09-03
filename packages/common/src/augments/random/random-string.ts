@@ -5,7 +5,7 @@ import {randomInteger} from './random-integer.js';
  *
  * @category Random : Util
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export const allowedRandomStringLetters: ReadonlyArray<string> = [
     'a',
@@ -53,7 +53,7 @@ export const allowedRandomStringLetters: ReadonlyArray<string> = [
  *
  * @category Random
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function randomString(generatedStringLength: number = 16): string {
     let stringBuilder = '';

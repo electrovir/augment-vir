@@ -5,7 +5,7 @@ import type {ArrayElement} from '../array/array.js';
  *
  * @category String
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export const punctuationLetters = [
     '.',
@@ -22,7 +22,7 @@ export const punctuationLetters = [
  * @category String
  * @category RegExp
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export const punctuationRegExp = new RegExp(`[${punctuationLetters.join('')}]+`);
 
@@ -32,7 +32,7 @@ export const punctuationRegExp = new RegExp(`[${punctuationLetters.join('')}]+`)
  * @category String
  * @category RegExp
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export const endsWithPunctuationRegExp = new RegExp(`[${punctuationLetters.join('')}]+$`);
 
@@ -41,7 +41,7 @@ export const endsWithPunctuationRegExp = new RegExp(`[${punctuationLetters.join(
  *
  * @category String
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type PunctuationLetter = ArrayElement<typeof punctuationLetters>;
 
@@ -50,7 +50,7 @@ export type PunctuationLetter = ArrayElement<typeof punctuationLetters>;
  *
  * @category String
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function removeEndingPunctuation(value: string): string {
     return value.replace(endsWithPunctuationRegExp, '');

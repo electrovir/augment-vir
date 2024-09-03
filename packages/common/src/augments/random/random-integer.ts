@@ -8,7 +8,7 @@ import {ensureMinMax} from '../number/min-max.js';
  *
  * @category Random
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function randomInteger({min: rawMin, max: rawMax}: {min: number; max: number}): number {
     const {min, max} = ensureMinMax({min: Math.floor(rawMin), max: Math.floor(rawMax)});

@@ -1,6 +1,6 @@
 ## @augment-vir/common
 
--   `flatten2dArray`: removed. Use [`[].flat()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flat).
+-   `flatten2dArray`: removed. Use [`[].flat()`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array/flat).
 -   `typedArrayIncludes`: moved to `@augment-vir/assert`.
 -   `arrayToObject`: the callback must now provide both key and value.
 -   `getEnumTypedValues`: renamed to `getEnumValues`.

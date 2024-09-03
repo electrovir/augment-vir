@@ -7,7 +7,7 @@ import {runShellCommand} from '../../augments/terminal/shell.js';
  *
  * @category Node : Docker : Util
  * @category Package : @augment-vir/node
- * @package @augment-vir/node
+ * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
  */
 export type CopyToDockerContainerParams = {
     hostPath: string;

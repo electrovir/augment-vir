@@ -15,7 +15,7 @@
  * const result2 = round(25, {digits: 2});
  * ```
  *
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function round(value: number, {digits}: {digits: number}): number {
     const digitFactor = Math.pow(10, digits);

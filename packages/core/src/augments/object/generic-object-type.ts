@@ -3,7 +3,7 @@
  *
  * @category Object
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type AnyObject = Record<PropertyKey, any>;
 /**
@@ -11,6 +11,6 @@ export type AnyObject = Record<PropertyKey, any>;
  *
  * @category Object
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type UnknownObject = Record<PropertyKey, unknown>;

@@ -10,7 +10,7 @@ import {runPrismaCommand, verifyOutput} from './run-prisma-command.js';
  *
  * @category Prisma : Node : Util
  * @category Package : @augment-vir/node
- * @package @augment-vir/node
+ * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
  */
 export type PrismaMigrationStatus = {
     totalMigrations: number;

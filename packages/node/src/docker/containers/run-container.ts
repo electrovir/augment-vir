@@ -17,7 +17,7 @@ import {killContainer} from './kill-container.js';
  *
  * @category Node : Docker : Util
  * @category Package : @augment-vir/node
- * @package @augment-vir/node
+ * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
  */
 export type RunDockerContainerParams = {
     imageName: string;

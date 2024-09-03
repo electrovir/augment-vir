@@ -13,7 +13,7 @@
  * requiresScientificNotation(999999999999999999999); // true
  * ```
  *
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function requiresScientificNotation(input: number): boolean {
     return String(input).includes('e');

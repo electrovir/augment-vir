@@ -9,7 +9,7 @@ import {requiresScientificNotation} from './scientific.js';
  *
  * @category Number
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export const defaultTruncationSuffixes = [
     'k', // thousand
@@ -201,7 +201,7 @@ function handleSmallNumbers(numberAsString: string, maxLength: number): string |
  * const result = truncateNumber(1_000_000);
  * ```
  *
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function truncateNumber(
     originalValue: Readonly<unknown>,

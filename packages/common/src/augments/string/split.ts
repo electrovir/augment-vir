@@ -4,7 +4,7 @@ import {findSubstringIndexes} from './substring-index.js';
 
 /**
  * Same as *
- * [`''.split`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/split)
+ * [`''.split`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String/split)
  * but includes the split delimiter in the output array.
  *
  * @category String
@@ -17,7 +17,7 @@ import {findSubstringIndexes} from './substring-index.js';
  * splitIncludeSplit('1,2,3', ',', {caseSensitive: false}); // outputs `['1', ',', '2', ',', '3']`
  * ```
  *
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function splitIncludeSplit(
     original: string,
@@ -56,12 +56,12 @@ export function splitIncludeSplit(
 
 /**
  * Same as
- * [`''.split'](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/split)
+ * [`''.split`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String/split)
  * but typed better: it always returns an array with at least one string.
  *
  * @category String
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function safeSplit(input: string, splitString: string): AtLeastTuple<string, 1> {
     return input.split(splitString) as unknown as AtLeastTuple<string, 1>;

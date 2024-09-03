@@ -5,7 +5,7 @@ import {perEnv, RuntimeEnv} from '@augment-vir/core';
  *
  * @category Log : Util
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export enum LogOutputType {
     /** Logged to stdout if the current environment supports it, or just `console.log`. */
@@ -17,12 +17,11 @@ export enum LogOutputType {
 /**
  * Standardized color keys for logging. If you want to use customized colors, use
  * [ansi-styles](https://www.npmjs.com/package/ansi-styles) in Node.js or [custom
- * CSS](https://developer.mozilla.org/en-US/docs/Web/API/console#styling_console_output) in
- * browsers.
+ * CSS](https://developer.mozilla.org/docs/Web/API/console#styling_console_output) in browsers.
  *
  * @category Log : Util
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export enum LogColorKey {
     Bold = 'bold',
@@ -43,7 +42,7 @@ export enum LogColorKey {
  *
  * @category Log : Util
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type LogColorConfig = Readonly<
     Record<
@@ -99,7 +98,7 @@ async function determineDefaultLogColors(): Promise<Record<LogColorKey, string>>
  *
  * @category Log : Util
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export const logColors: Readonly<Record<LogColorKey, string>> = await determineDefaultLogColors();
 
@@ -108,7 +107,7 @@ export const logColors: Readonly<Record<LogColorKey, string>> = await determineD
  *
  * @category Log : Util
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export const defaultLogColorConfig: LogColorConfig = {
     [LogColorKey.Bold]: {

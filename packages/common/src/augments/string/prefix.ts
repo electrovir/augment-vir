@@ -3,7 +3,7 @@
  *
  * @category String
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type WithPrefix<Prefix extends string> = `${Prefix}${string}`;
 
@@ -12,7 +12,7 @@ export type WithPrefix<Prefix extends string> = `${Prefix}${string}`;
  *
  * @category String
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function addPrefix<const Prefix extends string>({
     value,
@@ -33,7 +33,7 @@ export function addPrefix<const Prefix extends string>({
  *
  * @category String
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function removePrefix<const Prefix extends string>({
     value,

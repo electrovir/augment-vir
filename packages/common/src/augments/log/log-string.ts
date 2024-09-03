@@ -10,7 +10,7 @@ import {LogWriterParams} from './log-writer.js';
  *
  * @category Log : Util
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type LoggerOptions = {
     colorConfig: LogColorConfig;
@@ -22,7 +22,7 @@ export type LoggerOptions = {
  *
  * @category Log : Util
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type ToLogStringParams = {
     colorKey: LogColorKey;
@@ -108,6 +108,6 @@ async function createToLogString(): Promise<ToLogString> {
  *
  * @category Log : Util
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export const toLogString: ToLogString = await createToLogString();

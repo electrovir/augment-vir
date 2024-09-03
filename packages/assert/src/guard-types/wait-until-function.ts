@@ -25,7 +25,7 @@ import {autoGuardSymbol, pickOverride} from './guard-override.js';
  *
  * @category Assert : Util
  * @category Package : @augment-vir/assert
- * @package @augment-vir/assert
+ * @package [`@augment-vir/assert`](https://www.npmjs.com/package/@augment-vir/assert)
  */
 export type WaitUntilOptions = PartialWithUndefined<{
     /**

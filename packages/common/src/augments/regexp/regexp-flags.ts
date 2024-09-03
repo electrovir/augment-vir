@@ -15,7 +15,7 @@ import {escapeStringForRegExp} from './regexp-string.js';
  * // output is `/a/igm`
  * ```
  *
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function addRegExpFlags(originalRegExp: RegExp, flags: string): RegExp {
     return new RegExp(
@@ -48,7 +48,7 @@ export function addRegExpFlags(originalRegExp: RegExp, flags: string): RegExp {
  * setRegExpCaseSensitivity('abc', {caseSensitive: true}); // output is `/abc/i`
  * ```
  *
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function setRegExpCaseSensitivity(
     originalRegExpOrString: string | RegExp,

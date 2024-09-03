@@ -38,7 +38,7 @@ export type {PrismaMigrationStatus} from '../prisma/prisma-migrations.js';
  *
  * @category Prisma : Node
  * @category Package : @augment-vir/node
- * @package @augment-vir/node
+ * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
  */
 export const prisma = {
     migration: {

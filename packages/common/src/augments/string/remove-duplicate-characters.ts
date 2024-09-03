@@ -14,7 +14,7 @@ import {removeDuplicates} from '../array/remove-duplicates.js';
  * // output is `'aABcQrs'`
  * ```
  *
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function removeDuplicateCharacters(...values: ReadonlyArray<string>): string {
     const combined = values.join('');

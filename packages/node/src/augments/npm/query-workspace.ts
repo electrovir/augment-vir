@@ -7,7 +7,7 @@ import {runShellCommand} from '../terminal/shell.js';
  *
  * @category Node : Npm
  * @category Package : @augment-vir/node
- * @package @augment-vir/node
+ * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
  */
 export type NpmWorkspace = PackageJson & {
     _id: string;
@@ -30,7 +30,7 @@ export type NpmWorkspace = PackageJson & {
  *
  * @category Node : Npm
  * @category Package : @augment-vir/node
- * @package @augment-vir/node
+ * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
  */
 export async function queryNpmWorkspace(cwd: string): Promise<NpmWorkspace[]> {
     const queryOutput = await runShellCommand('npm query .workspace', {

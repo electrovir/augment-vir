@@ -26,7 +26,7 @@ async function internalReadDirPathsRecursive(dirPath: string, basePath: string):
  *
  * @category Node : File
  * @category Package : @augment-vir/node
- * @package @augment-vir/node
+ * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
  */
 export async function readDirRecursive(dirPath: string): Promise<string[]> {
     return await internalReadDirPathsRecursive(dirPath, dirPath);
@@ -38,7 +38,7 @@ export async function readDirRecursive(dirPath: string): Promise<string[]> {
  * @category Node : File
  * @category Package : @augment-vir/node
  * @returns That filtered list of paths.
- * @package @augment-vir/node
+ * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
  */
 export async function readDirFilesByExtension({
     dirPath,

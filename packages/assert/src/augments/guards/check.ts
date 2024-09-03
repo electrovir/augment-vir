@@ -24,7 +24,7 @@ const checkGroup = createCheckGroup(extendableAssertions, checkOverrides);
  * ```
  *
  * @returns A boolean (as a type guard when possible).
- * @package @augment-vir/assert
+ * @package [`@augment-vir/assert`](https://www.npmjs.com/package/@augment-vir/assert)
  */
 export const check: ((input: unknown) => boolean) &
     typeof checkGroup &

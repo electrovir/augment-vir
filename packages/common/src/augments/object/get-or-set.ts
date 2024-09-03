@@ -56,7 +56,7 @@ export function getOrSetFromMap<MapKey, MapValue>(
  * });
  * ```
  *
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function getOrSetFromMap<MapKey, MapValue>(
     map: Map<MapKey, MapValue> | WeakMap<MapKey & object, MapValue>,
@@ -125,7 +125,7 @@ export function getOrSet<OriginalObject extends AnyObject, Key extends keyof Ori
  * });
  * ```
  *
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function getOrSet<OriginalObject extends AnyObject, Key extends keyof OriginalObject>(
     originalObject: OriginalObject,

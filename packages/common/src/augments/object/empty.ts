@@ -5,6 +5,6 @@ import {IsEmptyObject} from 'type-fest';
  *
  * @category Object
  * @category Package : @augment-vir/common
- * @package @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type ExcludeEmpty<T> = IsEmptyObject<T> extends true ? never : T;
