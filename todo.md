@@ -24,6 +24,7 @@
 -   re-review v30 changelog
 -   fill in docs with examples for every single export
 -   add shallow copy and deep copy
+-   replace all categories that _only_ have a `: Common` version to just the category name (like `Type : Common` to just `Type`)
 -   fill out mono-repo root README
 -   move virmator's dir-contents augments into `@augment-vir/node`
 -   move path transforms to `@augment-vir/common` (like `toPosixPath`)

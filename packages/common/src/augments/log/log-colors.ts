@@ -1,4 +1,4 @@
-import {forEachEnv, RuntimeEnv} from '@augment-vir/core';
+import {perEnv, RuntimeEnv} from '@augment-vir/core';
 
 /**
  * Supported log output types.
@@ -54,7 +54,7 @@ export type LogColorConfig = Readonly<
 >;
 
 async function determineDefaultLogColors(): Promise<Record<LogColorKey, string>> {
-    return await forEachEnv({
+    return await perEnv({
         /** We calculate coverage in web, so the node code will never run in coverage tests. */
         /* node:coverage disable  */
         async [RuntimeEnv.Node]() {

@@ -1,6 +1,13 @@
 import {stringify} from '../object/stringify.js';
 import {removeEndingPunctuation} from '../string/punctuation.js';
 
+/**
+ * Tries its hardest to extract an error message from the input, which may be anything (not even an
+ * Error instance).
+ *
+ * @category Error : Common
+ * @package @augment-vir/common
+ */
 export function extractErrorMessage(maybeError: unknown): string {
     if (!maybeError) {
         return '';
@@ -19,6 +26,12 @@ export function extractErrorMessage(maybeError: unknown): string {
 
 export function combineErrorMessages(...messages: ReadonlyArray<string | undefined>): string;
 export function combineErrorMessages(messages: ReadonlyArray<string | undefined>): string;
+/**
+ * Combines multiple error messages into a single error message.
+ *
+ * @category Error : Common
+ * @package @augment-vir/common
+ */
 export function combineErrorMessages(
     ...rawMessages: [ReadonlyArray<string | undefined>] | ReadonlyArray<string | undefined>
 ): string {

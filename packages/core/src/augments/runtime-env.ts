@@ -1,9 +1,10 @@
 import {isNode} from 'browser-or-node';
 
 /**
- * JavaScript run-time env. code, which usually has its own env definition as well.
+ * JavaScript runtime env.
  *
  * @category Env
+ * @package @augment-vir/common
  */
 export enum RuntimeEnv {
     Node = 'node',
@@ -15,6 +16,7 @@ export enum RuntimeEnv {
  * simply import {@link currentRuntimeEnv} directly.
  *
  * @category Env
+ * @package @augment-vir/common
  */
 export function determineRuntimeEnv(): RuntimeEnv {
     /** Coverage in this package is only run in Node. */
@@ -23,9 +25,10 @@ export function determineRuntimeEnv(): RuntimeEnv {
 }
 
 /**
- * The current {@link RuntimeEnv} value.
+ * The current {@link RuntimeEnv}.
  *
  * @category Env
+ * @package @augment-vir/common
  */
 export const currentRuntimeEnv = determineRuntimeEnv();
 
@@ -34,15 +37,30 @@ export const currentRuntimeEnv = determineRuntimeEnv();
  *
  * @category Env
  * @returns `true` if the given {@link RuntimeEnv} is the current {@link RuntimeEnv}.
+ * @package @augment-vir/common
  */
 export function isRuntimeEnv(itItThisEnv: RuntimeEnv): boolean {
     return currentRuntimeEnv === itItThisEnv;
 }
 
+/**
+ * Throw this Error to indicate that something was attempted that cannot be done in the current
+ * runtime.
+ *
+ * @category Env
+ * @package @augment-vir/common
+ */
 export class RuntimeEnvError extends Error {
     public override readonly name = 'RuntimeEnvError';
 }
 
-export function forEachEnv<T>(perEnv: Record<RuntimeEnv, () => T>): T {
+/**
+ * Requires defining an object of functions for all possible {@link RuntimeEnv} values and then only
+ * calls the function for the current runtime.
+ *
+ * @category Env
+ * @package @augment-vir/common
+ */
+export function perEnv<T>(perEnv: Record<RuntimeEnv, () => T>): T {
     return perEnv[currentRuntimeEnv]();
 }

@@ -1,5 +1,5 @@
 import {check} from '@augment-vir/assert';
-import {forEachEnv, MaybePromise, RuntimeEnv, stringify} from '@augment-vir/core';
+import {MaybePromise, perEnv, RuntimeEnv, stringify} from '@augment-vir/core';
 import {filterMap} from '../array/filter.js';
 import {removeSuffix} from '../string/suffix.js';
 import {LogColorKey, type LogColorConfig} from './log-colors.js';
@@ -31,7 +31,7 @@ export type ToLogStringParams = {
 type ToLogString = (params: Readonly<ToLogStringParams>) => LogWriterParams;
 
 async function createToLogString(): Promise<ToLogString> {
-    return await forEachEnv<MaybePromise<ToLogString>>({
+    return await perEnv<MaybePromise<ToLogString>>({
         /** We calculate coverage in web, so the node code will never run in coverage tests. */
         /* node:coverage disable  */
         async [RuntimeEnv.Node]() {

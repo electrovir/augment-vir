@@ -5,6 +5,9 @@ export type {SetRequired} from 'type-fest';
 /**
  * Same as the Required<> built-in type helper but this requires that each property be present and
  * be not null.
+ *
+ * @category Object : Common
+ * @package @augment-vir/common
  */
 export type RequiredAndNotNull<T> = {
     [P in keyof CompleteRequire<T>]-?: NonNullable<T[P]>;
@@ -13,10 +16,19 @@ export type RequiredAndNotNull<T> = {
 /**
  * Require only a subset of object properties and require that they be not null. This is
  * particularly useful in conjunction with the "exactOptionalPropertyTypes" tsconfig flag.
+ *
+ * @category Object : Common
+ * @package @augment-vir/common
  */
 export type SetRequiredAndNotNull<T, K extends keyof T> = Omit<T, K> &
     CompleteRequire<{[PropertyName in K]: NonNullable<T[PropertyName]>}>;
 
+/**
+ * Sets a key as optional but also nullable.
+ *
+ * @category Object : Common
+ * @package @augment-vir/common
+ */
 export type SetOptionalAndNullable<
     OriginalObjectGeneric,
     OptionalKeysGeneric extends keyof OriginalObjectGeneric,
@@ -29,6 +41,9 @@ export type SetOptionalAndNullable<
 /**
  * Modified version of `RequiredKeys` from `type-fest` that does not require `BaseType` to extends
  * `object`.
+ *
+ * @category Object : Common
+ * @package @augment-vir/common
  */
 export type RequiredKeysOf<BaseType> = Exclude<
     {
@@ -43,6 +58,7 @@ export type RequiredKeysOf<BaseType> = Exclude<
  * `noUncheckedIndexedAccess` TSConfig compiler option is enabled.
  *
  * @category Object : Common
+ * @package @augment-vir/common
  */
 export type CompleteRequire<Parent> = {
     [Prop in keyof Parent]-?: Parent extends Partial<Record<Prop, infer V>> ? V : never;

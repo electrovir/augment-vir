@@ -1,7 +1,14 @@
+/**
+ * Removes ansi escape codes (such as terminal colors) within the given string.
+ *
+ * @category String : Common
+ * @package @augment-vir/common
+ */
 export function removeAnsiEscapeCodes(input: string): string {
     return input.replace(ansiRegExp, '');
 }
 
+/** {@inheritDoc removeAnsiEscapeCodes} */
 export const removeColor = removeAnsiEscapeCodes;
 
 // cspell:disable
@@ -36,4 +43,12 @@ const patterns: string[] = [
     String.raw`(?:(?:\d{1,4}(?:;\d{0,4})*)?[\dA-PR-TZcf-nq-uy=><~]))`,
 ];
 
+/**
+ * A RegExp that will match all ansi escape codes (such as terminal colors). Used in
+ * {@link removeAnsiEscapeCodes}.
+ *
+ * @category String : Common
+ * @category RegExp : Common
+ * @package @augment-vir/common
+ */
 export const ansiRegExp = new RegExp(patterns.join('|'), 'g');

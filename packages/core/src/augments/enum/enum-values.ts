@@ -7,6 +7,12 @@ function getEnumKeys<T extends EnumBaseType>(input: T): (keyof T)[] {
     return getObjectTypedKeys(input).filter((key) => isNaN(Number(key)));
 }
 
+/**
+ * Gets all values within an enum as an array.
+ *
+ * @category Enum : Common
+ * @package @augment-vir/common
+ */
 export function getEnumValues<T extends EnumBaseType>(input: T): T[keyof T][] {
     const keys = getEnumKeys(input);
     return keys.map((key) => input[key]);

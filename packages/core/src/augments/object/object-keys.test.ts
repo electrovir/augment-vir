@@ -1,6 +1,7 @@
 import {assert} from '@augment-vir/assert';
 import {getObjectTypedKeys} from '@augment-vir/core';
 import {describe, it} from '@augment-vir/test';
+import {ExtractKeysWithMatchingValues} from './object-keys.js';
 
 enum Planet {
     Mercury = 'mercury',
@@ -36,5 +37,13 @@ describe(getObjectTypedKeys.name, () => {
             Planet.Earth,
             mySymbol,
         ]);
+    });
+});
+
+describe('ExtractKeysWithMatchingValues', () => {
+    it('extracts keys', () => {
+        assert
+            .tsType<ExtractKeysWithMatchingValues<{a: RegExp; b: string}, string>>()
+            .equals<'b'>();
     });
 });
