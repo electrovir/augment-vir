@@ -5,6 +5,12 @@ import {createInterface} from 'node:readline';
 /** Can't test requiring user input. */
 /* node:coverage disable */
 
+/**
+ * Options for {@link askQuestion}.
+ *
+ * @category Terminal : Node
+ * @package @augment-vir/node
+ */
 export type AskQuestionOptions = {
     timeout: AnyDuration;
     hideUserInput: boolean;
@@ -15,6 +21,15 @@ const defaultAskQuestionOptions: AskQuestionOptions = {
     hideUserInput: false,
 };
 
+/**
+ * Asks the user a question in their terminal and then waits for them to type something in response.
+ * The response is accepted once the user inputs a new line.
+ *
+ * @category Terminal : Node
+ * @package @augment-vir/node
+ * @see
+ *  - {@link askQuestionUntilConditionMet}: ask a question on loop until the user provides a valid response.
+ */
 export async function askQuestion(
     questionToAsk: string,
     {
@@ -74,6 +89,12 @@ export async function askQuestion(
     });
 }
 
+/**
+ * Options for {@link askQuestionUntilConditionMet}.
+ *
+ * @category Terminal : Node
+ * @package @augment-vir/node
+ */
 export type QuestionUntilConditionMetConfig = {
     questionToAsk: string;
     conditionCallback: (response: string) => boolean | Promise<boolean>;
@@ -81,6 +102,16 @@ export type QuestionUntilConditionMetConfig = {
     tryCountMax?: number;
 } & Partial<AskQuestionOptions>;
 
+/**
+ * Asks the user a question in their terminal and then waits for them to type something in response.
+ * The response is submitted once the user inputs a new line. If the response fails validation, the
+ * question is presented again.
+ *
+ * @category Terminal : Node
+ * @package @augment-vir/node
+ * @see
+ *  - {@link askQuestion}: ask a question and accept any response.
+ */
 export async function askQuestionUntilConditionMet({
     questionToAsk,
     conditionCallback,

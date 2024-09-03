@@ -42,7 +42,12 @@ export {
 export {type RunDockerContainerCommandParams} from '../docker/containers/run-command.js';
 export {type RunDockerContainerParams} from '../docker/containers/run-container.js';
 
-/** Centralized Docker API from `@augment-vir/node`. */
+/**
+ * Centralized Docker API from `@augment-vir/node`.
+ *
+ * @category Docker : Node
+ * @package @augment-vir/node
+ */
 export const docker = {
     isRunning: isDockerRunning,
     start: startDocker,

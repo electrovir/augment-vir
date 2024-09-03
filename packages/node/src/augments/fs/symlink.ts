@@ -1,6 +1,12 @@
 import {existsSync} from 'node:fs';
 import {lstat, readlink, stat, symlink} from 'node:fs/promises';
 
+/**
+ * Creates a symlink.
+ *
+ * @category File : Node
+ * @package @augment-vir/node
+ */
 export async function createSymlink({
     linkTo,
     symlinkPath,

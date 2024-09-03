@@ -15,6 +15,14 @@ export function findAncestor(
     currentPath: string,
     callback: (path: string) => MaybePromise<boolean>,
 ): MaybePromise<string | undefined>;
+/**
+ * Find an ancestor file path that matches the given `callback`. If no matches are found all the way
+ * up until the system root, this returns `undefined`.
+ *
+ * @category Path : Node
+ * @returns `undefined` if no matches are found.
+ * @package @augment-vir/node
+ */
 export function findAncestor(
     currentPath: string,
     callback: (path: string) => MaybePromise<boolean>,
@@ -42,6 +50,24 @@ export function findAncestor(
     }
 }
 
+/**
+ * Join a list of paths to the given `parentDirPath`. This is particularly useful for getting full
+ * paths from the output of
+ * [`readdir`](https://nodejs.org/api/fs.html#fspromisesreaddirpath-options).
+ *
+ * @category Path : Node
+ * @example
+ *
+ * ```ts
+ * import {readdir} from 'node:fs/promises';
+ * import {join} from 'node:path';
+ *
+ * const parentDir = join('my', 'path');
+ * const dirs = joinFilesToDir(parentDir, await readdir(parentDir));
+ * ```
+ *
+ * @package @augment-vir/node
+ */
 export function joinFilesToDir(
     parentDirPath: string,
     childNames: ReadonlyArray<string>,

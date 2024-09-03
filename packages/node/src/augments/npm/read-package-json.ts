@@ -3,6 +3,14 @@ import {join} from 'node:path';
 import {PackageJson} from 'type-fest';
 import {readJsonFile} from '../fs/json.js';
 
+/**
+ * Read the `package.json` file contained within the given directory.
+ *
+ * @category Npm : Node
+ * @throws `TypeError` if the given directory has no `package.json` or the `package.json` is
+ *   invalid.
+ * @package @augment-vir/node
+ */
 export async function readPackageJson(dirPath: string): Promise<PackageJson> {
     const packageJsonPath = join(dirPath, 'package.json');
     const packageJson = (await readJsonFile(packageJsonPath)) as PackageJson | undefined;

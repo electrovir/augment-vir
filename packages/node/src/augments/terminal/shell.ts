@@ -3,6 +3,12 @@ import type {MaybePromise, PartialWithUndefined, RequiredAndNotNull} from '@augm
 import {ChildProcess, ExecException, spawn} from 'node:child_process';
 import {defineTypedCustomEvent, ListenTarget} from 'typed-event-target';
 
+/**
+ * All output from {@link runShellCommand}.
+ *
+ * @category Terminal : Node
+ * @package @augment-vir/node
+ */
 export type ShellOutput = {
     error: undefined | Error;
     stderr: string;
@@ -11,18 +17,46 @@ export type ShellOutput = {
     exitSignal: NodeJS.Signals | undefined;
 };
 
+/**
+ * An event that indicates that the shell command just wrote to stdout.
+ *
+ * @category Terminal : Node
+ * @package @augment-vir/node
+ */
 export class ShellStdoutEvent extends defineTypedCustomEvent<string | Buffer>()('shell-stdout') {}
+/**
+ * An event that indicates that the shell command just wrote to stderr.
+ *
+ * @category Terminal : Node
+ * @package @augment-vir/node
+ */
 export class ShellStderrEvent extends defineTypedCustomEvent<string | Buffer>()('shell-stderr') {}
 /**
- * Contains an exit code or an exit signal. Based on the Node.js documentation, either one or the
- * other is defined, never both at the same time.
+ * An event that indicates that the shell command is finished. This contains an exit code or an exit
+ * signal. Based on the Node.js documentation, either one or the other is defined, never both at the
+ * same time.
+ *
+ * @category Terminal : Node
+ * @package @augment-vir/node
  */
 export class ShellDoneEvent extends defineTypedCustomEvent<{
     exitCode: number | undefined;
     exitSignal: NodeJS.Signals | undefined;
 }>()('shell-done') {}
+/**
+ * An event that indicates that the shell command errored.
+ *
+ * @category Terminal : Node
+ * @package @augment-vir/node
+ */
 export class ShellErrorEvent extends defineTypedCustomEvent<Error>()('shell-error') {}
 
+/**
+ * A shell command listen target that emits events.
+ *
+ * @category Terminal : Node
+ * @package @augment-vir/node
+ */
 export class ShellTarget extends ListenTarget<
     ShellStdoutEvent | ShellStderrEvent | ShellDoneEvent | ShellErrorEvent
 > {
@@ -31,6 +65,16 @@ export class ShellTarget extends ListenTarget<
     }
 }
 
+/**
+ * Runs a shell command and returns a {@link ShellTarget} instance for directly hooking into shell
+ * events. This allows instant reactions to shell events but in a less convenient API compared to
+ * {@link runShellCommand}.
+ *
+ * @category Terminal : Node
+ * @package @augment-vir/node
+ * @see
+ * - {@link runShellCommand}: a higher level and more succinct way of running a shell command.
+ */
 export function streamShellCommand(
     command: string,
     cwd?: string,
@@ -98,7 +142,13 @@ export function streamShellCommand(
     return shellTarget;
 }
 
-export type RunShellCommandParams = {
+/**
+ * Options for {@link runShellCommand}.
+ *
+ * @category Terminal : Node
+ * @package @augment-vir/node
+ */
+export type RunShellCommandOptions = {
     cwd?: string | undefined;
     env?: NodeJS.ProcessEnv | undefined;
     shell?: string | undefined;
@@ -115,9 +165,17 @@ function prepareChunkForLogging(chunk: string | Buffer, trimEndingLine: boolean)
     return trimEndingLine ? stringified.replace(/\n$/, '') : stringified;
 }
 
+/**
+ * Runs a shell command and returns its output.
+ *
+ * @category Terminal : Node
+ * @package @augment-vir/node
+ * @see
+ * - {@link streamShellCommand}: a lower level way of running a shell command that allows instant reactions to shell events.
+ */
 export async function runShellCommand(
     command: string,
-    options: RunShellCommandParams = {},
+    options: RunShellCommandOptions = {},
 ): Promise<ShellOutput> {
     return new Promise<ShellOutput>((resolve, reject) => {
         let stdout = '';
@@ -198,6 +256,12 @@ export async function runShellCommand(
     });
 }
 
+/**
+ * Options for {@link logShellOutput}.
+ *
+ * @category Terminal : Node
+ * @package @augment-vir/node
+ */
 export type LogShellOutputOptions = PartialWithUndefined<{
     logger: Logger;
     withLabels: boolean;
@@ -210,6 +274,12 @@ const defaultLogShellOutputOptions: RequiredAndNotNull<LogShellOutputOptions> = 
     withLabels: false,
 };
 
+/**
+ * Log the output of running a shell command. This is useful for quick debugging of shell commands.
+ *
+ * @category Terminal : Node
+ * @package @augment-vir/node
+ */
 export function logShellOutput(
     shellOutput: PartialWithUndefined<Omit<ShellOutput, 'exitSignal'>>,
     {

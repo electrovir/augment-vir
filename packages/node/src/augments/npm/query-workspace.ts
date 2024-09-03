@@ -1,7 +1,13 @@
 import type {UnknownObject} from '@augment-vir/core';
 import type {PackageJson} from 'type-fest';
-import {runShellCommand} from '../shell.js';
+import {runShellCommand} from '../terminal/shell.js';
 
+/**
+ * An npm workspace object. This is the return type for {@link queryNpmWorkspace}.
+ *
+ * @category Npm : Node
+ * @package @augment-vir/node
+ */
 export type NpmWorkspace = PackageJson & {
     _id: string;
     deduped: boolean;
@@ -18,6 +24,12 @@ export type NpmWorkspace = PackageJson & {
     to: string[];
 };
 
+/**
+ * Get a list of all NPM workspaces in the given mono-repo directory using npm's CLI.
+ *
+ * @category Npm : Node
+ * @package @augment-vir/node
+ */
 export async function queryNpmWorkspace(cwd: string): Promise<NpmWorkspace[]> {
     const queryOutput = await runShellCommand('npm query .workspace', {
         cwd,

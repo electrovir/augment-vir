@@ -5,6 +5,12 @@ import {Readable} from 'node:stream';
 import {finished} from 'node:stream/promises';
 import type {ReadableStream} from 'node:stream/web';
 
+/**
+ * Download a file.
+ *
+ * @category File : Node
+ * @package @augment-vir/node
+ */
 export async function downloadFile({url, writePath}: {url: string; writePath: string}) {
     const response = await fetch(url);
 

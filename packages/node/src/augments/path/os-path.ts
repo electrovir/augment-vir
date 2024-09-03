@@ -1,6 +1,11 @@
 import {sep} from 'node:path';
 
-/** Convert a given path to a windows path if the current system doesn't use `/`. */
+/**
+ * Convert a given path to a windows path if the current system doesn't use `/`.
+ *
+ * @category Path : Node
+ * @package @augment-vir/node
+ */
 export function replaceWithWindowsPathIfNeeded(input: string): string {
     if (sep === '/') {
         return input;
@@ -11,7 +16,12 @@ export function replaceWithWindowsPathIfNeeded(input: string): string {
     }
 }
 
-/** Convert a Windows path to a posix path. */
+/**
+ * Convert a Windows path to a posix path.
+ *
+ * @category Path : Node
+ * @package @augment-vir/node
+ */
 export function toPosixPath(maybeWindowsPath: string): string {
     return maybeWindowsPath
         .replace(/^(.+?):\\+/, (match, captureGroup) => {
@@ -21,8 +31,11 @@ export function toPosixPath(maybeWindowsPath: string): string {
 }
 
 /**
- * Use this to interpolate paths into bash commands. If the given path is not a window path, the
+ * Use this to interpolate paths into bash commands. If the given path is not a Windows path, the
  * path structure will not be modified.
+ *
+ * @category Path : Node
+ * @package @augment-vir/node
  */
 export function interpolationSafeWindowsPath(input: string): string {
     return input.replace(/\\/g, '\\\\\\\\');

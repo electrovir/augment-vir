@@ -11,7 +11,12 @@ import {
     getMigrationStatus,
 } from '../prisma/prisma-migrations.js';
 
-/** Centralized Prisma API from `@augment-vir/node`. */
+/**
+ * Centralized Prisma API from `@augment-vir/node`.
+ *
+ * @category Prisma : Node
+ * @package @augment-vir/node
+ */
 export const prisma = {
     migration: {
         status: getMigrationStatus,

@@ -4,4 +4,10 @@ function getSystemRootPath() {
     return parse(process.cwd()).root;
 }
 
+/**
+ * The root path of the system containing the cwd.
+ *
+ * @category Path : Node
+ * @package @augment-vir/node
+ */
 export const systemRootPath = getSystemRootPath();
