@@ -20,6 +20,7 @@ export function findAncestor(
  * up until the system root, this returns `undefined`.
  *
  * @category Path : Node
+ * @category Package : @augment-vir/node
  * @returns `undefined` if no matches are found.
  * @package @augment-vir/node
  */
@@ -56,6 +57,7 @@ export function findAncestor(
  * [`readdir`](https://nodejs.org/api/fs.html#fspromisesreaddirpath-options).
  *
  * @category Path : Node
+ * @category Package : @augment-vir/node
  * @example
  *
  * ```ts

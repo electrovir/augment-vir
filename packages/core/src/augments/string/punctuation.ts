@@ -3,7 +3,8 @@ import type {ArrayElement} from '../array/array.js';
 /**
  * All characters that are considered punctuation.
  *
- * @category String : Common
+ * @category String
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export const punctuationLetters = [
@@ -18,8 +19,9 @@ export const punctuationLetters = [
 /**
  * A RegExp matching all letters that are considered punctuation.
  *
- * @category String : Common
- * @category RegExp : Common
+ * @category String
+ * @category RegExp
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export const punctuationRegExp = new RegExp(`[${punctuationLetters.join('')}]+`);
@@ -27,8 +29,9 @@ export const punctuationRegExp = new RegExp(`[${punctuationLetters.join('')}]+`)
 /**
  * A RegExp matching that matches any punctuation at the end of a string.
  *
- * @category String : Common
- * @category RegExp : Common
+ * @category String
+ * @category RegExp
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export const endsWithPunctuationRegExp = new RegExp(`[${punctuationLetters.join('')}]+$`);
@@ -36,7 +39,8 @@ export const endsWithPunctuationRegExp = new RegExp(`[${punctuationLetters.join(
 /**
  * All characters that are considered punctuation.
  *
- * @category String : Common
+ * @category String
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export type PunctuationLetter = ArrayElement<typeof punctuationLetters>;
@@ -44,7 +48,8 @@ export type PunctuationLetter = ArrayElement<typeof punctuationLetters>;
 /**
  * Removes any punctuation at the end of the given string.
  *
- * @category String : Common
+ * @category String
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export function removeEndingPunctuation(value: string): string {

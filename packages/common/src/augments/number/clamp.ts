@@ -3,7 +3,8 @@ import {MinMax} from './min-max.js';
 /**
  * Clamp's the given value to within the min and max bounds, inclusive.
  *
- * @category Number : Common
+ * @category Number
+ * @category Package : @augment-vir/common
  * @example
  *
  * ```ts

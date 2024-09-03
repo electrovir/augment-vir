@@ -7,7 +7,8 @@ import {awaitedBlockingMap} from './awaited-map.js';
  * `awaitedForEach` will wait for a callback on array element 1 to finish before moving on to array
  * element 2.
  *
- * @category Array : Common
+ * @category Array
+ * @category Package : @augment-vir/common
  * @example
  *
  * ```ts

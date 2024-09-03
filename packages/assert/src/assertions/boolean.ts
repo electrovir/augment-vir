@@ -11,6 +11,7 @@ import {WaitUntilOptions} from '../guard-types/wait-until-function.js';
  * for it in TypeScript.
  *
  * @category Assert : Util
+ * @category Package : @augment-vir/assert
  * @example
  *
  * ```ts
@@ -26,6 +27,7 @@ export type FalsyValue = undefined | null | false | 0 | '' | -0 | 0n;
  * Narrows the given type parameter `T` to all its falsy sub-types.
  *
  * @category Assert : Util
+ * @category Package : @augment-vir/assert
  * @example
  *
  * ```ts
@@ -43,6 +45,7 @@ export type Falsy<T> = NarrowToExpected<T, FalsyValue>;
  * Narrows the given type parameter `T` to all its truthy sub-types.
  *
  * @category Assert : Util
+ * @category Package : @augment-vir/assert
  * @example
  *
  * ```ts

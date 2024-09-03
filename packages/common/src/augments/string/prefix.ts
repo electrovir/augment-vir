@@ -1,7 +1,8 @@
 /**
  * Generic string type but with the given prefix prepended to it.
  *
- * @category String : Common
+ * @category String
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export type WithPrefix<Prefix extends string> = `${Prefix}${string}`;
@@ -9,7 +10,8 @@ export type WithPrefix<Prefix extends string> = `${Prefix}${string}`;
 /**
  * Adds a prefix to a string if it does not already exist.
  *
- * @category String : Common
+ * @category String
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export function addPrefix<const Prefix extends string>({
@@ -29,7 +31,8 @@ export function addPrefix<const Prefix extends string>({
 /**
  * Removes a prefix from a string if it exists.
  *
- * @category String : Common
+ * @category String
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export function removePrefix<const Prefix extends string>({

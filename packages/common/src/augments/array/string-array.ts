@@ -1,7 +1,8 @@
 /**
  * Trims all entries in an array.
  *
- * @category Array : Common
+ * @category Array
+ * @category Package : @augment-vir/common
  * @returns A new array (does not mutate).
  * @package @augment-vir/common
  */

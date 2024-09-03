@@ -7,6 +7,7 @@ import {SpecTagName, ensureSpecTagName} from 'html-spec-tags';
  * tag names that aren't generated via element-vir.
  *
  * @category Web : Elements
+ * @category Package : @augment-vir/web
  * @package @augment-vir/web
  */
 export function toTagOrDefinition(element: Element): DeclarativeElementDefinition | SpecTagName {

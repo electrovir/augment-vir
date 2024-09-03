@@ -39,7 +39,8 @@ export function getOrSetFromMap<MapKey, MapValue>(
  * given `createCallback` is used to create a new value which is then stored in the given map and
  * returned. Automatically handles an async `createCallback`.
  *
- * @category Object : Common
+ * @category Object
+ * @category Package : @augment-vir/common
  * @example
  *
  * ```ts
@@ -107,7 +108,8 @@ export function getOrSet<OriginalObject extends AnyObject, Key extends keyof Ori
  * then the given `createCallback` is used to create a new value which is then stored in the given
  * object and returned. Automatically handles an async `createCallback`.
  *
- * @category Object : Common
+ * @category Object
+ * @category Package : @augment-vir/common
  * @example
  *
  * ```ts

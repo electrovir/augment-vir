@@ -7,7 +7,8 @@ import {PartialDeep} from 'type-fest';
  *
  * Note that order matters! Each input object will overwrite the properties of the previous objects.
  *
- * @category Object : Common
+ * @category Object
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export function mergeDeep<const T extends object>(

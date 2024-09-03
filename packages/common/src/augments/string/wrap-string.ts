@@ -4,7 +4,8 @@ import {addSuffix} from './suffix.js';
 /**
  * Wraps a string in another string.
  *
- * @category String : Common
+ * @category String
+ * @category Package : @augment-vir/common
  * @example
  *
  * ```ts

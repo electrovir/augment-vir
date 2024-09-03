@@ -13,6 +13,13 @@ export async function getContainerLogs(
     return logResult.stdout;
 }
 
+/**
+ * All possible statuses for an existing container.
+ *
+ * @category Node : Docker : Util
+ * @category Package : @augment-vir/node
+ * @package @augment-vir/node
+ */
 export enum DockerContainerStatus {
     Created = 'created',
     Running = 'running',
@@ -26,6 +33,14 @@ export enum DockerContainerStatus {
     Removed = 'removed',
 }
 
+/**
+ * Statuses from {@link DockerContainerStatus} that indicate that a container has been exited in some
+ * way.
+ *
+ * @category Node : Docker : Util
+ * @category Package : @augment-vir/node
+ * @package @augment-vir/node
+ */
 export const exitedDockerContainerStatuses = [
     DockerContainerStatus.Dead,
     DockerContainerStatus.Removed,

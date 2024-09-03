@@ -12,6 +12,13 @@ import {
 } from './docker-command-inputs.js';
 import {killContainer} from './kill-container.js';
 
+/**
+ * Parameters for `docker.container.run`.
+ *
+ * @category Node : Docker : Util
+ * @category Package : @augment-vir/node
+ * @package @augment-vir/node
+ */
 export type RunDockerContainerParams = {
     imageName: string;
     detach: boolean;

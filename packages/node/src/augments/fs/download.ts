@@ -8,7 +8,8 @@ import type {ReadableStream} from 'node:stream/web';
 /**
  * Download a file.
  *
- * @category File : Node
+ * @category Node : File
+ * @category Package : @augment-vir/node
  * @package @augment-vir/node
  */
 export async function downloadFile({url, writePath}: {url: string; writePath: string}) {

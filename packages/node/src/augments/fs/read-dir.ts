@@ -24,7 +24,8 @@ async function internalReadDirPathsRecursive(dirPath: string, basePath: string):
  * Gets all files within a directory and its subdirectories, recursively. Returns an array of paths
  * relative to the given input path.
  *
- * @category File : Node
+ * @category Node : File
+ * @category Package : @augment-vir/node
  * @package @augment-vir/node
  */
 export async function readDirRecursive(dirPath: string): Promise<string[]> {
@@ -34,7 +35,8 @@ export async function readDirRecursive(dirPath: string): Promise<string[]> {
 /**
  * Reads all files within a single directory and filters them by the given extension or extensions.
  *
- * @category File : Node
+ * @category Node : File
+ * @category Package : @augment-vir/node
  * @returns That filtered list of paths.
  * @package @augment-vir/node
  */

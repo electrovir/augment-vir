@@ -4,7 +4,8 @@ import type {AnyObject} from '@augment-vir/core';
  * Counts the number of unique keys in an object type. Note that a key of just `string` will count
  * as 1.
  *
- * @category Object : Common
+ * @category Object
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export type KeyCount<T extends AnyObject> = UnionToTuple<keyof T>['length'];

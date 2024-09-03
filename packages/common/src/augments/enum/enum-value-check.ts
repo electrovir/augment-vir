@@ -4,8 +4,9 @@ import type {EnumBaseType} from '@augment-vir/core';
 /**
  * Filters the input array to all valid values from the given enum.
  *
- * @category Array : Common
- * @category Enum : Common
+ * @category Array
+ * @category Enum
+ * @category Package : @augment-vir/common
  * @example
  *
  * ```ts

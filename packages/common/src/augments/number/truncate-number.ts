@@ -7,7 +7,8 @@ import {requiresScientificNotation} from './scientific.js';
 /**
  * The default truncation prefixes for {@link truncateNumber}.
  *
- * @category Number : Common
+ * @category Number
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export const defaultTruncationSuffixes = [
@@ -189,7 +190,8 @@ function handleSmallNumbers(numberAsString: string, maxLength: number): string |
  *     'Z', // zetta- sextillion
  *     'Y', // yotta- septillion
  *
- * @category Number : Common
+ * @category Number
+ * @category Package : @augment-vir/common
  * @example
  *
  * ```ts

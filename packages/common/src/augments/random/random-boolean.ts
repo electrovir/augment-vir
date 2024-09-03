@@ -9,7 +9,8 @@ import {randomInteger} from './random-integer.js';
  *
  * This function uses cryptographically secure randomness.
  *
- * @category Random : Common
+ * @category Random
+ * @category Package : @augment-vir/common
  * @example
  *
  * ```ts

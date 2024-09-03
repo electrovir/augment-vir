@@ -18,6 +18,7 @@ import {Jsonify, Primitive} from 'type-fest';
  *   entirely.
  *
  * @category JSON : Common
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export type JsonCompatiblePrimitive = Jsonify<Primitive> | undefined;
@@ -26,6 +27,7 @@ export type JsonCompatiblePrimitive = Jsonify<Primitive> | undefined;
  * An object that only contains JSON compatible values.
  *
  * @category JSON : Common
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export type JsonCompatibleObject =
@@ -40,6 +42,7 @@ export type JsonCompatibleObject =
  * An array that only contains JSON compatible values.
  *
  * @category JSON : Common
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export type JsonCompatibleArray = JsonCompatibleValue[] | ReadonlyArray<JsonCompatibleValue>;
@@ -48,6 +51,7 @@ export type JsonCompatibleArray = JsonCompatibleValue[] | ReadonlyArray<JsonComp
  * Any JSON compatible value.
  *
  * @category JSON : Common
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export type JsonCompatibleValue =

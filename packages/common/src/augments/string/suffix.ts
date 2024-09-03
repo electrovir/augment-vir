@@ -3,7 +3,8 @@ import {toEnsuredNumber} from '../number/number-conversion.js';
 /**
  * Generic string type but with the given suffix appended to it.
  *
- * @category String : Common
+ * @category String
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export type WithSuffix<Suffix extends string> = `${string}${Suffix}`;
@@ -11,7 +12,8 @@ export type WithSuffix<Suffix extends string> = `${string}${Suffix}`;
 /**
  * Suffix for {@link addPercent} and {@link removePercent}.
  *
- * @category String : Common
+ * @category String
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export const percentSuffix = '%';
@@ -19,21 +21,24 @@ export const percentSuffix = '%';
 /**
  * Suffix for {@link addPx} and {@link removePx}.
  *
- * @category String : Common
+ * @category String
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export const pxSuffix = 'px';
 /**
  * Generic string type but with the `'px'` suffix appended to it.
  *
- * @category String : Common
+ * @category String
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export type WithPx = WithSuffix<typeof pxSuffix>;
 /**
  * Generic string type but with the `'%'` suffix appended to it.
  *
- * @category String : Common
+ * @category String
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export type WithPercent = WithSuffix<typeof percentSuffix>;
@@ -41,7 +46,8 @@ export type WithPercent = WithSuffix<typeof percentSuffix>;
 /**
  * Adds the `'px'` suffix to a string if it does not already exist.
  *
- * @category String : Common
+ * @category String
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export function addPx(input: number | string): WithPx {
@@ -51,7 +57,8 @@ export function addPx(input: number | string): WithPx {
 /**
  * Removes the `'px'` suffix from a string if it exists.
  *
- * @category String : Common
+ * @category String
+ * @category Package : @augment-vir/common
  * @throws `TypeError` if the input can't be converted into a number.
  * @package @augment-vir/common
  */
@@ -62,7 +69,8 @@ export function removePx(input: string): number {
 /**
  * Adds the `'%'` suffix to a string if it does not already exist.
  *
- * @category String : Common
+ * @category String
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export function addPercent(input: number | string): WithPercent {
@@ -72,7 +80,8 @@ export function addPercent(input: number | string): WithPercent {
 /**
  * Removes the `'%'` suffix from a string if it exists.
  *
- * @category String : Common
+ * @category String
+ * @category Package : @augment-vir/common
  * @throws `TypeError` if the input can't be converted into a number.
  * @package @augment-vir/common
  */
@@ -83,7 +92,8 @@ export function removePercent(input: string): number {
 /**
  * Adds a suffix to a string if it does not already exist.
  *
- * @category String : Common
+ * @category String
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export function addSuffix<const Suffix extends string>({
@@ -103,7 +113,8 @@ export function addSuffix<const Suffix extends string>({
 /**
  * Removes a suffix from a string if it exists.
  *
- * @category String : Common
+ * @category String
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export function removeSuffix<const Suffix extends string>({

@@ -4,6 +4,8 @@ import {MaybePromise} from '@augment-vir/core';
  * Call a function asynchronously without interrupting current synchronous execution, even if the
  * function was originally synchronous.
  *
+ * @category Function
+ * @category Package : @augment-vir/common
  * @example
  *
  * ```ts

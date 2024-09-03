@@ -3,11 +3,12 @@ import {setRegExpCaseSensitivity} from '../regexp/regexp-flags.js';
 import {findSubstringIndexes} from './substring-index.js';
 
 /**
- * Same as
- * [`''.split'](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/split)
+ * Same as *
+ * [`''.split`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/split)
  * but includes the split delimiter in the output array.
  *
- * @category String : Common
+ * @category String
+ * @category Package : @augment-vir/common
  * @example
  *
  * ```ts
@@ -58,7 +59,8 @@ export function splitIncludeSplit(
  * [`''.split'](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/split)
  * but typed better: it always returns an array with at least one string.
  *
- * @category String : Common
+ * @category String
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export function safeSplit(input: string, splitString: string): AtLeastTuple<string, 1> {

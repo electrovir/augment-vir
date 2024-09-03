@@ -17,7 +17,8 @@ export function shouldPreserveInSelectionSet(input: unknown): boolean {
 /**
  * Performs a SQL-like nested selection on an object, extracting the selected values.
  *
- * @category Selection : Common
+ * @category Selection
+ * @category Package : @augment-vir/common
  * @example
  *
  * ```ts

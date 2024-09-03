@@ -12,8 +12,9 @@ import {writeFileAndDir} from './write.js';
 /**
  * Read a file and also parse its contents as JSON.
  *
- * @category File : Node
+ * @category Node : File
  * @category JSON : Node
+ * @category Package : @augment-vir/node
  * @package @augment-vir/node
  * @see
  *  - {@link writeJsonFile}
@@ -31,8 +32,9 @@ export async function readJsonFile(path: string): Promise<JsonCompatibleValue | 
 /**
  * Options for {@link writeJsonFile}.
  *
- * @category File : Node
+ * @category Node : File
  * @category JSON : Node
+ * @category Package : @augment-vir/node
  * @package @augment-vir/node
  */
 export type WriteJsonOptions = PartialWithUndefined<{
@@ -42,8 +44,9 @@ export type WriteJsonOptions = PartialWithUndefined<{
 /**
  * Write to a file and stringify `data` as JSON before doing so.
  *
- * @category File : Node
+ * @category Node : File
  * @category JSON : Node
+ * @category Package : @augment-vir/node
  * @package @augment-vir/node
  * @see
  *  - {@link readJsonFile}
@@ -65,8 +68,9 @@ export async function writeJsonFile(
  * Append the given `newData` to the contents of the existing JSON file. If the file does not yet
  * exist, `newData` is written as its only JSON contents.
  *
- * @category File : Node
+ * @category Node : File
  * @category JSON : Node
+ * @category Package : @augment-vir/node
  * @package @augment-vir/node
  * @see
  *  - {@link readJsonFile}

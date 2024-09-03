@@ -1,10 +1,10 @@
 import {type AnyObject, type Values, ensureError, getObjectTypedKeys} from '@augment-vir/core';
 
-export type InnerMappedValues<EntireInputGeneric extends object, MappedValueGeneric> = {
+type InnerMappedValues<EntireInputGeneric extends object, MappedValueGeneric> = {
     [MappedProp in keyof EntireInputGeneric]: MappedValueGeneric;
 };
 
-export type MappedValues<EntireInputGeneric extends object, MappedValueGeneric> =
+type MappedValues<EntireInputGeneric extends object, MappedValueGeneric> =
     MappedValueGeneric extends PromiseLike<unknown>
         ? Promise<InnerMappedValues<EntireInputGeneric, Awaited<MappedValueGeneric>>>
         : InnerMappedValues<EntireInputGeneric, Awaited<MappedValueGeneric>>;
@@ -14,7 +14,8 @@ export type MappedValues<EntireInputGeneric extends object, MappedValueGeneric> 
  * `mapCallback` for each property. This is the same as {@link mapObjectValues} except that this
  * preserves Promise values: it doesn't wrap them all in a single promise.
  *
- * @category Object : Common
+ * @category Object
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export function mapObjectValuesSync<EntireInputGeneric extends object>(
@@ -44,7 +45,8 @@ export function mapObjectValuesSync<EntireInputGeneric extends object>(
  * Creates a new object with the same keys as the input object, but with values set to the result of
  * `mapCallback` for each property. Automatically handles an async `mapCallback`.
  *
- * @category Object : Common
+ * @category Object
+ * @category Package : @augment-vir/common
  * @example
  *
  * ```ts

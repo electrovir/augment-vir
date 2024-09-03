@@ -15,6 +15,23 @@ async function main() {
         ],
         intentionallyNotExported: [],
         defaultCategory: 'MISSING CATEGORY',
+        categoryOrder: [
+            '*',
+            'Web',
+            'Web : Elements',
+            'Node : Docker',
+            'Node : Docker : Util',
+            'Node : File',
+            'Node : Npm',
+            'Node : OS',
+            'Node : Terminal',
+            'Node : Terminal : Util',
+            'Package : @augment-vir/common',
+            'Package : @augment-vir/assert',
+            'Package : @augment-vir/test',
+            'Package : @augment-vir/web',
+            'Package : @augment-vir/node',
+        ],
         tsconfig: eslintTsconfigPath,
         blockTags: [
             /** The default tags we use. */

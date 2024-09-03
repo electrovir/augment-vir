@@ -3,7 +3,8 @@ import {PartialWithUndefined} from '@augment-vir/core';
 /**
  * Options for casing functions in `@augment-vir/common`.
  *
- * @category String : Common
+ * @category String
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export type CasingOptions = {
@@ -18,7 +19,8 @@ export type CasingOptions = {
 /**
  * Default options for {@link CasingOptions}.
  *
- * @category String : Common
+ * @category String
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export const defaultCasingOptions: Required<CasingOptions> = {
@@ -26,10 +28,13 @@ export const defaultCasingOptions: Required<CasingOptions> = {
 };
 
 /**
- * @category String : Common
+ * The different string cases.
+ *
+ * @category String
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
-export enum StringCaseEnum {
+export enum StringCase {
     Upper = 'upper',
     Lower = 'lower',
 }
@@ -38,7 +43,8 @@ export enum StringCaseEnum {
  * Indicates whether the given string has different lower and upper case variants. (Some strings
  * don't, such as all numbers or `'√'`.)
  *
- * @category String : Common
+ * @category String
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export function hasCase(input: string): boolean {
@@ -48,7 +54,8 @@ export function hasCase(input: string): boolean {
 /**
  * Options for {@link isCase}.
  *
- * @category String : Common
+ * @category String
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export type IsCaseOptions = {
@@ -69,12 +76,13 @@ export type IsCaseOptions = {
  * regardless of which `caseType` is provided. To instead return `false` for any such characters,
  * pass in an options object and set `rejectNoCaseCharacters` to true.
  *
- * @category String : Common
+ * @category String
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export function isCase(
     input: string,
-    caseType: StringCaseEnum,
+    caseType: StringCase,
     options?: PartialWithUndefined<IsCaseOptions>,
 ): boolean {
     if (!input && options?.rejectNoCaseCharacters) {
@@ -89,8 +97,8 @@ export function isCase(
                 continue;
             }
         } else if (
-            (caseType === StringCaseEnum.Upper && letter !== letter.toUpperCase()) ||
-            (caseType === StringCaseEnum.Lower && letter !== letter.toLowerCase())
+            (caseType === StringCase.Upper && letter !== letter.toUpperCase()) ||
+            (caseType === StringCase.Lower && letter !== letter.toLowerCase())
         ) {
             return false;
         }

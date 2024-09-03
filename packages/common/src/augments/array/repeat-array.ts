@@ -2,7 +2,8 @@
  * Repeats an array. Constructs a new array with the entries from the original repeated the given
  * number of times.
  *
- * @category Array : Common
+ * @category Array
+ * @category Package : @augment-vir/common
  * @example
  *
  * ```ts

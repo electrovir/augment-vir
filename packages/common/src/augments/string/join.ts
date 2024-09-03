@@ -3,7 +3,8 @@
  * item in the list. If the array has a length < 2, the conjunction is not added. If the list is
  * only of length 2, then no commas are added.
  *
- * @category String : Common
+ * @category String
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export function joinWithFinalConjunction(

@@ -1,7 +1,8 @@
 /**
  * A simple type for storing 2D dimensions.
  *
- * @category Number : Common
+ * @category Number
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export type Dimensions = {
@@ -11,7 +12,8 @@ export type Dimensions = {
 /**
  * A simple type for storing 3D dimensions.
  *
- * @category Number : Common
+ * @category Number
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export type Dimensions3d = {

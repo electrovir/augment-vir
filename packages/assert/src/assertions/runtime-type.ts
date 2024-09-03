@@ -2405,6 +2405,7 @@ export const runtimeTypeGuards = {
  * both distinct from `object`.
  *
  * @category Assert : Util
+ * @category Package : @augment-vir/assert
  * @package @augment-vir/assert
  */
 export enum RuntimeType {
@@ -2441,6 +2442,7 @@ export enum RuntimeType {
  *   from `object`.
  *
  * @category Assert : Util
+ * @category Package : @augment-vir/assert
  * @example
  *
  * ```ts

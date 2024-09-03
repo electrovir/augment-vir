@@ -10,5 +10,6 @@ module.exports = {
         ...baseConfig.words,
         'nocheck',
         'propstat',
+        'resolv',
     ],
 };

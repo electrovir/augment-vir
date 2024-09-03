@@ -5,7 +5,8 @@ import {Jsonify, Writable} from 'type-fest';
  * JSON serializable otherwise the copy will not match the original.
  *
  * @category JSON : Common
- * @category Copy : Common
+ * @category Copy
+ * @category Package : @augment-vir/common
  * @example
  *
  * ```ts

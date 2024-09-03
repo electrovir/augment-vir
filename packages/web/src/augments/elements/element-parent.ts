@@ -2,6 +2,7 @@
  * Gets the parent element of the current element, even if the current element is a `ShadowRoot`.
  *
  * @category Web : Elements
+ * @category Package : @augment-vir/web
  * @package @augment-vir/web
  */
 export function getParentElement(element: Node): Element | undefined {
@@ -24,6 +25,7 @@ export function getParentElement(element: Node): Element | undefined {
  * Recursively search for an ancestor of the starting element that passes the given callback.
  *
  * @category Web : Elements
+ * @category Package : @augment-vir/web
  * @package @augment-vir/web
  */
 export function findMatchingAncestor(

@@ -8,6 +8,7 @@ import type {copyThroughJson} from './copy-through-json.js';
  * {@link copyThroughJson}.
  *
  * @category JSON : Common
+ * @category Package : @augment-vir/common
  * @example
  *
  * ```ts

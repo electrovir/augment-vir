@@ -4,10 +4,6 @@ import {readFile} from 'node:fs/promises';
 import {join} from 'node:path';
 import {runPrismaCommand} from './run-prisma-command.js';
 
-/**
- * Runs Prisma generators included in the given Prisma schema (which usually includes the Prisma JS
- * client). This will work even if the database doesn't exist yet.
- */
 export async function generatePrismaClient(
     schemaFilePath: string,
     env: Record<string, string> = {},

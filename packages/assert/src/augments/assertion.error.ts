@@ -8,6 +8,7 @@ import {combineErrorMessages} from '@augment-vir/core';
  * (the optional user-defined failure message for any assertion).
  *
  * @category Assert : Util
+ * @category Package : @augment-vir/assert
  * @example
  *
  * ```ts

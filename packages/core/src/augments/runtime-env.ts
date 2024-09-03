@@ -4,6 +4,7 @@ import {isNode} from 'browser-or-node';
  * JavaScript runtime env.
  *
  * @category Env
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export enum RuntimeEnv {
@@ -16,6 +17,7 @@ export enum RuntimeEnv {
  * simply import {@link currentRuntimeEnv} directly.
  *
  * @category Env
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export function determineRuntimeEnv(): RuntimeEnv {
@@ -28,6 +30,7 @@ export function determineRuntimeEnv(): RuntimeEnv {
  * The current {@link RuntimeEnv}.
  *
  * @category Env
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export const currentRuntimeEnv = determineRuntimeEnv();
@@ -36,6 +39,7 @@ export const currentRuntimeEnv = determineRuntimeEnv();
  * Checks if the given {@link RuntimeEnv} value is the current {@link RuntimeEnv} value.
  *
  * @category Env
+ * @category Package : @augment-vir/common
  * @returns `true` if the given {@link RuntimeEnv} is the current {@link RuntimeEnv}.
  * @package @augment-vir/common
  */
@@ -48,6 +52,7 @@ export function isRuntimeEnv(itItThisEnv: RuntimeEnv): boolean {
  * runtime.
  *
  * @category Env
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export class RuntimeEnvError extends Error {
@@ -59,6 +64,7 @@ export class RuntimeEnvError extends Error {
  * calls the function for the current runtime.
  *
  * @category Env
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export function perEnv<T>(perEnv: Record<RuntimeEnv, () => T>): T {

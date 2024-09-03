@@ -25,7 +25,6 @@ const startDockerCommands: Record<OperatingSystem, string> = {
 export async function startDocker() {
     const command = startDockerCommands[currentOperatingSystem];
 
-    /** We */
     /* node:coverage disable */
     if (await isDockerRunning()) {
         /** Docker is already running. Nothing to do. */

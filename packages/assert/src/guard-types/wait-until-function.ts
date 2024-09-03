@@ -24,6 +24,7 @@ import {autoGuardSymbol, pickOverride} from './guard-override.js';
  * Options for configuring the timing of `waitUntil`.
  *
  * @category Assert : Util
+ * @category Package : @augment-vir/assert
  * @package @augment-vir/assert
  */
 export type WaitUntilOptions = PartialWithUndefined<{

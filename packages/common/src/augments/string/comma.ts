@@ -3,7 +3,8 @@ import {safeMatch} from '../regexp/match.js';
 /**
  * Removes all commas from the given string.
  *
- * @category String : Common
+ * @category String
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export function removeCommas(input: string): string {
@@ -13,8 +14,9 @@ export function removeCommas(input: string): string {
 /**
  * Convert the given number into a string, then add commas like a normal number would have.
  *
- * @category String : Common
- * @category Number : Common
+ * @category String
+ * @category Number
+ * @category Package : @augment-vir/common
  * @example
  *
  * ```ts

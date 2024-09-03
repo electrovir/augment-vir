@@ -5,8 +5,8 @@ import {typedObjectFromEntries} from '../object/object-entries.js';
  * Polyfill for `Object.groupBy`:
  * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/groupBy
  *
- * @category Array : Common
- * @category Object : Common
+ * @category Array
+ * @category Object
  * @example
  *
  * ```ts
@@ -48,8 +48,9 @@ export function groupArrayBy<ElementType, NewKey extends PropertyKey>(
  * `value` outputs from the callback. The resulting object does not have an array of elements
  * (unless the original array itself contains arrays).
  *
- * @category Array : Common
- * @category Object : Common
+ * @category Array
+ * @category Object
+ * @category Package : @augment-vir/common
  * @example
  *
  * ```ts
@@ -66,6 +67,7 @@ export function groupArrayBy<ElementType, NewKey extends PropertyKey>(
  * );
  * // result is `{key-a: 'a', key-b: 'b'}`
  * ```
+ *
  * @package @augment-vir/common
  */
 export function arrayToObject<ElementType, NewKey extends PropertyKey, NewValue>(

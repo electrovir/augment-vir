@@ -5,7 +5,8 @@ import {awaitedBlockingMap} from './awaited-map.js';
  * [`[].filter()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter)
  * on an array but supports an async callback.
  *
- * @category Array : Common
+ * @category Array
+ * @category Package : @augment-vir/common
  * @example
  *
  * ```ts

@@ -2,6 +2,7 @@
  * Detects `display: none` and only works if the element does not have `position: fixed;`.
  *
  * @category Web : Elements
+ * @category Package : @augment-vir/web
  * @package @augment-vir/web
  */
 export function isElementVisible(element: HTMLElement): boolean {

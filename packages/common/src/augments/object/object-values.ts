@@ -5,7 +5,8 @@ import {CompleteRequire, getObjectTypedKeys} from '@augment-vir/core';
  * [`Object.values`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/values)
  * except that it has better TypeScript types.
  *
- * @category Object : Common
+ * @category Object
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export function getObjectTypedValues<ObjectGeneric>(

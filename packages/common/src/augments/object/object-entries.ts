@@ -5,7 +5,8 @@ import {CompleteRequire, getObjectTypedKeys} from '@augment-vir/core';
  * [`Object.entries`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/entries)
  * except that it has better TypeScript types.
  *
- * @category Object : Common
+ * @category Object
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export function getObjectTypedEntries<const ObjectGeneric>(
@@ -25,7 +26,8 @@ export function getObjectTypedEntries<const ObjectGeneric>(
  * [`Object.fromEntries`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/fromEntries)
  * except that it has better TypeScript types.
  *
- * @category Object : Common
+ * @category Object
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export function typedObjectFromEntries<const KeyType extends PropertyKey, const ValueType>(
@@ -39,7 +41,8 @@ export function typedObjectFromEntries<const KeyType extends PropertyKey, const 
  * [`Object.entries`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/entries)
  * except that it has better TypeScript types and sorts the entries.
  *
- * @category Object : Common
+ * @category Object
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export function getEntriesSortedByKey<const ObjectGeneric>(

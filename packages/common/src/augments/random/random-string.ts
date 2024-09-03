@@ -3,7 +3,8 @@ import {randomInteger} from './random-integer.js';
 /**
  * All letters allowed in {@link randomString}.
  *
- * @category Random : Common : Util
+ * @category Random : Util
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export const allowedRandomStringLetters: ReadonlyArray<string> = [
@@ -50,7 +51,8 @@ export const allowedRandomStringLetters: ReadonlyArray<string> = [
  *
  * This function uses cryptographically secure randomness.
  *
- * @category Random : Common
+ * @category Random
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export function randomString(generatedStringLength: number = 16): string {

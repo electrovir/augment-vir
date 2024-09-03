@@ -4,7 +4,8 @@
  * instead of a rest parameter, put it inside of a tuple. If no arguments should be possible, pass
  * void to "Arguments". If you need an optional argument, pass it inside of a tuple.
  *
- * @category Function : Common
+ * @category Function
+ * @category Package : @augment-vir/common
  * @example
  *
  * ```ts

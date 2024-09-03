@@ -5,7 +5,8 @@ import {runShellCommand} from '../terminal/shell.js';
 /**
  * An npm workspace object. This is the return type for {@link queryNpmWorkspace}.
  *
- * @category Npm : Node
+ * @category Node : Npm
+ * @category Package : @augment-vir/node
  * @package @augment-vir/node
  */
 export type NpmWorkspace = PackageJson & {
@@ -27,7 +28,8 @@ export type NpmWorkspace = PackageJson & {
 /**
  * Get a list of all NPM workspaces in the given mono-repo directory using npm's CLI.
  *
- * @category Npm : Node
+ * @category Node : Npm
+ * @category Package : @augment-vir/node
  * @package @augment-vir/node
  */
 export async function queryNpmWorkspace(cwd: string): Promise<NpmWorkspace[]> {

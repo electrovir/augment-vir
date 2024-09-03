@@ -2,7 +2,8 @@
  * Round a value to the given number of decimal digits. If no decimal value is present, no rounding
  * occurs.
  *
- * @category Number : Common
+ * @category Number
+ * @category Package : @augment-vir/common
  * @example
  *
  * ```ts

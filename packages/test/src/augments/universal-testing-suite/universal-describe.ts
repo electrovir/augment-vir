@@ -8,6 +8,7 @@ import {isRuntimeEnv, RuntimeEnv} from '@augment-vir/core';
  * runners.
  *
  * @category Test : Util
+ * @category Package : @augment-vir/test
  * @package @augment-vir/test
  */
 export type UniversalBareDescribe = (
@@ -24,6 +25,7 @@ export type UniversalBareDescribe = (
  * runners.
  *
  * @category Test : Util
+ * @category Package : @augment-vir/test
  * @package @augment-vir/test
  */
 export type UniversalDescribe = UniversalBareDescribe & {
@@ -51,6 +53,7 @@ const describes = isRuntimeEnv(RuntimeEnv.Node)
  * runners.
  *
  * @category Test
+ * @category Package : @augment-vir/test
  * @example
  *
  * ```ts

@@ -3,7 +3,8 @@ import {CasingOptions} from './casing.js';
 /**
  * Capitalize the first letter of the input _only if_ the given options specifies doing so.
  *
- * @category String : Common
+ * @category String
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export function maybeCapitalize(
@@ -16,7 +17,8 @@ export function maybeCapitalize(
 /**
  * Capitalize the first letter of the input.
  *
- * @category String : Common
+ * @category String
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export function capitalizeFirstLetter<InputGeneric extends string>(

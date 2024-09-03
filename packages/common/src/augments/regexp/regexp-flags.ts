@@ -4,7 +4,8 @@ import {escapeStringForRegExp} from './regexp-string.js';
 /**
  * Creates a new RegExp by adding the given `flags` to the original RegExp.
  *
- * @category RegExp : Common
+ * @category RegExp
+ * @category Package : @augment-vir/common
  * @example
  *
  * ```ts
@@ -35,7 +36,8 @@ export function addRegExpFlags(originalRegExp: RegExp, flags: string): RegExp {
  * `caseSensitive` input. The first input can also be a string and it will be converted into a
  * RegExp.
  *
- * @category RegExp : Common
+ * @category RegExp
+ * @category Package : @augment-vir/common
  * @example
  *
  * ```ts

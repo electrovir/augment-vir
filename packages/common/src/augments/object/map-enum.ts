@@ -4,7 +4,8 @@ import {mapObject} from './map-entries.js';
 /**
  * Creates an object that maps all values of an enum to the provided `Values` type.
  *
- * @category Object : Common
+ * @category Object
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export type EnumMap<Enum extends EnumBaseType, Value> =
@@ -26,7 +27,8 @@ export function mapEnumToObject<const Enum extends EnumBaseType, const Value>(
  * Maps all values of an enum as keys in an object where each value is the callback's output for
  * that key.
  *
- * @category Object : Common
+ * @category Object
+ * @category Package : @augment-vir/common
  * @example
  *
  * ```ts

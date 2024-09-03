@@ -5,7 +5,8 @@ import {dirname} from 'node:path';
  * Writes to the given file path and always ensures that the path's parent directories are all
  * created.
  *
- * @category File : Node
+ * @category Node : File
+ * @category Package : @augment-vir/node
  * @package @augment-vir/node
  */
 export async function writeFileAndDir(

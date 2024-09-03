@@ -4,6 +4,7 @@ import type {AnyFunction, AnyObject} from '@augment-vir/core';
  * Extracts all model names from a generated `Prisma` object.
  *
  * @category Prisma : Common
+ * @category Package : @augment-vir/common
  * @example
  *
  * ```ts
@@ -22,6 +23,7 @@ export type ModelNameFromPrismaTypeMap<PrismaTypeMap extends BasePrismaTypeMap> 
  * Extracts all model names from a generated `PrismaClient`.
  *
  * @category Prisma : Common
+ * @category Package : @augment-vir/common
  * @example
  *
  * ```ts
@@ -45,6 +47,7 @@ export type ModelNameFromPrismaClient<PrismaClient extends AnyObject> = keyof {
  * Extracts the creation data for a model from the given `PrismaClient` type.
  *
  * @category Prisma : Common
+ * @category Package : @augment-vir/common
  * @example
  *
  * ```ts
@@ -69,6 +72,7 @@ export type PrismaModelCreationEntry<
  * the properties that are used within `@augment-vir/common`.
  *
  * @category Prisma : Common
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export type BasePrismaTypeMap = {
@@ -86,6 +90,7 @@ export type BasePrismaTypeMap = {
  * actually are.
  *
  * @category Prisma : Common
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export type BasePrismaPayload = {
@@ -98,6 +103,7 @@ export type BasePrismaPayload = {
  * A full model entry with all relations from the given Prisma type map and model name.
  *
  * @category Prisma : Common
+ * @category Package : @augment-vir/common
  * @example
  *
  * ```ts
@@ -119,6 +125,7 @@ export type FullPrismaModel<
  * name.
  *
  * @category Prisma : Common
+ * @category Package : @augment-vir/common
  * @example
  *
  * ```ts
@@ -139,6 +146,7 @@ export type BasePrismaModel<
  * Expand a Prisma payload into its scalars and recursive relations.
  *
  * @category Prisma : Common : Util
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export type ExpandPrismaTypeMapPayload<Payload extends BasePrismaPayload> = Payload['scalars'] & {
@@ -151,6 +159,7 @@ export type ExpandPrismaTypeMapPayload<Payload extends BasePrismaPayload> = Payl
  * Expand a payload that might be inside of an array, keeping it inside of an array if it is.
  *
  * @category Prisma : Common : Util
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export type ExpandPotentialArrayPrismaTypeMapPayload<

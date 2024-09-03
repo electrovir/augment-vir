@@ -13,7 +13,8 @@ type SelectionTypesToPreserve = Primitive | RegExp | Promise<any>;
 /**
  * A generic selection set without specific keys. Useful for type parameter baselines.
  *
- * @category Selection : Common
+ * @category Selection
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export type GenericSelectionSet = {
@@ -24,7 +25,8 @@ export type GenericSelectionSet = {
  * Performs a SQL-like nested selection on an object, extracting the selected values. This produces
  * the output type for `selectFrom`.
  *
- * @category Selection : Common
+ * @category Selection
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export type SelectFrom<
@@ -57,7 +59,8 @@ export type SelectFrom<
 /**
  * Defines a selection set for a given object type. This is used in {@link SelectFrom}.
  *
- * @category Selection : Common
+ * @category Selection
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export type SelectionSet<

@@ -5,7 +5,8 @@ import {ensureErrorAndPrependMessage} from '@augment-vir/core';
  * Similar to the `waitUntil` guard from '@augment-vir/assert' but doesn't check the callback's
  * output.
  *
- * @category Function : Common
+ * @category Function
+ * @category Package : @augment-vir/common
  * @example
  *
  * ```ts

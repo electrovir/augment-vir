@@ -5,7 +5,8 @@ import {PartialDeep} from 'type-fest';
 /**
  * Extract all nested object keys and values that are different between the two given objects.
  *
- * @category Number : Common
+ * @category Object
+ * @category Package : @augment-vir/common
  * @returns An empty tuple if the values are equal. Otherwise, the first tuple entry contains the
  *   changes in the first value, second entry contains the changes in the second value.
  * @package @augment-vir/common
@@ -59,7 +60,8 @@ export function diffObjects<
 /**
  * Extract all entries in the given arrays that are not equal.
  *
- * @category Number : Common
+ * @category Object
+ * @category Package : @augment-vir/common
  * @returns An empty tuple if the values are equal. Otherwise, the first tuple entry contains the
  *   changes in the first value, second entry contains the changes in the second value.
  * @package @augment-vir/common
@@ -110,13 +112,20 @@ export function diffArrays<T0, T1>(
     }
 }
 
-/** Callback for checking equality between two values that can be of different types. */
+/**
+ * Callback for checking equality between two values that can be of different types.
+ *
+ * @category Object
+ * @category Package : @augment-vir/common
+ * @package @augment-vir/common
+ */
 export type AreEqualCallback<T0, T1> = (value0: T0, value1: T1) => boolean;
 
 /**
  * Simple diff check that is useful simply to return the same format as the other diff functions.
  *
- * @category Number : Common
+ * @category Object
+ * @category Package : @augment-vir/common
  * @returns An empty tuple if the values are equal. Otherwise, the first tuple entry contains the
  *   changes in the first value, second entry contains the changes in the second value.
  * @package @augment-vir/common
@@ -165,7 +174,8 @@ const orderedValueDiffs: ReadonlyArray<
 /**
  * Diff any values. For diffing objects, use `diffObjects` to get better types.
  *
- * @category Number : Common
+ * @category Object
+ * @category Package : @augment-vir/common
  * @returns An empty tuple if the values are equal. Otherwise, the first tuple entry contains the
  *   changes in the first value, second entry contains the changes in the second value.
  * @package @augment-vir/common

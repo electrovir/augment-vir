@@ -6,7 +6,8 @@
  * element 2. Compare to `await Promise.all([].map(async () => {}))` which is _not_ blocking (all
  * callbacks are called in parallel).
  *
- * @category Array : Common
+ * @category Array
+ * @category Package : @augment-vir/common
  * @example
  *
  * ```ts

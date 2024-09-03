@@ -15,6 +15,7 @@ const assertWrapGroup = createAssertWrapGroup(extendableAssertions, assertWrapOv
  * and returns it if so.
  *
  * @category Assert
+ * @category Package : @augment-vir/assert
  * @example
  *
  * ```ts

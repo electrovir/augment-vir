@@ -25,6 +25,7 @@ export function appendJson(
  * appended to arrays will be flattened (but only by one level).
  *
  * @category JSON : Common
+ * @category Package : @augment-vir/common
  * @example
  *
  * ```ts

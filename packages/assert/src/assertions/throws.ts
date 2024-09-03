@@ -162,6 +162,7 @@ function internalThrowsCheck(
  * property is optional, and whichever properties are provided will be checked.
  *
  * @category Assert : Util
+ * @category Package : @augment-vir/assert
  * @example
  *
  * ```ts

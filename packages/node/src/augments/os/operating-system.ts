@@ -1,7 +1,8 @@
 /**
  * The three major operating system types.
  *
- * @category OS : Node
+ * @category Node : OS
+ * @category Package : @augment-vir/node
  * @package @augment-vir/node
  */
 export enum OperatingSystem {
@@ -14,7 +15,8 @@ export enum OperatingSystem {
  * The current operating system type, as deduced from
  * [`process.platform`](https://nodejs.org/api/process.html#processplatform).
  *
- * @category OS : Node
+ * @category Node : OS
+ * @category Package : @augment-vir/node
  * @package @augment-vir/node
  */
 export const currentOperatingSystem: OperatingSystem = getOperatingSystem();

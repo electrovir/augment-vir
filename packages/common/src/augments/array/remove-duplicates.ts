@@ -2,7 +2,8 @@
  * Removes duplicates from an array. Optionally provide a callback for calculating a unique id for
  * entries.
  *
- * @category Array : Common
+ * @category Array
+ * @category Package : @augment-vir/common
  * @example No callback
  *
  * ```ts

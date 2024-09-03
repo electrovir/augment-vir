@@ -5,6 +5,7 @@ import type {Coords} from '@augment-vir/common';
  * Checks if the current element is completely visible in its scroll view.
  *
  * @category Web : Elements
+ * @category Package : @augment-vir/web
  * @package @augment-vir/web
  */
 export async function checkIfEntirelyInScrollView(element: Element) {
@@ -15,6 +16,7 @@ export async function checkIfEntirelyInScrollView(element: Element) {
  * Check if the given element is visible in its scroll container to the degree of the given ratio.
  *
  * @category Web : Elements
+ * @category Package : @augment-vir/web
  * @package @augment-vir/web
  */
 export async function checkIfInScrollView(
@@ -38,6 +40,7 @@ export async function checkIfInScrollView(
  * so this should not be called excessively.
  *
  * @category Web : Elements
+ * @category Package : @augment-vir/web
  * @package @augment-vir/web
  */
 export function getCenterOfElement(element: Element): Coords {
@@ -54,6 +57,7 @@ export function getCenterOfElement(element: Element): Coords {
  * the given position.
  *
  * @category Web : Elements
+ * @category Package : @augment-vir/web
  * @package @augment-vir/web
  */
 export function appendPositionDebugDiv(position: Coords): HTMLDivElement {

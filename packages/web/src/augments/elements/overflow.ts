@@ -4,6 +4,7 @@ import {findMatchingAncestor, getParentElement} from './element-parent.js';
  * Finds the given element's ancestor which allows Y overflow.
  *
  * @category Web : Elements
+ * @category Package : @augment-vir/web
  * @package @augment-vir/web
  */
 export function findOverflowAncestor(start: Element) {

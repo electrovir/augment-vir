@@ -8,6 +8,7 @@
  * depth out or set it to undefined or any value <= 0 to allow full depth search.
  *
  * @category Web : Elements
+ * @category Package : @augment-vir/web
  * @package @augment-vir/web
  */
 export function getNestedChildren(
@@ -45,6 +46,7 @@ function recursivelyGetNestedChildren(
  * elements. Besides that, the order of children is preserved.
  *
  * @category Web : Elements
+ * @category Package : @augment-vir/web
  * @package @augment-vir/web
  */
 export function getDirectChildren(startingElement: Readonly<Element>): Element[] {

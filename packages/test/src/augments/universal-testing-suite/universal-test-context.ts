@@ -8,6 +8,7 @@ import type {MochaContext} from '../../mocha-types.js';
  * other Mocha-style test runners.
  *
  * @category Test : Util
+ * @category Package : @augment-vir/test
  * @package @augment-vir/test
  */
 export type MochaTestContext = MochaContext;
@@ -15,6 +16,7 @@ export type MochaTestContext = MochaContext;
  * The test context for [Node.js's test runner](https://nodejs.org/api/test.html).
  *
  * @category Test : Util
+ * @category Package : @augment-vir/test
  * @package @augment-vir/test
  */
 export type NodeTestContext = NodeTestContextImport;
@@ -27,6 +29,7 @@ export type NodeTestContext = NodeTestContextImport;
  * runners.
  *
  * @category Test : Util
+ * @category Package : @augment-vir/test
  * @package @augment-vir/test
  */
 export type UniversalContext = NodeTestContext | MochaTestContext;
@@ -37,6 +40,7 @@ export type UniversalContext = NodeTestContext | MochaTestContext;
  * used for web tests.
  *
  * @category Test : Util
+ * @category Package : @augment-vir/test
  * @package @augment-vir/test
  */
 export type ContextByEnv = {
@@ -48,6 +52,7 @@ export type ContextByEnv = {
  * Ensures that the given context is for the given env, otherwise throws an Error.
  *
  * @category Test : Util
+ * @category Package : @augment-vir/test
  * @package @augment-vir/test
  */
 export function ensureTestContext<const SpecificEnv extends RuntimeEnv>(
@@ -63,6 +68,7 @@ export function ensureTestContext<const SpecificEnv extends RuntimeEnv>(
  * Asserts that the given context is for the given env, otherwise throws an Error.
  *
  * @category Test : Util
+ * @category Package : @augment-vir/test
  * @package @augment-vir/test
  */
 export function assertTestContext<const SpecificEnv extends RuntimeEnv>(
@@ -80,6 +86,7 @@ export function assertTestContext<const SpecificEnv extends RuntimeEnv>(
  * Checks that the given context is for the given env.
  *
  * @category Test : Util
+ * @category Package : @augment-vir/test
  * @package @augment-vir/test
  */
 export function isTestContext<const SpecificEnv extends RuntimeEnv>(
@@ -105,6 +112,7 @@ const nodeOnlyCheckKey = 'diagnostic' satisfies NodeOnlyTestContextKeys;
  * Determine the env for the given test context.
  *
  * @category Test : Util
+ * @category Package : @augment-vir/test
  * @package @augment-vir/test
  */
 export function determineTestContextEnv(context: UniversalContext): RuntimeEnv {

@@ -2,6 +2,13 @@ import {check} from '@augment-vir/assert';
 import {runShellCommand} from '../../augments/terminal/shell.js';
 import {DockerEnvMap, makeEnvFlags} from './docker-command-inputs.js';
 
+/**
+ * Parameters for `docker.container.runCommand`.
+ *
+ * @category Node : Docker : Util
+ * @category Package : @augment-vir/node
+ * @package @augment-vir/node
+ */
 export type RunDockerContainerCommandParams = {
     /** Creates an interactive shell connection. */
     tty?: boolean | undefined;
@@ -12,7 +19,6 @@ export type RunDockerContainerCommandParams = {
     dockerFlags?: ReadonlyArray<string> | undefined;
 };
 
-/** Run a command on a container that is already running. */
 export async function runContainerCommand({
     tty,
     containerNameOrId,

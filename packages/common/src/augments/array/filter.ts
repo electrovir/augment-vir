@@ -1,7 +1,8 @@
 /**
  * Removes all given indexes from the given array.
  *
- * @category Array : Common
+ * @category Array
+ * @category Package : @augment-vir/common
  * @example
  *
  * ```ts
@@ -65,7 +66,8 @@ export function filterMap<ElementType, MappedEntry>(
  * [`[].filter()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter)
  * (in that order) on an array with a single iteration.
  *
- * @category Array : Common
+ * @category Array
+ * @category Package : @augment-vir/common
  * @example
  *
  * ```ts

@@ -1,7 +1,8 @@
 /**
  * Removes ansi escape codes (such as terminal colors) within the given string.
  *
- * @category String : Common
+ * @category String
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export function removeAnsiEscapeCodes(input: string): string {
@@ -47,8 +48,9 @@ const patterns: string[] = [
  * A RegExp that will match all ansi escape codes (such as terminal colors). Used in
  * {@link removeAnsiEscapeCodes}.
  *
- * @category String : Common
- * @category RegExp : Common
+ * @category String
+ * @category RegExp
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export const ansiRegExp = new RegExp(patterns.join('|'), 'g');

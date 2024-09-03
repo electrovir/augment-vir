@@ -3,7 +3,8 @@ import {randomString} from '../random/random-string.js';
 /**
  * Shuffles the positions of an array's entries (without mutating the array).
  *
- * @category Array : Common
+ * @category Array
+ * @category Package : @augment-vir/common
  * @returns A new array (does not mutate).
  * @package @augment-vir/common
  */

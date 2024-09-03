@@ -1,7 +1,8 @@
 /**
  * Creates a tuple with length of `OriginalTuple` with values of `NewValueType`.
  *
- * @category Array : Common
+ * @category Array
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export type MappedTuple<OriginalTuple extends ReadonlyArray<any>, NewValueType> = {
@@ -11,7 +12,8 @@ export type MappedTuple<OriginalTuple extends ReadonlyArray<any>, NewValueType> 
 /**
  * Creates a tuple that is _at least_ of length `Length`.
  *
- * @category Array : Common
+ * @category Array
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export type AtLeastTuple<Element, Length extends number> = readonly [
@@ -22,7 +24,8 @@ export type AtLeastTuple<Element, Length extends number> = readonly [
 /**
  * Either a tuple of `T` with length at least 1 or just `T` itself.
  *
- * @category Array : Common
+ * @category Array
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export type MaybeTuple<T> = T | AtLeastTuple<T, 1>;
@@ -30,7 +33,8 @@ export type MaybeTuple<T> = T | AtLeastTuple<T, 1>;
 /**
  * Remove the last entry in a tuple.
  *
- * @category Array : Common
+ * @category Array
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export type RemoveLastTupleEntry<T extends any[]> = T extends [...infer Head, any?] ? Head : any[];
@@ -38,7 +42,8 @@ export type RemoveLastTupleEntry<T extends any[]> = T extends [...infer Head, an
 /**
  * Remove the first entry in a tuple.
  *
- * @category Array : Common
+ * @category Array
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export type RemoveFirstTupleEntry<T extends any[]> = T extends [any?, ...infer Tail] ? Tail : any[];
@@ -46,7 +51,8 @@ export type RemoveFirstTupleEntry<T extends any[]> = T extends [any?, ...infer T
 /**
  * A tuple with entries of type `Element` and length of `Length`.
  *
- * @category Array : Common
+ * @category Array
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export type Tuple<Element, Length extends number> = Length extends Length

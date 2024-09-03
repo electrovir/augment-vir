@@ -9,6 +9,7 @@ import {createLogger, type Logger} from './logger.js';
  * Default implementation of {@link LogWriters} that is dependent on the current runtime environment.
  *
  * @category Log : Util
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export const defaultLogWriters: LogWriters =
@@ -38,7 +39,8 @@ export const defaultLogWriters: LogWriters =
  * The default `log`. Use this in place of `console` methods for styled outputs in both Node.js and
  * the browser.
  *
- * @category Log : Common
+ * @category Log
+ * @category Package : @augment-vir/common
  * @example
  *
  * ```ts
@@ -56,7 +58,8 @@ export const log: Logger = createLogger(defaultLogWriters);
  * Creates a custom logger that doesn't actually log but stores the logs into a object for later
  * usage. This is particularly useful in tests.
  *
- * @category Log : Common
+ * @category Log
+ * @category Package : @augment-vir/common
  * @example
  *
  * ```ts

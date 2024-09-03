@@ -17,6 +17,7 @@ const waitUntilGroup = createWaitUntilGroup(extendableAssertions, waitUntilOverr
  * returned value is truthy.
  *
  * @category Assert
+ * @category Package : @augment-vir/assert
  * @example
  *
  * ```ts

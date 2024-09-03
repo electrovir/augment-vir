@@ -4,6 +4,7 @@ import {DeferredPromise} from '@augment-vir/common';
  * Load a video from a URL and wait for it to be totally loaded.
  *
  * @category Web
+ * @category Package : @augment-vir/web
  * @package @augment-vir/web
  */
 export async function loadVideo(videoUrl: string): Promise<HTMLVideoElement> {

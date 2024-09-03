@@ -9,6 +9,7 @@ import {type LogWriters} from './log-writer.js';
  * The base `log` methods.
  *
  * @category Log : Util
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export type LoggerLogs = Readonly<Record<LogColorKey, (...args: ReadonlyArray<unknown>) => void>>;
@@ -16,15 +17,33 @@ export type LoggerLogs = Readonly<Record<LogColorKey, (...args: ReadonlyArray<un
 /**
  * Type for the `log` export.
  *
- * @category Log : Common
+ * @category Log : Util
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
-export type Logger = LoggerLogs & {if: (condition: boolean) => LoggerLogs};
+export type Logger = LoggerLogs & {
+    /**
+     * Only logs if the given condition is `true`.
+     *
+     * @example
+     *
+     * ```ts
+     * import {log} from '@augment-vir/common';
+     *
+     * // this will log
+     * log.if(true).info('hi');
+     * // this will not log
+     * log.if(false).info('hi');
+     * ```
+     */
+    if: (condition: boolean) => LoggerLogs;
+};
 
 /**
  * Default implementation of {@link LoggerOptions}.
  *
  * @category Log : Util
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export const defaultLoggerOptions: LoggerOptions = {
@@ -35,7 +54,8 @@ export const defaultLoggerOptions: LoggerOptions = {
 /**
  * A default {@link Logger} that simply does nothing.
  *
- * @category Log : Common
+ * @category Log
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export const emptyLog: Logger = createLogger({
@@ -46,7 +66,8 @@ export const emptyLog: Logger = createLogger({
 /**
  * Creates a custom {@link Logger}.
  *
- * @category Log : Common
+ * @category Log
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export function createLogger(

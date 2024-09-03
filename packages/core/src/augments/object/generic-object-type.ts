@@ -1,14 +1,16 @@
 /**
  * Any object with any allowed key and `any` values.
  *
- * @category Object : Common
+ * @category Object
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export type AnyObject = Record<PropertyKey, any>;
 /**
  * Any object with any allowed key and `unknown` value.
  *
- * @category Object : Common
+ * @category Object
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export type UnknownObject = Record<PropertyKey, unknown>;

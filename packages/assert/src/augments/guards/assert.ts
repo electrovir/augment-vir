@@ -30,6 +30,7 @@ const allAssertions = {
  * truthy.
  *
  * @category Assert
+ * @category Package : @augment-vir/assert
  * @example
  *
  * ```ts

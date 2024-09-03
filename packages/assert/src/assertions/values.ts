@@ -83,6 +83,7 @@ function isNotIn<const Parent extends object | string, const Child>(
  * {@link Empty}.
  *
  * @category Assert : Util
+ * @category Package : @augment-vir/assert
  * @package @augment-vir/assert
  */
 export type CanBeEmpty = string | Map<any, any> | Set<any> | AnyObject | any[];
@@ -92,6 +93,7 @@ export type CanBeEmpty = string | Map<any, any> | Set<any> | AnyObject | any[];
  * for them.)
  *
  * @category Assert : Util
+ * @category Package : @augment-vir/assert
  * @package @augment-vir/assert
  */
 export type Empty = '' | EmptyObject | [] | Map<any, any> | Set<any>;

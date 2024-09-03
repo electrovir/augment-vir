@@ -11,6 +11,7 @@ import {it} from './universal-it.js';
  * Base test case for {@link itCases}.
  *
  * @category Test : Util
+ * @category Package : @augment-vir/test
  * @package @augment-vir/test
  */
 export type BaseTestCase<OutputGeneric> = {
@@ -30,6 +31,7 @@ export type BaseTestCase<OutputGeneric> = {
  * Input for a function test that only has a single input.
  *
  * @category Test : Util
+ * @category Package : @augment-vir/test
  * @package @augment-vir/test
  */
 export type FunctionTestCaseSingleInput<FunctionToTest extends AnyFunction> = {
@@ -40,6 +42,7 @@ export type FunctionTestCaseSingleInput<FunctionToTest extends AnyFunction> = {
  * Input for a function test that has multiple inputs.
  *
  * @category Test : Util
+ * @category Package : @augment-vir/test
  * @package @augment-vir/test
  */
 export type FunctionTestCaseMultipleInputs<FunctionToTest extends AnyFunction> = {
@@ -57,6 +60,7 @@ export type FunctionTestCaseMultipleInputs<FunctionToTest extends AnyFunction> =
  * A function test case used for {@link itCases}.
  *
  * @category Test : Util
+ * @category Package : @augment-vir/test
  * @package @augment-vir/test
  */
 export type FunctionTestCase<FunctionToTest extends AnyFunction> =
@@ -90,6 +94,7 @@ export function itCases<const FunctionToTest extends AnyFunction>(
  * runners.
  *
  * @category Test
+ * @category Package : @augment-vir/test
  * @package @augment-vir/test
  */
 export function itCases(

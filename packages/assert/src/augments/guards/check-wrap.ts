@@ -15,6 +15,7 @@ const checkWrapGroup = createCheckWrapGroup(extendableAssertions, checkWrapOverr
  * returns it if so, else `undefined`.
  *
  * @category Assert
+ * @category Package : @augment-vir/assert
  * @example
  *
  * ```ts

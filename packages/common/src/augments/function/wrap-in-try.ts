@@ -6,7 +6,13 @@ import {
     type PartialWithUndefined,
 } from '@augment-vir/core';
 
-/** Options for {@link wrapInTry}. */
+/**
+ * Options for {@link wrapInTry}.
+ *
+ * @category Function
+ * @category Package : @augment-vir/common
+ * @package @augment-vir/common
+ */
 export type WrapInTryOptions<FallbackValue> = PartialWithUndefined<{
     /**
      * Call this function if the callback passed to {@link wrapInTry} throws an error. The thrown
@@ -87,7 +93,8 @@ export function wrapInTry<Value, FallbackValue = undefined>(
  * - If a `fallbackValue` is provided, it is returned by `wrapInTry`. The thrown error is ignored.
  * - If no options are provided, the thrown error is returned by `wrapInTry`.
  *
- * @category Function : Common
+ * @category Function
+ * @category Package : @augment-vir/common
  * @example
  *
  * ```ts

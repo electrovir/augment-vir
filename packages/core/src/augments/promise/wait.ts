@@ -4,7 +4,8 @@ import {DeferredPromise} from './deferred-promise.js';
 /**
  * An async pause for the given duration.
  *
- * @category Promise : Common
+ * @category Promise
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  * @see
  * - {@link waitValue} : return a value after the wait finishes.
@@ -28,7 +29,8 @@ export function wait(duration: Readonly<AnyDuration>): Promise<void> {
 /**
  * An async pause for the given duration that then returns the given `value`.
  *
- * @category Promise : Common
+ * @category Promise
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  * @see
  * - {@link wait} : plain wait.

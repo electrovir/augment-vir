@@ -6,7 +6,8 @@ import {defineTypedCustomEvent, ListenTarget} from 'typed-event-target';
 /**
  * All output from {@link runShellCommand}.
  *
- * @category Terminal : Node
+ * @category Node : Terminal : Util
+ * @category Package : @augment-vir/node
  * @package @augment-vir/node
  */
 export type ShellOutput = {
@@ -20,14 +21,16 @@ export type ShellOutput = {
 /**
  * An event that indicates that the shell command just wrote to stdout.
  *
- * @category Terminal : Node
+ * @category Node : Terminal : Util
+ * @category Package : @augment-vir/node
  * @package @augment-vir/node
  */
 export class ShellStdoutEvent extends defineTypedCustomEvent<string | Buffer>()('shell-stdout') {}
 /**
  * An event that indicates that the shell command just wrote to stderr.
  *
- * @category Terminal : Node
+ * @category Node : Terminal : Util
+ * @category Package : @augment-vir/node
  * @package @augment-vir/node
  */
 export class ShellStderrEvent extends defineTypedCustomEvent<string | Buffer>()('shell-stderr') {}
@@ -36,7 +39,8 @@ export class ShellStderrEvent extends defineTypedCustomEvent<string | Buffer>()(
  * signal. Based on the Node.js documentation, either one or the other is defined, never both at the
  * same time.
  *
- * @category Terminal : Node
+ * @category Node : Terminal : Util
+ * @category Package : @augment-vir/node
  * @package @augment-vir/node
  */
 export class ShellDoneEvent extends defineTypedCustomEvent<{
@@ -46,7 +50,8 @@ export class ShellDoneEvent extends defineTypedCustomEvent<{
 /**
  * An event that indicates that the shell command errored.
  *
- * @category Terminal : Node
+ * @category Node : Terminal : Util
+ * @category Package : @augment-vir/node
  * @package @augment-vir/node
  */
 export class ShellErrorEvent extends defineTypedCustomEvent<Error>()('shell-error') {}
@@ -54,7 +59,8 @@ export class ShellErrorEvent extends defineTypedCustomEvent<Error>()('shell-erro
 /**
  * A shell command listen target that emits events.
  *
- * @category Terminal : Node
+ * @category Node : Terminal : Util
+ * @category Package : @augment-vir/node
  * @package @augment-vir/node
  */
 export class ShellTarget extends ListenTarget<
@@ -70,7 +76,8 @@ export class ShellTarget extends ListenTarget<
  * events. This allows instant reactions to shell events but in a less convenient API compared to
  * {@link runShellCommand}.
  *
- * @category Terminal : Node
+ * @category Node : Terminal
+ * @category Package : @augment-vir/node
  * @package @augment-vir/node
  * @see
  * - {@link runShellCommand}: a higher level and more succinct way of running a shell command.
@@ -145,7 +152,8 @@ export function streamShellCommand(
 /**
  * Options for {@link runShellCommand}.
  *
- * @category Terminal : Node
+ * @category Node : Terminal : Util
+ * @category Package : @augment-vir/node
  * @package @augment-vir/node
  */
 export type RunShellCommandOptions = {
@@ -155,7 +163,9 @@ export type RunShellCommandOptions = {
     /** Automatically hook up stdout and stderr printing to the caller's console methods. */
     hookUpToConsole?: boolean | undefined;
     rejectOnError?: boolean | undefined;
+    /** Callback to call whenever the shell logs to stdout. */
     stdoutCallback?: (stdout: string, childProcess: ChildProcess) => MaybePromise<void> | undefined;
+    /** Callback to call whenever the shell logs to stderr. */
     stderrCallback?: (stderr: string, childProcess: ChildProcess) => MaybePromise<void> | undefined;
 };
 
@@ -168,7 +178,8 @@ function prepareChunkForLogging(chunk: string | Buffer, trimEndingLine: boolean)
 /**
  * Runs a shell command and returns its output.
  *
- * @category Terminal : Node
+ * @category Node : Terminal
+ * @category Package : @augment-vir/node
  * @package @augment-vir/node
  * @see
  * - {@link streamShellCommand}: a lower level way of running a shell command that allows instant reactions to shell events.
@@ -259,7 +270,8 @@ export async function runShellCommand(
 /**
  * Options for {@link logShellOutput}.
  *
- * @category Terminal : Node
+ * @category Node : Terminal : Util
+ * @category Package : @augment-vir/node
  * @package @augment-vir/node
  */
 export type LogShellOutputOptions = PartialWithUndefined<{
@@ -277,7 +289,8 @@ const defaultLogShellOutputOptions: RequiredAndNotNull<LogShellOutputOptions> = 
 /**
  * Log the output of running a shell command. This is useful for quick debugging of shell commands.
  *
- * @category Terminal : Node
+ * @category Node : Terminal : Util
+ * @category Package : @augment-vir/node
  * @package @augment-vir/node
  */
 export function logShellOutput(

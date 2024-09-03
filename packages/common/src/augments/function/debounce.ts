@@ -1,7 +1,13 @@
 import {MaybePromise} from '@augment-vir/core';
 import {AnyDuration, convertDuration, DurationUnit} from '@date-vir/duration';
 
-/** Different types of debouncing for the {@link Debounce} class. */
+/**
+ * Different types of debouncing for the {@link Debounce} class.
+ *
+ * @category Function
+ * @category Package : @augment-vir/common
+ * @package @augment-vir/common
+ */
 export enum DebounceStyle {
     /**
      * Fires on the first call, then waits the given amount of milliseconds until another call is
@@ -34,7 +40,8 @@ export enum DebounceStyle {
  * (see its docs for debounce style details). A callback can be provided on construction or to the
  * `.execute()` method.
  *
- * @category Function : Common
+ * @category Function
+ * @category Package : @augment-vir/common
  * @example
  *
  * ```ts
@@ -60,18 +67,24 @@ export enum DebounceStyle {
  */
 export class Debounce {
     public nextCallTimestamp = 0;
-    public callback: (() => MaybePromise<void>) | undefined;
 
     constructor(
+        /** Debounce style. See {@link DebounceStyle} for more details. */
         public debounceStyle: DebounceStyle,
+        /** Duration between debounces. */
         public debounceDuration: AnyDuration,
-        callback?: typeof this.callback | undefined,
+        /**
+         * Set the callback to be triggered on `.execute()`. If this is not set, the callback to be
+         * called can be passed in `.execute()` instead.
+         */
+        public callback?: (() => MaybePromise<void>) | undefined,
     ) {
         if (callback) {
             this.callback = callback;
         }
     }
 
+    /** Call the callback, if one has been set yet, if the current debounce timer is up. */
     public execute(callback?: typeof this.callback | undefined) {
         if (callback) {
             this.callback = callback;

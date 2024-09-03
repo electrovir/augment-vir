@@ -1,5 +1,5 @@
 import {describe, itCases} from '@augment-vir/test';
-import {hasCase, isCase, StringCaseEnum} from './casing.js';
+import {hasCase, isCase, StringCase} from './casing.js';
 
 describe(hasCase.name, () => {
     itCases(hasCase, [
@@ -37,7 +37,7 @@ describe(isCase.name, () => {
             it: 'passes a valid lower check',
             inputs: [
                 'here',
-                StringCaseEnum.Lower,
+                StringCase.Lower,
             ],
             expect: true,
         },
@@ -45,7 +45,7 @@ describe(isCase.name, () => {
             it: 'passes a valid upper check',
             inputs: [
                 'HERE',
-                StringCaseEnum.Upper,
+                StringCase.Upper,
             ],
             expect: true,
         },
@@ -53,7 +53,7 @@ describe(isCase.name, () => {
             it: 'fails an invalid check',
             inputs: [
                 'here',
-                StringCaseEnum.Upper,
+                StringCase.Upper,
             ],
             expect: false,
         },
@@ -61,7 +61,7 @@ describe(isCase.name, () => {
             it: 'fails a mixed check',
             inputs: [
                 'heRe',
-                StringCaseEnum.Upper,
+                StringCase.Upper,
             ],
             expect: false,
         },
@@ -69,7 +69,7 @@ describe(isCase.name, () => {
             it: 'normally allows an empty string',
             inputs: [
                 '',
-                StringCaseEnum.Upper,
+                StringCase.Upper,
             ],
             expect: true,
         },
@@ -77,7 +77,7 @@ describe(isCase.name, () => {
             it: 'fails an empty string if no case is blocked',
             inputs: [
                 '',
-                StringCaseEnum.Upper,
+                StringCase.Upper,
                 {rejectNoCaseCharacters: true},
             ],
             expect: false,
@@ -86,7 +86,7 @@ describe(isCase.name, () => {
             it: 'fails letter with no case',
             inputs: [
                 '√',
-                StringCaseEnum.Upper,
+                StringCase.Upper,
                 {rejectNoCaseCharacters: true},
             ],
             expect: false,
@@ -95,7 +95,7 @@ describe(isCase.name, () => {
             it: 'passes letter with no case',
             inputs: [
                 '√',
-                StringCaseEnum.Upper,
+                StringCase.Upper,
             ],
             expect: true,
         },

@@ -2,7 +2,8 @@
  * Determines if the given number is so large that it requires scientific notation (`e`) when
  * represented as a string.
  *
- * @category Number : Common
+ * @category Number
+ * @category Package : @augment-vir/common
  * @example
  *
  * ```ts

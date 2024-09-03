@@ -16,12 +16,10 @@ async function sendMouseToMiddleOfElement(
     });
 }
 
-/** Clicks the center of the given element. */
 export async function clickElement(element: Element): Promise<void> {
     await sendMouseToMiddleOfElement(element, 'click');
 }
 
-/** Moves the mouse to the center of the given element. */
 export async function moveToElement(element: Element): Promise<void> {
     return sendMouseToMiddleOfElement(element, 'move');
 }

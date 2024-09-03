@@ -17,7 +17,8 @@ type LibMapCallbackType<ArrayType extends ReadonlyArray<any>, OutputType> = (
  * [`[].map()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map)
  * on an array but transfers the input tuple's size to the output type.
  *
- * @category Array : Common
+ * @category Array
+ * @category Package : @augment-vir/common
  * @example
  *
  * ```ts

@@ -21,6 +21,7 @@ import {deepEquals} from './equality/simple-equality.js';
  * default.
  *
  * @category Assert : Util
+ * @category Package : @augment-vir/assert
  * @example
  *
  * ```ts

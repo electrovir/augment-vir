@@ -2,7 +2,8 @@
  * Narrows the given `Actual` type to the given `Expected` type as much as possible, or falls back
  * to just `Expected` itself.
  *
- * @category Type : Common
+ * @category Type
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  * @see
  *  - {@link NarrowToActual}: narrowing in the other direction.
@@ -20,7 +21,8 @@ export type NarrowToExpected<Actual, Expected> =
  * Narrows the given `Expected` type to the given `Actual` type as much as possible, or falls back
  * to just `Expected` itself.
  *
- * @category Type : Common
+ * @category Type
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  * @see
  *  - {@link NarrowToExpected}: narrowing in the other direction.

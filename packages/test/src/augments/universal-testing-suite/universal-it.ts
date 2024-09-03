@@ -9,6 +9,7 @@ import {UniversalContext} from './universal-test-context.js';
  * runners.
  *
  * @category Test : Util
+ * @category Package : @augment-vir/test
  * @package @augment-vir/test
  */
 export type UniversalItCallback = (this: void, context: UniversalContext) => Promise<void> | void;
@@ -21,6 +22,7 @@ export type UniversalItCallback = (this: void, context: UniversalContext) => Pro
  * runners.
  *
  * @category Test : Util
+ * @category Package : @augment-vir/test
  * @package @augment-vir/test
  */
 export type UniversalBareIt = (this: void, doesThis: string, callback: UniversalItCallback) => void;
@@ -33,6 +35,7 @@ export type UniversalBareIt = (this: void, doesThis: string, callback: Universal
  * runners.
  *
  * @category Test : Util
+ * @category Package : @augment-vir/test
  * @package @augment-vir/test
  */
 export type UniversalIt = UniversalBareIt & {
@@ -61,6 +64,7 @@ const its = isRuntimeEnv(RuntimeEnv.Node)
  * runners.
  *
  * @category Test
+ * @category Package : @augment-vir/test
  * @example
  *
  * ```ts

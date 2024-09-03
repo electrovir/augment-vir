@@ -6,7 +6,8 @@ import type {ArrayElement} from '../array/array.js';
  * These values are automatically parsed from https://developer.mozilla.org/docs/Web/HTTP/Status via
  * https://github.com/electrovir/augment-vir/blob/dev/packages/scripts/src/scripts/generate-http-status.script.ts
  *
- * @category Http : Common
+ * @category HTTP
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export enum HttpStatus {
@@ -497,7 +498,8 @@ export enum HttpStatus {
  * All standardized HTTP status code categories. These are determined by the first number in the
  * HTTP status code.
  *
- * @category Http : Common
+ * @category HTTP
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export enum HttpStatusCategory {
@@ -511,7 +513,8 @@ export enum HttpStatusCategory {
 /**
  * All standardized HTTP status codes grouped into their respective categories.
  *
- * @category Http : Common
+ * @category HTTP
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export const httpStatusByCategory = {
@@ -593,7 +596,8 @@ export const httpStatusByCategory = {
 /**
  * All possible HTTP status codes for the given {@link HttpStatusCategory}.
  *
- * @category Http : Common
+ * @category HTTP
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export type HttpStatusByCategory<Category extends HttpStatusCategory> = ArrayElement<

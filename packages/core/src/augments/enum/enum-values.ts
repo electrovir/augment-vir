@@ -10,7 +10,8 @@ function getEnumKeys<T extends EnumBaseType>(input: T): (keyof T)[] {
 /**
  * Gets all values within an enum as an array.
  *
- * @category Enum : Common
+ * @category Enum
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export function getEnumValues<T extends EnumBaseType>(input: T): T[keyof T][] {

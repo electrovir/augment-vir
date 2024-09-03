@@ -5,6 +5,7 @@ import {Constructor} from 'type-fest';
  * Extract the event target element from an Event.
  *
  * @category Web : Elements
+ * @category Package : @augment-vir/web
  * @example
  *
  * ```ts

@@ -15,7 +15,8 @@ import {GenericSelectionSet, SelectFrom, SelectionSet} from './selection-set.js'
  * The same as {@link selectFrom} except that the final output is collapsed until the first nested
  * value that has more than 1 key or that is not an object.
  *
- * @category Selection : Common
+ * @category Selection
+ * @category Package : @augment-vir/common
  * @example
  *
  * ```ts
@@ -83,7 +84,8 @@ function collapseObject(input: Readonly<AnyObject>, selectionSet: unknown): AnyO
  * Collapses a selected value to the first part of the selection that contains more than 1 key or
  * that is not an object. This produces the output type for {@link selectCollapsedFrom}.
  *
- * @category Selection : Common
+ * @category Selection
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export type PickCollapsedSelection<

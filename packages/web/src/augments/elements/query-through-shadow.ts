@@ -6,6 +6,7 @@ import {stringify} from '@augment-vir/core';
  * Options for {@link queryThroughShadow}.
  *
  * @category Web : Elements
+ * @category Package : @augment-vir/web
  * @package @augment-vir/web
  */
 export type QueryThroughShadowOptions = PartialWithUndefined<{
@@ -37,6 +38,7 @@ export function queryThroughShadow(
  * the given element with support for elements that contain an open Shadow Root.
  *
  * @category Web : Elements
+ * @category Package : @augment-vir/web
  * @package @augment-vir/web
  */
 export function queryThroughShadow(

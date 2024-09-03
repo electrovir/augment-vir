@@ -5,7 +5,8 @@ export type {Writable, WritableDeep} from 'type-fest';
 /**
  * This function does nothing but return the input as a writable typed version of itself.
  *
- * @category Type : Common
+ * @category Type
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export function makeWritable<T>(input: T): Writable<T> {

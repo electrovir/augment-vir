@@ -5,6 +5,7 @@ import type {IsEqual} from 'type-fest';
  * Otherwise it resolves to the given `No` type parameter.
  *
  * @category Assert : Util
+ * @category Package : @augment-vir/assert
  * @package @augment-vir/assert
  */
 export type IfEquals<Actual, Expected, Yes = unknown, No = never> =
@@ -15,6 +16,7 @@ export type IfEquals<Actual, Expected, Yes = unknown, No = never> =
  * Otherwise it resolves to the given `No` type parameter.
  *
  * @category Assert : Util
+ * @category Package : @augment-vir/assert
  * @package @augment-vir/assert
  */
 export type IfExtends<Actual, Expected, Yes = unknown, No = never> = Actual extends Expected

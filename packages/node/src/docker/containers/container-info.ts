@@ -1,13 +1,16 @@
+import type {JsonCompatibleArray, JsonCompatibleObject} from '@augment-vir/common';
 import {runShellCommand} from '../../augments/terminal/shell.js';
+import type {DockerContainerStatus} from './container-status.js';
 
-/** There may be other possible values for Status. */
-export enum DockerContainerStatusEnum {
-    exited = 'exited',
-    running = 'running',
-}
-
+/**
+ * Properties on {@link DockerContainerInfo}.State, retrieved from {@link getContainerInfo}.
+ *
+ * @category Node : Docker : Util
+ * @category Package : @augment-vir/node
+ * @package @augment-vir/node
+ */
 export type DockerContainerInfoState = {
-    Status: DockerContainerStatusEnum;
+    Status: DockerContainerStatus;
     Running: boolean;
     Paused: boolean;
     Restarting: boolean;
@@ -21,13 +24,39 @@ export type DockerContainerInfoState = {
 };
 
 /** This type signature is incomplete. Add to it as necessary. */
+
+/**
+ * Properties on the output from {@link getContainerInfo}. Not all these properties are filled in all
+ * the way, particularly most of properties with nested objects.
+ *
+ * @category Node : Docker : Util
+ * @category Package : @augment-vir/node
+ * @package @augment-vir/node
+ */
 export type DockerContainerInfo = Readonly<{
     Id: string;
     Created: string;
     Path: string;
     Args: ReadonlyArray<string>;
     State: DockerContainerInfoState;
+    Image: string;
+    ResolvConfPath: string;
+    HostnamePath: string;
+    HostsPath: string;
+    LogPath: string;
     Name: string;
+    RestartCount: number;
+    Driver: string;
+    Platform: string;
+    MountLabel: string;
+    ProcessLabel: string;
+    AppArmorProfile: string;
+    ExecIDs: unknown;
+    HostConfig: JsonCompatibleObject;
+    GraphDriver: JsonCompatibleObject;
+    Mounts: JsonCompatibleArray;
+    Config: JsonCompatibleObject;
+    NetworkSettings: JsonCompatibleObject;
 }>;
 
 export async function getContainerInfo(

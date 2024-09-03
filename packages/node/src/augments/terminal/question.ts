@@ -8,7 +8,8 @@ import {createInterface} from 'node:readline';
 /**
  * Options for {@link askQuestion}.
  *
- * @category Terminal : Node
+ * @category Node : Terminal : Util
+ * @category Package : @augment-vir/node
  * @package @augment-vir/node
  */
 export type AskQuestionOptions = {
@@ -25,7 +26,8 @@ const defaultAskQuestionOptions: AskQuestionOptions = {
  * Asks the user a question in their terminal and then waits for them to type something in response.
  * The response is accepted once the user inputs a new line.
  *
- * @category Terminal : Node
+ * @category Node : Terminal
+ * @category Package : @augment-vir/node
  * @package @augment-vir/node
  * @see
  *  - {@link askQuestionUntilConditionMet}: ask a question on loop until the user provides a valid response.
@@ -92,12 +94,14 @@ export async function askQuestion(
 /**
  * Options for {@link askQuestionUntilConditionMet}.
  *
- * @category Terminal : Node
+ * @category Node : Terminal : Util
+ * @category Package : @augment-vir/node
  * @package @augment-vir/node
  */
-export type QuestionUntilConditionMetConfig = {
+export type QuestionUntilConditionMetOptions = {
     questionToAsk: string;
-    conditionCallback: (response: string) => boolean | Promise<boolean>;
+    /** Callback to call with the user's response to verify if their response is valid. */
+    verifyResponseCallback: (response: string) => boolean | Promise<boolean>;
     invalidInputMessage: string;
     tryCountMax?: number;
 } & Partial<AskQuestionOptions>;
@@ -107,24 +111,25 @@ export type QuestionUntilConditionMetConfig = {
  * The response is submitted once the user inputs a new line. If the response fails validation, the
  * question is presented again.
  *
- * @category Terminal : Node
+ * @category Node : Terminal
+ * @category Package : @augment-vir/node
  * @package @augment-vir/node
  * @see
  *  - {@link askQuestion}: ask a question and accept any response.
  */
 export async function askQuestionUntilConditionMet({
     questionToAsk,
-    conditionCallback,
+    verifyResponseCallback,
     invalidInputMessage,
     tryCountMax = 5,
     ...options
-}: QuestionUntilConditionMetConfig): Promise<string> {
+}: QuestionUntilConditionMetOptions): Promise<string> {
     let wasConditionMet = false;
     let retryCount = 0;
     let response = '';
     while (!wasConditionMet && retryCount <= tryCountMax) {
         response = (await askQuestion(questionToAsk, options)).trim();
-        wasConditionMet = await conditionCallback(response);
+        wasConditionMet = await verifyResponseCallback(response);
         if (!wasConditionMet) {
             log.error(invalidInputMessage);
         }

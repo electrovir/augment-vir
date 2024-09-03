@@ -4,6 +4,7 @@ import {sep} from 'node:path';
  * Convert a given path to a windows path if the current system doesn't use `/`.
  *
  * @category Path : Node
+ * @category Package : @augment-vir/node
  * @package @augment-vir/node
  */
 export function replaceWithWindowsPathIfNeeded(input: string): string {
@@ -20,6 +21,7 @@ export function replaceWithWindowsPathIfNeeded(input: string): string {
  * Convert a Windows path to a posix path.
  *
  * @category Path : Node
+ * @category Package : @augment-vir/node
  * @package @augment-vir/node
  */
 export function toPosixPath(maybeWindowsPath: string): string {
@@ -35,6 +37,7 @@ export function toPosixPath(maybeWindowsPath: string): string {
  * path structure will not be modified.
  *
  * @category Path : Node
+ * @category Package : @augment-vir/node
  * @package @augment-vir/node
  */
 export function interpolationSafeWindowsPath(input: string): string {

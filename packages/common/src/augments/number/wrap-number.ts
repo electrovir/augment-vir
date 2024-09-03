@@ -6,7 +6,8 @@ import {ensureMinMax, MinMax} from './min-max.js';
  * If the given value is outside the given min/max bounds, instead of clamping the number (as the
  * {@link clamp} function does), this function wraps the value around to the next bound (inclusive).
  *
- * @category Number : Common
+ * @category Number
+ * @category Package : @augment-vir/common
  * @example
  *
  * ```ts

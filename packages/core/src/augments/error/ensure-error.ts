@@ -3,7 +3,8 @@ import {combineErrorMessages, extractErrorMessage} from './error-message.js';
 /**
  * Either returns the input if it's already an Error instance or converts it into an Error instance.
  *
- * @category Error : Common
+ * @category Error
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export function ensureError(maybeError: unknown): Error {
@@ -18,7 +19,8 @@ export function ensureError(maybeError: unknown): Error {
  * Ensures that the given input is an error and prepends the given message to the ensured Error
  * instance's message.
  *
- * @category Error : Common
+ * @category Error
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export function ensureErrorAndPrependMessage(maybeError: unknown, prependMessage: string): Error {

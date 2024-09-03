@@ -6,7 +6,8 @@ import {readJsonFile} from '../fs/json.js';
 /**
  * Read the `package.json` file contained within the given directory.
  *
- * @category Npm : Node
+ * @category Node : Npm
+ * @category Package : @augment-vir/node
  * @throws `TypeError` if the given directory has no `package.json` or the `package.json` is
  *   invalid.
  * @package @augment-vir/node

@@ -7,8 +7,9 @@ import {extractErrorMessage} from '@augment-vir/core';
  * - If no errors are in the given array, a new Error with an empty message is returned.
  * - If only one error is in the given array, it is directly returned without modification.
  *
- * @category Array : Common
- * @category Error : Common
+ * @category Array
+ * @category Error
+ * @category Package : @augment-vir/common
  * @example
  *
  * ```ts

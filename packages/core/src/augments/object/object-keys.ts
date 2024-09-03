@@ -3,7 +3,8 @@
  * [`Object.keys`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys)
  * except that it also grabs symbol keys and has better TypeScript typing.
  *
- * @category Object : Common
+ * @category Object
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export function getObjectTypedKeys<const ObjectGeneric>(
@@ -28,7 +29,8 @@ export function getObjectTypedKeys<const ObjectGeneric>(
  * Performs `keyof` on all keys within the `OriginalObject` that have values matching the given
  * `Matcher`.
  *
- * @category Object : Common
+ * @category Object
+ * @category Package : @augment-vir/common
  * @example
  *
  * ```ts
@@ -48,7 +50,8 @@ export type ExtractKeysWithMatchingValues<OriginalObject extends object, Matcher
  * Performs `keyof` on all keys within the `OriginalObject` that have values _not_ matching the
  * given `Matcher`.
  *
- * @category Object : Common
+ * @category Object
+ * @category Package : @augment-vir/common
  * @example
  *
  * ```ts

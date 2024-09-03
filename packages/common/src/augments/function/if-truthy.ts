@@ -4,7 +4,8 @@ import {check, type Falsy, type Truthy} from '@augment-vir/assert';
  * Checks an input for truthiness then calls the respective callback, returning the callback's
  * output.
  *
- * @category Boolean : Common
+ * @category Function
+ * @category Package : @augment-vir/common
  * @example
  *
  * ```ts

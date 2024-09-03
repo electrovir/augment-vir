@@ -5,7 +5,8 @@ import {ensureError} from '../error/ensure-error.js';
  * Creates a promise that can be resolved or rejected at any later time. It also includes indication
  * on whether its been settled yet or not.
  *
- * @category Promise : Common
+ * @category Promise
+ * @category Package : @augment-vir/common
  * @example
  *
  * ```ts

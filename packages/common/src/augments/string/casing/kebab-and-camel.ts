@@ -1,11 +1,12 @@
 import {mergeDefinedProperties} from '../../object/merge-defined-properties.js';
 import {maybeCapitalize} from './capitalization.js';
-import {CasingOptions, defaultCasingOptions, isCase, StringCaseEnum} from './casing.js';
+import {CasingOptions, defaultCasingOptions, isCase, StringCase} from './casing.js';
 
 /**
  * Converts a kebab-case string to CamelCase.
  *
- * @category String : Common
+ * @category String
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export function kebabCaseToCamelCase(
@@ -35,7 +36,8 @@ export function kebabCaseToCamelCase(
 /**
  * Converts a CamelCase string to kebab-case.
  *
- * @category String : Common
+ * @category String
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export function camelCaseToKebabCase(rawCamelCase: string) {
@@ -46,8 +48,8 @@ export function camelCaseToKebabCase(rawCamelCase: string) {
             const nextLetter: string =
                 index < originalString.length - 1 ? originalString[index + 1] || '' : '';
             const possibleWordBoundary =
-                isCase(previousLetter, StringCaseEnum.Lower, {rejectNoCaseCharacters: true}) ||
-                isCase(nextLetter, StringCaseEnum.Lower, {rejectNoCaseCharacters: true});
+                isCase(previousLetter, StringCase.Lower, {rejectNoCaseCharacters: true}) ||
+                isCase(nextLetter, StringCase.Lower, {rejectNoCaseCharacters: true});
 
             if (
                 currentLetter === currentLetter.toLowerCase() ||

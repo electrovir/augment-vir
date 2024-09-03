@@ -1,7 +1,8 @@
 /**
  * Either a Promise of `T` or just `T` itself.
  *
- * @category Promise : Common
+ * @category Promise
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export type MaybePromise<T> = Promise<T> | T;

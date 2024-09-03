@@ -5,6 +5,13 @@ import {runShellCommand} from '../augments/terminal/shell.js';
 import {PrismaMigrationNeededError, PrismaResetNeededError} from './prisma-errors.js';
 import {runPrismaCommand, verifyOutput} from './run-prisma-command.js';
 
+/**
+ * Output of `prisma.migration.status`.
+ *
+ * @category Prisma : Node : Util
+ * @category Package : @augment-vir/node
+ * @package @augment-vir/node
+ */
 export type PrismaMigrationStatus = {
     totalMigrations: number;
     unappliedMigrations: string[];
@@ -22,12 +29,6 @@ enum DbChangeRequired {
     ResetNeeded = 'reset-needed',
 }
 
-/**
- * @throws `PrismaMigrationNeededError` when a new migration is required so the user needs to input
- *   a name.
- * @throws `PrismaResetNeededError` when there's a migration mismatch with the database and it needs
- *   to be reset.
- */
 export async function applyPrismaMigrationsToDev(
     schemaFilePath: string,
     env: Record<string, string> = {},
@@ -133,6 +134,11 @@ export async function createPrismaMigration(
         createOnly = false,
     }: {
         migrationName: string;
+        /**
+         * Set this to `true` to create a new migration without applying it to the database.
+         *
+         * @default false
+         */
         createOnly?: boolean | undefined;
     },
     schemaFilePath: string,

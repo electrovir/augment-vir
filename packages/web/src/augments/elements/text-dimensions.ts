@@ -7,6 +7,7 @@ import type {AnyDuration} from '@date-vir/duration';
  * so it should not be called excessively.
  *
  * @category Web : Elements
+ * @category Package : @augment-vir/web
  * @package @augment-vir/web
  */
 export async function calculateTextDimensions(

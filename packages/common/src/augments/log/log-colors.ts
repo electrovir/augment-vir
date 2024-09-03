@@ -4,6 +4,7 @@ import {perEnv, RuntimeEnv} from '@augment-vir/core';
  * Supported log output types.
  *
  * @category Log : Util
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export enum LogOutputType {
@@ -20,6 +21,7 @@ export enum LogOutputType {
  * browsers.
  *
  * @category Log : Util
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export enum LogColorKey {
@@ -40,6 +42,7 @@ export enum LogColorKey {
  * already.
  *
  * @category Log : Util
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export type LogColorConfig = Readonly<
@@ -95,6 +98,7 @@ async function determineDefaultLogColors(): Promise<Record<LogColorKey, string>>
  * Mapping of color keys to the current color string.
  *
  * @category Log : Util
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export const logColors: Readonly<Record<LogColorKey, string>> = await determineDefaultLogColors();
@@ -103,6 +107,7 @@ export const logColors: Readonly<Record<LogColorKey, string>> = await determineD
  * Default implementation of {@link LogColorConfig}.
  *
  * @category Log : Util
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export const defaultLogColorConfig: LogColorConfig = {

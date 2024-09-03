@@ -2,6 +2,7 @@
  * Extracts the text content of the given element or shadow root.
  *
  * @category Web : Elements
+ * @category Package : @augment-vir/web
  * @package @augment-vir/web
  */
 export function extractElementText(element: Element | ShadowRoot): string {

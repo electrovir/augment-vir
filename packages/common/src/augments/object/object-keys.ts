@@ -3,7 +3,8 @@ import {filterObject} from './object-filter.js';
 /**
  * Same as the TypeScript built-in type `Omit` except that it works on actual runtime values.
  *
- * @category Object : Common
+ * @category Object
+ * @category Package : @augment-vir/common
  * @example
  *
  * ```ts
@@ -27,7 +28,8 @@ export function omitObjectKeys<const ObjectGeneric, const KeyGeneric extends key
 /**
  * Same as the TypeScript built-in type `Pick` except that it works on actual runtime values.
  *
- * @category Object : Common
+ * @category Object
+ * @category Package : @augment-vir/common
  * @example
  *
  * ```ts

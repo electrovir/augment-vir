@@ -2,7 +2,8 @@
  * Replaces whatever substring is at the given index in the original string with the new string.
  * Optionally, provide a length of the substring to get replaced.
  *
- * @category String : Common
+ * @category String
+ * @category Package : @augment-vir/common
  * @example
  *
  * ```ts

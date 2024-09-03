@@ -11,6 +11,7 @@ const checkGroup = createCheckGroup(extendableAssertions, checkOverrides);
  * whether its input is truthy or not.
  *
  * @category Assert
+ * @category Package : @augment-vir/assert
  * @example
  *
  * ```ts

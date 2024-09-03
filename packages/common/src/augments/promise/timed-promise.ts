@@ -5,7 +5,8 @@ import {AnyDuration, convertDuration, DurationUnit} from '@date-vir/duration';
 /**
  * An error thrown by {@link wrapPromiseInTimeout} when the timeout is reached.
  *
- * @category Promise : Common
+ * @category Promise
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export class PromiseTimeoutError extends Error {
@@ -30,7 +31,8 @@ export class PromiseTimeoutError extends Error {
  * Wraps an already-created Promise in a timeout, causing a rejection if the original Promise isn't
  * resolved by then.
  *
- * @category Promise : Common
+ * @category Promise
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export function wrapPromiseInTimeout<T>(

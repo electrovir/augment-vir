@@ -5,7 +5,8 @@
  * each usage of this function to explicitly specify the generic, thus giving us type safety for the
  * input.
  *
- * @category Type : Common
+ * @category Type
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export function ensureType<ExpectedType = never>(

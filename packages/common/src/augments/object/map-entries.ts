@@ -33,7 +33,8 @@ export function mapObject<const OriginalObject, const NewKey extends PropertyKey
 /**
  * Maps an object. The callback must return a key and value.
  *
- * @category Object : Common
+ * @category Object
+ * @category Package : @augment-vir/common
  * @example
  *
  * ```ts

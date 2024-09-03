@@ -6,7 +6,8 @@ export type {SetRequired} from 'type-fest';
  * Same as the Required<> built-in type helper but this requires that each property be present and
  * be not null.
  *
- * @category Object : Common
+ * @category Object
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export type RequiredAndNotNull<T> = {
@@ -17,7 +18,8 @@ export type RequiredAndNotNull<T> = {
  * Require only a subset of object properties and require that they be not null. This is
  * particularly useful in conjunction with the "exactOptionalPropertyTypes" tsconfig flag.
  *
- * @category Object : Common
+ * @category Object
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export type SetRequiredAndNotNull<T, K extends keyof T> = Omit<T, K> &
@@ -26,7 +28,8 @@ export type SetRequiredAndNotNull<T, K extends keyof T> = Omit<T, K> &
 /**
  * Sets a key as optional but also nullable.
  *
- * @category Object : Common
+ * @category Object
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export type SetOptionalAndNullable<
@@ -42,7 +45,8 @@ export type SetOptionalAndNullable<
  * Modified version of `RequiredKeys` from `type-fest` that does not require `BaseType` to extends
  * `object`.
  *
- * @category Object : Common
+ * @category Object
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export type RequiredKeysOf<BaseType> = Exclude<
@@ -57,7 +61,8 @@ export type RequiredKeysOf<BaseType> = Exclude<
  * `Required<Partial<T>>` doesn't fully remove `| undefined` from indexed keys when the
  * `noUncheckedIndexedAccess` TSConfig compiler option is enabled.
  *
- * @category Object : Common
+ * @category Object
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export type CompleteRequire<Parent> = {

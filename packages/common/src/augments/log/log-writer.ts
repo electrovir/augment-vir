@@ -4,6 +4,7 @@ import {type LogOutputType} from './log-colors.js';
  * Params for {@link LogWriter}
  *
  * @category Log : Util
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export type LogWriterParams = {
@@ -17,6 +18,7 @@ export type LogWriterParams = {
  * CSS will be applied if this is called within a browser.
  *
  * @category Log : Util
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export type LogWriter = (params: Readonly<LogWriterParams>) => void;
@@ -25,6 +27,7 @@ export type LogWriter = (params: Readonly<LogWriterParams>) => void;
  * A log writer for each log output type.
  *
  * @category Log : Util
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export type LogWriters = Record<LogOutputType, LogWriter>;

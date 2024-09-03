@@ -6,7 +6,8 @@ import {getObjectTypedEntries, typedObjectFromEntries} from './object-entries.js
  * [`[].filter`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/fromEntries)
  * but for objects.
  *
- * @category Object : Common
+ * @category Object
+ * @category Package : @augment-vir/common
  * @example
  *
  * ```ts

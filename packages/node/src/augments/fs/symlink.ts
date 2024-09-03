@@ -4,7 +4,8 @@ import {lstat, readlink, stat, symlink} from 'node:fs/promises';
 /**
  * Creates a symlink.
  *
- * @category File : Node
+ * @category Node : File
+ * @category Package : @augment-vir/node
  * @package @augment-vir/node
  */
 export async function createSymlink({

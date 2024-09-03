@@ -11,6 +11,7 @@ import {removeSuffix} from '../string/suffix.js';
  * v20.11.0 but is compatible with older versions of Node.js as well as browsers.
  *
  * @category Path : Common
+ * @category Package : @augment-vir/common
  * @example
  *
  * ```ts

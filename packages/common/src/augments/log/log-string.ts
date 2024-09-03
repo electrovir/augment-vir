@@ -9,6 +9,7 @@ import {LogWriterParams} from './log-writer.js';
  * Options for a custom Logger.
  *
  * @category Log : Util
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export type LoggerOptions = {
@@ -20,6 +21,7 @@ export type LoggerOptions = {
  * Parameters for {@link toLogString}.
  *
  * @category Log : Util
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export type ToLogStringParams = {
@@ -105,6 +107,7 @@ async function createToLogString(): Promise<ToLogString> {
  * Converts log arguments into a single {@link LogWriterParams}.
  *
  * @category Log : Util
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export const toLogString: ToLogString = await createToLogString();

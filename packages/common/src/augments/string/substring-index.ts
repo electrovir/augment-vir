@@ -5,7 +5,8 @@ import {setRegExpCaseSensitivity} from '../regexp/regexp-flags.js';
  * [`''.indexOf`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/indexOf)
  * except that it finds _all_ indexes of.
  *
- * @category String : Common
+ * @category String
+ * @category Package : @augment-vir/common
  * @package @augment-vir/common
  */
 export function findSubstringIndexes<IncludeLength extends boolean | undefined>({
