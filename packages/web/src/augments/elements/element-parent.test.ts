@@ -1,8 +1,8 @@
 import {assert} from '@augment-vir/assert';
 import {describe, it, testWeb} from '@augment-vir/test';
 import {defineElementNoInputs, html} from 'element-vir';
-import {queryThroughShadow} from '../query-through-shadow.js';
 import {findMatchingAncestor, getParentElement} from './element-parent.js';
+import {queryThroughShadow} from './query-through-shadow.js';
 
 describe(getParentElement.name, () => {
     it('works on a shadow root', async () => {

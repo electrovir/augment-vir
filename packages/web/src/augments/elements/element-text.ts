@@ -1,3 +1,9 @@
+/**
+ * Extracts the text content of the given element or shadow root.
+ *
+ * @category Web : Elements
+ * @package @augment-vir/web
+ */
 export function extractElementText(element: Element | ShadowRoot): string {
     const value = (element as HTMLInputElement).value;
     const shadowRoot = (element as Element).shadowRoot;

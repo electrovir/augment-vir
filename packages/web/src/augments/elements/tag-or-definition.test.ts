@@ -1,7 +1,7 @@
 import {stringify} from '@augment-vir/core';
 import {describe, itCases, testWeb} from '@augment-vir/test';
 import {defineElementNoInputs, html} from 'element-vir';
-import {queryThroughShadow} from '../query-through-shadow.js';
+import {queryThroughShadow} from './query-through-shadow.js';
 import {toTagOrDefinition} from './tag-or-definition.js';
 
 const TestElement = defineElementNoInputs({

@@ -2,6 +2,12 @@ import {check} from '@augment-vir/assert';
 import type {PartialWithUndefined} from '@augment-vir/common';
 import {stringify} from '@augment-vir/core';
 
+/**
+ * Options for {@link queryThroughShadow}.
+ *
+ * @category Web : Elements
+ * @package @augment-vir/web
+ */
 export type QueryThroughShadowOptions = PartialWithUndefined<{
     all: boolean;
 }>;
@@ -25,6 +31,14 @@ export function queryThroughShadow(
     query: string | {tagName: string},
     options: QueryThroughShadowOptions,
 ): Element | Element[] | undefined;
+/**
+ * Perform
+ * [`.querySelector()`](https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelector) on
+ * the given element with support for elements that contain an open Shadow Root.
+ *
+ * @category Web : Elements
+ * @package @augment-vir/web
+ */
 export function queryThroughShadow(
     element: Element | ShadowRoot,
     rawQuery: string | {tagName: string},

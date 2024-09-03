@@ -1,9 +1,9 @@
 import {assert} from '@augment-vir/assert';
 import {describe, itCases, testWeb} from '@augment-vir/test';
 import {CSSResult, HTMLTemplateResult, css, html} from 'element-vir';
-import {findOverflowParent} from './overflow-parent.js';
+import {findOverflowAncestor} from './overflow.js';
 
-describe(findOverflowParent.name, () => {
+describe(findOverflowAncestor.name, () => {
     async function testFindOverflowParent(
         wrapperStyle?: CSSResult | undefined,
         extraTemplate?: HTMLTemplateResult | undefined,
@@ -28,7 +28,7 @@ describe(findOverflowParent.name, () => {
         assert.instanceOf(targetElement, HTMLDivElement);
         assert.instanceOf(wrapper, HTMLDivElement);
 
-        const overflowParent = findOverflowParent(targetElement);
+        const overflowParent = findOverflowAncestor(targetElement);
 
         return {
             isBody: overflowParent === document.body,

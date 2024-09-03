@@ -2,6 +2,13 @@ import {waitUntil} from '@augment-vir/assert';
 import {Dimensions, type PartialWithUndefined} from '@augment-vir/common';
 import type {AnyDuration} from '@date-vir/duration';
 
+/**
+ * Calculate the dimensions needed for an element's text. This is a relatively expensive operation,
+ * so it should not be called excessively.
+ *
+ * @category Web : Elements
+ * @package @augment-vir/web
+ */
 export async function calculateTextDimensions(
     parentElement: Element,
     text: string,

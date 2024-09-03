@@ -1,6 +1,20 @@
 import {PartialWithUndefined} from '@augment-vir/common';
 import {Constructor} from 'type-fest';
 
+/**
+ * Extract the event target element from an Event.
+ *
+ * @category Web : Elements
+ * @example
+ *
+ * ```ts
+ * element.addEventListener('click', (event) => {
+ *     const eventTarget = extractEventTarget(event, HTMLButtonElement);
+ * });
+ * ```
+ *
+ * @package @augment-vir/web
+ */
 export function extractEventTarget<ExpectedTargetClassConstructor extends Constructor<Element>>(
     event: Event,
     expectedTargetClass: ExpectedTargetClassConstructor,

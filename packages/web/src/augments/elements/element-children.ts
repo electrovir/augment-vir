@@ -6,6 +6,9 @@
  *
  * Optionally define a second "depth" input to control how far nestings should be pursued. Leave
  * depth out or set it to undefined or any value <= 0 to allow full depth search.
+ *
+ * @category Web : Elements
+ * @package @augment-vir/web
  */
 export function getNestedChildren(
     startingElement: Readonly<Element>,
@@ -40,6 +43,9 @@ function recursivelyGetNestedChildren(
  *
  * Note that that slotted elements and light dom elements will always be shown above shadow dom
  * elements. Besides that, the order of children is preserved.
+ *
+ * @category Web : Elements
+ * @package @augment-vir/web
  */
 export function getDirectChildren(startingElement: Readonly<Element>): Element[] {
     return [
