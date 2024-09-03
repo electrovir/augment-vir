@@ -2,13 +2,32 @@ import {Jsonify, Primitive} from 'type-fest';
 
 /**
  * These are similar in purpose, name, and structure to type-fest's JsonValue types but these are
- * permissive. The goal here is to allow any types that do not get serialized into just empty
+ * more permissive. The goal here is to allow any types that do not get serialized into just empty
  * objects. (For example, JSON.stringify(new Map()) returns "{}", so we don't want to allow that
  * type.)
  */
 
-export type JsonCompatiblePrimitiveValue = Jsonify<Primitive> | undefined;
+/**
+ * All primitives that are allowed in JSON.
+ *
+ * Note that while `undefined` is allowed here, it will be behave slightly differently than the
+ * others.
+ *
+ * - `JSON.stringify(undefined)` will output `undefined`, not a string.
+ * - `JSON.stringify({a: null, b: undefined})` will output `'{"a": null}'`, omitting the `b` key
+ *   entirely.
+ *
+ * @category JSON : Common
+ * @package @augment-vir/common
+ */
+export type JsonCompatiblePrimitive = Jsonify<Primitive> | undefined;
 
+/**
+ * An object that only contains JSON compatible values.
+ *
+ * @category JSON : Common
+ * @package @augment-vir/common
+ */
 export type JsonCompatibleObject =
     | Partial<{
           readonly [key: string | number]: JsonCompatibleValue | Readonly<JsonCompatibleValue>;
@@ -17,17 +36,21 @@ export type JsonCompatibleObject =
           [key: string | number]: JsonCompatibleValue | Readonly<JsonCompatibleValue>;
       }>;
 
-export type JsonCompatibleArray =
-    | JsonCompatibleValue[]
-    /**
-     * This weird readonly with object syntax for an array type is so that TypeScript doesn't
-     * complain about JsonCompatibleArray circularly referencing itself
-     */
-    | ({
-          readonly [P in number]: JsonCompatibleValue;
-      } & ReadonlyArray<any>);
+/**
+ * An array that only contains JSON compatible values.
+ *
+ * @category JSON : Common
+ * @package @augment-vir/common
+ */
+export type JsonCompatibleArray = JsonCompatibleValue[] | ReadonlyArray<JsonCompatibleValue>;
 
+/**
+ * Any JSON compatible value.
+ *
+ * @category JSON : Common
+ * @package @augment-vir/common
+ */
 export type JsonCompatibleValue =
-    | JsonCompatiblePrimitiveValue
+    | JsonCompatiblePrimitive
     | JsonCompatibleObject
     | JsonCompatibleArray;

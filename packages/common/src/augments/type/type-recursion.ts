@@ -151,15 +151,103 @@ type TsRecursionArray = [
     150,
 ];
 
+/**
+ * This is used as the baseline type for TypeScript recursion tracking indexes. Use this to manually
+ * abort a type's recursion to prevent it from going too deep and throwing an error in TypeScript's
+ * language server.
+ *
+ * @category Type : Common
+ * @example
+ *
+ * ```ts
+ * import type {
+ *     TsRecursionTracker,
+ *     TsRecursionStart,
+ *     TsRecurse,
+ *     TsTooMuchRecursion,
+ * } from '@augment-vir/common';
+ *
+ * export type SomeType<Depth extends TsRecursionTracker = TsRecursionStart> =
+ *     Depth extends TsTooMuchRecursion
+ *         ? 'Error: recursive object depth is too deep.'
+ *         : SomeType<TsRecurse<Depth>>;
+ * ```
+ *
+ * @package @augment-vir/common
+ */
 export type TsRecursionTracker = keyof TsRecursionArray;
 
 /**
  * Through experimentation on Typescript version 5.4.5, this is the maximum recursion depth we can
- * go to before TypeScript will block recursive types.
+ * go to before TypeScript will block recursive types. Use this as the limit to type recursion.
+ *
+ * @category Type : Common
+ * @example
+ *
+ * ```ts
+ * import type {
+ *     TsRecursionTracker,
+ *     TsRecursionStart,
+ *     TsRecurse,
+ *     TsTooMuchRecursion,
+ * } from '@augment-vir/common';
+ *
+ * export type SomeType<Depth extends TsRecursionTracker = TsRecursionStart> =
+ *     Depth extends TsTooMuchRecursion
+ *         ? 'Error: recursive object depth is too deep.'
+ *         : SomeType<TsRecurse<Depth>>;
+ * ```
+ *
+ * @package @augment-vir/common
  */
 export type TsTooMuchRecursion = 91;
+/**
+ * This is the default starting recursion depth needed to get the full tested allowed recursion
+ * depth.
+ *
+ * @category Type : Common
+ * @example
+ *
+ * ```ts
+ * import type {
+ *     TsRecursionTracker,
+ *     TsRecursionStart,
+ *     TsRecurse,
+ *     TsTooMuchRecursion,
+ * } from '@augment-vir/common';
+ *
+ * export type SomeType<Depth extends TsRecursionTracker = TsRecursionStart> =
+ *     Depth extends TsTooMuchRecursion
+ *         ? 'Error: recursive object depth is too deep.'
+ *         : SomeType<TsRecurse<Depth>>;
+ * ```
+ *
+ * @package @augment-vir/common
+ */
 export type TsRecursionStart = 0;
 
+/**
+ * Increments a TypeScript recursion depth tracker.
+ *
+ * @category Type : Common
+ * @example
+ *
+ * ```ts
+ * import type {
+ *     TsRecursionTracker,
+ *     TsRecursionStart,
+ *     TsRecurse,
+ *     TsTooMuchRecursion,
+ * } from '@augment-vir/common';
+ *
+ * export type SomeType<Depth extends TsRecursionTracker = TsRecursionStart> =
+ *     Depth extends TsTooMuchRecursion
+ *         ? 'Error: recursive object depth is too deep.'
+ *         : SomeType<TsRecurse<Depth>>;
+ * ```
+ *
+ * @package @augment-vir/common
+ */
 export type TsRecurse<CurrentRecursion extends TsRecursionTracker> =
     TsRecursionArray[CurrentRecursion] extends TsRecursionTracker
         ? TsRecursionArray[CurrentRecursion]

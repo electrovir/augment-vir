@@ -7,7 +7,7 @@ describe(removeDuplicates.name, () => {
         61: {key: 'value'},
     };
 
-    itCases(removeDuplicates<any, any>, [
+    itCases(removeDuplicates<any>, [
         {
             it: 'removes nothing when no duplicates',
             inputs: [
@@ -69,6 +69,46 @@ describe(removeDuplicates.name, () => {
                 {id: 4},
                 {id: 6},
                 {id: 61},
+            ],
+        },
+        {
+            it: 'defaults to using the entry itself, without duplicates',
+            inputs: [
+                [
+                    4,
+                    6,
+                    61,
+                    62,
+                    63,
+                ],
+            ],
+            expect: [
+                4,
+                6,
+                61,
+                62,
+                63,
+            ],
+        },
+        {
+            it: 'defaults to using the entry itself, with duplicates',
+            inputs: [
+                [
+                    4,
+                    6,
+                    61,
+                    63,
+                    62,
+                    6,
+                    63,
+                ],
+            ],
+            expect: [
+                4,
+                6,
+                61,
+                63,
+                62,
             ],
         },
     ]);

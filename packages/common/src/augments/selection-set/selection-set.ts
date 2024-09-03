@@ -1,4 +1,3 @@
-import {check} from '@augment-vir/assert';
 import type {AnyObject} from '@augment-vir/core';
 import {IsAny, IsNever, Primitive, UnionToIntersection} from 'type-fest';
 import {
@@ -8,20 +7,27 @@ import {
     TsTooMuchRecursion,
 } from '../type/type-recursion.js';
 
-export function shouldPreserveInSelectionSet(input: unknown): input is SelectionTypesToPreserve {
-    return check.isPrimitive(input) || input instanceof RegExp || input instanceof Promise;
-}
-
 /** All types that won't be recursed into when defining a {@link SelectionSet}. */
-export type SelectionTypesToPreserve = Primitive | RegExp | Promise<any>;
+type SelectionTypesToPreserve = Primitive | RegExp | Promise<any>;
 
-/** A generic selection set without specific keys. */
+/**
+ * A generic selection set without specific keys. Useful for type parameter baselines.
+ *
+ * @category Selection : Common
+ * @package @augment-vir/common
+ */
 export type GenericSelectionSet = {
     [Key in PropertyKey]: unknown;
 };
 
-/** Masks an object value with the given {@link SelectionSet}. */
-export type PickSelection<
+/**
+ * Performs a SQL-like nested selection on an object, extracting the selected values. This produces
+ * the output type for `selectFrom`.
+ *
+ * @category Selection : Common
+ * @package @augment-vir/common
+ */
+export type SelectFrom<
     Full extends Readonly<AnyObject>,
     Selection extends SelectionSet<Full>,
     Depth extends TsRecursionTracker = TsRecursionStart,
@@ -29,7 +35,7 @@ export type PickSelection<
     ? ['Error: recursive object depth is too deep.']
     : Full extends ReadonlyArray<infer Element extends any>
       ? (
-            | PickSelection<Extract<Element, AnyObject>, Selection, TsRecurse<Depth>>
+            | SelectFrom<Extract<Element, AnyObject>, Selection, TsRecurse<Depth>>
             | Exclude<Element, AnyObject>
         )[]
       : {
@@ -39,7 +45,7 @@ export type PickSelection<
                   ? Key
                   : never]:
                 | (Selection[Key] extends GenericSelectionSet
-                      ? PickSelection<
+                      ? SelectFrom<
                             NonNullable<Extract<Full[Key], AnyObject>>,
                             Selection[Key],
                             TsRecurse<Depth>
@@ -48,7 +54,12 @@ export type PickSelection<
                 | Exclude<Full[Key], AnyObject>;
         };
 
-/** Defines a selection set for the given object. */
+/**
+ * Defines a selection set for a given object type. This is used in {@link SelectFrom}.
+ *
+ * @category Selection : Common
+ * @package @augment-vir/common
+ */
 export type SelectionSet<
     Full extends Readonly<AnyObject>,
     Depth extends TsRecursionTracker = TsRecursionStart,

@@ -1,7 +1,34 @@
+/**
+ * Removes all given indexes from the given array.
+ *
+ * @category Array : Common
+ * @example
+ *
+ * ```ts
+ * import {filterOutIndexes} from '@augment-vir/common';
+ *
+ * const result = filterOutIndexes(
+ *     [
+ *         'a',
+ *         'b',
+ *         '',
+ *     ],
+ *     [
+ *         0,
+ *         2,
+ *     ],
+ * );
+ * // result is `['b']`
+ * ```
+ *
+ * @returns A new array (does not mutate).
+ * @package @augment-vir/common
+ */
 export function filterOutIndexes<T>(array: ReadonlyArray<T>, indexes: ReadonlyArray<number>): T[] {
     return array.filter((_, index) => !indexes.includes(index));
 }
 
+/** Performs `filterMap` with a type guard filter. */
 export function filterMap<ElementType, MappedEntry, TypeGuarded extends MappedEntry>(
     inputArray: ReadonlyArray<ElementType>,
     mapCallback: (
@@ -16,6 +43,7 @@ export function filterMap<ElementType, MappedEntry, TypeGuarded extends MappedEn
         originalArray: ReadonlyArray<ElementType>,
     ) => mappedOutput is TypeGuarded,
 ): TypeGuarded[];
+/** Performs a regular `filterMap`. */
 export function filterMap<ElementType, MappedEntry>(
     inputArray: ReadonlyArray<ElementType>,
     mapCallback: (
@@ -30,6 +58,39 @@ export function filterMap<ElementType, MappedEntry>(
         originalArray: ReadonlyArray<ElementType>,
     ) => boolean,
 ): MappedEntry[];
+/**
+ * Performs
+ * [`[].map()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map)
+ * and
+ * [`[].filter()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter)
+ * (in that order) on an array with a single iteration.
+ *
+ * @category Array : Common
+ * @example
+ *
+ * ```ts
+ * import {filterMap} from '@augment-vir/common';
+ *
+ * const result = filterMap(
+ *     [
+ *         'a',
+ *         'b',
+ *         '',
+ *     ],
+ *     // map callback
+ *     (value) => {
+ *         return `value-${value}`;
+ *     },
+ *     // filter callback
+ *     (mappedValue, originalValue) => {
+ *         return !!originalValue;
+ *     },
+ * );
+ * // result is `['value-a', 'value-b']`
+ * ```
+ *
+ * @package @augment-vir/common
+ */
 export function filterMap<ElementType, MappedEntry>(
     inputArray: ReadonlyArray<ElementType>,
     mapCallback: (

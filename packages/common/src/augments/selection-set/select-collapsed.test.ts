@@ -53,6 +53,36 @@ describe(selectCollapsedFrom.name, () => {
             ],
         },
         {
+            it: 'collapses a simpler case',
+            inputs: [
+                [
+                    {
+                        child: {
+                            grandChild: 'hi',
+                            grandChild2: 3,
+                            grandChild3: /something/,
+                        },
+                    },
+                    {
+                        child: {
+                            grandChild: 'hi',
+                            grandChild2: 4,
+                            grandChild3: /something/,
+                        },
+                    },
+                ],
+                {
+                    child: {
+                        grandChild2: true,
+                    },
+                },
+            ],
+            expect: [
+                3,
+                4,
+            ],
+        },
+        {
             it: 'stops collapsing if there are more than 1 key',
             inputs: [
                 {

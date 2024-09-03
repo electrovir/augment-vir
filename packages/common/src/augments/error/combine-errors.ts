@@ -1,16 +1,32 @@
 import {check} from '@augment-vir/assert';
-import {extractErrorMessage, type AtLeastTuple} from '@augment-vir/core';
+import {extractErrorMessage} from '@augment-vir/core';
 
-export function combineErrors(errors: AtLeastTuple<Error, 1>): Error;
-export function combineErrors(errors: ReadonlyArray<Error | undefined>): Error | undefined;
-export function combineErrors(rawErrors: ReadonlyArray<Error | undefined>): Error | undefined {
-    const errors = rawErrors.filter((error) => error);
-
+/**
+ * Combines an array of errors into a single array.
+ *
+ * - If no errors are in the given array, a new Error with an empty message is returned.
+ * - If only one error is in the given array, it is directly returned without modification.
+ *
+ * @category Array : Common
+ * @category Error : Common
+ * @example
+ *
+ * ```ts
+ * import {combineErrors} from '@augment-vir/common';
+ *
+ * const result1 = combineErrors([
+ *     new Error('message 1'),
+ *     new Error('message 2'),
+ * ]); // result1 is a single error with the message 'message 1\nmessage 2'
+ * ```
+ *
+ * @returns A single error.
+ * @package @augment-vir/common
+ */
+export function combineErrors(errors: ReadonlyArray<Error>): Error {
     if (!check.isLengthAtLeast(errors, 1)) {
-        return undefined;
-    }
-
-    if (errors.length === 1) {
+        return new Error();
+    } else if (errors.length === 1) {
         return errors[0];
     }
 

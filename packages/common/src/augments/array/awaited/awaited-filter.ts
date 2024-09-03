@@ -1,5 +1,33 @@
 import {awaitedBlockingMap} from './awaited-map.js';
 
+/**
+ * Performs
+ * [`[].filter()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter)
+ * on an array but supports an async callback.
+ *
+ * @category Array : Common
+ * @example
+ *
+ * ```ts
+ * import {awaitedFilter} from '@augment-vir/common';
+ *
+ * const result = await awaitedFilter(
+ *     [
+ *         1,
+ *         2,
+ *         3,
+ *         4,
+ *         5,
+ *     ],
+ *     async (value) => {
+ *         return await Promise.resolve(value > 2);
+ *     },
+ * );
+ * ```
+ *
+ * @returns A new array (does not mutate).
+ * @package @augment-vir/common
+ */
 export async function awaitedFilter<OriginalGeneric>(
     arrayInput: ReadonlyArray<OriginalGeneric>,
     filterCallback: (

@@ -1,9 +1,24 @@
 import {CasingOptions} from './casing.js';
 
-export function maybeCapitalize(input: string, casingOptions: Partial<CasingOptions>): string {
+/**
+ * Capitalize the first letter of the input _only if_ the given options specifies doing so.
+ *
+ * @category String : Common
+ * @package @augment-vir/common
+ */
+export function maybeCapitalize(
+    input: string,
+    casingOptions: Pick<CasingOptions, 'capitalizeFirstLetter'>,
+): string {
     return casingOptions.capitalizeFirstLetter ? capitalizeFirstLetter(input) : input;
 }
 
+/**
+ * Capitalize the first letter of the input.
+ *
+ * @category String : Common
+ * @package @augment-vir/common
+ */
 export function capitalizeFirstLetter<InputGeneric extends string>(
     input: InputGeneric,
 ): Capitalize<InputGeneric> {

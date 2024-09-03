@@ -1,3 +1,7 @@
+/**
+ * @category Number : Common
+ * @package @augment-vir/common
+ */
 export type MinMax = {
     min: number;
     max: number;
@@ -5,9 +9,10 @@ export type MinMax = {
 
 /**
  * Given a min and max, ensures that they are in correct order. Meaning, min is less than max. If
- * that is not the case, the returned value is the given min and max values swapped.
+ * that is not the case, values are swapped.
  *
- * @category Number:Common
+ * @category Number : Common
+ * @package @augment-vir/common
  */
 export function ensureMinMax({min, max}: MinMax): MinMax {
     if (min > max) {

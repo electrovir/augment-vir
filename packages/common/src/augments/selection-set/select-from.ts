@@ -1,19 +1,64 @@
+import {check} from '@augment-vir/assert';
 import type {AnyObject} from '@augment-vir/core';
 import {mapObjectValues} from '../object/map-values.js';
 import {omitObjectKeys} from '../object/object-keys.js';
-import {PickSelection, SelectionSet, shouldPreserveInSelectionSet} from './selection-set.js';
+import {SelectFrom, SelectionSet} from './selection-set.js';
 
+/**
+ * Determine if the given input should be preserved in the selection output, meaning it won't be
+ * recursed into.
+ *
+ * @ignore
+ */
+export function shouldPreserveInSelectionSet(input: unknown): boolean {
+    return check.isPrimitive(input) || input instanceof RegExp || input instanceof Promise;
+}
+
+/**
+ * Performs a SQL-like nested selection on an object, extracting the selected values.
+ *
+ * @category Selection : Common
+ * @example
+ *
+ * ```ts
+ * import {selectFrom} from '@augment-vir/common';
+ *
+ * selectFrom(
+ *     [
+ *         {
+ *             child: {
+ *                 grandChild: 'hi',
+ *                 grandChild2: 3,
+ *                 grandChild3: /something/,
+ *             },
+ *         },
+ *         {
+ *             child: {
+ *                 grandChild: 'hi',
+ *                 grandChild2: 4,
+ *                 grandChild3: /something/,
+ *             },
+ *         },
+ *     ],
+ *     {
+ *         child: {
+ *             grandChild2: true,
+ *         },
+ *     },
+ * );
+ * // output is `[{child: {grandChild2: 3}}, {child: {grandChild2: 4}}]`
+ * ```
+ *
+ * @package @augment-vir/common
+ */
 export function selectFrom<
     Full extends AnyObject,
     const Selection extends SelectionSet<NoInfer<Full>>,
->(
-    originalObject: Readonly<Full>,
-    selectionSet: Readonly<Selection>,
-): PickSelection<Full, Selection> {
+>(originalObject: Readonly<Full>, selectionSet: Readonly<Selection>): SelectFrom<Full, Selection> {
     if (Array.isArray(originalObject)) {
         return originalObject.map((originalEntry) =>
             selectFrom(originalEntry, selectionSet),
-        ) as PickSelection<Full, Selection>;
+        ) as SelectFrom<Full, Selection>;
     }
 
     const keysToRemove: PropertyKey[] = [];
@@ -34,5 +79,5 @@ export function selectFrom<
             }
         }),
         keysToRemove,
-    ) as PickSelection<Full, Selection>;
+    ) as SelectFrom<Full, Selection>;
 }

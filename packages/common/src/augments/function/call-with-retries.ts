@@ -1,18 +1,28 @@
-import {ensureErrorAndPrependMessage, MaybePromise} from '@augment-vir/core';
+import {ensureErrorAndPrependMessage} from '@augment-vir/core';
 
-export function callWithRetries<const T>(
-    maxRetries: number,
-    callback: () => Promise<T>,
-): Promise<T>;
-export function callWithRetries<const T>(maxRetries: number, callback: () => T): T;
-export function callWithRetries<const T>(
-    maxRetries: number,
-    callback: () => MaybePromise<T>,
-): MaybePromise<T>;
-export function callWithRetries<const T>(
-    maxRetries: number,
-    callback: () => MaybePromise<T>,
-): MaybePromise<T> {
+/**
+ * Calls `callback` until it doesn't throw an error or throws an error when `maxRetries` is reached.
+ * Similar to the `waitUntil` guard from '@augment-vir/assert' but doesn't check the callback's
+ * output.
+ *
+ * @category Function : Common
+ * @example
+ *
+ * ```ts
+ * import {callWithRetries} from '@augment-vir/common';
+ *
+ * const result = callWithRetries(5, () => {
+ *     if (Math.random() < 0.5) {
+ *         return 'done';
+ *     } else {
+ *         throw new Error();
+ *     }
+ * });
+ * ```
+ *
+ * @package @augment-vir/common
+ */
+export function callWithRetries<const T>(maxRetries: number, callback: () => T): T {
     try {
         const result = callback();
 
@@ -23,7 +33,7 @@ export function callWithRetries<const T>(
                 } else {
                     return callWithRetries(maxRetries - 1, callback);
                 }
-            });
+            }) as T;
         } else {
             return result;
         }

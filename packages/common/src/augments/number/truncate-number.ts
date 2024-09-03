@@ -1,10 +1,16 @@
-import {safeMatch} from '../regexp/safe-match.js';
-import {addCommasToNumber} from '../string/commas.js';
+import {safeMatch} from '../regexp/match.js';
+import {addCommasToNumber} from '../string/comma.js';
 import {safeSplit} from '../string/split.js';
 import {toNumber} from './number-conversion.js';
-import {doesRequireScientificNotation} from './scientific.js';
+import {requiresScientificNotation} from './scientific.js';
 
-const defaultTruncationSuffixes = [
+/**
+ * The default truncation prefixes for {@link truncateNumber}.
+ *
+ * @category Number : Common
+ * @package @augment-vir/common
+ */
+export const defaultTruncationSuffixes = [
     'k', // thousand
     'M', // million
     'B', // billion
@@ -169,10 +175,10 @@ function handleSmallNumbers(numberAsString: string, maxLength: number): string |
 }
 
 /**
- * This truncates a number such that is will at a max have 6 characters including suffix, decimal
- * point, or comma.
+ * Truncates a number such that is will at a max have 6 (customizable) characters including suffix,
+ * decimal point, or comma.
  *
- * Default suffixes are:
+ * Default suffixes are in {@link defaultTruncationSuffixes}:
  *
  *     'k', // thousand
  *     'M', // million
@@ -182,6 +188,18 @@ function handleSmallNumbers(numberAsString: string, maxLength: number): string |
  *     'E', // exa- quintillion
  *     'Z', // zetta- sextillion
  *     'Y', // yotta- septillion
+ *
+ * @category Number : Common
+ * @example
+ *
+ * ```ts
+ * import {truncateNumber} from '@augment-vir/common';
+ *
+ * // `result` will be `'1M'`
+ * const result = truncateNumber(1_000_000);
+ * ```
+ *
+ * @package @augment-vir/common
  */
 export function truncateNumber(
     originalValue: Readonly<unknown>,
@@ -201,7 +219,7 @@ export function truncateNumber(
     }
 
     // handle too big or too small edge cases
-    if (doesRequireScientificNotation(inputNumber)) {
+    if (requiresScientificNotation(inputNumber)) {
         return truncateScientificNotation({input: inputNumber, maxLength});
     }
 

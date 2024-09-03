@@ -3,7 +3,7 @@ import {getEnumValues, isRuntimeEnv, RuntimeEnv} from '@augment-vir/core';
 import {describe, it} from '@augment-vir/test';
 import {defaultLogColorConfig, LogColorKey, logColors} from './log-colors.js';
 import {toLogString} from './log-string.js';
-import {createLoggerWithStoredLogs} from './log.js';
+import {createArrayLogger} from './log.js';
 import {createLogger, defaultLoggerOptions} from './logger.js';
 
 if (isRuntimeEnv(RuntimeEnv.Node)) {
@@ -71,7 +71,7 @@ if (isRuntimeEnv(RuntimeEnv.Node)) {
         };
 
         it('creates a logger', () => {
-            const {log, logs} = createLoggerWithStoredLogs();
+            const {log, logs} = createArrayLogger();
 
             getEnumValues(LogColorKey).forEach((key) => {
                 log[key](key);
@@ -80,7 +80,7 @@ if (isRuntimeEnv(RuntimeEnv.Node)) {
             assert.deepEquals(logs, allExpectedLogs);
         });
         it('logs if true', () => {
-            const {log, logs} = createLoggerWithStoredLogs();
+            const {log, logs} = createArrayLogger();
 
             getEnumValues(LogColorKey).forEach((key) => {
                 log.if(true)[key](key);
@@ -89,7 +89,7 @@ if (isRuntimeEnv(RuntimeEnv.Node)) {
             assert.deepEquals(logs, allExpectedLogs);
         });
         it('skips logging if false', () => {
-            const {log, logs} = createLoggerWithStoredLogs();
+            const {log, logs} = createArrayLogger();
 
             getEnumValues(LogColorKey).forEach((key) => {
                 log.if(false)[key](key);
@@ -103,9 +103,9 @@ if (isRuntimeEnv(RuntimeEnv.Node)) {
     });
 }
 
-describe(createLoggerWithStoredLogs.name, () => {
+describe(createArrayLogger.name, () => {
     it('stores logs', () => {
-        const {log, logs} = createLoggerWithStoredLogs();
+        const {log, logs} = createArrayLogger();
 
         log.error('this is an error');
         log.plain('this is a log');

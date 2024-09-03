@@ -15,12 +15,7 @@ async function main() {
         ],
         intentionallyNotExported: [],
         defaultCategory: 'MISSING CATEGORY',
-        categoryOrder: [
-            'Main',
-            'Internal',
-        ],
         tsconfig: eslintTsconfigPath,
-        requiredToBeDocumented: [],
         blockTags: [
             /** The default tags we use. */
             '@category',

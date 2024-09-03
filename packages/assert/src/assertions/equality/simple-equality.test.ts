@@ -403,6 +403,7 @@ describe('deepEquals', () => {
             assert.throws(() => assert.deepEquals(actualReject, expected));
         });
         it('rejects loosely equal values', () => {
+            // @ts-expect-error: `1` is not a string
             assert.throws(() => assert.deepEquals('1', 1));
         });
     });

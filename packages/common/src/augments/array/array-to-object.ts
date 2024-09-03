@@ -5,7 +5,22 @@ import {typedObjectFromEntries} from '../object/object-entries.js';
  * Polyfill for `Object.groupBy`:
  * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/groupBy
  *
- * @category Object:Common
+ * @category Array : Common
+ * @category Object : Common
+ * @example
+ *
+ * ```ts
+ * import {arrayToObject} from '@augment-vir/common';
+ *
+ * const result = arrayToObject(
+ *     [
+ *         'a',
+ *         'b',
+ *     ],
+ *     (value) => `key-${value}`,
+ * );
+ * // result is `{key-a: ['a'], key-b: ['b']}`
+ * ```
  */
 export function groupArrayBy<ElementType, NewKey extends PropertyKey>(
     inputArray: ReadonlyArray<ElementType>,
@@ -29,10 +44,29 @@ export function groupArrayBy<ElementType, NewKey extends PropertyKey>(
 }
 
 /**
- * Like `groupArrayBy` but maps array entries to a single key. Meaning, the resulting object does
- * not have an array of elements (unless the original array itself contains arrays).
+ * Similar to {@link groupArrayBy} but maps array entries to a single key and requires `key` _and_
+ * `value` outputs from the callback. The resulting object does not have an array of elements
+ * (unless the original array itself contains arrays).
  *
- * @category Object:Common
+ * @category Array : Common
+ * @category Object : Common
+ * @example
+ *
+ * ```ts
+ * import {arrayToObject} from '@augment-vir/common';
+ *
+ * const result = arrayToObject(
+ *     [
+ *         'a',
+ *         'b',
+ *     ],
+ *     (value) => {
+ *         return {key: `key-${value}`, value};
+ *     },
+ * );
+ * // result is `{key-a: 'a', key-b: 'b'}`
+ * ```
+ * @package @augment-vir/common
  */
 export function arrayToObject<ElementType, NewKey extends PropertyKey, NewValue>(
     inputArray: ReadonlyArray<ElementType>,

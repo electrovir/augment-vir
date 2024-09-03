@@ -8,14 +8,47 @@ import {
     TsRecursionTracker,
     TsTooMuchRecursion,
 } from '../type/type-recursion.js';
-import {selectFrom} from './select-from.js';
-import {
-    GenericSelectionSet,
-    PickSelection,
-    SelectionSet,
-    shouldPreserveInSelectionSet,
-} from './selection-set.js';
+import {selectFrom, shouldPreserveInSelectionSet} from './select-from.js';
+import {GenericSelectionSet, SelectFrom, SelectionSet} from './selection-set.js';
 
+/**
+ * The same as {@link selectFrom} except that the final output is collapsed until the first nested
+ * value that has more than 1 key or that is not an object.
+ *
+ * @category Selection : Common
+ * @example
+ *
+ * ```ts
+ * import {selectCollapsedFrom} from '@augment-vir/common';
+ *
+ * selectCollapsedFrom(
+ *     [
+ *         {
+ *             child: {
+ *                 grandChild: 'hi',
+ *                 grandChild2: 3,
+ *                 grandChild3: /something/,
+ *             },
+ *         },
+ *         {
+ *             child: {
+ *                 grandChild: 'hi',
+ *                 grandChild2: 4,
+ *                 grandChild3: /something/,
+ *             },
+ *         },
+ *     ],
+ *     {
+ *         child: {
+ *             grandChild2: true,
+ *         },
+ *     },
+ * );
+ * // output is `[3, 4]`
+ * ```
+ *
+ * @package @augment-vir/common
+ */
 export function selectCollapsedFrom<
     Full extends AnyObject,
     const Selection extends SelectionSet<NoInfer<Full>>,
@@ -48,7 +81,10 @@ function collapseObject(input: Readonly<AnyObject>, selectionSet: unknown): AnyO
 
 /**
  * Collapses a selected value to the first part of the selection that contains more than 1 key or
- * that is not an object.
+ * that is not an object. This produces the output type for {@link selectCollapsedFrom}.
+ *
+ * @category Selection : Common
+ * @package @augment-vir/common
  */
 export type PickCollapsedSelection<
     Full extends Readonly<AnyObject>,
@@ -56,14 +92,14 @@ export type PickCollapsedSelection<
     Depth extends TsRecursionTracker = TsRecursionStart,
 > = Depth extends TsTooMuchRecursion
     ? 'Error: recursive object depth is too deep.'
-    : KeyCount<ExcludeEmpty<NonNullable<PickSelection<Full, Selection, Depth>>>> extends 1
-      ? Selection[keyof PickSelection<Full, Selection, Depth>] extends GenericSelectionSet
+    : KeyCount<ExcludeEmpty<NonNullable<SelectFrom<Full, Selection, Depth>>>> extends 1
+      ? Selection[keyof SelectFrom<Full, Selection, Depth>] extends GenericSelectionSet
           ?
                 | PickCollapsedSelection<
-                      NonNullable<Full[keyof PickSelection<Full, Selection, Depth>]>,
-                      Selection[keyof PickSelection<Full, Selection, Depth>],
+                      NonNullable<Full[keyof SelectFrom<Full, Selection, Depth>]>,
+                      Selection[keyof SelectFrom<Full, Selection, Depth>],
                       TsRecurse<Depth>
                   >
-                | Extract<Full[keyof PickSelection<Full, Selection, Depth>], undefined | null>
-          : Values<PickSelection<Full, Selection, Depth>>
-      : PickSelection<Full, Selection, Depth>;
+                | Extract<Full[keyof SelectFrom<Full, Selection, Depth>], undefined | null>
+          : Values<SelectFrom<Full, Selection, Depth>>
+      : SelectFrom<Full, Selection, Depth>;

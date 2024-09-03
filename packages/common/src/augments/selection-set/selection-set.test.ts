@@ -3,13 +3,13 @@
 import {assert} from '@augment-vir/assert';
 import {PartialWithUndefined, type AnyObject} from '@augment-vir/core';
 import {describe, it} from '@augment-vir/test';
-import {GenericSelectionSet, PickSelection, SelectionSet} from './selection-set.js';
+import {GenericSelectionSet, SelectFrom, SelectionSet} from './selection-set.js';
 
 describe('PickSelection', () => {
     it('narrows to the selection set', () => {
         assert
             .tsType<
-                PickSelection<
+                SelectFrom<
                     {
                         hi: string;
                         bye: number;
@@ -55,7 +55,7 @@ describe('PickSelection', () => {
     it('allows selecting into potentially undefined properties', () => {
         assert
             .tsType<
-                PickSelection<
+                SelectFrom<
                     PartialWithUndefined<{top: {mid: {low: string[]}}}>,
                     {
                         top: {
@@ -78,7 +78,7 @@ describe('PickSelection', () => {
     it('selects through arrays', () => {
         assert
             .tsType<
-                PickSelection<
+                SelectFrom<
                     {
                         child: {grandChild: string; grandChild2: number}[];
                         child2: {grandChild3: string};
@@ -99,7 +99,7 @@ describe('PickSelection', () => {
     it('works on unions', () => {
         assert
             .tsType<
-                PickSelection<
+                SelectFrom<
                     {
                         child: {a: string} | {b: number};
                     },
@@ -121,7 +121,7 @@ describe('PickSelection', () => {
     it('fails on an invalid selection set', () => {
         assert
             .tsType<
-                PickSelection<
+                SelectFrom<
                     {
                         child: {a: string} | {b: number};
                     },

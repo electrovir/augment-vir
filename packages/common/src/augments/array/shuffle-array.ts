@@ -1,6 +1,12 @@
 import {randomString} from '../random/random-string.js';
 
-/** Creates a new array which is a shuffled version of the input array. */
+/**
+ * Shuffles the positions of an array's entries (without mutating the array).
+ *
+ * @category Array : Common
+ * @returns A new array (does not mutate).
+ * @package @augment-vir/common
+ */
 export function shuffleArray<ArrayElementType>(
     input: ReadonlyArray<ArrayElementType>,
 ): Array<ArrayElementType> {

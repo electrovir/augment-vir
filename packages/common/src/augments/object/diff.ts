@@ -5,7 +5,10 @@ import {PartialDeep} from 'type-fest';
 /**
  * Extract all nested object keys and values that are different between the two given objects.
  *
- * @returns An empty tuple if the values are equal.
+ * @category Number : Common
+ * @returns An empty tuple if the values are equal. Otherwise, the first tuple entry contains the
+ *   changes in the first value, second entry contains the changes in the second value.
+ * @package @augment-vir/common
  */
 export function diffObjects<
     T0 extends Readonly<Record<PropertyKey, unknown>>,
@@ -56,7 +59,10 @@ export function diffObjects<
 /**
  * Extract all entries in the given arrays that are not equal.
  *
- * @returns An empty tuple if the values are equal.
+ * @category Number : Common
+ * @returns An empty tuple if the values are equal. Otherwise, the first tuple entry contains the
+ *   changes in the first value, second entry contains the changes in the second value.
+ * @package @augment-vir/common
  */
 export function diffArrays<T0, T1>(
     array0: ReadonlyArray<T0>,
@@ -110,7 +116,10 @@ export type AreEqualCallback<T0, T1> = (value0: T0, value1: T1) => boolean;
 /**
  * Simple diff check that is useful simply to return the same format as the other diff functions.
  *
- * @returns An empty tuple if the values are equal.
+ * @category Number : Common
+ * @returns An empty tuple if the values are equal. Otherwise, the first tuple entry contains the
+ *   changes in the first value, second entry contains the changes in the second value.
+ * @package @augment-vir/common
  */
 export function diffBasic<T0, T1>(
     value0: T0,
@@ -156,7 +165,10 @@ const orderedValueDiffs: ReadonlyArray<
 /**
  * Diff any values. For diffing objects, use `diffObjects` to get better types.
  *
- * @returns An empty tuple if the values are equal.
+ * @category Number : Common
+ * @returns An empty tuple if the values are equal. Otherwise, the first tuple entry contains the
+ *   changes in the first value, second entry contains the changes in the second value.
+ * @package @augment-vir/common
  */
 export function diffValues<T0, T1>(value0: T0, value1: T1): [T0, T1] | [] {
     let diffOutput = undefined as [] | [unknown, unknown] | undefined;

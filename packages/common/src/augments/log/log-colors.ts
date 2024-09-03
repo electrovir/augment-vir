@@ -1,10 +1,27 @@
 import {forEachEnv, RuntimeEnv} from '@augment-vir/core';
 
+/**
+ * Supported log output types.
+ *
+ * @category Log : Util
+ * @package @augment-vir/common
+ */
 export enum LogOutputType {
+    /** Logged to stdout if the current environment supports it, or just `console.log`. */
     Standard = 'stdout',
+    /** Logged to stderr if the current environment supports it, or just `console.error`. */
     Error = 'stderr',
 }
 
+/**
+ * Standardized color keys for logging. If you want to use customized colors, use
+ * [ansi-styles](https://www.npmjs.com/package/ansi-styles) in Node.js or [custom
+ * CSS](https://developer.mozilla.org/en-US/docs/Web/API/console#styling_console_output) in
+ * browsers.
+ *
+ * @category Log : Util
+ * @package @augment-vir/common
+ */
 export enum LogColorKey {
     Bold = 'bold',
     Error = 'error',
@@ -18,6 +35,13 @@ export enum LogColorKey {
     Warning = 'warning',
 }
 
+/**
+ * Configuration for creating a logger. This is not required, as a default configuration is built-in
+ * already.
+ *
+ * @category Log : Util
+ * @package @augment-vir/common
+ */
 export type LogColorConfig = Readonly<
     Record<
         LogColorKey,
@@ -67,8 +91,20 @@ async function determineDefaultLogColors(): Promise<Record<LogColorKey, string>>
     });
 }
 
+/**
+ * Mapping of color keys to the current color string.
+ *
+ * @category Log : Util
+ * @package @augment-vir/common
+ */
 export const logColors: Readonly<Record<LogColorKey, string>> = await determineDefaultLogColors();
 
+/**
+ * Default implementation of {@link LogColorConfig}.
+ *
+ * @category Log : Util
+ * @package @augment-vir/common
+ */
 export const defaultLogColorConfig: LogColorConfig = {
     [LogColorKey.Bold]: {
         colors: [

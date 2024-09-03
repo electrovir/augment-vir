@@ -2,6 +2,12 @@ import {check} from '@augment-vir/assert';
 import {ensureError} from '@augment-vir/core';
 import {AnyDuration, convertDuration, DurationUnit} from '@date-vir/duration';
 
+/**
+ * An error thrown by {@link wrapPromiseInTimeout} when the timeout is reached.
+ *
+ * @category Promise : Common
+ * @package @augment-vir/common
+ */
 export class PromiseTimeoutError extends Error {
     public override readonly name = 'PromiseTimeoutError';
 
@@ -20,6 +26,13 @@ export class PromiseTimeoutError extends Error {
     }
 }
 
+/**
+ * Wraps an already-created Promise in a timeout, causing a rejection if the original Promise isn't
+ * resolved by then.
+ *
+ * @category Promise : Common
+ * @package @augment-vir/common
+ */
 export function wrapPromiseInTimeout<T>(
     duration: Readonly<AnyDuration>,
     originalPromise: PromiseLike<T>,

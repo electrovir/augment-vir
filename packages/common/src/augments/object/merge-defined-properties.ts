@@ -4,6 +4,18 @@ import {getObjectTypedEntries} from './object-entries.js';
 /**
  * Merge all objects together but ignore any override values that are `undefined` or `null` or
  * missing. This only merges objects at the top level, it is not a deep merge.
+ *
+ * @category Object : Common
+ * @example
+ *
+ * ```ts
+ * import {mergeDefinedProperties} from '@augment-vir/common';
+ *
+ * mergeDefinedProperties({a: 'default', b: 'default'}, {a: 'override', b: undefined});
+ * // output is `{a: 'override', b: 'default'}`
+ * ```
+ *
+ * @package @augment-vir/common
  */
 export function mergeDefinedProperties<const T extends AnyObject>(
     original: T,

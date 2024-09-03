@@ -78,7 +78,7 @@ describe(isCase.name, () => {
             inputs: [
                 '',
                 StringCaseEnum.Upper,
-                {failOnNoCaseCharacters: true},
+                {rejectNoCaseCharacters: true},
             ],
             expect: false,
         },
@@ -87,7 +87,7 @@ describe(isCase.name, () => {
             inputs: [
                 '√',
                 StringCaseEnum.Upper,
-                {failOnNoCaseCharacters: true},
+                {rejectNoCaseCharacters: true},
             ],
             expect: false,
         },

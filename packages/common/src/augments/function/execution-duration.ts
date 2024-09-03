@@ -4,9 +4,21 @@ import {Duration, DurationUnit} from '@date-vir/duration';
 export type ExecutionDuration = Duration<DurationUnit.Milliseconds>;
 
 /**
- * Measures how long (in milliseconds) the given callback takes to run to completion. Automatically
- * switches to async mode and awaits callbacks if they return a promise (otherwise this function is
- * purely synchronous).
+ * Measures how long (in milliseconds) the given callback takes to run to completion. By default
+ * this is synchronous, but it will automatically switch to async and await the callback if it
+ * returns a promise.
+ *
+ * @category Function : Common
+ * @example
+ *
+ * ```ts
+ * import {measureExecutionDuration} from '@augment-vir/common';
+ *
+ * const duration1 = measureExecutionDuration(() => {});
+ * const duration2 = await measureExecutionDuration(async () => {});
+ * ```
+ *
+ * @package @augment-vir/common
  */
 export function measureExecutionDuration<T>(
     callback: () => T,

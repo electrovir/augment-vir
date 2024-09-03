@@ -15,24 +15,25 @@
 -   enforce all overrides in `GuardGroup` have (by a `Partial`) matching keys with the given `assertions` object.
     -   this might not be practical/possible because typescript has very strict rules on defining types for assert guards
 -   add type guards to the boundary assertions on strings (like `assert.endsWith`)
+-   add a logger that saves to a file or to indexeddb
 
 ## Before v30 release
 
--   remove `requiredToBeDocumented: []`
 -   fill in package.json descriptions
+-   create an augment that is like `Promise.all` but works on objects
 -   re-review v30 changelog
--   create a single documentation output
-    -   add back docs test
 -   fill in docs with examples for every single export
--   add debounce examples
+-   add shallow copy and deep copy
 -   fill out mono-repo root README
 -   move virmator's dir-contents augments into `@augment-vir/node`
 -   move path transforms to `@augment-vir/common` (like `toPosixPath`)
--   add script to generate docs for `@augment-vir/assert`'s readme
-    -   use typedoc to generate json
-    -   parse the JSON into a README friendly format
-    -   one entry per assert method
-    -   a table in each entry for which parent assertions it's a part of (`assert`, `check`, etc.)
+    -   maybe
+-   remove `en-US` from all mdn links
+-   try to fix `mapObjectValuesSync` so it doesn't require currying
+-   update all `@package` tags to link to their given package and use monospace font (wrap in `)
+-   add a `convert` which is like `assert`
+    -   `convertTo.number`, `convertToEnsured.number`, `convertToMaybe.number`, etc. for numbers, strings, etc.
+    -   remove `number-conversation.ts`
 
 ## Immediately after v30 release
 

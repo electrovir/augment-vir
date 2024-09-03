@@ -43,5 +43,15 @@ describe(round.name, () => {
             ],
             expect: 2,
         },
+        {
+            it: 'does nothing when there are no decimals',
+            inputs: [
+                564_123,
+                {
+                    digits: 0,
+                },
+            ],
+            expect: 564_123,
+        },
     ]);
 });

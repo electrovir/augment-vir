@@ -6,6 +6,9 @@ import {PartialDeep} from 'type-fest';
  * undefined will be removed.
  *
  * Note that order matters! Each input object will overwrite the properties of the previous objects.
+ *
+ * @category Object : Common
+ * @package @augment-vir/common
  */
 export function mergeDeep<const T extends object>(
     ...inputs: (

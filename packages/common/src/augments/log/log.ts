@@ -5,6 +5,12 @@ import {LoggerOptions} from './log-string.js';
 import {LogWriters} from './log-writer.js';
 import {createLogger, type Logger} from './logger.js';
 
+/**
+ * Default implementation of {@link LogWriters} that is dependent on the current runtime environment.
+ *
+ * @category Log : Util
+ * @package @augment-vir/common
+ */
 export const defaultLogWriters: LogWriters =
     /** We calculate coverage in web, so the node code will never run in coverage tests. */
     /* node:coverage disable  */
@@ -28,14 +34,46 @@ export const defaultLogWriters: LogWriters =
               },
           };
 
+/**
+ * The default `log`. Use this in place of `console` methods for styled outputs in both Node.js and
+ * the browser.
+ *
+ * @category Log : Common
+ * @example
+ *
+ * ```ts
+ * import {log} from '@augment-vir/common';
+ *
+ * log.info('hi');
+ * log.error('failure');
+ * ```
+ *
+ * @package @augment-vir/common
+ */
 export const log: Logger = createLogger(defaultLogWriters);
 
-export function createLoggerWithStoredLogs(
-    options?: PartialWithUndefined<LoggerOptions> | undefined,
-) {
+/**
+ * Creates a custom logger that doesn't actually log but stores the logs into a object for later
+ * usage. This is particularly useful in tests.
+ *
+ * @category Log : Common
+ * @example
+ *
+ * ```ts
+ * import {createArrayLogger} from '@augment-vir/common';
+ *
+ * const {log, logs} = createArrayLogger();
+ *
+ * log.info('hi');
+ * // `logs[LogOutputType.Standard]` is now `['hi']`
+ * ```
+ *
+ * @package @augment-vir/common
+ */
+export function createArrayLogger(options?: PartialWithUndefined<LoggerOptions> | undefined) {
     const logs = {
-        stdout: [] as string[],
-        stderr: [] as string[],
+        [LogOutputType.Standard]: [] as string[],
+        [LogOutputType.Error]: [] as string[],
     };
     const log = createLogger(
         {

@@ -4,6 +4,9 @@
  * the generic being inferred from the inputs), there will actually be a type error. This forces
  * each usage of this function to explicitly specify the generic, thus giving us type safety for the
  * input.
+ *
+ * @category Type : Common
+ * @package @augment-vir/common
  */
 export function ensureType<ExpectedType = never>(
     input: NoInfer<ExpectedType>,

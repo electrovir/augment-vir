@@ -1,9 +1,33 @@
 import {awaitedBlockingMap} from './awaited-map.js';
 
 /**
- * Acts like calling Array.prototype.forEach in that all elements are executed upon in order, and
- * each execution is blocking. Meaning, the callback won't be called on element 2 until the callback
- * has finished its call on element 1.
+ * Performs
+ * [`[].forEach()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach)
+ * on an array but supports an async callback. The async callback is blocking. Meaning,
+ * `awaitedForEach` will wait for a callback on array element 1 to finish before moving on to array
+ * element 2.
+ *
+ * @category Array : Common
+ * @example
+ *
+ * ```ts
+ * import {awaitedForEach} from '@augment-vir/common';
+ *
+ * await awaitedForEach(
+ *     [
+ *         1,
+ *         2,
+ *         3,
+ *         4,
+ *         5,
+ *     ],
+ *     async (value) => {
+ *         await Promise.resolve(value);
+ *     },
+ * );
+ * ```
+ *
+ * @package @augment-vir/common
  */
 export async function awaitedForEach<OriginalGeneric>(
     input: ReadonlyArray<OriginalGeneric>,

@@ -1,6 +1,14 @@
-import {makeCaseInsensitiveRegExp} from '../regexp/regexp-flags.js';
+import {setRegExpCaseSensitivity} from '../regexp/regexp-flags.js';
 
-export function getSubstringIndexes<IncludeLength extends boolean | undefined>({
+/**
+ * Finds all indexes of a `searchFor` string or RegExp in `searchIn`. Ths is similar to
+ * [`''.indexOf`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/indexOf)
+ * except that it finds _all_ indexes of.
+ *
+ * @category String : Common
+ * @package @augment-vir/common
+ */
+export function findSubstringIndexes<IncludeLength extends boolean | undefined>({
     searchIn,
     searchFor,
     caseSensitive,
@@ -8,14 +16,11 @@ export function getSubstringIndexes<IncludeLength extends boolean | undefined>({
 }: {
     searchIn: string;
     searchFor: string | RegExp;
-    /**
-     * CaseSensitive only applies when the input is a string. Otherwise, the RegExp's "i" flag is
-     * used to determine case sensitivity.
-     */
     caseSensitive: boolean;
+    /** Set to true to get an array of objects with the found indexes _and_ their lengths. */
     includeLength?: IncludeLength;
 }): IncludeLength extends true ? {index: number; length: number}[] : number[] {
-    const searchRegExp: RegExp = makeCaseInsensitiveRegExp(searchFor, caseSensitive);
+    const searchRegExp: RegExp = setRegExpCaseSensitivity(searchFor, {caseSensitive});
 
     const indexes: number[] = [];
     const indexesAndLengths: {

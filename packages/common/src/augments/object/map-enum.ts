@@ -1,6 +1,12 @@
 import type {EnumBaseType, MaybePromise, Values} from '@augment-vir/core';
 import {mapObject} from './map-entries.js';
 
+/**
+ * Creates an object that maps all values of an enum to the provided `Values` type.
+ *
+ * @category Object : Common
+ * @package @augment-vir/common
+ */
 export type EnumMap<Enum extends EnumBaseType, Value> =
     Values<Enum> extends PropertyKey ? Record<Values<Enum>, Value> : 'ERROR: invalid enum';
 
@@ -16,6 +22,29 @@ export function mapEnumToObject<const Enum extends EnumBaseType, const Value>(
         ? Promise<EnumMap<Enum, Awaited<Value>>>
         : MaybePromise<EnumMap<Enum, Awaited<Value>>>
     : EnumMap<Enum, Value>;
+/**
+ * Maps all values of an enum as keys in an object where each value is the callback's output for
+ * that key.
+ *
+ * @category Object : Common
+ * @example
+ *
+ * ```ts
+ * import {mapEnumToObject} from '@augment-vir/common';
+ *
+ * enum MyEnum {
+ *     A = 'a',
+ *     B = 'b',
+ * }
+ *
+ * mapEnumToObject(MyEnum, (enumValue) => {
+ *     return `value-${enumValue}`;
+ * });
+ * // output is `{[MyEnum.A]: 'value-a', [MyEnum.B]: 'value-b'}`
+ * ```
+ *
+ * @package @augment-vir/common
+ */
 export function mapEnumToObject<const Enum extends EnumBaseType, const Value>(
     enumInput: Enum,
     callback: (enumValue: Values<Enum>, wholeEnum: Enum) => MaybePromise<Value>,

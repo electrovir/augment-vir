@@ -10,16 +10,12 @@ export type MappedValues<EntireInputGeneric extends object, MappedValueGeneric> 
         : InnerMappedValues<EntireInputGeneric, Awaited<MappedValueGeneric>>;
 
 /**
- * Map an object's keys to new values synchronously. This is different from plain mapObjectValues in
- * that this will not wrap the return value in a promise if any of the new object values are
- * promises. This function also requires currying in order to get the types correct. This allows you
- * to explicitly state the return type.
+ * Creates a new object with the same keys as the input object, but with values set to the result of
+ * `mapCallback` for each property. This is the same as {@link mapObjectValues} except that this
+ * preserves Promise values: it doesn't wrap them all in a single promise.
  *
- * @example
- *
- * ```ts
- * mapObjectValuesSync({objectToIterateOver: 'initial value'})(callback);
- * ```
+ * @category Object : Common
+ * @package @augment-vir/common
  */
 export function mapObjectValuesSync<EntireInputGeneric extends object>(
     inputObject: EntireInputGeneric,
@@ -45,8 +41,22 @@ export function mapObjectValuesSync<EntireInputGeneric extends object>(
 }
 
 /**
- * Creates a new object with the same properties as the input object, but with values set to the
- * result of mapCallback for each property.
+ * Creates a new object with the same keys as the input object, but with values set to the result of
+ * `mapCallback` for each property. Automatically handles an async `mapCallback`.
+ *
+ * @category Object : Common
+ * @example
+ *
+ * ```ts
+ * import {mapObjectValues} from '@augment-vir/common';
+ *
+ * mapObjectValues({a: 1, b: 2}, (key, value) => {
+ *     return `key-${key} value-${value}`;
+ * });
+ * // output is `{a: 'key-a value-1', b: 'key-b value-2'}`
+ * ```
+ *
+ * @package @augment-vir/common
  */
 export function mapObjectValues<EntireInputGeneric extends object, MappedValueGeneric>(
     inputObject: EntireInputGeneric,

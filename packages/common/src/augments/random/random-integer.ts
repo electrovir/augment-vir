@@ -6,7 +6,8 @@ import {ensureMinMax} from '../number/min-max.js';
  *
  * This function uses cryptographically secure randomness.
  *
- * @category Random:Common
+ * @category Random : Common
+ * @package @augment-vir/common
  */
 export function randomInteger({min: rawMin, max: rawMax}: {min: number; max: number}): number {
     const {min, max} = ensureMinMax({min: Math.floor(rawMin), max: Math.floor(rawMax)});

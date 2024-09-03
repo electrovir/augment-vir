@@ -1,34 +1,73 @@
+import {removeDuplicateCharacters} from '../string/remove-duplicate-characters.js';
 import {escapeStringForRegExp} from './regexp-string.js';
 
-export function deDupeRegExFlags(flags: string): string {
-    const deDuped = new Set(Array.from(flags.toLowerCase()));
-
-    return Array.from(deDuped).join('');
-}
-
+/**
+ * Creates a new RegExp by adding the given `flags` to the original RegExp.
+ *
+ * @category RegExp : Common
+ * @example
+ *
+ * ```ts
+ * import {addRegExpFlags} from '@augment-vir/common';
+ *
+ * addRegExpFlags(/a/i, 'gm');
+ * // output is `/a/igm`
+ * ```
+ *
+ * @package @augment-vir/common
+ */
 export function addRegExpFlags(originalRegExp: RegExp, flags: string): RegExp {
     return new RegExp(
         originalRegExp.source,
-        deDupeRegExFlags(
+        removeDuplicateCharacters(
             [
                 originalRegExp.flags,
                 flags,
-            ].join(''),
+            ]
+                .join('')
+                .toLowerCase(),
         ),
     );
 }
 
-export function makeCaseInsensitiveRegExp(searchForInput: string | RegExp, caseSensitive: boolean) {
-    const regExpFlags: string = `g${
-        !caseSensitive && typeof searchForInput === 'string' ? 'i' : ''
-    }`;
-    const searchFor: RegExp =
-        searchForInput instanceof RegExp
-            ? new RegExp(
-                  searchForInput.source,
-                  deDupeRegExFlags(`${searchForInput.flags}${regExpFlags}`),
-              )
-            : new RegExp(escapeStringForRegExp(searchForInput), regExpFlags);
+/**
+ * Creates a new RegExp by adding or removing the case insensitivity flag `'i'`, based on the given
+ * `caseSensitive` input. The first input can also be a string and it will be converted into a
+ * RegExp.
+ *
+ * @category RegExp : Common
+ * @example
+ *
+ * ```ts
+ * import {setRegExpCaseSensitivity} from '@augment-vir/common';
+ *
+ * setRegExpCaseSensitivity(/abc/i, {caseSensitive: true}); // output is `/abc/`
+ * setRegExpCaseSensitivity(/abc/, {caseSensitive: false}); // output is `/abc/i`
+ * setRegExpCaseSensitivity('abc', {caseSensitive: true}); // output is `/abc/i`
+ * ```
+ *
+ * @package @augment-vir/common
+ */
+export function setRegExpCaseSensitivity(
+    originalRegExpOrString: string | RegExp,
+    {caseSensitive}: {caseSensitive: boolean},
+) {
+    const caseSensitivityFlag: string = caseSensitive ? '' : 'i';
 
-    return searchFor;
+    const newRegExp: RegExp =
+        originalRegExpOrString instanceof RegExp
+            ? new RegExp(
+                  originalRegExpOrString.source,
+                  removeDuplicateCharacters(
+                      [
+                          originalRegExpOrString.flags.replaceAll('i', ''),
+                          caseSensitivityFlag,
+                      ]
+                          .join('')
+                          .toLowerCase(),
+                  ),
+              )
+            : new RegExp(escapeStringForRegExp(originalRegExpOrString), caseSensitivityFlag);
+
+    return newRegExp;
 }

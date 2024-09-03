@@ -50,28 +50,21 @@ export type FunctionTestCase<FunctionToTest extends AnyFunction> =
 
 const unsetError = Symbol('unset-error');
 
-export function itCases<FunctionToTest extends AnyFunction>(
+export function itCases<const FunctionToTest extends AnyFunction>(
     functionToTest: FunctionToTest,
-    testCases: ReadonlyArray<FunctionTestCase<typeof functionToTest>>,
+    customAsserter: CustomOutputAsserter<NoInfer<FunctionToTest>>,
+    testCases: ReadonlyArray<FunctionTestCase<NoInfer<FunctionToTest>>>,
 ): unknown[];
-export function itCases<FunctionToTest extends AnyFunction>(
+export function itCases<const FunctionToTest extends AnyFunction>(
     functionToTest: FunctionToTest,
-    customAsserter: CustomOutputAsserter<typeof functionToTest>,
-    testCases: ReadonlyArray<FunctionTestCase<typeof functionToTest>>,
-): unknown[];
-export function itCases<FunctionToTest extends AnyFunction>(
-    functionToTest: FunctionToTest,
-    testCasesOrCustomAsserter:
-        | CustomOutputAsserter<typeof functionToTest>
-        | ReadonlyArray<FunctionTestCase<typeof functionToTest>>,
-    maybeTestCases?: ReadonlyArray<FunctionTestCase<typeof functionToTest>> | undefined,
+    testCases: ReadonlyArray<FunctionTestCase<NoInfer<FunctionToTest>>>,
 ): unknown[];
 export function itCases(
     functionToTest: AnyFunction,
     testCasesOrCustomAsserter:
-        | CustomOutputAsserter<typeof functionToTest>
-        | ReadonlyArray<FunctionTestCase<typeof functionToTest>>,
-    maybeTestCases?: ReadonlyArray<FunctionTestCase<typeof functionToTest>> | undefined,
+        | CustomOutputAsserter<AnyFunction>
+        | ReadonlyArray<FunctionTestCase<AnyFunction>>,
+    maybeTestCases?: ReadonlyArray<FunctionTestCase<AnyFunction>> | undefined,
 ): unknown[] {
     const testCases: ReadonlyArray<BaseTestCase<unknown>> | undefined = (maybeTestCases ||
         testCasesOrCustomAsserter) as ReadonlyArray<BaseTestCase<unknown>> | undefined;

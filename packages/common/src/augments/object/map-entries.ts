@@ -3,6 +3,9 @@ import {Values, ensureError, type MaybePromise} from '@augment-vir/core';
 import {filterMap} from '../array/filter.js';
 import {getObjectTypedEntries, typedObjectFromEntries} from './object-entries.js';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import type {mapObjectValues} from './map-values.js';
+
 export function mapObject<const OriginalObject, const NewKey extends PropertyKey, const NewValue>(
     inputObject: OriginalObject,
     mapCallback: (
@@ -27,6 +30,28 @@ export function mapObject<const OriginalObject, const NewKey extends PropertyKey
         originalObject: OriginalObject,
     ) => MaybePromise<{key: NewKey; value: NewValue} | undefined>,
 ): MaybePromise<Record<NewKey, NewValue>>;
+/**
+ * Maps an object. The callback must return a key and value.
+ *
+ * @category Object : Common
+ * @example
+ *
+ * ```ts
+ * import {mapObject} from '@augment-vir/common';
+ *
+ * mapObject({a: 1, b: 2}, (key, value) => {
+ *     return {
+ *         key: `key-${key}`,
+ *         value: `value-${value}`,
+ *     };
+ * });
+ * // output is `{'key-a': 'value-1', 'key-b': 'value-2'}`
+ * ```
+ *
+ * @package @augment-vir/common
+ * @see
+ * - {@link mapObjectValues}: the variant that only maps values.
+ */
 export function mapObject<
     const OriginalObject extends object,
     const NewKey extends PropertyKey,

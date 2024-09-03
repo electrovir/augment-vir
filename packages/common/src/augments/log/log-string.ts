@@ -5,11 +5,23 @@ import {removeSuffix} from '../string/suffix.js';
 import {LogColorKey, type LogColorConfig} from './log-colors.js';
 import {LogWriterParams} from './log-writer.js';
 
+/**
+ * Options for a custom Logger.
+ *
+ * @category Log : Util
+ * @package @augment-vir/common
+ */
 export type LoggerOptions = {
     colorConfig: LogColorConfig;
     omitColors: boolean;
 };
 
+/**
+ * Parameters for {@link toLogString}.
+ *
+ * @category Log : Util
+ * @package @augment-vir/common
+ */
 export type ToLogStringParams = {
     colorKey: LogColorKey;
     args: ReadonlyArray<any>;
@@ -89,4 +101,10 @@ async function createToLogString(): Promise<ToLogString> {
     });
 }
 
+/**
+ * Converts log arguments into a single {@link LogWriterParams}.
+ *
+ * @category Log : Util
+ * @package @augment-vir/common
+ */
 export const toLogString: ToLogString = await createToLogString();

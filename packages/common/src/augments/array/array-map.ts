@@ -12,7 +12,34 @@ type LibMapCallbackType<ArrayType extends ReadonlyArray<any>, OutputType> = (
     array: readonly ArrayElement<ArrayType>[],
 ) => OutputType;
 
-/** Preserves tuple types. */
+/**
+ * Performs
+ * [`[].map()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map)
+ * on an array but transfers the input tuple's size to the output type.
+ *
+ * @category Array : Common
+ * @example
+ *
+ * ```ts
+ * import {typedMap} from '@augment-vir/common';
+ *
+ * const result = await typedMap(
+ *     [
+ *         1,
+ *         2,
+ *         3,
+ *         4,
+ *         5,
+ *     ],
+ *     (value) => {
+ *         return value + 1;
+ *     },
+ * );
+ * ```
+ *
+ * @returns A new array (does not mutate).
+ * @package @augment-vir/common
+ */
 export function typedMap<const ArrayGeneric extends ReadonlyArray<any>, const OutputType>(
     arrayToMap: ArrayGeneric,
     mapCallback: (

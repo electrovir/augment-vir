@@ -1,7 +1,7 @@
 import {assert} from '@augment-vir/assert';
 import {describe, it, itCases} from '@augment-vir/test';
 import {selectFrom} from './select-from.js';
-import {PickSelection} from './selection-set.js';
+import {SelectFrom} from './selection-set.js';
 
 describe(selectFrom.name, () => {
     it('has proper types', () => {
@@ -60,7 +60,7 @@ describe(selectFrom.name, () => {
                 }),
             )
             .equals<
-                PickSelection<
+                SelectFrom<
                     typeof entry,
                     {
                         hi: true;

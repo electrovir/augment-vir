@@ -3,11 +3,22 @@
  * item in the list. If the array has a length < 2, the conjunction is not added. If the list is
  * only of length 2, then no commas are added.
  *
- * @param list Array of items to be converted into strings. Works best if these are simply strings
- *   to begin with.
- * @param conjunction Defaults to 'and'. The conjunction to be used before the final element.
+ * @category String : Common
+ * @package @augment-vir/common
  */
-export function joinWithFinalConjunction(list: ReadonlyArray<any>, conjunction = 'and'): string {
+export function joinWithFinalConjunction(
+    /**
+     * Array of items to be converted into strings. Works best if these are simply strings to begin
+     * with.
+     */
+    list: ReadonlyArray<any>,
+    /**
+     * The conjunction to be used before the final element.
+     *
+     * @default 'and'
+     */
+    conjunction = 'and',
+): string {
     if (list.length < 2) {
         /**
          * If there are not multiple things in the list to join, just turn the list into a string

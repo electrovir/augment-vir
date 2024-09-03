@@ -5,14 +5,14 @@ import type {EmptyObject} from 'type-fest';
 import {
     JsonCompatibleArray,
     JsonCompatibleObject,
-    JsonCompatiblePrimitiveValue,
+    JsonCompatiblePrimitive,
     JsonCompatibleValue,
 } from './json-compatible.js';
 
 describe('JsonCompatibleValue', () => {
     it('has proper JsonCompatiblePrimitiveValue types', () => {
         assert
-            .tsType<JsonCompatiblePrimitiveValue>()
+            .tsType<JsonCompatiblePrimitive>()
             .equals<string | number | boolean | null | undefined>();
         assert.tsType<JsonCompatibleObject>().matches<JsonCompatibleValue>();
         assert.tsType<JsonCompatibleValue>().notMatches<JsonCompatibleObject>();
@@ -47,7 +47,7 @@ describe('JsonCompatibleValue', () => {
         acceptArray([] as Array<AnyObject>);
         acceptArray([] as Array<EmptyObject>);
         acceptArray([] as Array<{derp: string}>);
-        acceptArray([] as Array<JsonCompatiblePrimitiveValue>);
+        acceptArray([] as Array<JsonCompatiblePrimitive>);
         acceptArray([] as Array<JsonCompatibleObject>);
         acceptArray([] as Array<JsonCompatibleArray>);
         // @ts-expect-error: object with number key is not an array

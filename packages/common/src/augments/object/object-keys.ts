@@ -1,5 +1,20 @@
 import {filterObject} from './object-filter.js';
 
+/**
+ * Same as the TypeScript built-in type `Omit` except that it works on actual runtime values.
+ *
+ * @category Object : Common
+ * @example
+ *
+ * ```ts
+ * import {omitObjectKeys} from '@augment-vir/common';
+ *
+ * omitObjectKeys({a: 'a', b: 'b'}, ['a']);
+ * // output is `{b: 'b'}`
+ * ```
+ *
+ * @package @augment-vir/common
+ */
 export function omitObjectKeys<const ObjectGeneric, const KeyGeneric extends keyof ObjectGeneric>(
     inputObject: Readonly<ObjectGeneric>,
     omitTheseKeys: ReadonlyArray<KeyGeneric>,
@@ -9,6 +24,21 @@ export function omitObjectKeys<const ObjectGeneric, const KeyGeneric extends key
     }) as Omit<ObjectGeneric, KeyGeneric>;
 }
 
+/**
+ * Same as the TypeScript built-in type `Pick` except that it works on actual runtime values.
+ *
+ * @category Object : Common
+ * @example
+ *
+ * ```ts
+ * import {pickObjectKeys} from '@augment-vir/common';
+ *
+ * pickObjectKeys({a: 'a', b: 'b'}, ['a']);
+ * // output is `{a: 'a'}`
+ * ```
+ *
+ * @package @augment-vir/common
+ */
 export function pickObjectKeys<const ObjectGeneric, const KeyGeneric extends keyof ObjectGeneric>(
     inputObject: Readonly<ObjectGeneric>,
     pickTheseKeys: ReadonlyArray<KeyGeneric>,

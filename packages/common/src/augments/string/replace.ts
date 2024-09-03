@@ -1,3 +1,19 @@
+/**
+ * Replaces whatever substring is at the given index in the original string with the new string.
+ * Optionally, provide a length of the substring to get replaced.
+ *
+ * @category String : Common
+ * @example
+ *
+ * ```ts
+ * import {replaceStringAtIndex} from '@augment-vir/common';
+ *
+ * replaceStringAtIndex('eat the waffles', 4, 'his'); // outputs `'eat his waffles'`
+ * replaceStringAtIndex('eat the waffles', 4, 'my', 3); // outputs `'eat my waffles'`
+ * ```
+ *
+ * @package @augment-vir/common
+ */
 export function replaceStringAtIndex(
     originalString: string,
     start: number,

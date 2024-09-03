@@ -1,58 +1,92 @@
 import {check} from '@augment-vir/assert';
 import {ensureError, MaybePromise, type AnyObject} from '@augment-vir/core';
 
-/**
- * Get a value from a map or call the callback and return its result and store the result in the
- * map.
- *
- * @category Object:Common
- */
 export function getOrSetFromMap<MapKey extends object, MapValue>(
     map: WeakMap<MapKey, MapValue>,
     key: MapKey,
-    createNewValueCallback: () => MapValue,
+    createCallback: () => MapValue,
 ): MapValue;
 export function getOrSetFromMap<MapKey, MapValue>(
     map: Map<MapKey, MapValue>,
     key: MapKey,
-    createNewValueCallback: () => MapValue,
+    createCallback: () => MapValue,
 ): MapValue;
-export function getOrSetFromMap<MapKey, MapValue>(
-    map: Map<MapKey, MapValue> | WeakMap<MapKey & object, MapValue>,
-    key: MapKey,
-    createNewValueCallback: () => MapValue,
-): MapValue {
-    const mapKey = key as any;
 
-    if (map.has(mapKey)) {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        return map.get(mapKey)!;
-    } else {
-        const newValue = createNewValueCallback();
-        map.set(mapKey, newValue);
-        return newValue;
-    }
-}
+export function getOrSetFromMap<MapKey extends object, MapValue>(
+    map: WeakMap<MapKey, MapValue>,
+    key: MapKey,
+    createCallback: () => Promise<MapValue>,
+): Promise<MapValue>;
+export function getOrSetFromMap<MapKey, MapValue>(
+    map: Map<MapKey, MapValue>,
+    key: MapKey,
+    createCallback: () => Promise<MapValue>,
+): Promise<MapValue>;
+
+export function getOrSetFromMap<MapKey extends object, MapValue>(
+    map: WeakMap<MapKey, MapValue>,
+    key: MapKey,
+    createCallback: () => MaybePromise<MapValue>,
+): MaybePromise<MapValue>;
+export function getOrSetFromMap<MapKey, MapValue>(
+    map: Map<MapKey, MapValue>,
+    key: MapKey,
+    createCallback: () => MaybePromise<MapValue>,
+): MaybePromise<MapValue>;
 
 /**
- * Given an object, tries to get the given key in that object. If the key is not in that object,
- * then the given `createCallback` is used to create a new value which is then stored in the given
- * object and returned. Automatically handles `createCallback` returning a promise, if it does.
+ * Given an map, tries to get the given key in that map. If the key is not in that map, then the
+ * given `createCallback` is used to create a new value which is then stored in the given map and
+ * returned. Automatically handles an async `createCallback`.
  *
- * @category Object:Common
+ * @category Object : Common
  * @example
  *
  * ```ts
  * // instead of doing this
- * if (!myObject[myKey]) {
- *     myObject[myKey] = {};
+ * if (!myMap.get(myKey)) {
+ *     myMap.set(myKey, {});
  * }
- * myObject[myKey]![nextKey] = 'some value';
+ * myMap.get(myKey)![nextKey] = 'some value';
  *
  * // do this
- * getOrSetInObject(myObject, myKey, () => {});
+ * getOrSetInObject(myMap, myKey, () => {
+ *     return {};
+ * });
  * ```
+ *
+ * @package @augment-vir/common
  */
+export function getOrSetFromMap<MapKey, MapValue>(
+    map: Map<MapKey, MapValue> | WeakMap<MapKey & object, MapValue>,
+    key: MapKey,
+    createCallback: () => MaybePromise<MapValue>,
+): MaybePromise<MapValue> {
+    const mapKey = key as any;
+
+    if (mapKey in map) {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        return map.get(mapKey)!;
+    } else {
+        const createdValue = createCallback();
+        if (check.isPromise(createdValue)) {
+            return new Promise<MapValue>(async (resolve, reject) => {
+                try {
+                    const awaitedValue = await createdValue;
+                    map.set(mapKey, awaitedValue);
+                    resolve(awaitedValue);
+                } catch (error) {
+                    reject(ensureError(error));
+                }
+            });
+        } else {
+            map.set(mapKey, createdValue);
+
+            return createdValue;
+        }
+    }
+}
+
 export function getOrSet<OriginalObject extends AnyObject, Key extends keyof OriginalObject>(
     originalObject: OriginalObject,
     key: Key,
@@ -68,6 +102,29 @@ export function getOrSet<OriginalObject extends AnyObject, Key extends keyof Ori
     key: Key,
     createCallback: () => MaybePromise<OriginalObject[Key]>,
 ): MaybePromise<Required<OriginalObject>[Key]>;
+/**
+ * Given an object, tries to get the given key in that object. If the key is not in that object,
+ * then the given `createCallback` is used to create a new value which is then stored in the given
+ * object and returned. Automatically handles an async `createCallback`.
+ *
+ * @category Object : Common
+ * @example
+ *
+ * ```ts
+ * // instead of doing this
+ * if (!myObject[myKey]) {
+ *     myObject[myKey] = {};
+ * }
+ * myObject[myKey]![nextKey] = 'some value';
+ *
+ * // do this
+ * getOrSetInObject(myObject, myKey, () => {
+ *     return {};
+ * });
+ * ```
+ *
+ * @package @augment-vir/common
+ */
 export function getOrSet<OriginalObject extends AnyObject, Key extends keyof OriginalObject>(
     originalObject: OriginalObject,
     key: Key,

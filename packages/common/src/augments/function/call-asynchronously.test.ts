@@ -27,4 +27,13 @@ describe(callAsynchronously.name, () => {
 
         assert.strictEquals(await callAsynchronously(() => randomValue), randomValue);
     });
+
+    it('logs in the correct order', async () => {
+        console.info('1');
+        const later = callAsynchronously(() => {
+            console.info('3');
+        });
+        console.info('2');
+        await later;
+    });
 });
