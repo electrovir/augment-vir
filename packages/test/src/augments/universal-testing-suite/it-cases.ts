@@ -7,6 +7,12 @@ import {
 } from '@augment-vir/core';
 import {it} from './universal-it.js';
 
+/**
+ * Base test case for {@link itCases}.
+ *
+ * @category Test : Util
+ * @package @augment-vir/test
+ */
 export type BaseTestCase<OutputGeneric> = {
     it: string;
     only?: boolean | undefined;
@@ -20,11 +26,23 @@ export type BaseTestCase<OutputGeneric> = {
       }
 );
 
-export type OutputTestCaseSingleInput<FunctionToTest extends AnyFunction> = {
+/**
+ * Input for a function test that only has a single input.
+ *
+ * @category Test : Util
+ * @package @augment-vir/test
+ */
+export type FunctionTestCaseSingleInput<FunctionToTest extends AnyFunction> = {
     input: Parameters<FunctionToTest>[0];
 } & BaseTestCase<Awaited<ReturnType<FunctionToTest>>>;
 
-export type OutputTestCaseMultipleInputs<FunctionToTest extends AnyFunction> = {
+/**
+ * Input for a function test that has multiple inputs.
+ *
+ * @category Test : Util
+ * @package @augment-vir/test
+ */
+export type FunctionTestCaseMultipleInputs<FunctionToTest extends AnyFunction> = {
     inputs: Parameters<FunctionToTest>['length'] extends never
         ? FunctionToTest extends TypedFunction<[infer ArgumentsType], any>
             ? // readonly rest params case
@@ -35,18 +53,24 @@ export type OutputTestCaseMultipleInputs<FunctionToTest extends AnyFunction> = {
           Parameters<FunctionToTest>;
 } & BaseTestCase<Awaited<ReturnType<FunctionToTest>>>;
 
+/**
+ * A function test case used for {@link itCases}.
+ *
+ * @category Test : Util
+ * @package @augment-vir/test
+ */
 export type FunctionTestCase<FunctionToTest extends AnyFunction> =
     1 extends Parameters<FunctionToTest>['length']
         ? Parameters<FunctionToTest>['length'] extends 0 | 1
             ? // only one param case
-              OutputTestCaseSingleInput<FunctionToTest>
+              FunctionTestCaseSingleInput<FunctionToTest>
             : // multiple params with a rest param
-              OutputTestCaseMultipleInputs<FunctionToTest>
+              FunctionTestCaseMultipleInputs<FunctionToTest>
         : 0 extends Parameters<FunctionToTest>['length']
           ? // no param case
             BaseTestCase<Awaited<ReturnType<FunctionToTest>>>
           : // multiple param case
-            OutputTestCaseMultipleInputs<FunctionToTest>;
+            FunctionTestCaseMultipleInputs<FunctionToTest>;
 
 const unsetError = Symbol('unset-error');
 
@@ -59,6 +83,15 @@ export function itCases<const FunctionToTest extends AnyFunction>(
     functionToTest: FunctionToTest,
     testCases: ReadonlyArray<FunctionTestCase<NoInfer<FunctionToTest>>>,
 ): unknown[];
+/**
+ * Succinctly run many input / output tests for a pure function without repeating `it` boilerplate.
+ * Compatible with both [Node.js's test runner](https://nodejs.org/api/test.html) and
+ * [web-test-runner](https://modern-web.dev/docs/test-runner/overview/) or other Mocha-style test
+ * runners.
+ *
+ * @category Test
+ * @package @augment-vir/test
+ */
 export function itCases(
     functionToTest: AnyFunction,
     testCasesOrCustomAsserter:

@@ -2,9 +2,9 @@ import {assert} from '@augment-vir/assert';
 import {
     BaseTestCase,
     FunctionTestCase,
+    FunctionTestCaseMultipleInputs,
+    FunctionTestCaseSingleInput,
     itCases,
-    OutputTestCaseMultipleInputs,
-    OutputTestCaseSingleInput,
 } from './it-cases.js';
 import {describe} from './universal-describe.js';
 import {it} from './universal-it.js';
@@ -106,10 +106,10 @@ describe('FunctionTestCase', () => {
     it('handles functions with just one input', () => {
         assert
             .tsType<FunctionTestCase<(input: string) => string>>()
-            .equals<OutputTestCaseSingleInput<(input: string) => string>>();
+            .equals<FunctionTestCaseSingleInput<(input: string) => string>>();
         assert
             .tsType<FunctionTestCase<(input?: string | undefined) => string>>()
-            .equals<OutputTestCaseSingleInput<(input: string | undefined) => string>>();
+            .equals<FunctionTestCaseSingleInput<(input: string | undefined) => string>>();
 
         const testAssignment: FunctionTestCase<(input1?: string) => string> = {} as any;
     });
@@ -120,10 +120,10 @@ describe('FunctionTestCase', () => {
 
         assert
             .tsType<FunctionTestCase<(input1: string, input2: number) => string>>()
-            .equals<OutputTestCaseMultipleInputs<(input: string, input2: number) => string>>();
+            .equals<FunctionTestCaseMultipleInputs<(input: string, input2: number) => string>>();
         assert
             .tsType<FunctionTestCase<(input1: string, input2: number) => string>>()
-            .equals<OutputTestCaseMultipleInputs<(input: string, input2: number) => string>>();
+            .equals<FunctionTestCaseMultipleInputs<(input: string, input2: number) => string>>();
     });
 
     it('handles functions with rest inputs', () => {
@@ -134,7 +134,7 @@ describe('FunctionTestCase', () => {
         assert
             .tsType<FunctionTestCase<(...allInputs: ReadonlyArray<string>) => string>>()
             .equals<
-                OutputTestCaseMultipleInputs<(...allInputs: ReadonlyArray<string>) => string>
+                FunctionTestCaseMultipleInputs<(...allInputs: ReadonlyArray<string>) => string>
             >();
     });
 
@@ -147,7 +147,7 @@ describe('FunctionTestCase', () => {
         assert
             .tsType<FunctionTestCase<(...allInputs: ReadonlyArray<string>) => string>>()
             .equals<
-                OutputTestCaseMultipleInputs<(...allInputs: ReadonlyArray<string>) => string>
+                FunctionTestCaseMultipleInputs<(...allInputs: ReadonlyArray<string>) => string>
             >();
     });
 });

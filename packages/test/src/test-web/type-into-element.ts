@@ -1,21 +1,27 @@
 import {sendKeys} from '@web/test-runner-commands';
 import {focusElement} from './element-test-focus.js';
 
-export async function typeString(input: string): Promise<void> {
+/**
+ * Types the given string as if it were input by a keyboard. This doesn't try to type into any
+ * element in particular, it'll go wherever the current focus is, if any.
+ */
+export async function typeString(text: string): Promise<void> {
     return await sendKeys({
-        type: input,
+        type: text,
     });
 }
 
+/** Focus the given element and then type the given string. */
 export async function typeStringIntoElement(
-    input: string,
+    text: string,
     inputElement: Readonly<HTMLInputElement>,
 ): Promise<void> {
     await focusElement(inputElement);
 
-    await typeString(input);
+    await typeString(text);
 }
 
+/** Deletes all text that has been typed into the given `<input>` element. */
 export async function deleteAllTextInInput(
     inputElement: Readonly<HTMLInputElement>,
 ): Promise<void> {

@@ -5,7 +5,7 @@ import {testWeb} from '../augments/test-web.js';
 import {describe} from '../augments/universal-testing-suite/universal-describe.js';
 import {it} from '../augments/universal-testing-suite/universal-it.js';
 
-describe(testWeb.type.name, () => {
+describe(testWeb.typeText.name, () => {
     it('types into the window', async () => {
         const deferredEvent = new DeferredPromise<KeyboardEvent>();
 
@@ -16,7 +16,7 @@ describe(testWeb.type.name, () => {
 
         window.addEventListener('keydown', windowListener);
 
-        await testWeb.type('h');
+        await testWeb.typeText('h');
 
         const keyboardEvent = await wrapPromiseInTimeout({seconds: 5}, deferredEvent.promise);
 
