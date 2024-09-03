@@ -1,4 +1,4 @@
-import {runShellCommand} from '../../augments/shell.js';
+import {runShellCommand} from '../../augments/terminal/shell.js';
 
 /** There may be other possible values for Status. */
 export enum DockerContainerStatusEnum {

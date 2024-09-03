@@ -1,5 +1,5 @@
 import {assert} from '@augment-vir/assert';
-import {createLoggerWithStoredLogs} from '@augment-vir/common';
+import {createArrayLogger} from '@augment-vir/common';
 import {PartialWithUndefined} from '@augment-vir/core';
 import {describe, it, itCases} from '@augment-vir/test';
 import {join} from 'node:path';
@@ -7,8 +7,8 @@ import {
     longRunningFilePath,
     longRunningFileWithStderr,
     nodePackageDir,
-} from '../file-paths.mock.js';
-import {interpolationSafeWindowsPath, toPosixPath} from './path/os-path.js';
+} from '../../file-paths.mock.js';
+import {interpolationSafeWindowsPath, toPosixPath} from '../path/os-path.js';
 import {logShellOutput, LogShellOutputOptions, runShellCommand, type ShellOutput} from './shell.js';
 
 describe(runShellCommand.name, () => {
@@ -129,7 +129,7 @@ describe(logShellOutput.name, () => {
         options: Omit<LogShellOutputOptions, 'logger'>,
         shellOutputOverride: PartialWithUndefined<Omit<ShellOutput, 'exitSignal'>> = {},
     ) {
-        const {log, logs} = createLoggerWithStoredLogs({omitColors: true});
+        const {log, logs} = createArrayLogger({omitColors: true});
 
         logShellOutput(
             {

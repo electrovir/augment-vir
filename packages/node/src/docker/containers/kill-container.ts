@@ -1,5 +1,5 @@
 import type {PartialWithUndefined} from '@augment-vir/core';
-import {runShellCommand} from '../../augments/shell.js';
+import {runShellCommand} from '../../augments/terminal/shell.js';
 import {waitUntilContainerExited, waitUntilContainerRemoved} from './container-status.js';
 
 export async function killContainer(

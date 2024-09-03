@@ -1,5 +1,5 @@
 import {log} from '@augment-vir/common';
-import {runShellCommand, type ShellOutput} from '../augments/shell.js';
+import {runShellCommand, type ShellOutput} from '../augments/terminal/shell.js';
 import {PrismaSchemaError} from './prisma-errors.js';
 
 const prismaCommandsThatSupportNoHints = [

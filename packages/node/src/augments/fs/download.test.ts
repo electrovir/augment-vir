@@ -2,7 +2,7 @@ import {assert} from '@augment-vir/assert';
 import {describe, it} from '@augment-vir/test';
 import {readFile, rm} from 'node:fs/promises';
 import {join} from 'node:path';
-import {testFilesDir} from '../file-paths.mock.js';
+import {testFilesDir} from '../../file-paths.mock.js';
 import {downloadFile} from './download.js';
 
 describe(downloadFile.name, () => {

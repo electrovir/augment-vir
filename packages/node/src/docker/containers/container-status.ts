@@ -1,5 +1,5 @@
 import {assert, waitUntil} from '@augment-vir/assert';
-import {runShellCommand} from '../../augments/shell.js';
+import {runShellCommand} from '../../augments/terminal/shell.js';
 
 export async function getContainerLogs(
     containerNameOrId: string,

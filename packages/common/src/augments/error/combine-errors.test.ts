@@ -5,7 +5,7 @@ import {combineErrors} from './combine-errors.js';
 
 describe(combineErrors.name, () => {
     it('has proper types', () => {
-        assert.tsType(combineErrors([])).equals<Error | undefined>();
+        assert.tsType(combineErrors([])).equals<Error>();
         assert.tsType(combineErrors([new Error()])).equals<Error>();
 
         assert
@@ -19,7 +19,7 @@ describe(combineErrors.name, () => {
             .equals<Error>();
 
         const potentiallyEmptyErrorArray: Error[] = [];
-        assert.tsType(combineErrors(potentiallyEmptyErrorArray)).equals<Error | undefined>();
+        assert.tsType(combineErrors(potentiallyEmptyErrorArray)).equals<Error>();
     });
 
     it('combines multiple errors', () => {

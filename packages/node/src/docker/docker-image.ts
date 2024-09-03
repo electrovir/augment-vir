@@ -1,5 +1,5 @@
 import {ensureError} from '@augment-vir/core';
-import {runShellCommand} from '../augments/shell.js';
+import {runShellCommand} from '../augments/terminal/shell.js';
 
 export async function updateImage(
     /** @example 'alpine:3.20.2' */

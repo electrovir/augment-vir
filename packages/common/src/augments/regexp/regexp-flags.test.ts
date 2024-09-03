@@ -1,20 +1,5 @@
 import {describe, itCases} from '@augment-vir/test';
-import {addRegExpFlags, deDupeRegExFlags} from './regexp-flags.js';
-
-describe(deDupeRegExFlags.name, () => {
-    itCases(deDupeRegExFlags, [
-        {
-            it: 'deDupes consecutive flags',
-            input: 'iIiIgGgG',
-            expect: 'ig',
-        },
-        {
-            it: 'deDupes nonconsecutive flags',
-            input: 'igIgI',
-            expect: 'ig',
-        },
-    ]);
-});
+import {addRegExpFlags} from './regexp-flags.js';
 
 describe(addRegExpFlags.name, () => {
     function testAddingRegExpFlags(...args: Parameters<typeof addRegExpFlags>) {

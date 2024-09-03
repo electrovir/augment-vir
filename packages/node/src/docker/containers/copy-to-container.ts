@@ -1,6 +1,6 @@
 import {addSuffix} from '@augment-vir/common';
 import {stat} from 'node:fs/promises';
-import {runShellCommand} from '../../augments/shell.js';
+import {runShellCommand} from '../../augments/terminal/shell.js';
 
 export type CopyToDockerContainerParams = {
     hostPath: string;

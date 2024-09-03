@@ -1,6 +1,6 @@
 import {waitUntil} from '@augment-vir/assert';
 import {currentOperatingSystem, OperatingSystem} from '../augments/os/operating-system.js';
-import {runShellCommand} from '../augments/shell.js';
+import {runShellCommand} from '../augments/terminal/shell.js';
 
 export async function isDockerRunning() {
     const output = await runShellCommand('docker info');

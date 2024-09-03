@@ -19,7 +19,6 @@ import {JSDOM} from 'jsdom';
 import {existsSync} from 'node:fs';
 import {readFile} from 'node:fs/promises';
 import {relative} from 'node:path';
-import {HttpStatusCategory} from '../../../core/src/augments/http/http-status.js';
 import {httpStatusOutputPath, mdnDownloadCachePath, monoRepoDirPath} from '../file-paths.js';
 
 const mdnUrl = 'https://developer.mozilla.org/en-US/docs/Web/HTTP/Status#information_responses';

@@ -3,7 +3,7 @@ import {rm, writeFile} from 'node:fs/promises';
 import {dirname, join} from 'node:path';
 import {monoRepoDirPath, nodePackageDir, tempWorkspaceQueryFile} from '../../file-paths.mock.js';
 import {interpolationSafeWindowsPath, toPosixPath} from '../path/os-path.js';
-import {runShellCommand} from '../shell.js';
+import {runShellCommand} from '../terminal/shell.js';
 import {queryNpmWorkspace} from './query-workspace.js';
 
 describe(queryNpmWorkspace.name, () => {
