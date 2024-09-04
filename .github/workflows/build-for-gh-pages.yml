@@ -3,7 +3,7 @@ name: build-for-gh-pages
 on:
     push:
         branches:
-            - dev
+            - '**'
 permissions:
     contents: write
 
