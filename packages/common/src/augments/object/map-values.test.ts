@@ -9,7 +9,7 @@ import {mapObjectValues, mapObjectValuesSync} from './map-values.js';
 describe(mapObjectValuesSync.name, () => {
     it('should have proper types', () => {
         assert.notInstanceOf(
-            mapObjectValuesSync({thing: 5})(async () => {
+            mapObjectValuesSync({thing: 5}, async () => {
                 return await waitValue({milliseconds: 40}, 0);
             }),
             Promise,
@@ -17,7 +17,7 @@ describe(mapObjectValuesSync.name, () => {
 
         assert
             .tsType(
-                mapObjectValuesSync({thing: 2})<{thing: number}>((key, value) => {
+                mapObjectValuesSync({thing: 2}, (key, value) => {
                     return 5;
                 }),
             )
@@ -25,13 +25,11 @@ describe(mapObjectValuesSync.name, () => {
     });
 
     it('properly maps a partial object', () => {
-        mapObjectValuesSync<Partial<Record<1 | 2 | 3 | 4, string>>>({})<{thing: number}>(
-            (key, value) => {
-                assert.tsType(value).equals<string>();
+        mapObjectValuesSync({} as Partial<Record<1 | 2 | 3 | 4, string>>, (key, value) => {
+            assert.tsType(value).equals<string>();
 
-                return 4;
-            },
-        );
+            return 4;
+        });
     });
 
     it('should properly map', () => {
@@ -41,7 +39,7 @@ describe(mapObjectValuesSync.name, () => {
             c: /hello there/,
         } as const;
 
-        const mappedObject = mapObjectValuesSync(startingObject)((key, value) => {
+        const mappedObject = mapObjectValuesSync(startingObject, (key, value) => {
             assert.tsType(key).equals<keyof typeof startingObject>();
             assert.tsType(value).equals<Values<typeof startingObject>>();
             return String(value).length;

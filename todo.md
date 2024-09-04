@@ -16,21 +16,20 @@
     -   this might not be practical/possible because typescript has very strict rules on defining types for assert guards
 -   add type guards to the boundary assertions on strings (like `assert.endsWith`)
 -   add a logger that saves to a file or to indexeddb
+-   create an augment that is like `Promise.all` but works on objects
+-   add shallow copy and deep copy
+-   move virmator's dir-contents augments into `@augment-vir/node`
+-   move path transforms to `@augment-vir/common` (like `toPosixPath`)
+    -   maybe
+-   add a `convert` which is like `assert`
+    -   `convertTo.number`, `convertToEnsured.number`, `convertToMaybe.number`, etc. for numbers, strings, etc.
+    -   remove `number-conversation.ts`
 
 ## Before v30 release
 
 -   fill in package.json descriptions
--   create an augment that is like `Promise.all` but works on objects
 -   re-review v30 changelog
--   add shallow copy and deep copy
 -   fill out mono-repo root README
--   move virmator's dir-contents augments into `@augment-vir/node`
--   move path transforms to `@augment-vir/common` (like `toPosixPath`)
-    -   maybe
--   try to fix `mapObjectValuesSync` so it doesn't require currying
--   add a `convert` which is like `assert`
-    -   `convertTo.number`, `convertToEnsured.number`, `convertToMaybe.number`, etc. for numbers, strings, etc.
-    -   remove `number-conversation.ts`
 
 ## Immediately after v30 release
 

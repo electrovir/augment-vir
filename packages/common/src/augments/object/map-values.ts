@@ -1,4 +1,4 @@
-import {type AnyObject, type Values, ensureError, getObjectTypedKeys} from '@augment-vir/core';
+import {type AnyObject, ensureError, getObjectTypedKeys} from '@augment-vir/core';
 
 type InnerMappedValues<EntireInputGeneric extends object, MappedValueGeneric> = {
     [MappedProp in keyof EntireInputGeneric]: MappedValueGeneric;
@@ -18,27 +18,22 @@ type MappedValues<EntireInputGeneric extends object, MappedValueGeneric> =
  * @category Package : @augment-vir/common
  * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
-export function mapObjectValuesSync<EntireInputGeneric extends object>(
+export function mapObjectValuesSync<EntireInputGeneric extends object, MappedValueGeneric>(
     inputObject: EntireInputGeneric,
-) {
-    function innerMap<OutputObjectGeneric extends object>(
-        mapCallback: (
-            inputKey: keyof EntireInputGeneric,
-            keyValue: Required<EntireInputGeneric>[typeof inputKey],
-            fullObject: EntireInputGeneric,
-        ) => never extends Values<OutputObjectGeneric> ? any : Values<OutputObjectGeneric>,
-    ): OutputObjectGeneric {
-        return getObjectTypedKeys(inputObject).reduce<AnyObject>((accum, currentKey) => {
-            const mappedValue = mapCallback(currentKey, inputObject[currentKey], inputObject);
+    mapCallback: (
+        inputKey: keyof EntireInputGeneric,
+        keyValue: Required<EntireInputGeneric>[typeof inputKey],
+        fullObject: EntireInputGeneric,
+    ) => MappedValueGeneric,
+): InnerMappedValues<EntireInputGeneric, MappedValueGeneric> {
+    const mappedObject = getObjectTypedKeys(inputObject).reduce<AnyObject>((accum, currentKey) => {
+        const mappedValue = mapCallback(currentKey, inputObject[currentKey], inputObject);
 
-            return {
-                ...accum,
-                [currentKey]: mappedValue,
-            };
-        }, {});
-    }
+        accum[currentKey] = mappedValue;
 
-    return innerMap;
+        return accum;
+    }, {});
+    return mappedObject as unknown as InnerMappedValues<EntireInputGeneric, MappedValueGeneric>;
 }
 
 /**
