@@ -1,6 +1,21 @@
 {
     "name": "@augment-vir/assert",
     "version": "30.0.0",
+    "description": "A collection of assertions for test and production code alike.",
+    "keywords": [
+        "augment",
+        "helper",
+        "util",
+        "node",
+        "browser",
+        "backend",
+        "frontend",
+        "assert",
+        "test",
+        "chai",
+        "vir",
+        "augment-vir"
+    ],
     "homepage": "https://github.com/electrovir/augment-vir",
     "bugs": {
         "url": "https://github.com/electrovir/augment-vir/issues"

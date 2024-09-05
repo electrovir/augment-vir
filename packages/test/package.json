@@ -1,6 +1,20 @@
 {
     "name": "@augment-vir/test",
     "version": "30.0.0",
+    "description": "A universal testing suite that works with Mocha style test runners _and_ Node.js's built-in test runner.",
+    "keywords": [
+        "test",
+        "suite",
+        "augment",
+        "helper",
+        "util",
+        "node",
+        "browser",
+        "backend",
+        "frontend",
+        "vir",
+        "augment-vir"
+    ],
     "homepage": "https://github.com/electrovir/augment-vir",
     "bugs": {
         "url": "https://github.com/electrovir/augment-vir/issues"

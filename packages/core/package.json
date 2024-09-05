@@ -1,13 +1,7 @@
 {
     "name": "@augment-vir/core",
     "version": "30.0.0",
-    "description": "Core augment-vir augments, especially including run-time environment determination.",
-    "keywords": [
-        "augment-vir",
-        "vir",
-        "core",
-        "env"
-    ],
+    "description": "Core augment-vir augments. Use @augment-vir/common instead.",
     "homepage": "https://github.com/electrovir/augment-vir",
     "bugs": {
         "url": "https://github.com/electrovir/augment-vir/issues"

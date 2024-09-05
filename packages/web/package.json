@@ -1,6 +1,16 @@
 {
     "name": "@augment-vir/web",
     "version": "30.0.0",
+    "description": "A collection of augments, helpers types, functions, and classes only for web (frontend) JavaScript environments.",
+    "keywords": [
+        "augment",
+        "helper",
+        "util",
+        "browser",
+        "frontend",
+        "vir",
+        "augment-vir"
+    ],
     "homepage": "https://github.com/electrovir/augment-vir",
     "bugs": {
         "url": "https://github.com/electrovir/augment-vir/issues"

@@ -27,9 +27,7 @@
 
 ## Before v30 release
 
--   fill in package.json descriptions
 -   re-review v30 changelog
--   fill out mono-repo root README
 
 ## Immediately after v30 release
 

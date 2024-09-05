@@ -6,6 +6,10 @@ import {isNode} from 'browser-or-node';
  * @category Env
  * @category Package : @augment-vir/common
  * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
+ * @see
+ *  - {@link currentRuntimeEnv}
+ *  - {@link isRuntimeEnv}
+ *  - {@link perEnv}
  */
 export enum RuntimeEnv {
     Node = 'node',
@@ -32,6 +36,10 @@ export function determineRuntimeEnv(): RuntimeEnv {
  * @category Env
  * @category Package : @augment-vir/common
  * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
+ * @see
+ *  - {@link RuntimeEnv}
+ *  - {@link isRuntimeEnv}
+ *  - {@link perEnv}
  */
 export const currentRuntimeEnv = determineRuntimeEnv();
 
@@ -42,6 +50,9 @@ export const currentRuntimeEnv = determineRuntimeEnv();
  * @category Package : @augment-vir/common
  * @returns `true` if the given {@link RuntimeEnv} is the current {@link RuntimeEnv}.
  * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
+ *  - {@link RuntimeEnv}
+ *  - {@link currentRuntimeEnv}
+ *  - {@link perEnv}
  */
 export function isRuntimeEnv(itItThisEnv: RuntimeEnv): boolean {
     return currentRuntimeEnv === itItThisEnv;
@@ -66,6 +77,9 @@ export class RuntimeEnvError extends Error {
  * @category Env
  * @category Package : @augment-vir/common
  * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
+ *  - {@link RuntimeEnv}
+ *  - {@link currentRuntimeEnv}
+ *  - {@link isRuntimeEnv}
  */
 export function perEnv<T>(perEnv: Record<RuntimeEnv, () => T>): T {
     return perEnv[currentRuntimeEnv]();
