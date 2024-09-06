@@ -10,7 +10,7 @@ import {
 } from './json-compatible.js';
 
 describe('JsonCompatibleValue', () => {
-    it('has proper JsonCompatiblePrimitiveValue types', () => {
+    it('has proper JsonCompatiblePrimitive types', () => {
         assert
             .tsType<JsonCompatiblePrimitive>()
             .equals<string | number | boolean | null | undefined>();

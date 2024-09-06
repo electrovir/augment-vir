@@ -7,7 +7,7 @@ import {PartialDeep} from 'type-fest';
  *
  * Note that order matters! Each input object will overwrite the properties of the previous objects.
  *
- * @category Object
+ * @category Object : Merge
  * @category Package : @augment-vir/common
  * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */

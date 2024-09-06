@@ -5,7 +5,7 @@ import {getObjectTypedEntries} from './object-entries.js';
  * Merge all objects together but ignore any override values that are `undefined` or `null` or
  * missing. This only merges objects at the top level, it is not a deep merge.
  *
- * @category Object
+ * @category Object : Merge
  * @category Package : @augment-vir/common
  * @example
  *

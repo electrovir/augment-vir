@@ -3,7 +3,7 @@ import {getOrSet} from './get-or-set.js';
 /**
  * Merges all arrays by their property in the given objects.
  *
- * @category Object
+ * @category Object : Merge
  * @category Package : @augment-vir/common
  * @example
  *
