@@ -30,7 +30,7 @@ describe('matches', () => {
                 ],
                 throws: {
                     matchConstructor: AssertionError,
-                    matchMessage: 'does not match',
+                    matchMessage: "'a b c' does not match /abc/",
                 },
             },
         ]);
@@ -73,7 +73,7 @@ describe('matches', () => {
                 ],
                 throws: {
                     matchConstructor: AssertionError,
-                    matchMessage: 'does not match',
+                    matchMessage: "'a b c' does not match /abc/",
                 },
             },
         ]);

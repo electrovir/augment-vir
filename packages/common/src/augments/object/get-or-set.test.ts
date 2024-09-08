@@ -1,5 +1,5 @@
 import {assert} from '@augment-vir/assert';
-import type {AnyObject} from '@augment-vir/core';
+import {wait, type AnyObject} from '@augment-vir/core';
 import {describe, it, itCases} from '@augment-vir/test';
 import {randomString} from '../random/random-string.js';
 import {getOrSet, getOrSetFromMap} from './get-or-set.js';
@@ -152,6 +152,37 @@ describe(getOrSetFromMap.name, () => {
             exampleValue,
         );
         assert.strictEquals(exampleMap.get(exampleKey), exampleValue);
+    });
+
+    it('handles a promise', async () => {
+        const exampleKey = {};
+        const exampleValue = randomString();
+        const exampleMap = new Map();
+
+        assert.strictEquals(
+            await getOrSetFromMap(exampleMap, exampleKey, () => Promise.resolve(exampleValue)),
+            exampleValue,
+        );
+        assert.strictEquals(exampleMap.get(exampleKey), exampleValue);
+    });
+    it('handles a promise rejects', async () => {
+        const exampleKey = {};
+        const exampleValue = randomString();
+        const exampleMap = new Map<any, string>();
+
+        const result = getOrSetFromMap(exampleMap, exampleKey, async () => {
+            await wait({milliseconds: 0});
+            const test = true as boolean;
+            if (test) {
+                throw new Error('fail');
+            } else {
+                return exampleValue;
+            }
+        });
+        assert.tsType(result).equals<Promise<string>>();
+
+        await assert.throws(result);
+        assert.isUndefined(exampleMap.get(exampleKey));
     });
 
     it('works with WeakMap', () => {

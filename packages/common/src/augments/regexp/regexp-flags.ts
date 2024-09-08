@@ -17,18 +17,43 @@ import {escapeStringForRegExp} from './regexp-string.js';
  *
  * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
-export function addRegExpFlags(originalRegExp: RegExp, flags: string): RegExp {
-    return new RegExp(
-        originalRegExp.source,
-        removeDuplicateCharacters(
-            [
-                originalRegExp.flags,
-                flags,
-            ]
-                .join('')
-                .toLowerCase(),
-        ),
+export function addRegExpFlags(originalRegExpOrString: RegExp | string, flags: string): RegExp {
+    const allFlags = removeDuplicateCharacters(
+        [
+            typeof originalRegExpOrString === 'string' ? '' : originalRegExpOrString.flags,
+            flags,
+        ]
+            .join('')
+            .toLowerCase(),
     );
+
+    return setRegExpFlags(originalRegExpOrString, allFlags);
+}
+
+/**
+ * Creates a new RegExp with the given `flags`.
+ *
+ * @category RegExp
+ * @category Package : @augment-vir/common
+ * @example
+ *
+ * ```ts
+ * import {setRegExpFlags} from '@augment-vir/common';
+ *
+ * setRegExpFlags(/a/i, 'gm');
+ * // output is `/a/gm`
+ * ```
+ *
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
+ */
+export function setRegExpFlags(originalRegExpOrString: RegExp | string, flags: string): RegExp {
+    const allFlags = removeDuplicateCharacters(flags);
+
+    if (typeof originalRegExpOrString === 'string') {
+        return new RegExp(escapeStringForRegExp(originalRegExpOrString), allFlags);
+    } else {
+        return new RegExp(originalRegExpOrString.source, allFlags);
+    }
 }
 
 /**
@@ -56,20 +81,5 @@ export function setRegExpCaseSensitivity(
 ) {
     const caseSensitivityFlag: string = caseSensitive ? '' : 'i';
 
-    const newRegExp: RegExp =
-        originalRegExpOrString instanceof RegExp
-            ? new RegExp(
-                  originalRegExpOrString.source,
-                  removeDuplicateCharacters(
-                      [
-                          originalRegExpOrString.flags.replaceAll('i', ''),
-                          caseSensitivityFlag,
-                      ]
-                          .join('')
-                          .toLowerCase(),
-                  ),
-              )
-            : new RegExp(escapeStringForRegExp(originalRegExpOrString), caseSensitivityFlag);
-
-    return newRegExp;
+    return addRegExpFlags(originalRegExpOrString, caseSensitivityFlag);
 }

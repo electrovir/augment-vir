@@ -4,7 +4,7 @@ import {autoGuardSymbol} from '../guard-types/guard-override.js';
 
 function matches(actual: string, expected: RegExp, failureMessage?: string | undefined) {
     if (!expected.test(actual)) {
-        throw new AssertionError(`'${actual}' does _not_ match ${expected}`, failureMessage);
+        throw new AssertionError(`'${actual}' does not match ${expected}`, failureMessage);
     }
 }
 function mismatches(actual: string, expected: RegExp, failureMessage?: string | undefined) {

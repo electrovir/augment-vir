@@ -1,4 +1,4 @@
-import {setRegExpCaseSensitivity} from '../regexp/regexp-flags.js';
+import {addRegExpFlags, setRegExpCaseSensitivity} from '../regexp/regexp-flags.js';
 
 /**
  * Finds all indexes of a `searchFor` string or RegExp in `searchIn`. Ths is similar to
@@ -21,7 +21,10 @@ export function findSubstringIndexes<IncludeLength extends boolean | undefined>(
     /** Set to true to get an array of objects with the found indexes _and_ their lengths. */
     includeLength?: IncludeLength;
 }): IncludeLength extends true ? {index: number; length: number}[] : number[] {
-    const searchRegExp: RegExp = setRegExpCaseSensitivity(searchFor, {caseSensitive});
+    const searchRegExp: RegExp = addRegExpFlags(
+        setRegExpCaseSensitivity(searchFor, {caseSensitive}),
+        'g',
+    );
 
     const indexes: number[] = [];
     const indexesAndLengths: {

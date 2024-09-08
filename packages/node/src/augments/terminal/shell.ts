@@ -257,7 +257,7 @@ export async function runShellCommand(
         shellTarget.listen(ShellDoneEvent, ({detail: {exitCode, exitSignal}}) => {
             shellTarget.destroy();
             resolve({
-                error: combineErrors(errors),
+                error: errors.length ? combineErrors(errors) : undefined,
                 stdout,
                 stderr,
                 exitCode,

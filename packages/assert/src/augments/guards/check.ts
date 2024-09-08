@@ -28,6 +28,6 @@ const checkGroup = createCheckGroup(extendableAssertions, checkOverrides);
  */
 export const check: ((input: unknown) => boolean) &
     typeof checkGroup &
-    Record<keyof AnyFunction, never> = Object.assign((input: unknown) => {
+    Record<keyof AnyFunction, never> = Object.assign(function check(this: void, input: unknown) {
     return !!input;
 }, checkGroup);

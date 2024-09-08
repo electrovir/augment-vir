@@ -26,6 +26,7 @@
 -   `waitUntilTruthy`: removed. Use `waitUntil.isTruthy` from `@augment-vir/assert` instead.
 -   `isUuid`: removed. Use `check.isUuid` from `@augment-vir/assert` instead.
 -   `ansiRegex`: renamed to `ansiRegExp`.
+-   `getAllIndexesOf`: renamed to `findSubstringIndexes`.
 -   `isTruthy`: removed. Use `check.isTruthy` from `@augment-vir/assert` instead.
 -   `isFalsy`: moved to `@augment-vir/assert`.
 -   `doesRequireScientificNotation`: renamed to `requiresScientificNotation`.

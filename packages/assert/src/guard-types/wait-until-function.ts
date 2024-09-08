@@ -16,9 +16,11 @@ import {
     wait,
 } from '@augment-vir/core';
 import {AnyDuration, convertDuration, DurationUnit} from '@date-vir/duration';
-import type {AssertionError} from '../augments/assertion.error.js';
 import type {AssertFunction} from './assert-function.js';
 import {autoGuardSymbol, pickOverride} from './guard-override.js';
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import type {AssertionError} from '../augments/assertion.error.js';
 
 /**
  * Options for configuring the timing of `waitUntil`.
@@ -54,7 +56,7 @@ export const defaultWaitUntilOptions: RequiredAndNotNull<WaitUntilOptions> = {
 
 const notSetSymbol = Symbol('not set');
 
-async function executeWaitUntil<const Assert extends AssertFunction<any>>(
+export async function executeWaitUntil<const Assert extends AssertFunction<any>>(
     this: void,
     assert: AssertFunction<any>,
     rawArgs: unknown[],

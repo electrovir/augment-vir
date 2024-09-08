@@ -24,10 +24,9 @@
 -   add a `convert` which is like `assert`
     -   `convertTo.number`, `convertToEnsured.number`, `convertToMaybe.number`, etc. for numbers, strings, etc.
     -   remove `number-conversation.ts`
-
-## Before v30 release
-
--   re-review v30 changelog
+-   just a plain `diff` function
+    -   better outputs from `diffArray` (it should output a partial)
+-   add a function that batches `Promise.all` calls
 
 ## Immediately after v30 release
 

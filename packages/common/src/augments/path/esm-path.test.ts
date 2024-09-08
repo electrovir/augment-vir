@@ -6,7 +6,7 @@ describe(getEsmPath.name, () => {
     it('gets the esm file and dir paths', () => {
         const result = getEsmPath(import.meta);
 
-        assert.endsWith(result.filePath, 'augments/file/esm-path.test.ts');
-        assert.endsWith(result.dirPath, 'augments/file');
+        assert.endsWith(result.filePath, 'augments/path/esm-path.test.ts');
+        assert.endsWith(result.dirPath, 'augments/path');
     });
 });

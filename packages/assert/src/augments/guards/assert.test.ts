@@ -12,6 +12,9 @@ describe(assert.name, () => {
             matchMessage: 'fake message: 1 is not within ±1 of 4',
         });
     });
+    it('has a name', () => {
+        assert.strictEquals(assert.name, 'assert');
+    });
 });
 
 describe('assert.fail', () => {

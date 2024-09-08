@@ -365,6 +365,10 @@ function throwsWaitUntil(
             ? optionsOrFailureMessage
             : (callbackOrOptions as WaitUntilOptions);
 
+    if (typeof callback !== 'function') {
+        throw new TypeError(`Callback is not a function, got '${stringify(callback)}'`);
+    }
+
     return internalWaitUntilThrows(
         matchOptions,
         async () => {

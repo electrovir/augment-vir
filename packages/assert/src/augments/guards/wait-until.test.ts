@@ -82,4 +82,20 @@ describe('waitUntil', () => {
             },
         );
     });
+
+    it('is a plain function', async () => {
+        let count = -1;
+
+        const result = await waitUntil(() => {
+            return ++count;
+        }, waitUntilTestOptions);
+
+        assert.tsType(result).equals<number>();
+        assert.strictEquals(result, 1);
+        assert.strictEquals(count, 1);
+    });
+
+    it('has a name', () => {
+        assert.strictEquals(waitUntil.name, 'waitUntil');
+    });
 });

@@ -1,7 +1,8 @@
+import {AnyFunction} from '@augment-vir/core';
 import {extendableAssertions, waitUntilOverrides} from '../../assertions/extendable-assertions.js';
 import {
-    createWaitUntil,
     createWaitUntilGroup,
+    executeWaitUntil,
     WaitUntilOptions,
 } from '../../guard-types/wait-until-function.js';
 import {AssertionError} from '../assertion.error.js';
@@ -43,16 +44,25 @@ const waitUntilGroup = createWaitUntilGroup(extendableAssertions, waitUntilOverr
  * @throws {@link AssertionError} When the assertion fails.
  * @package [`@augment-vir/assert`](https://www.npmjs.com/package/@augment-vir/assert)
  */
-export const waitUntil: ((
-    callback: () => unknown,
+export const waitUntil: (<T>(
+    callback: () => T,
     options?: WaitUntilOptions | undefined,
     failureMessage?: string | undefined,
-) => void) &
+) => Promise<T>) &
     typeof waitUntilGroup = Object.assign(
-    createWaitUntil((input: unknown, failureMessage?: string | undefined) => {
-        if (!input) {
-            throw new AssertionError('Assertion failed.', failureMessage);
-        }
-    }),
+    function waitUntil(input: unknown, failureMessage?: string | undefined) {
+        return executeWaitUntil(
+            (input: unknown, failureMessage?: string | undefined) => {
+                if (!input) {
+                    throw new AssertionError('Assertion failed.', failureMessage);
+                }
+            },
+            [
+                input,
+                failureMessage,
+            ],
+            false,
+        );
+    } as AnyFunction,
     waitUntilGroup,
 );

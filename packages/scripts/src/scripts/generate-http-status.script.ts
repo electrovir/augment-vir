@@ -187,7 +187,7 @@ async function writeStatuses(statusesByCategory: StatusesByCategory) {
  * https://github.com/electrovir/augment-vir/blob/dev/packages/scripts/src/scripts/generate-http-status.script.ts
  * 
  * @category HTTP
- * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
+ * @package [\`@augment-vir/common\`](https://www.npmjs.com/package/@augment-vir/common)
  * @category Package : @augment-vir/common
  */
 export enum HttpStatus {`,
@@ -199,7 +199,7 @@ export enum HttpStatus {`,
  * HTTP status code.
  *
  * @category HTTP
- * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
+ * @package [\`@augment-vir/common\`](https://www.npmjs.com/package/@augment-vir/common)
  * @category Package : @augment-vir/common
  */
 export enum HttpStatusCategory {
@@ -214,7 +214,7 @@ export enum HttpStatusCategory {
  * All standardized HTTP status codes grouped into their respective categories.
  *
  * @category HTTP
- * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
+ * @package [\`@augment-vir/common\`](https://www.npmjs.com/package/@augment-vir/common)
  * @category Package : @augment-vir/common
  */
 export const httpStatusByCategory = {`,
@@ -225,7 +225,7 @@ export const httpStatusByCategory = {`,
  * All possible HTTP status codes for the given {@link HttpStatusCategory}.
  *
  * @category HTTP
- * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
+ * @package [\`@augment-vir/common\`](https://www.npmjs.com/package/@augment-vir/common)
  * @category Package : @augment-vir/common
  */
 export type HttpStatusByCategory<Category extends HttpStatusCategory> = ArrayElement<

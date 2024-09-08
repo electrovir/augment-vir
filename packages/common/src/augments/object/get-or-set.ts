@@ -65,7 +65,7 @@ export function getOrSetFromMap<MapKey, MapValue>(
 ): MaybePromise<MapValue> {
     const mapKey = key as any;
 
-    if (mapKey in map) {
+    if (map.has(mapKey)) {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         return map.get(mapKey)!;
     } else {

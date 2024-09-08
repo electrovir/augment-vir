@@ -38,13 +38,14 @@ const assertWrapGroup = createAssertWrapGroup(extendableAssertions, assertWrapOv
  * @package [`@augment-vir/assert`](https://www.npmjs.com/package/@augment-vir/assert)
  */
 export const assertWrap: (<T>(input: T, failureMessage?: string | undefined) => T) &
-    typeof assertWrapGroup = Object.assign(
-    <T>(input: T, failureMessage?: string | undefined): T => {
-        if (!input) {
-            throw new AssertionError('Assertion failed.', failureMessage);
-        }
+    typeof assertWrapGroup = Object.assign(function assertWrap<T>(
+    this: void,
+    input: T,
+    failureMessage?: string | undefined,
+): T {
+    if (!input) {
+        throw new AssertionError('Assertion failed.', failureMessage);
+    }
 
-        return input;
-    },
-    assertWrapGroup,
-);
+    return input;
+}, assertWrapGroup);

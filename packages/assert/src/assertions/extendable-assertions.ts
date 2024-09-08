@@ -77,58 +77,34 @@ export const guardOverrides = [
 export const checkOverrides: UnionToIntersection<ArrayElement<typeof guardOverrides>['check']> =
     Object.assign(
         {},
-        ...guardOverrides
-            .map((entry) => {
-                if ('check' in entry) {
-                    return entry.check;
-                } else {
-                    return undefined;
-                }
-            })
-            .filter((entry) => !!entry),
+        ...guardOverrides.map((entry) => {
+            return entry.check;
+        }),
     );
 
 export const assertWrapOverrides: UnionToIntersection<
     Extract<ArrayElement<typeof guardOverrides>, {assertWrap: any}>['assertWrap']
 > = Object.assign(
     {},
-    ...guardOverrides
-        .map((entry) => {
-            if ('assertWrap' in entry) {
-                return entry.assertWrap;
-            } else {
-                return undefined;
-            }
-        })
-        .filter((entry) => !!entry),
+    ...guardOverrides.map((entry) => {
+        return entry.assertWrap;
+    }),
 );
 
 export const checkWrapOverrides: UnionToIntersection<
     Extract<ArrayElement<typeof guardOverrides>, {checkWrap: any}>['checkWrap']
 > = Object.assign(
     {},
-    ...guardOverrides
-        .map((entry) => {
-            if ('checkWrap' in entry) {
-                return entry.checkWrap;
-            } else {
-                return undefined;
-            }
-        })
-        .filter((entry) => !!entry),
+    ...guardOverrides.map((entry) => {
+        return entry.checkWrap;
+    }),
 );
 
 export const waitUntilOverrides: UnionToIntersection<
     Extract<ArrayElement<typeof guardOverrides>, {waitUntil: any}>['waitUntil']
 > = Object.assign(
     {},
-    ...guardOverrides
-        .map((entry) => {
-            if ('waitUntil' in entry) {
-                return entry.waitUntil;
-            } else {
-                return undefined;
-            }
-        })
-        .filter((entry) => !!entry),
+    ...guardOverrides.map((entry) => {
+        return entry.waitUntil;
+    }),
 );

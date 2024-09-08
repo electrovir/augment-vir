@@ -1090,6 +1090,9 @@ describe('isNumber', () => {
 
             assert.tsType(actualPassUnion).equals<ExpectedUnionNarrowedType>();
         });
+        it('blocks NaN', () => {
+            assert.throws(() => assert.isNumber(NaN));
+        });
     });
     describe('check', () => {
         it('guards', () => {

@@ -503,16 +503,20 @@ describe('throws', () => {
             });
         });
         describe('with promise', () => {
-            it('guards with match', async () => {
+            it('fails', async () => {
+                const rejection = Promise.reject(new Error('fake error'));
+
                 await assert.throws(async () => {
                     await waitUntil.throws(
                         {matchConstructor: Error},
                         // @ts-expect-error: promises are not allowed with `waitUntil`
-                        Promise.reject(new Error('fake error')),
+                        rejection,
                         waitUntilTestOptions,
                         'failure',
                     );
                 });
+
+                await assert.throws(rejection);
             });
         });
     });

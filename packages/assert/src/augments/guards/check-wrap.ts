@@ -39,7 +39,7 @@ const checkWrapGroup = createCheckWrapGroup(extendableAssertions, checkWrapOverr
  */
 export const checkWrap: (<T>(input: T) => undefined | T) &
     typeof checkWrapGroup &
-    Record<keyof AnyFunction, never> = Object.assign(<T>(input: T) => {
+    Record<keyof AnyFunction, never> = Object.assign(function checkWrap<T>(this: void, input: T) {
     if (!input) {
         return undefined;
     }
