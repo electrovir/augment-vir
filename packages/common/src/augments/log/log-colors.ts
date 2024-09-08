@@ -25,6 +25,7 @@ export enum LogOutputType {
  */
 export enum LogColorKey {
     Bold = 'bold',
+    Debug = 'debug',
     Error = 'error',
     Faint = 'faint',
     Info = 'info',
@@ -64,6 +65,7 @@ async function determineDefaultLogColors(): Promise<Record<LogColorKey, string>>
 
             return {
                 [LogColorKey.Bold]: styles.bold.open,
+                [LogColorKey.Debug]: styles.blueBright.open,
                 [LogColorKey.Error]: styles.red.open,
                 [LogColorKey.Faint]: styles.gray.open,
                 [LogColorKey.Info]: styles.cyan.open,
@@ -79,6 +81,7 @@ async function determineDefaultLogColors(): Promise<Record<LogColorKey, string>>
         [RuntimeEnv.Web]() {
             return Promise.resolve({
                 [LogColorKey.Bold]: 'font-weight: bold',
+                [LogColorKey.Debug]: 'color: blue',
                 [LogColorKey.Error]: 'color: red',
                 [LogColorKey.Faint]: 'color: grey',
                 [LogColorKey.Info]: 'color: teal',
@@ -113,6 +116,12 @@ export const defaultLogColorConfig: LogColorConfig = {
     [LogColorKey.Bold]: {
         colors: [
             logColors.bold,
+        ],
+        logType: LogOutputType.Standard,
+    },
+    [LogColorKey.Debug]: {
+        colors: [
+            logColors.debug,
         ],
         logType: LogOutputType.Standard,
     },
