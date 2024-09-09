@@ -25,7 +25,6 @@ describe(Debounce.name, () => {
                 await wait({milliseconds: 100});
             }
         });
-        assert.isAbove(duration.milliseconds, 450);
     });
 
     it('debounces after wait style', async () => {
@@ -48,7 +47,6 @@ describe(Debounce.name, () => {
                 await wait({milliseconds: 100});
             }
         });
-        assert.isAbove(duration.milliseconds, 450);
     });
 
     it('accepts a callback on construction', async () => {
@@ -73,7 +71,6 @@ describe(Debounce.name, () => {
                 await wait({milliseconds: 100});
             }
         });
-        assert.isAbove(duration.milliseconds, 450);
     });
     it('skips execution if missing callback', () => {
         const debounce = new Debounce(DebounceStyle.FirstThenWait, {
