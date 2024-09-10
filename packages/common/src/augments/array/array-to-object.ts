@@ -1,5 +1,8 @@
+import {check} from '@augment-vir/assert';
+import {MaybePromise, ensureError} from '@augment-vir/core';
 import {getOrSet} from '../object/get-or-set.js';
 import {typedObjectFromEntries} from '../object/object-entries.js';
+import {filterMap} from './filter.js';
 
 /**
  * Polyfill for `Object.groupBy`:
@@ -43,10 +46,52 @@ export function groupArrayBy<ElementType, NewKey extends PropertyKey>(
     ) as Partial<Record<NewKey, ElementType[]>>;
 }
 
+export function arrayToObject<ElementType, NewKey extends PropertyKey, NewValue>(
+    inputArray: ReadonlyArray<ElementType>,
+    callback: (
+        value: ElementType,
+        index: number,
+        originalArray: ReadonlyArray<ElementType>,
+    ) => Promise<
+        | {
+              key: NewKey;
+              value: NewValue;
+          }
+        | undefined
+    >,
+): Promise<Partial<Record<NewKey, NewValue>>>;
+export function arrayToObject<ElementType, NewKey extends PropertyKey, NewValue>(
+    inputArray: ReadonlyArray<ElementType>,
+    callback: (
+        value: ElementType,
+        index: number,
+        originalArray: ReadonlyArray<ElementType>,
+    ) =>
+        | {
+              key: NewKey;
+              value: NewValue;
+          }
+        | undefined,
+): Partial<Record<NewKey, NewValue>>;
+export function arrayToObject<ElementType, NewKey extends PropertyKey, NewValue>(
+    inputArray: ReadonlyArray<ElementType>,
+    callback: (
+        value: ElementType,
+        index: number,
+        originalArray: ReadonlyArray<ElementType>,
+    ) => MaybePromise<
+        | {
+              key: NewKey;
+              value: NewValue;
+          }
+        | undefined
+    >,
+): MaybePromise<Partial<Record<NewKey, NewValue>>>;
 /**
  * Similar to {@link groupArrayBy} but maps array entries to a single key and requires `key` _and_
  * `value` outputs from the callback. The resulting object does not have an array of elements
- * (unless the original array itself contains arrays).
+ * (unless the original array itself contains arrays). Automatically handles the case where the
+ * callback returns a promise.
  *
  * @category Array
  * @category Object
@@ -76,18 +121,63 @@ export function arrayToObject<ElementType, NewKey extends PropertyKey, NewValue>
         value: ElementType,
         index: number,
         originalArray: ReadonlyArray<ElementType>,
-    ) => {
-        key: NewKey;
-        value: NewValue;
-    },
-): Partial<Record<NewKey, NewValue>> {
-    return typedObjectFromEntries(
-        inputArray.map((entry, index, originalArray) => {
-            const {key, value} = callback(entry, index, originalArray);
-            return [
-                key,
-                value,
-            ];
-        }),
-    );
+    ) => MaybePromise<
+        | {
+              key: NewKey;
+              value: NewValue;
+          }
+        | undefined
+    >,
+): MaybePromise<Partial<Record<NewKey, NewValue>>> {
+    try {
+        let gotAPromise = false as boolean;
+
+        const mappedEntries = inputArray
+            .map((entry, index, originalArray) => {
+                const output = callback(entry, index, originalArray);
+                if (output instanceof Promise) {
+                    gotAPromise = true;
+                    return output;
+                } else if (output) {
+                    return [
+                        output.key,
+                        output.value,
+                    ] as [NewKey, NewValue];
+                } else {
+                    return undefined;
+                }
+            })
+            .filter(check.isTruthy);
+
+        if (gotAPromise) {
+            return new Promise<Record<NewKey, NewValue>>(async (resolve, reject) => {
+                try {
+                    const entries: [NewKey, NewValue][] = filterMap(
+                        await Promise.all(mappedEntries),
+                        (entry) => {
+                            if (!entry) {
+                                return undefined;
+                            } else if (Array.isArray(entry)) {
+                                return entry;
+                            } else {
+                                return [
+                                    entry.key,
+                                    entry.value,
+                                ] as [NewKey, NewValue];
+                            }
+                        },
+                        check.isTruthy,
+                    );
+
+                    resolve(typedObjectFromEntries(entries));
+                } catch (error) {
+                    reject(ensureError(error));
+                }
+            });
+        } else {
+            return typedObjectFromEntries(mappedEntries as [NewKey, NewValue][]);
+        }
+    } catch (error) {
+        throw ensureError(error);
+    }
 }

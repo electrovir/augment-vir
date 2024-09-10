@@ -1,3 +1,4 @@
+import {addData, dumpData, getAllPrismaModelNames} from '../prisma/model-data.js';
 import {generatePrismaClient, isGeneratedPrismaClientCurrent} from '../prisma/prisma-client.js';
 import {
     doesPrismaDiffExist,
@@ -14,6 +15,10 @@ import {
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type {PrismaMigrationNeededError, PrismaResetNeededError} from '../prisma/prisma-errors.js';
 
+export type {
+    PrismaAddDataData as PrismaAddModelData,
+    PrismaDataDumpOptions,
+} from '../prisma/model-data.js';
 export * from '../prisma/prisma-errors.js';
 export type {PrismaMigrationStatus} from '../prisma/prisma-migrations.js';
 
@@ -98,6 +103,14 @@ export const prisma = {
         /**
          * Runs Prisma generators included in the given Prisma schema (which usually includes the
          * Prisma JS client). This will work even if the database doesn't exist yet.
+         *
+         * @example
+         *
+         * ```ts
+         * import {prisma} from '@augment-vir/node';
+         *
+         * prisma.client.generate('../../prisma/schema.prisma');
+         * ```
          */
         generate: generatePrismaClient,
         /**
@@ -105,5 +118,57 @@ export const prisma = {
          * schema.
          */
         isCurrent: isGeneratedPrismaClientCurrent,
+        /**
+         * Adds a collection of create data to a database through a `PrismaClient` instance. This is
+         * particularly useful for setting up mocks in a mock PrismaClient.
+         *
+         * @example
+         *
+         * ```ts
+         * import {addPrismaModelData} from '@augment-vir/common';
+         * import {PrismaClient} from '@prisma/client';
+         *
+         * await addPrismaModelData(new PrismaClient(), [
+         *     {
+         *         user: {
+         *             mockUser1: {
+         *                 first_name: 'one',
+         *                 id: 123,
+         *                 // etc.
+         *             },
+         *             mockUser2: {
+         *                 first_name: 'two',
+         *                 id: 124,
+         *                 authRole: 'user',
+         *                 // etc.
+         *             },
+         *         },
+         *     },
+         *     {
+         *         region: [
+         *             {
+         *                 id: 1,
+         *                 name: 'North America',
+         *                 // etc.
+         *             },
+         *             {
+         *                 id: 2,
+         *                 name: 'Europe',
+         *                 // etc.
+         *             },
+         *         ],
+         *     },
+         * ]);
+         * ```
+         */
+        addData: addData,
+        /**
+         * Dump data from the current database through a `PrismaClient` instance.
+         *
+         * @see {@link PrismaDataDumpOptions}
+         */
+        dumpData: dumpData,
+        /** List all model names in the given Prisma client. */
+        listModelNames: getAllPrismaModelNames,
     },
 };

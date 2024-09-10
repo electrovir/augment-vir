@@ -28,6 +28,10 @@
     -   better outputs from `diffArray` (it should output a partial)
 -   add a function that batches `Promise.all` calls
 
+## before v30 release
+
+-   revisit all prisma changes in v30 changelog
+
 ## Immediately after v30 release
 
 -   update `html-spec-tags`
