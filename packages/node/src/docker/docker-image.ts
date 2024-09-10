@@ -29,7 +29,7 @@ export async function removeImageFromLocalRegistry(
     imageName: string,
 ) {
     try {
-        const shellOutput = await runShellCommand(`docker image rm '${imageName}'`, {
+        await runShellCommand(`docker image rm '${imageName}'`, {
             rejectOnError: true,
         });
     } catch (caught) {

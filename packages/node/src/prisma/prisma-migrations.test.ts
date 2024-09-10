@@ -2,7 +2,6 @@ import {assert} from '@augment-vir/assert';
 import {describe, it} from '@augment-vir/test';
 import {existsSync} from 'node:fs';
 import {readdir, rm} from 'node:fs/promises';
-import {isOperatingSystem, OperatingSystem} from '../augments/os/operating-system.js';
 import {prisma} from '../augments/prisma.js';
 import {
     testInvalidPrismaSchemaPath,
@@ -143,6 +142,8 @@ describe(prisma.migration.applyDev.name, () => {
         });
     });
     it('fails when a new migration is needed', async () => {
+        const originalCi = process.env;
+        delete process.env.CI;
         await clearTestDatabaseOutputs();
         await prisma.database.resetDev(testPrismaSchemaPath);
 
@@ -152,19 +153,11 @@ describe(prisma.migration.applyDev.name, () => {
             unappliedMigrations: [],
         });
 
-        /**
-         * This behaves differently in Linux. I don't know why, and at the moment I don't care nor
-         * do I have an easy way to debug it.
-         */
-        /* node:coverage ignore next 8 */
-        if (isOperatingSystem(OperatingSystem.Linux)) {
-            await prisma.migration.applyDev(testPrismaSchema2Path);
-        } else {
-            await assert.throws(prisma.migration.applyDev(testPrismaSchema2Path), {
-                matchMessage: 'A new Prisma migration is needed for',
-                matchConstructor: PrismaMigrationNeededError,
-            });
-        }
+        await assert.throws(prisma.migration.applyDev(testPrismaSchema2Path), {
+            matchMessage: 'A new Prisma migration is needed for',
+            matchConstructor: PrismaMigrationNeededError,
+        });
+        process.env = originalCi;
     });
     it('fails when a reset is needed', async () => {
         await clearTestDatabaseOutputs();
