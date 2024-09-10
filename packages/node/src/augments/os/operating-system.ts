@@ -21,6 +21,27 @@ export enum OperatingSystem {
  */
 export const currentOperatingSystem: OperatingSystem = getOperatingSystem();
 
+/**
+ * Checks if the current operating system is the requested one.
+ *
+ * @category Node : OS
+ * @category Package : @augment-vir/node
+ * @example
+ *
+ * ```ts
+ * import {isOperatingSystem, OperatingSystem} from '@augment-vir/node';
+ *
+ * if (isOperatingSystem(OperatingSystem.Mac)) {
+ *     // do something
+ * }
+ * ```
+ *
+ * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
+ */
+export function isOperatingSystem(operatingSystem: OperatingSystem): boolean {
+    return currentOperatingSystem === operatingSystem;
+}
+
 function getOperatingSystem(): OperatingSystem {
     /** We can't test all of these on a single system. */
     /* node:coverage ignore next 7 */

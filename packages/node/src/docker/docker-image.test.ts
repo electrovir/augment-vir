@@ -2,6 +2,7 @@ import {assert} from '@augment-vir/assert';
 import {describe, it} from '@augment-vir/test';
 import {docker} from '../augments/docker.js';
 import {runMockLongLivingContainer} from './containers/run-container.mock.js';
+import {dockerTest} from './run-docker-test.mock.js';
 
 /**
  * Using Alpine Linux because it's so small.
@@ -13,15 +14,18 @@ import {runMockLongLivingContainer} from './containers/run-container.mock.js';
  */
 export const testDockerImageName = 'alpine:3.19.3';
 
-describe('docker.image', () => {
-    it('updates and removes', async () => {
-        await docker.image.remove(testDockerImageName);
-        assert.isFalse(await docker.image.exists(testDockerImageName));
-        await docker.image.update(testDockerImageName);
-        assert.isTrue(await docker.image.exists(testDockerImageName));
-        await docker.image.update(testDockerImageName);
-    });
-    it('ignores removing already missing images', async () => {
-        await docker.image.remove('electrovir-fake-image-name:123.456.0789');
-    });
-});
+describe(
+    'docker.image',
+    dockerTest(() => {
+        it('updates and removes', async () => {
+            await docker.image.remove(testDockerImageName);
+            assert.isFalse(await docker.image.exists(testDockerImageName));
+            await docker.image.update(testDockerImageName);
+            assert.isTrue(await docker.image.exists(testDockerImageName));
+            await docker.image.update(testDockerImageName);
+        });
+        it('ignores removing already missing images', async () => {
+            await docker.image.remove('electrovir-fake-image-name:123.456.0789');
+        });
+    }),
+);

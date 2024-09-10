@@ -50,7 +50,6 @@ export async function applyPrismaMigrationsToDev(
             ...env,
         },
         stdoutCallback(stdout, childProcess) {
-            log.debug({stdout});
             if (stdout.includes('Enter a name for the new migration')) {
                 if (childProcess.pid) {
                     terminate(childProcess.pid);
@@ -59,7 +58,6 @@ export async function applyPrismaMigrationsToDev(
             }
         },
         stderrCallback(stderr, childProcess) {
-            log.debug({stderr});
             if (
                 stderr.includes(
                     'Prisma Migrate has detected that the environment is non-interactive, which is not supported',

@@ -1,4 +1,3 @@
-import {log} from '@augment-vir/common';
 import {ensureError} from '@augment-vir/core';
 import {runShellCommand} from '../augments/terminal/shell.js';
 
@@ -33,7 +32,6 @@ export async function removeImageFromLocalRegistry(
         const shellOutput = await runShellCommand(`docker image rm '${imageName}'`, {
             rejectOnError: true,
         });
-        log.debug(shellOutput);
     } catch (caught) {
         const error = ensureError(caught);
 
