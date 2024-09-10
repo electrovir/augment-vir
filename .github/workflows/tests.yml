@@ -32,8 +32,7 @@ jobs:
               if: runner.os == 'macOS'
               shell: bash
               run: |
-                  brew install docker colima
-                  colima start
+                  brew install docker
             - name: run test
               shell: bash
               run: |

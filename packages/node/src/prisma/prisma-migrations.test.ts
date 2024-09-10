@@ -145,17 +145,11 @@ describe(prisma.migration.applyDev.name, () => {
         await clearTestDatabaseOutputs();
         await prisma.database.resetDev(testPrismaSchemaPath);
 
-        await prisma.migration.create(
-            {
-                migrationName: 'init',
-                createOnly: true,
-            },
-            testPrismaSchemaPath,
-        );
-        const status = await prisma.migration.status(testPrismaSchemaPath);
-
-        assert.strictEquals(status.totalMigrations, 1);
-        assert.isLengthExactly(status.unappliedMigrations, 1);
+        await prisma.migration.create({migrationName: 'init'}, testPrismaSchemaPath);
+        assert.deepEquals(await prisma.migration.status(testPrismaSchemaPath), {
+            totalMigrations: 1,
+            unappliedMigrations: [],
+        });
 
         await assert.throws(prisma.migration.applyDev(testPrismaSchema2Path), {
             matchMessage: 'A new Prisma migration is needed for',
