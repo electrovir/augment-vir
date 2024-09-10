@@ -42,22 +42,22 @@
         "@date-vir/duration": "^6.0.0",
         "ansi-styles": "^6.2.1",
         "terminate": "^2.8.0",
-        "type-fest": "^4.25.0",
+        "type-fest": "^4.26.1",
         "typed-event-target": "^3.4.0"
     },
     "devDependencies": {
         "@augment-vir/test": "^30.0.1",
-        "@prisma/client": "^5.19.0",
-        "@types/node": "^22.5.0",
+        "@prisma/client": "^5.19.1",
+        "@types/node": "^22.5.4",
         "@web/dev-server-esbuild": "^1.0.2",
-        "@web/test-runner": "^0.18.3",
+        "@web/test-runner": "^0.19.0",
         "@web/test-runner-commands": "^0.9.0",
         "@web/test-runner-playwright": "^0.11.0",
-        "@web/test-runner-visual-regression": "^0.9.0",
+        "@web/test-runner-visual-regression": "^0.10.0",
         "c8": "^10.1.2",
-        "concurrently": "^8.2.2",
+        "concurrently": "^9.0.0",
         "istanbul-smart-text-reporter": "^1.1.4",
-        "prisma": "^5.19.0"
+        "prisma": "^5.19.1"
     },
     "engines": {
         "node": ">=22"

@@ -4,8 +4,6 @@ import type {GuardGroup} from '../guard-types/guard-group.js';
 import {autoGuard, autoGuardSymbol} from '../guard-types/guard-override.js';
 import {WaitUntilOptions} from '../guard-types/wait-until-function.js';
 
-/* eslint-disable @typescript-eslint/no-duplicate-type-constituents */
-
 /**
  * All falsy values in JavaScript. This does not include `NaN` because there is no dedicated type
  * for it in TypeScript.

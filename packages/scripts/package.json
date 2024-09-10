@@ -26,14 +26,14 @@
     "dependencies": {
         "@augment-vir/assert": "^30.0.1",
         "@augment-vir/core": "^30.0.1",
-        "@virmator/docs": "^13.3.7",
+        "@virmator/docs": "^13.3.9",
         "jsdom": "^25.0.0",
-        "typedoc": "^0.26.6"
+        "typedoc": "^0.26.7"
     },
     "devDependencies": {
         "@augment-vir/test": "^30.0.1",
         "@types/jsdom": "^21.1.7",
-        "@types/node": "^22.5.0"
+        "@types/node": "^22.5.4"
     },
     "engines": {
         "node": ">=22"

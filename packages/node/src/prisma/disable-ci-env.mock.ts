@@ -70,6 +70,8 @@ export function testWithNonCiEnv(callback: () => MaybePromise<void>) {
     return async () => {
         const usedKeys = prismaCiFlags.filter((ciFlag) => ciFlag in process.env);
 
+        /** For already non-CI environments. */
+        /* node:coverage ignore next 6 */
         const originalEnvValues = arrayToObject(usedKeys, (key) => {
             return {
                 key,
