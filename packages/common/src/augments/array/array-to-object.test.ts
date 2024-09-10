@@ -165,12 +165,115 @@ describe(arrayToObject.name, () => {
                 [],
                 (value) => {
                     return {
-                        value,
                         key: 'five',
+                        value,
                     };
                 },
             ],
             expect: {},
+        },
+        {
+            it: 'handles an async callback',
+            inputs: [
+                ['value'],
+                (value) => {
+                    return Promise.resolve({
+                        key: 'five',
+                        value,
+                    });
+                },
+            ],
+            expect: {five: 'value'},
+        },
+        {
+            it: 'filters out undefined async values',
+            inputs: [
+                [
+                    true,
+                    false,
+                ],
+                (value) => {
+                    if (!value) {
+                        return Promise.resolve(undefined);
+                    }
+
+                    return Promise.resolve({
+                        key: 'five',
+                        value,
+                    });
+                },
+            ],
+            expect: {five: true},
+        },
+        {
+            it: 'handles a mix of sync and async values',
+            inputs: [
+                [
+                    true,
+                    false,
+                ],
+                (value) => {
+                    if (value) {
+                        return Promise.resolve({
+                            key: 'async',
+                            value,
+                        });
+                    } else {
+                        return {
+                            key: 'sync',
+                            value,
+                        };
+                    }
+                },
+            ],
+            expect: {
+                sync: false,
+                async: true,
+            },
+        },
+        {
+            it: 'filters out undefined sync values',
+            inputs: [
+                [
+                    true,
+                    false,
+                ],
+                (value) => {
+                    if (!value) {
+                        return undefined;
+                    }
+
+                    return {
+                        key: 'five',
+                        value,
+                    };
+                },
+            ],
+            expect: {five: true},
+        },
+        {
+            it: 'handles an async callback error',
+            inputs: [
+                ['value'],
+                () => {
+                    return Promise.reject(new Error('reasons'));
+                },
+            ],
+            throws: {
+                matchMessage: 'reasons',
+            },
+        },
+        {
+            it: 'handles a sync callback error',
+            inputs: [
+                ['value'],
+                () => {
+                    throw new Error('reasons');
+                },
+            ],
+            throws: {
+                matchMessage: 'reasons',
+            },
         },
         {
             it: 'handles no collisions',
@@ -197,8 +300,8 @@ describe(arrayToObject.name, () => {
                 ],
                 (value: any) => {
                     return {
-                        value,
                         key: value.c,
+                        value,
                     };
                 },
             ],
@@ -248,8 +351,8 @@ describe(arrayToObject.name, () => {
                 ],
                 (value: any) => {
                     return {
-                        value,
                         key: value.c,
+                        value,
                     };
                 },
             ],

@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/web",
-    "version": "30.0.1",
+    "version": "30.0.2",
     "description": "A collection of augments, helpers types, functions, and classes only for web (frontend) JavaScript environments.",
     "keywords": [
         "augment",
@@ -35,14 +35,14 @@
         "test:update": "npm test"
     },
     "dependencies": {
-        "@augment-vir/assert": "^30.0.1",
-        "@augment-vir/common": "^30.0.1",
+        "@augment-vir/assert": "^30.0.2",
+        "@augment-vir/common": "^30.0.2",
         "@date-vir/duration": "^6.0.0",
         "html-spec-tags": "^2.2.0",
         "type-fest": "^4.26.1"
     },
     "devDependencies": {
-        "@augment-vir/test": "^30.0.1",
+        "@augment-vir/test": "^30.0.2",
         "typescript": "^5.6.2"
     },
     "peerDependencies": {

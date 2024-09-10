@@ -1,6 +1,6 @@
 {
     "name": "augment-vir-temp-virmator-update",
-    "version": "30.0.1",
+    "version": "30.0.2",
     "private": true,
     "homepage": "https://github.com/electrovir/augment-vir",
     "bugs": {
@@ -25,7 +25,7 @@
         "format": "virmator format",
         "postinstall": "npm run exec --workspace @augment-vir/scripts src/scripts/fix-mocha-node-module.script.ts",
         "lint": "virmator lint fix",
-        "publish": "virmator publish npm run test:all",
+        "publish": "virmator publish \"npm run test:all\"",
         "test": "mono-vir for-each npm run test",
         "test:all": "npm run compile && npm run test:coverage && concurrently --colors --kill-others-on-fail -c auto --names spelling,format,deps,lint,exports,docs \"npm run test:spelling\" \"npm run test:format\" \"npm run test:deps\" \"npm run test:lint\" \"npm run test:exports\" \"npm run test:docs\"",
         "test:coverage": "mono-vir for-each npm run test:coverage",

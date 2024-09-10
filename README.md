@@ -1,6 +1,6 @@
 # augment-vir
 
-Documentation and code for all the current `@augment-vir` packages.
+Documentation and code for all the latest `@augment-vir` packages.
 
 -   [`@augment-vir/assert`](https://www.npmjs.com/package/@augment-vir/assert): A collection of assertions for test and production code alike. These main exports are the following:
     -   [`assert`](https://electrovir.github.io/augment-vir/functions/assert.html): a collection of assertion methods with type guards when possible. Example: [`assert.isDefined()`](https://electrovir.github.io/augment-vir/functions/assert.html#isDefined)
