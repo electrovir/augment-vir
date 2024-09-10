@@ -9,6 +9,7 @@ import {
     testPrismaSchema2Path,
     testPrismaSchemaPath,
 } from '../file-paths.mock.js';
+import {testWithNonCiEnv} from './disable-ci-env.mock.js';
 import {clearTestDatabaseOutputs} from './prisma-database.mock.js';
 import {
     PrismaMigrationNeededError,
@@ -141,24 +142,24 @@ describe(prisma.migration.applyDev.name, () => {
             matchMessage: 'Invalid schema file',
         });
     });
-    it('fails when a new migration is needed', async () => {
-        const originalCi = process.env;
-        delete process.env.CI;
-        await clearTestDatabaseOutputs();
-        await prisma.database.resetDev(testPrismaSchemaPath);
+    it(
+        'fails when a new migration is needed',
+        testWithNonCiEnv(async () => {
+            await clearTestDatabaseOutputs();
+            await prisma.database.resetDev(testPrismaSchemaPath);
 
-        await prisma.migration.create({migrationName: 'init'}, testPrismaSchemaPath);
-        assert.deepEquals(await prisma.migration.status(testPrismaSchemaPath), {
-            totalMigrations: 1,
-            unappliedMigrations: [],
-        });
+            await prisma.migration.create({migrationName: 'init'}, testPrismaSchemaPath);
+            assert.deepEquals(await prisma.migration.status(testPrismaSchemaPath), {
+                totalMigrations: 1,
+                unappliedMigrations: [],
+            });
 
-        await assert.throws(prisma.migration.applyDev(testPrismaSchema2Path), {
-            matchMessage: 'A new Prisma migration is needed for',
-            matchConstructor: PrismaMigrationNeededError,
-        });
-        process.env = originalCi;
-    });
+            await assert.throws(prisma.migration.applyDev(testPrismaSchema2Path), {
+                matchMessage: 'A new Prisma migration is needed for',
+                matchConstructor: PrismaMigrationNeededError,
+            });
+        }),
+    );
     it('fails when a reset is needed', async () => {
         await clearTestDatabaseOutputs();
         await prisma.database.resetDev(testPrismaSchemaPath);

@@ -28,11 +28,6 @@ jobs:
               shell: bash
               run: |
                   npm i npm
-            - name: Install Docker on macOS
-              if: runner.os == 'macOS'
-              shell: bash
-              run: |
-                  brew install docker
             - name: run test
               shell: bash
               run: |
