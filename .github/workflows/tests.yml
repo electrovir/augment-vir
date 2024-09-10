@@ -23,10 +23,17 @@ jobs:
               with:
                   node-version-file: '.nvmrc'
             # handle NPM / Node.js repeatedly bricking their npm setup on Windows
-            - if: runner.os == 'Windows'
+            - name: Fix npm on Windows
+              if: runner.os == 'Windows'
               shell: bash
               run: |
-                  npm install npm
+                  npm i npm
+            - name: Install Docker on macOS
+              if: runner.os == 'macOS'
+              shell: bash
+              run: |
+                  brew install docker colima
+                  colima start
             - name: run test
               shell: bash
               run: |
