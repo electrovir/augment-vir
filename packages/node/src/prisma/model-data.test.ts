@@ -1,12 +1,14 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+
 import {assert} from '@augment-vir/assert';
 import {prismaModelCreateExclude, prismaModelCreateOmitId} from '@augment-vir/common';
 import {describe, it, itCases} from '@augment-vir/test';
+import type {IsAny} from 'type-fest';
 import {prisma} from '../augments/prisma.js';
 import {testPrismaSchemaPath} from '../file-paths.mock.js';
 import {addData, dumpData, getAllPrismaModelNames, PrismaAddDataData} from './model-data.js';
 import {clearTestDatabaseOutputs} from './prisma-database.mock.js';
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore: this might not be generated yet
 import type {PrismaClient} from '../../node_modules/.prisma/index.js';
 
@@ -22,14 +24,15 @@ describe(
             await prisma.client.generate(testPrismaSchemaPath);
             await prisma.migration.create({migrationName: 'init'}, testPrismaSchemaPath);
 
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore: this might not be generated yet
             const {PrismaClient} = await import('../../node_modules/.prisma/index.js');
 
             return new PrismaClient();
         }
 
-        async function testData(data: PrismaAddDataData<PrismaClient>) {
+        async function testData(
+            data: IsAny<PrismaClient> extends true ? any : PrismaAddDataData<PrismaClient>,
+        ) {
             const prismaClient = await setupPrismaClient();
 
             await prisma.client.addData(prismaClient, data);
@@ -46,7 +49,7 @@ describe(
         it('includes all fields by default', async () => {
             const prismaClient = await setupPrismaClient();
 
-            await prisma.client.addData(prismaClient, {
+            await prisma.client.addData<any>(prismaClient, {
                 user: [
                     {
                         email: 'fake@example.com',
@@ -85,7 +88,7 @@ describe(
         it('adds without id', async () => {
             const prismaClient = await setupPrismaClient();
 
-            await prisma.client.addData(prismaClient, {
+            await prisma.client.addData<any>(prismaClient, {
                 user: [
                     {
                         email: 'fake@example.com',
@@ -109,7 +112,7 @@ describe(
                 ],
             );
 
-            await prisma.client.addData(prismaClient, {
+            await prisma.client.addData<any>(prismaClient, {
                 user: [
                     {
                         email: 'fake2@example.com',
@@ -250,7 +253,7 @@ describe(
                 it: 'fails with informative message',
                 input: {
                     user: [
-                        // @ts-expect-error: intentionally missing fields
+                        // @ts-ignore: intentionally missing fields
                         {},
                     ],
                 },
@@ -268,7 +271,6 @@ describe(getAllPrismaModelNames.name, () => {
 
         await prisma.client.generate(testPrismaSchemaPath);
 
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore: this might not be generated yet
         const {PrismaClient} = await import('../../node_modules/.prisma/index.js');
 

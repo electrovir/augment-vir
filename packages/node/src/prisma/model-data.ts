@@ -17,6 +17,7 @@ import {
     type PrismaAllBasicModels,
     type PrismaModelName,
 } from '@augment-vir/common';
+import type {IsAny} from 'type-fest';
 
 /**
  * Params for {@link addData}. This is similar to {@link PrismaAllModelsCreate} but allows an array of
@@ -71,7 +72,7 @@ export type PrismaAddDataData<PrismaClient extends BasePrismaClient> =
 
 export async function addData<const PrismaClient extends BasePrismaClient>(
     prismaClient: Readonly<PrismaClient>,
-    data: PrismaAddDataData<PrismaClient>,
+    data: IsAny<PrismaClient> extends true ? any : PrismaAddDataData<PrismaClient>,
 ): Promise<void> {
     const dataArray: Record<string, AnyObject>[] = (check.isArray(data) ? data : [data]) as Record<
         string,
