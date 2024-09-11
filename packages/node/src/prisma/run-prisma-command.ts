@@ -1,4 +1,5 @@
 import {log} from '@augment-vir/common';
+import {interpolationSafeWindowsPath} from '../augments/path/os-path.js';
 import {runShellCommand, type ShellOutput} from '../augments/terminal/shell.js';
 import {PrismaSchemaError} from './prisma-errors.js';
 
@@ -41,7 +42,7 @@ export async function runPrismaCommand(
 
     log.faint(`> ${fullCommand}`);
 
-    const result = await runShellCommand(fullCommand, {
+    const result = await runShellCommand(interpolationSafeWindowsPath(fullCommand), {
         env: {
             ...process.env,
             ...env,
