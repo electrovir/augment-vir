@@ -8,7 +8,7 @@ const testContainerName = `test-${docker.container.run.name}`;
 const testImageName = 'alpine:3.20.2';
 
 describe(
-    docker.container.run.name,
+    'docker.container.run',
     dockerTest(() => {
         it('starts a detached container', async () => {
             await docker.container.waitUntilRemoved(testContainerName);

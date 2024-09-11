@@ -31,6 +31,7 @@ export type RunDockerContainerParams = {
     removeWhenDone?: boolean;
     dockerFlags?: ReadonlyArray<string>;
     useCurrentUser?: boolean;
+    platform?: string;
 };
 
 export async function runContainer({
@@ -45,6 +46,7 @@ export async function runContainer({
     removeWhenDone,
     useCurrentUser,
     dockerFlags = [],
+    platform,
 }: RunDockerContainerParams) {
     try {
         const portMapFlags = makePortMapFlags(portMapping);
@@ -54,7 +56,7 @@ export async function runContainer({
         const rmFlag = removeWhenDone ? '--rm' : '';
         const userFlag = useCurrentUser ? '--user "$(id -u)":"$(id -g)"' : '';
 
-        await updateImage(imageName);
+        await updateImage(imageName, platform);
 
         const fullCommand = [
             'docker',

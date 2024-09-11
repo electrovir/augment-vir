@@ -1,16 +1,30 @@
+import {wrapString} from '@augment-vir/common';
 import {ensureError} from '@augment-vir/core';
 import {runShellCommand} from '../augments/terminal/shell.js';
 
 export async function updateImage(
     /** @example 'alpine:3.20.2' */
     imageName: string,
+    platform?: string,
 ) {
     if (await isImageInLocalRegistry(imageName)) {
         /** If image already exists then we don't need to update it. */
         return;
     }
 
-    await runShellCommand(`docker pull '${imageName}'`, {
+    const command = [
+        'docker',
+        'pull',
+        ...(platform
+            ? [
+                  '--platform',
+                  'linux',
+              ]
+            : []),
+        wrapString({value: imageName, wrapper: "'"}),
+    ].join(' ');
+
+    await runShellCommand(command, {
         rejectOnError: true,
     });
 }

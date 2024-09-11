@@ -20,9 +20,24 @@ describe(
         it('updates and removes', async () => {
             await docker.image.remove(testDockerImageName);
             assert.isFalse(await docker.image.exists(testDockerImageName));
-            await docker.image.update(testDockerImageName);
+            await docker.image.update(
+                testDockerImageName,
+                /** Use `linux` platform because the test image name does not exist in Windows. */
+                'linux',
+            );
             assert.isTrue(await docker.image.exists(testDockerImageName));
-            await docker.image.update(testDockerImageName);
+            await docker.image.update(
+                testDockerImageName,
+                /** Use `linux` platform because the test image name does not exist in Windows. */
+                'linux',
+            );
+        });
+        it('allow missing platform input', async () => {
+            try {
+                await docker.image.update(testDockerImageName);
+            } catch {
+                // ignore errors, this will fail on windows
+            }
         });
         it('ignores removing already missing images', async () => {
             await docker.image.remove('electrovir-fake-image-name:123.456.0789');

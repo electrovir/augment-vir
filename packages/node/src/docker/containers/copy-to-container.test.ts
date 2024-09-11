@@ -9,7 +9,7 @@ import {runMockLongLivingContainer} from './run-container.mock.js';
 const testContainerName = `test-${docker.container.copyTo.name}`;
 
 describe(
-    docker.container.copyTo.name,
+    'docker.container.copyTo',
     dockerTest(() => {
         it('copies a file', async () => {
             const copyToPath = '/tmp/hi.json';

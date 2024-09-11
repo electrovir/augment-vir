@@ -7,7 +7,7 @@ import {runMockLongLivingContainer} from './run-container.mock.js';
 const testContainerName = `test-${docker.container.tryOrKill.name}`;
 
 describe(
-    docker.container.tryOrKill.name,
+    'docker.container.tryOrKill',
     dockerTest(() => {
         it('runs without failure', async () => {
             await docker.container.kill(testContainerName);
