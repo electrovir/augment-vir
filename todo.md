@@ -1,7 +1,5 @@
 # Todo
 
-## Not now
-
 -   add a pretty diff to the assertion errors like chai has
     -   or at least include functions in the stringify output
 -   make a snapshot function in `@augment-vir/test` that supports both Node.js's built-in test runner's snapshot testing as well as something that works in web-test-runner.
@@ -12,8 +10,6 @@
     -   https://github.com/Gerrit0/typedoc-plugin-missing-exports
 -   make `isElementVisible` work in more situations (see its stackoverflow link)
 -   reverse engineer how web-test-runner calculates code coverage, because it works really well, and apply it to node test coverage
--   enforce all overrides in `GuardGroup` have (by a `Partial`) matching keys with the given `assertions` object.
-    -   this might not be practical/possible because typescript has very strict rules on defining types for assert guards
 -   add type guards to the boundary assertions on strings (like `assert.endsWith`)
 -   add a logger that saves to a file or to indexeddb
 -   create an augment that is like `Promise.all` but works on objects
@@ -27,10 +23,6 @@
 -   just a plain `diff` function
     -   better outputs from `diffArray` (it should output a partial)
 -   add a function that batches `Promise.all` calls
-
-## before v30 release
-
--   revisit all prisma changes in v30 changelog
 
 ## Immediately after v30 release
 
