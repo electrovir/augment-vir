@@ -24,10 +24,6 @@
     -   better outputs from `diffArray` (it should output a partial)
 -   add a function that batches `Promise.all` calls
 
-## before v30 release
-
--   remove all `log.debug` usage
-
 ## Immediately after v30 release
 
 -   update `html-spec-tags`
