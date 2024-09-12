@@ -37,13 +37,16 @@ describe(
 
             await prisma.client.addData(prismaClient, data);
 
-            return await prisma.client.dumpData(prismaClient, {
+            const dumpedData = await prisma.client.dumpData(prismaClient, {
                 omitFields: [
                     'createdAt',
                     'updatedAt',
                     'id',
                 ],
             });
+            await prismaClient.$disconnect();
+
+            return dumpedData;
         }
 
         it('includes all fields by default', async () => {
@@ -75,14 +78,18 @@ describe(
                 'role',
                 'updatedAt',
             ]);
+            await prismaClient.$disconnect();
         });
 
         it('dumps without limit', async () => {
+            const prismaClient = await setupPrismaClient();
             assert.isDefined(
-                await prisma.client.dumpData(await setupPrismaClient(), {
+                await prisma.client.dumpData(prismaClient, {
                     limit: 0,
                 }),
             );
+
+            await prismaClient.$disconnect();
         });
 
         it('adds without id', async () => {
@@ -139,6 +146,8 @@ describe(
                 ).id,
                 'fake-id-2',
             );
+
+            await prismaClient.$disconnect();
         });
 
         itCases(testData, [
@@ -193,7 +202,6 @@ describe(
                         },
                     },
                 },
-
                 expect: {
                     region: [
                         {regionName: 'fake'},
@@ -231,7 +239,6 @@ describe(
                         {regionName: 'fake'},
                     ],
                 },
-
                 expect: {
                     region: [
                         {regionName: 'fake'},
@@ -283,5 +290,7 @@ describe(getAllPrismaModelNames.name, () => {
             'userSettings',
             'userStats',
         ]);
+
+        await prismaClient.$disconnect();
     });
 });
