@@ -8,10 +8,10 @@ import {sep} from 'node:path';
  * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
  */
 export function replaceWithWindowsPathIfNeeded(input: string): string {
+    /** No single system will test all of these lines so we must ignore them all. */
+    /* node:coverage ignore next 5 */
     if (sep === '/') {
         return input;
-        /** Can't test on Windows. */
-        /* node:coverage ignore next 3 */
     } else {
         return input.replace(/\//g, sep);
     }
