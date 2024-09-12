@@ -21,7 +21,7 @@ export async function clearTestDatabaseOutputs() {
          *
          *     EPERM: operation not permitted, unlink 'D:\a\augment-vir\augment-vir\packages\node\node_modules\.prisma\query_engine-windows.dll.node'
          */
-        await runShellCommand(`sudo rm -rf ${interpolationSafeWindowsPath(pathToDelete)}`, {
+        await runShellCommand(`rm -rf ${interpolationSafeWindowsPath(pathToDelete)}`, {
             rejectOnError: true,
         });
     });
