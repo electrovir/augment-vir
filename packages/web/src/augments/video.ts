@@ -10,6 +10,8 @@ import {DeferredPromise} from '@augment-vir/common';
 export async function loadVideo(videoUrl: string): Promise<HTMLVideoElement> {
     const deferredPromise = new DeferredPromise<HTMLVideoElement>();
     const videoElement = document.createElement('video');
+    /** This doesn't work in WebKit on Windows. */
+    /* node:coverage ignore next 3 */
     videoElement.addEventListener('loadeddata', () => {
         deferredPromise.resolve(videoElement);
     });
