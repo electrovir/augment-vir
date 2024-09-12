@@ -1,0 +1,58 @@
+{
+    "name": "@augment-vir/web",
+    "version": "30.0.2",
+    "description": "A collection of augments, helpers types, functions, and classes only for web (frontend) JavaScript environments.",
+    "keywords": [
+        "augment",
+        "helper",
+        "util",
+        "browser",
+        "frontend",
+        "vir",
+        "augment-vir"
+    ],
+    "homepage": "https://github.com/electrovir/augment-vir",
+    "bugs": {
+        "url": "https://github.com/electrovir/augment-vir/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/electrovir/augment-vir.git"
+    },
+    "license": "(MIT or CC0 1.0)",
+    "author": {
+        "name": "electrovir",
+        "url": "https://github.com/electrovir"
+    },
+    "type": "module",
+    "main": "src/index.ts",
+    "module": "src/index.ts",
+    "types": "src/index.ts",
+    "scripts": {
+        "compile": "virmator compile",
+        "test": "virmator --no-deps test web",
+        "test:coverage": "virmator --no-deps test web coverage",
+        "test:update": "npm test"
+    },
+    "dependencies": {
+        "@augment-vir/assert": "^30.0.2",
+        "@augment-vir/common": "^30.0.2",
+        "@date-vir/duration": "^6.0.0",
+        "html-spec-tags": "^2.2.0",
+        "type-fest": "^4.26.1"
+    },
+    "devDependencies": {
+        "@augment-vir/test": "^30.0.2",
+        "bowser": "^2.11.0",
+        "typescript": "^5.6.2"
+    },
+    "peerDependencies": {
+        "element-vir": ">=22.0.0"
+    },
+    "engines": {
+        "node": ">=22"
+    },
+    "publishConfig": {
+        "access": "public"
+    }
+}

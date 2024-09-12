@@ -1,15 +1,23 @@
 {
     "compilerOptions": {
-        "declarationDir": "dist/types",
-        "module": "ES2020",
-        "outDir": "dist/esm",
-        "rootDir": "./src"
+        "outDir": "./dist/",
+        "rootDir": "./src/"
     },
     "exclude": [
-        "./configs",
-        "./dist",
-        "./node_modules",
-        "./test-files"
+        "./configs/",
+        "./coverage/",
+        "./dist/",
+        "./dist-*/",
+        "./node_modules/",
+        "./test-files/"
     ],
-    "extends": "../../tsconfig.repo-base.json"
+    "extends": "../../configs/tsconfig.base.json",
+    "references": [
+        {
+            "path": "../test"
+        },
+        {
+            "path": "../assert"
+        }
+    ]
 }

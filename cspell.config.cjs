@@ -1,13 +1,15 @@
-const {baseConfig} = require('virmator/base-configs/base-cspell.js');
+const {baseConfig} = require('@virmator/spellcheck/configs/cspell.config.base.cjs');
 
 module.exports = {
     ...baseConfig,
     ignorePaths: [
         ...baseConfig.ignorePaths,
+        'packages/test/src/mocha.d.ts',
     ],
     words: [
         ...baseConfig.words,
-        'pkgid',
-        'deduped',
+        'nocheck',
+        'propstat',
+        'resolv',
     ],
 };

@@ -1,34 +1,44 @@
 {
     "name": "@augment-vir/scripts",
-    "version": "29.3.0",
+    "version": "30.0.2",
     "private": true,
-    "license": "MIT",
+    "homepage": "https://github.com/electrovir/augment-vir",
+    "bugs": {
+        "url": "https://github.com/electrovir/augment-vir/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/electrovir/augment-vir.git"
+    },
+    "license": "(MIT or CC0 1.0)",
     "author": {
         "name": "electrovir",
         "url": "https://github.com/electrovir"
     },
+    "type": "module",
     "scripts": {
-        "compile": "tsc",
-        "test": "virmator test",
-        "test:coverage": "npm test coverage",
-        "verify": "ts-node src/index.ts"
+        "compile": "virmator compile",
+        "exec": "tsx",
+        "test": "exit 0",
+        "test:coverage": "npm run test",
+        "test:update": "npm test"
     },
     "dependencies": {
-        "@augment-vir/common": "^29.3.0",
-        "@augment-vir/node-js": "^29.3.0"
+        "@augment-vir/assert": "^30.0.2",
+        "@augment-vir/core": "^30.0.2",
+        "@virmator/docs": "^13.3.11",
+        "jsdom": "^25.0.0",
+        "typedoc": "^0.26.7"
     },
     "devDependencies": {
-        "@electrovir/nyc": "^15.1.0-fix0",
-        "@istanbuljs/nyc-config-typescript": "^1.0.2",
-        "@types/chai": "^4.3.16",
-        "@types/mocha": "^10.0.7",
-        "@types/node": "^20.14.8",
-        "chai": "^4.3.10",
-        "istanbul-smart-text-reporter": "^1.1.4",
-        "mocha": "^10.4.0",
-        "mocha-spec-reporter-with-file-names": "^0.0.3",
-        "ts-node": "^10.9.2",
-        "type-fest": "^4.20.1",
-        "typescript": "5.5.2"
+        "@augment-vir/test": "^30.0.2",
+        "@types/jsdom": "^21.1.7",
+        "@types/node": "^22.5.4"
+    },
+    "engines": {
+        "node": ">=22"
+    },
+    "publishConfig": {
+        "access": "public"
     }
 }

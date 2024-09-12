@@ -1,13 +1,26 @@
 {
     "compilerOptions": {
-        "outDir": "./dist",
-        "rootDir": "./src"
+        "outDir": "./dist/",
+        "rootDir": "./src/"
     },
     "exclude": [
-        "./configs",
-        "./dist",
-        "./node_modules",
-        "./test-files"
+        "./configs/",
+        "./coverage/",
+        "./dist/",
+        "./dist-*/",
+        "./node_modules/",
+        "./test-files/"
     ],
-    "extends": "../../tsconfig.repo-base.json"
+    "extends": "../../configs/tsconfig.base.json",
+    "references": [
+        {
+            "path": "../core"
+        },
+        {
+            "path": "../test"
+        },
+        {
+            "path": "../assert"
+        }
+    ]
 }

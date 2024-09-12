@@ -1,35 +1,63 @@
 {
     "name": "@augment-vir/common",
-    "version": "29.3.0",
-    "homepage": "https://github.com/electrovir/augment-vir/tree/main/packages/common",
+    "version": "30.0.2",
+    "description": "A collection of augments, helpers types, functions, and classes for any JavaScript environment.",
+    "keywords": [
+        "augment",
+        "helper",
+        "util",
+        "node",
+        "browser",
+        "backend",
+        "frontend",
+        "vir",
+        "augment-vir"
+    ],
+    "homepage": "https://github.com/electrovir/augment-vir",
     "bugs": {
         "url": "https://github.com/electrovir/augment-vir/issues"
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/electrovir/augment-vir"
+        "url": "git+https://github.com/electrovir/augment-vir.git"
     },
-    "license": "MIT",
+    "license": "(MIT or CC0 1.0)",
     "author": {
         "name": "electrovir",
         "url": "https://github.com/electrovir"
     },
-    "main": "dist/cjs/index.js",
-    "module": "dist/esm/index.js",
-    "types": "dist/types/index.d.ts",
+    "type": "module",
+    "main": "src/index.ts",
+    "module": "src/index.ts",
+    "types": "src/index.ts",
     "scripts": {
-        "compile": "rm -rf dist && tsc --project tsconfig.json && tsc --project tsconfig.cjs.json",
-        "test": "echo \"use common-test to run tests\" && exit 0",
-        "test:coverage": "npm test",
-        "test:types": "tsc --noEmit"
+        "compile": "virmator compile",
+        "test": "concurrently --colors --kill-others-on-fail -c red,blue --names node,web \"npm run test:node\" \"npm run test:web\"",
+        "test:coverage": "virmator --no-deps test web coverage",
+        "test:node": "virmator --no-deps test node",
+        "test:update": "npm test",
+        "test:web": "virmator --no-deps test web"
     },
     "dependencies": {
-        "browser-or-node": "^3.0.0",
-        "run-time-assertions": "^1.5.1",
-        "type-fest": "^4.21.0"
+        "@augment-vir/assert": "^30.0.2",
+        "@augment-vir/core": "^30.0.2",
+        "@date-vir/duration": "^6.0.0",
+        "ansi-styles": "^6.2.1",
+        "json5": "^2.2.3",
+        "type-fest": "^4.26.1"
     },
     "devDependencies": {
-        "typescript": "5.5.2"
+        "@web/dev-server-esbuild": "^1.0.2",
+        "@web/test-runner": "^0.19.0",
+        "@web/test-runner-commands": "^0.9.0",
+        "@web/test-runner-playwright": "^0.11.0",
+        "@web/test-runner-visual-regression": "^0.10.0",
+        "concurrently": "^9.0.0",
+        "execute-in-browser": "^1.0.3",
+        "istanbul-smart-text-reporter": "^1.1.4"
+    },
+    "engines": {
+        "node": ">=22"
     },
     "publishConfig": {
         "access": "public"

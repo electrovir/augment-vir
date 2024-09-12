@@ -1,3 +1,3 @@
 # @augment-vir/scripts
 
-Scripts for internal usage.
+Internal only, this is not published to npm.

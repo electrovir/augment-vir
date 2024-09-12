@@ -1,0 +1,46 @@
+{
+    "name": "@augment-vir/core",
+    "version": "30.0.2",
+    "description": "Core augment-vir augments. Use @augment-vir/common instead.",
+    "homepage": "https://github.com/electrovir/augment-vir",
+    "bugs": {
+        "url": "https://github.com/electrovir/augment-vir/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/electrovir/augment-vir.git"
+    },
+    "license": "(MIT or CC0 1.0)",
+    "author": {
+        "name": "electrovir",
+        "url": "https://github.com/electrovir"
+    },
+    "type": "module",
+    "main": "src/index.ts",
+    "module": "src/index.ts",
+    "types": "src/index.ts",
+    "scripts": {
+        "compile": "virmator compile",
+        "start": "tsx src/index.ts",
+        "test": "virmator test node",
+        "test:coverage": "npm run test coverage",
+        "test:update": "npm test"
+    },
+    "dependencies": {
+        "@date-vir/duration": "^6.0.0",
+        "browser-or-node": "^3.0.0",
+        "json5": "^2.2.3",
+        "type-fest": "^4.26.1"
+    },
+    "devDependencies": {
+        "@types/node": "^22.5.4",
+        "c8": "^10.1.2",
+        "istanbul-smart-text-reporter": "^1.1.4"
+    },
+    "engines": {
+        "node": ">=22"
+    },
+    "publishConfig": {
+        "access": "public"
+    }
+}

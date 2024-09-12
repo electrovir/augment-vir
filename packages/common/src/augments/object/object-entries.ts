@@ -1,53 +1,54 @@
-import {RemovePartial} from './object';
-import {typedHasProperty} from './typed-has-property';
+import {CompleteRequire, getObjectTypedKeys} from '@augment-vir/core';
 
-/** @deprecated This is the same as hasKey */
-export function isKeyof<ObjectGeneric>(
-    key: PropertyKey,
-    object: ObjectGeneric,
-): key is keyof ObjectGeneric {
-    return typedHasProperty(object, key);
-}
-
-export function getObjectTypedKeys<ObjectGeneric>(
+/**
+ * Gets an object's entries. This is the same as
+ * [`Object.entries`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object/entries)
+ * except that it has better TypeScript types.
+ *
+ * @category Object
+ * @category Package : @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
+ */
+export function getObjectTypedEntries<const ObjectGeneric>(
     input: ObjectGeneric,
-): Array<keyof ObjectGeneric> {
-    let reflectKeys: Array<keyof ObjectGeneric> | undefined;
-    try {
-        reflectKeys = Reflect.ownKeys(input as object) as unknown as Array<keyof ObjectGeneric>;
-    } catch (error) {}
-    return (
-        reflectKeys ??
-        ([
-            ...Object.keys(input as object),
-            ...Object.getOwnPropertySymbols(input as object),
-        ] as unknown as Array<keyof ObjectGeneric>)
-    );
-}
-
-export function getObjectTypedValues<ObjectGeneric>(
-    input: ObjectGeneric,
-): RemovePartial<ObjectGeneric>[keyof RemovePartial<ObjectGeneric>][] {
-    return getObjectTypedKeys(input).map(
-        (key) => input[key],
-    ) as RemovePartial<ObjectGeneric>[keyof RemovePartial<ObjectGeneric>][];
-}
-
-export function getObjectTypedEntries<ObjectGeneric>(
-    input: ObjectGeneric,
-): [keyof ObjectGeneric, RemovePartial<ObjectGeneric>[keyof RemovePartial<ObjectGeneric>]][] {
+): [keyof ObjectGeneric, CompleteRequire<ObjectGeneric>[keyof CompleteRequire<ObjectGeneric>]][] {
     return getObjectTypedKeys(input).map((key) => [
         key,
         input[key],
-    ]) as [keyof ObjectGeneric, RemovePartial<ObjectGeneric>[keyof RemovePartial<ObjectGeneric>]][];
+    ]) as [
+        keyof ObjectGeneric,
+        CompleteRequire<ObjectGeneric>[keyof CompleteRequire<ObjectGeneric>],
+    ][];
 }
 
-export function getEntriesSortedByKey(input: object): [string, unknown][] {
-    return Object.entries(input).sort((tupleA, tupleB) => tupleA[0].localeCompare(tupleB[0]));
-}
-
-export function typedObjectFromEntries<KeyType extends PropertyKey, ValueType>(
+/**
+ * Create an object from an array of entries. This is the same as
+ * [`Object.fromEntries`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object/fromEntries)
+ * except that it has better TypeScript types.
+ *
+ * @category Object
+ * @category Package : @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
+ */
+export function typedObjectFromEntries<const KeyType extends PropertyKey, const ValueType>(
     entries: ReadonlyArray<Readonly<[KeyType, ValueType]>>,
 ): Record<KeyType, ValueType> {
     return Object.fromEntries(entries) as Record<KeyType, ValueType>;
+}
+
+/**
+ * Gets an object's entries and sorts them by their key values. This is the same as
+ * [`Object.entries`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object/entries)
+ * except that it has better TypeScript types and sorts the entries.
+ *
+ * @category Object
+ * @category Package : @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
+ */
+export function getEntriesSortedByKey<const ObjectGeneric>(
+    input: ObjectGeneric,
+): [keyof ObjectGeneric, CompleteRequire<ObjectGeneric>[keyof CompleteRequire<ObjectGeneric>]][] {
+    return getObjectTypedEntries(input).sort((tupleA, tupleB) =>
+        String(tupleA[0]).localeCompare(String(tupleB[0])),
+    );
 }
