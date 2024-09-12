@@ -18,7 +18,7 @@ export async function updateImage(
         ...(platform
             ? [
                   '--platform',
-                  'linux',
+                  platform,
               ]
             : []),
         wrapString({value: imageName, wrapper: "'"}),

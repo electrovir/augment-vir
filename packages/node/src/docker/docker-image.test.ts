@@ -20,17 +20,9 @@ describe(
         it('updates and removes', async () => {
             await docker.image.remove(testDockerImageName);
             assert.isFalse(await docker.image.exists(testDockerImageName));
-            await docker.image.update(
-                testDockerImageName,
-                /** Use `linux` platform because the test image name does not exist in Windows. */
-                'linux',
-            );
+            await docker.image.update(testDockerImageName, 'amd64');
             assert.isTrue(await docker.image.exists(testDockerImageName));
-            await docker.image.update(
-                testDockerImageName,
-                /** Use `linux` platform because the test image name does not exist in Windows. */
-                'linux',
-            );
+            await docker.image.update(testDockerImageName, 'amd64');
         });
         it('allow missing platform input', async () => {
             try {
