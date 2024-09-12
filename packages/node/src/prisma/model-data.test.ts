@@ -34,19 +34,21 @@ describe(
             data: IsAny<PrismaClient> extends true ? any : PrismaAddDataData<PrismaClient>,
         ) {
             const prismaClient = await setupPrismaClient();
+            try {
+                await prisma.client.addData(prismaClient, data);
 
-            await prisma.client.addData(prismaClient, data);
+                const dumpedData = await prisma.client.dumpData(prismaClient, {
+                    omitFields: [
+                        'createdAt',
+                        'updatedAt',
+                        'id',
+                    ],
+                });
 
-            const dumpedData = await prisma.client.dumpData(prismaClient, {
-                omitFields: [
-                    'createdAt',
-                    'updatedAt',
-                    'id',
-                ],
-            });
-            await prismaClient.$disconnect();
-
-            return dumpedData;
+                return dumpedData;
+            } finally {
+                await prismaClient.$disconnect();
+            }
         }
 
         it('includes all fields by default', async () => {
