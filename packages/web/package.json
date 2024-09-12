@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/web",
-    "version": "30.0.2",
+    "version": "30.0.3",
     "description": "A collection of augments, helpers types, functions, and classes only for web (frontend) JavaScript environments.",
     "keywords": [
         "augment",

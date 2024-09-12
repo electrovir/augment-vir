@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/assert",
-    "version": "30.0.2",
+    "version": "30.0.3",
     "description": "A collection of assertions for test and production code alike.",
     "keywords": [
         "augment",

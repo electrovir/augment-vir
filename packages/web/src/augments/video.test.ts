@@ -12,7 +12,9 @@ describe(loadVideo.name, () => {
          * in those _Windows_ tests, `bowser.getOSName` still reports `'macOS'`, so we have to omit
          * Safari entirely.
          */
-        if (bowser.getBrowserName() !== 'Safari') {
+        if (bowser.getBrowserName() === 'Safari') {
+            return;
+        } else {
             assert.instanceOf(await loadVideo('/video.mock.webm'), HTMLVideoElement);
         }
     });

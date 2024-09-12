@@ -1,6 +1,6 @@
 {
-    "name": "augment-vir-temp-virmator-update",
-    "version": "30.0.2",
+    "name": "@augment-vir/mono-repo-root",
+    "version": "30.0.3",
     "private": true,
     "homepage": "https://github.com/electrovir/augment-vir",
     "bugs": {
