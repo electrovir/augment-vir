@@ -32,8 +32,8 @@
     "types": "src/index.ts",
     "scripts": {
         "compile": "virmator compile",
-        "test": "virmator --no-deps test node --test-concurrency 1",
-        "test:coverage": "virmator test node coverage --test-concurrency 1",
+        "test": "npm i @prisma/client && virmator --no-deps test node --test-concurrency 1",
+        "test:coverage": "npm i @prisma/client && virmator test node coverage --test-concurrency 1",
         "test:update": "npm test"
     },
     "dependencies": {

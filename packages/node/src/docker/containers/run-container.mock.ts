@@ -14,6 +14,7 @@ export async function runMockLongLivingContainer(
             '-t',
         ],
         command: 'sh',
+        platform: 'linux',
         ...args,
     });
 }

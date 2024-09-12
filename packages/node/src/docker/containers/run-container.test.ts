@@ -26,6 +26,7 @@ describe(
                 detach: false,
                 imageName: testImageName,
                 removeWhenDone: true,
+                platform: 'linux',
             });
             await docker.container.waitUntilExited(testContainerName);
         });
@@ -37,6 +38,7 @@ describe(
                 detach: true,
                 imageName: testImageName,
                 removeWhenDone: true,
+                platform: 'linux',
             });
             await docker.container.waitUntilExited(testContainerName);
         });
@@ -51,6 +53,7 @@ describe(
                     useCurrentUser: true,
                     removeWhenDone: true,
                     command: 'random-command-this-does-not-exist-please-electrovir',
+                    platform: 'linux',
                 }),
                 {
                     matchMessage:
