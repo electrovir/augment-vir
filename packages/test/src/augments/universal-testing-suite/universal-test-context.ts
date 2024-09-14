@@ -32,7 +32,7 @@ export type NodeTestContext = NodeTestContextImport;
  * @category Package : @augment-vir/test
  * @package [`@augment-vir/test`](https://www.npmjs.com/package/@augment-vir/test)
  */
-export type UniversalContext = NodeTestContext | MochaTestContext;
+export type UniversalTestContext = NodeTestContext | MochaTestContext;
 
 /**
  * Test context by runtime env when [Node.js's test runner](https://nodejs.org/api/test.html) is
@@ -56,7 +56,7 @@ export type ContextByEnv = {
  * @package [`@augment-vir/test`](https://www.npmjs.com/package/@augment-vir/test)
  */
 export function ensureTestContext<const SpecificEnv extends RuntimeEnv>(
-    context: UniversalContext,
+    context: UniversalTestContext,
     env: RuntimeEnv,
 ): ContextByEnv[SpecificEnv] {
     assertTestContext(context, env);
@@ -72,7 +72,7 @@ export function ensureTestContext<const SpecificEnv extends RuntimeEnv>(
  * @package [`@augment-vir/test`](https://www.npmjs.com/package/@augment-vir/test)
  */
 export function assertTestContext<const SpecificEnv extends RuntimeEnv>(
-    context: UniversalContext,
+    context: UniversalTestContext,
     env: RuntimeEnv,
 ): asserts context is ContextByEnv[SpecificEnv] {
     const actualEnv = determineTestContextEnv(context);
@@ -90,7 +90,7 @@ export function assertTestContext<const SpecificEnv extends RuntimeEnv>(
  * @package [`@augment-vir/test`](https://www.npmjs.com/package/@augment-vir/test)
  */
 export function isTestContext<const SpecificEnv extends RuntimeEnv>(
-    context: UniversalContext,
+    context: UniversalTestContext,
     env: RuntimeEnv,
 ): context is ContextByEnv[SpecificEnv] {
     try {
@@ -115,6 +115,6 @@ const nodeOnlyCheckKey = 'diagnostic' satisfies NodeOnlyTestContextKeys;
  * @category Package : @augment-vir/test
  * @package [`@augment-vir/test`](https://www.npmjs.com/package/@augment-vir/test)
  */
-export function determineTestContextEnv(context: UniversalContext): RuntimeEnv {
+export function determineTestContextEnv(context: UniversalTestContext): RuntimeEnv {
     return context[nodeOnlyCheckKey] ? RuntimeEnv.Node : RuntimeEnv.Web;
 }

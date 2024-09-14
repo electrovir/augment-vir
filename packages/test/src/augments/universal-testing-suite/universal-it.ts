@@ -1,5 +1,5 @@
 import {isRuntimeEnv, RuntimeEnv} from '@augment-vir/core';
-import {UniversalContext} from './universal-test-context.js';
+import {UniversalTestContext} from './universal-test-context.js';
 
 /**
  * An interface for an {@link it} callback. Used in {@link UniversalBareIt}.
@@ -12,7 +12,10 @@ import {UniversalContext} from './universal-test-context.js';
  * @category Package : @augment-vir/test
  * @package [`@augment-vir/test`](https://www.npmjs.com/package/@augment-vir/test)
  */
-export type UniversalItCallback = (this: void, context: UniversalContext) => Promise<void> | void;
+export type UniversalItCallback = (
+    this: void,
+    context: UniversalTestContext,
+) => Promise<void> | void;
 
 /**
  * A minimal interface for {@link it}. This is used in {@link UniversalIt}.
