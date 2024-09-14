@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/mono-repo-root",
-    "version": "30.0.3",
+    "version": "30.0.4",
     "private": true,
     "homepage": "https://github.com/electrovir/augment-vir",
     "bugs": {
@@ -48,7 +48,7 @@
         "esbuild": "^0.23.1",
         "eslint": "^9.10.0",
         "eslint-config-prettier": "^9.1.0",
-        "eslint-plugin-jsdoc": "^50.2.2",
+        "eslint-plugin-jsdoc": "^50.2.3",
         "eslint-plugin-monorepo-cop": "^1.0.2",
         "eslint-plugin-playwright": "^1.6.2",
         "eslint-plugin-prettier": "^5.2.1",

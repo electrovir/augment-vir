@@ -11,6 +11,15 @@ import type {GuardGroup} from '../guard-types/guard-group.js';
 import {autoGuard, autoGuardSymbol} from '../guard-types/guard-override.js';
 import {WaitUntilOptions} from '../guard-types/wait-until-function.js';
 
+type ArrayNarrow<Actual> =
+    Extract<Actual, unknown[]> extends never
+        ? Extract<Actual, ReadonlyArray<unknown>> extends never
+            ? unknown[] extends Actual
+                ? unknown[]
+                : never
+            : Extract<Actual, ReadonlyArray<unknown>>
+        : Extract<Actual, unknown[]>;
+
 function isNotArray<const Actual>(
     actual: Actual,
     failureMessage?: string | undefined,
@@ -72,10 +81,10 @@ function isNotNull<const Actual>(
     assertNotRuntimeType(actual, 'null', failureMessage);
 }
 
-function isArray(
-    actual: unknown,
+function isArray<const Actual>(
+    actual: Actual,
     failureMessage?: string | undefined,
-): asserts actual is unknown[] {
+): asserts actual is ArrayNarrow<Actual> {
     assertRuntimeType(actual, 'array', failureMessage);
 }
 function isBigInt(actual: unknown, failureMessage?: string | undefined): asserts actual is bigint {
@@ -547,7 +556,7 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link check.isNotArray} : the opposite check.
          */
-        isArray: autoGuardSymbol,
+        isArray: autoGuard<<Actual>(actual: Actual) => actual is ArrayNarrow<Actual>>(),
         /**
          * Checks that a value is a BigInt.
          *
@@ -978,7 +987,7 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link assertWrap.isNotArray} : the opposite assertion.
          */
-        isArray: autoGuardSymbol,
+        isArray: autoGuard<<Actual>(actual: Actual) => ArrayNarrow<Actual>>(),
         /**
          * Asserts that a value is a BigInt. Returns the value if the assertion passes.
          *
@@ -1467,7 +1476,7 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link checkWrap.isNotArray} : the opposite check.
          */
-        isArray: autoGuardSymbol,
+        isArray: autoGuard<<Actual>(actual: Actual) => ArrayNarrow<Actual> | undefined>(),
         /**
          * Checks that a value is a BigInt. Returns the value if the check passes, otherwise
          * `undefined`.
@@ -1919,7 +1928,14 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link waitUntil.isNotArray} : the opposite assertion.
          */
-        isArray: autoGuardSymbol,
+        isArray:
+            autoGuard<
+                <const Actual>(
+                    callback: () => MaybePromise<Actual>,
+                    options?: WaitUntilOptions | undefined,
+                    failureMessage?: string | undefined,
+                ) => Promise<ArrayNarrow<Actual>>
+            >(),
         /**
          * Repeatedly calls a callback until its output is a BigInt. Once the callback output
          * passes, it is returned. If the attempts time out, an error is thrown.

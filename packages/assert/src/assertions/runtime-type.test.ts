@@ -1,4 +1,11 @@
-import {AnyFunction, AnyObject, UnknownObject} from '@augment-vir/core';
+import {
+    AnyFunction,
+    AnyObject,
+    JsonCompatibleArray,
+    JsonCompatibleObject,
+    JsonCompatibleValue,
+    UnknownObject,
+} from '@augment-vir/core';
 import {describe, it} from '@augment-vir/test';
 import {assertWrap} from '../augments/guards/assert-wrap.js';
 import {assert} from '../augments/guards/assert.js';
@@ -36,6 +43,11 @@ describe('isArray', () => {
 
             assert.tsType(actualPassUnion).equals<ExpectedUnionNarrowedType>();
         });
+        it('narrows readonly', () => {
+            const value: string | ReadonlyArray<string> = [] as any;
+            assert.isArray(value);
+            assert.tsType(value).equals<ReadonlyArray<string>>();
+        });
     });
     describe('check', () => {
         it('guards', () => {
@@ -51,6 +63,26 @@ describe('isArray', () => {
         it('rejects', () => {
             assert.isFalse(check.isArray(actualReject));
         });
+        it('narrows', () => {
+            if (check.isArray(actualPassUnion)) {
+                assert.tsType(actualPassUnion).equals<ExpectedUnionNarrowedType>();
+            }
+        });
+        it('narrows readonly', () => {
+            const value: string | ReadonlyArray<string> = [] as any;
+
+            if (check.isArray(value)) {
+                assert.tsType(value).equals<ReadonlyArray<string>>();
+            }
+        });
+        it('narrows to writable first', () => {
+            const value: JsonCompatibleObject | JsonCompatibleArray = [] as any;
+
+            if (check.isArray(value)) {
+                assert.tsType(value).equals<JsonCompatibleValue[]>();
+                value.push('something');
+            }
+        });
     });
     describe('assertWrap', () => {
         it('guards', () => {
@@ -62,6 +94,12 @@ describe('isArray', () => {
         });
         it('rejects', () => {
             assert.throws(() => assertWrap.isArray(actualReject));
+        });
+        it('narrows readonly', () => {
+            const value: string | ReadonlyArray<string> = [] as any;
+            const checked = assertWrap.isArray(value);
+            assert.tsType(checked).equals<ReadonlyArray<string>>();
+            assert.deepEquals(checked, []);
         });
     });
     describe('checkWrap', () => {
@@ -75,6 +113,13 @@ describe('isArray', () => {
         });
         it('rejects', () => {
             assert.isUndefined(checkWrap.isArray(actualReject));
+        });
+        it('narrows readonly', () => {
+            const value: string | ReadonlyArray<string> = [] as any;
+            const checked = checkWrap.isArray(value);
+            assert.isDefined(checked);
+            assert.tsType(checked).equals<ReadonlyArray<string>>();
+            assert.deepEquals(checked, []);
         });
     });
     describe('waitUntil', () => {
@@ -95,6 +140,15 @@ describe('isArray', () => {
             await assert.throws(
                 waitUntil.isArray(() => actualReject, waitUntilTestOptions, 'failure'),
             );
+        });
+        it('narrows readonly', async () => {
+            const value: string | ReadonlyArray<string> = [] as any;
+
+            const newValue = await waitUntil.isArray(() => value, waitUntilTestOptions, 'failure');
+
+            assert.tsType(newValue).equals<ReadonlyArray<string>>();
+
+            assert.deepEquals(value, newValue);
         });
     });
 });
