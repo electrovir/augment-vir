@@ -19,7 +19,6 @@ export * from './augments/function/if-truthy.js';
 export * from './augments/function/wrap-in-try.js';
 export * from './augments/json/append-json.js';
 export * from './augments/json/copy-through-json.js';
-export * from './augments/json/json-compatible.js';
 export * from './augments/json/jsonify.js';
 export * from './augments/log/log-colors.js';
 export * from './augments/log/log-string.js';

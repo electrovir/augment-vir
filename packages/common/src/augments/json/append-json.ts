@@ -1,11 +1,11 @@
 import {check} from '@augment-vir/assert';
-import {copyThroughJson} from './copy-through-json.js';
 import type {
     JsonCompatibleArray,
     JsonCompatibleObject,
     JsonCompatibleValue,
-} from './json-compatible.js';
-import {JsonCompatiblePrimitive} from './json-compatible.js';
+} from '@augment-vir/core';
+import {JsonCompatiblePrimitive} from '@augment-vir/core';
+import {copyThroughJson} from './copy-through-json.js';
 
 export function appendJson(
     entry: JsonCompatibleArray | JsonCompatiblePrimitive,
@@ -65,10 +65,9 @@ export function appendJson(
 
     const firstEntry = copyThroughJson(entries[0]);
 
-    const combinedData: JsonCompatibleObject | JsonCompatibleArray =
-        typeof firstEntry === 'object'
-            ? (firstEntry as JsonCompatibleObject | JsonCompatibleArray)
-            : [firstEntry];
+    const combinedData: JsonCompatibleObject | JsonCompatibleArray = (
+        typeof firstEntry === 'object' ? firstEntry : [firstEntry]
+    ) as JsonCompatibleObject | JsonCompatibleArray;
 
     entries.slice(1).forEach((entry) => {
         if (check.isArray(combinedData)) {

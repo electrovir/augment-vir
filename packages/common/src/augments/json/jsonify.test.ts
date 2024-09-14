@@ -1,5 +1,5 @@
+import {JsonCompatibleObject} from '@augment-vir/core';
 import {describe, itCases} from '@augment-vir/test';
-import {JsonCompatibleObject} from './json-compatible.js';
 import {jsonify} from './jsonify.js';
 
 describe(jsonify.name, () => {
