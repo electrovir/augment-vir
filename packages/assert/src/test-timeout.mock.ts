@@ -1,5 +1,5 @@
-import {RequiredAndNotNull} from '@augment-vir/core';
-import type {WaitUntilOptions} from './guard-types/wait-until-function.js';
+import {type RequiredAndNotNull} from '@augment-vir/core';
+import {type WaitUntilOptions} from './guard-types/wait-until-function.js';
 
 export const waitUntilTestOptions: RequiredAndNotNull<WaitUntilOptions> = {
     interval: {

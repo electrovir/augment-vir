@@ -11,11 +11,11 @@ import type {
 import {
     ensureError,
     ensureErrorAndPrependMessage,
-    ExtractKeysWithMatchingValues,
-    Overwrite,
+    type ExtractKeysWithMatchingValues,
+    type Overwrite,
     wait,
 } from '@augment-vir/core';
-import {AnyDuration, convertDuration, DurationUnit} from '@date-vir/duration';
+import {type AnyDuration, convertDuration, DurationUnit} from '@date-vir/duration';
 import type {AssertFunction} from './assert-function.js';
 import {autoGuardSymbol, pickOverride} from './guard-override.js';
 

@@ -1,10 +1,10 @@
 import type {NarrowToActual, NarrowToExpected} from '@augment-vir/core';
-import {AnyObject, MaybePromise, stringify, Values} from '@augment-vir/core';
+import {type AnyObject, type MaybePromise, stringify, type Values} from '@augment-vir/core';
 import type {EmptyObject} from 'type-fest';
 import {AssertionError} from '../augments/assertion.error.js';
 import type {GuardGroup} from '../guard-types/guard-group.js';
 import {autoGuard, autoGuardSymbol} from '../guard-types/guard-override.js';
-import type {WaitUntilOptions} from '../guard-types/wait-until-function.js';
+import {type WaitUntilOptions} from '../guard-types/wait-until-function.js';
 
 function hasValue(parent: object, value: unknown, failureMessage?: string | undefined) {
     /** Wrap this in a try/catch because `Reflect.ownKeys` can fail depending on what its input is. */

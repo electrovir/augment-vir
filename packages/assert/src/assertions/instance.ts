@@ -1,9 +1,9 @@
-import {MaybePromise, stringify} from '@augment-vir/core';
-import {Constructor} from 'type-fest';
+import {type MaybePromise, stringify} from '@augment-vir/core';
+import {type Constructor} from 'type-fest';
 import {AssertionError} from '../augments/assertion.error.js';
 import type {GuardGroup} from '../guard-types/guard-group.js';
 import {autoGuard} from '../guard-types/guard-override.js';
-import {WaitUntilOptions} from '../guard-types/wait-until-function.js';
+import {type WaitUntilOptions} from '../guard-types/wait-until-function.js';
 
 /** Wraps the JavaScript built-in "instanceof" in a type guard assertion. */
 function instanceOf<const Instance>(

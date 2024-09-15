@@ -1,5 +1,5 @@
 import {check} from '@augment-vir/assert';
-import {MaybePromise, ensureError} from '@augment-vir/core';
+import {type MaybePromise, ensureError} from '@augment-vir/core';
 import {getOrSet} from '../object/get-or-set.js';
 import {typedObjectFromEntries} from '../object/object-entries.js';
 import {filterMap} from './filter.js';

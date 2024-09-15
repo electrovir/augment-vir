@@ -1,9 +1,9 @@
 import type {NarrowToExpected} from '@augment-vir/core';
-import {EnumBaseType, getEnumValues, MaybePromise} from '@augment-vir/core';
+import {type EnumBaseType, getEnumValues, type MaybePromise} from '@augment-vir/core';
 import {AssertionError} from '../augments/assertion.error.js';
 import type {GuardGroup} from '../guard-types/guard-group.js';
 import {autoGuard} from '../guard-types/guard-override.js';
-import {WaitUntilOptions} from '../guard-types/wait-until-function.js';
+import {type WaitUntilOptions} from '../guard-types/wait-until-function.js';
 
 export function isEnumValue<const Expected extends EnumBaseType>(
     child: unknown,

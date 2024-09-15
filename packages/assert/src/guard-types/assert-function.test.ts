@@ -1,6 +1,6 @@
 import {describe, it} from '@augment-vir/test';
 import {assert} from '../augments/guards/assert.js';
-import {AssertFunction} from './assert-function.js';
+import {type AssertFunction} from './assert-function.js';
 
 describe('AssertFunction', () => {
     it('asserts', () => {

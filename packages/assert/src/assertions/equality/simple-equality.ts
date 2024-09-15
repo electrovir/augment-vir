@@ -1,9 +1,9 @@
-import {MaybePromise, NarrowToExpected, stringify} from '@augment-vir/core';
+import {type MaybePromise, type NarrowToExpected, stringify} from '@augment-vir/core';
 import deepEqual from 'deep-eql';
 import {AssertionError} from '../../augments/assertion.error.js';
 import type {GuardGroup} from '../../guard-types/guard-group.js';
 import {autoGuard, autoGuardSymbol} from '../../guard-types/guard-override.js';
-import {WaitUntilOptions} from '../../guard-types/wait-until-function.js';
+import {type WaitUntilOptions} from '../../guard-types/wait-until-function.js';
 
 export function strictEquals<const Actual, const Expected extends Actual>(
     actual: Actual,

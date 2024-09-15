@@ -1,6 +1,6 @@
-import {ExtractKeysWithMatchingValues, Overwrite, type NarrowToActual} from '@augment-vir/core';
-import {AssertFunction} from './assert-function.js';
-import {AssertWrapOverridesBase} from './assert-wrap-function.js';
+import type {ExtractKeysWithMatchingValues, NarrowToActual, Overwrite} from '@augment-vir/core';
+import {type AssertFunction} from './assert-function.js';
+import {type AssertWrapOverridesBase} from './assert-wrap-function.js';
 import {autoGuardSymbol, pickOverride} from './guard-override.js';
 
 export type CheckWrapFunction<Output> = <Input>(

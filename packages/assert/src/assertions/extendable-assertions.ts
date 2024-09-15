@@ -1,7 +1,7 @@
 import type {ArrayElement} from '@augment-vir/core';
 import type {UnionToIntersection} from 'type-fest';
-import {AssertFunction} from '../guard-types/assert-function.js';
-import {GuardGroup} from '../guard-types/guard-group.js';
+import {type AssertFunction} from '../guard-types/assert-function.js';
+import {type GuardGroup} from '../guard-types/guard-group.js';
 import {booleanGuards} from './boolean.js';
 import {boundaryGuards} from './boundary.js';
 import {enumGuards} from './enum.js';

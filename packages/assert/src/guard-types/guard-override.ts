@@ -1,4 +1,4 @@
-import {AnyObject, Values} from '@augment-vir/core';
+import type {AnyObject, Values} from '@augment-vir/core';
 
 export const autoGuardSymbol = Symbol('auto guard');
 

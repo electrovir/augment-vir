@@ -1,15 +1,15 @@
 import {
-    AnyFunction,
-    MaybePromise,
-    NarrowToActual,
-    NarrowToExpected,
+    type AnyFunction,
+    type MaybePromise,
+    type NarrowToActual,
+    type NarrowToExpected,
     stringify,
-    UnknownObject,
+    type UnknownObject,
 } from '@augment-vir/core';
 import {AssertionError} from '../augments/assertion.error.js';
 import type {GuardGroup} from '../guard-types/guard-group.js';
 import {autoGuard, autoGuardSymbol} from '../guard-types/guard-override.js';
-import {WaitUntilOptions} from '../guard-types/wait-until-function.js';
+import {type WaitUntilOptions} from '../guard-types/wait-until-function.js';
 
 type ArrayNarrow<Actual> =
     Extract<Actual, unknown[]> extends never
@@ -612,10 +612,7 @@ export const runtimeTypeGuards = {
          */
         isFunction:
             autoGuard<
-                <const Actual>(
-                    actual: Actual,
-                    failureMessage?: string | undefined,
-                ) => actual is NarrowToActual<Actual, AnyFunction>
+                <const Actual>(actual: Actual) => actual is NarrowToActual<Actual, AnyFunction>
             >(),
         /**
          * Checks that a value is exactly `null`.

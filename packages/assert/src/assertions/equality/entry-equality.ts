@@ -1,9 +1,9 @@
 import type {NarrowToExpected} from '@augment-vir/core';
-import {AnyObject, MaybePromise, stringify} from '@augment-vir/core';
+import {type AnyObject, type MaybePromise, stringify} from '@augment-vir/core';
 import {AssertionError} from '../../augments/assertion.error.js';
 import type {GuardGroup} from '../../guard-types/guard-group.js';
 import {autoGuard, autoGuardSymbol} from '../../guard-types/guard-override.js';
-import {WaitUntilOptions} from '../../guard-types/wait-until-function.js';
+import {type WaitUntilOptions} from '../../guard-types/wait-until-function.js';
 import {strictEquals} from './simple-equality.js';
 
 function entriesEqual<const Actual extends object, const Expected extends Actual>(

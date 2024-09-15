@@ -1,10 +1,10 @@
 import {
-    AnyFunction,
+    type AnyFunction,
     combineErrorMessages,
     ensureError,
     ensureErrorAndPrependMessage,
     extractErrorMessage,
-    MaybePromise,
+    type MaybePromise,
     stringify,
     wait,
 } from '@augment-vir/core';
@@ -12,7 +12,7 @@ import {convertDuration, DurationUnit} from '@date-vir/duration';
 import type {IsAny} from 'type-fest';
 import {AssertionError} from '../augments/assertion.error.js';
 import type {GuardGroup} from '../guard-types/guard-group.js';
-import {parseWaitUntilOptions, WaitUntilOptions} from '../guard-types/wait-until-function.js';
+import {parseWaitUntilOptions, type WaitUntilOptions} from '../guard-types/wait-until-function.js';
 import {deepEquals} from './equality/simple-equality.js';
 
 /**

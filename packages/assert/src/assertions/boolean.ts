@@ -1,8 +1,8 @@
-import {MaybePromise, NarrowToExpected, stringify} from '@augment-vir/core';
+import {type MaybePromise, type NarrowToExpected, stringify} from '@augment-vir/core';
 import {AssertionError} from '../augments/assertion.error.js';
 import type {GuardGroup} from '../guard-types/guard-group.js';
 import {autoGuard, autoGuardSymbol} from '../guard-types/guard-override.js';
-import {WaitUntilOptions} from '../guard-types/wait-until-function.js';
+import {type WaitUntilOptions} from '../guard-types/wait-until-function.js';
 
 /**
  * All falsy values in JavaScript. This does not include `NaN` because there is no dedicated type

@@ -26,10 +26,9 @@
 
 ## Immediately after v30 release
 
--   update `html-spec-tags`
+-   finish updating `date-vir`
 -   add `parseJsonWithShape` to `object-shape-tester`
 -   rename `runtimeType` in `object-shape-tester`
--   finish updating `date-vir`
 -   deprecate `run-time-assertions`
 -   use `ListenTarget` for `ShellEmitter`
 -   update `typed-event-target` package
@@ -37,3 +36,4 @@
         -   execute is called with no callback
         -   the callback is triggered
         -   the callback is skipped
+-   update all deps from `virmator` so they're all on v30 of augment-vir

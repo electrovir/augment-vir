@@ -11,7 +11,10 @@ import type {
     OutputAssertWrapWithoutAsserter,
     OutputCheckWithoutAsserter,
 } from './output.js';
-import {OutputCheckWrapWithoutAsserter, OutputWaitUntilWithoutAsserter} from './output.js';
+import {
+    type OutputCheckWrapWithoutAsserter,
+    type OutputWaitUntilWithoutAsserter,
+} from './output.js';
 
 describe('output', () => {
     describe('assert', () => {

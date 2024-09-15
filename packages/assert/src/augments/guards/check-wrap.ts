@@ -1,4 +1,4 @@
-import {AnyFunction} from '@augment-vir/core';
+import {type AnyFunction} from '@augment-vir/core';
 import {checkWrapOverrides, extendableAssertions} from '../../assertions/extendable-assertions.js';
 import {createCheckWrapGroup} from '../../guard-types/check-wrap-wrapper-function.js';
 

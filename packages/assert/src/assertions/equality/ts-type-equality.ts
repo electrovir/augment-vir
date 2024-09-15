@@ -1,5 +1,5 @@
-import {ExpectTypeOf} from 'expect-type';
-import type {GuardGroup} from '../../guard-types/guard-group.js';
+import {type ExpectTypeOf} from 'expect-type';
+import {type GuardGroup} from '../../guard-types/guard-group.js';
 
 type AssertTypeOf<TestingType> = {
     equals: ExpectTypeOf<TestingType, {positive: true}>['toEqualTypeOf'];

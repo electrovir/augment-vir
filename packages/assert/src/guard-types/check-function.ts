@@ -1,11 +1,11 @@
-import {
+import type {
     ExtractKeysWithMatchingValues,
     MaybePromise,
     Overwrite,
     RemoveFirstTupleEntry,
     RemoveLastTupleEntry,
 } from '@augment-vir/core';
-import {AssertFunction} from './assert-function.js';
+import {type AssertFunction} from './assert-function.js';
 import {pickOverride, type autoGuardSymbol} from './guard-override.js';
 
 export type CheckFunction<Output> = (input: any, ...extraInputs: any[]) => input is Output;

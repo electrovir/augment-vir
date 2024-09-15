@@ -1,4 +1,4 @@
-import type {MaybePromise} from '@augment-vir/core';
+import {type MaybePromise} from '@augment-vir/core';
 import {killContainer} from './kill-container.js';
 
 /**

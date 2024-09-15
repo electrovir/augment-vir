@@ -1,8 +1,13 @@
-import {AnyObject, extractErrorMessage, MaybePromise, NarrowToExpected} from '@augment-vir/core';
+import {
+    type AnyObject,
+    extractErrorMessage,
+    type MaybePromise,
+    type NarrowToExpected,
+} from '@augment-vir/core';
 import {AssertionError} from '../../augments/assertion.error.js';
 import type {GuardGroup} from '../../guard-types/guard-group.js';
 import {autoGuard, autoGuardSymbol} from '../../guard-types/guard-override.js';
-import {WaitUntilOptions} from '../../guard-types/wait-until-function.js';
+import {type WaitUntilOptions} from '../../guard-types/wait-until-function.js';
 
 function baseJsonEquals(a: unknown, b: unknown): boolean {
     return JSON.stringify(a) === JSON.stringify(b);

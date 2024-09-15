@@ -1,6 +1,6 @@
 import type {AnyObject} from '@augment-vir/core';
 import {describe, type FunctionTestCase, it, itCases} from '@augment-vir/test';
-import {Primitive} from 'type-fest';
+import {type Primitive} from 'type-fest';
 import {assertWrap} from '../augments/guards/assert-wrap.js';
 import {assert} from '../augments/guards/assert.js';
 import {checkWrap} from '../augments/guards/check-wrap.js';

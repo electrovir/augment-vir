@@ -1,5 +1,5 @@
 import {check} from '@augment-vir/assert';
-import {MaybePromise, perEnv, RuntimeEnv, stringify} from '@augment-vir/core';
+import {perEnv, RuntimeEnv, stringify, type MaybePromise} from '@augment-vir/core';
 import {filterMap} from '../array/filter.js';
 import {removeSuffix} from '../string/suffix.js';
 import {LogColorKey, type LogColorConfig} from './log-colors.js';

@@ -1,4 +1,4 @@
-import {MaybePromise} from '@augment-vir/core';
+import {type MaybePromise} from '@augment-vir/core';
 import {AnyDuration, convertDuration, DurationUnit} from '@date-vir/duration';
 
 /**

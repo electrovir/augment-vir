@@ -1,10 +1,10 @@
 import {
-    AnyFunction,
-    ExtractKeysWithMatchingValues,
-    NarrowToExpected,
-    Overwrite,
+    type AnyFunction,
+    type ExtractKeysWithMatchingValues,
+    type NarrowToExpected,
+    type Overwrite,
 } from '@augment-vir/core';
-import {AssertFunction} from './assert-function.js';
+import {type AssertFunction} from './assert-function.js';
 import {autoGuardSymbol, pickOverride} from './guard-override.js';
 
 export type AssertWrapFunction<Output> = <Input>(

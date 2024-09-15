@@ -1,8 +1,8 @@
-import {MaybePromise, Uuid} from '@augment-vir/core';
+import {type MaybePromise, type Uuid} from '@augment-vir/core';
 import {AssertionError} from '../augments/assertion.error.js';
-import {GuardGroup} from '../guard-types/guard-group.js';
+import {type GuardGroup} from '../guard-types/guard-group.js';
 import {autoGuard, autoGuardSymbol} from '../guard-types/guard-override.js';
-import {WaitUntilOptions} from '../guard-types/wait-until-function.js';
+import {type WaitUntilOptions} from '../guard-types/wait-until-function.js';
 
 const uuidRegExp = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 

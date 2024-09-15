@@ -1,4 +1,4 @@
-import type {MaybePromise} from '@augment-vir/common';
+import {type MaybePromise} from '@augment-vir/common';
 import {isOperatingSystem, OperatingSystem} from '../augments/os/operating-system.js';
 
 export function dockerTest(callback: () => MaybePromise<void>) {

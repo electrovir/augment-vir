@@ -1,5 +1,5 @@
 import {check} from '@augment-vir/assert';
-import type {MaybePromise} from '@augment-vir/common';
+import {type MaybePromise} from '@augment-vir/common';
 import {dirname, join} from 'node:path';
 import {systemRootPath} from './root.js';
 

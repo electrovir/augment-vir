@@ -1,6 +1,6 @@
 import {assert} from '@augment-vir/assert';
 import {describe, it} from '@augment-vir/test';
-import {MaybePromise} from './maybe-promise.js';
+import {type MaybePromise} from './maybe-promise.js';
 
 describe('MaybePromise', () => {
     it('wraps in a promise', () => {

@@ -1,9 +1,9 @@
-import {AnyFunction} from '@augment-vir/core';
+import {type AnyFunction} from '@augment-vir/core';
 import {extendableAssertions, waitUntilOverrides} from '../../assertions/extendable-assertions.js';
 import {
     createWaitUntilGroup,
     executeWaitUntil,
-    WaitUntilOptions,
+    type WaitUntilOptions,
 } from '../../guard-types/wait-until-function.js';
 import {AssertionError} from '../assertion.error.js';
 
