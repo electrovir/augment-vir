@@ -113,7 +113,7 @@ export type WaitUntilFunction<Assert extends AssertFunction<any>> =
           ) => Promise<NarrowToExpected<Input, Guard>>
         : never;
 
-type WaitUntilGroup<
+export type WaitUntilGroup<
     Asserts extends Readonly<Record<string, AssertFunction<any>>>,
     WaitUntilOverrides extends WaitUntilOverridesBase,
 > = Omit<

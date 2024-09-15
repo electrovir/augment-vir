@@ -1,8 +1,12 @@
 import {type AnyFunction} from '@augment-vir/core';
 import {checkWrapOverrides, extendableAssertions} from '../../assertions/extendable-assertions.js';
-import {createCheckWrapGroup} from '../../guard-types/check-wrap-wrapper-function.js';
+import {
+    CheckWrapGroup,
+    createCheckWrapGroup,
+} from '../../guard-types/check-wrap-wrapper-function.js';
 
-const checkWrapGroup = createCheckWrapGroup(extendableAssertions, checkWrapOverrides);
+const checkWrapGroup: CheckWrapGroup<typeof extendableAssertions, typeof checkWrapOverrides> =
+    createCheckWrapGroup(extendableAssertions, checkWrapOverrides);
 
 /**
  * A group of guard methods that do the following:

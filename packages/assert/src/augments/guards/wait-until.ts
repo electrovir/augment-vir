@@ -3,11 +3,13 @@ import {extendableAssertions, waitUntilOverrides} from '../../assertions/extenda
 import {
     createWaitUntilGroup,
     executeWaitUntil,
+    type WaitUntilGroup,
     type WaitUntilOptions,
 } from '../../guard-types/wait-until-function.js';
 import {AssertionError} from '../assertion.error.js';
 
-const waitUntilGroup = createWaitUntilGroup(extendableAssertions, waitUntilOverrides);
+const waitUntilGroup: WaitUntilGroup<typeof extendableAssertions, typeof waitUntilOverrides> =
+    createWaitUntilGroup(extendableAssertions, waitUntilOverrides);
 
 /**
  * A group of guard methods that run the given callback multiple times until its return value

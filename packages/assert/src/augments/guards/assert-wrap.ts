@@ -1,8 +1,9 @@
 import {assertWrapOverrides, extendableAssertions} from '../../assertions/extendable-assertions.js';
-import {createAssertWrapGroup} from '../../guard-types/assert-wrap-function.js';
+import {AssertWrapGroup, createAssertWrapGroup} from '../../guard-types/assert-wrap-function.js';
 import {AssertionError} from '../assertion.error.js';
 
-const assertWrapGroup = createAssertWrapGroup(extendableAssertions, assertWrapOverrides);
+const assertWrapGroup: AssertWrapGroup<typeof extendableAssertions, typeof assertWrapOverrides> =
+    createAssertWrapGroup(extendableAssertions, assertWrapOverrides);
 
 /**
  * A group of guard methods that do the following:

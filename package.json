@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/mono-repo-root",
-    "version": "30.0.4",
+    "version": "30.0.5",
     "private": true,
     "homepage": "https://github.com/electrovir/augment-vir",
     "bugs": {

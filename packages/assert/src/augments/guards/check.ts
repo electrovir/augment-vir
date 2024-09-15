@@ -1,8 +1,11 @@
 import type {AnyFunction} from '@augment-vir/core';
 import {checkOverrides, extendableAssertions} from '../../assertions/extendable-assertions.js';
-import {createCheckGroup} from '../../guard-types/check-function.js';
+import {CheckGroup, createCheckGroup} from '../../guard-types/check-function.js';
 
-const checkGroup = createCheckGroup(extendableAssertions, checkOverrides);
+const checkGroup: CheckGroup<typeof extendableAssertions, typeof checkOverrides> = createCheckGroup(
+    extendableAssertions,
+    checkOverrides,
+);
 
 /**
  * A group of guard methods that return a boolean type guard rather than an assertion type guard.

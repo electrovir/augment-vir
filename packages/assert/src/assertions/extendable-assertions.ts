@@ -23,7 +23,26 @@ import {throwGuards} from './throws.js';
 import {uuidGuards} from './uuid.js';
 import {valueGuards} from './values.js';
 
-export const extendableAssertions = {
+export const extendableAssertions: typeof booleanGuards.assert &
+    typeof boundaryGuards.assert &
+    typeof entryEqualityGuards.assert &
+    typeof enumGuards.assert &
+    typeof instanceGuards.assert &
+    typeof jsonEqualityGuards.assert &
+    typeof keyGuards.assert &
+    typeof lengthGuards.assert &
+    typeof nullishGuards.assert &
+    typeof numericGuards.assert &
+    typeof primitiveGuards.assert &
+    typeof promiseGuards.assert &
+    typeof regexpGuards.assert &
+    typeof runtimeTypeGuards.assert &
+    typeof simpleEqualityGuards.assert &
+    typeof throwGuards.assert &
+    typeof uuidGuards.assert &
+    typeof valueGuards.assert &
+    typeof httpGuards.assert &
+    typeof outputGuards.assert = {
     ...booleanGuards.assert,
     ...boundaryGuards.assert,
     ...entryEqualityGuards.assert,
@@ -51,7 +70,28 @@ export const extendableAssertions = {
  * maintain function type parameters when mapping such functions.
  */
 
-export const guardOverrides = [
+export const guardOverrides: [
+    typeof booleanGuards,
+    typeof boundaryGuards,
+    typeof entryEqualityGuards,
+    typeof enumGuards,
+    typeof instanceGuards,
+    typeof jsonEqualityGuards,
+    typeof keyGuards,
+    typeof lengthGuards,
+    typeof nullishGuards,
+    typeof numericGuards,
+    typeof primitiveGuards,
+    typeof promiseGuards,
+    typeof regexpGuards,
+    typeof runtimeTypeGuards,
+    typeof simpleEqualityGuards,
+    typeof throwGuards,
+    typeof uuidGuards,
+    typeof valueGuards,
+    typeof httpGuards,
+    typeof outputGuards,
+] = [
     booleanGuards,
     boundaryGuards,
     entryEqualityGuards,

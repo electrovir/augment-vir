@@ -2,9 +2,7 @@ import {tsTypeGuards} from '../../assertions/equality/ts-type-equality.js';
 import {extendableAssertions} from '../../assertions/extendable-assertions.js';
 import {AssertionError} from '../assertion.error.js';
 
-const allAssertions = {
-    ...tsTypeGuards.assert,
-    ...extendableAssertions,
+const extraAssertions = {
     /**
      * Immediately throw an assertion error.
      *
@@ -21,6 +19,14 @@ const allAssertions = {
     fail: (failureMessage?: string | undefined) => {
         throw new AssertionError('Failure triggered.', failureMessage);
     },
+};
+
+const allAssertions: typeof tsTypeGuards.assert &
+    typeof extendableAssertions &
+    typeof extraAssertions = {
+    ...tsTypeGuards.assert,
+    ...extendableAssertions,
+    ...extraAssertions,
 };
 
 /**
