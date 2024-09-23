@@ -11,5 +11,6 @@ module.exports = {
         'nocheck',
         'propstat',
         'resolv',
+        'prismock',
     ],
 };

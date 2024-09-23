@@ -1,7 +1,11 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 
 import {assert} from '@augment-vir/assert';
-import {prismaModelCreateExclude, prismaModelCreateOmitId} from '@augment-vir/common';
+import {
+    prismaModelCreateExclude,
+    prismaModelCreateOmitId,
+    type AnyObject,
+} from '@augment-vir/common';
 import {describe, it, itCases} from '@augment-vir/test';
 import type {IsAny} from 'type-fest';
 import {prisma} from '../augments/prisma.js';
@@ -80,6 +84,18 @@ describe(
                 'role',
                 'updatedAt',
             ]);
+            await prismaClient.$disconnect();
+        });
+
+        it('handles a dump error', async () => {
+            const prismaClient = await setupPrismaClient();
+
+            (prismaClient as AnyObject).invalidMode = {};
+
+            await assert.throws(prisma.client.dumpData(prismaClient), {
+                matchMessage: 'Failed to read data for model',
+            });
+
             await prismaClient.$disconnect();
         });
 

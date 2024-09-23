@@ -136,11 +136,18 @@ async function addModelDataObject(
     );
 }
 
+const prismockKeys = [
+    'getData',
+    'setData',
+];
+
 export function getAllPrismaModelNames<const PrismaClient extends BasePrismaClient>(
     prismaClient: PrismaClient,
 ): PrismaModelName<PrismaClient>[] {
     return Object.keys(prismaClient)
-        .filter((key) => !key.startsWith('$') && !key.startsWith('_'))
+        .filter(
+            (key) => !key.startsWith('$') && !key.startsWith('_') && !prismockKeys.includes(key),
+        )
         .sort() as PrismaModelName<PrismaClient>[];
 }
 
@@ -181,26 +188,33 @@ export async function dumpData<const PrismaClient extends BasePrismaClient>(
     const data: Partial<Record<PrismaModelName<PrismaClient>, AnyObject[]>> = await arrayToObject(
         modelNames,
         async (modelName) => {
-            const entries: AnyObject[] = await prismaClient[modelName].findMany(
-                finalOptions.limit > 0
-                    ? {
-                          take: finalOptions.limit,
-                      }
-                    : {},
-            );
+            try {
+                const entries: AnyObject[] = await prismaClient[modelName].findMany(
+                    finalOptions.limit > 0
+                        ? {
+                              take: finalOptions.limit,
+                          }
+                        : {},
+                );
 
-            if (!entries.length) {
-                return undefined;
+                if (!entries.length) {
+                    return undefined;
+                }
+
+                const filteredEntries = finalOptions.omitFields.length
+                    ? entries.map((entry) => omitObjectKeys(entry, finalOptions.omitFields))
+                    : entries;
+
+                return {
+                    key: modelName,
+                    value: filteredEntries,
+                };
+            } catch (error) {
+                throw ensureErrorAndPrependMessage(
+                    error,
+                    `Failed to read data for model '${modelName}'`,
+                );
             }
-
-            const filteredEntries = finalOptions.omitFields.length
-                ? entries.map((entry) => omitObjectKeys(entry, finalOptions.omitFields))
-                : entries;
-
-            return {
-                key: modelName,
-                value: filteredEntries,
-            };
         },
     );
 
