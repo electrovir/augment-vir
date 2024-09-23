@@ -26,8 +26,8 @@
     "dependencies": {
         "@augment-vir/assert": "^30.0.5",
         "@augment-vir/core": "^30.0.5",
-        "@virmator/docs": "^13.3.12",
-        "jsdom": "^25.0.0",
+        "@virmator/docs": "^13.3.15",
+        "jsdom": "^25.0.1",
         "typedoc": "^0.26.7"
     },
     "devDependencies": {
