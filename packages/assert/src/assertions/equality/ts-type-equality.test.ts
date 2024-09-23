@@ -76,6 +76,19 @@ describe('tsType', () => {
         // @ts-expect-error
         assert.tsType<string>('hi').equals<number>(5);
     });
+    it('can compare enums', () => {
+        enum MyEnum {
+            First = 'first',
+            Second = 'second',
+            Third = 'third',
+        }
+
+        assert.tsType<{myEnum: MyEnum}>().equals<{myEnum: MyEnum}>();
+    });
+    it('supports slowEquals', () => {
+        assert.tsType<{a: string} & {b: number}>().notEquals<{a: string; b: number}>();
+        assert.tsType<{a: string} & {b: number}>().slowEquals<{a: string; b: number}>();
+    });
     it('can compare unknown', () => {
         assert.tsType<unknown>().notEquals<string>();
         assert.tsType<string>().notEquals<unknown>();

@@ -67,7 +67,7 @@ function isLengthExactly(
     }
 }
 
-/** These functions are not used at run time, they're only here for types. */
+// These functions are not used at run time, they're only here for types.
 /* node:coverage disable */
 
 function checkIsLengthAtLeast<Element, Length extends number>(

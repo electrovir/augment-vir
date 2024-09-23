@@ -28,6 +28,7 @@
 
 -   finish updating `date-vir`
 -   add `parseJsonWithShape` to `object-shape-tester`
+    -   in progress
 -   rename `runtimeType` in `object-shape-tester`
 -   deprecate `run-time-assertions`
 -   use `ListenTarget` for `ShellEmitter`
