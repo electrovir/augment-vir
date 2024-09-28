@@ -1,5 +1,5 @@
 import {type MaybePromise} from '@augment-vir/core';
-import {AnyDuration, convertDuration, DurationUnit} from '@date-vir/duration';
+import {AnyDuration, convertDuration} from '@date-vir/duration';
 
 /**
  * Different types of debouncing for the {@link Debounce} class.
@@ -106,6 +106,6 @@ export class Debounce {
             }, this.debounceDuration.milliseconds);
         }
         this.nextCallTimestamp =
-            now + convertDuration(this.debounceDuration, DurationUnit.Milliseconds).milliseconds;
+            now + convertDuration(this.debounceDuration, {milliseconds: true}).milliseconds;
     }
 }

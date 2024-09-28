@@ -1,6 +1,6 @@
 import {check} from '@augment-vir/assert';
 import {ensureError} from '@augment-vir/core';
-import {AnyDuration, convertDuration, DurationUnit} from '@date-vir/duration';
+import {AnyDuration, convertDuration} from '@date-vir/duration';
 
 /**
  * An error thrown by {@link wrapPromiseInTimeout} when the timeout is reached.
@@ -19,7 +19,7 @@ export class PromiseTimeoutError extends Error {
         super(
             [
                 failureMessage,
-                `Promised timed out after ${convertDuration(duration, DurationUnit.Milliseconds).milliseconds} ms.`,
+                `Promised timed out after ${convertDuration(duration, {milliseconds: true}).milliseconds} ms.`,
             ]
                 .filter(check.isTruthy)
                 .join(': '),
@@ -40,7 +40,7 @@ export function wrapPromiseInTimeout<T>(
     originalPromise: PromiseLike<T>,
     failureMessage?: string | undefined,
 ): Promise<T> {
-    const milliseconds = convertDuration(duration, DurationUnit.Milliseconds).milliseconds;
+    const milliseconds = convertDuration(duration, {milliseconds: true}).milliseconds;
 
     return new Promise<T>(async (resolve, reject) => {
         const timeoutId =

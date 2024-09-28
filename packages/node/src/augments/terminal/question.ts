@@ -1,5 +1,5 @@
 import {log} from '@augment-vir/common';
-import {convertDuration, DurationUnit, type AnyDuration} from '@date-vir/duration';
+import {convertDuration, type AnyDuration} from '@date-vir/duration';
 import {createInterface} from 'node:readline';
 
 /** Can't test requiring user input. */
@@ -67,7 +67,7 @@ export async function askQuestion(
     });
 
     return new Promise((resolve, reject) => {
-        const timeoutMs = convertDuration(timeout, DurationUnit.Milliseconds).milliseconds;
+        const timeoutMs = convertDuration(timeout, {milliseconds: true}).milliseconds;
 
         const timeoutId = timeoutMs
             ? setTimeout(() => {

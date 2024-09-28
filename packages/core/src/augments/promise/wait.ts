@@ -1,4 +1,4 @@
-import {AnyDuration, convertDuration, DurationUnit} from '@date-vir/duration';
+import {AnyDuration, convertDuration} from '@date-vir/duration';
 import {DeferredPromise} from './deferred-promise.js';
 
 /**
@@ -12,7 +12,7 @@ import {DeferredPromise} from './deferred-promise.js';
  */
 export function wait(duration: Readonly<AnyDuration>): Promise<void> {
     const deferredPromise = new DeferredPromise();
-    const milliseconds = convertDuration(duration, DurationUnit.Milliseconds).milliseconds;
+    const milliseconds = convertDuration(duration, {milliseconds: true}).milliseconds;
 
     if (milliseconds !== Infinity) {
         setTimeout(

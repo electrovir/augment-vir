@@ -23,14 +23,10 @@
 -   just a plain `diff` function
     -   better outputs from `diffArray` (it should output a partial)
 -   add a function that batches `Promise.all` calls
+-   allow readonly inputs to all guards (like assert.deepEquals)
 
 ## Immediately after v30 release
 
--   finish updating `date-vir`
--   add `parseJsonWithShape` to `object-shape-tester`
-    -   in progress
--   rename `runtimeType` in `object-shape-tester`
--   deprecate `run-time-assertions`
 -   use `ListenTarget` for `ShellEmitter`
 -   update `typed-event-target` package
     -   convert `Debounce` into an ListenTarget and emit events when:

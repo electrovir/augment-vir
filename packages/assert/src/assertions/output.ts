@@ -8,7 +8,7 @@ import {
     stringify,
     wait,
 } from '@augment-vir/core';
-import {convertDuration, DurationUnit} from '@date-vir/duration';
+import {convertDuration} from '@date-vir/duration';
 import type {IsAny} from 'type-fest';
 import {AssertionError} from '../augments/assertion.error.js';
 import type {GuardGroup} from '../guard-types/guard-group.js';
@@ -427,8 +427,8 @@ export async function waitUntilOutput(
         ? emptyOrFailureMessage
         : (emptyOrFailureMessageOrOptions as string | undefined);
 
-    const timeout = convertDuration(options.timeout, DurationUnit.Milliseconds).milliseconds;
-    const interval = convertDuration(options.interval, DurationUnit.Milliseconds);
+    const timeout = convertDuration(options.timeout, {milliseconds: true}).milliseconds;
+    const interval = convertDuration(options.interval, {milliseconds: true});
 
     let lastCallbackOutput: unknown = notSetSymbol;
     let lastError: Error | undefined = undefined;

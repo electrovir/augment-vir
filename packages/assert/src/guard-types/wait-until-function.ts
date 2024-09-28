@@ -15,7 +15,7 @@ import {
     type Overwrite,
     wait,
 } from '@augment-vir/core';
-import {type AnyDuration, convertDuration, DurationUnit} from '@date-vir/duration';
+import {type AnyDuration, convertDuration} from '@date-vir/duration';
 import type {AssertFunction} from './assert-function.js';
 import {autoGuardSymbol, pickOverride} from './guard-override.js';
 
@@ -64,8 +64,8 @@ export async function executeWaitUntil<const Assert extends AssertFunction<any>>
 ) {
     const {callback, extraAssertionArgs, failureMessage, options} = parseWaitUntilArgs(rawArgs);
 
-    const timeout = convertDuration(options.timeout, DurationUnit.Milliseconds).milliseconds;
-    const interval = convertDuration(options.interval, DurationUnit.Milliseconds);
+    const timeout = convertDuration(options.timeout, {milliseconds: true}).milliseconds;
+    const interval = convertDuration(options.interval, {milliseconds: true});
 
     let lastCallbackOutput: unknown = notSetSymbol;
     let lastError: Error | undefined = undefined;
