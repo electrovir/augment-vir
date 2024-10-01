@@ -28,9 +28,16 @@
 ## Immediately after v30 release
 
 -   use `ListenTarget` for `ShellEmitter`
--   update `typed-event-target` package
-    -   convert `Debounce` into an ListenTarget and emit events when:
-        -   execute is called with no callback
-        -   the callback is triggered
-        -   the callback is skipped
+-   convert `Debounce` into an ListenTarget and emit events when:
+    -   execute is called with no callback
+    -   the callback is triggered
+    -   the callback is skipped
 -   update all deps from `virmator` so they're all on v30 of augment-vir
+    -   `element-vir`
+    -   `observavir`
+    -   `url-vir`
+    -   `mono-vir`
+    -   `prettier-plugin-interpolated-html-tags`
+    -   `proxy-vir`
+    -   `prettier-plugin-multiline-arrays`
+-   include `@augment-vir/test` as dependency in virmator test command
