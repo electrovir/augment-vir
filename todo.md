@@ -34,10 +34,12 @@
     -   the callback is skipped
 -   update all deps from `virmator` so they're all on v30 of augment-vir
     -   `element-vir`
-    -   `observavir`
-    -   `url-vir`
     -   `mono-vir`
+    -   `markdown-code-example-inserter`
     -   `prettier-plugin-interpolated-html-tags`
     -   `proxy-vir`
     -   `prettier-plugin-multiline-arrays`
--   include `@augment-vir/test` as dependency in virmator test command
+    -   `augment-vir`
+    -   `mock-vir`
+    -   `virmator`
+-   remove type guard from equality checks? (like jsonEquals)

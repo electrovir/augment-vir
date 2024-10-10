@@ -7,8 +7,9 @@ import {
 import {check} from './guards/check.js';
 
 /**
- * Runs a custom provided checker that is applied deeply to any given variables. Automatically
- * handles async custom checkers.
+ * Deeply checks inputs for equality with a custom checker callback. All objects are recursed into
+ * and the custom checker is only run on primitives. This function automatically handles async
+ * custom checkers and circular references.
  *
  * @category Assert
  */
@@ -18,8 +19,9 @@ export function checkCustomDeepQuality(
     customChecker: (a: unknown, b: unknown) => boolean,
 ): boolean;
 /**
- * Runs a custom provided checker that is applied deeply to any given variables. Automatically
- * handles async custom checkers.
+ * Deeply checks inputs for equality with a custom checker callback. All objects are recursed into
+ * and the custom checker is only run on primitives. This function automatically handles async
+ * custom checkers and circular references.
  *
  * @category Assert
  */
@@ -29,8 +31,9 @@ export function checkCustomDeepQuality(
     customChecker: (a: unknown, b: unknown) => Promise<boolean>,
 ): Promise<boolean>;
 /**
- * Runs a custom provided checker that is applied deeply to any given variables. Automatically
- * handles async custom checkers.
+ * Deeply checks inputs for equality with a custom checker callback. All objects are recursed into
+ * and the custom checker is only run on primitives. This function automatically handles async
+ * custom checkers and circular references.
  *
  * @category Assert
  */
@@ -40,8 +43,9 @@ export function checkCustomDeepQuality(
     customChecker: (a: unknown, b: unknown) => MaybePromise<boolean>,
 ): MaybePromise<boolean>;
 /**
- * Runs a custom provided checker that is applied deeply to any given variables. Automatically
- * handles async custom checkers.
+ * Deeply checks inputs for equality with a custom checker callback. All objects are recursed into
+ * and the custom checker is only run on primitives. This function automatically handles async
+ * custom checkers and circular references.
  *
  * @category Assert
  */
@@ -50,15 +54,30 @@ export function checkCustomDeepQuality(
     b: unknown,
     customChecker: (a: unknown, b: unknown) => MaybePromise<boolean>,
 ): MaybePromise<boolean> {
+    return recursiveCheckCustomDeepQuality(a, b, customChecker, new Set());
+}
+
+function recursiveCheckCustomDeepQuality(
+    a: unknown,
+    b: unknown,
+    customChecker: (a: unknown, b: unknown) => MaybePromise<boolean>,
+    checkedObjects: Set<AnyObject>,
+): MaybePromise<boolean> {
     a = flattenComplexObject(a);
     b = flattenComplexObject(b);
 
     if (check.isObject(a) && check.isObject(b)) {
+        if (checkedObjects.has(a) || checkedObjects.has(b)) {
+            return true;
+        }
+        checkedObjects.add(a);
+        checkedObjects.add(b);
         if (
-            !checkCustomDeepQuality(
+            !recursiveCheckCustomDeepQuality(
                 getObjectTypedKeys(a).sort(),
                 getObjectTypedKeys(b).sort(),
                 customChecker,
+                checkedObjects,
             )
         ) {
             return false;
@@ -67,10 +86,11 @@ export function checkCustomDeepQuality(
         let receivedPromise = false as boolean;
 
         const results = getObjectTypedKeys(a).map((key) => {
-            const result = checkCustomDeepQuality(
+            const result = recursiveCheckCustomDeepQuality(
                 (a as AnyObject)[key],
                 (b as AnyObject)[key],
                 customChecker,
+                checkedObjects,
             );
             if (check.isPromise(result)) {
                 receivedPromise = true;
@@ -80,13 +100,23 @@ export function checkCustomDeepQuality(
 
         return handleMaybePromise(receivedPromise, results);
     } else if (check.isArray(a) && check.isArray(b)) {
+        if (checkedObjects.has(a) || checkedObjects.has(b)) {
+            return true;
+        }
+        checkedObjects.add(a);
+        checkedObjects.add(b);
         if (a.length !== b.length) {
             return false;
         }
 
         let receivedPromise = false as boolean;
         const results = a.map((entry, index) => {
-            const result = checkCustomDeepQuality(entry, b[index], customChecker);
+            const result = recursiveCheckCustomDeepQuality(
+                entry,
+                b[index],
+                customChecker,
+                checkedObjects,
+            );
             if (check.isPromise(result)) {
                 receivedPromise = true;
             }

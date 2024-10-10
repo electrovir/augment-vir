@@ -301,6 +301,30 @@ describe(checkCustomDeepQuality.name, () => {
         },
     ]);
 
+    it('handles equal circular references', () => {
+        const circular1 = {hi: 'bye', nested: {}};
+        circular1.nested = circular1;
+        const circular2 = {hi: 'bye', nested: {}};
+        circular2.nested = circular2;
+
+        assert.isTrue(checkCustomDeepQuality(circular1, circular2, check.strictEquals));
+    });
+    it('handles circular arrays', () => {
+        const circular1: any[] = [];
+        circular1.push(circular1);
+
+        assert.isTrue(checkCustomDeepQuality(circular1, circular1, check.strictEquals));
+    });
+
+    it('handles unequal circular references', () => {
+        const circular1 = {hi: 'bye', nested: {}};
+        circular1.nested = circular1;
+        const circular2 = {hi: 'different', nested: {}};
+        circular2.nested = circular2;
+
+        assert.isFalse(checkCustomDeepQuality(circular1, circular2, check.strictEquals));
+    });
+
     it('handles return types', async () => {
         const asyncResult = checkCustomDeepQuality('a', 'a', (a, b) =>
             Promise.resolve(check.strictEquals(a, b)),
