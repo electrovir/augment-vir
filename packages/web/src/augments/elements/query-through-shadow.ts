@@ -23,14 +23,14 @@ export function queryThroughShadow(
 export function queryThroughShadow(
     element: Element | ShadowRoot,
     query: string | {tagName: string},
-    options: {
+    options?: {
         all?: false | undefined;
     },
 ): Element | undefined;
 export function queryThroughShadow(
     element: Element | ShadowRoot,
     query: string | {tagName: string},
-    options: QueryThroughShadowOptions,
+    options?: QueryThroughShadowOptions,
 ): Element | Element[] | undefined;
 /**
  * Perform [`.querySelector()`](https://developer.mozilla.org/docs/Web/API/Document/querySelector)
@@ -43,7 +43,7 @@ export function queryThroughShadow(
 export function queryThroughShadow(
     element: Element | ShadowRoot,
     rawQuery: string | {tagName: string},
-    options: QueryThroughShadowOptions,
+    options: QueryThroughShadowOptions = {},
 ): Element | Element[] | undefined {
     if (!rawQuery) {
         if (element instanceof Element) {
