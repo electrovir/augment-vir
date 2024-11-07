@@ -23,7 +23,7 @@
         "compile": "virmator compile",
         "docs": "npm run exec --workspace @augment-vir/scripts src/scripts/run-typedoc.script.ts",
         "format": "virmator format",
-        "postinstall": "npm run exec --workspace @augment-vir/scripts src/scripts/fix-mocha-node-module.script.ts",
+        "postinstall": "cd packages/common && tsc -b --pretty -f",
         "lint": "virmator lint fix",
         "publish": "virmator publish \"npm run test:all\"",
         "test": "mono-vir for-each npm run test",
