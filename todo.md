@@ -24,6 +24,9 @@
     -   better outputs from `diffArray` (it should output a partial)
 -   add a function that batches `Promise.all` calls
 -   allow readonly inputs to all guards (like assert.deepEquals)
+-   add `NestedType` type from `element-book`
+-   fix infinite recursion types, `InfiniteRecursionLimiter` from `element-book` works better
+-   add `NonEmptyString` from `element-vir`
 
 ## Immediately after v30 release
 
@@ -33,7 +36,6 @@
     -   the callback is triggered
     -   the callback is skipped
 -   update all deps from `virmator` so they're all on v30 of augment-vir
-    -   `element-vir`
     -   `mono-vir`
     -   `markdown-code-example-inserter`
     -   `prettier-plugin-interpolated-html-tags`

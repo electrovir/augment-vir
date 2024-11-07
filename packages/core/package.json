@@ -33,9 +33,9 @@
         "type-fest": "^4.26.1"
     },
     "devDependencies": {
-        "@types/node": "^22.7.4",
+        "@types/node": "^22.9.0",
         "c8": "^10.1.2",
-        "istanbul-smart-text-reporter": "^1.1.4"
+        "istanbul-smart-text-reporter": "^1.1.5"
     },
     "engines": {
         "node": ">=22"
