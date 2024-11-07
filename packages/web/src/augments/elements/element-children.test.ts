@@ -19,13 +19,13 @@ function createChildTester(
 
 const TextOnly = defineElementNoInputs({
     tagName: 'text-only',
-    renderCallback() {
+    render() {
         return 'hello there';
     },
 });
 const HasChildren = defineElementNoInputs({
     tagName: 'has-children',
-    renderCallback() {
+    render() {
         return html`
             <div>
                 <span>hello</span>
@@ -37,7 +37,7 @@ const HasChildren = defineElementNoInputs({
 });
 const HasSlot = defineElementNoInputs({
     tagName: 'has-slot',
-    renderCallback() {
+    render() {
         return html`
             <div>first div</div>
             <slot><p>default slot innards</p></slot>

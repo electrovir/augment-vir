@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/core",
-    "version": "30.3.0",
+    "version": "30.4.0",
     "description": "Core augment-vir augments. Use @augment-vir/common instead.",
     "homepage": "https://github.com/electrovir/augment-vir",
     "bugs": {
@@ -22,7 +22,7 @@
     "scripts": {
         "compile": "virmator compile",
         "start": "tsx src/index.ts",
-        "test": "virmator test node",
+        "test": "virmator test --no-deps node",
         "test:coverage": "npm run test coverage",
         "test:update": "npm test"
     },

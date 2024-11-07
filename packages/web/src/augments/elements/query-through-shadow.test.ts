@@ -11,7 +11,7 @@ const classNames = {
 
 const NestedTestElement = defineElementNoInputs({
     tagName: 'nested-test-element',
-    renderCallback: () => {
+    render() {
         return html`
             <span class=${classNames.doubleNestedSpan}></span>
         `;
@@ -20,7 +20,7 @@ const NestedTestElement = defineElementNoInputs({
 
 const TestElement = defineElementNoInputs({
     tagName: 'test-element',
-    renderCallback: () => {
+    render() {
         return html`
             <div class=${classNames.nestedDiv}></div>
             <${NestedTestElement}></${NestedTestElement}>

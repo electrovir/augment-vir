@@ -6,7 +6,7 @@ import {toTagOrDefinition} from './tag-or-definition.js';
 
 const TestElement = defineElementNoInputs({
     tagName: 'test-element',
-    renderCallback() {
+    render() {
         return html`
             <div>test element insides</div>
         `;

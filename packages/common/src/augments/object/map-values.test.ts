@@ -186,6 +186,7 @@ describe(mapObjectValues.name, () => {
         onlyAcceptStrings(originalObject.a);
 
         const mappedObject = mapObjectValues(originalObject, (key, value) => {
+            // eslint-disable-next-line @typescript-eslint/no-base-to-string
             return String(value);
         });
 

@@ -14,6 +14,7 @@ import {addData, dumpData, getAllPrismaModelNames, PrismaAddDataData} from './mo
 import {clearTestDatabaseOutputs} from './prisma-database.mock.js';
 
 // @ts-ignore: this might not be generated yet
+// eslint-disable-next-line sonarjs/no-internal-api-use
 import type {PrismaClient} from '../../node_modules/.prisma/index.js';
 
 describe(

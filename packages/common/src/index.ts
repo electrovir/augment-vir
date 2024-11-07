@@ -84,3 +84,9 @@ export * from './augments/type/type-recursion.js';
 export * from './augments/type/union.js';
 export * from './augments/type/void-type.js';
 export * from './augments/type/writable.js';
+
+/**
+ * This must be placed last to account for this depending on `typed-listen-target` which depends on
+ * part of `@augment-vir/common`.
+ */
+export * from './augments/promise/promise-queue.js';

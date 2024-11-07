@@ -8,7 +8,7 @@ describe(getParentElement.name, () => {
     it('works on a shadow root', async () => {
         const TestElement = defineElementNoInputs({
             tagName: 'test-element-for-get-parent-element',
-            renderCallback() {
+            render() {
                 return 'hi';
             },
         });
@@ -50,7 +50,7 @@ describe(findMatchingAncestor.name, () => {
     it('finds matching parent', async () => {
         const TestElement = defineElementNoInputs({
             tagName: 'test-element-for-find-matching-parent-element',
-            renderCallback() {
+            render() {
                 return html`
                     <slot></slot>
                 `;

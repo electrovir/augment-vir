@@ -46,7 +46,7 @@ describe(extractElementText.name, () => {
     it('handles a shadow root', async () => {
         const TestElement = defineElementNoInputs({
             tagName: 'vir-test-extract-element-text',
-            renderCallback() {
+            render() {
                 return html`
                     inside the shadow
                 `;
