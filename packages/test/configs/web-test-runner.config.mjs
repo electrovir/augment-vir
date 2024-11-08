@@ -1,6 +1,6 @@
-import {defineConfig} from '@virmator/test/configs/web-test-runner.config.base.mjs';
 import {dirname} from 'path';
 import {fileURLToPath, pathToFileURL} from 'url';
+import {defineConfig} from '../../../configs/web-test-runner.config.base.mjs';
 
 const baseConfig = defineConfig({
     coveragePercent: 100,
