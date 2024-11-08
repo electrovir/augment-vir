@@ -1,17 +1,8 @@
 import {RuntimeEnv} from '@augment-vir/core';
 import {TestContext as NodeTestContextImport} from 'node:test';
 import {OmitIndexSignature, Simplify} from 'type-fest';
-import type {MochaContext} from '../../mocha-types.js';
+import {MochaTestContext} from './mocha-types.js';
 
-/**
- * The test context for [web-test-runner](https://modern-web.dev/docs/test-runner/overview/) or
- * other Mocha-style test runners.
- *
- * @category Test : Util
- * @category Package : @augment-vir/test
- * @package [`@augment-vir/test`](https://www.npmjs.com/package/@augment-vir/test)
- */
-export type MochaTestContext = MochaContext;
 /**
  * The test context for [Node.js's test runner](https://nodejs.org/api/test.html).
  *
@@ -19,7 +10,10 @@ export type MochaTestContext = MochaContext;
  * @category Package : @augment-vir/test
  * @package [`@augment-vir/test`](https://www.npmjs.com/package/@augment-vir/test)
  */
-export type NodeTestContext = NodeTestContextImport;
+export type NodeTestContext = Readonly<NodeTestContextImport> & {
+    /** Added for use by `assertSnapshot`. */
+    snapshotCount?: number;
+};
 
 /**
  * Test context provided by `it`'s callback.
@@ -45,17 +39,18 @@ export type UniversalTestContext = NodeTestContext | MochaTestContext;
  */
 export type ContextByEnv = {
     [RuntimeEnv.Node]: NodeTestContext;
-    [RuntimeEnv.Web]: MochaContext;
+    [RuntimeEnv.Web]: MochaTestContext;
 };
 
 /**
- * Ensures that the given context is for the given env, otherwise throws an Error.
+ * Asserts that the given context is for the given env and returns that context.
  *
  * @category Test : Util
  * @category Package : @augment-vir/test
+ * @throws `TypeError` if the context does not match the env.
  * @package [`@augment-vir/test`](https://www.npmjs.com/package/@augment-vir/test)
  */
-export function ensureTestContext<const SpecificEnv extends RuntimeEnv>(
+export function assertWrapTestContext<const SpecificEnv extends RuntimeEnv>(
     context: UniversalTestContext,
     env: RuntimeEnv,
 ): ContextByEnv[SpecificEnv] {
@@ -91,7 +86,7 @@ export function assertTestContext<const SpecificEnv extends RuntimeEnv>(
  */
 export function isTestContext<const SpecificEnv extends RuntimeEnv>(
     context: UniversalTestContext,
-    env: RuntimeEnv,
+    env: SpecificEnv,
 ): context is ContextByEnv[SpecificEnv] {
     try {
         assertTestContext(context, env);
@@ -116,5 +111,5 @@ const nodeOnlyCheckKey = 'diagnostic' satisfies NodeOnlyTestContextKeys;
  * @package [`@augment-vir/test`](https://www.npmjs.com/package/@augment-vir/test)
  */
 export function determineTestContextEnv(context: UniversalTestContext): RuntimeEnv {
-    return context[nodeOnlyCheckKey] ? RuntimeEnv.Node : RuntimeEnv.Web;
+    return nodeOnlyCheckKey in context ? RuntimeEnv.Node : RuntimeEnv.Web;
 }

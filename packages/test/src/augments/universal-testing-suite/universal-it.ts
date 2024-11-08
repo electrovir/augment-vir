@@ -1,4 +1,5 @@
 import {isRuntimeEnv, RuntimeEnv} from '@augment-vir/core';
+import type {MochaTestContext} from './mocha-types.js';
 import {UniversalTestContext} from './universal-test-context.js';
 
 /**
@@ -46,13 +47,38 @@ export type UniversalIt = UniversalBareIt & {
     skip: UniversalBareIt;
 };
 
-const its = isRuntimeEnv(RuntimeEnv.Node)
-    ? {
-          node: (await import('node:test')).it,
-      }
-    : {
-          mocha: (globalThis as unknown as {it: UniversalIt}).it,
-      };
+function createWebIt(): UniversalIt {
+    const webIt = Object.assign(
+        (doesThis: string, callback: UniversalItCallback) => {
+            return (globalThis as unknown as {it: UniversalIt}).it(doesThis, async function () {
+                const context = this as unknown as MochaTestContext;
+                await callback(context);
+            });
+        },
+        {
+            skip: (doesThis: string, callback: UniversalItCallback) => {
+                return (globalThis as unknown as {it: UniversalIt}).it.skip(
+                    doesThis,
+                    async function () {
+                        const context = this as unknown as MochaTestContext;
+                        await callback(context);
+                    },
+                );
+            },
+            only: (doesThis: string, callback: UniversalItCallback) => {
+                return (globalThis as unknown as {it: UniversalIt}).it.only(
+                    doesThis,
+                    async function () {
+                        const context = this as unknown as MochaTestContext;
+                        await callback(context);
+                    },
+                );
+            },
+        },
+    );
+
+    return webIt;
+}
 
 /**
  * A single test declaration. This can be used in both web tests _and_ node tests, so you only have
@@ -82,4 +108,6 @@ const its = isRuntimeEnv(RuntimeEnv.Node)
  *
  * @package [`@augment-vir/test`](https://www.npmjs.com/package/@augment-vir/test)
  */
-export const it: UniversalIt = its.mocha || its.node;
+export const it: UniversalIt = isRuntimeEnv(RuntimeEnv.Node)
+    ? (await import('node:test')).it
+    : createWebIt();
