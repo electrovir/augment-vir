@@ -78,11 +78,109 @@ export type FunctionTestCase<FunctionToTest extends AnyFunction> =
 
 const unsetError = Symbol('unset-error');
 
+/**
+ * Succinctly run many input / output tests for a pure function without repeating `it` boilerplate.
+ * Compatible with both [Node.js's test runner](https://nodejs.org/api/test.html) and
+ * [web-test-runner](https://modern-web.dev/docs/test-runner/overview/) or other Mocha-style test
+ * runners.
+ *
+ * @category Test
+ * @category Package : @augment-vir/test
+ * @example
+ *
+ * ```ts
+ * import {itCases, describe} from '@augment-vir/test';
+ *
+ * function myFunctionToTest(a: number, b: number) {
+ *     return a + b;
+ * }
+ *
+ * describe(myFunctionToTest.name, () => {
+ *     itCases(myFunctionToTest, [
+ *         {
+ *             it: 'handles negative numbers',
+ *             inputs: [
+ *                 -1,
+ *                 -2,
+ *             ],
+ *             expect: -3,
+ *         },
+ *         {
+ *             it: 'handles 0',
+ *             inputs: [
+ *                 0,
+ *                 0,
+ *             ],
+ *             expect: 0,
+ *         },
+ *         {
+ *             it: 'adds',
+ *             inputs: [
+ *                 3,
+ *                 5,
+ *             ],
+ *             expect: 8,
+ *         },
+ *     ]);
+ * });
+ * ```
+ *
+ * @package [`@augment-vir/test`](https://www.npmjs.com/package/@augment-vir/test)
+ */
 export function itCases<const FunctionToTest extends AnyFunction>(
     functionToTest: FunctionToTest,
     customAsserter: CustomOutputAsserter<NoInfer<FunctionToTest>>,
     testCases: ReadonlyArray<FunctionTestCase<NoInfer<FunctionToTest>>>,
 ): unknown[];
+/**
+ * Succinctly run many input / output tests for a pure function without repeating `it` boilerplate.
+ * Compatible with both [Node.js's test runner](https://nodejs.org/api/test.html) and
+ * [web-test-runner](https://modern-web.dev/docs/test-runner/overview/) or other Mocha-style test
+ * runners.
+ *
+ * @category Test
+ * @category Package : @augment-vir/test
+ * @example
+ *
+ * ```ts
+ * import {itCases, describe} from '@augment-vir/test';
+ *
+ * function myFunctionToTest(a: number, b: number) {
+ *     return a + b;
+ * }
+ *
+ * describe(myFunctionToTest.name, () => {
+ *     itCases(myFunctionToTest, [
+ *         {
+ *             it: 'handles negative numbers',
+ *             inputs: [
+ *                 -1,
+ *                 -2,
+ *             ],
+ *             expect: -3,
+ *         },
+ *         {
+ *             it: 'handles 0',
+ *             inputs: [
+ *                 0,
+ *                 0,
+ *             ],
+ *             expect: 0,
+ *         },
+ *         {
+ *             it: 'adds',
+ *             inputs: [
+ *                 3,
+ *                 5,
+ *             ],
+ *             expect: 8,
+ *         },
+ *     ]);
+ * });
+ * ```
+ *
+ * @package [`@augment-vir/test`](https://www.npmjs.com/package/@augment-vir/test)
+ */
 export function itCases<const FunctionToTest extends AnyFunction>(
     functionToTest: FunctionToTest,
     testCases: ReadonlyArray<FunctionTestCase<NoInfer<FunctionToTest>>>,
@@ -95,6 +193,45 @@ export function itCases<const FunctionToTest extends AnyFunction>(
  *
  * @category Test
  * @category Package : @augment-vir/test
+ * @example
+ *
+ * ```ts
+ * import {itCases, describe} from '@augment-vir/test';
+ *
+ * function myFunctionToTest(a: number, b: number) {
+ *     return a + b;
+ * }
+ *
+ * describe(myFunctionToTest.name, () => {
+ *     itCases(myFunctionToTest, [
+ *         {
+ *             it: 'handles negative numbers',
+ *             inputs: [
+ *                 -1,
+ *                 -2,
+ *             ],
+ *             expect: -3,
+ *         },
+ *         {
+ *             it: 'handles 0',
+ *             inputs: [
+ *                 0,
+ *                 0,
+ *             ],
+ *             expect: 0,
+ *         },
+ *         {
+ *             it: 'adds',
+ *             inputs: [
+ *                 3,
+ *                 5,
+ *             ],
+ *             expect: 8,
+ *         },
+ *     ]);
+ * });
+ * ```
+ *
  * @package [`@augment-vir/test`](https://www.npmjs.com/package/@augment-vir/test)
  */
 export function itCases(
