@@ -27,6 +27,7 @@
 -   add `NestedType` type from `element-book`
 -   fix infinite recursion types, `InfiniteRecursionLimiter` from `element-book` works better
 -   add `NonEmptyString` from `element-vir`
+-   write my own node snapshot assertion that doesn't use Node.js's built-in format (which I don't like)
 
 ## Immediately after v30 release
 
@@ -45,3 +46,4 @@
     -   `mock-vir`
     -   `virmator`
 -   remove type guard from equality checks? (like jsonEquals)
+-   deprecate `test-established-expectations`
