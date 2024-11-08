@@ -1,0 +1,105 @@
+import {check} from '@augment-vir/assert';
+import {extractErrorMessage, log, RuntimeEnv} from '@augment-vir/common';
+import {
+    SnapshotCommand,
+    type CompareCommandResult,
+    type SnapshotPayload,
+} from '@virmator/test/dist/web-snapshot-plugin/snapshot-payload.js';
+import {type MochaNode} from './mocha-types.js';
+import {isTestContext, UniversalTestContext} from './universal-test-context.js';
+
+/**
+ * An error that is thrown from {@link assertSnapshot} when the snapshot comparison fails due to the
+ * snapshot expectation file simply not existing.
+ *
+ * @category Test : Util
+ * @category Package : @augment-vir/test
+ * @package [`@augment-vir/test`](https://www.npmjs.com/package/@augment-vir/test)
+ */
+export class SnapshotFileMissingError extends Error {
+    constructor(testName: string) {
+        super(
+            `Missing snapshot file for test '${testName}'.\n\nRun tests in update mode to create the snapshot file.`,
+        );
+    }
+}
+
+/**
+ * Assert that the given snapshot data matches already-saved snapshot file's expectations. Note that
+ * the given data will be serialized into a JSON string if it is not already a string. This works in
+ * both Node and web tests.
+ *
+ * Web tests require a web-test-runner config with the `snapshotPlugin` plugin from
+ * `@virmator/test/dist/web-snapshot-plugin/web-snapshot-plugin.js` in order to work.
+ *
+ * @category Test
+ * @category Package : @augment-vir/test
+ * @package [`@augment-vir/test`](https://www.npmjs.com/package/@augment-vir/test)
+ */
+export async function assertSnapshot(testContext: UniversalTestContext, data: unknown) {
+    const {snapshotName, testName} = getTestName(testContext);
+    const serializedData = check.isString(data) ? data : JSON.stringify(data);
+
+    if (isTestContext(testContext, RuntimeEnv.Node)) {
+        try {
+            testContext.snapshotCount = testContext.snapshotCount
+                ? testContext.snapshotCount + 1
+                : 1;
+            testContext.assert.snapshot(serializedData);
+        } catch (error) {
+            if (extractErrorMessage(error).includes('Cannot read snapshot file')) {
+                throw new SnapshotFileMissingError(testName);
+            } else {
+                throw error;
+            }
+        }
+    } else {
+        const {executeServerCommand} = await import('@web/test-runner-commands');
+
+        const result: CompareCommandResult = await executeServerCommand(
+            SnapshotCommand.CompareSnapshot,
+            {
+                content: serializedData,
+                name: snapshotName,
+            } satisfies SnapshotPayload,
+        );
+
+        if (result.updated) {
+            log.info(`Snapshot updated at '${result.snapshotPath}'`);
+        } else if (!result.exists) {
+            throw new SnapshotFileMissingError(testName);
+        } else if (!result.matches) {
+            throw new Error(
+                `Snapshot mismatch at '${testName}':\n\nActual: ${serializedData}\n\nExpected: ${result.savedContent}\n`,
+            );
+        }
+    }
+}
+
+function flattenMochaParentTitles(node: MochaNode): string[] {
+    if (node.root) {
+        return [];
+    } else {
+        return [
+            ...flattenMochaParentTitles(node.parent),
+            node.title,
+        ];
+    }
+}
+
+function getTestName(testContext: UniversalTestContext) {
+    const testName = isTestContext(testContext, RuntimeEnv.Node)
+        ? testContext.fullName
+        : flattenMochaParentTitles(testContext.test).join(' > ');
+
+    testContext.snapshotCount = testContext.snapshotCount ? testContext.snapshotCount + 1 : 1;
+    const snapshotName = [
+        testName,
+        testContext.snapshotCount,
+    ].join(' ');
+
+    return {
+        snapshotName,
+        testName,
+    };
+}
