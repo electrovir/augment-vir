@@ -3,6 +3,7 @@ export * from './augments/array/array-to-object.js';
 export * from './augments/array/awaited/awaited-filter.js';
 export * from './augments/array/awaited/awaited-for-each.js';
 export * from './augments/array/awaited/awaited-map.js';
+export * from './augments/array/create-array.js';
 export * from './augments/array/filter.js';
 export * from './augments/array/remove-duplicates.js';
 export * from './augments/array/repeat-array.js';
