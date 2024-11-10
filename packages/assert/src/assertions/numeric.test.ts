@@ -171,6 +171,649 @@ describe('isAbove', () => {
     });
 });
 
+describe('isInBounds', () => {
+    describe('assert', () => {
+        itCases(assert.isInBounds, [
+            {
+                it: 'passes',
+                inputs: [
+                    55,
+                    {
+                        min: 50,
+                        max: 60,
+                    },
+                ],
+                throws: undefined,
+            },
+            {
+                it: 'passes edge',
+                inputs: [
+                    50,
+                    {
+                        min: 50,
+                        max: 60,
+                    },
+                ],
+                throws: undefined,
+            },
+            {
+                it: 'rejects below',
+                inputs: [
+                    49,
+                    {
+                        min: 50,
+                        max: 60,
+                    },
+                ],
+                throws: {
+                    matchConstructor: AssertionError,
+                    matchMessage: '49 is not within the bounds {min:50,max:60}',
+                },
+            },
+            {
+                it: 'rejects above',
+                inputs: [
+                    61,
+                    {
+                        min: 50,
+                        max: 60,
+                    },
+                ],
+                throws: {
+                    matchConstructor: AssertionError,
+                    matchMessage: '61 is not within the bounds {min:50,max:60}',
+                },
+            },
+        ]);
+    });
+    describe('check', () => {
+        itCases(check.isInBounds, [
+            {
+                it: 'passes',
+                inputs: [
+                    55,
+                    {
+                        min: 50,
+                        max: 60,
+                    },
+                ],
+                expect: true,
+            },
+            {
+                it: 'passes edge',
+                inputs: [
+                    50,
+                    {
+                        min: 50,
+                        max: 60,
+                    },
+                ],
+                expect: true,
+            },
+            {
+                it: 'rejects below',
+                inputs: [
+                    49,
+                    {
+                        min: 50,
+                        max: 60,
+                    },
+                ],
+                expect: false,
+            },
+            {
+                it: 'rejects above',
+                inputs: [
+                    61,
+                    {
+                        min: 50,
+                        max: 60,
+                    },
+                ],
+                expect: false,
+            },
+        ]);
+    });
+    describe('assertWrap', () => {
+        itCases(assertWrap.isInBounds, [
+            {
+                it: 'passes',
+                inputs: [
+                    55,
+                    {
+                        min: 50,
+                        max: 60,
+                    },
+                ],
+                expect: 55,
+            },
+            {
+                it: 'passes edge',
+                inputs: [
+                    50,
+                    {
+                        min: 50,
+                        max: 60,
+                    },
+                ],
+                expect: 50,
+            },
+            {
+                it: 'rejects below',
+                inputs: [
+                    49,
+                    {
+                        min: 50,
+                        max: 60,
+                    },
+                ],
+                throws: {
+                    matchConstructor: AssertionError,
+                    matchMessage: '49 is not within the bounds {min:50,max:60}',
+                },
+            },
+            {
+                it: 'rejects above',
+                inputs: [
+                    61,
+                    {
+                        min: 50,
+                        max: 60,
+                    },
+                ],
+                throws: {
+                    matchConstructor: AssertionError,
+                    matchMessage: '61 is not within the bounds {min:50,max:60}',
+                },
+            },
+        ]);
+    });
+    describe('checkWrap', () => {
+        itCases(checkWrap.isInBounds, [
+            {
+                it: 'passes',
+                inputs: [
+                    55,
+                    {
+                        min: 50,
+                        max: 60,
+                    },
+                ],
+                expect: 55,
+            },
+            {
+                it: 'passes edge',
+                inputs: [
+                    50,
+                    {
+                        min: 50,
+                        max: 60,
+                    },
+                ],
+                expect: 50,
+            },
+            {
+                it: 'rejects below',
+                inputs: [
+                    49,
+                    {
+                        min: 50,
+                        max: 60,
+                    },
+                ],
+                expect: undefined,
+            },
+            {
+                it: 'rejects above',
+                inputs: [
+                    61,
+                    {
+                        min: 50,
+                        max: 60,
+                    },
+                ],
+                expect: undefined,
+            },
+        ]);
+    });
+    describe('waitUntil', () => {
+        it('passes', async () => {
+            let value = 45;
+            const result = await waitUntil.isInBounds(
+                {
+                    min: 50,
+                    max: 60,
+                },
+                () => {
+                    return ++value;
+                },
+                waitUntilTestOptions,
+            );
+            assert.strictEquals(result, 50);
+        });
+        it('rejects', async () => {
+            const value = 0;
+            await assert.throws(() =>
+                waitUntil.isInBounds(
+                    {
+                        min: 50,
+                        max: 60,
+                    },
+                    () => {
+                        return value;
+                    },
+                    waitUntilTestOptions,
+                ),
+            );
+        });
+    });
+});
+
+describe('isOutBounds', () => {
+    describe('assert', () => {
+        itCases(assert.isOutBounds, [
+            {
+                it: 'fails',
+                inputs: [
+                    55,
+                    {
+                        min: 50,
+                        max: 60,
+                    },
+                ],
+                throws: {
+                    matchConstructor: AssertionError,
+                    matchMessage: '55 is not outside the bounds {min:50,max:60}',
+                },
+            },
+            {
+                it: 'fails edge',
+                inputs: [
+                    50,
+                    {
+                        min: 50,
+                        max: 60,
+                    },
+                ],
+                throws: {
+                    matchConstructor: AssertionError,
+                    matchMessage: '50 is not outside the bounds {min:50,max:60}',
+                },
+            },
+            {
+                it: 'passes below',
+                inputs: [
+                    49,
+                    {
+                        min: 50,
+                        max: 60,
+                    },
+                ],
+                throws: undefined,
+            },
+            {
+                it: 'passes above',
+                inputs: [
+                    61,
+                    {
+                        min: 50,
+                        max: 60,
+                    },
+                ],
+                throws: undefined,
+            },
+        ]);
+    });
+    describe('check', () => {
+        itCases(check.isOutBounds, [
+            {
+                it: 'rejects',
+                inputs: [
+                    55,
+                    {
+                        min: 50,
+                        max: 60,
+                    },
+                ],
+                expect: false,
+            },
+            {
+                it: 'rejects edge',
+                inputs: [
+                    50,
+                    {
+                        min: 50,
+                        max: 60,
+                    },
+                ],
+                expect: false,
+            },
+            {
+                it: 'passes below',
+                inputs: [
+                    49,
+                    {
+                        min: 50,
+                        max: 60,
+                    },
+                ],
+                expect: true,
+            },
+            {
+                it: 'passes above',
+                inputs: [
+                    61,
+                    {
+                        min: 50,
+                        max: 60,
+                    },
+                ],
+                expect: true,
+            },
+        ]);
+    });
+    describe('assertWrap', () => {
+        itCases(assertWrap.isOutBounds, [
+            {
+                it: 'rejects',
+                inputs: [
+                    55,
+                    {
+                        min: 50,
+                        max: 60,
+                    },
+                ],
+                throws: {
+                    matchConstructor: AssertionError,
+                    matchMessage: '55 is not outside the bounds {min:50,max:60}',
+                },
+            },
+            {
+                it: 'rejects edge',
+                inputs: [
+                    50,
+                    {
+                        min: 50,
+                        max: 60,
+                    },
+                ],
+                throws: {
+                    matchConstructor: AssertionError,
+                    matchMessage: '50 is not outside the bounds {min:50,max:60}',
+                },
+            },
+            {
+                it: 'accepts below',
+                inputs: [
+                    49,
+                    {
+                        min: 50,
+                        max: 60,
+                    },
+                ],
+                expect: 49,
+            },
+            {
+                it: 'accepts above',
+                inputs: [
+                    61,
+                    {
+                        min: 50,
+                        max: 60,
+                    },
+                ],
+                expect: 61,
+            },
+        ]);
+    });
+    describe('checkWrap', () => {
+        itCases(checkWrap.isOutBounds, [
+            {
+                it: 'rejects',
+                inputs: [
+                    55,
+                    {
+                        min: 50,
+                        max: 60,
+                    },
+                ],
+                expect: undefined,
+            },
+            {
+                it: 'rejects edge',
+                inputs: [
+                    50,
+                    {
+                        min: 50,
+                        max: 60,
+                    },
+                ],
+                expect: undefined,
+            },
+            {
+                it: 'rejects below',
+                inputs: [
+                    49,
+                    {
+                        min: 50,
+                        max: 60,
+                    },
+                ],
+                expect: 49,
+            },
+            {
+                it: 'rejects above',
+                inputs: [
+                    61,
+                    {
+                        min: 50,
+                        max: 60,
+                    },
+                ],
+                expect: 61,
+            },
+        ]);
+    });
+    describe('waitUntil', () => {
+        it('passes', async () => {
+            let value = 55;
+            const result = await waitUntil.isOutBounds(
+                {
+                    min: 50,
+                    max: 60,
+                },
+                () => {
+                    return ++value;
+                },
+                waitUntilTestOptions,
+            );
+            assert.strictEquals(result, 61);
+        });
+        it('rejects', async () => {
+            const value = 55;
+            await assert.throws(() =>
+                waitUntil.isOutBounds(
+                    {
+                        min: 50,
+                        max: 60,
+                    },
+                    () => {
+                        return value;
+                    },
+                    waitUntilTestOptions,
+                ),
+            );
+        });
+    });
+});
+
+describe('isInteger', () => {
+    describe('assert', () => {
+        itCases(assert.isInteger, [
+            {
+                it: 'passes',
+                inputs: [5],
+                throws: undefined,
+            },
+            {
+                it: 'rejects',
+                inputs: [5.1],
+                throws: {
+                    matchConstructor: AssertionError,
+                    matchMessage: '5.1 is not an integer',
+                },
+            },
+        ]);
+    });
+    describe('check', () => {
+        itCases(check.isInteger, [
+            {
+                it: 'passes',
+                input: 5,
+                expect: true,
+            },
+            {
+                it: 'rejects',
+                input: 5.1,
+                expect: false,
+            },
+        ]);
+    });
+    describe('assertWrap', () => {
+        itCases(assertWrap.isInteger, [
+            {
+                it: 'passes',
+                inputs: [5],
+                expect: 5,
+            },
+            {
+                it: 'rejects',
+                inputs: [5.1],
+                throws: {
+                    matchConstructor: AssertionError,
+                    matchMessage: '5.1 is not an integer',
+                },
+            },
+        ]);
+    });
+    describe('checkWrap', () => {
+        itCases(checkWrap.isInteger, [
+            {
+                it: 'passes',
+                inputs: [5],
+                expect: 5,
+            },
+            {
+                it: 'rejects',
+                inputs: [5.1],
+                expect: undefined,
+            },
+        ]);
+    });
+    describe('waitUntil', () => {
+        it('passes', async () => {
+            let value = 3.2;
+            const result = await waitUntil.isInteger(() => {
+                value -= 0.1;
+                return value;
+            }, waitUntilTestOptions);
+            assert.strictEquals(result, 3);
+            assert(Number.isInteger(result));
+        });
+        it('rejects', async () => {
+            const value = 5.1;
+            await assert.throws(() =>
+                waitUntil.isInteger(() => {
+                    return value;
+                }, waitUntilTestOptions),
+            );
+        });
+    });
+});
+
+describe('isNotInteger', () => {
+    describe('assert', () => {
+        itCases(assert.isNotInteger, [
+            {
+                it: 'rejects',
+                inputs: [5],
+                throws: {
+                    matchConstructor: AssertionError,
+                    matchMessage: '5 is an integer',
+                },
+            },
+            {
+                it: 'passes',
+                inputs: [5.1],
+                throws: undefined,
+            },
+        ]);
+    });
+    describe('check', () => {
+        itCases(check.isNotInteger, [
+            {
+                it: 'rejects',
+                input: 5,
+                expect: false,
+            },
+            {
+                it: 'passes',
+                input: 5.1,
+                expect: true,
+            },
+        ]);
+    });
+    describe('assertWrap', () => {
+        itCases(assertWrap.isNotInteger, [
+            {
+                it: 'rejects',
+                inputs: [5],
+                throws: {
+                    matchConstructor: AssertionError,
+                    matchMessage: '5 is an integer',
+                },
+            },
+            {
+                it: 'accepts',
+                inputs: [5.1],
+                expect: 5.1,
+            },
+        ]);
+    });
+    describe('checkWrap', () => {
+        itCases(checkWrap.isNotInteger, [
+            {
+                it: 'rejects',
+                inputs: [5],
+                expect: undefined,
+            },
+            {
+                it: 'rejects',
+                inputs: [5.1],
+                expect: 5.1,
+            },
+        ]);
+    });
+    describe('waitUntil', () => {
+        it('passes', async () => {
+            let value = 3;
+            const result = await waitUntil.isNotInteger(() => {
+                value += 0.1;
+                return value;
+            }, waitUntilTestOptions);
+            assert.strictEquals(result, 3.1);
+        });
+        it('rejects', async () => {
+            const value = 5;
+            await assert.throws(() =>
+                waitUntil.isNotInteger(() => {
+                    return value;
+                }, waitUntilTestOptions),
+            );
+        });
+    });
+});
+
 describe('isAtLeast', () => {
     describe('assert', () => {
         itCases(assert.isAtLeast, [

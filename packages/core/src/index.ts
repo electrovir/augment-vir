@@ -8,6 +8,7 @@ export * from './augments/function/generic-function-type.js';
 export * from './augments/function/typed-function-type.js';
 export * from './augments/http/http-status.js';
 export * from './augments/json/json-compatible.js';
+export * from './augments/min-max.js';
 export * from './augments/narrow-type.js';
 export * from './augments/object/generic-object-type.js';
 export * from './augments/object/object-keys.js';

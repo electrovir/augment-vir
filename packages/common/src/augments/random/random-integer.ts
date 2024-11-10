@@ -1,4 +1,4 @@
-import {ensureMinMax} from '../number/min-max.js';
+import {ensureMinMax} from '@augment-vir/core';
 
 /**
  * Creates a random integer (no decimal points are included) between the given min and max values

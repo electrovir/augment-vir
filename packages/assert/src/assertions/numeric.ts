@@ -1,6 +1,8 @@
+import {stringify, type MinMax} from '@augment-vir/core';
 import {AssertionError} from '../augments/assertion.error.js';
 import type {GuardGroup} from '../guard-types/guard-group.js';
 import {autoGuardSymbol} from '../guard-types/guard-override.js';
+import {isNumber} from './runtime-type.js';
 
 function isAbove(actual: number, expected: number, failureMessage?: string | undefined) {
     if (actual <= expected) {
@@ -11,6 +13,36 @@ function isAbove(actual: number, expected: number, failureMessage?: string | und
 function isAtLeast(actual: number, expected: number, failureMessage?: string | undefined) {
     if (actual < expected) {
         throw new AssertionError(`${actual} is not at least ${expected}`, failureMessage);
+    }
+}
+
+function isInBounds(actual: number, {max, min}: MinMax, failureMessage?: string | undefined) {
+    if (actual < min || max < actual) {
+        throw new AssertionError(
+            `${actual} is not within the bounds ${stringify({min, max})}`,
+            failureMessage,
+        );
+    }
+}
+
+function isOutBounds(actual: number, {min, max}: MinMax, failureMessage?: string | undefined) {
+    if (min <= actual && actual <= max) {
+        throw new AssertionError(
+            `${actual} is not outside the bounds ${stringify({min, max})}`,
+            failureMessage,
+        );
+    }
+}
+
+function isInteger(actual: number, failureMessage?: string | undefined) {
+    isNumber(actual);
+    if (!Number.isInteger(actual)) {
+        throw new AssertionError(`${actual} is not an integer.`, failureMessage);
+    }
+}
+function isNotInteger(actual: number, failureMessage?: string | undefined) {
+    if (Number.isInteger(actual)) {
+        throw new AssertionError(`${actual} is an integer.`, failureMessage);
     }
 }
 
@@ -70,6 +102,93 @@ function isNotApproximately(
 }
 
 const assertions: {
+    /**
+     * Asserts that a number is inside the provided min and max bounds, inclusive.
+     *
+     * Performs no type guarding.
+     *
+     * @example
+     *
+     * ```ts
+     * import {assert} from '@augment-vir/assert';
+     *
+     * assert.isInBounds(5, {min: 1, max: 10}); // passes
+     * assert.isInBounds(10, {min: 1, max: 10}); // passes
+     * assert.isInBounds(11, {min: 1, max: 10}); // fails
+     * assert.isInBounds(0, {min: 1, max: 10}); // fails
+     * ```
+     *
+     * @throws {@link AssertionError} If the assertion fails.
+     * @see
+     * - {@link assert.isOutBounds} : the opposite assertion.
+     */
+    isInBounds: typeof isInBounds;
+    /**
+     * Asserts that a number is outside the provided min and max bounds, exclusive.
+     *
+     * Performs no type guarding.
+     *
+     * @example
+     *
+     * ```ts
+     * import {assert} from '@augment-vir/assert';
+     *
+     * assert.isOutBounds(5, {min: 1, max: 10}); // fails
+     * assert.isOutBounds(10, {min: 1, max: 10}); // fails
+     * assert.isOutBounds(11, {min: 1, max: 10}); // passes
+     * assert.isOutBounds(0, {min: 1, max: 10}); // passes
+     * ```
+     *
+     * @throws {@link AssertionError} If the assertion fails.
+     * @see
+     * - {@link assert.isInBounds} : the opposite assertion.
+     */
+    isOutBounds: typeof isOutBounds;
+
+    /**
+     * Asserts that a number is an integer. This has the same limitations as
+     * https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number/isInteger.
+     *
+     * Performs no type guarding.
+     *
+     * @example
+     *
+     * ```ts
+     * import {assert} from '@augment-vir/assert';
+     *
+     * assert.isInteger(5); // passes
+     * assert.isInteger(5.0000000000000001); // passes
+     * assert.isInteger(5.1); // fails
+     * assert.isInteger(NaN); // fails
+     * ```
+     *
+     * @throws {@link AssertionError} If the assertion fails.
+     * @see
+     * - {@link assert.isNotInteger} : the opposite assertion.
+     */
+    isInteger: typeof isInteger;
+    /**
+     * Asserts that a number is not an integer. This has the same limitations, as
+     * https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number/isInteger.
+     *
+     * Performs no type guarding.
+     *
+     * @example
+     *
+     * ```ts
+     * import {assert} from '@augment-vir/assert';
+     *
+     * assert.isNotInteger(5); // fails
+     * assert.isNotInteger(5.0000000000000001); // fails
+     * assert.isNotInteger(5.1); // passes
+     * assert.isNotInteger(NaN); // passes
+     * ```
+     *
+     * @throws {@link AssertionError} If the assertion fails.
+     * @see
+     * - {@link assert.isInteger} : the opposite assertion.
+     */
+    isNotInteger: typeof isNotInteger;
     /**
      * Asserts that a number is above the expectation (`actual > expected`).
      *
@@ -263,6 +382,10 @@ const assertions: {
      */
     isNotApproximately: typeof isNotApproximately;
 } = {
+    isInBounds,
+    isOutBounds,
+    isInteger,
+    isNotInteger,
     isAbove,
     isAtLeast,
     isBelow,
@@ -277,6 +400,89 @@ const assertions: {
 export const numericGuards = {
     assert: assertions,
     check: {
+        /**
+         * Checks that a number is inside the provided min and max bounds, inclusive.
+         *
+         * Performs no type guarding.
+         *
+         * @example
+         *
+         * ```ts
+         * import {check} from '@augment-vir/assert';
+         *
+         * check.isInBounds(5, {min: 1, max: 10}); // passes
+         * check.isInBounds(10, {min: 1, max: 10}); // passes
+         * check.isInBounds(11, {min: 1, max: 10}); // fails
+         * check.isInBounds(0, {min: 1, max: 10}); // fails
+         * ```
+         *
+         * @see
+         * - {@link check.isOutBounds} : the opposite check.
+         */
+        isInBounds: autoGuardSymbol,
+        /**
+         * Checks that a number is outside the provided min and max bounds, exclusive.
+         *
+         * Performs no type guarding.
+         *
+         * @example
+         *
+         * ```ts
+         * import {check} from '@augment-vir/assert';
+         *
+         * check.isOutBounds(5, {min: 1, max: 10}); // fails
+         * check.isOutBounds(10, {min: 1, max: 10}); // fails
+         * check.isOutBounds(11, {min: 1, max: 10}); // passes
+         * check.isOutBounds(0, {min: 1, max: 10}); // passes
+         * ```
+         *
+         * @see
+         * - {@link check.isInBounds} : the opposite check.
+         */
+        isOutBounds: autoGuardSymbol,
+
+        /**
+         * Checks that a number is an integer. This has the same limitations as
+         * https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number/isInteger.
+         *
+         * Performs no type guarding.
+         *
+         * @example
+         *
+         * ```ts
+         * import {check} from '@augment-vir/assert';
+         *
+         * check.isInteger(5); // passes
+         * check.isInteger(5.0000000000000001); // passes
+         * check.isInteger(5.1); // fails
+         * check.isInteger(NaN); // fails
+         * ```
+         *
+         * @see
+         * - {@link check.isNotInteger} : the opposite check.
+         */
+        isInteger: autoGuardSymbol,
+        /**
+         * Checks that a number is not an integer. This has the same limitations, as
+         * https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number/isInteger.
+         *
+         * Performs no type guarding.
+         *
+         * @example
+         *
+         * ```ts
+         * import {check} from '@augment-vir/assert';
+         *
+         * check.isNotInteger(5); // fails
+         * check.isNotInteger(5.0000000000000001); // fails
+         * check.isNotInteger(5.1); // passes
+         * check.isNotInteger(NaN); // passes
+         * ```
+         *
+         * @see
+         * - {@link check.isInteger} : the opposite check.
+         */
+        isNotInteger: autoGuardSymbol,
         /**
          * Checks that a number is above the expectation (`actual > expected`).
          *
@@ -461,6 +667,97 @@ export const numericGuards = {
         isNotApproximately: autoGuardSymbol,
     },
     assertWrap: {
+        /**
+         * Asserts that a number is inside the provided min and max bounds, inclusive. Returns the
+         * number if the assertion passes.
+         *
+         * Performs no type guarding.
+         *
+         * @example
+         *
+         * ```ts
+         * import {assertWrap} from '@augment-vir/assert';
+         *
+         * assertWrap.isInBounds(5, {min: 1, max: 10}); // returns `5`
+         * assertWrap.isInBounds(10, {min: 1, max: 10}); // returns `10`
+         * assertWrap.isInBounds(11, {min: 1, max: 10}); // fails
+         * assertWrap.isInBounds(0, {min: 1, max: 10}); // fails
+         * ```
+         *
+         * @throws {@link AssertionError} If the assertion fails.
+         * @see
+         * - {@link assertWrap.isOutBounds} : the opposite assertion.
+         */
+        isInBounds: autoGuardSymbol,
+        /**
+         * Asserts that a number is outside the provided min and max bounds, exclusive. Returns the
+         * number if the assertion passes.
+         *
+         * Performs no type guarding.
+         *
+         * @example
+         *
+         * ```ts
+         * import {assertWrap} from '@augment-vir/assert';
+         *
+         * assertWrap.isOutBounds(5, {min: 1, max: 10}); // fails
+         * assertWrap.isOutBounds(10, {min: 1, max: 10}); // fails
+         * assertWrap.isOutBounds(11, {min: 1, max: 10}); // returns `11`
+         * assertWrap.isOutBounds(0, {min: 1, max: 10}); // returns `0`
+         * ```
+         *
+         * @throws {@link AssertionError} If the assertion fails.
+         * @see
+         * - {@link assertWrap.isInBounds} : the opposite assertion.
+         */
+        isOutBounds: autoGuardSymbol,
+
+        /**
+         * Asserts that a number is an integer. Returns the number if the assertion passes. This has
+         * the same limitations as
+         * https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number/isInteger.
+         *
+         * Performs no type guarding.
+         *
+         * @example
+         *
+         * ```ts
+         * import {assertWrap} from '@augment-vir/assert';
+         *
+         * assertWrap.isInteger(5); // returns `5`
+         * assertWrap.isInteger(5.0000000000000001); // returns `5`
+         * assertWrap.isInteger(5.1); // fails
+         * assertWrap.isInteger(NaN); // fails
+         * ```
+         *
+         * @throws {@link AssertionError} If the assertion fails.
+         * @see
+         * - {@link assertWrap.isNotInteger} : the opposite assertion.
+         */
+        isInteger: autoGuardSymbol,
+        /**
+         * Asserts that a number is not an integer. Returns the number if the assertion passes. This
+         * has the same limitations, as
+         * https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number/isInteger.
+         *
+         * Performs no type guarding.
+         *
+         * @example
+         *
+         * ```ts
+         * import {assertWrap} from '@augment-vir/assert';
+         *
+         * assertWrap.isNotInteger(5); // fails
+         * assertWrap.isNotInteger(5.0000000000000001); // fails
+         * assertWrap.isNotInteger(5.1); // returns `5.1`
+         * assertWrap.isNotInteger(NaN); // returns `NaN`
+         * ```
+         *
+         * @throws {@link AssertionError} If the assertion fails.
+         * @see
+         * - {@link assertWrap.isInteger} : the opposite assertion.
+         */
+        isNotInteger: autoGuardSymbol,
         /**
          * Asserts that a number is above the expectation (`actual > expected`). Returns the number
          * if the assertion passes.
@@ -673,6 +970,93 @@ export const numericGuards = {
     },
     checkWrap: {
         /**
+         * Checks that a number is inside the provided min and max bounds, inclusive. Returns the
+         * number if the check passes, otherwise `undefined`.
+         *
+         * Performs no type guarding.
+         *
+         * @example
+         *
+         * ```ts
+         * import {checkWrap} from '@augment-vir/assert';
+         *
+         * checkWrap.isInBounds(5, {min: 1, max: 10}); // returns `5`
+         * checkWrap.isInBounds(10, {min: 1, max: 10}); // returns `10`
+         * checkWrap.isInBounds(11, {min: 1, max: 10}); // returns `undefined`
+         * checkWrap.isInBounds(0, {min: 1, max: 10}); // returns `undefined`
+         * ```
+         *
+         * @see
+         * - {@link checkWrap.isOutBounds} : the opposite check.
+         */
+        isInBounds: autoGuardSymbol,
+        /**
+         * Checks that a number is outside the provided min and max bounds, exclusive. Returns the
+         * number if the check passes, otherwise `undefined`.
+         *
+         * Performs no type guarding.
+         *
+         * @example
+         *
+         * ```ts
+         * import {checkWrap} from '@augment-vir/assert';
+         *
+         * checkWrap.isOutBounds(5, {min: 1, max: 10}); // returns `undefined`
+         * checkWrap.isOutBounds(10, {min: 1, max: 10}); // returns `undefined`
+         * checkWrap.isOutBounds(11, {min: 1, max: 10}); // returns `11`
+         * checkWrap.isOutBounds(0, {min: 1, max: 10}); // returns `0`
+         * ```
+         *
+         * @see
+         * - {@link checkWrap.isInBounds} : the opposite check.
+         */
+        isOutBounds: autoGuardSymbol,
+
+        /**
+         * Checks that a number is an integer. Returns the number if the check passes, otherwise
+         * `undefined`. This has the same limitations as
+         * https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number/isInteger.
+         *
+         * Performs no type guarding.
+         *
+         * @example
+         *
+         * ```ts
+         * import {checkWrap} from '@augment-vir/assert';
+         *
+         * checkWrap.isInteger(5); // returns `5`
+         * checkWrap.isInteger(5.0000000000000001); // returns `5`
+         * checkWrap.isInteger(5.1); // returns `undefined`
+         * checkWrap.isInteger(NaN); // returns `undefined`
+         * ```
+         *
+         * @see
+         * - {@link checkWrap.isNotInteger} : the opposite check.
+         */
+        isInteger: autoGuardSymbol,
+        /**
+         * Checks that a number is not an integer. Returns the number if the check passes, otherwise
+         * `undefined`. This has the same limitations, as
+         * https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number/isInteger.
+         *
+         * Performs no type guarding.
+         *
+         * @example
+         *
+         * ```ts
+         * import {checkWrap} from '@augment-vir/assert';
+         *
+         * checkWrap.isNotInteger(5); // returns `undefined`
+         * checkWrap.isNotInteger(5.0000000000000001); // returns `undefined`
+         * checkWrap.isNotInteger(5.1); // returns `5.1`
+         * checkWrap.isNotInteger(NaN); // returns `NaN`
+         * ```
+         *
+         * @see
+         * - {@link checkWrap.isInteger} : the opposite check.
+         */
+        isNotInteger: autoGuardSymbol,
+        /**
          * Checks that a number is above the expectation (`actual > expected`). Returns the number
          * if the check passes, otherwise `undefined`.
          *
@@ -874,6 +1258,99 @@ export const numericGuards = {
         isNotApproximately: autoGuardSymbol,
     },
     waitUntil: {
+        /**
+         * Repeatedly calls a callback until its output is a number is inside the provided min and
+         * max bounds, inclusive. If the attempts time out, an error is thrown.
+         *
+         * Performs no type guarding.
+         *
+         * @example
+         *
+         * ```ts
+         * import {waitUntil} from '@augment-vir/assert';
+         *
+         * waitUntil.isInBounds(5, {min: 1, max: 10}); // passes
+         * waitUntil.isInBounds(10, {min: 1, max: 10}); // passes
+         * waitUntil.isInBounds(11, {min: 1, max: 10}); // fails
+         * waitUntil.isInBounds(0, {min: 1, max: 10}); // fails
+         * ```
+         *
+         * @throws {@link AssertionError} If the assertion fails.
+         * @see
+         * - {@link waitUntil.isOutBounds} : the opposite assertion.
+         */
+        isInBounds: autoGuardSymbol,
+        /**
+         * Repeatedly calls a callback until its output is outside the provided min and max bounds,
+         * exclusive. If the attempts time out, an error is thrown.
+         *
+         * Performs no type guarding.
+         *
+         * @example
+         *
+         * ```ts
+         * import {waitUntil} from '@augment-vir/assert';
+         *
+         * waitUntil.isOutBounds(5, {min: 1, max: 10}); // fails
+         * waitUntil.isOutBounds(10, {min: 1, max: 10}); // fails
+         * waitUntil.isOutBounds(11, {min: 1, max: 10}); // passes
+         * waitUntil.isOutBounds(0, {min: 1, max: 10}); // passes
+         * ```
+         *
+         * @throws {@link AssertionError} If the assertion fails.
+         * @see
+         * - {@link waitUntil.isInBounds} : the opposite assertion.
+         */
+        isOutBounds: autoGuardSymbol,
+
+        /**
+         * Repeatedly calls a callback until its output is an integer. This has the same limitations
+         * as
+         * https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number/isInteger.
+         * If the attempts time out, an error is thrown.
+         *
+         * Performs no type guarding.
+         *
+         * @example
+         *
+         * ```ts
+         * import {waitUntil} from '@augment-vir/assert';
+         *
+         * waitUntil.isInteger(5); // passes
+         * waitUntil.isInteger(5.0000000000000001); // passes
+         * waitUntil.isInteger(5.1); // fails
+         * waitUntil.isInteger(NaN); // fails
+         * ```
+         *
+         * @throws {@link AssertionError} If the assertion fails.
+         * @see
+         * - {@link waitUntil.isNotInteger} : the opposite assertion.
+         */
+        isInteger: autoGuardSymbol,
+        /**
+         * Repeatedly calls a callback until its output is not an integer. This has the same
+         * limitations, as
+         * https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number/isInteger.
+         * If the attempts time out, an error is thrown.
+         *
+         * Performs no type guarding.
+         *
+         * @example
+         *
+         * ```ts
+         * import {waitUntil} from '@augment-vir/assert';
+         *
+         * waitUntil.isNotInteger(5); // fails
+         * waitUntil.isNotInteger(5.0000000000000001); // fails
+         * waitUntil.isNotInteger(5.1); // passes
+         * waitUntil.isNotInteger(NaN); // passes
+         * ```
+         *
+         * @throws {@link AssertionError} If the assertion fails.
+         * @see
+         * - {@link waitUntil.isInteger} : the opposite assertion.
+         */
+        isNotInteger: autoGuardSymbol,
         /**
          * Repeatedly calls a callback until its output is a number that is above the expectation
          * (`actual > expected`). Once the callback output passes, it is returned. If the attempts

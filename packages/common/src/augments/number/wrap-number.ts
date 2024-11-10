@@ -1,10 +1,8 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import type {clamp} from './clamp.js';
-import {ensureMinMax, MinMax} from './min-max.js';
+import {ensureMinMax, MinMax} from '@augment-vir/core';
 
 /**
  * If the given value is outside the given min/max bounds, instead of clamping the number (as the
- * {@link clamp} function does), this function wraps the value around to the next bound (inclusive).
+ * `clamp` function does), this function wraps the value around to the next bound (inclusive).
  *
  * @category Number
  * @category Package : @augment-vir/common

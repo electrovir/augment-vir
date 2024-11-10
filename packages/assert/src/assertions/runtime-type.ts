@@ -102,7 +102,10 @@ function isFunction<const Actual>(
 ): asserts actual is NarrowToActual<Actual, AnyFunction> {
     assertRuntimeType(actual, 'function', failureMessage);
 }
-function isNumber(actual: unknown, failureMessage?: string | undefined): asserts actual is number {
+export function isNumber(
+    actual: unknown,
+    failureMessage?: string | undefined,
+): asserts actual is number {
     assertRuntimeType(actual, 'number', failureMessage);
     if (isNaN(actual as number)) {
         throw new AssertionError('Value is NaN.', failureMessage);

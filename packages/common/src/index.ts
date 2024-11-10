@@ -30,7 +30,6 @@ export * from './augments/number/clamp.js';
 export * from './augments/number/coords.js';
 export * from './augments/number/digit.js';
 export * from './augments/number/dimensions.js';
-export * from './augments/number/min-max.js';
 export * from './augments/number/number-conversion.js';
 export * from './augments/number/round.js';
 export * from './augments/number/scientific.js';

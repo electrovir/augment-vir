@@ -1,4 +1,4 @@
-import {MinMax} from './min-max.js';
+import {MinMax} from '@augment-vir/core';
 
 /**
  * Clamp's the given value to within the min and max bounds, inclusive.
