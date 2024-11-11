@@ -1,7 +1,6 @@
 import {check} from '@augment-vir/assert';
 import {extractErrorMessage, log, RuntimeEnv} from '@augment-vir/common';
 import {
-    SnapshotCommand,
     type CompareCommandResult,
     type SnapshotPayload,
 } from '@virmator/test/dist/web-snapshot-plugin/snapshot-payload.js';
@@ -54,6 +53,9 @@ export async function assertSnapshot(testContext: UniversalTestContext, data: un
             }
         }
     } else {
+        const {SnapshotCommand} = await import(
+            '@virmator/test/dist/web-snapshot-plugin/snapshot-payload.js'
+        );
         const {executeServerCommand} = await import('@web/test-runner-commands');
 
         const result: CompareCommandResult = await executeServerCommand(
