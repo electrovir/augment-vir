@@ -52,11 +52,11 @@ export type ContextByEnv = {
  */
 export function assertWrapTestContext<const SpecificEnv extends RuntimeEnv>(
     context: UniversalTestContext,
-    env: RuntimeEnv,
+    env: SpecificEnv,
 ): ContextByEnv[SpecificEnv] {
     assertTestContext(context, env);
 
-    return context as ContextByEnv[SpecificEnv];
+    return context;
 }
 
 /**
@@ -68,7 +68,7 @@ export function assertWrapTestContext<const SpecificEnv extends RuntimeEnv>(
  */
 export function assertTestContext<const SpecificEnv extends RuntimeEnv>(
     context: UniversalTestContext,
-    env: RuntimeEnv,
+    env: SpecificEnv,
 ): asserts context is ContextByEnv[SpecificEnv] {
     const actualEnv = determineTestContextEnv(context);
 
