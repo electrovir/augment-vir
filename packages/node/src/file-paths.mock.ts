@@ -7,6 +7,7 @@ export const nodePackageDir = dirname(import.meta.dirname);
 
 export const testFilesDir = join(nodePackageDir, 'test-files');
 const longRunningFileDir = join(testFilesDir, 'long-running-test-file');
+export const dirContentsTestDir = join(testFilesDir, 'dir-contents-test');
 export const longRunningFilePath = join(longRunningFileDir, 'long-running-file.ts');
 export const longRunningFileWithStderr = join(
     longRunningFileDir,
