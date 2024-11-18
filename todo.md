@@ -37,13 +37,9 @@
     -   the callback is triggered
     -   the callback is skipped
 -   update all deps from `virmator` so they're all on v30 of augment-vir
-    -   `mono-vir`
-    -   `markdown-code-example-inserter`
-    -   `prettier-plugin-interpolated-html-tags`
-    -   `proxy-vir`
     -   `prettier-plugin-multiline-arrays`
-    -   `augment-vir`
-    -   `mock-vir`
     -   `virmator`
+-   figure out why most packages are failing tests on windows
+    -   like this: https://github.com/electrovir/proxy-vir/actions/runs/11876323290/job/33094520685
 -   remove type guard from equality checks? (like jsonEquals)
--   deprecate `test-established-expectations`
+-   deprecate `cli-args-vir`
