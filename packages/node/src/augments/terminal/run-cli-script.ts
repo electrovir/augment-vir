@@ -28,6 +28,8 @@ export const ExtensionToRunner: Record<string, string> = {
  */
 export async function runCliScript(
     path: string,
+    /** This should just be `__filename` (for CJS) or `import.meta.filename` (for ESM). */
+    cliScriptFilePath: string,
     /**
      * This should be the bin name of the package that is calling this function. Set to `undefined`
      * if there isn't one.
@@ -37,7 +39,7 @@ export async function runCliScript(
     const args = extractRelevantArgs({
         rawArgs: process.argv,
         binName,
-        fileName: import.meta.filename,
+        fileName: cliScriptFilePath,
     });
 
     const extension = extname(path);
