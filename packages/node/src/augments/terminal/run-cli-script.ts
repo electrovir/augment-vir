@@ -2,6 +2,7 @@
 /** This file cannot be tested because it calls `process.exit`. */
 
 import {extname} from 'node:path';
+import {interpolationSafeWindowsPath} from '../path/os-path.js';
 import {extractRelevantArgs} from './relevant-args.js';
 import {runShellCommand} from './shell.js';
 
@@ -48,11 +49,13 @@ export async function runCliScript(
     }
 
     const results = await runShellCommand(
-        [
-            runner,
-            path,
-            ...args,
-        ].join(' '),
+        interpolationSafeWindowsPath(
+            [
+                runner,
+                path,
+                ...args,
+            ].join(' '),
+        ),
         {
             hookUpToConsole: true,
         },
