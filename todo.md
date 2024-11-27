@@ -28,6 +28,7 @@
 -   fix infinite recursion types, `InfiniteRecursionLimiter` from `element-book` works better
 -   add `NonEmptyString` from `element-vir`
 -   write my own node snapshot assertion that doesn't use Node.js's built-in format (which I don't like)
+-   make the operating system enums work in the frontend (move it to the common package)
 
 ## Immediately after v30 release
 

@@ -1,5 +1,5 @@
 import {check} from '@augment-vir/assert';
-import {extractErrorMessage, log, RuntimeEnv} from '@augment-vir/common';
+import {extractErrorMessage, getOrSet, RuntimeEnv} from '@augment-vir/common';
 import {
     type CompareCommandResult,
     type SnapshotPayload,
@@ -41,9 +41,6 @@ export async function assertSnapshot(testContext: UniversalTestContext, data: un
 
     if (isTestContext(testContext, RuntimeEnv.Node)) {
         try {
-            testContext.snapshotCount = testContext.snapshotCount
-                ? testContext.snapshotCount + 1
-                : 1;
             testContext.assert.snapshot(serializedData);
         } catch (error) {
             if (extractErrorMessage(error).includes('Cannot read snapshot file')) {
@@ -66,14 +63,14 @@ export async function assertSnapshot(testContext: UniversalTestContext, data: un
             } satisfies SnapshotPayload,
         );
 
-        if (result.updated) {
-            log.info(`Snapshot updated at '${result.snapshotPath}'`);
-        } else if (!result.exists) {
-            throw new SnapshotFileMissingError(testName);
-        } else if (!result.matches) {
-            throw new Error(
-                `Snapshot mismatch at '${testName}':\n\nActual: ${serializedData}\n\nExpected: ${result.savedContent}\n`,
-            );
+        if (!result.updated) {
+            if (!result.exists) {
+                throw new SnapshotFileMissingError(testName);
+            } else if (!result.matches) {
+                throw new Error(
+                    `Snapshot mismatch at '${testName}':\n\nActual: ${serializedData}\n\nExpected: ${result.savedContent}\n`,
+                );
+            }
         }
     }
 }
@@ -94,10 +91,16 @@ function getTestName(testContext: UniversalTestContext) {
         ? testContext.fullName
         : flattenMochaParentTitles(testContext.test).join(' > ');
 
-    testContext.snapshotCount = testContext.snapshotCount ? testContext.snapshotCount + 1 : 1;
+    const snapshotCountObject = getOrSet(testContext, 'snapshotCount', () => {
+        return {};
+    });
+    const currentSnapshotCount = getOrSet(snapshotCountObject, testName, () => 0);
+    const newSnapshotCount = currentSnapshotCount + 1;
+    snapshotCountObject[testName] = newSnapshotCount;
+
     const snapshotName = [
         testName,
-        testContext.snapshotCount,
+        newSnapshotCount,
     ].join(' ');
 
     return {

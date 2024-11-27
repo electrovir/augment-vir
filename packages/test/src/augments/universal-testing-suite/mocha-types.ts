@@ -74,5 +74,5 @@ export type MochaTestContext = Readonly<{
     test: MochaTest;
 }> & {
     /** Added for use by `assertSnapshot`. */
-    snapshotCount?: number;
+    snapshotCount?: {[TestName in string]: number};
 };

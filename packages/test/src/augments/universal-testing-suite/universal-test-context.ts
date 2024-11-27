@@ -12,7 +12,7 @@ import {MochaTestContext} from './mocha-types.js';
  */
 export type NodeTestContext = Readonly<NodeTestContextImport> & {
     /** Added for use by `assertSnapshot`. */
-    snapshotCount?: number;
+    snapshotCount?: {[TestName in string]: number};
 };
 
 /**

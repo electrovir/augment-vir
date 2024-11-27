@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/test",
-    "version": "30.8.2",
+    "version": "30.8.3",
     "description": "A universal testing suite that works with Mocha style test runners _and_ Node.js's built-in test runner.",
     "keywords": [
         "test",
@@ -42,8 +42,8 @@
         "test:web": "virmator test --no-deps web 'src/test-web/**/*.test.ts' 'src/augments/universal-testing-suite/**/*.test.ts'"
     },
     "dependencies": {
-        "@augment-vir/assert": "^30.8.2",
-        "@augment-vir/common": "^30.8.2",
+        "@augment-vir/assert": "^30.8.3",
+        "@augment-vir/common": "^30.8.3",
         "@open-wc/testing-helpers": "^3.0.1",
         "@virmator/test": "^13.8.0",
         "type-fest": "^4.26.1"
