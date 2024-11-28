@@ -68,7 +68,7 @@ export async function assertSnapshot(testContext: UniversalTestContext, data: un
                 throw new SnapshotFileMissingError(testName);
             } else if (!result.matches) {
                 throw new Error(
-                    `Snapshot mismatch at '${testName}':\n\nActual: ${serializedData}\n\nExpected: ${result.savedContent}\n`,
+                    `Snapshot mismatch at '${testName}':\n\nActual: ${serializedData}\n\nExpected: ${result.savedSnapshot}\n`,
                 );
             }
         }

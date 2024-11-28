@@ -56,6 +56,7 @@ if (isRuntimeEnv(RuntimeEnv.Node)) {
         const allExpectedLogs = {
             stdout: [
                 `${logColors[LogColorKey.Bold]}bold${logColors[LogColorKey.Reset]}`,
+                `${logColors[LogColorKey.Debug]}debug${logColors[LogColorKey.Reset]}`,
                 `${logColors[LogColorKey.Faint]}faint${logColors[LogColorKey.Reset]}`,
                 `${logColors[LogColorKey.Info]}info${logColors[LogColorKey.Reset]}`,
                 `${logColors[LogColorKey.Mutate]}${logColors[LogColorKey.Bold]}mutate${logColors[LogColorKey.Reset]}`,

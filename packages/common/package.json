@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/common",
-    "version": "30.8.3",
+    "version": "30.8.4",
     "description": "A collection of augments, helpers types, functions, and classes for any JavaScript environment.",
     "keywords": [
         "augment",
@@ -39,12 +39,12 @@
         "test:web": "virmator --no-deps test web"
     },
     "dependencies": {
-        "@augment-vir/assert": "^30.8.3",
-        "@augment-vir/core": "^30.8.3",
+        "@augment-vir/assert": "^30.8.4",
+        "@augment-vir/core": "^30.8.4",
         "@date-vir/duration": "^7.0.1",
         "ansi-styles": "^6.2.1",
         "json5": "^2.2.3",
-        "type-fest": "^4.26.1",
+        "type-fest": "^4.29.0",
         "typed-event-target": "^4.0.2"
     },
     "devDependencies": {
@@ -54,7 +54,7 @@
         "@web/test-runner-playwright": "^0.11.0",
         "@web/test-runner-visual-regression": "^0.10.0",
         "concurrently": "^9.1.0",
-        "execute-in-browser": "^1.0.3",
+        "execute-in-browser": "^1.0.4",
         "istanbul-smart-text-reporter": "^1.1.5"
     },
     "engines": {

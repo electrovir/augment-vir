@@ -4,6 +4,10 @@ import {join, resolve} from 'node:path';
 
 export const monoRepoDirPath = resolve(import.meta.dirname, '..', '..', '..');
 export const monoRepoNodeModulesDirPath = join(monoRepoDirPath, 'node_modules');
+
+export const virmatorBinPath = join(monoRepoNodeModulesDirPath, '.bin', 'virmator');
+export const virmatorShPath = join(monoRepoDirPath, 'virmator.sh');
+
 export const packagesDirPath = join(monoRepoDirPath, 'packages');
 export const packagePaths = {
     test: join(packagesDirPath, 'test'),

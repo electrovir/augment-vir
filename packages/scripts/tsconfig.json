@@ -14,7 +14,10 @@
     "extends": "../../configs/tsconfig.base.json",
     "references": [
         {
-            "path": "../core"
+            "path": "../common"
+        },
+        {
+            "path": "../node"
         },
         {
             "path": "../test"
