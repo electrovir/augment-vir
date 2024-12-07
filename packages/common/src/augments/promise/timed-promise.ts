@@ -1,5 +1,5 @@
 import {check} from '@augment-vir/assert';
-import {ensureError} from '@augment-vir/core';
+import {ensureError, type MaybePromise} from '@augment-vir/core';
 import {AnyDuration, convertDuration} from '@date-vir/duration';
 
 /**
@@ -37,7 +37,7 @@ export class PromiseTimeoutError extends Error {
  */
 export function wrapPromiseInTimeout<T>(
     duration: Readonly<AnyDuration>,
-    originalPromise: PromiseLike<T>,
+    originalPromise: MaybePromise<T>,
     failureMessage?: string | undefined,
 ): Promise<T> {
     const milliseconds = convertDuration(duration, {milliseconds: true}).milliseconds;

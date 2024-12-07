@@ -24,113 +24,153 @@ function isNotArray<const Actual>(
     actual: Actual,
     failureMessage?: string | undefined,
 ): asserts actual is Exclude<Actual, ReadonlyArray<unknown>> {
-    assertNotRuntimeType(actual, 'array', failureMessage);
+    if (Array.isArray(actual)) {
+        throw new AssertionError(`'${stringify(actual)}' is an array.`, failureMessage);
+    }
 }
 function isNotBigInt<const Actual>(
     actual: Actual,
     failureMessage?: string | undefined,
 ): asserts actual is Exclude<Actual, bigint> {
-    assertNotRuntimeType(actual, 'bigint', failureMessage);
+    if (typeof actual === 'bigint') {
+        throw new AssertionError(`'${stringify(actual)}' is a bigint.`, failureMessage);
+    }
 }
 function isNotBoolean<const Actual>(
     actual: Actual,
     failureMessage?: string | undefined,
 ): asserts actual is Exclude<Actual, boolean> {
-    assertNotRuntimeType(actual, 'boolean', failureMessage);
+    if (typeof actual === 'boolean') {
+        throw new AssertionError(`'${stringify(actual)}' is a boolean.`, failureMessage);
+    }
 }
 function isNotFunction<const Actual>(
     actual: Actual,
     failureMessage?: string | undefined,
 ): asserts actual is Exclude<Actual, AnyFunction> {
-    assertNotRuntimeType(actual, 'function', failureMessage);
+    if (typeof actual === 'function') {
+        throw new AssertionError(`'${stringify(actual)}' is a function.`, failureMessage);
+    }
 }
 function isNotNumber<const Actual>(
     actual: Actual,
     failureMessage?: string | undefined,
 ): asserts actual is Exclude<Actual, number> {
-    assertNotRuntimeType(actual, 'number', failureMessage);
+    if (typeof actual === 'number') {
+        throw new AssertionError(`'${stringify(actual)}' is a number.`, failureMessage);
+    }
 }
 function isNotObject<const Actual>(
     actual: Actual,
     failureMessage?: string | undefined,
 ): asserts actual is Exclude<Actual, UnknownObject> {
-    assertNotRuntimeType(actual, 'object', failureMessage);
+    if (!Array.isArray(actual) && typeof actual === 'object' && !!actual) {
+        throw new AssertionError(`'${stringify(actual)}' is a non-null object.`, failureMessage);
+    }
 }
 function isNotString<const Actual>(
     actual: Actual,
     failureMessage?: string | undefined,
 ): asserts actual is Exclude<Actual, string> {
-    assertNotRuntimeType(actual, 'string', failureMessage);
+    if (typeof actual === 'string') {
+        throw new AssertionError(`'${stringify(actual)}' is a string.`, failureMessage);
+    }
 }
 function isNotSymbol<const Actual>(
     actual: Actual,
     failureMessage?: string | undefined,
 ): asserts actual is Exclude<Actual, symbol> {
-    assertNotRuntimeType(actual, 'symbol', failureMessage);
+    if (typeof actual === 'symbol') {
+        throw new AssertionError(`'${stringify(actual)}' is a symbol.`, failureMessage);
+    }
 }
 function isNotUndefined<const Actual>(
     actual: Actual,
     failureMessage?: string | undefined,
 ): asserts actual is Exclude<Actual, undefined> {
-    assertNotRuntimeType(actual, 'undefined', failureMessage);
+    if (typeof actual === 'undefined') {
+        throw new AssertionError(`'${stringify(actual)}' is a undefined.`, failureMessage);
+    }
 }
 function isNotNull<const Actual>(
     actual: Actual,
     failureMessage?: string | undefined,
 ): asserts actual is Exclude<Actual, null> {
-    assertNotRuntimeType(actual, 'null', failureMessage);
+    if (actual === null) {
+        throw new AssertionError(`'${stringify(actual)}' is a null.`, failureMessage);
+    }
 }
 
 function isArray<const Actual>(
     actual: Actual,
     failureMessage?: string | undefined,
 ): asserts actual is ArrayNarrow<Actual> {
-    assertRuntimeType(actual, 'array', failureMessage);
+    if (!Array.isArray(actual)) {
+        throw new AssertionError(`'${stringify(actual)}' is not an array.`, failureMessage);
+    }
 }
 function isBigInt(actual: unknown, failureMessage?: string | undefined): asserts actual is bigint {
-    assertRuntimeType(actual, 'bigint', failureMessage);
+    if (typeof actual !== 'bigint') {
+        throw new AssertionError(`'${stringify(actual)}' is not a bigint.`, failureMessage);
+    }
 }
 function isBoolean(
     actual: unknown,
     failureMessage?: string | undefined,
 ): asserts actual is boolean {
-    assertRuntimeType(actual, 'boolean', failureMessage);
+    if (typeof actual !== 'boolean') {
+        throw new AssertionError(`'${stringify(actual)}' is not a boolean.`, failureMessage);
+    }
 }
 function isFunction<const Actual>(
     actual: Actual,
     failureMessage?: string | undefined,
 ): asserts actual is NarrowToActual<Actual, AnyFunction> {
-    assertRuntimeType(actual, 'function', failureMessage);
+    if (typeof actual !== 'function') {
+        throw new AssertionError(`'${stringify(actual)}' is not a function.`, failureMessage);
+    }
 }
 export function isNumber(
     actual: unknown,
     failureMessage?: string | undefined,
 ): asserts actual is number {
-    assertRuntimeType(actual, 'number', failureMessage);
-    if (isNaN(actual as number)) {
-        throw new AssertionError('Value is NaN.', failureMessage);
+    if (typeof actual !== 'number' || isNaN(actual)) {
+        throw new AssertionError(`'${stringify(actual)}' is not a number.`, failureMessage);
     }
 }
 function isObject(
     actual: unknown,
     failureMessage?: string | undefined,
 ): asserts actual is UnknownObject {
-    assertRuntimeType(actual, 'object', failureMessage);
+    if (Array.isArray(actual) || typeof actual !== 'object' || !actual) {
+        throw new AssertionError(
+            `'${stringify(actual)}' is not a non-null object.`,
+            failureMessage,
+        );
+    }
 }
 function isString(actual: unknown, failureMessage?: string | undefined): asserts actual is string {
-    assertRuntimeType(actual, 'string', failureMessage);
+    if (typeof actual !== 'string') {
+        throw new AssertionError(`'${stringify(actual)}' is not a string.`, failureMessage);
+    }
 }
 function isSymbol(actual: unknown, failureMessage?: string | undefined): asserts actual is symbol {
-    assertRuntimeType(actual, 'symbol', failureMessage);
+    if (typeof actual !== 'symbol') {
+        throw new AssertionError(`'${stringify(actual)}' is not a symbol.`, failureMessage);
+    }
 }
 function isUndefined(
     actual: unknown,
     failureMessage?: string | undefined,
 ): asserts actual is undefined {
-    assertRuntimeType(actual, 'undefined', failureMessage);
+    if (typeof actual !== 'undefined') {
+        throw new AssertionError(`'${stringify(actual)}' is not a undefined.`, failureMessage);
+    }
 }
 function isNull(actual: unknown, failureMessage?: string | undefined): asserts actual is null {
-    assertRuntimeType(actual, 'null', failureMessage);
+    if (actual !== null) {
+        throw new AssertionError(`'${stringify(actual)}' is not nul.`, failureMessage);
+    }
 }
 
 const assertions: {
@@ -2412,98 +2452,3 @@ export const runtimeTypeGuards = {
             >(),
     },
 } satisfies GuardGroup<typeof assertions>;
-
-/**
- * An enum representing the possible values returned by {@link getRuntimeType}. These values are
- * similar to the output of the built-in
- * [`typeof`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/typeof) operator
- * except that this includes new types `array` and `null`, that `typeof` does not have, which are
- * both distinct from `object`.
- *
- * @category Assert : Util
- * @category Package : @augment-vir/assert
- * @package [`@augment-vir/assert`](https://www.npmjs.com/package/@augment-vir/assert)
- */
-export enum RuntimeType {
-    String = 'string',
-    Number = 'number',
-    Bigint = 'bigint',
-    Boolean = 'boolean',
-    Symbol = 'symbol',
-    Undefined = 'undefined',
-    Object = 'object',
-    Function = 'function',
-    /**
-     * This is not included in {@link RuntimeType.Object}. (Compared to
-     * [`typeof`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/typeof)
-     * which _does_ include `null` in the `'object'` type.)
-     */
-    Array = 'array',
-    /**
-     * This is not included in {@link RuntimeType.Object}. (Compared to
-     * [`typeof`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/typeof)
-     * which _does_ include `null` in the `'object'` type.)
-     */
-    Null = 'null',
-}
-
-/**
- * Determines the {@link RuntimeType} of a variable. This is similar to the built-in
- * [`typeof`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/typeof) operator
- * except in the following ways:
- *
- * - This returns an enum value ({@link RuntimeType}) rather than just a string (though the enum values
- *   are strings anyway).
- * - This includes new types `array` and `null`, that `typeof` does not have, which are both distinct
- *   from `object`.
- *
- * @category Assert : Util
- * @category Package : @augment-vir/assert
- * @example
- *
- * ```ts
- * import {getRuntimeType} from '@augment-vir/assert';
- *
- * getRuntimeType(['a']); // RuntimeType.Array
- * getRuntimeType({a: 'a'}); // RuntimeType.Object
- * ```
- *
- * @package [`@augment-vir/assert`](https://www.npmjs.com/package/@augment-vir/assert)
- */
-export function getRuntimeType(actual: unknown): RuntimeType {
-    if (actual === null) {
-        return RuntimeType.Null;
-    } else if (Array.isArray(actual)) {
-        return RuntimeType.Array;
-    } else {
-        return typeof actual as RuntimeType;
-    }
-}
-
-/**
- * Asserts that the given actual matches the given test type. Note that an name for the actual must
- * be provided for error messaging purposes.
- */
-function assertRuntimeType(
-    actual: unknown,
-    testType: RuntimeType | `${RuntimeType}`,
-    failureMessage?: string | undefined,
-) {
-    const actualType = getRuntimeType(actual);
-    if (actualType !== testType) {
-        throw new AssertionError(
-            `'${stringify(actual)}' is '${actualType}', not '${testType}'.`,
-            failureMessage,
-        );
-    }
-}
-function assertNotRuntimeType(
-    actual: unknown,
-    testType: RuntimeType | `${RuntimeType}`,
-    failureMessage?: string | undefined,
-) {
-    const actualType = getRuntimeType(actual);
-    if (actualType === testType) {
-        throw new AssertionError(`'${stringify(actual)}' is '${actualType}'.`, failureMessage);
-    }
-}
