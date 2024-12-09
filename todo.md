@@ -43,3 +43,7 @@
 - figure out why most packages are failing tests on windows
     - like this: https://github.com/electrovir/proxy-vir/actions/runs/11876323290/job/33094520685
 - remove type guard from equality checks? (like jsonEquals)
+
+## Do now
+
+- add `this:void` to all functions

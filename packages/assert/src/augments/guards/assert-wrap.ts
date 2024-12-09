@@ -1,9 +1,16 @@
-import {assertWrapOverrides, extendableAssertions} from '../../assertions/extendable-assertions.js';
-import {AssertWrapGroup, createAssertWrapGroup} from '../../guard-types/assert-wrap-function.js';
+import {ArrayElement} from '@augment-vir/core';
+import {UnionToIntersection} from 'type-fest';
+import {guardOverrides} from '../../assertions/extendable-assertions.js';
 import {AssertionError} from '../assertion.error.js';
 
-const assertWrapGroup: AssertWrapGroup<typeof extendableAssertions, typeof assertWrapOverrides> =
-    createAssertWrapGroup(extendableAssertions, assertWrapOverrides);
+export const assertWrapMethods: UnionToIntersection<
+    Extract<ArrayElement<typeof guardOverrides>, {assertWrap: any}>['assertWrap']
+> = Object.assign(
+    {},
+    ...guardOverrides.map((entry) => {
+        return entry.assertWrap;
+    }),
+);
 
 /**
  * A group of guard methods that do the following:
@@ -39,7 +46,7 @@ const assertWrapGroup: AssertWrapGroup<typeof extendableAssertions, typeof asser
  * @package [`@augment-vir/assert`](https://www.npmjs.com/package/@augment-vir/assert)
  */
 export const assertWrap: (<T>(input: T, failureMessage?: string | undefined) => T) &
-    typeof assertWrapGroup = Object.assign(function assertWrap<T>(
+    typeof assertWrapMethods = Object.assign(function assertWrap<T>(
     this: void,
     input: T,
     failureMessage?: string | undefined,
@@ -49,4 +56,4 @@ export const assertWrap: (<T>(input: T, failureMessage?: string | undefined) => 
     }
 
     return input;
-}, assertWrapGroup);
+}, assertWrapMethods);

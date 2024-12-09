@@ -2,10 +2,10 @@ import type {NarrowToExpected} from '@augment-vir/core';
 import {type EnumBaseType, getEnumValues, type MaybePromise} from '@augment-vir/core';
 import {AssertionError} from '../augments/assertion.error.js';
 import type {GuardGroup} from '../guard-types/guard-group.js';
-import {autoGuard} from '../guard-types/guard-override.js';
-import {type WaitUntilOptions} from '../guard-types/wait-until-function.js';
+import {createWaitUntil, type WaitUntilOptions} from '../guard-types/wait-until-function.js';
 
-export function isEnumValue<const Expected extends EnumBaseType>(
+export function assertIsEnumValue<const Expected extends EnumBaseType>(
+    this: void,
     child: unknown,
     checkEnum: Expected,
     failureMessage?: string | undefined,
@@ -18,25 +18,17 @@ export function isEnumValue<const Expected extends EnumBaseType>(
         );
     }
 }
-function isNotEnumValue<const Actual, const Expected extends EnumBaseType>(
-    child: Actual,
-    checkEnum: Expected,
-    failureMessage?: string | undefined,
-): asserts child is Exclude<Actual, Expected[keyof Expected] | `${Expected[keyof Expected]}`> {
-    try {
-        isEnumValue(child, checkEnum);
-    } catch {
-        return;
-    }
 
+export function isEnumValue<const Expected extends EnumBaseType>(
+    this: void,
+    child: unknown,
+    checkEnum: Expected,
+): child is Expected[keyof Expected] {
     const values = getEnumValues(checkEnum);
-    throw new AssertionError(
-        `${String(child)} is an enum value in '${values.join(',')}'`,
-        failureMessage,
-    );
+    return values.includes(child as Expected[keyof Expected]);
 }
 
-const assertions: {
+const assertions = {
     /**
      * Asserts that a child value is an enum member.
      *
@@ -60,7 +52,14 @@ const assertions: {
      * @see
      * - {@link assert.isNotEnumValue} : the opposite assertion.
      */
-    isEnumValue: typeof isEnumValue;
+    isEnumValue<const Expected extends EnumBaseType>(
+        this: void,
+        child: unknown,
+        checkEnum: Expected,
+        failureMessage?: string | undefined,
+    ): asserts child is Expected[keyof Expected] {
+        assertIsEnumValue(child, checkEnum, failureMessage);
+    },
     /**
      * Asserts that a child value is _not_ an enum member.
      *
@@ -84,10 +83,20 @@ const assertions: {
      * @see
      * - {@link assert.isEnumValue} : the opposite assertion.
      */
-    isNotEnumValue: typeof isNotEnumValue;
-} = {
-    isEnumValue,
-    isNotEnumValue,
+    isNotEnumValue<const Actual, const Expected extends EnumBaseType>(
+        this: void,
+        child: Actual,
+        checkEnum: Expected,
+        failureMessage?: string | undefined,
+    ): asserts child is Exclude<Actual, Expected[keyof Expected] | `${Expected[keyof Expected]}`> {
+        const values = getEnumValues(checkEnum);
+        if (values.includes(child as Expected[keyof Expected])) {
+            throw new AssertionError(
+                `${String(child)} is an enum value in '${values.join(',')}'.`,
+                failureMessage,
+            );
+        }
+    },
 };
 
 export const enumGuards = {
@@ -115,13 +124,7 @@ export const enumGuards = {
          * @see
          * - {@link check.isNotEnumValue} : the opposite check.
          */
-        isEnumValue:
-            autoGuard<
-                <const Expected extends EnumBaseType>(
-                    child: unknown,
-                    checkEnum: Expected,
-                ) => child is Expected[keyof Expected]
-            >(),
+        isEnumValue,
         /**
          * Checks that a child value is _not_ an enum member.
          *
@@ -144,16 +147,14 @@ export const enumGuards = {
          * @see
          * - {@link check.isEnumValue} : the opposite check.
          */
-        isNotEnumValue:
-            autoGuard<
-                <const Actual, const Expected extends EnumBaseType>(
-                    child: Actual,
-                    checkEnum: Expected,
-                ) => child is Exclude<
-                    Actual,
-                    Expected[keyof Expected] | `${Expected[keyof Expected]}`
-                >
-            >(),
+        isNotEnumValue<const Actual, const Expected extends EnumBaseType>(
+            this: void,
+            child: Actual,
+            checkEnum: Expected,
+        ): child is Exclude<Actual, Expected[keyof Expected] | `${Expected[keyof Expected]}`> {
+            const values = getEnumValues(checkEnum);
+            return !values.includes(child as Expected[keyof Expected]);
+        },
     },
     assertWrap: {
         /**
@@ -181,14 +182,21 @@ export const enumGuards = {
          * @see
          * - {@link assertWrap.isNotEnumValue} : the opposite assertion.
          */
-        isEnumValue:
-            autoGuard<
-                <const Actual, const Expected extends EnumBaseType>(
-                    child: Actual,
-                    checkEnum: Expected,
-                    failureMessage?: string | undefined,
-                ) => NarrowToExpected<Actual, Expected[keyof Expected]>
-            >(),
+        isEnumValue<const Actual, const Expected extends EnumBaseType>(
+            this: void,
+            child: Actual,
+            checkEnum: Expected,
+            failureMessage?: string | undefined,
+        ): NarrowToExpected<Actual, Expected[keyof Expected]> {
+            const values = getEnumValues(checkEnum);
+            if (!values.includes(child as Expected[keyof Expected])) {
+                throw new AssertionError(
+                    `${String(child)} is not an enum value in '${values.join(',')}'.`,
+                    failureMessage,
+                );
+            }
+            return child as NarrowToExpected<Actual, Expected[keyof Expected]>;
+        },
         /**
          * Asserts that a child value is _not_ an enum member. Returns the child value if the
          * assertion passes.
@@ -214,14 +222,24 @@ export const enumGuards = {
          * @see
          * - {@link assertWrap.isEnumValue} : the opposite assertion.
          */
-        isNotEnumValue:
-            autoGuard<
-                <const Actual, const Expected extends EnumBaseType>(
-                    child: Actual,
-                    checkEnum: Expected,
-                    failureMessage?: string | undefined,
-                ) => Exclude<Actual, Expected[keyof Expected] | `${Expected[keyof Expected]}`>
-            >(),
+        isNotEnumValue<const Actual, const Expected extends EnumBaseType>(
+            this: void,
+            child: Actual,
+            checkEnum: Expected,
+            failureMessage?: string | undefined,
+        ): Exclude<Actual, Expected[keyof Expected] | `${Expected[keyof Expected]}`> {
+            const values = getEnumValues(checkEnum);
+            if (values.includes(child as Expected[keyof Expected])) {
+                throw new AssertionError(
+                    `${String(child)} is not an enum value in '${values.join(',')}'.`,
+                    failureMessage,
+                );
+            }
+            return child as Exclude<
+                Actual,
+                Expected[keyof Expected] | `${Expected[keyof Expected]}`
+            >;
+        },
     },
     checkWrap: {
         /**
@@ -248,13 +266,18 @@ export const enumGuards = {
          * @see
          * - {@link checkWrap.isNotEnumValue} : the opposite check.
          */
-        isEnumValue:
-            autoGuard<
-                <const Actual, const Expected extends EnumBaseType>(
-                    child: Actual,
-                    checkEnum: Expected,
-                ) => NarrowToExpected<Actual, Expected[keyof Expected]> | undefined
-            >(),
+        isEnumValue<const Actual, const Expected extends EnumBaseType>(
+            this: void,
+            child: Actual,
+            checkEnum: Expected,
+        ): NarrowToExpected<Actual, Expected[keyof Expected]> | undefined {
+            const values = getEnumValues(checkEnum);
+            if (values.includes(child as Expected[keyof Expected])) {
+                return child as NarrowToExpected<Actual, Expected[keyof Expected]>;
+            } else {
+                return undefined;
+            }
+        },
         /**
          * Checks that a child value is _not_ an enum member. Returns the child value if the check
          * passes, otherwise `undefined`.
@@ -279,15 +302,21 @@ export const enumGuards = {
          * @see
          * - {@link checkWrap.isEnumValue} : the opposite check.
          */
-        isNotEnumValue:
-            autoGuard<
-                <const Actual, const Expected extends EnumBaseType>(
-                    child: Actual,
-                    checkEnum: Expected,
-                ) =>
-                    | Exclude<Actual, Expected[keyof Expected] | `${Expected[keyof Expected]}`>
-                    | undefined
-            >(),
+        isNotEnumValue<const Actual, const Expected extends EnumBaseType>(
+            this: void,
+            child: Actual,
+            checkEnum: Expected,
+        ): Exclude<Actual, Expected[keyof Expected] | `${Expected[keyof Expected]}`> | undefined {
+            const values = getEnumValues(checkEnum);
+            if (values.includes(child as Expected[keyof Expected])) {
+                return undefined;
+            } else {
+                return child as Exclude<
+                    Actual,
+                    Expected[keyof Expected] | `${Expected[keyof Expected]}`
+                >;
+            }
+        },
     },
     waitUntil: {
         /**
@@ -315,15 +344,16 @@ export const enumGuards = {
          * @see
          * - {@link waitUntil.isNotEnumValue} : the opposite assertion.
          */
-        isEnumValue:
-            autoGuard<
-                <const Actual, const Expected extends EnumBaseType>(
-                    checkEnum: Expected,
-                    callback: () => MaybePromise<Actual>,
-                    options?: WaitUntilOptions | undefined,
-                    failureMessage?: string | undefined,
-                ) => Promise<NarrowToExpected<Actual, Expected[keyof Expected]>>
-            >(),
+        isEnumValue: createWaitUntil(assertions.isEnumValue) as <
+            const Actual,
+            const Expected extends EnumBaseType,
+        >(
+            this: void,
+            checkEnum: Expected,
+            callback: () => MaybePromise<Actual>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<NarrowToExpected<Actual, Expected[keyof Expected]>>,
         /**
          * Repeatedly calls a callback until its output is _not_ an enum member. Once the callback
          * output passes, it is returned. If the attempts time out, an error is thrown.
@@ -349,16 +379,15 @@ export const enumGuards = {
          * @see
          * - {@link waitUntil.isEnumValue} : the opposite assertion.
          */
-        isNotEnumValue:
-            autoGuard<
-                <const Actual, const Expected extends EnumBaseType>(
-                    checkEnum: Expected,
-                    callback: () => MaybePromise<Actual>,
-                    options?: WaitUntilOptions | undefined,
-                    failureMessage?: string | undefined,
-                ) => Promise<
-                    Exclude<Actual, Expected[keyof Expected] | `${Expected[keyof Expected]}`>
-                >
-            >(),
+        isNotEnumValue: createWaitUntil(assertions.isNotEnumValue) as <
+            const Actual,
+            const Expected extends EnumBaseType,
+        >(
+            this: void,
+            checkEnum: Expected,
+            callback: () => MaybePromise<Actual>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<Exclude<Actual, Expected[keyof Expected] | `${Expected[keyof Expected]}`>>,
     },
 } satisfies GuardGroup<typeof assertions>;

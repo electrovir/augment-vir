@@ -3,79 +3,36 @@ import {type AnyObject, type MaybePromise, stringify, type Values} from '@augmen
 import type {EmptyObject} from 'type-fest';
 import {AssertionError} from '../augments/assertion.error.js';
 import type {GuardGroup} from '../guard-types/guard-group.js';
-import {autoGuard, autoGuardSymbol} from '../guard-types/guard-override.js';
-import {type WaitUntilOptions} from '../guard-types/wait-until-function.js';
+import {createWaitUntil, type WaitUntilOptions} from '../guard-types/wait-until-function.js';
 
-function hasValue(parent: object, value: unknown, failureMessage?: string | undefined) {
+function hasValue(this: void, parent: object | string, value: unknown): boolean {
+    if (typeof parent === 'string') {
+        return typeof value === 'string' && parent.includes(value);
+    }
     /** Wrap this in a try/catch because `Reflect.ownKeys` can fail depending on what its input is. */
+    let hasValue: boolean = true;
+
     try {
-        const hasValue = Reflect.ownKeys(parent)
+        hasValue = Reflect.ownKeys(parent)
             .map((key) => parent[key as keyof typeof parent] as unknown)
             .includes(value);
-
-        if (!hasValue) {
-            throw new Error('fail');
-        }
     } catch {
-        throw new AssertionError(
-            `'${stringify(parent)}' does not have value '${stringify(value)}'.`,
-            failureMessage,
-        );
-    }
-}
-function lacksValue(parent: object, value: unknown, failureMessage?: string | undefined) {
-    try {
-        hasValue(parent, value);
-    } catch {
-        return;
+        return false;
     }
 
-    throw new AssertionError(
-        `'${stringify(parent)}' has value '${stringify(value)}'.`,
-        failureMessage,
-    );
+    return hasValue;
 }
 
-function hasValues(
-    parent: object,
-    values: ReadonlyArray<unknown>,
-    failureMessage?: string | undefined,
-) {
-    values.forEach((value) => hasValue(parent, value, failureMessage));
-}
-function lacksValues(
-    parent: object,
-    values: ReadonlyArray<unknown>,
-    failureMessage?: string | undefined,
-) {
-    values.forEach((value) => lacksValue(parent, value, failureMessage));
-}
-
-export function isIn<const Parent extends object | string>(
+export function isIn<Parent extends object | string>(
+    this: void,
     child: unknown,
     parent: Parent,
-    failureMessage?: string | undefined,
-): asserts child is Values<Parent> {
+): child is Values<Parent> {
     if (typeof parent === 'string') {
-        if (!parent.includes(child as string)) {
-            throw new AssertionError(`${stringify(child)} is not in '${parent}'.`, failureMessage);
-        }
+        return parent.includes(child as string);
     } else {
-        hasValue(parent, child, failureMessage);
+        return hasValue(parent, child);
     }
-}
-function isNotIn<const Parent extends object | string, const Child>(
-    child: Child,
-    parent: Parent,
-    failureMessage?: string | undefined,
-): asserts child is Exclude<Child, Values<Parent>> {
-    try {
-        isIn(child, parent);
-    } catch {
-        return;
-    }
-
-    throw new AssertionError(`${stringify(child)} is not in ${stringify(parent)}.`, failureMessage);
 }
 
 /**
@@ -98,40 +55,7 @@ export type CanBeEmpty = string | Map<any, any> | Set<any> | AnyObject | any[];
  */
 export type Empty = '' | EmptyObject | [] | Map<any, any> | Set<any>;
 
-function isEmpty<const Actual extends CanBeEmpty>(
-    actual: Actual,
-    failureMessage?: string | undefined,
-): asserts actual is NarrowToActual<Actual, Empty> {
-    const input = actual;
-
-    if (!input) {
-        return;
-    } else if (typeof input !== 'string' && typeof input !== 'object') {
-        throw new TypeError(`Cannot check if '${stringify(input)}' is empty.`);
-    } else if (
-        (typeof input === 'string' && input) ||
-        (Array.isArray(input) && input.length) ||
-        (input instanceof Map && input.size) ||
-        (input instanceof Set && input.size) ||
-        (input && typeof input === 'object' && Object.keys(input).length)
-    ) {
-        throw new AssertionError(`'${stringify(actual)}' is not empty.`, failureMessage);
-    }
-}
-function isNotEmpty<const Actual extends CanBeEmpty>(
-    actual: Actual,
-    failureMessage?: string | undefined,
-): asserts actual is Exclude<Actual, Empty> {
-    try {
-        isEmpty(actual);
-    } catch {
-        return;
-    }
-
-    throw new AssertionError(`'${stringify(actual)}' is empty.`, failureMessage);
-}
-
-const assertions: {
+const assertions = {
     /**
      * Asserts that an object/array parent includes a child value through reference equality.
      *
@@ -154,7 +78,19 @@ const assertions: {
      * - {@link assert.lacksValue} : the opposite assertion.
      * - {@link assert.hasValues} : the multi-value assertion.
      */
-    hasValue: typeof hasValue;
+    hasValue(
+        this: void,
+        parent: object | string,
+        value: unknown,
+        failureMessage?: string | undefined,
+    ) {
+        if (!hasValue(parent, value)) {
+            throw new AssertionError(
+                `'${stringify(parent)}' does not have value '${stringify(value)}'.`,
+                failureMessage,
+            );
+        }
+    },
     /**
      * Asserts that an object/array parent does _not_ include a child value through reference
      * equality.
@@ -178,7 +114,19 @@ const assertions: {
      * - {@link assert.hasValue} : the opposite assertion.
      * - {@link assert.lacksValues} : the multi-value assertion.
      */
-    lacksValue: typeof lacksValue;
+    lacksValue(
+        this: void,
+        parent: object | string,
+        value: unknown,
+        failureMessage?: string | undefined,
+    ) {
+        if (hasValue(parent, value)) {
+            throw new AssertionError(
+                `'${stringify(parent)}' has value '${stringify(value)}'.`,
+                failureMessage,
+            );
+        }
+    },
 
     /**
      * Asserts that an object/array parent includes all child values through reference equality.
@@ -193,21 +141,9 @@ const assertions: {
      * const child = {a: 'a'};
      * const child2 = {b: 'b'};
      *
-     * assert.hasValues({child, child2}, [
-     *     child,
-     *     child2,
-     * ]); // passes
-     * assert.hasValues({child: {a: 'a'}, child2}, [
-     *     child,
-     *     child2,
-     * ]); // fails
-     * assert.hasValues(
-     *     [child],
-     *     [
-     *         child,
-     *         child2,
-     *     ],
-     * ); // passes
+     * assert.hasValues({child, child2}, [child, child2]); // passes
+     * assert.hasValues({child: {a: 'a'}, child2}, [child, child2]); // fails
+     * assert.hasValues([child], [child, child2]); // passes
      * ```
      *
      * @throws {@link AssertionError} If the assertion fails.
@@ -215,7 +151,42 @@ const assertions: {
      * - {@link assert.lacksValues} : the opposite assertion.
      * - {@link assert.hasValue} : the single-value assertion.
      */
-    hasValues: typeof hasValues;
+    hasValues(
+        this: void,
+        parent: object | string,
+        values: unknown[],
+        failureMessage?: string | undefined,
+    ) {
+        let missingValues: unknown[] = [];
+
+        if (typeof parent === 'string') {
+            missingValues = values.filter((value) => {
+                return !(typeof value === 'string' && parent.includes(value));
+            });
+        } else {
+            try {
+                const actualValues = Reflect.ownKeys(parent).map(
+                    (key) => parent[key as keyof typeof parent] as unknown,
+                );
+
+                missingValues = values.filter((value) => {
+                    return !actualValues.includes(value);
+                });
+            } catch {
+                throw new AssertionError(
+                    `'${stringify(parent)}' does not have values '${stringify(values)}'.`,
+                    failureMessage,
+                );
+            }
+        }
+
+        if (missingValues.length) {
+            throw new AssertionError(
+                `'${stringify(parent)}' does not have values '${stringify(missingValues)}'.`,
+                failureMessage,
+            );
+        }
+    },
 
     /**
      * Asserts that an object/array parent includes none of the provided child values through
@@ -231,18 +202,9 @@ const assertions: {
      * const child = {a: 'a'};
      * const child2 = {b: 'b'};
      *
-     * assert.lacksValues({}, [
-     *     child,
-     *     child2,
-     * ]); // passes
-     * assert.lacksValues({child, child2}, [
-     *     child,
-     *     child2,
-     * ]); // fails
-     * assert.lacksValues({child: {a: 'a'}, child2}, [
-     *     child,
-     *     child2,
-     * ]); // fails
+     * assert.lacksValues({}, [child, child2]); // passes
+     * assert.lacksValues({child, child2}, [child, child2]); // fails
+     * assert.lacksValues({child: {a: 'a'}, child2}, [child, child2]); // fails
      * ```
      *
      * @throws {@link AssertionError} If the assertion fails.
@@ -250,7 +212,39 @@ const assertions: {
      * - {@link assert.lacksValues} : the opposite assertion.
      * - {@link assert.hasValue} : the single-value assertion.
      */
-    lacksValues: typeof lacksValues;
+    lacksValues(
+        this: void,
+        parent: object | string,
+        values: unknown[],
+        failureMessage?: string | undefined,
+    ) {
+        let includedValues: unknown[] = [];
+
+        if (typeof parent === 'string') {
+            includedValues = values.filter((value) => {
+                return typeof value === 'string' && parent.includes(value);
+            });
+        } else {
+            try {
+                const actualValues = Reflect.ownKeys(parent).map(
+                    (key) => parent[key as keyof typeof parent] as unknown,
+                );
+
+                includedValues = values.filter((value) => {
+                    return actualValues.includes(value);
+                });
+            } catch {
+                // ignore error
+            }
+        }
+
+        if (includedValues.length) {
+            throw new AssertionError(
+                `'${stringify(parent)}' has values '${stringify(includedValues)}'.`,
+                failureMessage,
+            );
+        }
+    },
     /**
      * Asserts that child value is contained within a parent object, array, or string through
      * reference equality.
@@ -276,7 +270,19 @@ const assertions: {
      * @see
      * - {@link assert.isNotIn} : the opposite assertion.
      */
-    isIn: typeof isIn;
+    isIn<Parent extends object | string>(
+        this: void,
+        child: unknown,
+        parent: Parent,
+        failureMessage?: string | undefined,
+    ): asserts child is Values<Parent> {
+        if (!isIn(child, parent)) {
+            throw new AssertionError(
+                `'${stringify(child)}'\n\nis not in\n\n${stringify(parent)}.`,
+                failureMessage,
+            );
+        }
+    },
     /**
      * Asserts that child value is _not_ contained within a parent object, array, or string through
      * reference equality.
@@ -302,7 +308,19 @@ const assertions: {
      * @see
      * - {@link assert.isIn} : the opposite assertion.
      */
-    isNotIn: typeof isNotIn;
+    isNotIn<Parent extends object | string, Child>(
+        this: void,
+        child: Child,
+        parent: Parent,
+        failureMessage?: string | undefined,
+    ): asserts child is Exclude<Child, Values<Parent>> {
+        if (isIn(child, parent)) {
+            throw new AssertionError(
+                `'${stringify(child)}'\n\nis in\n\n${stringify(parent)}.`,
+                failureMessage,
+            );
+        }
+    },
     /**
      * Asserts that a value is empty. Supports strings, Maps, Sets, objects, and arrays.
      *
@@ -325,7 +343,34 @@ const assertions: {
      * @see
      * - {@link assert.isNotEmpty} : the opposite assertion.
      */
-    isEmpty: typeof isEmpty;
+    isEmpty<Actual extends CanBeEmpty>(
+        this: void,
+        actual: Actual,
+        failureMessage?: string | undefined,
+    ): asserts actual is NarrowToActual<Actual, Empty> {
+        if (typeof actual !== 'string' && typeof actual !== 'object') {
+            throw new AssertionError(`'${stringify(actual)}' is not empty.`, failureMessage);
+        }
+
+        if (typeof actual === 'string' && !actual) {
+            // eslint-disable-next-line sonarjs/no-gratuitous-expressions
+            if (!actual) {
+                return;
+            }
+        } else if (Array.isArray(actual)) {
+            if (!actual.length) {
+                return;
+            }
+        } else if (actual instanceof Map || actual instanceof Set) {
+            if (!actual.size) {
+                return;
+            }
+        } else if (typeof actual === 'object' && !Object.keys(actual).length) {
+            return;
+        }
+
+        throw new AssertionError(`'${stringify(actual)}' is not empty.`, failureMessage);
+    },
     /**
      * Asserts that a value is _not_ empty. Supports strings, Maps, Sets, objects, and arrays.
      *
@@ -348,16 +393,32 @@ const assertions: {
      * @see
      * - {@link assert.isEmpty} : the opposite assertion.
      */
-    isNotEmpty: typeof isNotEmpty;
-} = {
-    hasValue,
-    lacksValue,
-    hasValues,
-    lacksValues,
-    isIn,
-    isNotIn,
-    isEmpty,
-    isNotEmpty,
+    isNotEmpty<Actual extends CanBeEmpty>(
+        this: void,
+        actual: Actual,
+        failureMessage?: string | undefined,
+    ): asserts actual is Exclude<Actual, Empty> {
+        if (typeof actual !== 'string' && typeof actual !== 'object') {
+            return;
+        }
+
+        if (typeof actual === 'string' && !actual) {
+            // eslint-disable-next-line sonarjs/no-gratuitous-expressions
+            if (!actual) {
+                throw new AssertionError(`'${stringify(actual)}' is not empty.`, failureMessage);
+            }
+        } else if (Array.isArray(actual)) {
+            if (!actual.length) {
+                throw new AssertionError(`'${stringify(actual)}' is not empty.`, failureMessage);
+            }
+        } else if (actual instanceof Map || actual instanceof Set) {
+            if (!actual.size) {
+                throw new AssertionError(`'${stringify(actual)}' is not empty.`, failureMessage);
+            }
+        } else if (typeof actual === 'object' && !Object.keys(actual).length) {
+            throw new AssertionError(`'${stringify(actual)}' is not empty.`, failureMessage);
+        }
+    },
 };
 
 export const valueGuards = {
@@ -384,7 +445,9 @@ export const valueGuards = {
          * - {@link check.lacksValue} : the opposite check.
          * - {@link check.hasValues} : the multi-value check.
          */
-        hasValue: autoGuardSymbol,
+        hasValue(this: void, parent: object | string, value: unknown): boolean {
+            return hasValue(parent, value);
+        },
         /**
          * Checks that an object/array parent does _not_ include a child value through reference
          * equality.
@@ -407,7 +470,9 @@ export const valueGuards = {
          * - {@link check.hasValue} : the opposite check.
          * - {@link check.lacksValues} : the multi-value check.
          */
-        lacksValue: autoGuardSymbol,
+        lacksValue(this: void, parent: object | string, value: unknown): boolean {
+            return !hasValue(parent, value);
+        },
         /**
          * Checks that an object/array parent includes all child values through reference equality.
          *
@@ -421,28 +486,18 @@ export const valueGuards = {
          * const child = {a: 'a'};
          * const child2 = {b: 'b'};
          *
-         * check.hasValues({child, child2}, [
-         *     child,
-         *     child2,
-         * ]); // returns `true`
-         * check.hasValues({child: {a: 'a'}, child2}, [
-         *     child,
-         *     child2,
-         * ]); // returns `false`
-         * check.hasValues(
-         *     [child],
-         *     [
-         *         child,
-         *         child2,
-         *     ],
-         * ); // returns `true`
+         * check.hasValues({child, child2}, [child, child2]); // returns `true`
+         * check.hasValues({child: {a: 'a'}, child2}, [child, child2]); // returns `false`
+         * check.hasValues([child], [child, child2]); // returns `true`
          * ```
          *
          * @see
          * - {@link check.lacksValues} : the opposite check.
          * - {@link check.hasValue} : the single-value check.
          */
-        hasValues: autoGuardSymbol,
+        hasValues(this: void, parent: object | string, values: unknown[]): boolean {
+            return values.every((value) => hasValue(parent, value));
+        },
         /**
          * Checks that an object/array parent includes none of the provided child values through
          * reference equality.
@@ -457,25 +512,18 @@ export const valueGuards = {
          * const child = {a: 'a'};
          * const child2 = {b: 'b'};
          *
-         * check.lacksValues({}, [
-         *     child,
-         *     child2,
-         * ]); // returns `true`
-         * check.lacksValues({child, child2}, [
-         *     child,
-         *     child2,
-         * ]); // returns `false`
-         * check.lacksValues({child: {a: 'a'}, child2}, [
-         *     child,
-         *     child2,
-         * ]); // returns `false`
+         * check.lacksValues({}, [child, child2]); // returns `true`
+         * check.lacksValues({child, child2}, [child, child2]); // returns `false`
+         * check.lacksValues({child: {a: 'a'}, child2}, [child, child2]); // returns `false`
          * ```
          *
          * @see
          * - {@link check.lacksValues} : the opposite check.
          * - {@link check.hasValue} : the single-value check.
          */
-        lacksValues: autoGuardSymbol,
+        lacksValues(this: void, parent: object | string, values: unknown[]): boolean {
+            return values.every((value) => !hasValue(parent, value));
+        },
         /**
          * Checks that child value is contained within a parent object, array, or string through
          * reference equality.
@@ -500,9 +548,13 @@ export const valueGuards = {
          * @see
          * - {@link check.isNotIn} : the opposite check.
          */
-        isIn: autoGuard<
-            <const Parent>(child: unknown, parent: Parent) => child is Values<Parent>
-        >(),
+        isIn<Parent extends object | string>(
+            this: void,
+            child: unknown,
+            parent: Parent,
+        ): child is Values<Parent> {
+            return isIn(child, parent);
+        },
         /**
          * Checks that child value is _not_ contained within a parent object, array, or string
          * through reference equality.
@@ -527,14 +579,13 @@ export const valueGuards = {
          * @see
          * - {@link check.isIn} : the opposite check.
          */
-        isNotIn:
-            autoGuard<
-                <const Parent, const Child>(
-                    child: Child,
-                    parent: Parent,
-                    failureMessage?: string | undefined,
-                ) => child is Exclude<Child, Values<Parent>>
-            >(),
+        isNotIn<Parent extends object | string, Child>(
+            this: void,
+            child: Child,
+            parent: Parent,
+        ): child is Exclude<Child, Values<Parent>> {
+            return !isIn(child, parent);
+        },
         /**
          * Checks that a value is empty. Supports strings, Maps, Sets, objects, and arrays.
          *
@@ -556,12 +607,26 @@ export const valueGuards = {
          * @see
          * - {@link check.isNotEmpty} : the opposite check.
          */
-        isEmpty:
-            autoGuard<
-                <const Actual extends CanBeEmpty>(
-                    actual: Actual,
-                ) => actual is NarrowToActual<Actual, Empty>
-            >(),
+        isEmpty<Actual extends CanBeEmpty>(
+            this: void,
+            actual: Actual,
+        ): actual is NarrowToActual<Actual, Empty> {
+            if (typeof actual !== 'string' && typeof actual !== 'object') {
+                return false;
+            }
+
+            if (typeof actual === 'string') {
+                return !actual;
+            } else if (Array.isArray(actual)) {
+                return !actual.length;
+            } else if (actual instanceof Map) {
+                return !actual.size;
+            } else if (actual instanceof Set) {
+                return !actual.size;
+            } else {
+                return !Object.keys(actual).length;
+            }
+        },
         /**
          * Checks that a value is _not_ empty. Supports strings, Maps, Sets, objects, and arrays.
          *
@@ -583,12 +648,26 @@ export const valueGuards = {
          * @see
          * - {@link check.isEmpty} : the opposite check.
          */
-        isNotEmpty:
-            autoGuard<
-                <const Actual extends CanBeEmpty>(
-                    actual: Actual,
-                ) => actual is Exclude<Actual, Empty>
-            >(),
+        isNotEmpty<Actual extends CanBeEmpty>(
+            this: void,
+            actual: Actual,
+        ): actual is Exclude<Actual, Empty> {
+            if (typeof actual !== 'string' && typeof actual !== 'object') {
+                return true;
+            }
+
+            if (typeof actual === 'string') {
+                return !!actual;
+            } else if (Array.isArray(actual)) {
+                return !!actual.length;
+            } else if (actual instanceof Map) {
+                return !!actual.size;
+            } else if (actual instanceof Set) {
+                return !!actual.size;
+            } else {
+                return !!Object.keys(actual).length;
+            }
+        },
     },
     assertWrap: {
         /**
@@ -615,7 +694,21 @@ export const valueGuards = {
          * - {@link assertWrap.lacksValue} : the opposite assertion.
          * - {@link assertWrap.hasValues} : the multi-value assertion.
          */
-        hasValue: autoGuardSymbol,
+        hasValue<Parent extends object | string>(
+            this: void,
+            parent: Parent,
+            value: unknown,
+            failureMessage?: string | undefined,
+        ): Parent {
+            if (!hasValue(parent, value)) {
+                throw new AssertionError(
+                    `'${stringify(parent)}' does not have value '${stringify(value)}'.`,
+                    failureMessage,
+                );
+            }
+
+            return parent;
+        },
         /**
          * Asserts that an object/array parent does _not_ include a child value through reference
          * equality. Returns the parent value if the assertion passes.
@@ -640,7 +733,21 @@ export const valueGuards = {
          * - {@link assertWrap.hasValue} : the opposite assertion.
          * - {@link assertWrap.lacksValues} : the multi-value assertion.
          */
-        lacksValue: autoGuardSymbol,
+        lacksValue<Parent extends object | string>(
+            this: void,
+            parent: Parent,
+            value: unknown,
+            failureMessage?: string | undefined,
+        ): Parent {
+            if (hasValue(parent, value)) {
+                throw new AssertionError(
+                    `'${stringify(parent)}' has value '${stringify(value)}'.`,
+                    failureMessage,
+                );
+            }
+
+            return parent;
+        },
         /**
          * Asserts that an object/array parent includes all child values through reference equality.
          * Returns the parent value if the assertion passes.
@@ -655,21 +762,9 @@ export const valueGuards = {
          * const child = {a: 'a'};
          * const child2 = {b: 'b'};
          *
-         * assertWrap.hasValues({child, child2}, [
-         *     child,
-         *     child2,
-         * ]); // returns `{child, child2}`;
-         * assertWrap.hasValues({child: {a: 'a'}, child2}, [
-         *     child,
-         *     child2,
-         * ]); // throws an error
-         * assertWrap.hasValues(
-         *     [child],
-         *     [
-         *         child,
-         *         child2,
-         *     ],
-         * ); // returns `[child]`;
+         * assertWrap.hasValues({child, child2}, [child, child2]); // returns `{child, child2}`;
+         * assertWrap.hasValues({child: {a: 'a'}, child2}, [child, child2]); // throws an error
+         * assertWrap.hasValues([child], [child, child2]); // returns `[child]`;
          * ```
          *
          * @returns The value if the assertion passes.
@@ -678,7 +773,44 @@ export const valueGuards = {
          * - {@link assertWrap.lacksValues} : the opposite assertion.
          * - {@link assertWrap.hasValue} : the single-value assertion.
          */
-        hasValues: autoGuardSymbol,
+        hasValues<Parent extends object | string>(
+            this: void,
+            parent: Parent,
+            values: unknown[],
+            failureMessage?: string | undefined,
+        ): Parent {
+            let missingValues = [];
+
+            if (typeof parent === 'string') {
+                missingValues = values.filter((value) => {
+                    return !(typeof value === 'string' && parent.includes(value));
+                });
+            } else {
+                try {
+                    const actualValues = Reflect.ownKeys(parent).map(
+                        (key) => parent[key as keyof typeof parent] as unknown,
+                    );
+
+                    missingValues = values.filter((value) => {
+                        return !actualValues.includes(value);
+                    });
+                } catch {
+                    throw new AssertionError(
+                        `'${stringify(parent)}' does not have values '${stringify(values)}'.`,
+                        failureMessage,
+                    );
+                }
+            }
+
+            if (missingValues.length) {
+                throw new AssertionError(
+                    `'${stringify(parent)}' does not have values '${stringify(missingValues)}'.`,
+                    failureMessage,
+                );
+            }
+
+            return parent;
+        },
         /**
          * Asserts that an object/array parent includes none of the provided child values through
          * reference equality. Returns the parent value if the assertion passes.
@@ -693,18 +825,9 @@ export const valueGuards = {
          * const child = {a: 'a'};
          * const child2 = {b: 'b'};
          *
-         * assertWrap.lacksValues({}, [
-         *     child,
-         *     child2,
-         * ]); // returns `{}`;
-         * assertWrap.lacksValues({child, child2}, [
-         *     child,
-         *     child2,
-         * ]); // throws an error
-         * assertWrap.lacksValues({child: {a: 'a'}, child2}, [
-         *     child,
-         *     child2,
-         * ]); // throws an error
+         * assertWrap.lacksValues({}, [child, child2]); // returns `{}`;
+         * assertWrap.lacksValues({child, child2}, [child, child2]); // throws an error
+         * assertWrap.lacksValues({child: {a: 'a'}, child2}, [child, child2]); // throws an error
          * ```
          *
          * @returns The value if the assertion passes.
@@ -713,7 +836,41 @@ export const valueGuards = {
          * - {@link assertWrap.lacksValues} : the opposite assertion.
          * - {@link assertWrap.hasValue} : the single-value assertion.
          */
-        lacksValues: autoGuardSymbol,
+        lacksValues<Parent extends object | string>(
+            this: void,
+            parent: Parent,
+            values: unknown[],
+            failureMessage?: string | undefined,
+        ): Parent {
+            let includedValues: unknown[] = [];
+
+            if (typeof parent === 'string') {
+                includedValues = values.filter((value) => {
+                    return typeof value === 'string' && parent.includes(value);
+                });
+            } else {
+                try {
+                    const actualValues = Reflect.ownKeys(parent).map(
+                        (key) => parent[key as keyof typeof parent] as unknown,
+                    );
+
+                    includedValues = values.filter((value) => {
+                        return actualValues.includes(value);
+                    });
+                } catch {
+                    // ignore error
+                }
+            }
+
+            if (includedValues.length) {
+                throw new AssertionError(
+                    `'${stringify(parent)}' has values '${stringify(includedValues)}'.`,
+                    failureMessage,
+                );
+            }
+
+            return parent;
+        },
         /**
          * Asserts that child value is contained within a parent object, array, or string through
          * reference equality. Returns the child value if the assertion passes.
@@ -740,13 +897,21 @@ export const valueGuards = {
          * @see
          * - {@link assertWrap.isNotIn} : the opposite assertion.
          */
-        isIn: autoGuard<
-            <const Child, const Parent>(
-                child: Child,
-                parent: Parent,
-                failureMessage?: string | undefined,
-            ) => NarrowToExpected<Child, Values<Parent>>
-        >(),
+        isIn<Parent extends object | string, Child>(
+            this: void,
+            child: Child,
+            parent: Parent,
+            failureMessage?: string | undefined,
+        ): Extract<Child, Values<Parent>> {
+            if (!isIn(child, parent)) {
+                throw new AssertionError(
+                    `'${stringify(child)}'\n\nis not in\n\n${stringify(parent)}.`,
+                    failureMessage,
+                );
+            }
+
+            return child as Extract<Child, Values<Parent>>;
+        },
         /**
          * Asserts that child value is _not_ contained within a parent object, array, or string
          * through reference equality. Returns the child value if the assertion passes.
@@ -773,14 +938,21 @@ export const valueGuards = {
          * @see
          * - {@link assertWrap.isIn} : the opposite assertion.
          */
-        isNotIn:
-            autoGuard<
-                <const Parent, const Child>(
-                    child: Child,
-                    parent: Parent,
-                    failureMessage?: string | undefined,
-                ) => Exclude<Child, Values<Parent>>
-            >(),
+        isNotIn<Parent extends object | string, Child>(
+            this: void,
+            child: Child,
+            parent: Parent,
+            failureMessage?: string | undefined,
+        ): Exclude<Child, Values<Parent>> {
+            if (isIn(child, parent)) {
+                throw new AssertionError(
+                    `'${stringify(child)}'\n\nis in\n\n${stringify(parent)}.`,
+                    failureMessage,
+                );
+            }
+
+            return child as Exclude<Child, Values<Parent>>;
+        },
         /**
          * Asserts that a value is empty. Supports strings, Maps, Sets, objects, and arrays. Returns
          * the value if the assertion passes.
@@ -805,13 +977,33 @@ export const valueGuards = {
          * @see
          * - {@link assertWrap.isNotEmpty} : the opposite assertion.
          */
-        isEmpty:
-            autoGuard<
-                <const Actual extends CanBeEmpty>(
-                    actual: Actual,
-                    failureMessage?: string | undefined,
-                ) => NarrowToActual<Actual, Empty>
-            >(),
+        isEmpty<Actual extends CanBeEmpty>(
+            this: void,
+            actual: Actual,
+            failureMessage?: string | undefined,
+        ): NarrowToActual<Actual, Empty> {
+            if (typeof actual !== 'string' && typeof actual !== 'object') {
+                throw new AssertionError(`'${stringify(actual)}' is not empty.`, failureMessage);
+            }
+
+            if (typeof actual === 'string' && !actual) {
+                // eslint-disable-next-line sonarjs/no-gratuitous-expressions
+                if (!actual) {
+                    return actual as NarrowToActual<Actual, Empty>;
+                }
+            } else if (Array.isArray(actual)) {
+                if (!actual.length) {
+                    return actual as NarrowToActual<Actual, Empty>;
+                }
+            } else if (actual instanceof Map || actual instanceof Set) {
+                if (!actual.size) {
+                    return actual as NarrowToActual<Actual, Empty>;
+                }
+            } else if (typeof actual === 'object' && !Object.keys(actual).length) {
+                return actual as NarrowToActual<Actual, Empty>;
+            }
+            throw new AssertionError(`'${stringify(actual)}' is not empty.`, failureMessage);
+        },
         /**
          * Asserts that a value is _not_ empty. Supports strings, Maps, Sets, objects, and arrays.
          * Returns the value if the assertion passes.
@@ -836,10 +1028,34 @@ export const valueGuards = {
          * @see
          * - {@link assertWrap.isEmpty} : the opposite assertion.
          */
-        isNotEmpty:
-            autoGuard<
-                <const Actual extends CanBeEmpty>(actual: Actual) => Exclude<Actual, Empty>
-            >(),
+        isNotEmpty<Actual extends CanBeEmpty>(
+            this: void,
+            actual: Actual,
+            failureMessage?: string | undefined,
+        ): Exclude<Actual, Empty> {
+            if (typeof actual !== 'string' && typeof actual !== 'object') {
+                return actual as Exclude<Actual, Empty>;
+            }
+
+            if (typeof actual === 'string' && !actual) {
+                // eslint-disable-next-line sonarjs/no-gratuitous-expressions
+                if (!actual) {
+                    throw new AssertionError(`'${stringify(actual)}' is empty.`, failureMessage);
+                }
+            } else if (Array.isArray(actual)) {
+                if (!actual.length) {
+                    throw new AssertionError(`'${stringify(actual)}' is empty.`, failureMessage);
+                }
+            } else if (actual instanceof Map || actual instanceof Set) {
+                if (!actual.size) {
+                    throw new AssertionError(`'${stringify(actual)}' is empty.`, failureMessage);
+                }
+            } else if (typeof actual === 'object' && !Object.keys(actual).length) {
+                throw new AssertionError(`'${stringify(actual)}' is empty.`, failureMessage);
+            }
+
+            return actual as Exclude<Actual, Empty>;
+        },
     },
     checkWrap: {
         /**
@@ -863,7 +1079,17 @@ export const valueGuards = {
          * - {@link checkWrap.lacksValue} : the opposite check.
          * - {@link checkWrap.hasValues} : the multi-value check.
          */
-        hasValue: autoGuardSymbol,
+        hasValue<Parent extends object | string>(
+            this: void,
+            parent: Parent,
+            value: unknown,
+        ): Parent | undefined {
+            if (hasValue(parent, value)) {
+                return parent;
+            } else {
+                return undefined;
+            }
+        },
         /**
          * Checks that an object/array parent does _not_ include a child value through reference
          * equality.
@@ -886,7 +1112,17 @@ export const valueGuards = {
          * - {@link checkWrap.hasValue} : the opposite check.
          * - {@link checkWrap.lacksValues} : the multi-value check.
          */
-        lacksValue: autoGuardSymbol,
+        lacksValue<Parent extends object | string>(
+            this: void,
+            parent: Parent,
+            value: unknown,
+        ): Parent | undefined {
+            if (hasValue(parent, value)) {
+                return undefined;
+            } else {
+                return parent;
+            }
+        },
         /**
          * Checks that an object/array parent includes all child values through reference equality.
          *
@@ -900,28 +1136,26 @@ export const valueGuards = {
          * const child = {a: 'a'};
          * const child2 = {b: 'b'};
          *
-         * checkWrap.hasValues({child, child2}, [
-         *     child,
-         *     child2,
-         * ]); // returns `{child, child2}`
-         * checkWrap.hasValues({child: {a: 'a'}, child2}, [
-         *     child,
-         *     child2,
-         * ]); // returns `undefined`
-         * checkWrap.hasValues(
-         *     [child],
-         *     [
-         *         child,
-         *         child2,
-         *     ],
-         * ); // returns `[child]`
+         * checkWrap.hasValues({child, child2}, [child, child2]); // returns `{child, child2}`
+         * checkWrap.hasValues({child: {a: 'a'}, child2}, [child, child2]); // returns `undefined`
+         * checkWrap.hasValues([child], [child, child2]); // returns `[child]`
          * ```
          *
          * @see
          * - {@link checkWrap.lacksValues} : the opposite check.
          * - {@link checkWrap.hasValue} : the single-value check.
          */
-        hasValues: autoGuardSymbol,
+        hasValues<Parent extends object | string>(
+            this: void,
+            parent: Parent,
+            values: unknown[],
+        ): Parent | undefined {
+            if (values.every((value) => hasValue(parent, value))) {
+                return parent;
+            } else {
+                return undefined;
+            }
+        },
         /**
          * Checks that an object/array parent includes none of the provided child values through
          * reference equality.
@@ -936,25 +1170,26 @@ export const valueGuards = {
          * const child = {a: 'a'};
          * const child2 = {b: 'b'};
          *
-         * checkWrap.lacksValues({}, [
-         *     child,
-         *     child2,
-         * ]); // returns `{}`
-         * checkWrap.lacksValues({child, child2}, [
-         *     child,
-         *     child2,
-         * ]); // returns `undefined`
-         * checkWrap.lacksValues({child: {a: 'a'}, child2}, [
-         *     child,
-         *     child2,
-         * ]); // returns `undefined`
+         * checkWrap.lacksValues({}, [child, child2]); // returns `{}`
+         * checkWrap.lacksValues({child, child2}, [child, child2]); // returns `undefined`
+         * checkWrap.lacksValues({child: {a: 'a'}, child2}, [child, child2]); // returns `undefined`
          * ```
          *
          * @see
          * - {@link checkWrap.lacksValues} : the opposite check.
          * - {@link checkWrap.hasValue} : the single-value check.
          */
-        lacksValues: autoGuardSymbol,
+        lacksValues<Parent extends object | string>(
+            this: void,
+            parent: Parent,
+            values: unknown[],
+        ): Parent | undefined {
+            if (values.every((value) => hasValue(parent, value))) {
+                return undefined;
+            } else {
+                return parent;
+            }
+        },
         /**
          * Checks that child value is contained within a parent object, array, or string through
          * reference equality.
@@ -979,12 +1214,17 @@ export const valueGuards = {
          * @see
          * - {@link checkWrap.isNotIn} : the opposite check.
          */
-        isIn: autoGuard<
-            <const Child, const Parent>(
-                child: Child,
-                parent: Parent,
-            ) => NarrowToExpected<Child, Values<Parent>> | undefined
-        >(),
+        isIn<Parent extends object | string, Child>(
+            this: void,
+            child: Child,
+            parent: Parent,
+        ): Extract<Child, Values<Parent>> | undefined {
+            if (isIn(child, parent)) {
+                return child as Extract<Child, Values<Parent>>;
+            } else {
+                return undefined;
+            }
+        },
         /**
          * Checks that child value is _not_ contained within a parent object, array, or string
          * through reference equality.
@@ -1009,14 +1249,17 @@ export const valueGuards = {
          * @see
          * - {@link checkWrap.isIn} : the opposite check.
          */
-        isNotIn:
-            autoGuard<
-                <const Parent, const Child>(
-                    child: Child,
-                    parent: Parent,
-                    failureMessage?: string | undefined,
-                ) => Exclude<Child, Values<Parent>> | undefined
-            >(),
+        isNotIn<Parent extends object | string, Child>(
+            this: void,
+            child: Child,
+            parent: Parent,
+        ): Exclude<Child, Values<Parent>> | undefined {
+            if (isIn(child, parent)) {
+                return undefined;
+            } else {
+                return child as Exclude<Child, Values<Parent>>;
+            }
+        },
         /**
          * Checks that a value is empty. Supports strings, Maps, Sets, objects, and arrays.
          *
@@ -1038,12 +1281,32 @@ export const valueGuards = {
          * @see
          * - {@link checkWrap.isNotEmpty} : the opposite check.
          */
-        isEmpty:
-            autoGuard<
-                <const Actual extends CanBeEmpty>(
-                    actual: Actual,
-                ) => NarrowToActual<Actual, Empty> | undefined
-            >(),
+        isEmpty<Actual extends CanBeEmpty>(
+            this: void,
+            actual: Actual,
+        ): NarrowToActual<Actual, Empty> | undefined {
+            if (typeof actual !== 'string' && typeof actual !== 'object') {
+                return undefined;
+            }
+
+            if (typeof actual === 'string') {
+                if (!actual) {
+                    return actual as NarrowToActual<Actual, Empty>;
+                }
+            } else if (Array.isArray(actual)) {
+                if (!actual.length) {
+                    return actual as NarrowToActual<Actual, Empty>;
+                }
+            } else if (actual instanceof Map || actual instanceof Set) {
+                if (!actual.size) {
+                    return actual as NarrowToActual<Actual, Empty>;
+                }
+            } else if (typeof actual === 'object' && !Object.keys(actual).length) {
+                return actual as NarrowToActual<Actual, Empty>;
+            }
+
+            return undefined;
+        },
         /**
          * Checks that a value is _not_ empty. Supports strings, Maps, Sets, objects, and arrays.
          *
@@ -1065,12 +1328,32 @@ export const valueGuards = {
          * @see
          * - {@link checkWrap.isEmpty} : the opposite check.
          */
-        isNotEmpty:
-            autoGuard<
-                <const Actual extends CanBeEmpty>(
-                    actual: Actual,
-                ) => Exclude<Actual, Empty> | undefined
-            >(),
+        isNotEmpty<Actual extends CanBeEmpty>(
+            this: void,
+            actual: Actual,
+        ): Exclude<Actual, Empty> | undefined {
+            if (typeof actual !== 'string' && typeof actual !== 'object') {
+                return actual as Exclude<Actual, Empty>;
+            }
+
+            if (typeof actual === 'string') {
+                if (!actual) {
+                    return undefined;
+                }
+            } else if (Array.isArray(actual)) {
+                if (!actual.length) {
+                    return undefined;
+                }
+            } else if (actual instanceof Map || actual instanceof Set) {
+                if (!actual.size) {
+                    return undefined;
+                }
+            } else if (typeof actual === 'object' && !Object.keys(actual).length) {
+                return undefined;
+            }
+
+            return actual as Exclude<Actual, Empty>;
+        },
     },
     waitUntil: {
         /**
@@ -1102,7 +1385,13 @@ export const valueGuards = {
          * - {@link waitUntil.lacksValue} : the opposite assertion.
          * - {@link waitUntil.hasValues} : the multi-value assertion.
          */
-        hasValue: autoGuardSymbol,
+        hasValue: createWaitUntil(assertions.hasValue) as <Parent extends object | string>(
+            this: void,
+            value: unknown,
+            callback: () => MaybePromise<Parent>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<Parent>,
         /**
          * Repeatedly calls a callback until its output is an object/array parent does _not_ include
          * a child value through reference equality. Once the callback output passes, it is
@@ -1132,7 +1421,13 @@ export const valueGuards = {
          * - {@link waitUntil.hasValue} : the opposite assertion.
          * - {@link waitUntil.lacksValues} : the multi-value assertion.
          */
-        lacksValue: autoGuardSymbol,
+        lacksValue: createWaitUntil(assertions.lacksValue) as <Parent extends object | string>(
+            this: void,
+            value: unknown,
+            callback: () => MaybePromise<Parent>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<Parent>,
         /**
          * Repeatedly calls a callback until its output is an object/array parent includes all child
          * values through reference equality. Once the callback output passes, it is returned. If
@@ -1148,31 +1443,13 @@ export const valueGuards = {
          * const child = {a: 'a'};
          * const child2 = {b: 'b'};
          *
-         * await waitUntil.hasValues(
-         *     [
-         *         child,
-         *         child2,
-         *     ],
-         *     () => {
-         *         return {child, child2};
-         *     },
-         * ); // returns `{child, child2}`;
-         * await waitUntil.hasValues(
-         *     [
-         *         child,
-         *         child2,
-         *     ],
-         *     () => {
-         *         return {child: {a: 'a'}, child2};
-         *     },
-         * ); // throws an error
-         * await waitUntil.hasValues(
-         *     [
-         *         child,
-         *         child2,
-         *     ],
-         *     () => [child],
-         * ); // returns `[child]`;
+         * await waitUntil.hasValues([child, child2], () => {
+         *     return {child, child2};
+         * }); // returns `{child, child2}`;
+         * await waitUntil.hasValues([child, child2], () => {
+         *     return {child: {a: 'a'}, child2};
+         * }); // throws an error
+         * await waitUntil.hasValues([child, child2], () => [child]); // returns `[child]`;
          * ```
          *
          * @returns The callback output once it passes.
@@ -1181,7 +1458,13 @@ export const valueGuards = {
          * - {@link waitUntil.lacksValues} : the opposite assertion.
          * - {@link waitUntil.hasValue} : the single-value assertion.
          */
-        hasValues: autoGuardSymbol,
+        hasValues: createWaitUntil(assertions.hasValues) as <Parent extends object | string>(
+            this: void,
+            value: unknown[],
+            callback: () => MaybePromise<Parent>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<Parent>,
         /**
          * Repeatedly calls a callback until its output is an object/array parent includes none of
          * the provided child values through reference equality. Once the callback output passes, it
@@ -1197,33 +1480,15 @@ export const valueGuards = {
          * const child = {a: 'a'};
          * const child2 = {b: 'b'};
          *
-         * await waitUntil.lacksValues(
-         *     [
-         *         child,
-         *         child2,
-         *     ],
-         *     () => {
-         *         return {};
-         *     },
-         * ); // returns `{}`;
-         * await waitUntil.lacksValues(
-         *     [
-         *         child,
-         *         child2,
-         *     ],
-         *     () => {
-         *         return {child, child2};
-         *     },
-         * ); // throws an error
-         * await waitUntil.lacksValues(
-         *     [
-         *         child,
-         *         child2,
-         *     ],
-         *     () => {
-         *         return {child: {a: 'a'}, child2};
-         *     },
-         * ); // throws an error
+         * await waitUntil.lacksValues([child, child2], () => {
+         *     return {};
+         * }); // returns `{}`;
+         * await waitUntil.lacksValues([child, child2], () => {
+         *     return {child, child2};
+         * }); // throws an error
+         * await waitUntil.lacksValues([child, child2], () => {
+         *     return {child: {a: 'a'}, child2};
+         * }); // throws an error
          * ```
          *
          * @returns The callback output once it passes.
@@ -1232,7 +1497,13 @@ export const valueGuards = {
          * - {@link waitUntil.lacksValues} : the opposite assertion.
          * - {@link waitUntil.hasValue} : the single-value assertion.
          */
-        lacksValues: autoGuardSymbol,
+        lacksValues: createWaitUntil(assertions.lacksValues) as <Parent extends object | string>(
+            this: void,
+            value: unknown[],
+            callback: () => MaybePromise<Parent>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<Parent>,
         /**
          * Repeatedly calls a callback until its output is child value is contained within a parent
          * object, array, or string through reference equality. Once the callback output passes, it
@@ -1260,14 +1531,13 @@ export const valueGuards = {
          * @see
          * - {@link waitUntil.isNotIn} : the opposite assertion.
          */
-        isIn: autoGuard<
-            <const Child, const Parent>(
-                parent: Parent,
-                callback: () => MaybePromise<Child>,
-                options?: WaitUntilOptions | undefined,
-                failureMessage?: string | undefined,
-            ) => Promise<NarrowToExpected<Child, Values<Parent>>>
-        >(),
+        isIn: createWaitUntil(assertions.isIn) as <Child, Parent>(
+            this: void,
+            parent: Parent,
+            callback: () => MaybePromise<Child>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<NarrowToExpected<Child, Values<Parent>>>,
         /**
          * Repeatedly calls a callback until its output is child value is _not_ contained within a
          * parent object, array, or string through reference equality. Once the callback output
@@ -1295,15 +1565,13 @@ export const valueGuards = {
          * @see
          * - {@link waitUntil.isIn} : the opposite assertion.
          */
-        isNotIn:
-            autoGuard<
-                <const Child, const Parent>(
-                    parent: Parent,
-                    callback: () => MaybePromise<Child>,
-                    options?: WaitUntilOptions | undefined,
-                    failureMessage?: string | undefined,
-                ) => Promise<Exclude<Child, Values<Parent>>>
-            >(),
+        isNotIn: createWaitUntil(assertions.isNotIn) as <Child, Parent>(
+            this: void,
+            parent: Parent,
+            callback: () => MaybePromise<Child>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<Exclude<Child, Values<Parent>>>,
         /**
          * Repeatedly calls a callback until its output is a value is empty. Supports strings, Maps,
          * Sets, objects, and arrays. Once the callback output passes, it is returned. If the
@@ -1333,14 +1601,12 @@ export const valueGuards = {
          * @see
          * - {@link waitUntil.isNotEmpty} : the opposite assertion.
          */
-        isEmpty:
-            autoGuard<
-                <const Actual extends CanBeEmpty>(
-                    callback: () => MaybePromise<Actual>,
-                    options?: WaitUntilOptions | undefined,
-                    failureMessage?: string | undefined,
-                ) => Promise<NarrowToActual<Actual, Empty>>
-            >(),
+        isEmpty: createWaitUntil(assertions.isEmpty) as <Actual extends CanBeEmpty>(
+            this: void,
+            callback: () => MaybePromise<Actual>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<NarrowToActual<Actual, Empty>>,
         /**
          * Repeatedly calls a callback until its output is a value is _not_ empty. Supports strings,
          * Maps, Sets, objects, and arrays. Once the callback output passes, it is returned. If the
@@ -1370,13 +1636,11 @@ export const valueGuards = {
          * @see
          * - {@link waitUntil.isEmpty} : the opposite assertion.
          */
-        isNotEmpty:
-            autoGuard<
-                <const Actual extends CanBeEmpty>(
-                    callback: () => MaybePromise<Actual>,
-                    options?: WaitUntilOptions | undefined,
-                    failureMessage?: string | undefined,
-                ) => Promise<Exclude<Actual, Empty>>
-            >(),
+        isNotEmpty: createWaitUntil(assertions.isNotEmpty) as <Actual extends CanBeEmpty>(
+            this: void,
+            callback: () => MaybePromise<Actual>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<Exclude<Actual, Empty>>,
     },
 } satisfies GuardGroup<typeof assertions>;

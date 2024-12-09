@@ -1,8 +1,7 @@
 import {type MaybePromise, type NarrowToExpected, stringify} from '@augment-vir/core';
 import {AssertionError} from '../augments/assertion.error.js';
 import type {GuardGroup} from '../guard-types/guard-group.js';
-import {autoGuard, autoGuardSymbol} from '../guard-types/guard-override.js';
-import {type WaitUntilOptions} from '../guard-types/wait-until-function.js';
+import {createWaitUntil, type WaitUntilOptions} from '../guard-types/wait-until-function.js';
 
 /**
  * All falsy values in JavaScript. This does not include `NaN` because there is no dedicated type
@@ -57,34 +56,7 @@ export type Falsy<T> = NarrowToExpected<T, FalsyValue>;
  */
 export type Truthy<T> = Exclude<T, FalsyValue>;
 
-function isFalsy(input: unknown, failureMessage?: string | undefined): asserts input is FalsyValue {
-    if (input) {
-        throw new AssertionError(`'${stringify(input)}' is not truthy.`, failureMessage);
-    }
-}
-
-function isTruthy<const Actual>(
-    input: Actual,
-    failureMessage?: string | undefined,
-): asserts input is Truthy<Actual> {
-    if (!input) {
-        throw new AssertionError(`'${stringify(input)}' is not truthy.`, failureMessage);
-    }
-}
-
-function isTrue(input: unknown, failureMessage?: string | undefined): asserts input is true {
-    if (input !== true) {
-        throw new AssertionError(`'${stringify(input)}' is not true.`, failureMessage);
-    }
-}
-
-function isFalse(input: unknown, failureMessage?: string | undefined): asserts input is false {
-    if (input !== false) {
-        throw new AssertionError(`'${stringify(input)}' is not false.`, failureMessage);
-    }
-}
-
-const assertions: {
+const assertions = {
     /**
      * Asserts that a value is exactly `false`.
      *
@@ -106,7 +78,15 @@ const assertions: {
      * - {@link assert.isTrue} : the opposite assertion.
      * - {@link assert.isFalsy} : a less exact assertion.
      */
-    isFalse: typeof isFalse;
+    isFalse(
+        this: void,
+        input: unknown,
+        failureMessage?: string | undefined,
+    ): asserts input is false {
+        if (input !== false) {
+            throw new AssertionError(`'${stringify(input)}' is not false.`, failureMessage);
+        }
+    },
     /**
      * Asserts that a value is falsy.
      *
@@ -128,7 +108,15 @@ const assertions: {
      * - {@link assert.isTruthy} : the opposite assertion.
      * - {@link assert.isFalse} : a more exact assertion.
      */
-    isFalsy: typeof isFalsy;
+    isFalsy(
+        this: void,
+        input: unknown,
+        failureMessage?: string | undefined,
+    ): asserts input is FalsyValue {
+        if (input) {
+            throw new AssertionError(`'${stringify(input)}' is not falsy.`, failureMessage);
+        }
+    },
     /**
      * Asserts that a value is exactly `true`.
      *
@@ -150,7 +138,11 @@ const assertions: {
      * - {@link assert.isFalse} : the opposite assertion.
      * - {@link assert.isTruthy} : a less exact assertion.
      */
-    isTrue: typeof isTrue;
+    isTrue(this: void, input: unknown, failureMessage?: string | undefined): asserts input is true {
+        if (input !== true) {
+            throw new AssertionError(`'${stringify(input)}' is not true.`, failureMessage);
+        }
+    },
     /**
      * Asserts that a value is truthy.
      *
@@ -172,12 +164,15 @@ const assertions: {
      * - {@link assert.isFalsy} : the opposite assertion.
      * - {@link assert.isTrue} : a more exact assertion.
      */
-    isTruthy: typeof isTruthy;
-} = {
-    isFalse,
-    isFalsy,
-    isTrue,
-    isTruthy,
+    isTruthy<const Actual>(
+        this: void,
+        input: Actual,
+        failureMessage?: string | undefined,
+    ): asserts input is Truthy<Actual> {
+        if (!input) {
+            throw new AssertionError(`'${stringify(input)}' is not truthy.`, failureMessage);
+        }
+    },
 };
 
 export const booleanGuards = {
@@ -203,7 +198,9 @@ export const booleanGuards = {
          * - {@link check.isTrue} : the opposite check.
          * - {@link check.isFalsy} : a less exact check.
          */
-        isFalse: autoGuardSymbol,
+        isFalse(this: void, input: unknown): input is false {
+            return input === false;
+        },
         /**
          * Checks that a value is falsy.
          *
@@ -224,7 +221,9 @@ export const booleanGuards = {
          * - {@link check.isTruthy} : the opposite check.
          * - {@link check.isFalse} : a more exact check.
          */
-        isFalsy: autoGuardSymbol,
+        isFalsy(this: void, input: unknown): input is FalsyValue {
+            return !input;
+        },
         /**
          * Checks that a value is exactly `true`.
          *
@@ -245,7 +244,9 @@ export const booleanGuards = {
          * - {@link check.isFalse} : the opposite check.
          * - {@link check.isTruthy} : a less exact check.
          */
-        isTrue: autoGuardSymbol,
+        isTrue(this: void, input: unknown): input is true {
+            return input === true;
+        },
         /**
          * Checks that a value is truthy.
          *
@@ -266,7 +267,9 @@ export const booleanGuards = {
          * - {@link check.isFalsy} : the opposite check.
          * - {@link check.isTrue} : a more exact check.
          */
-        isTruthy: autoGuard<<T>(input: T) => input is Truthy<T>>(),
+        isTruthy<T>(this: void, input: T): input is Truthy<T> {
+            return !!input;
+        },
     },
     assertWrap: {
         /**
@@ -291,7 +294,13 @@ export const booleanGuards = {
          * - {@link assertWrap.isTrue} : the opposite assertion.
          * - {@link assertWrap.isFalsy} : a less exact assertion.
          */
-        isFalse: autoGuardSymbol,
+        isFalse(this: void, input: unknown, failureMessage?: undefined | string): false {
+            if (input === false) {
+                return input;
+            } else {
+                throw new AssertionError(`'${stringify(input)}' is not false.`, failureMessage);
+            }
+        },
         /**
          * Asserts that a value is falsy. Returns the value if the assertion passes.
          *
@@ -314,7 +323,13 @@ export const booleanGuards = {
          * - {@link assertWrap.isTruthy} : the opposite assertion.
          * - {@link assertWrap.isFalse} : a more exact assertion.
          */
-        isFalsy: autoGuard<<T>(input: T, failureMessage?: string | undefined) => Falsy<T>>(),
+        isFalsy<T>(this: void, input: T, failureMessage?: undefined | string): Falsy<T> {
+            if (input) {
+                throw new AssertionError(`'${stringify(input)}' is not falsy.`, failureMessage);
+            } else {
+                return input as Falsy<T>;
+            }
+        },
         /**
          * Asserts that a value is exactly `true`. Returns the value if the assertion passes.
          *
@@ -337,7 +352,13 @@ export const booleanGuards = {
          * - {@link assertWrap.isFalse} : the opposite assertion.
          * - {@link assertWrap.isTruthy} : a less exact assertion.
          */
-        isTrue: autoGuardSymbol,
+        isTrue(this: void, input: unknown, failureMessage?: undefined | string): true {
+            if (input === true) {
+                return input;
+            } else {
+                throw new AssertionError(`'${stringify(input)}' is not true.`, failureMessage);
+            }
+        },
         /**
          * Asserts that a value is truthy. Returns the value if the assertion passes.
          *
@@ -360,7 +381,13 @@ export const booleanGuards = {
          * - {@link assertWrap.isFalsy} : the opposite assertion.
          * - {@link assertWrap.isTrue} : a more exact assertion.
          */
-        isTruthy: autoGuard<<T>(input: T, failureMessage?: string | undefined) => Truthy<T>>(),
+        isTruthy<T>(this: void, input: T, failureMessage?: undefined | string): Truthy<T> {
+            if (input) {
+                return input as Truthy<T>;
+            } else {
+                throw new AssertionError(`'${stringify(input)}' is not truthy.`, failureMessage);
+            }
+        },
     },
     checkWrap: {
         /**
@@ -385,7 +412,13 @@ export const booleanGuards = {
          * - {@link checkWrap.isTrue} : the opposite check.
          * - {@link checkWrap.isFalsy} : a less exact check.
          */
-        isFalse: autoGuardSymbol,
+        isFalse(this: void, input: unknown): false | undefined {
+            if (input === false) {
+                return input;
+            } else {
+                return undefined;
+            }
+        },
         /**
          * Checks that a value is falsy. Returns the value if the check passes, otherwise
          * `undefined`.
@@ -408,7 +441,13 @@ export const booleanGuards = {
          * - {@link checkWrap.isTruthy} : the opposite check.
          * - {@link checkWrap.isFalse} : a more exact check.
          */
-        isFalsy: autoGuard<<T>(input: T) => Falsy<T> | undefined>(),
+        isFalsy<T>(this: void, input: T): Falsy<T> | undefined {
+            if (input) {
+                return undefined;
+            } else {
+                return input as Falsy<T>;
+            }
+        },
         /**
          * Checks that a value is exactly `true`. Returns the value if the check passes, otherwise
          * `undefined`.
@@ -431,7 +470,13 @@ export const booleanGuards = {
          * - {@link checkWrap.isFalse} : the opposite check.
          * - {@link checkWrap.isTruthy} : a less exact check.
          */
-        isTrue: autoGuardSymbol,
+        isTrue(this: void, input: unknown): true | undefined {
+            if (input === true) {
+                return input;
+            } else {
+                return undefined;
+            }
+        },
         /**
          * Checks that a value is truthy. Returns the value if the check passes, otherwise
          * `undefined`.
@@ -454,7 +499,13 @@ export const booleanGuards = {
          * - {@link checkWrap.isFalsy} : the opposite check.
          * - {@link checkWrap.isTrue} : a more exact check.
          */
-        isTruthy: autoGuard<<T>(input: T) => Truthy<T> | undefined>(),
+        isTruthy<T>(this: void, input: T): Truthy<T> | undefined {
+            if (input) {
+                return input as Truthy<T>;
+            } else {
+                return undefined;
+            }
+        },
     },
     waitUntil: {
         /**
@@ -480,7 +531,12 @@ export const booleanGuards = {
          * - {@link waitUntil.isTrue} : the opposite assertion.
          * - {@link waitUntil.isFalsy} : a less exact assertion.
          */
-        isFalse: autoGuardSymbol,
+        isFalse: createWaitUntil(assertions.isFalse) as (
+            this: void,
+            callback: () => MaybePromise<unknown>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<false>,
         /**
          * Repeatedly calls a callback until its output is falsy. Once the callback output passes,
          * it is returned. If the attempts time out, an error is thrown.
@@ -504,14 +560,12 @@ export const booleanGuards = {
          * - {@link waitUntil.isTruthy} : the opposite assertion.
          * - {@link waitUntil.isFalse} : a more exact assertion.
          */
-        isFalsy:
-            autoGuard<
-                <Actual>(
-                    callback: () => MaybePromise<Actual>,
-                    options?: WaitUntilOptions | undefined,
-                    failureMessage?: string | undefined,
-                ) => Promise<Falsy<Actual>>
-            >(),
+        isFalsy: createWaitUntil(assertions.isFalsy) as <Actual>(
+            this: void,
+            callback: () => MaybePromise<Actual>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<Falsy<Actual>>,
         /**
          * Repeatedly calls a callback until its output is exactly `true`. Once the callback output
          * passes, it is returned. If the attempts time out, an error is thrown.
@@ -535,7 +589,12 @@ export const booleanGuards = {
          * - {@link waitUntil.isFalse} : the opposite assertion.
          * - {@link waitUntil.isTruthy} : a less exact assertion.
          */
-        isTrue: autoGuardSymbol,
+        isTrue: createWaitUntil(assertions.isTrue) as (
+            this: void,
+            callback: () => MaybePromise<unknown>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<true>,
         /**
          * Repeatedly calls a callback until its output is truthy. Once the callback output passes,
          * it is returned. If the attempts time out, an error is thrown.
@@ -559,13 +618,11 @@ export const booleanGuards = {
          * - {@link waitUntil.isFalsy} : the opposite assertion.
          * - {@link waitUntil.isTrue} : a more exact assertion.
          */
-        isTruthy:
-            autoGuard<
-                <Actual>(
-                    callback: () => MaybePromise<Actual>,
-                    options?: WaitUntilOptions | undefined,
-                    failureMessage?: string | undefined,
-                ) => Promise<Truthy<Actual>>
-            >(),
+        isTruthy: createWaitUntil(assertions.isTruthy) as <Actual>(
+            this: void,
+            callback: () => MaybePromise<Actual>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<Truthy<Actual>>,
     },
 } satisfies GuardGroup<typeof assertions>;

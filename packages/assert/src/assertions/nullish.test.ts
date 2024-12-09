@@ -54,7 +54,6 @@ describe('isDefined', () => {
     });
     describe('checkWrap', () => {
         it('does not exist', () => {
-            // @ts-expect-error: checkWrap.isDefined does not exist
             assert.isUndefined(checkWrap.isDefined);
             checkWrap;
         });
@@ -130,7 +129,6 @@ describe('isNullish', () => {
     describe('checkWrap', () => {
         it('guards', () => {
             it('does not exist', () => {
-                // @ts-expect-error: checkWrap.isNullish does not exist
                 assert.isUndefined(checkWrap.isNullish);
                 checkWrap;
             });

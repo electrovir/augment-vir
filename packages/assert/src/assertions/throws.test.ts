@@ -561,6 +561,10 @@ describe('isError', () => {
         });
         it('rejects', () => {
             assert.isFalse(check.isError(actualReject));
+            assert.isFalse(check.isError(undefined));
+            assert.isFalse(check.isError(new Error(), {matchConstructor: TypeError}));
+            assert.isFalse(check.isError(new Error('hi'), {matchMessage: 'no'}));
+            assert.isFalse(check.isError(new Error('hi'), {matchMessage: /no/}));
         });
     });
     describe('assertWrap', () => {

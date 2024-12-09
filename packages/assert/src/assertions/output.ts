@@ -16,9 +16,8 @@ import {parseWaitUntilOptions, type WaitUntilOptions} from '../guard-types/wait-
 import {deepEquals} from './equality/simple-equality.js';
 
 /**
- * A customer asserter for `.output` guards (`assert.output`, `check.output`, etc.). This is
- * typically not necessary, as the `.output` guards already perform deep equality checks by
- * default.
+ * A custom asserter for `.output` guards (`assert.output`, `check.output`, etc.). This is typically
+ * not necessary, as the `.output` guards already perform deep equality checks by default.
  *
  * @category Assert : Util
  * @category Package : @augment-vir/assert
@@ -133,13 +132,7 @@ function extractOutputArgs(
         ? emptyOrFailureMessage
         : (failureMessageOrExpectedOutput as string | undefined);
 
-    return [
-        asserter,
-        functionToCall,
-        inputs,
-        expectedOutput,
-        failureMessage,
-    ] as const;
+    return [asserter, functionToCall, inputs, expectedOutput, failureMessage] as const;
 }
 
 function innerAssertOutput<const ShouldReturnResult extends boolean>(

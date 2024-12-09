@@ -1,15 +1,17 @@
-import {type AnyFunction} from '@augment-vir/core';
-import {extendableAssertions, waitUntilOverrides} from '../../assertions/extendable-assertions.js';
-import {
-    createWaitUntilGroup,
-    executeWaitUntil,
-    type WaitUntilGroup,
-    type WaitUntilOptions,
-} from '../../guard-types/wait-until-function.js';
+import {AnyFunction, ArrayElement} from '@augment-vir/core';
+import {executeWaitUntil, type WaitUntilOptions} from '../../guard-types/wait-until-function.js';
 import {AssertionError} from '../assertion.error.js';
+import {UnionToIntersection} from 'type-fest';
+import {guardOverrides} from '../../assertions/extendable-assertions.js';
 
-const waitUntilGroup: WaitUntilGroup<typeof extendableAssertions, typeof waitUntilOverrides> =
-    createWaitUntilGroup(extendableAssertions, waitUntilOverrides);
+export const waitUntilMethods: UnionToIntersection<
+    Extract<ArrayElement<typeof guardOverrides>, {waitUntil: any}>['waitUntil']
+> = Object.assign(
+    {},
+    ...guardOverrides.map((entry) => {
+        return entry.waitUntil;
+    }),
+);
 
 /**
  * A group of guard methods that run the given callback multiple times until its return value
@@ -51,7 +53,7 @@ export const waitUntil: (<T>(
     options?: WaitUntilOptions | undefined,
     failureMessage?: string | undefined,
 ) => Promise<T>) &
-    typeof waitUntilGroup = Object.assign(
+    typeof waitUntilMethods = Object.assign(
     function waitUntil(input: unknown, failureMessage?: string | undefined) {
         return executeWaitUntil(
             (input: unknown, failureMessage?: string | undefined) => {
@@ -59,12 +61,9 @@ export const waitUntil: (<T>(
                     throw new AssertionError('Assertion failed.', failureMessage);
                 }
             },
-            [
-                input,
-                failureMessage,
-            ],
+            [input, failureMessage],
             false,
         );
     } as AnyFunction,
-    waitUntilGroup,
+    waitUntilMethods,
 );

@@ -2,56 +2,9 @@ import type {NarrowToExpected} from '@augment-vir/core';
 import {type AnyObject, type MaybePromise, stringify} from '@augment-vir/core';
 import {AssertionError} from '../../augments/assertion.error.js';
 import type {GuardGroup} from '../../guard-types/guard-group.js';
-import {autoGuard, autoGuardSymbol} from '../../guard-types/guard-override.js';
-import {type WaitUntilOptions} from '../../guard-types/wait-until-function.js';
-import {strictEquals} from './simple-equality.js';
+import {createWaitUntil, type WaitUntilOptions} from '../../guard-types/wait-until-function.js';
 
-function entriesEqual<const Actual extends object, const Expected extends Actual>(
-    actual: Actual,
-    expected: Expected,
-    failureMessage?: string | undefined,
-): asserts actual is Expected {
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (!actual || typeof actual !== 'object') {
-        throw new AssertionError(`${stringify(actual)} is not an object.`, failureMessage);
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    } else if (!expected || typeof expected !== 'object') {
-        throw new AssertionError(`${stringify(expected)} is not an object.`, failureMessage);
-    }
-
-    const allKeys = Array.from(
-        new Set([
-            ...Reflect.ownKeys(actual),
-            ...Reflect.ownKeys(expected),
-        ]),
-    );
-
-    allKeys.forEach((key) => {
-        const actualValue = (actual as AnyObject)[key];
-        const expectedValue = (expected as AnyObject)[key];
-
-        try {
-            strictEquals(actualValue, expectedValue);
-        } catch {
-            throw new AssertionError(
-                `Entries are not equal at key '${String(key)}'.`,
-                failureMessage,
-            );
-        }
-    });
-}
-
-function notEntriesEqual(actual: object, expected: object, failureMessage?: string | undefined) {
-    try {
-        entriesEqual(actual, expected);
-    } catch {
-        return;
-    }
-
-    throw new AssertionError('Entries are equal.', failureMessage);
-}
-
-const assertions: {
+const assertions = {
     /**
      * Asserts that two objects are deeply equal by checking only their top-level values for strict
      * (non-deep, reference, using
@@ -79,7 +32,36 @@ const assertions: {
      * - {@link assert.jsonEquals} : another deep equality assertion.
      * - {@link assert.deepEquals} : the most thorough (but also slow) deep equality assertion.
      */
-    entriesEqual: typeof entriesEqual;
+    entriesEqual<Actual extends AnyObject, const Expected extends Actual>(
+        this: void,
+        actual: Actual,
+        expected: Expected,
+        failureMessage?: string | undefined,
+    ): asserts actual is Expected {
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        if (!actual || typeof actual !== 'object') {
+            throw new AssertionError(`${stringify(actual)} is not an object.`, failureMessage);
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        } else if (!expected || typeof expected !== 'object') {
+            throw new AssertionError(`${stringify(expected)} is not an object.`, failureMessage);
+        }
+
+        const allKeys = Array.from(
+            new Set([...Reflect.ownKeys(actual), ...Reflect.ownKeys(expected)]),
+        );
+
+        allKeys.forEach((key) => {
+            const actualValue = (actual as AnyObject)[key];
+            const expectedValue = (expected as AnyObject)[key];
+
+            if (actualValue !== expectedValue) {
+                throw new AssertionError(
+                    `Entries are not equal at key '${String(key)}'.`,
+                    failureMessage,
+                );
+            }
+        });
+    },
     /**
      * Asserts that two objects are _not_ deeply equal by checking only their top-level values for
      * strict (non-deep, reference, using
@@ -107,10 +89,32 @@ const assertions: {
      * - {@link assert.notJsonEquals} : another not deep equality assertion.
      * - {@link assert.notDeepEquals} : the most thorough (but also slow) not deep equality assertion.
      */
-    notEntriesEqual: typeof notEntriesEqual;
-} = {
-    entriesEqual,
-    notEntriesEqual,
+    notEntriesEqual(
+        this: void,
+        actual: AnyObject,
+        expected: AnyObject,
+        failureMessage?: string | undefined,
+    ) {
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        if (!actual || typeof actual !== 'object' || !expected || typeof expected !== 'object') {
+            return;
+        }
+
+        const allKeys = Array.from(
+            new Set([...Reflect.ownKeys(actual), ...Reflect.ownKeys(expected)]),
+        );
+
+        const valid = allKeys.some((key) => {
+            const actualValue = actual[key];
+            const expectedValue = expected[key];
+
+            return actualValue !== expectedValue;
+        });
+
+        if (!valid) {
+            throw new AssertionError('Entries are equal.', failureMessage);
+        }
+    },
 };
 
 export const entryEqualityGuards = {
@@ -142,13 +146,33 @@ export const entryEqualityGuards = {
          * - {@link check.jsonEquals} : another deep equality check.
          * - {@link check.deepEquals} : the most thorough (but also slow) deep equality check.
          */
-        entriesEqual:
-            autoGuard<
-                <Actual, Expected extends Actual>(
-                    actual: Actual,
-                    expected: Expected,
-                ) => actual is Expected
-            >(),
+        entriesEqual<Actual extends AnyObject, Expected extends Actual>(
+            this: void,
+            actual: Actual,
+            expected: Expected,
+        ): actual is Expected {
+            if (
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+                !actual ||
+                typeof actual !== 'object' ||
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+                !expected ||
+                typeof expected !== 'object'
+            ) {
+                return false;
+            }
+
+            const allKeys = Array.from(
+                new Set([...Reflect.ownKeys(actual), ...Reflect.ownKeys(expected)]),
+            );
+
+            return allKeys.every((key) => {
+                const actualValue = (actual as AnyObject)[key];
+                const expectedValue = (expected as AnyObject)[key];
+
+                return actualValue === expectedValue;
+            });
+        },
         /**
          * Checks that two objects are _not_ deeply equal by checking only their top-level values
          * for strict (non-deep, reference, using
@@ -175,7 +199,29 @@ export const entryEqualityGuards = {
          * - {@link check.notJsonEquals} : another not deep equality check.
          * - {@link check.notDeepEquals} : the most thorough (but also slow) not deep equality check.
          */
-        notEntriesEqual: autoGuardSymbol,
+        notEntriesEqual(this: void, actual: AnyObject, expected: AnyObject) {
+            if (
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+                !actual ||
+                typeof actual !== 'object' ||
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+                !expected ||
+                typeof expected !== 'object'
+            ) {
+                return true;
+            }
+
+            const allKeys = Array.from(
+                new Set([...Reflect.ownKeys(actual), ...Reflect.ownKeys(expected)]),
+            );
+
+            return allKeys.some((key) => {
+                const actualValue = actual[key];
+                const expectedValue = expected[key];
+
+                return actualValue !== expectedValue;
+            });
+        },
     },
     assertWrap: {
         /**
@@ -206,14 +252,41 @@ export const entryEqualityGuards = {
          * - {@link assertWrap.jsonEquals} : another deep equality assertion.
          * - {@link assertWrap.deepEquals} : the most thorough (but also slow) deep equality assertion.
          */
-        entriesEqual:
-            autoGuard<
-                <Actual, Expected extends Actual>(
-                    actual: Actual,
-                    expected: Expected,
-                    failureMessage?: string | undefined,
-                ) => NarrowToExpected<Actual, Expected>
-            >(),
+        entriesEqual<Actual extends AnyObject, Expected extends Actual>(
+            this: void,
+            actual: Actual,
+            expected: Expected,
+            failureMessage?: string | undefined,
+        ): NarrowToExpected<Actual, Expected> {
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+            if (!actual || typeof actual !== 'object') {
+                throw new AssertionError(`${stringify(actual)} is not an object.`, failureMessage);
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+            } else if (!expected || typeof expected !== 'object') {
+                throw new AssertionError(
+                    `${stringify(expected)} is not an object.`,
+                    failureMessage,
+                );
+            }
+
+            const allKeys = Array.from(
+                new Set([...Reflect.ownKeys(actual), ...Reflect.ownKeys(expected)]),
+            );
+
+            allKeys.forEach((key) => {
+                const actualValue = (actual as AnyObject)[key];
+                const expectedValue = (expected as AnyObject)[key];
+
+                if (actualValue !== expectedValue) {
+                    throw new AssertionError(
+                        `Entries are not equal at key '${String(key)}'.`,
+                        failureMessage,
+                    );
+                }
+            });
+
+            return actual as NarrowToExpected<Actual, Expected>;
+        },
         /**
          * Asserts that two objects are _not_ deeply equal by checking only their top-level values
          * for strict (non-deep, reference, using
@@ -242,7 +315,40 @@ export const entryEqualityGuards = {
          * - {@link assertWrap.notJsonEquals} : another not deep equality assertion.
          * - {@link assertWrap.notDeepEquals} : the most thorough (but also slow) not deep equality assertion.
          */
-        notEntriesEqual: autoGuardSymbol,
+        notEntriesEqual<Actual extends AnyObject>(
+            this: void,
+            actual: Actual,
+            expected: AnyObject,
+            failureMessage?: string | undefined,
+        ): Actual {
+            if (
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+                !actual ||
+                typeof actual !== 'object' ||
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+                !expected ||
+                typeof expected !== 'object'
+            ) {
+                return actual;
+            }
+
+            const allKeys = Array.from(
+                new Set([...Reflect.ownKeys(actual), ...Reflect.ownKeys(expected)]),
+            );
+
+            const valid = allKeys.some((key) => {
+                const actualValue = (actual as AnyObject)[key];
+                const expectedValue = expected[key];
+
+                return actualValue !== expectedValue;
+            });
+
+            if (valid) {
+                return actual;
+            } else {
+                throw new AssertionError('Entries are equal.', failureMessage);
+            }
+        },
     },
     checkWrap: {
         /**
@@ -273,13 +379,38 @@ export const entryEqualityGuards = {
          * - {@link checkWrap.jsonEquals} : another deep equality check.
          * - {@link checkWrap.deepEquals} : the most thorough (but also slow) deep equality check.
          */
-        entriesEqual:
-            autoGuard<
-                <Actual, Expected extends Actual>(
-                    actual: Actual,
-                    expected: Expected,
-                ) => NarrowToExpected<Actual, Expected> | undefined
-            >(),
+        entriesEqual<Actual extends object, Expected extends Actual>(
+            this: void,
+            actual: Actual,
+            expected: Expected,
+        ): NarrowToExpected<Actual, Expected> | undefined {
+            if (
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+                !actual ||
+                typeof actual !== 'object' ||
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+                !expected ||
+                typeof expected !== 'object'
+            ) {
+                return undefined;
+            }
+
+            const allKeys = Array.from(
+                new Set([...Reflect.ownKeys(actual), ...Reflect.ownKeys(expected)]),
+            );
+
+            const valid = allKeys.every((key) => {
+                const actualValue = (actual as AnyObject)[key];
+                const expectedValue = (expected as AnyObject)[key];
+
+                return actualValue === expectedValue;
+            });
+            if (valid) {
+                return actual as NarrowToExpected<Actual, Expected>;
+            } else {
+                return undefined;
+            }
+        },
 
         /**
          * Checks that two objects are _not_ deeply equal by checking only their top-level values
@@ -309,7 +440,35 @@ export const entryEqualityGuards = {
          * - {@link checkWrap.notJsonEquals} : another not deep equality check.
          * - {@link checkWrap.notDeepEquals} : the most thorough (but also slow) not deep equality check.
          */
-        notEntriesEqual: autoGuardSymbol,
+        notEntriesEqual(this: void, actual: AnyObject, expected: AnyObject) {
+            if (
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+                !actual ||
+                typeof actual !== 'object' ||
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+                !expected ||
+                typeof expected !== 'object'
+            ) {
+                return actual;
+            }
+
+            const allKeys = Array.from(
+                new Set([...Reflect.ownKeys(actual), ...Reflect.ownKeys(expected)]),
+            );
+
+            const valid = allKeys.some((key) => {
+                const actualValue = actual[key];
+                const expectedValue = expected[key];
+
+                return actualValue !== expectedValue;
+            });
+
+            if (valid) {
+                return actual;
+            } else {
+                return undefined;
+            }
+        },
     },
     waitUntil: {
         /**
@@ -346,15 +505,16 @@ export const entryEqualityGuards = {
          * - {@link waitUntil.jsonEquals} : another deep equality assertion.
          * - {@link waitUntil.deepEquals} : the most thorough (but also slow) deep equality assertion.
          */
-        entriesEqual:
-            autoGuard<
-                <Actual, Expected extends Actual>(
-                    expected: Expected,
-                    callback: () => MaybePromise<Actual>,
-                    options?: WaitUntilOptions | undefined,
-                    failureMessage?: string | undefined,
-                ) => Promise<NarrowToExpected<Actual, Expected>>
-            >(),
+        entriesEqual: createWaitUntil(assertions.entriesEqual) as <
+            Actual extends AnyObject,
+            Expected extends Actual,
+        >(
+            this: void,
+            expected: Expected,
+            callback: () => MaybePromise<Actual>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<NarrowToExpected<Actual, Expected>>,
 
         /**
          * Repeatedly calls a callback until its output is _not_ deeply equal to the first input by
@@ -391,6 +551,12 @@ export const entryEqualityGuards = {
          * - {@link waitUntil.notJsonEquals} : another not deep equality assertion.
          * - {@link waitUntil.notDeepEquals} : the most thorough (but also slow) not deep equality assertion.
          */
-        notEntriesEqual: autoGuardSymbol,
+        notEntriesEqual: createWaitUntil(assertions.notEntriesEqual) as <Actual extends AnyObject>(
+            this: void,
+            expected: unknown,
+            callback: () => MaybePromise<Actual>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<Actual>,
     },
 } satisfies GuardGroup<typeof assertions>;

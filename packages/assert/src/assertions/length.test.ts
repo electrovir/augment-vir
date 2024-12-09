@@ -8,15 +8,8 @@ import {waitUntil} from '../augments/guards/wait-until.js';
 import {waitUntilTestOptions} from '../test-timeout.mock.js';
 
 describe('isLengthAtLeast', () => {
-    const actualPass: string[] = [
-        'a',
-        'b',
-        'c',
-    ] as any;
-    const actualReject: string[] = [
-        'a',
-        'c',
-    ] as any;
+    const actualPass: string[] = ['a', 'b', 'c'] as any;
+    const actualReject: string[] = ['a', 'c'] as any;
     const expected = 3;
     type ExpectedType = AtLeastTuple<string, 3>;
     type UnexpectedType = string[];
@@ -36,6 +29,16 @@ describe('isLengthAtLeast', () => {
         });
         it('works on strings', () => {
             assert.isLengthAtLeast('hi', 1);
+        });
+        it('works on objects', () => {
+            assert.isLengthAtLeast(
+                {
+                    a: 'b',
+                    c: 'd',
+                    e: 'f',
+                },
+                2,
+            );
         });
     });
     describe('check', () => {
@@ -85,6 +88,16 @@ describe('isLengthAtLeast', () => {
             const newValue = assertWrap.isLengthAtLeast('hi', 1);
             assert.tsType(newValue).equals<'hi'>();
         });
+        it('works on objects', () => {
+            assertWrap.isLengthAtLeast(
+                {
+                    a: 'b',
+                    c: 'd',
+                    e: 'f',
+                },
+                2,
+            );
+        });
     });
     describe('checkWrap', () => {
         it('guards', () => {
@@ -103,6 +116,23 @@ describe('isLengthAtLeast', () => {
         it('works on strings', () => {
             const newValue = checkWrap.isLengthAtLeast('hi', 1);
             assert.tsType(newValue).equals<'hi' | undefined>();
+        });
+        it('works on objects', () => {
+            assert.deepEquals(
+                checkWrap.isLengthAtLeast(
+                    {
+                        a: 'b',
+                        c: 'd',
+                        e: 'f',
+                    },
+                    2,
+                ),
+                {
+                    a: 'b',
+                    c: 'd',
+                    e: 'f',
+                },
+            );
         });
     });
     describe('waitUntil', () => {
@@ -144,15 +174,8 @@ describe('isLengthAtLeast', () => {
 });
 
 describe('isLengthExactly', () => {
-    const actualPass: string[] = [
-        'a',
-        'b',
-        'c',
-    ] as any;
-    const actualReject: string[] = [
-        'a',
-        'c',
-    ] as any;
+    const actualPass: string[] = ['a', 'b', 'c'] as any;
+    const actualReject: string[] = ['a', 'c'] as any;
     const expected = 3;
     type ExpectedType = Tuple<string, 3>;
     type UnexpectedType = string[];
@@ -172,6 +195,16 @@ describe('isLengthExactly', () => {
         });
         it('works on strings', () => {
             assert.isLengthExactly('hi', 2);
+        });
+        it('works on objects', () => {
+            assert.isLengthExactly(
+                {
+                    a: 'b',
+                    c: 'd',
+                    e: 'f',
+                },
+                3,
+            );
         });
     });
     describe('check', () => {
@@ -221,6 +254,16 @@ describe('isLengthExactly', () => {
             assert.strictEquals(assertWrap.isLengthExactly('hi', 2), 'hi');
             assert.tsType(assertWrap.isLengthExactly('hi', 2)).equals<'hi'>();
         });
+        it('works on objects', () => {
+            assertWrap.isLengthExactly(
+                {
+                    a: 'b',
+                    c: 'd',
+                    e: 'f',
+                },
+                3,
+            );
+        });
     });
     describe('checkWrap', () => {
         it('guards', () => {
@@ -237,8 +280,25 @@ describe('isLengthExactly', () => {
             assert.isUndefined(checkWrap.isLengthExactly(actualReject, expected));
         });
         it('works on strings', () => {
-            assert.strictEquals(assertWrap.isLengthExactly('hi', 2), 'hi');
+            assert.strictEquals(checkWrap.isLengthExactly('hi', 2), 'hi');
             assert.tsType(checkWrap.isLengthExactly('hi', 2)).equals<'hi' | undefined>();
+        });
+        it('works on objects', () => {
+            assert.deepEquals(
+                checkWrap.isLengthExactly(
+                    {
+                        a: 'b',
+                        c: 'd',
+                        e: 'f',
+                    },
+                    3,
+                ),
+                {
+                    a: 'b',
+                    c: 'd',
+                    e: 'f',
+                },
+            );
         });
     });
     describe('waitUntil', () => {
@@ -281,43 +341,15 @@ describe('isLengthExactly', () => {
 
 describe('AtLeastTuple', () => {
     it('should be assignable to from a Tuple', () => {
-        const atLeastTuple: AtLeastTuple<any, 5> = [
-            1,
-            2,
-            3,
-            4,
-            5,
-        ] as Tuple<any, 5>;
+        const atLeastTuple: AtLeastTuple<any, 5> = [1, 2, 3, 4, 5] as Tuple<any, 5>;
     });
     it('should not be assignable to a Tuple', () => {
         // @ts-expect-error: `AtLeastTuple` can be bigger than `Tuple`
-        const strictTuple: Tuple<any, 5> = [
-            1,
-            2,
-            3,
-            4,
-            5,
-        ] as AtLeastTuple<any, 5>;
+        const strictTuple: Tuple<any, 5> = [1, 2, 3, 4, 5] as AtLeastTuple<any, 5>;
     });
 
     it('should match arrays with more than the expected length', () => {
-        assert
-            .tsType([
-                1,
-                2,
-                3,
-                4,
-                5,
-                6,
-                7,
-            ] as const)
-            .matches<AtLeastTuple<any, 5>>();
-        assert
-            .tsType([
-                1,
-                2,
-                3,
-            ] as const)
-            .notMatches<AtLeastTuple<any, 5>>();
+        assert.tsType([1, 2, 3, 4, 5, 6, 7] as const).matches<AtLeastTuple<any, 5>>();
+        assert.tsType([1, 2, 3] as const).notMatches<AtLeastTuple<any, 5>>();
     });
 });

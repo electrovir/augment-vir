@@ -1,11 +1,14 @@
-import type {AnyFunction} from '@augment-vir/core';
-import {checkOverrides, extendableAssertions} from '../../assertions/extendable-assertions.js';
-import {CheckGroup, createCheckGroup} from '../../guard-types/check-function.js';
+import {AnyFunction, ArrayElement} from '@augment-vir/core';
+import {UnionToIntersection} from 'type-fest';
+import {guardOverrides} from '../../assertions/extendable-assertions.js';
 
-const checkGroup: CheckGroup<typeof extendableAssertions, typeof checkOverrides> = createCheckGroup(
-    extendableAssertions,
-    checkOverrides,
-);
+export const checkMethods: UnionToIntersection<ArrayElement<typeof guardOverrides>['check']> =
+    Object.assign(
+        {},
+        ...guardOverrides.map((entry) => {
+            return entry.check;
+        }),
+    );
 
 /**
  * A group of guard methods that return a boolean type guard rather than an assertion type guard.
@@ -30,7 +33,7 @@ const checkGroup: CheckGroup<typeof extendableAssertions, typeof checkOverrides>
  * @package [`@augment-vir/assert`](https://www.npmjs.com/package/@augment-vir/assert)
  */
 export const check: ((input: unknown) => boolean) &
-    typeof checkGroup &
+    typeof checkMethods &
     Record<keyof AnyFunction, never> = Object.assign(function check(this: void, input: unknown) {
     return !!input;
-}, checkGroup);
+}, checkMethods);

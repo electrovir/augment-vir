@@ -1,8 +1,7 @@
 import {type MaybePromise, stringify} from '@augment-vir/core';
 import {AssertionError} from '../augments/assertion.error.js';
 import type {GuardGroup} from '../guard-types/guard-group.js';
-import {autoGuard} from '../guard-types/guard-override.js';
-import {type WaitUntilOptions} from '../guard-types/wait-until-function.js';
+import {createWaitUntil, type WaitUntilOptions} from '../guard-types/wait-until-function.js';
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
@@ -22,13 +21,18 @@ function endsWith<const ArrayElement>(
     child: string | ArrayElement,
     failureMessage?: string | undefined,
 ): void {
-    const message = `${stringify(parent)} does not end with ${stringify(child)}}`;
     if (typeof parent === 'string') {
         if (!parent.endsWith(child as string)) {
-            throw new AssertionError(message, failureMessage);
+            throw new AssertionError(
+                `${stringify(parent)} does not end with ${stringify(child)}}`,
+                failureMessage,
+            );
         }
     } else if (parent[parent.length - 1] !== child) {
-        throw new AssertionError(message, failureMessage);
+        throw new AssertionError(
+            `${stringify(parent)} does not end with ${stringify(child)}}`,
+            failureMessage,
+        );
     }
 }
 
@@ -50,6 +54,7 @@ function boundaryCheck(): any {
      * overloads.
      */
 }
+
 function boundaryAssertWrap<const ArrayElement>(
     parent: ReadonlyArray<ArrayElement>,
     child: ArrayElement,
@@ -134,13 +139,18 @@ function endsWithout<const ArrayElement>(
     child: string | ArrayElement,
     failureMessage?: string | undefined,
 ): void {
-    const message = `${stringify(parent)} ends with ${stringify(child)}}`;
     if (typeof parent === 'string') {
         if (parent.endsWith(child as string)) {
-            throw new AssertionError(message, failureMessage);
+            throw new AssertionError(
+                `${stringify(parent)} ends with ${stringify(child)}}`,
+                failureMessage,
+            );
         }
     } else if (parent[parent.length - 1] === child) {
-        throw new AssertionError(message, failureMessage);
+        throw new AssertionError(
+            `${stringify(parent)} ends with ${stringify(child)}}`,
+            failureMessage,
+        );
     }
 }
 
@@ -160,13 +170,18 @@ function startsWith<const ArrayElement>(
     child: string | ArrayElement,
     failureMessage?: string | undefined,
 ): void {
-    const message = `${stringify(parent)} does not start with ${stringify(child)}}`;
     if (typeof parent === 'string') {
         if (!parent.startsWith(child as string)) {
-            throw new AssertionError(message, failureMessage);
+            throw new AssertionError(
+                `${stringify(parent)} does not start with ${stringify(child)}}`,
+                failureMessage,
+            );
         }
     } else if (parent[0] !== child) {
-        throw new AssertionError(message, failureMessage);
+        throw new AssertionError(
+            `${stringify(parent)} does not start with ${stringify(child)}}`,
+            failureMessage,
+        );
     }
 }
 
@@ -186,13 +201,18 @@ function startsWithout<const ArrayElement>(
     child: string | ArrayElement,
     failureMessage?: string | undefined,
 ): void {
-    const message = `${stringify(parent)} starts with ${stringify(child)}}`;
     if (typeof parent === 'string') {
         if (parent.startsWith(child as string)) {
-            throw new AssertionError(message, failureMessage);
+            throw new AssertionError(
+                `${stringify(parent)} starts with ${stringify(child)}}`,
+                failureMessage,
+            );
         }
     } else if (parent[0] === child) {
-        throw new AssertionError(message, failureMessage);
+        throw new AssertionError(
+            `${stringify(parent)} starts with ${stringify(child)}}`,
+            failureMessage,
+        );
     }
 }
 
@@ -210,20 +230,8 @@ const assertions: {
      *
      * assert.endsWith('ab', 'b'); // passes
      * assert.endsWith('ab', 'a'); // fails
-     * assert.endsWith(
-     *     [
-     *         'a',
-     *         'b',
-     *     ],
-     *     'b',
-     * ); // passes
-     * assert.endsWith(
-     *     [
-     *         'a',
-     *         'b',
-     *     ],
-     *     'a',
-     * ); // fails
+     * assert.endsWith(['a', 'b'], 'b'); // passes
+     * assert.endsWith(['a', 'b'], 'a'); // fails
      * ```
      *
      * @throws {@link AssertionError} If the parent does not end with the child.
@@ -245,20 +253,8 @@ const assertions: {
      *
      * assert.endsWithout('ab', 'b'); // fails
      * assert.endsWithout('ab', 'a'); // passes
-     * assert.endsWithout(
-     *     [
-     *         'a',
-     *         'b',
-     *     ],
-     *     'b',
-     * ); // fails
-     * assert.endsWithout(
-     *     [
-     *         'a',
-     *         'b',
-     *     ],
-     *     'a',
-     * ); // passes
+     * assert.endsWithout(['a', 'b'], 'b'); // fails
+     * assert.endsWithout(['a', 'b'], 'a'); // passes
      * ```
      *
      * @throws {@link AssertionError} If the parent ends with the child.
@@ -280,20 +276,8 @@ const assertions: {
      *
      * assert.startsWith('ab', 'b'); // fails
      * assert.startsWith('ab', 'a'); // passes
-     * assert.startsWith(
-     *     [
-     *         'a',
-     *         'b',
-     *     ],
-     *     'b',
-     * ); // fails
-     * assert.startsWith(
-     *     [
-     *         'a',
-     *         'b',
-     *     ],
-     *     'a',
-     * ); // passes
+     * assert.startsWith(['a', 'b'], 'b'); // fails
+     * assert.startsWith(['a', 'b'], 'a'); // passes
      * ```
      *
      * @throws {@link AssertionError} If the parent does not start with the child.
@@ -315,20 +299,8 @@ const assertions: {
      *
      * assert.startsWith('ab', 'b'); // passes
      * assert.startsWith('ab', 'a'); // fails
-     * assert.startsWith(
-     *     [
-     *         'a',
-     *         'b',
-     *     ],
-     *     'b',
-     * ); // passes
-     * assert.startsWith(
-     *     [
-     *         'a',
-     *         'b',
-     *     ],
-     *     'a',
-     * ); // fails
+     * assert.startsWith(['a', 'b'], 'b'); // passes
+     * assert.startsWith(['a', 'b'], 'a'); // fails
      * ```
      *
      * @throws {@link AssertionError} If the parent does start with the child.
@@ -338,9 +310,97 @@ const assertions: {
      */
     startsWithout: typeof startsWithout;
 } = {
+    /**
+     * Asserts that a parent string or array ends with a specific child. This uses reference
+     * equality when the parent is an array.
+     *
+     * Performs no type guarding.
+     *
+     * @example
+     *
+     * ```ts
+     * import {assert} from '@augment-vir/assert';
+     *
+     * assert.endsWith('ab', 'b'); // passes
+     * assert.endsWith('ab', 'a'); // fails
+     * assert.endsWith(['a', 'b'], 'b'); // passes
+     * assert.endsWith(['a', 'b'], 'a'); // fails
+     * ```
+     *
+     * @throws {@link AssertionError} If the parent does not end with the child.
+     * @see
+     * - {@link assert.endsWithout} : the opposite assertion.
+     * - {@link assert.startsWith} : assertion on the other end.
+     */
     endsWith,
+    /**
+     * Asserts that a parent string or array does _not_ end with a specific child. This uses
+     * reference equality when the parent is an array.
+     *
+     * Performs no type guarding.
+     *
+     * @example
+     *
+     * ```ts
+     * import {assert} from '@augment-vir/assert';
+     *
+     * assert.endsWithout('ab', 'b'); // fails
+     * assert.endsWithout('ab', 'a'); // passes
+     * assert.endsWithout(['a', 'b'], 'b'); // fails
+     * assert.endsWithout(['a', 'b'], 'a'); // passes
+     * ```
+     *
+     * @throws {@link AssertionError} If the parent ends with the child.
+     * @see
+     * - {@link assert.endsWith} : the opposite assertion.
+     * - {@link assert.startsWithout} : assertion on the other end.
+     */
     endsWithout,
+    /**
+     * Asserts that a parent string or array starts with a specific child. This uses reference
+     * equality when the parent is an array.
+     *
+     * Performs no type guarding.
+     *
+     * @example
+     *
+     * ```ts
+     * import {assert} from '@augment-vir/assert';
+     *
+     * assert.startsWith('ab', 'b'); // fails
+     * assert.startsWith('ab', 'a'); // passes
+     * assert.startsWith(['a', 'b'], 'b'); // fails
+     * assert.startsWith(['a', 'b'], 'a'); // passes
+     * ```
+     *
+     * @throws {@link AssertionError} If the parent does not start with the child.
+     * @see
+     * - {@link assert.startsWithout} : the opposite assertion.
+     * - {@link assert.endsWith} : assertion on the other end.
+     */
     startsWith,
+    /**
+     * Asserts that a parent string or array starts with a specific child. This uses reference
+     * equality when the parent is an array.
+     *
+     * Performs no type guarding.
+     *
+     * @example
+     *
+     * ```ts
+     * import {assert} from '@augment-vir/assert';
+     *
+     * assert.startsWith('ab', 'b'); // passes
+     * assert.startsWith('ab', 'a'); // fails
+     * assert.startsWith(['a', 'b'], 'b'); // passes
+     * assert.startsWith(['a', 'b'], 'a'); // fails
+     * ```
+     *
+     * @throws {@link AssertionError} If the parent does start with the child.
+     * @see
+     * - {@link assert.startsWithout} : the opposite assertion.
+     * - {@link assert.endsWith} : assertion on the other end.
+     */
     startsWithout,
 };
 
@@ -360,27 +420,21 @@ export const boundaryGuards = {
          *
          * check.endsWith('ab', 'b'); // returns `true`
          * check.endsWith('ab', 'a'); // returns `false`
-         * check.endsWith(
-         *     [
-         *         'a',
-         *         'b',
-         *     ],
-         *     'b',
-         * ); // returns `true`
-         * check.endsWith(
-         *     [
-         *         'a',
-         *         'b',
-         *     ],
-         *     'a',
-         * ); // returns `false`
+         * check.endsWith(['a', 'b'], 'b'); // returns `true`
+         * check.endsWith(['a', 'b'], 'a'); // returns `false`
          * ```
          *
          * @see
          * - {@link check.endsWithout} : the opposite check.
          * - {@link check.startsWith} : check on the other end.
          */
-        endsWith: autoGuard<typeof boundaryCheck>(),
+        endsWith: ((parent: string | unknown[], child: unknown): boolean => {
+            if (typeof parent === 'string') {
+                return parent.endsWith(child as string);
+            }
+
+            return parent[parent.length - 1] === child;
+        }) as typeof boundaryCheck,
         /**
          * Checks that a parent string or array does _not_ end with a specific child. This uses
          * reference equality when the parent is an array.
@@ -394,27 +448,21 @@ export const boundaryGuards = {
          *
          * check.endsWithout('ab', 'b'); // returns `false`
          * check.endsWithout('ab', 'a'); // returns `true`
-         * check.endsWithout(
-         *     [
-         *         'a',
-         *         'b',
-         *     ],
-         *     'b',
-         * ); // returns `false`
-         * check.endsWithout(
-         *     [
-         *         'a',
-         *         'b',
-         *     ],
-         *     'a',
-         * ); // returns `true`
+         * check.endsWithout(['a', 'b'], 'b'); // returns `false`
+         * check.endsWithout(['a', 'b'], 'a'); // returns `true`
          * ```
          *
          * @see
          * - {@link check.endsWith} : the opposite check.
          * - {@link check.startsWithout} : check on the other end.
          */
-        endsWithout: autoGuard<typeof boundaryCheck>(),
+        endsWithout: ((parent: string | unknown[], child: unknown): boolean => {
+            if (typeof parent === 'string') {
+                return !parent.endsWith(child as string);
+            }
+
+            return parent[parent.length - 1] !== child;
+        }) as typeof boundaryCheck,
 
         /**
          * Checks that a parent string or array starts with a specific child. This uses reference
@@ -429,27 +477,21 @@ export const boundaryGuards = {
          *
          * check.startsWith('ab', 'b'); // returns `false`
          * check.startsWith('ab', 'a'); // returns `true`
-         * check.startsWith(
-         *     [
-         *         'a',
-         *         'b',
-         *     ],
-         *     'b',
-         * ); // returns `false`
-         * check.startsWith(
-         *     [
-         *         'a',
-         *         'b',
-         *     ],
-         *     'a',
-         * ); // returns `true`
+         * check.startsWith(['a', 'b'], 'b'); // returns `false`
+         * check.startsWith(['a', 'b'], 'a'); // returns `true`
          * ```
          *
          * @see
          * - {@link check.startsWithout} : the opposite check.
          * - {@link check.endsWith} : check on the other end.
          */
-        startsWith: autoGuard<typeof boundaryCheck>(),
+        startsWith: ((parent: string | unknown[], child: unknown): boolean => {
+            if (typeof parent === 'string') {
+                return parent.startsWith(child as string);
+            }
+
+            return parent[0] === child;
+        }) as typeof boundaryCheck,
         /**
          * Checks that a parent string or array starts with a specific child. This uses reference
          * equality when the parent is an array.
@@ -463,27 +505,21 @@ export const boundaryGuards = {
          *
          * check.startsWith('ab', 'b'); // returns `false`
          * check.startsWith('ab', 'a'); // returns `true`
-         * check.startsWith(
-         *     [
-         *         'a',
-         *         'b',
-         *     ],
-         *     'b',
-         * ); // returns `false`
-         * check.startsWith(
-         *     [
-         *         'a',
-         *         'b',
-         *     ],
-         *     'a',
-         * ); // returns `true`
+         * check.startsWith(['a', 'b'], 'b'); // returns `false`
+         * check.startsWith(['a', 'b'], 'a'); // returns `true`
          * ```
          *
          * @see
          * - {@link check.startsWithout} : the opposite check.
          * - {@link check.endsWith} : check on the other end.
          */
-        startsWithout: autoGuard<typeof boundaryCheck>(),
+        startsWithout: ((parent: string | unknown[], child: unknown): boolean => {
+            if (typeof parent === 'string') {
+                return !parent.startsWith(child as string);
+            }
+
+            return parent[0] !== child;
+        }) as typeof boundaryCheck,
     },
     assertWrap: {
         /**
@@ -499,20 +535,8 @@ export const boundaryGuards = {
          *
          * assertWrap.endsWith('ab', 'b'); // returns `'ab'`
          * assertWrap.endsWith('ab', 'a'); // throws an error
-         * assertWrap.endsWith(
-         *     [
-         *         'a',
-         *         'b',
-         *     ],
-         *     'b',
-         * ); // returns `['a', 'b']`
-         * assertWrap.endsWith(
-         *     [
-         *         'a',
-         *         'b',
-         *     ],
-         *     'a',
-         * ); // throws an error
+         * assertWrap.endsWith(['a', 'b'], 'b'); // returns `['a', 'b']`
+         * assertWrap.endsWith(['a', 'b'], 'a'); // throws an error
          * ```
          *
          * @returns The parent value if it does end with the child.
@@ -521,7 +545,26 @@ export const boundaryGuards = {
          * - {@link assertWrap.endsWithout} : the opposite assertion.
          * - {@link assertWrap.startsWith} : assertion on the other end.
          */
-        endsWith: autoGuard<typeof boundaryAssertWrap>(),
+        endsWith: ((
+            parent: string | unknown[],
+            child: unknown,
+            failureMessage?: string | undefined,
+        ): string | unknown[] => {
+            if (typeof parent === 'string') {
+                if (!parent.endsWith(child as string)) {
+                    throw new AssertionError(
+                        `${stringify(parent)} does not end with ${stringify(child)}}`,
+                        failureMessage,
+                    );
+                }
+            } else if (parent[parent.length - 1] !== child) {
+                throw new AssertionError(
+                    `${stringify(parent)} does not end with ${stringify(child)}}`,
+                    failureMessage,
+                );
+            }
+            return parent;
+        }) as typeof boundaryAssertWrap,
         /**
          * Asserts that a parent string or array does _not_ end with a specific child. This uses
          * reference equality when the parent is an array. Returns the parent if the assertion
@@ -536,20 +579,8 @@ export const boundaryGuards = {
          *
          * assertWrap.endsWithout('ab', 'b'); // throws an error
          * assertWrap.endsWithout('ab', 'a'); // returns `'ab'`
-         * assertWrap.endsWithout(
-         *     [
-         *         'a',
-         *         'b',
-         *     ],
-         *     'b',
-         * ); // throws an error
-         * assertWrap.endsWithout(
-         *     [
-         *         'a',
-         *         'b',
-         *     ],
-         *     'a',
-         * ); // returns `['a', 'b']`
+         * assertWrap.endsWithout(['a', 'b'], 'b'); // throws an error
+         * assertWrap.endsWithout(['a', 'b'], 'a'); // returns `['a', 'b']`
          * ```
          *
          * @returns The parent value if it does not end with the child.
@@ -558,7 +589,26 @@ export const boundaryGuards = {
          * - {@link assertWrap.endsWith} : the opposite assertion.
          * - {@link assertWrap.startsWithout} : assertion on the other end.
          */
-        endsWithout: autoGuard<typeof boundaryAssertWrap>(),
+        endsWithout: ((
+            parent: string | unknown[],
+            child: unknown,
+            failureMessage?: string | undefined,
+        ): string | unknown[] => {
+            if (typeof parent === 'string') {
+                if (parent.endsWith(child as string)) {
+                    throw new AssertionError(
+                        `${stringify(parent)} ends with ${stringify(child)}}`,
+                        failureMessage,
+                    );
+                }
+            } else if (parent[parent.length - 1] === child) {
+                throw new AssertionError(
+                    `${stringify(parent)} ends with ${stringify(child)}}`,
+                    failureMessage,
+                );
+            }
+            return parent;
+        }) as typeof boundaryAssertWrap,
         /**
          * Checks that a parent string or array starts with a specific child. This uses reference
          * equality when the parent is an array. Returns the parent if the assertion passes.
@@ -572,20 +622,8 @@ export const boundaryGuards = {
          *
          * assertWrap.startsWith('ab', 'b'); // throws an error
          * assertWrap.startsWith('ab', 'a'); // returns `'ab'`
-         * assertWrap.startsWith(
-         *     [
-         *         'a',
-         *         'b',
-         *     ],
-         *     'b',
-         * ); // throws an error
-         * assertWrap.startsWith(
-         *     [
-         *         'a',
-         *         'b',
-         *     ],
-         *     'a',
-         * ); // returns `['a', 'b']`
+         * assertWrap.startsWith(['a', 'b'], 'b'); // throws an error
+         * assertWrap.startsWith(['a', 'b'], 'a'); // returns `['a', 'b']`
          * ```
          *
          * @returns The parent value if it starts with the child.
@@ -594,7 +632,26 @@ export const boundaryGuards = {
          * - {@link assertWrap.startsWithout} : the opposite assertion.
          * - {@link assertWrap.endsWith} : assertion on the other end.
          */
-        startsWith: autoGuard<typeof boundaryAssertWrap>(),
+        startsWith: ((
+            parent: string | unknown[],
+            child: unknown,
+            failureMessage?: string | undefined,
+        ): string | unknown[] => {
+            if (typeof parent === 'string') {
+                if (!parent.startsWith(child as string)) {
+                    throw new AssertionError(
+                        `${stringify(parent)} does not start with ${stringify(child)}}`,
+                        failureMessage,
+                    );
+                }
+            } else if (parent[0] !== child) {
+                throw new AssertionError(
+                    `${stringify(parent)} does not start with ${stringify(child)}}`,
+                    failureMessage,
+                );
+            }
+            return parent;
+        }) as typeof boundaryAssertWrap,
         /**
          * Asserts that a parent string or array starts with a specific child. This uses reference
          * equality when the parent is an array. Returns the parent if the assertion passes.
@@ -608,20 +665,8 @@ export const boundaryGuards = {
          *
          * assertWrap.startsWith('ab', 'b'); // returns `'ab'`
          * assertWrap.startsWith('ab', 'a'); // throws an error
-         * assertWrap.startsWith(
-         *     [
-         *         'a',
-         *         'b',
-         *     ],
-         *     'b',
-         * ); // returns `['a', 'b']`
-         * assertWrap.startsWith(
-         *     [
-         *         'a',
-         *         'b',
-         *     ],
-         *     'a',
-         * ); // throws an error
+         * assertWrap.startsWith(['a', 'b'], 'b'); // returns `['a', 'b']`
+         * assertWrap.startsWith(['a', 'b'], 'a'); // throws an error
          * ```
          *
          * @returns The parent value if it does not start with the child.
@@ -630,7 +675,26 @@ export const boundaryGuards = {
          * - {@link assertWrap.startsWithout} : the opposite assertion.
          * - {@link assertWrap.endsWith} : assertion on the other end.
          */
-        startsWithout: autoGuard<typeof boundaryAssertWrap>(),
+        startsWithout: ((
+            parent: string | unknown[],
+            child: unknown,
+            failureMessage?: string | undefined,
+        ): string | unknown[] => {
+            if (typeof parent === 'string') {
+                if (parent.startsWith(child as string)) {
+                    throw new AssertionError(
+                        `${stringify(parent)} starts with ${stringify(child)}}`,
+                        failureMessage,
+                    );
+                }
+            } else if (parent[0] === child) {
+                throw new AssertionError(
+                    `${stringify(parent)} starts with ${stringify(child)}}`,
+                    failureMessage,
+                );
+            }
+            return parent;
+        }) as typeof boundaryAssertWrap,
     },
     checkWrap: {
         /**
@@ -647,20 +711,8 @@ export const boundaryGuards = {
          *
          * checkWrap.endsWith('ab', 'b'); // returns `'ab'`
          * checkWrap.endsWith('ab', 'a'); // returns `undefined`
-         * checkWrap.endsWith(
-         *     [
-         *         'a',
-         *         'b',
-         *     ],
-         *     'b',
-         * ); // returns `['a', 'b']`
-         * checkWrap.endsWith(
-         *     [
-         *         'a',
-         *         'b',
-         *     ],
-         *     'a',
-         * ); // returns `undefined`
+         * checkWrap.endsWith(['a', 'b'], 'b'); // returns `['a', 'b']`
+         * checkWrap.endsWith(['a', 'b'], 'a'); // returns `undefined`
          * ```
          *
          * @returns The first value if the check passes, otherwise `undefined`.
@@ -668,7 +720,21 @@ export const boundaryGuards = {
          * - {@link checkWrap.endsWithout} : the opposite check.
          * - {@link checkWrap.startsWith} : check on the other end.
          */
-        endsWith: autoGuard<typeof boundaryCheckWrap>(),
+        endsWith: ((parent: string | unknown[], child: unknown): string | unknown[] | undefined => {
+            if (typeof parent === 'string') {
+                if (parent.endsWith(child as string)) {
+                    return parent;
+                } else {
+                    return undefined;
+                }
+            }
+
+            if (parent[parent.length - 1] === child) {
+                return parent;
+            } else {
+                return undefined;
+            }
+        }) as typeof boundaryCheckWrap,
         /**
          * Checks that a parent string or array does _not_ end with a specific child. This uses
          * reference equality when the parent is an array. Returns the value if the check passes,
@@ -683,20 +749,8 @@ export const boundaryGuards = {
          *
          * checkWrap.endsWithout('ab', 'b'); // returns `undefined`
          * checkWrap.endsWithout('ab', 'a'); // returns `'ab'`
-         * checkWrap.endsWithout(
-         *     [
-         *         'a',
-         *         'b',
-         *     ],
-         *     'b',
-         * ); // returns `undefined`
-         * checkWrap.endsWithout(
-         *     [
-         *         'a',
-         *         'b',
-         *     ],
-         *     'a',
-         * ); // returns `['a', 'b']`
+         * checkWrap.endsWithout(['a', 'b'], 'b'); // returns `undefined`
+         * checkWrap.endsWithout(['a', 'b'], 'a'); // returns `['a', 'b']`
          * ```
          *
          * @returns The first value if the check passes, otherwise `undefined`.
@@ -704,7 +758,24 @@ export const boundaryGuards = {
          * - {@link checkWrap.endsWith} : the opposite check.
          * - {@link checkWrap.startsWithout} : check on the other end.
          */
-        endsWithout: autoGuard<typeof boundaryCheckWrap>(),
+        endsWithout: ((
+            parent: string | unknown[],
+            child: unknown,
+        ): string | unknown[] | undefined => {
+            if (typeof parent === 'string') {
+                if (parent.endsWith(child as string)) {
+                    return undefined;
+                } else {
+                    return parent;
+                }
+            }
+
+            if (parent[parent.length - 1] === child) {
+                return undefined;
+            } else {
+                return parent;
+            }
+        }) as typeof boundaryCheckWrap,
         /**
          * Checks that a parent string or array starts with a specific child. This uses reference
          * equality when the parent is an array. Returns the value if the check passes, otherwise
@@ -719,20 +790,8 @@ export const boundaryGuards = {
          *
          * checkWrap.startsWith('ab', 'b'); // returns `undefined`
          * checkWrap.startsWith('ab', 'a'); // returns `'ab'`
-         * checkWrap.startsWith(
-         *     [
-         *         'a',
-         *         'b',
-         *     ],
-         *     'b',
-         * ); // returns `undefined`
-         * checkWrap.startsWith(
-         *     [
-         *         'a',
-         *         'b',
-         *     ],
-         *     'a',
-         * ); // returns `['a', 'b']`
+         * checkWrap.startsWith(['a', 'b'], 'b'); // returns `undefined`
+         * checkWrap.startsWith(['a', 'b'], 'a'); // returns `['a', 'b']`
          * ```
          *
          * @returns The first value if the check passes, otherwise `undefined`.
@@ -740,7 +799,24 @@ export const boundaryGuards = {
          * - {@link checkWrap.startsWithout} : the opposite check.
          * - {@link checkWrap.endsWith} : check on the other end.
          */
-        startsWith: autoGuard<typeof boundaryCheckWrap>(),
+        startsWith: ((
+            parent: string | unknown[],
+            child: unknown,
+        ): string | unknown[] | undefined => {
+            if (typeof parent === 'string') {
+                if (parent.startsWith(child as string)) {
+                    return parent;
+                } else {
+                    return undefined;
+                }
+            }
+
+            if (parent[0] === child) {
+                return parent;
+            } else {
+                return undefined;
+            }
+        }) as typeof boundaryCheckWrap,
         /**
          * Checks that a parent string or array starts with a specific child. This uses reference
          * equality when the parent is an array. Returns the value if the check passes, otherwise
@@ -755,20 +831,8 @@ export const boundaryGuards = {
          *
          * checkWrap.startsWith('ab', 'b'); // returns `undefined`
          * checkWrap.startsWith('ab', 'a'); // returns `'ab'`
-         * checkWrap.startsWith(
-         *     [
-         *         'a',
-         *         'b',
-         *     ],
-         *     'b',
-         * ); // returns `undefined`
-         * checkWrap.startsWith(
-         *     [
-         *         'a',
-         *         'b',
-         *     ],
-         *     'a',
-         * ); // returns `['a', 'b']`
+         * checkWrap.startsWith(['a', 'b'], 'b'); // returns `undefined`
+         * checkWrap.startsWith(['a', 'b'], 'a'); // returns `['a', 'b']`
          * ```
          *
          * @returns The first value if the check passes, otherwise `undefined`.
@@ -776,7 +840,24 @@ export const boundaryGuards = {
          * - {@link checkWrap.startsWithout} : the opposite check.
          * - {@link checkWrap.endsWith} : check on the other end.
          */
-        startsWithout: autoGuard<typeof boundaryCheckWrap>(),
+        startsWithout: ((
+            parent: string | unknown[],
+            child: unknown,
+        ): string | unknown[] | undefined => {
+            if (typeof parent === 'string') {
+                if (parent.startsWith(child as string)) {
+                    return undefined;
+                } else {
+                    return parent;
+                }
+            }
+
+            if (parent[0] === child) {
+                return undefined;
+            } else {
+                return parent;
+            }
+        }) as typeof boundaryCheckWrap,
     },
     waitUntil: {
         /**
@@ -793,14 +874,8 @@ export const boundaryGuards = {
          *
          * await waitUntil.endsWith('b', () => 'ab'); // returns `'ab'`
          * await waitUntil.endsWith('a', () => 'ab'); // throws an error
-         * await waitUntil.endsWith('b', () => [
-         *     'a',
-         *     'b',
-         * ]); // returns `['a', 'b']`
-         * await waitUntil.endsWith('a', () => [
-         *     'a',
-         *     'b',
-         * ]); // throws an error
+         * await waitUntil.endsWith('b', () => ['a', 'b']); // returns `['a', 'b']`
+         * await waitUntil.endsWith('a', () => ['a', 'b']); // throws an error
          * ```
          *
          * @returns The callback output once it passes.
@@ -809,7 +884,7 @@ export const boundaryGuards = {
          * - {@link waitUntil.endsWithout} : the opposite assertion.
          * - {@link waitUntil.startsWith} : assertion on the other end.
          */
-        endsWith: autoGuard<typeof boundaryWaitUntil>(),
+        endsWith: createWaitUntil(assertions.endsWith) as typeof boundaryWaitUntil,
         /**
          * Repeatedly calls a callback until its output string or array does not end with the first
          * input child value. This uses reference equality when the parent is an array. Once the
@@ -824,14 +899,8 @@ export const boundaryGuards = {
          *
          * await waitUntil.endsWith('b', () => 'ab'); // throws an error
          * await waitUntil.endsWith('a', () => 'ab'); // returns `'ab'`
-         * await waitUntil.endsWith('b', () => [
-         *     'a',
-         *     'b',
-         * ]); // throws an error
-         * await waitUntil.endsWith('a', () => [
-         *     'a',
-         *     'b',
-         * ]); // returns `['a', 'b']`
+         * await waitUntil.endsWith('b', () => ['a', 'b']); // throws an error
+         * await waitUntil.endsWith('a', () => ['a', 'b']); // returns `['a', 'b']`
          * ```
          *
          * @returns The callback output once it passes.
@@ -840,7 +909,7 @@ export const boundaryGuards = {
          * - {@link waitUntil.endsWith} : the opposite assertion.
          * - {@link waitUntil.startsWithout} : assertion on the other end.
          */
-        endsWithout: autoGuard<typeof boundaryWaitUntil>(),
+        endsWithout: createWaitUntil(assertions.endsWithout) as typeof boundaryWaitUntil,
         /**
          * Repeatedly calls a callback until its output string or array starts with the first input
          * child value. This uses reference equality when the parent is an array. Once the callback
@@ -855,14 +924,8 @@ export const boundaryGuards = {
          *
          * await waitUntil.endsWith('b', () => 'ab'); // throws an error
          * await waitUntil.endsWith('a', () => 'ab'); // returns `'ab'`
-         * await waitUntil.endsWith('b', () => [
-         *     'a',
-         *     'b',
-         * ]); // throws an error
-         * await waitUntil.endsWith('a', () => [
-         *     'a',
-         *     'b',
-         * ]); // returns `['a', 'b']`
+         * await waitUntil.endsWith('b', () => ['a', 'b']); // throws an error
+         * await waitUntil.endsWith('a', () => ['a', 'b']); // returns `['a', 'b']`
          * ```
          *
          * @returns The callback output once it passes.
@@ -871,7 +934,7 @@ export const boundaryGuards = {
          * - {@link waitUntil.startsWithout} : the opposite assertion.
          * - {@link waitUntil.endsWith} : assertion on the other end.
          */
-        startsWith: autoGuard<typeof boundaryWaitUntil>(),
+        startsWith: createWaitUntil(assertions.startsWith) as typeof boundaryWaitUntil,
         /**
          * Repeatedly calls a callback until its output string or array does not start with the
          * first input child value. This uses reference equality when the parent is an array. Once
@@ -885,14 +948,8 @@ export const boundaryGuards = {
          * ```ts
          * await waitUntil.endsWith('b', () => 'ab'); // returns `'ab'`
          * await waitUntil.endsWith('a', () => 'ab'); // throws an error
-         * await waitUntil.endsWith('b', () => [
-         *     'a',
-         *     'b',
-         * ]); // returns `['a', 'b']`
-         * await waitUntil.endsWith('a', () => [
-         *     'a',
-         *     'b',
-         * ]); // throws an error
+         * await waitUntil.endsWith('b', () => ['a', 'b']); // returns `['a', 'b']`
+         * await waitUntil.endsWith('a', () => ['a', 'b']); // throws an error
          * ```
          *
          * @returns The callback output once it passes.
@@ -901,6 +958,6 @@ export const boundaryGuards = {
          * - {@link waitUntil.startsWith} : the opposite assertion.
          * - {@link waitUntil.endsWithout} : assertion on the other end.
          */
-        startsWithout: autoGuard<typeof boundaryWaitUntil>(),
+        startsWithout: createWaitUntil(assertions.startsWithout) as typeof boundaryWaitUntil,
     },
 } satisfies GuardGroup<typeof assertions>;

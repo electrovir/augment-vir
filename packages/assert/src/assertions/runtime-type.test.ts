@@ -15,10 +15,7 @@ import {waitUntil} from '../augments/guards/wait-until.js';
 import {waitUntilTestOptions} from '../test-timeout.mock.js';
 
 describe('isArray', () => {
-    const actualPass: unknown = [
-        'hi',
-        'bye',
-    ] as any;
+    const actualPass: unknown = ['hi', 'bye'] as any;
     const actualReject: unknown = 'two' as any;
     type ExpectedType = unknown[];
     type UnexpectedType = unknown;
@@ -521,6 +518,9 @@ describe('isBoolean', () => {
             const newValue = assertWrap.isBoolean(actualPassUnion);
             assert.tsType(newValue).equals<ExpectedUnionNarrowedType>();
         });
+        it('rejects', () => {
+            assert.throws(() => assertWrap.isBoolean(34));
+        });
     });
     describe('checkWrap', () => {
         it('guards', () => {
@@ -627,6 +627,9 @@ describe('isNotBoolean', () => {
         it('narrows', () => {
             const newValue = assertWrap.isNotBoolean(actualPassUnion);
             assert.tsType(newValue).equals<ExpectedUnionNarrowedType>();
+        });
+        it('rejects', () => {
+            assert.throws(() => assertWrap.isNotBoolean(false));
         });
     });
     describe('checkWrap', () => {

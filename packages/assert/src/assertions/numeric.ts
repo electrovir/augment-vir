@@ -1,107 +1,9 @@
-import {stringify, type MinMax} from '@augment-vir/core';
+import {MaybePromise, MinMax, stringify} from '@augment-vir/core';
 import {AssertionError} from '../augments/assertion.error.js';
 import type {GuardGroup} from '../guard-types/guard-group.js';
-import {autoGuardSymbol} from '../guard-types/guard-override.js';
-import {isNumber} from './runtime-type.js';
+import {createWaitUntil, WaitUntilOptions} from '../guard-types/wait-until-function.js';
 
-function isAbove(actual: number, expected: number, failureMessage?: string | undefined) {
-    if (actual <= expected) {
-        throw new AssertionError(`${actual} is not above ${expected}`, failureMessage);
-    }
-}
-
-function isAtLeast(actual: number, expected: number, failureMessage?: string | undefined) {
-    if (actual < expected) {
-        throw new AssertionError(`${actual} is not at least ${expected}`, failureMessage);
-    }
-}
-
-function isInBounds(actual: number, {max, min}: MinMax, failureMessage?: string | undefined) {
-    if (actual < min || max < actual) {
-        throw new AssertionError(
-            `${actual} is not within the bounds ${stringify({min, max})}`,
-            failureMessage,
-        );
-    }
-}
-
-function isOutBounds(actual: number, {min, max}: MinMax, failureMessage?: string | undefined) {
-    if (min <= actual && actual <= max) {
-        throw new AssertionError(
-            `${actual} is not outside the bounds ${stringify({min, max})}`,
-            failureMessage,
-        );
-    }
-}
-
-function isInteger(actual: number, failureMessage?: string | undefined) {
-    isNumber(actual);
-    if (!Number.isInteger(actual)) {
-        throw new AssertionError(`${actual} is not an integer.`, failureMessage);
-    }
-}
-function isNotInteger(actual: number, failureMessage?: string | undefined) {
-    if (Number.isInteger(actual)) {
-        throw new AssertionError(`${actual} is an integer.`, failureMessage);
-    }
-}
-
-function isBelow(actual: number, expected: number, failureMessage?: string | undefined) {
-    if (actual >= expected) {
-        throw new AssertionError(`${actual} is not below ${expected}`, failureMessage);
-    }
-}
-
-function isAtMost(actual: number, expected: number, failureMessage?: string | undefined) {
-    if (actual > expected) {
-        throw new AssertionError(`${actual} is not at most ${expected}`, failureMessage);
-    }
-}
-
-function isNaNGuard(actual: number, failureMessage?: string | undefined) {
-    if (!isNaN(actual)) {
-        throw new AssertionError(`${actual} is not NaN`, failureMessage);
-    }
-}
-
-function isFiniteGuard(actual: number, failureMessage?: string | undefined) {
-    if (isNaN(actual) || actual === Infinity || actual === -Infinity) {
-        throw new AssertionError(`${actual} is not finite`, failureMessage);
-    }
-}
-
-function isInfinite(actual: number, failureMessage?: string | undefined) {
-    if (actual !== Infinity && actual !== -Infinity) {
-        throw new AssertionError(`${actual} is not infinite`, failureMessage);
-    }
-}
-
-function isApproximately(
-    actual: number,
-    expected: number,
-    delta: number,
-    failureMessage?: string | undefined,
-) {
-    if (actual < expected - delta || actual > expected + delta) {
-        throw new AssertionError(
-            `${actual} is not within ±${delta} of ${expected}`,
-            failureMessage,
-        );
-    }
-}
-
-function isNotApproximately(
-    actual: number,
-    expected: number,
-    delta: number,
-    failureMessage?: string | undefined,
-) {
-    if (actual >= expected - delta && actual <= expected + delta) {
-        throw new AssertionError(`${actual} is within ±${delta} of ${expected}`, failureMessage);
-    }
-}
-
-const assertions: {
+const assertions = {
     /**
      * Asserts that a number is inside the provided min and max bounds, inclusive.
      *
@@ -122,7 +24,19 @@ const assertions: {
      * @see
      * - {@link assert.isOutBounds} : the opposite assertion.
      */
-    isInBounds: typeof isInBounds;
+    isInBounds(
+        this: void,
+        actual: number,
+        {max, min}: MinMax,
+        failureMessage?: string | undefined,
+    ) {
+        if (actual < min || max < actual) {
+            throw new AssertionError(
+                `${actual} is not within the bounds ${stringify({min, max})}`,
+                failureMessage,
+            );
+        }
+    },
     /**
      * Asserts that a number is outside the provided min and max bounds, exclusive.
      *
@@ -143,7 +57,19 @@ const assertions: {
      * @see
      * - {@link assert.isInBounds} : the opposite assertion.
      */
-    isOutBounds: typeof isOutBounds;
+    isOutBounds(
+        this: void,
+        actual: number,
+        {min, max}: MinMax,
+        failureMessage?: string | undefined,
+    ) {
+        if (min <= actual && actual <= max) {
+            throw new AssertionError(
+                `${actual} is not outside the bounds ${stringify({min, max})}`,
+                failureMessage,
+            );
+        }
+    },
 
     /**
      * Asserts that a number is an integer. This has the same limitations as
@@ -166,7 +92,11 @@ const assertions: {
      * @see
      * - {@link assert.isNotInteger} : the opposite assertion.
      */
-    isInteger: typeof isInteger;
+    isInteger(this: void, actual: number, failureMessage?: string | undefined) {
+        if (typeof actual !== 'number' || isNaN(actual) || !Number.isInteger(actual)) {
+            throw new AssertionError(`${actual} is not an integer.`, failureMessage);
+        }
+    },
     /**
      * Asserts that a number is not an integer. This has the same limitations, as
      * https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number/isInteger.
@@ -188,7 +118,11 @@ const assertions: {
      * @see
      * - {@link assert.isInteger} : the opposite assertion.
      */
-    isNotInteger: typeof isNotInteger;
+    isNotInteger(this: void, actual: number, failureMessage?: string | undefined) {
+        if (Number.isInteger(actual)) {
+            throw new AssertionError(`${actual} is an integer.`, failureMessage);
+        }
+    },
     /**
      * Asserts that a number is above the expectation (`actual > expected`).
      *
@@ -209,7 +143,11 @@ const assertions: {
      * - {@link assert.isBelow} : the opposite assertion.
      * - {@link assert.isAtLeast} : the more lenient assertion.
      */
-    isAbove: typeof isAbove;
+    isAbove(this: void, actual: number, expected: number, failureMessage?: string | undefined) {
+        if (actual <= expected) {
+            throw new AssertionError(`${actual} is not above ${expected}`, failureMessage);
+        }
+    },
     /**
      * Asserts that a number is at least the expectation (`actual >= expected`).
      *
@@ -230,7 +168,11 @@ const assertions: {
      * - {@link assert.isAtMost} : the opposite assertion.
      * - {@link assert.isAbove} : the more restrictive assertion.
      */
-    isAtLeast: typeof isAtLeast;
+    isAtLeast(this: void, actual: number, expected: number, failureMessage?: string | undefined) {
+        if (actual < expected) {
+            throw new AssertionError(`${actual} is not at least ${expected}`, failureMessage);
+        }
+    },
     /**
      * Asserts that a number is below the expectation (`actual < expected`).
      *
@@ -251,7 +193,11 @@ const assertions: {
      * - {@link assert.isAbove} : the opposite assertion.
      * - {@link assert.isAtMost} : the more lenient assertion.
      */
-    isBelow: typeof isBelow;
+    isBelow(this: void, actual: number, expected: number, failureMessage?: string | undefined) {
+        if (actual >= expected) {
+            throw new AssertionError(`${actual} is not below ${expected}`, failureMessage);
+        }
+    },
     /**
      * Asserts that a number is at most the expectation (`actual <= expected`).
      *
@@ -272,7 +218,11 @@ const assertions: {
      * - {@link assert.isAtLeast} : the opposite assertion.
      * - {@link assert.isBelow} : the more restrictive assertion.
      */
-    isAtMost: typeof isAtMost;
+    isAtMost(this: void, actual: number, expected: number, failureMessage?: string | undefined) {
+        if (actual > expected) {
+            throw new AssertionError(`${actual} is not at most ${expected}`, failureMessage);
+        }
+    },
 
     /**
      * Asserts that a number is
@@ -294,7 +244,11 @@ const assertions: {
      * @see
      * - {@link assert.isNumber} : can be used as the opposite assertion.
      */
-    isNaN: typeof isNaNGuard;
+    isNaN(this: void, actual: number, failureMessage?: string | undefined) {
+        if (!isNaN(actual)) {
+            throw new AssertionError(`${actual} is not NaN`, failureMessage);
+        }
+    },
     /**
      * Asserts that a number is finite: meaning, not `NaN` and not `Infinity` or `-Infinity`.
      *
@@ -316,7 +270,11 @@ const assertions: {
      * - {@link assert.isNaN} : an opposite assertion.
      * - {@link assert.isInfinite} : an opposite assertion.
      */
-    isFinite: typeof isFiniteGuard;
+    isFinite(this: void, actual: number, failureMessage?: string | undefined) {
+        if (isNaN(actual) || actual === Infinity || actual === -Infinity) {
+            throw new AssertionError(`${actual} is not finite`, failureMessage);
+        }
+    },
     /**
      * Asserts that a number is either `Infinity` or `-Infinity`.
      *
@@ -338,7 +296,11 @@ const assertions: {
      * - {@link assert.isNaN} : an opposite assertion.
      * - {@link assert.isInfinite} : an opposite assertion.
      */
-    isInfinite: typeof isInfinite;
+    isInfinite(this: void, actual: number, failureMessage?: string | undefined) {
+        if (actual !== Infinity && actual !== -Infinity) {
+            throw new AssertionError(`${actual} is not infinite`, failureMessage);
+        }
+    },
     /**
      * Asserts that a number is within ±`delta` of the expectation.
      *
@@ -359,7 +321,20 @@ const assertions: {
      * @see
      * - {@link assert.isNotApproximately} : the opposite assertion.
      */
-    isApproximately: typeof isApproximately;
+    isApproximately(
+        this: void,
+        actual: number,
+        expected: number,
+        delta: number,
+        failureMessage?: string | undefined,
+    ) {
+        if (actual < expected - delta || actual > expected + delta) {
+            throw new AssertionError(
+                `${actual} is not within ±${delta} of ${expected}`,
+                failureMessage,
+            );
+        }
+    },
     /**
      * Asserts that a number is outside ±`delta` of the expectation.
      *
@@ -380,21 +355,20 @@ const assertions: {
      * @see
      * - {@link assert.isApproximately} : the opposite assertion.
      */
-    isNotApproximately: typeof isNotApproximately;
-} = {
-    isInBounds,
-    isOutBounds,
-    isInteger,
-    isNotInteger,
-    isAbove,
-    isAtLeast,
-    isBelow,
-    isAtMost,
-    isNaN: isNaNGuard,
-    isFinite: isFiniteGuard,
-    isInfinite,
-    isApproximately,
-    isNotApproximately,
+    isNotApproximately(
+        this: void,
+        actual: number,
+        expected: number,
+        delta: number,
+        failureMessage?: string | undefined,
+    ) {
+        if (actual >= expected - delta && actual <= expected + delta) {
+            throw new AssertionError(
+                `${actual} is within ±${delta} of ${expected}`,
+                failureMessage,
+            );
+        }
+    },
 };
 
 export const numericGuards = {
@@ -419,7 +393,9 @@ export const numericGuards = {
          * @see
          * - {@link check.isOutBounds} : the opposite check.
          */
-        isInBounds: autoGuardSymbol,
+        isInBounds(this: void, actual: number, {max, min}: MinMax): boolean {
+            return min <= actual && actual <= max;
+        },
         /**
          * Checks that a number is outside the provided min and max bounds, exclusive.
          *
@@ -439,7 +415,9 @@ export const numericGuards = {
          * @see
          * - {@link check.isInBounds} : the opposite check.
          */
-        isOutBounds: autoGuardSymbol,
+        isOutBounds(this: void, actual: number, {max, min}: MinMax): boolean {
+            return actual < min || max < actual;
+        },
 
         /**
          * Checks that a number is an integer. This has the same limitations as
@@ -461,7 +439,9 @@ export const numericGuards = {
          * @see
          * - {@link check.isNotInteger} : the opposite check.
          */
-        isInteger: autoGuardSymbol,
+        isInteger(this: void, actual: number): boolean {
+            return typeof actual === 'number' && !isNaN(actual) && Number.isInteger(actual);
+        },
         /**
          * Checks that a number is not an integer. This has the same limitations, as
          * https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number/isInteger.
@@ -482,7 +462,9 @@ export const numericGuards = {
          * @see
          * - {@link check.isInteger} : the opposite check.
          */
-        isNotInteger: autoGuardSymbol,
+        isNotInteger(this: void, actual: number): boolean {
+            return typeof actual !== 'number' || isNaN(actual) || !Number.isInteger(actual);
+        },
         /**
          * Checks that a number is above the expectation (`actual > expected`).
          *
@@ -502,7 +484,9 @@ export const numericGuards = {
          * - {@link check.isBelow} : the opposite check.
          * - {@link check.isAtLeast} : the more lenient check.
          */
-        isAbove: autoGuardSymbol,
+        isAbove(this: void, actual: number, expected: number): boolean {
+            return actual > expected;
+        },
         /**
          * Checks that a number is at least the expectation (`actual >= expected`).
          *
@@ -522,7 +506,9 @@ export const numericGuards = {
          * - {@link check.isAtMost} : the opposite check.
          * - {@link check.isAbove} : the more restrictive check.
          */
-        isAtLeast: autoGuardSymbol,
+        isAtLeast(this: void, actual: number, expected: number): boolean {
+            return actual >= expected;
+        },
         /**
          * Checks that a number is below the expectation (`actual < expected`).
          *
@@ -542,7 +528,9 @@ export const numericGuards = {
          * - {@link check.isAbove} : the opposite check.
          * - {@link check.isAtMost} : the more lenient check.
          */
-        isBelow: autoGuardSymbol,
+        isBelow(this: void, actual: number, expected: number): boolean {
+            return actual < expected;
+        },
         /**
          * Checks that a number is at most the expectation (`actual <= expected`).
          *
@@ -562,7 +550,9 @@ export const numericGuards = {
          * - {@link check.isAtLeast} : the opposite check.
          * - {@link check.isBelow} : the more restrictive check.
          */
-        isAtMost: autoGuardSymbol,
+        isAtMost(this: void, actual: number, expected: number): boolean {
+            return actual <= expected;
+        },
         /**
          * Checks that a number is
          * [`NaN`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/NaN).
@@ -582,7 +572,9 @@ export const numericGuards = {
          * @see
          * - {@link check.isNumber} : can be used as the opposite check.
          */
-        isNaN: autoGuardSymbol,
+        isNaN(this: void, input: number): boolean {
+            return isNaN(input);
+        },
         /**
          * Checks that a number is finite: meaning, not `NaN` and not `Infinity` or `-Infinity`.
          *
@@ -603,7 +595,9 @@ export const numericGuards = {
          * - {@link check.isNaN} : an opposite check.
          * - {@link check.isInfinite} : an opposite check.
          */
-        isFinite: autoGuardSymbol,
+        isFinite(this: void, actual: number): boolean {
+            return !isNaN(actual) && actual !== Infinity && actual !== -Infinity;
+        },
         /**
          * Checks that a number is either `Infinity` or `-Infinity`.
          *
@@ -624,7 +618,9 @@ export const numericGuards = {
          * - {@link check.isNaN} : an opposite check.
          * - {@link check.isInfinite} : an opposite check.
          */
-        isInfinite: autoGuardSymbol,
+        isInfinite(this: void, actual: number): boolean {
+            return actual === Infinity || actual === -Infinity;
+        },
         /**
          * Checks that a number is within ±`delta` of the expectation.
          *
@@ -644,7 +640,9 @@ export const numericGuards = {
          * @see
          * - {@link check.isNotApproximately} : the opposite check.
          */
-        isApproximately: autoGuardSymbol,
+        isApproximately(this: void, actual: number, expected: number, delta: number): boolean {
+            return expected - delta <= actual && actual <= expected + delta;
+        },
         /**
          * Checks that a number is outside ±`delta` of the expectation.
          *
@@ -664,7 +662,9 @@ export const numericGuards = {
          * @see
          * - {@link check.isApproximately} : the opposite check.
          */
-        isNotApproximately: autoGuardSymbol,
+        isNotApproximately(this: void, actual: number, expected: number, delta: number): boolean {
+            return actual < expected - delta || actual > expected + delta;
+        },
     },
     assertWrap: {
         /**
@@ -688,7 +688,21 @@ export const numericGuards = {
          * @see
          * - {@link assertWrap.isOutBounds} : the opposite assertion.
          */
-        isInBounds: autoGuardSymbol,
+        isInBounds<Actual extends number>(
+            this: void,
+            actual: Actual,
+            {max, min}: MinMax,
+            failureMessage?: string | undefined,
+        ): Actual {
+            if (actual < min || max < actual) {
+                throw new AssertionError(
+                    `${actual} is not within the bounds ${stringify({min, max})}`,
+                    failureMessage,
+                );
+            }
+
+            return actual;
+        },
         /**
          * Asserts that a number is outside the provided min and max bounds, exclusive. Returns the
          * number if the assertion passes.
@@ -710,7 +724,21 @@ export const numericGuards = {
          * @see
          * - {@link assertWrap.isInBounds} : the opposite assertion.
          */
-        isOutBounds: autoGuardSymbol,
+        isOutBounds<Actual extends number>(
+            this: void,
+            actual: Actual,
+            {min, max}: MinMax,
+            failureMessage?: string | undefined,
+        ): Actual {
+            if (min <= actual && actual <= max) {
+                throw new AssertionError(
+                    `${actual} is not outside the bounds ${stringify({min, max})}`,
+                    failureMessage,
+                );
+            }
+
+            return actual;
+        },
 
         /**
          * Asserts that a number is an integer. Returns the number if the assertion passes. This has
@@ -734,7 +762,17 @@ export const numericGuards = {
          * @see
          * - {@link assertWrap.isNotInteger} : the opposite assertion.
          */
-        isInteger: autoGuardSymbol,
+        isInteger<Actual extends number>(
+            this: void,
+            actual: Actual,
+            failureMessage?: string | undefined,
+        ): Actual {
+            if (typeof actual !== 'number' || isNaN(actual) || !Number.isInteger(actual)) {
+                throw new AssertionError(`${actual} is not an integer.`, failureMessage);
+            }
+
+            return actual;
+        },
         /**
          * Asserts that a number is not an integer. Returns the number if the assertion passes. This
          * has the same limitations, as
@@ -757,7 +795,17 @@ export const numericGuards = {
          * @see
          * - {@link assertWrap.isInteger} : the opposite assertion.
          */
-        isNotInteger: autoGuardSymbol,
+        isNotInteger<Actual extends number>(
+            this: void,
+            actual: Actual,
+            failureMessage?: string | undefined,
+        ): Actual {
+            if (Number.isInteger(actual)) {
+                throw new AssertionError(`${actual} is an integer.`, failureMessage);
+            }
+
+            return actual;
+        },
         /**
          * Asserts that a number is above the expectation (`actual > expected`). Returns the number
          * if the assertion passes.
@@ -780,7 +828,18 @@ export const numericGuards = {
          * - {@link assertWrap.isBelow} : the opposite assertion.
          * - {@link assertWrap.isAtLeast} : the more lenient assertion.
          */
-        isAbove: autoGuardSymbol,
+        isAbove<Actual extends number>(
+            this: void,
+            actual: Actual,
+            expected: number,
+            failureMessage?: string | undefined,
+        ): Actual {
+            if (actual <= expected) {
+                throw new AssertionError(`${actual} is not above ${expected}`, failureMessage);
+            }
+
+            return actual;
+        },
         /**
          * Asserts that a number is at least the expectation (`actual >= expected`). Returns the
          * number if the assertion passes.
@@ -803,7 +862,18 @@ export const numericGuards = {
          * - {@link assertWrap.isAtMost} : the opposite assertion.
          * - {@link assertWrap.isAbove} : the more restrictive assertion.
          */
-        isAtLeast: autoGuardSymbol,
+        isAtLeast<Actual extends number>(
+            this: void,
+            actual: Actual,
+            expected: number,
+            failureMessage?: string | undefined,
+        ): Actual {
+            if (actual < expected) {
+                throw new AssertionError(`${actual} is not at least ${expected}`, failureMessage);
+            }
+
+            return actual;
+        },
         /**
          * Asserts that a number is below the expectation (`actual < expected`). Returns the number
          * if the assertion passes.
@@ -826,7 +896,18 @@ export const numericGuards = {
          * - {@link assertWrap.isAbove} : the opposite assertion.
          * - {@link assertWrap.isAtMost} : the more lenient assertion.
          */
-        isBelow: autoGuardSymbol,
+        isBelow<Actual extends number>(
+            this: void,
+            actual: Actual,
+            expected: number,
+            failureMessage?: string | undefined,
+        ): Actual {
+            if (actual >= expected) {
+                throw new AssertionError(`${actual} is not below ${expected}`, failureMessage);
+            }
+
+            return actual;
+        },
         /**
          * Asserts that a number is at most the expectation (`actual <= expected`). Returns the
          * number if the assertion passes.
@@ -849,7 +930,18 @@ export const numericGuards = {
          * - {@link assertWrap.isAtLeast} : the opposite assertion.
          * - {@link assertWrap.isBelow} : the more restrictive assertion.
          */
-        isAtMost: autoGuardSymbol,
+        isAtMost<Actual extends number>(
+            this: void,
+            actual: Actual,
+            expected: number,
+            failureMessage?: string | undefined,
+        ): Actual {
+            if (actual > expected) {
+                throw new AssertionError(`${actual} is not at most ${expected}`, failureMessage);
+            }
+
+            return actual;
+        },
         /**
          * Asserts that a number is
          * [`NaN`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/NaN).
@@ -872,7 +964,17 @@ export const numericGuards = {
          * @see
          * - {@link assertWrap.isNumber} : can be used as the opposite assertion.
          */
-        isNaN: autoGuardSymbol,
+        isNaN<Actual extends number>(
+            this: void,
+            actual: Actual,
+            failureMessage?: string | undefined,
+        ): Actual {
+            if (!isNaN(actual)) {
+                throw new AssertionError(`${actual} is not NaN`, failureMessage);
+            }
+
+            return actual;
+        },
         /**
          * Asserts that a number is finite: meaning, not `NaN` and not `Infinity` or `-Infinity`.
          * Returns the number if the assertion passes.
@@ -896,7 +998,17 @@ export const numericGuards = {
          * - {@link assertWrap.isNaN} : an opposite assertion.
          * - {@link assertWrap.isInfinite} : an opposite assertion.
          */
-        isFinite: autoGuardSymbol,
+        isFinite<Actual extends number>(
+            this: void,
+            actual: Actual,
+            failureMessage?: string | undefined,
+        ): Actual {
+            if (isNaN(actual) || actual === Infinity || actual === -Infinity) {
+                throw new AssertionError(`${actual} is not finite`, failureMessage);
+            }
+
+            return actual;
+        },
         /**
          * Asserts that a number is either `Infinity` or `-Infinity`. Returns the number if the
          * assertion passes.
@@ -920,7 +1032,17 @@ export const numericGuards = {
          * - {@link assertWrap.isNaN} : an opposite assertion.
          * - {@link assertWrap.isInfinite} : an opposite assertion.
          */
-        isInfinite: autoGuardSymbol,
+        isInfinite<Actual extends number>(
+            this: void,
+            actual: Actual,
+            failureMessage?: string | undefined,
+        ): Actual {
+            if (actual !== Infinity && actual !== -Infinity) {
+                throw new AssertionError(`${actual} is not infinite`, failureMessage);
+            }
+
+            return actual;
+        },
         /**
          * Asserts that a number is within ±`delta` of the expectation. Returns the number if the
          * assertion passes.
@@ -943,7 +1065,22 @@ export const numericGuards = {
          * @see
          * - {@link assertWrap.isNotApproximately} : the opposite assertion.
          */
-        isApproximately: autoGuardSymbol,
+        isApproximately<Actual extends number>(
+            this: void,
+            actual: Actual,
+            expected: number,
+            delta: number,
+            failureMessage?: string | undefined,
+        ): Actual {
+            if (actual < expected - delta || actual > expected + delta) {
+                throw new AssertionError(
+                    `${actual} is not within ±${delta} of ${expected}`,
+                    failureMessage,
+                );
+            }
+
+            return actual;
+        },
         /**
          * Asserts that a number is outside ±`delta` of the expectation. Returns the number if the
          * assertion passes.
@@ -966,7 +1103,22 @@ export const numericGuards = {
          * @see
          * - {@link assertWrap.isApproximately} : the opposite assertion.
          */
-        isNotApproximately: autoGuardSymbol,
+        isNotApproximately<Actual extends number>(
+            this: void,
+            actual: Actual,
+            expected: number,
+            delta: number,
+            failureMessage?: string | undefined,
+        ): Actual {
+            if (actual >= expected - delta && actual <= expected + delta) {
+                throw new AssertionError(
+                    `${actual} is within ±${delta} of ${expected}`,
+                    failureMessage,
+                );
+            }
+
+            return actual;
+        },
     },
     checkWrap: {
         /**
@@ -989,7 +1141,17 @@ export const numericGuards = {
          * @see
          * - {@link checkWrap.isOutBounds} : the opposite check.
          */
-        isInBounds: autoGuardSymbol,
+        isInBounds<Actual extends number>(
+            this: void,
+            actual: Actual,
+            {max, min}: MinMax,
+        ): Actual | undefined {
+            if (min <= actual && actual <= max) {
+                return actual;
+            } else {
+                return undefined;
+            }
+        },
         /**
          * Checks that a number is outside the provided min and max bounds, exclusive. Returns the
          * number if the check passes, otherwise `undefined`.
@@ -1010,7 +1172,17 @@ export const numericGuards = {
          * @see
          * - {@link checkWrap.isInBounds} : the opposite check.
          */
-        isOutBounds: autoGuardSymbol,
+        isOutBounds<Actual extends number>(
+            this: void,
+            actual: Actual,
+            {max, min}: MinMax,
+        ): Actual | undefined {
+            if (actual < min || max < actual) {
+                return actual;
+            } else {
+                return undefined;
+            }
+        },
 
         /**
          * Checks that a number is an integer. Returns the number if the check passes, otherwise
@@ -1033,7 +1205,13 @@ export const numericGuards = {
          * @see
          * - {@link checkWrap.isNotInteger} : the opposite check.
          */
-        isInteger: autoGuardSymbol,
+        isInteger<Actual extends number>(this: void, actual: Actual): Actual | undefined {
+            if (typeof actual === 'number' && !isNaN(actual) && Number.isInteger(actual)) {
+                return actual;
+            } else {
+                return undefined;
+            }
+        },
         /**
          * Checks that a number is not an integer. Returns the number if the check passes, otherwise
          * `undefined`. This has the same limitations, as
@@ -1055,7 +1233,13 @@ export const numericGuards = {
          * @see
          * - {@link checkWrap.isInteger} : the opposite check.
          */
-        isNotInteger: autoGuardSymbol,
+        isNotInteger<Actual extends number>(this: void, actual: Actual): Actual | undefined {
+            if (typeof actual !== 'number' || isNaN(actual) || !Number.isInteger(actual)) {
+                return actual;
+            } else {
+                return undefined;
+            }
+        },
         /**
          * Checks that a number is above the expectation (`actual > expected`). Returns the number
          * if the check passes, otherwise `undefined`.
@@ -1077,7 +1261,17 @@ export const numericGuards = {
          * - {@link checkWrap.isBelow} : the opposite check.
          * - {@link checkWrap.isAtLeast} : the more lenient check.
          */
-        isAbove: autoGuardSymbol,
+        isAbove<Actual extends number>(
+            this: void,
+            actual: Actual,
+            expected: number,
+        ): Actual | undefined {
+            if (actual > expected) {
+                return actual;
+            } else {
+                return undefined;
+            }
+        },
         /**
          * Checks that a number is at least the expectation (`actual >= expected`). Returns the
          * number if the check passes, otherwise `undefined`.
@@ -1099,7 +1293,17 @@ export const numericGuards = {
          * - {@link checkWrap.isAtMost} : the opposite check.
          * - {@link checkWrap.isAbove} : the more restrictive check.
          */
-        isAtLeast: autoGuardSymbol,
+        isAtLeast<Actual extends number>(
+            this: void,
+            actual: Actual,
+            expected: number,
+        ): Actual | undefined {
+            if (actual >= expected) {
+                return actual;
+            } else {
+                return undefined;
+            }
+        },
         /**
          * Checks that a number is below the expectation (`actual < expected`). Returns the number
          * if the check passes, otherwise `undefined`.
@@ -1121,7 +1325,17 @@ export const numericGuards = {
          * - {@link checkWrap.isAbove} : the opposite check.
          * - {@link checkWrap.isAtMost} : the more lenient check.
          */
-        isBelow: autoGuardSymbol,
+        isBelow<Actual extends number>(
+            this: void,
+            actual: Actual,
+            expected: number,
+        ): Actual | undefined {
+            if (actual < expected) {
+                return actual;
+            } else {
+                return undefined;
+            }
+        },
         /**
          * Checks that a number is at most the expectation (`actual <= expected`). Returns the
          * number if the check passes, otherwise `undefined`.
@@ -1143,7 +1357,17 @@ export const numericGuards = {
          * - {@link checkWrap.isAtLeast} : the opposite check.
          * - {@link checkWrap.isBelow} : the more restrictive check.
          */
-        isAtMost: autoGuardSymbol,
+        isAtMost<Actual extends number>(
+            this: void,
+            actual: Actual,
+            expected: number,
+        ): Actual | undefined {
+            if (actual <= expected) {
+                return actual;
+            } else {
+                return undefined;
+            }
+        },
         /**
          * Checks that a number is
          * [`NaN`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/NaN).
@@ -1165,7 +1389,13 @@ export const numericGuards = {
          * @see
          * - {@link checkWrap.isNumber} : can be used as the opposite check.
          */
-        isNaN: autoGuardSymbol,
+        isNaN<Actual extends number>(this: void, actual: Actual): Actual | undefined {
+            if (isNaN(actual)) {
+                return actual;
+            } else {
+                return undefined;
+            }
+        },
         /**
          * Checks that a number is finite: meaning, not `NaN` and not `Infinity` or `-Infinity`.
          * Returns the number if the check passes, otherwise `undefined`.
@@ -1188,7 +1418,13 @@ export const numericGuards = {
          * - {@link checkWrap.isNaN} : an opposite check.
          * - {@link checkWrap.isInfinite} : an opposite check.
          */
-        isFinite: autoGuardSymbol,
+        isFinite<Actual extends number>(this: void, actual: Actual): Actual | undefined {
+            if (!isNaN(actual) && actual !== Infinity && actual !== -Infinity) {
+                return actual;
+            } else {
+                return undefined;
+            }
+        },
         /**
          * Checks that a number is either `Infinity` or `-Infinity`. Returns the number if the check
          * passes, otherwise `undefined`.
@@ -1211,7 +1447,13 @@ export const numericGuards = {
          * - {@link checkWrap.isNaN} : an opposite check.
          * - {@link checkWrap.isInfinite} : an opposite check.
          */
-        isInfinite: autoGuardSymbol,
+        isInfinite<Actual extends number>(this: void, actual: Actual): Actual | undefined {
+            if (actual === Infinity || actual === -Infinity) {
+                return actual;
+            } else {
+                return undefined;
+            }
+        },
         /**
          * Checks that a number is within ±`delta` of the expectation. Returns the number if the
          * check passes, otherwise `undefined`.
@@ -1233,7 +1475,18 @@ export const numericGuards = {
          * @see
          * - {@link checkWrap.isNotApproximately} : the opposite check.
          */
-        isApproximately: autoGuardSymbol,
+        isApproximately<Actual extends number>(
+            this: void,
+            actual: Actual,
+            expected: number,
+            delta: number,
+        ): Actual | undefined {
+            if (expected - delta <= actual && actual <= expected + delta) {
+                return actual;
+            } else {
+                return undefined;
+            }
+        },
         /**
          * Checks that a number is outside ±`delta` of the expectation. Returns the number if the
          * check passes, otherwise `undefined`.
@@ -1255,7 +1508,18 @@ export const numericGuards = {
          * @see
          * - {@link checkWrap.isApproximately} : the opposite check.
          */
-        isNotApproximately: autoGuardSymbol,
+        isNotApproximately<Actual extends number>(
+            this: void,
+            actual: Actual,
+            expected: number,
+            delta: number,
+        ): Actual | undefined {
+            if (actual < expected - delta || actual > expected + delta) {
+                return actual;
+            } else {
+                return undefined;
+            }
+        },
     },
     waitUntil: {
         /**
@@ -1279,7 +1543,13 @@ export const numericGuards = {
          * @see
          * - {@link waitUntil.isOutBounds} : the opposite assertion.
          */
-        isInBounds: autoGuardSymbol,
+        isInBounds: createWaitUntil(assertions.isInBounds) as <Actual extends number>(
+            this: void,
+            {max, min}: MinMax,
+            callback: () => MaybePromise<Actual>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<Actual>,
         /**
          * Repeatedly calls a callback until its output is outside the provided min and max bounds,
          * exclusive. If the attempts time out, an error is thrown.
@@ -1301,7 +1571,13 @@ export const numericGuards = {
          * @see
          * - {@link waitUntil.isInBounds} : the opposite assertion.
          */
-        isOutBounds: autoGuardSymbol,
+        isOutBounds: createWaitUntil(assertions.isOutBounds) as <Actual extends number>(
+            this: void,
+            {max, min}: MinMax,
+            callback: () => MaybePromise<Actual>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<Actual>,
 
         /**
          * Repeatedly calls a callback until its output is an integer. This has the same limitations
@@ -1326,7 +1602,12 @@ export const numericGuards = {
          * @see
          * - {@link waitUntil.isNotInteger} : the opposite assertion.
          */
-        isInteger: autoGuardSymbol,
+        isInteger: createWaitUntil(assertions.isInteger) as <Actual extends number>(
+            this: void,
+            callback: () => MaybePromise<Actual>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<Actual>,
         /**
          * Repeatedly calls a callback until its output is not an integer. This has the same
          * limitations, as
@@ -1350,7 +1631,12 @@ export const numericGuards = {
          * @see
          * - {@link waitUntil.isInteger} : the opposite assertion.
          */
-        isNotInteger: autoGuardSymbol,
+        isNotInteger: createWaitUntil(assertions.isNotInteger) as <Actual extends number>(
+            this: void,
+            callback: () => MaybePromise<Actual>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<Actual>,
         /**
          * Repeatedly calls a callback until its output is a number that is above the expectation
          * (`actual > expected`). Once the callback output passes, it is returned. If the attempts
@@ -1374,7 +1660,13 @@ export const numericGuards = {
          * - {@link waitUntil.isBelow} : the opposite assertion.
          * - {@link waitUntil.isAtLeast} : the more lenient assertion.
          */
-        isAbove: autoGuardSymbol,
+        isAbove: createWaitUntil(assertions.isAbove) as <Actual extends number>(
+            this: void,
+            expected: number,
+            callback: () => MaybePromise<Actual>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<Actual>,
         /**
          * Repeatedly calls a callback until its output is a number that is at least the expectation
          * (`actual >= expected`). Once the callback output passes, it is returned. If the attempts
@@ -1398,7 +1690,13 @@ export const numericGuards = {
          * - {@link waitUntil.isAtMost} : the opposite assertion.
          * - {@link waitUntil.isAbove} : the more restrictive assertion.
          */
-        isAtLeast: autoGuardSymbol,
+        isAtLeast: createWaitUntil(assertions.isAtLeast) as <Actual extends number>(
+            this: void,
+            expected: number,
+            callback: () => MaybePromise<Actual>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<Actual>,
         /**
          * Repeatedly calls a callback until its output is a number that is below the expectation
          * (`actual < expected`). Once the callback output passes, it is returned. If the attempts
@@ -1422,7 +1720,13 @@ export const numericGuards = {
          * - {@link waitUntil.isAbove} : the opposite assertion.
          * - {@link waitUntil.isAtMost} : the more lenient assertion.
          */
-        isBelow: autoGuardSymbol,
+        isBelow: createWaitUntil(assertions.isBelow) as <Actual extends number>(
+            this: void,
+            expected: number,
+            callback: () => MaybePromise<Actual>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<Actual>,
         /**
          * Repeatedly calls a callback until its output is a number that is at most the expectation
          * (`actual <= expected`). Once the callback output passes, it is returned. If the attempts
@@ -1446,7 +1750,13 @@ export const numericGuards = {
          * - {@link waitUntil.isAtLeast} : the opposite assertion.
          * - {@link waitUntil.isBelow} : the more restrictive assertion.
          */
-        isAtMost: autoGuardSymbol,
+        isAtMost: createWaitUntil(assertions.isAtMost) as <Actual extends number>(
+            this: void,
+            expected: number,
+            callback: () => MaybePromise<Actual>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<Actual>,
         /**
          * Repeatedly calls a callback until its output is a number that is
          * [`NaN`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/NaN).
@@ -1470,7 +1780,12 @@ export const numericGuards = {
          * @see
          * - {@link waitUntil.isNumber} : can be used as the opposite assertion.
          */
-        isNaN: autoGuardSymbol,
+        isNaN: createWaitUntil(assertions.isNaN) as <Actual extends number>(
+            this: void,
+            callback: () => MaybePromise<Actual>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<Actual>,
         /**
          * Repeatedly calls a callback until its output is a number that is finite: meaning, not
          * `NaN` and not `Infinity` or `-Infinity`. Once the callback output passes, it is returned.
@@ -1495,7 +1810,12 @@ export const numericGuards = {
          * - {@link waitUntil.isNaN} : an opposite assertion.
          * - {@link waitUntil.isInfinite} : an opposite assertion.
          */
-        isFinite: autoGuardSymbol,
+        isFinite: createWaitUntil(assertions.isFinite) as <Actual extends number>(
+            this: void,
+            callback: () => MaybePromise<Actual>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<Actual>,
         /**
          * Repeatedly calls a callback until its output is a number that is either `Infinity` or
          * `-Infinity`. Once the callback output passes, it is returned. If the attempts time out,
@@ -1520,7 +1840,12 @@ export const numericGuards = {
          * - {@link waitUntil.isNaN} : an opposite assertion.
          * - {@link waitUntil.isInfinite} : an opposite assertion.
          */
-        isInfinite: autoGuardSymbol,
+        isInfinite: createWaitUntil(assertions.isInfinite) as <Actual extends number>(
+            this: void,
+            callback: () => MaybePromise<Actual>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<Actual>,
         /**
          * Repeatedly calls a callback until its output is a number that is within ±`delta` of the
          * expectation. Once the callback output passes, it is returned. If the attempts time out,
@@ -1544,7 +1869,14 @@ export const numericGuards = {
          * @see
          * - {@link waitUntil.isNotApproximately} : the opposite assertion.
          */
-        isApproximately: autoGuardSymbol,
+        isApproximately: createWaitUntil(assertions.isApproximately) as <Actual extends number>(
+            this: void,
+            expected: number,
+            delta: number,
+            callback: () => MaybePromise<Actual>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<Actual>,
         /**
          * Repeatedly calls a callback until its output is a number that is outside ±`delta` of the
          * expectation. Once the callback output passes, it is returned. If the attempts time out,
@@ -1568,6 +1900,15 @@ export const numericGuards = {
          * @see
          * - {@link waitUntil.isApproximately} : the opposite assertion.
          */
-        isNotApproximately: autoGuardSymbol,
+        isNotApproximately: createWaitUntil(assertions.isNotApproximately) as <
+            Actual extends number,
+        >(
+            this: void,
+            expected: number,
+            delta: number,
+            callback: () => MaybePromise<Actual>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<Actual>,
     },
 } satisfies GuardGroup<typeof assertions>;

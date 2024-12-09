@@ -2,60 +2,11 @@ import {stringify, type MaybePromise} from '@augment-vir/core';
 import {type Primitive} from 'type-fest';
 import {AssertionError} from '../augments/assertion.error.js';
 import type {GuardGroup} from '../guard-types/guard-group.js';
-import {autoGuard, autoGuardSymbol} from '../guard-types/guard-override.js';
-import {type WaitUntilOptions} from '../guard-types/wait-until-function.js';
+import {createWaitUntil, type WaitUntilOptions} from '../guard-types/wait-until-function.js';
 
-export type {Primitive} from 'type-fest';
+export {type Primitive} from 'type-fest';
 
-/** Asserts that the given value is a primitive. */
-function isPrimitive(
-    input: unknown,
-    failureMessage?: string | undefined,
-): asserts input is Primitive {
-    /**
-     * `null` is a primitive but `typeof null` gives `'object'` so we have to special case `null`
-     * here.
-     */
-    if (input !== null && (typeof input === 'object' || typeof input === 'function')) {
-        throw new AssertionError(`'${stringify(input)}' is not a Primitive.`, failureMessage);
-    }
-}
-function isNotPrimitive<const Actual>(
-    input: Actual,
-    failureMessage?: string | undefined,
-): asserts input is Exclude<Actual, Primitive> {
-    try {
-        isPrimitive(input);
-    } catch {
-        return;
-    }
-
-    throw new AssertionError(`'${stringify(input)}' is a Primitive.`, failureMessage);
-}
-
-/** Asserts that the given value is a PropertyKey ( string | number | symbol). */
-function isPropertyKey(
-    input: unknown,
-    failureMessage?: string | undefined,
-): asserts input is PropertyKey {
-    if (typeof input !== 'string' && typeof input !== 'number' && typeof input !== 'symbol') {
-        throw new AssertionError(`'${stringify(input)}' is not a PropertyKey.`, failureMessage);
-    }
-}
-function isNotPropertyKey<const Actual>(
-    input: Actual,
-    failureMessage?: string | undefined,
-): asserts input is Exclude<Actual, PropertyKey> {
-    try {
-        isPropertyKey(input);
-    } catch {
-        return;
-    }
-
-    throw new AssertionError(`'${stringify(input)}' is a PropertyKey.`, failureMessage);
-}
-
-const assertions: {
+const assertions = {
     /**
      * Asserts that a value is a valid `PropertyKey`. `PropertyKey` is a built-in TypeScript type
      * which refers to all possible key types for a JavaScript object.
@@ -76,7 +27,22 @@ const assertions: {
      * @see
      * - {@link assert.isNotPropertyKey} : the opposite assertion.
      */
-    isPropertyKey: typeof isPropertyKey;
+    isPropertyKey(
+        this: void,
+        actual: unknown,
+        failureMessage?: string | undefined,
+    ): asserts actual is PropertyKey {
+        if (
+            typeof actual !== 'string' &&
+            typeof actual !== 'number' &&
+            typeof actual !== 'symbol'
+        ) {
+            throw new AssertionError(
+                `'${stringify(actual)}' is not a PropertyKey.`,
+                failureMessage,
+            );
+        }
+    },
     /**
      * Asserts that a value is _not_ a valid `PropertyKey`. `PropertyKey` is a built-in TypeScript
      * type which refers to all possible key types for a JavaScript object.
@@ -97,7 +63,19 @@ const assertions: {
      * @see
      * - {@link assert.isPropertyKey} : the opposite assertion.
      */
-    isNotPropertyKey: typeof isNotPropertyKey;
+    isNotPropertyKey<Actual>(
+        this: void,
+        actual: Actual,
+        failureMessage?: string | undefined,
+    ): asserts actual is Exclude<Actual, PropertyKey> {
+        if (
+            typeof actual === 'string' ||
+            typeof actual === 'number' ||
+            typeof actual === 'symbol'
+        ) {
+            throw new AssertionError(`'${stringify(actual)}' is a PropertyKey.`, failureMessage);
+        }
+    },
 
     /**
      * Asserts that a value is a JavaScript
@@ -119,7 +97,19 @@ const assertions: {
      * @see
      * - {@link assert.isNotPrimitive} : the opposite assertion.
      */
-    isPrimitive: typeof isPrimitive;
+    isPrimitive(
+        this: void,
+        actual: unknown,
+        failureMessage?: string | undefined,
+    ): asserts actual is Primitive {
+        /**
+         * `null` is a primitive but `typeof null` gives `'object'` so we have to special case
+         * `null` here.
+         */
+        if (actual !== null && (typeof actual === 'object' || typeof actual === 'function')) {
+            throw new AssertionError(`'${stringify(actual)}' is not a Primitive.`, failureMessage);
+        }
+    },
     /**
      * Asserts that a value is _not_ a JavaScript
      * [primitive](https://developer.mozilla.org/docs/Glossary/Primitive).
@@ -140,12 +130,19 @@ const assertions: {
      * @see
      * - {@link assert.isPrimitive} : the opposite assertion.
      */
-    isNotPrimitive: typeof isNotPrimitive;
-} = {
-    isPropertyKey,
-    isNotPropertyKey,
-    isPrimitive,
-    isNotPrimitive,
+    isNotPrimitive<Actual>(
+        this: void,
+        actual: Actual,
+        failureMessage?: string | undefined,
+    ): asserts actual is Exclude<Actual, Primitive> {
+        /**
+         * `null` is a primitive but `typeof null` gives `'object'` so we have to special case
+         * `null` here.
+         */
+        if (actual === null || (typeof actual !== 'object' && typeof actual !== 'function')) {
+            throw new AssertionError(`'${stringify(actual)}' is not a Primitive.`, failureMessage);
+        }
+    },
 };
 
 export const primitiveGuards = {
@@ -162,16 +159,21 @@ export const primitiveGuards = {
          * ```ts
          * import {check} from '@augment-vir/assert';
          *
-         * check.isPropertyKey('key'); // returns `true`
-         * check.isPropertyKey(true); // returns `false`
-         * check.isPropertyKey({}); // returns `false`
+         * check.isNotPrimitive('key'); // returns `false`
+         * check.isNotPrimitive(true); // returns `false`
+         * check.isNotPrimitive({}); // returns `true`
          * ```
          *
          * @see
-         * - {@link check.isNotPropertyKey} : the opposite check.
+         * - {@link check.isPrimitive} : the opposite check.
          */
-        isNotPrimitive:
-            autoGuard<<const Actual>(input: Actual) => input is Exclude<Actual, Primitive>>(),
+        isNotPrimitive<Actual>(this: void, actual: Actual): actual is Exclude<Actual, Primitive> {
+            /**
+             * `null` is a primitive but `typeof null` gives `'object'` so we have to special case
+             * `null` here.
+             */
+            return actual !== null && (typeof actual === 'object' || typeof actual === 'function');
+        },
         /**
          * Checks that a value is _not_ a valid `PropertyKey`. `PropertyKey` is a built-in
          * TypeScript type which refers to all possible key types for a JavaScript object.
@@ -191,8 +193,16 @@ export const primitiveGuards = {
          * @see
          * - {@link check.isPropertyKey} : the opposite check.
          */
-        isNotPropertyKey:
-            autoGuard<<const Actual>(input: Actual) => input is Exclude<Actual, PropertyKey>>(),
+        isNotPropertyKey<Actual>(
+            this: void,
+            actual: Actual,
+        ): actual is Exclude<Actual, PropertyKey> {
+            return (
+                typeof actual !== 'string' &&
+                typeof actual !== 'number' &&
+                typeof actual !== 'symbol'
+            );
+        },
         /**
          * Checks that a value is a JavaScript
          * [primitive](https://developer.mozilla.org/docs/Glossary/Primitive).
@@ -212,7 +222,13 @@ export const primitiveGuards = {
          * @see
          * - {@link check.isNotPrimitive} : the opposite check.
          */
-        isPrimitive: autoGuardSymbol,
+        isPrimitive(this: void, actual: unknown): actual is Primitive {
+            /**
+             * `null` is a primitive but `typeof null` gives `'object'` so we have to special case
+             * `null` here.
+             */
+            return actual === null || (typeof actual !== 'object' && typeof actual !== 'function');
+        },
 
         /**
          * Checks that a value is _not_ a JavaScript
@@ -225,15 +241,21 @@ export const primitiveGuards = {
          * ```ts
          * import {check} from '@augment-vir/assert';
          *
-         * check.isPrimitive('key'); // returns `false`
-         * check.isPrimitive(true); // returns `false`
-         * check.isPrimitive({}); // returns `true`
+         * check.isPropertyKey('key'); // returns `true`
+         * check.isPropertyKey(true); // returns `false`
+         * check.isPropertyKey({}); // returns `false`
          * ```
          *
          * @see
-         * - {@link check.isPrimitive} : the opposite check.
+         * - {@link check.isNotPropertyKey} : the opposite check.
          */
-        isPropertyKey: autoGuardSymbol,
+        isPropertyKey<Actual>(this: void, actual: Actual): actual is Extract<PropertyKey, Actual> {
+            return (
+                typeof actual === 'string' ||
+                typeof actual === 'number' ||
+                typeof actual === 'symbol'
+            );
+        },
     },
     assertWrap: {
         /**
@@ -258,13 +280,24 @@ export const primitiveGuards = {
          * @see
          * - {@link assertWrap.isNotPropertyKey} : the opposite assertion.
          */
-        isNotPrimitive:
-            autoGuard<
-                <const Actual>(
-                    input: Actual,
-                    failureMessage?: string | undefined,
-                ) => Exclude<Actual, Primitive>
-            >(),
+        isNotPrimitive<Actual>(
+            this: void,
+            actual: Actual,
+            failureMessage?: string | undefined,
+        ): Exclude<Actual, Primitive> {
+            /**
+             * `null` is a primitive but `typeof null` gives `'object'` so we have to special case
+             * `null` here.
+             */
+            if (actual === null || (typeof actual !== 'object' && typeof actual !== 'function')) {
+                throw new AssertionError(
+                    `'${stringify(actual)}' is not a Primitive.`,
+                    failureMessage,
+                );
+            }
+
+            return actual as Exclude<Actual, Primitive>;
+        },
         /**
          * Asserts that a value is _not_ a valid `PropertyKey`. `PropertyKey` is a built-in
          * TypeScript type which refers to all possible key types for a JavaScript object. Returns
@@ -287,13 +320,24 @@ export const primitiveGuards = {
          * @see
          * - {@link assertWrap.isPropertyKey} : the opposite assertion.
          */
-        isNotPropertyKey:
-            autoGuard<
-                <const Actual>(
-                    input: Actual,
-                    failureMessage?: string | undefined,
-                ) => Exclude<Actual, PropertyKey>
-            >(),
+        isNotPropertyKey<Actual>(
+            this: void,
+            actual: Actual,
+            failureMessage?: string | undefined,
+        ): Exclude<Actual, PropertyKey> {
+            if (
+                typeof actual === 'string' ||
+                typeof actual === 'number' ||
+                typeof actual === 'symbol'
+            ) {
+                throw new AssertionError(
+                    `'${stringify(actual)}' is a PropertyKey.`,
+                    failureMessage,
+                );
+            }
+
+            return actual as Exclude<Actual, PropertyKey>;
+        },
         /**
          * Asserts that a value is a JavaScript
          * [primitive](https://developer.mozilla.org/docs/Glossary/Primitive). Returns the value if
@@ -316,7 +360,24 @@ export const primitiveGuards = {
          * @see
          * - {@link assertWrap.isNotPrimitive} : the opposite assertion.
          */
-        isPrimitive: autoGuardSymbol,
+        isPrimitive<Actual>(
+            this: void,
+            actual: Actual,
+            failureMessage?: string | undefined,
+        ): Extract<Actual, Primitive> {
+            /**
+             * `null` is a primitive but `typeof null` gives `'object'` so we have to special case
+             * `null` here.
+             */
+            if (actual !== null && (typeof actual === 'object' || typeof actual === 'function')) {
+                throw new AssertionError(
+                    `'${stringify(actual)}' is not a Primitive.`,
+                    failureMessage,
+                );
+            }
+
+            return actual as Extract<Actual, Primitive>;
+        },
         /**
          * Asserts that a value is _not_ a JavaScript
          * [primitive](https://developer.mozilla.org/docs/Glossary/Primitive). Returns the value if
@@ -339,7 +400,24 @@ export const primitiveGuards = {
          * @see
          * - {@link assertWrap.isPrimitive} : the opposite assertion.
          */
-        isPropertyKey: autoGuardSymbol,
+        isPropertyKey<Actual>(
+            this: void,
+            actual: Actual,
+            failureMessage?: string | undefined,
+        ): Extract<Actual, PropertyKey> {
+            if (
+                typeof actual !== 'string' &&
+                typeof actual !== 'number' &&
+                typeof actual !== 'symbol'
+            ) {
+                throw new AssertionError(
+                    `'${stringify(actual)}' is not a PropertyKey.`,
+                    failureMessage,
+                );
+            }
+
+            return actual as Extract<Actual, PropertyKey>;
+        },
     },
     checkWrap: {
         /**
@@ -354,17 +432,26 @@ export const primitiveGuards = {
          * ```ts
          * import {checkWrap} from '@augment-vir/assert';
          *
-         * checkWrap.isPropertyKey('key'); // returns `'key'`
-         * checkWrap.isPropertyKey(true); // returns `undefined`
-         * checkWrap.isPropertyKey({}); // returns `undefined`
+         * checkWrap.isNotPrimitive('key'); // returns `undefined`
+         * checkWrap.isNotPrimitive(true); // returns `undefined`
+         * checkWrap.isNotPrimitive({}); // returns `{}`
          * ```
          *
          * @returns The value if the check passes, otherwise `undefined`.
          * @see
-         * - {@link checkWrap.isNotPropertyKey} : the opposite check.
+         * - {@link checkWrap.isPrimitive} : the opposite check.
          */
-        isNotPrimitive:
-            autoGuard<<const Actual>(input: Actual) => Exclude<Actual, Primitive> | undefined>(),
+        isNotPrimitive<Actual>(this: void, actual: Actual): Exclude<Actual, Primitive> | undefined {
+            /**
+             * `null` is a primitive but `typeof null` gives `'object'` so we have to special case
+             * `null` here.
+             */
+            if (actual !== null && (typeof actual === 'object' || typeof actual === 'function')) {
+                return actual as Exclude<Actual, Primitive>;
+            } else {
+                return undefined;
+            }
+        },
         /**
          * Checks that a value is _not_ a valid `PropertyKey`. `PropertyKey` is a built-in
          * TypeScript type which refers to all possible key types for a JavaScript object. Returns
@@ -386,8 +473,20 @@ export const primitiveGuards = {
          * @see
          * - {@link checkWrap.isPropertyKey} : the opposite check.
          */
-        isNotPropertyKey:
-            autoGuard<<const Actual>(input: Actual) => Exclude<Actual, PropertyKey> | undefined>(),
+        isNotPropertyKey<Actual>(
+            this: void,
+            actual: Actual,
+        ): Exclude<Actual, PropertyKey> | undefined {
+            if (
+                typeof actual !== 'string' &&
+                typeof actual !== 'number' &&
+                typeof actual !== 'symbol'
+            ) {
+                return actual as Exclude<Actual, PropertyKey>;
+            } else {
+                return undefined;
+            }
+        },
         /**
          * Checks that a value is a JavaScript
          * [primitive](https://developer.mozilla.org/docs/Glossary/Primitive). Returns the value if
@@ -409,7 +508,17 @@ export const primitiveGuards = {
          * @see
          * - {@link checkWrap.isNotPrimitive} : the opposite check.
          */
-        isPrimitive: autoGuardSymbol,
+        isPrimitive<Actual>(this: void, actual: Actual): Extract<Actual, Primitive> | undefined {
+            /**
+             * `null` is a primitive but `typeof null` gives `'object'` so we have to special case
+             * `null` here.
+             */
+            if (actual === null || (typeof actual !== 'object' && typeof actual !== 'function')) {
+                return actual as Extract<Actual, Primitive>;
+            } else {
+                return undefined;
+            }
+        },
         /**
          * Checks that a value is _not_ a JavaScript
          * [primitive](https://developer.mozilla.org/docs/Glossary/Primitive). Returns the value if
@@ -431,7 +540,20 @@ export const primitiveGuards = {
          * @see
          * - {@link checkWrap.isPrimitive} : the opposite check.
          */
-        isPropertyKey: autoGuardSymbol,
+        isPropertyKey<Actual>(
+            this: void,
+            actual: Actual,
+        ): Extract<PropertyKey, Actual> | undefined {
+            if (
+                typeof actual === 'string' ||
+                typeof actual === 'number' ||
+                typeof actual === 'symbol'
+            ) {
+                return actual as Extract<PropertyKey, Actual>;
+            } else {
+                return undefined;
+            }
+        },
     },
     waitUntil: {
         /**
@@ -457,14 +579,12 @@ export const primitiveGuards = {
          * @see
          * - {@link waitUntil.isNotPropertyKey} : the opposite assertion.
          */
-        isNotPrimitive:
-            autoGuard<
-                <const Actual>(
-                    callback: () => MaybePromise<Actual>,
-                    options?: WaitUntilOptions | undefined,
-                    failureMessage?: string | undefined,
-                ) => Promise<Exclude<Actual, Primitive>>
-            >(),
+        isNotPrimitive: createWaitUntil(assertions.isNotPrimitive) as <Actual>(
+            this: void,
+            callback: () => MaybePromise<Actual>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<Exclude<Actual, Primitive>>,
         /**
          * Repeatedly calls a callback until its output is _not_ a valid `PropertyKey`.
          * `PropertyKey` is a built-in TypeScript type which refers to all possible key types for a
@@ -488,14 +608,12 @@ export const primitiveGuards = {
          * @see
          * - {@link waitUntil.isPropertyKey} : the opposite assertion.
          */
-        isNotPropertyKey:
-            autoGuard<
-                <const Actual>(
-                    callback: () => MaybePromise<Actual>,
-                    options?: WaitUntilOptions | undefined,
-                    failureMessage?: string | undefined,
-                ) => Promise<Exclude<Actual, PropertyKey>>
-            >(),
+        isNotPropertyKey: createWaitUntil(assertions.isNotPropertyKey) as <Actual>(
+            this: void,
+            callback: () => MaybePromise<Actual>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<Exclude<Actual, PropertyKey>>,
         /**
          * Repeatedly calls a callback until its output is a JavaScript
          * [primitive](https://developer.mozilla.org/docs/Glossary/Primitive). Once the callback
@@ -518,7 +636,12 @@ export const primitiveGuards = {
          * @see
          * - {@link waitUntil.isNotPrimitive} : the opposite assertion.
          */
-        isPrimitive: autoGuardSymbol,
+        isPrimitive: createWaitUntil(assertions.isPrimitive) as <Actual>(
+            this: void,
+            callback: () => MaybePromise<Actual>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<Extract<Actual, Primitive>>,
         /**
          * Repeatedly calls a callback until its output is _not_ a JavaScript
          * [primitive](https://developer.mozilla.org/docs/Glossary/Primitive). Once the callback
@@ -541,6 +664,11 @@ export const primitiveGuards = {
          * @see
          * - {@link waitUntil.isPrimitive} : the opposite assertion.
          */
-        isPropertyKey: autoGuardSymbol,
+        isPropertyKey: createWaitUntil(assertions.isPropertyKey) as <Actual>(
+            this: void,
+            callback: () => MaybePromise<Actual>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<Extract<Actual, PropertyKey>>,
     },
 } satisfies GuardGroup<typeof assertions>;

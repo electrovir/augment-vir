@@ -9,42 +9,11 @@ import {
 } from '@augment-vir/core';
 import {AssertionError} from '../augments/assertion.error.js';
 import type {GuardGroup} from '../guard-types/guard-group.js';
-import {autoGuard, autoGuardSymbol} from '../guard-types/guard-override.js';
-import {type WaitUntilOptions} from '../guard-types/wait-until-function.js';
+import {createWaitUntil, type WaitUntilOptions} from '../guard-types/wait-until-function.js';
 import {isEnumValue} from './enum.js';
 import {isIn} from './values.js';
 
-function isHttpStatus(
-    actual: unknown,
-    failureMessage?: string | undefined,
-): asserts actual is HttpStatus {
-    try {
-        isEnumValue(actual, HttpStatus);
-    } catch {
-        throw new AssertionError(
-            `${stringify(actual)} is not a valid http status.`,
-            failureMessage,
-        );
-    }
-}
-
-function isHttpStatusCategory<const Actual, const Category extends HttpStatusCategory>(
-    actual: Actual,
-    category: Category,
-    failureMessage?: string | undefined,
-): asserts actual is NarrowToExpected<Actual, HttpStatusByCategory<Category>> {
-    try {
-        isEnumValue(actual, HttpStatus);
-        isIn(actual, httpStatusByCategory[category]);
-    } catch {
-        throw new AssertionError(
-            `${stringify(actual)} is not a '${category}' http status.`,
-            failureMessage,
-        );
-    }
-}
-
-const assertions: {
+const assertions = {
     /**
      * Asserts that a value is an {@link HttpStatus}.
      *
@@ -66,7 +35,18 @@ const assertions: {
      * - {@link HttpStatus} : all included statuses.
      * - {@link HttpStatusCategory} : all status categories.
      */
-    isHttpStatus: typeof isHttpStatus;
+    isHttpStatus<Actual>(
+        this: void,
+        actual: unknown,
+        failureMessage?: string | undefined,
+    ): asserts actual is NarrowToExpected<Actual, HttpStatus> {
+        if (!isEnumValue(actual, HttpStatus)) {
+            throw new AssertionError(
+                `${stringify(actual)} is not a valid HTTP status.`,
+                failureMessage,
+            );
+        }
+    },
     /**
      * Asserts that a value is an {@link HttpStatus} within a specific {@link HttpStatusCategory}.
      *
@@ -89,10 +69,24 @@ const assertions: {
      * - {@link HttpStatus} : all included statuses.
      * - {@link HttpStatusCategory} : all status categories.
      */
-    isHttpStatusCategory: typeof isHttpStatusCategory;
-} = {
-    isHttpStatus,
-    isHttpStatusCategory,
+    isHttpStatusCategory<const Actual, const Category extends HttpStatusCategory>(
+        this: void,
+        actual: Actual,
+        category: Category,
+        failureMessage?: string | undefined,
+    ): asserts actual is NarrowToExpected<Actual, HttpStatusByCategory<Category>> {
+        if (!isEnumValue(actual, HttpStatus)) {
+            throw new AssertionError(
+                `${stringify(actual)} is not a valid HTTP status.`,
+                failureMessage,
+            );
+        } else if (!isIn(actual, httpStatusByCategory[category])) {
+            throw new AssertionError(
+                `${stringify(actual)} is not a '${category}' HTTP status.`,
+                failureMessage,
+            );
+        }
+    },
 };
 
 export const httpGuards = {
@@ -118,7 +112,12 @@ export const httpGuards = {
          * - {@link HttpStatus} : all included statuses.
          * - {@link HttpStatusCategory} : all status categories.
          */
-        isHttpStatus: autoGuardSymbol,
+        isHttpStatus<Actual>(
+            this: void,
+            actual: Actual,
+        ): actual is NarrowToExpected<Actual, HttpStatus> {
+            return isEnumValue(actual, HttpStatus);
+        },
         /**
          * Checks that a value is an {@link HttpStatus} within a specific {@link HttpStatusCategory}.
          *
@@ -139,14 +138,13 @@ export const httpGuards = {
          * - {@link HttpStatus} : all included statuses.
          * - {@link HttpStatusCategory} : all status categories.
          */
-        isHttpStatusCategory:
-            autoGuard<
-                <const Actual, const Category extends HttpStatusCategory>(
-                    actual: Actual,
-                    category: Category,
-                    failureMessage?: string | undefined,
-                ) => actual is NarrowToExpected<Actual, HttpStatusByCategory<Category>>
-            >(),
+        isHttpStatusCategory<const Actual, const Category extends HttpStatusCategory>(
+            this: void,
+            actual: Actual,
+            category: Category,
+        ): actual is NarrowToExpected<Actual, HttpStatusByCategory<Category>> {
+            return isEnumValue(actual, HttpStatus) && isIn(actual, httpStatusByCategory[category]);
+        },
     },
     assertWrap: {
         /**
@@ -170,7 +168,20 @@ export const httpGuards = {
          * - {@link HttpStatus} : all included statuses.
          * - {@link HttpStatusCategory} : all status categories.
          */
-        isHttpStatus: autoGuardSymbol,
+        isHttpStatus<Actual>(
+            this: void,
+            actual: Actual,
+            failureMessage?: string | undefined,
+        ): NarrowToExpected<Actual, HttpStatus> {
+            if (!isEnumValue(actual, HttpStatus)) {
+                throw new AssertionError(
+                    `${stringify(actual)} is not a valid HTTP status.`,
+                    failureMessage,
+                );
+            }
+
+            return actual as NarrowToExpected<Actual, HttpStatus>;
+        },
         /**
          * Checks that a value is an {@link HttpStatus} within a specific {@link HttpStatusCategory}.
          * Returns the value if the assertion passes.
@@ -192,14 +203,26 @@ export const httpGuards = {
          * - {@link HttpStatus} : all included statuses.
          * - {@link HttpStatusCategory} : all status categories.
          */
-        isHttpStatusCategory:
-            autoGuard<
-                <const Actual, const Category extends HttpStatusCategory>(
-                    actual: Actual,
-                    category: Category,
-                    failureMessage?: string | undefined,
-                ) => NarrowToExpected<Actual, HttpStatusByCategory<Category>>
-            >(),
+        isHttpStatusCategory<const Actual, const Category extends HttpStatusCategory>(
+            this: void,
+            actual: Actual,
+            category: Category,
+            failureMessage?: string | undefined,
+        ): NarrowToExpected<Actual, HttpStatusByCategory<Category>> {
+            if (!isEnumValue(actual, HttpStatus)) {
+                throw new AssertionError(
+                    `${stringify(actual)} is not a valid HTTP status.`,
+                    failureMessage,
+                );
+            } else if (!isIn(actual, httpStatusByCategory[category])) {
+                throw new AssertionError(
+                    `${stringify(actual)} is not a '${category}' HTTP status.`,
+                    failureMessage,
+                );
+            }
+
+            return actual as NarrowToExpected<Actual, HttpStatusByCategory<Category>>;
+        },
     },
     checkWrap: {
         /**
@@ -224,7 +247,16 @@ export const httpGuards = {
          * - {@link HttpStatus} : all included statuses.
          * - {@link HttpStatusCategory} : all status categories.
          */
-        isHttpStatus: autoGuardSymbol,
+        isHttpStatus<Actual>(
+            this: void,
+            actual: Actual,
+        ): NarrowToExpected<Actual, HttpStatus> | undefined {
+            if (isEnumValue(actual, HttpStatus)) {
+                return actual as NarrowToExpected<Actual, HttpStatus>;
+            } else {
+                return undefined;
+            }
+        },
         /**
          * Checks that a value is an {@link HttpStatus} within a specific {@link HttpStatusCategory}.
          * Returns the value if the check passes, otherwise `undefined`.
@@ -246,14 +278,17 @@ export const httpGuards = {
          * - {@link HttpStatus} : all included statuses.
          * - {@link HttpStatusCategory} : all status categories.
          */
-        isHttpStatusCategory:
-            autoGuard<
-                <const Actual, const Category extends HttpStatusCategory>(
-                    actual: Actual,
-                    category: Category,
-                    failureMessage?: string | undefined,
-                ) => NarrowToExpected<Actual, HttpStatusByCategory<Category>> | undefined
-            >(),
+        isHttpStatusCategory<const Actual, const Category extends HttpStatusCategory>(
+            this: void,
+            actual: Actual,
+            category: Category,
+        ): NarrowToExpected<Actual, HttpStatusByCategory<Category>> | undefined {
+            if (isEnumValue(actual, HttpStatus) && isIn(actual, httpStatusByCategory[category])) {
+                return actual as NarrowToExpected<Actual, HttpStatusByCategory<Category>>;
+            } else {
+                return undefined;
+            }
+        },
     },
     waitUntil: {
         /**
@@ -279,7 +314,12 @@ export const httpGuards = {
          * - {@link HttpStatus} : all included statuses.
          * - {@link HttpStatusCategory} : all status categories.
          */
-        isHttpStatus: autoGuardSymbol,
+        isHttpStatus: createWaitUntil(assertions.isHttpStatus) as <const Actual>(
+            this: void,
+            callback: () => MaybePromise<Actual>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<NarrowToExpected<Actual, HttpStatus>>,
         /**
          * Repeatedly calls a callback until its output is an {@link HttpStatus} within a specific
          * {@link HttpStatusCategory}. Once the callback output passes, it is returned. If the
@@ -304,14 +344,15 @@ export const httpGuards = {
          * - {@link HttpStatus} : all included statuses.
          * - {@link HttpStatusCategory} : all status categories.
          */
-        isHttpStatusCategory:
-            autoGuard<
-                <const Actual, const Category extends HttpStatusCategory>(
-                    category: Category,
-                    callback: () => MaybePromise<Actual>,
-                    options?: WaitUntilOptions | undefined,
-                    failureMessage?: string | undefined,
-                ) => Promise<NarrowToExpected<Actual, HttpStatusByCategory<Category>>>
-            >(),
+        isHttpStatusCategory: createWaitUntil(assertions.isHttpStatusCategory) as <
+            const Actual,
+            const Category extends HttpStatusCategory,
+        >(
+            this: void,
+            category: Category,
+            callback: () => MaybePromise<Actual>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<NarrowToExpected<Actual, HttpStatusByCategory<Category>>>,
     },
 } satisfies GuardGroup<typeof assertions>;

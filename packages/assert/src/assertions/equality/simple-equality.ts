@@ -2,71 +2,9 @@ import {type MaybePromise, type NarrowToExpected, stringify} from '@augment-vir/
 import deepEqual from 'deep-eql';
 import {AssertionError} from '../../augments/assertion.error.js';
 import type {GuardGroup} from '../../guard-types/guard-group.js';
-import {autoGuard, autoGuardSymbol} from '../../guard-types/guard-override.js';
-import {type WaitUntilOptions} from '../../guard-types/wait-until-function.js';
+import {WaitUntilOptions, createWaitUntil} from '../../guard-types/wait-until-function.js';
 
-export function strictEquals<const Actual, const Expected extends Actual>(
-    actual: Actual,
-    expected: Expected,
-    failureMessage?: string | undefined,
-): asserts actual is Expected {
-    if (actual !== expected) {
-        throw new AssertionError(
-            `\n\n${stringify(actual)}\n\ndoes not strictly equal\n\n${stringify(expected)}\n\n`,
-            failureMessage,
-        );
-    }
-}
-function notStrictEquals(actual: unknown, expected: unknown, failureMessage?: string | undefined) {
-    if (actual === expected) {
-        throw new AssertionError(
-            `\n\n${stringify(actual)}\n\nstrictly equals\n\n${stringify(expected)}\n\n`,
-            failureMessage,
-        );
-    }
-}
-
-function looseEquals(actual: unknown, expected: unknown, failureMessage?: string | undefined) {
-    if (actual != expected) {
-        throw new AssertionError(
-            `\n\n${stringify(actual)}\n\ndoes not loosely equal\n\n${stringify(expected)}\n\n`,
-            failureMessage,
-        );
-    }
-}
-
-function notLooseEquals(actual: unknown, expected: unknown, failureMessage?: string | undefined) {
-    if (actual == expected) {
-        throw new AssertionError(
-            `\n\n${stringify(actual)}\n\nloosely equals\n\n${stringify(expected)}\n\n`,
-            failureMessage,
-        );
-    }
-}
-
-export function deepEquals<const Actual, const Expected extends Actual>(
-    actual: Actual,
-    expected: Expected,
-    failureMessage?: string | undefined,
-): asserts actual is NarrowToExpected<Actual, Expected> {
-    if (!deepEqual(actual, expected)) {
-        throw new AssertionError(
-            `\n\n${stringify(actual)}\n\ndoes not deeply equal\n\n${stringify(expected)}\n\n`,
-            failureMessage,
-        );
-    }
-}
-
-function notDeepEquals(actual: unknown, expected: unknown, failureMessage?: string | undefined) {
-    if (deepEqual(actual, expected)) {
-        throw new AssertionError(
-            `\n\n${stringify(actual)}\n\ndeeply equals\n\n${stringify(expected)}\n\n`,
-            failureMessage,
-        );
-    }
-}
-
-const assertions: {
+const assertions = {
     /**
      * Asserts that two values are strictly equal (using
      * [`===`](https://developer.mozilla.org/docs/Web/JavaScript/Equality_comparisons_and_sameness#strict_equality_using)).
@@ -93,7 +31,19 @@ const assertions: {
      * - {@link assert.notStrictEquals} : the opposite assertion.
      * - {@link assert.looseEquals} : the loose equality assertion.
      */
-    strictEquals: typeof strictEquals;
+    strictEquals<const Actual, const Expected extends Actual>(
+        this: void,
+        actual: Actual,
+        expected: Expected,
+        failureMessage?: string | undefined,
+    ): asserts actual is Expected {
+        if (actual !== expected) {
+            throw new AssertionError(
+                `\n\n${stringify(actual)}\n\ndoes not strictly equal\n\n${stringify(expected)}\n\n`,
+                failureMessage,
+            );
+        }
+    },
     /**
      * Asserts that two values are _not_ strictly equal (using
      * [`===`](https://developer.mozilla.org/docs/Web/JavaScript/Equality_comparisons_and_sameness#strict_equality_using)).
@@ -120,8 +70,19 @@ const assertions: {
      * - {@link assert.strictEquals} : the opposite assertion.
      * - {@link assert.notLooseEquals} : the loose equality assertion.
      */
-    notStrictEquals: typeof notStrictEquals;
-
+    notStrictEquals(
+        this: void,
+        actual: unknown,
+        expected: unknown,
+        failureMessage?: string | undefined,
+    ) {
+        if (actual === expected) {
+            throw new AssertionError(
+                `\n\n${stringify(actual)}\n\nstrictly equals\n\n${stringify(expected)}\n\n`,
+                failureMessage,
+            );
+        }
+    },
     /**
      * Asserts that two values are loosely equal (using
      * [`==`](https://developer.mozilla.org/docs/Web/JavaScript/Equality_comparisons_and_sameness#loose_equality_using)).
@@ -148,7 +109,19 @@ const assertions: {
      * - {@link assert.notLooseEquals} : the opposite assertion.
      * - {@link assert.strictEquals} : the strict equality assertion.
      */
-    looseEquals: typeof looseEquals;
+    looseEquals(
+        this: void,
+        actual: unknown,
+        expected: unknown,
+        failureMessage?: string | undefined,
+    ) {
+        if (actual != expected) {
+            throw new AssertionError(
+                `\n\n${stringify(actual)}\n\ndoes not loosely equal\n\n${stringify(expected)}\n\n`,
+                failureMessage,
+            );
+        }
+    },
     /**
      * Asserts that two values are _not_ loosely equal (using
      * [`==`](https://developer.mozilla.org/docs/Web/JavaScript/Equality_comparisons_and_sameness#loose_equality_using)).
@@ -175,8 +148,19 @@ const assertions: {
      * - {@link assert.looseEquals} : the opposite assertion.
      * - {@link assert.strictEquals} : the strict equality assertion.
      */
-    notLooseEquals: typeof notLooseEquals;
-
+    notLooseEquals(
+        this: void,
+        actual: unknown,
+        expected: unknown,
+        failureMessage?: string | undefined,
+    ) {
+        if (actual == expected) {
+            throw new AssertionError(
+                `\n\n${stringify(actual)}\n\nloosely equals\n\n${stringify(expected)}\n\n`,
+                failureMessage,
+            );
+        }
+    },
     /**
      * Asserts that two values are deeply equal using the
      * [deep-eql](https://www.npmjs.com/package/deep-eql) package.
@@ -207,7 +191,19 @@ const assertions: {
      * - {@link assert.entriesEqual} : a less expensive (but less thorough) deep equality assertion.
      * - {@link assert.jsonEquals} : a less expensive (but less thorough) deep equality assertion.
      */
-    deepEquals: typeof deepEquals;
+    deepEquals<const Actual, const Expected extends Actual>(
+        this: void,
+        actual: Actual,
+        expected: Expected,
+        failureMessage?: string | undefined,
+    ): asserts actual is NarrowToExpected<Actual, Expected> {
+        if (!deepEqual(actual, expected)) {
+            throw new AssertionError(
+                `\n\n${stringify(actual)}\n\ndoes not deeply equal\n\n${stringify(expected)}\n\n`,
+                failureMessage,
+            );
+        }
+    },
     /**
      * Asserts that two values are _not_ deeply equal using the
      * [deep-eql](https://www.npmjs.com/package/deep-eql) package.
@@ -222,31 +218,38 @@ const assertions: {
      * ```ts
      * import {assert} from '@augment-vir/assert';
      *
-     * assert.deepEquals('a', 'a'); // false
+     * assert.notDeepEquals('a', 'a'); // false
      *
-     * assert.deepEquals('1', 1); // passes
+     * assert.notDeepEquals('1', 1); // passes
      *
-     * assert.deepEquals({a: 'a'}, {a: 'a'}); // fails
+     * assert.notDeepEquals({a: 'a'}, {a: 'a'}); // fails
      *
      * const objectExample = {a: 'a'};
-     * assert.deepEquals(objectExample, objectExample); // fails
+     * assert.notDeepEquals(objectExample, objectExample); // fails
      * ```
      *
      * @throws {@link AssertionError} If both inputs are deeply equal.
      * @see
-     * - {@link assert.notDeepEquals} : the opposite assertion.
-     * - {@link assert.entriesEqual} : a less expensive (but less thorough) deep equality assertion.
-     * - {@link assert.jsonEquals} : a less expensive (but less thorough) deep equality assertion.
+     * - {@link assert.deepEquals} : the opposite assertion.
+     * - {@link assert.notEntriesEqual} : a less expensive (but less thorough) deep equality assertion.
+     * - {@link assert.notJsonEquals} : a less expensive (but less thorough) deep equality assertion.
      */
-    notDeepEquals: typeof notDeepEquals;
-} = {
-    strictEquals,
-    notStrictEquals,
-    looseEquals,
-    notLooseEquals,
-    deepEquals,
-    notDeepEquals,
+    notDeepEquals(
+        this: void,
+        actual: unknown,
+        expected: unknown,
+        failureMessage?: string | undefined,
+    ) {
+        if (deepEqual(actual, expected)) {
+            throw new AssertionError(
+                `\n\n${stringify(actual)}\n\ndeeply equals\n\n${stringify(expected)}\n\n`,
+                failureMessage,
+            );
+        }
+    },
 };
+
+export const deepEquals = assertions.deepEquals;
 
 export const simpleEqualityGuards = {
     assert: assertions,
@@ -276,13 +279,13 @@ export const simpleEqualityGuards = {
          * - {@link check.notStrictEquals} : the opposite check.
          * - {@link check.looseEquals} : the loose equality check.
          */
-        strictEquals:
-            autoGuard<
-                <Actual, Expected extends Actual>(
-                    actual: Actual,
-                    expected: Expected,
-                ) => actual is Expected
-            >(),
+        strictEquals<Actual, Expected extends Actual>(
+            this: void,
+            actual: Actual,
+            expected: Expected,
+        ): actual is NarrowToExpected<Actual, Expected> {
+            return actual === expected;
+        },
         /**
          * Checks that two values are _not_ strictly equal (using
          * [`===`](https://developer.mozilla.org/docs/Web/JavaScript/Equality_comparisons_and_sameness#strict_equality_using)).
@@ -308,7 +311,9 @@ export const simpleEqualityGuards = {
          * - {@link check.strictEquals} : the opposite check.
          * - {@link check.notLooseEquals} : the loose equality check.
          */
-        notStrictEquals: autoGuardSymbol,
+        notStrictEquals(this: void, actual: unknown, expected: unknown): boolean {
+            return actual !== expected;
+        },
         /**
          * Checks that two values are loosely equal (using
          * [`==`](https://developer.mozilla.org/docs/Web/JavaScript/Equality_comparisons_and_sameness#loose_equality_using)).
@@ -334,7 +339,9 @@ export const simpleEqualityGuards = {
          * - {@link check.notLooseEquals} : the opposite check.
          * - {@link check.strictEquals} : the strict equality check.
          */
-        looseEquals: autoGuardSymbol,
+        looseEquals(this: void, actual: unknown, expected: unknown): boolean {
+            return actual == expected;
+        },
         /**
          * Checks that two values are _not_ loosely equal (using
          * [`==`](https://developer.mozilla.org/docs/Web/JavaScript/Equality_comparisons_and_sameness#loose_equality_using)).
@@ -360,7 +367,9 @@ export const simpleEqualityGuards = {
          * - {@link check.looseEquals} : the opposite check.
          * - {@link check.strictEquals} : the strict equality check.
          */
-        notLooseEquals: autoGuardSymbol,
+        notLooseEquals(this: void, actual: unknown, expected: unknown): boolean {
+            return actual != expected;
+        },
         /**
          * Checks that two values are deeply equal using the
          * [deep-eql](https://www.npmjs.com/package/deep-eql) package.
@@ -390,13 +399,13 @@ export const simpleEqualityGuards = {
          * - {@link check.entriesEqual} : a less expensive (but less thorough) deep equality check.
          * - {@link check.jsonEquals} : a less expensive (but less thorough) deep equality check.
          */
-        deepEquals:
-            autoGuard<
-                <Actual, Expected extends Actual>(
-                    actual: Actual,
-                    expected: Expected,
-                ) => actual is Expected
-            >(),
+        deepEquals<Actual, Expected extends Actual>(
+            this: void,
+            actual: Actual,
+            expected: Expected,
+        ): actual is NarrowToExpected<Actual, Expected> {
+            return deepEqual(actual, expected);
+        },
         /**
          * Checks that two values are _not_ deeply equal using the
          * [deep-eql](https://www.npmjs.com/package/deep-eql) package.
@@ -426,7 +435,9 @@ export const simpleEqualityGuards = {
          * - {@link check.entriesEqual} : a less expensive (but less thorough) deep equality check.
          * - {@link check.jsonEquals} : a less expensive (but less thorough) deep equality check.
          */
-        notDeepEquals: autoGuardSymbol,
+        notDeepEquals(this: void, actual: unknown, expected: unknown): boolean {
+            return !deepEqual(actual, expected);
+        },
     },
     assertWrap: {
         /**
@@ -456,14 +467,21 @@ export const simpleEqualityGuards = {
          * - {@link assertWrap.notStrictEquals} : the opposite assertion.
          * - {@link assertWrap.looseEquals} : the loose equality assertion.
          */
-        strictEquals:
-            autoGuard<
-                <Actual, Expected extends Actual>(
-                    actual: Actual,
-                    expected: Expected,
-                    failureMessage?: string | undefined,
-                ) => NarrowToExpected<Actual, Expected>
-            >(),
+        strictEquals<Actual, Expected extends Actual>(
+            this: void,
+            actual: Actual,
+            expected: Expected,
+            failureMessage?: string | undefined,
+        ): NarrowToExpected<Actual, Expected> {
+            if (actual === expected) {
+                return actual as NarrowToExpected<Actual, Expected>;
+            } else {
+                throw new AssertionError(
+                    `\n\n${stringify(actual)}\n\ndoes not strictly equal\n\n${stringify(expected)}\n\n`,
+                    failureMessage,
+                );
+            }
+        },
         /**
          * Asserts that two values are _not_ strictly equal (using
          * [`===`](https://developer.mozilla.org/docs/Web/JavaScript/Equality_comparisons_and_sameness#strict_equality_using)).
@@ -491,7 +509,21 @@ export const simpleEqualityGuards = {
          * - {@link assertWrap.strictEquals} : the opposite assertion.
          * - {@link assertWrap.notLooseEquals} : the loose equality assertion.
          */
-        notStrictEquals: autoGuardSymbol,
+        notStrictEquals<Actual>(
+            this: void,
+            actual: Actual,
+            expected: unknown,
+            failureMessage?: string | undefined,
+        ): Actual {
+            if (actual === expected) {
+                throw new AssertionError(
+                    `\n\n${stringify(actual)}\n\nstrictly equals\n\n${stringify(expected)}\n\n`,
+                    failureMessage,
+                );
+            } else {
+                return actual;
+            }
+        },
         /**
          * Asserts that two values are loosely equal (using
          * [`==`](https://developer.mozilla.org/docs/Web/JavaScript/Equality_comparisons_and_sameness#loose_equality_using)).
@@ -519,7 +551,21 @@ export const simpleEqualityGuards = {
          * - {@link assertWrap.notLooseEquals} : the opposite assertion.
          * - {@link assertWrap.strictEquals} : the strict equality assertion.
          */
-        looseEquals: autoGuardSymbol,
+        looseEquals<Actual>(
+            this: void,
+            actual: Actual,
+            expected: unknown,
+            failureMessage?: string | undefined,
+        ): Actual {
+            if (actual == expected) {
+                return actual;
+            } else {
+                throw new AssertionError(
+                    `\n\n${stringify(actual)}\n\ndoes not loosely equal\n\n${stringify(expected)}\n\n`,
+                    failureMessage,
+                );
+            }
+        },
         /**
          * Asserts that two values are _not_ loosely equal (using
          * [`==`](https://developer.mozilla.org/docs/Web/JavaScript/Equality_comparisons_and_sameness#loose_equality_using)).
@@ -547,7 +593,21 @@ export const simpleEqualityGuards = {
          * - {@link assertWrap.looseEquals} : the opposite assertion.
          * - {@link assertWrap.strictEquals} : the strict equality assertion.
          */
-        notLooseEquals: autoGuardSymbol,
+        notLooseEquals<Actual>(
+            this: void,
+            actual: Actual,
+            expected: unknown,
+            failureMessage?: string | undefined,
+        ): Actual {
+            if (actual == expected) {
+                throw new AssertionError(
+                    `\n\n${stringify(actual)}\n\nloosely equals\n\n${stringify(expected)}\n\n`,
+                    failureMessage,
+                );
+            } else {
+                return actual;
+            }
+        },
 
         /**
          * Asserts that two values are deeply equal using the
@@ -580,14 +640,21 @@ export const simpleEqualityGuards = {
          * - {@link assertWrap.entriesEqual} : a less expensive (but less thorough) deep equality assertion.
          * - {@link assertWrap.jsonEquals} : a less expensive (but less thorough) deep equality assertion.
          */
-        deepEquals:
-            autoGuard<
-                <Actual, Expected extends Actual>(
-                    actual: Actual,
-                    expected: Expected,
-                    failureMessage?: string | undefined,
-                ) => NarrowToExpected<Actual, Expected>
-            >(),
+        deepEquals<Actual, Expected extends Actual>(
+            this: void,
+            actual: Actual,
+            expected: Expected,
+            failureMessage?: string | undefined,
+        ): NarrowToExpected<Actual, Expected> {
+            if (deepEqual(actual, expected)) {
+                return actual as NarrowToExpected<Actual, Expected>;
+            } else {
+                throw new AssertionError(
+                    `\n\n${stringify(actual)}\n\ndoes not deeply equal\n\n${stringify(expected)}\n\n`,
+                    failureMessage,
+                );
+            }
+        },
         /**
          * Asserts that two values are _not_ deeply equal using the
          * [deep-eql](https://www.npmjs.com/package/deep-eql) package. Returns the first value if
@@ -619,7 +686,21 @@ export const simpleEqualityGuards = {
          * - {@link assertWrap.entriesEqual} : a less expensive (but less thorough) deep equality assertion.
          * - {@link assertWrap.jsonEquals} : a less expensive (but less thorough) deep equality assertion.
          */
-        notDeepEquals: autoGuardSymbol,
+        notDeepEquals<Actual>(
+            this: void,
+            actual: Actual,
+            expected: unknown,
+            failureMessage?: string | undefined,
+        ): Actual {
+            if (deepEqual(actual, expected)) {
+                throw new AssertionError(
+                    `\n\n${stringify(actual)}\n\ndeeply equals\n\n${stringify(expected)}\n\n`,
+                    failureMessage,
+                );
+            } else {
+                return actual;
+            }
+        },
     },
     checkWrap: {
         /**
@@ -649,13 +730,17 @@ export const simpleEqualityGuards = {
          * - {@link checkWrap.notStrictEquals} : the opposite check.
          * - {@link checkWrap.looseEquals} : the loose equality check.
          */
-        strictEquals:
-            autoGuard<
-                <Actual, Expected extends Actual>(
-                    actual: Actual,
-                    expected: Expected,
-                ) => Expected | undefined
-            >(),
+        strictEquals<Actual, Expected extends Actual>(
+            this: void,
+            actual: Actual,
+            expected: Expected,
+        ): NarrowToExpected<Actual, Expected> | undefined {
+            if (actual === expected) {
+                return actual as NarrowToExpected<Actual, Expected>;
+            } else {
+                return undefined;
+            }
+        },
         /**
          * Checks that two values are _not_ strictly equal (using
          * [`===`](https://developer.mozilla.org/docs/Web/JavaScript/Equality_comparisons_and_sameness#strict_equality_using)).
@@ -683,7 +768,13 @@ export const simpleEqualityGuards = {
          * - {@link checkWrap.strictEquals} : the opposite check.
          * - {@link checkWrap.notLooseEquals} : the loose equality check.
          */
-        notStrictEquals: autoGuardSymbol,
+        notStrictEquals<Actual>(this: void, actual: Actual, expected: unknown): Actual | undefined {
+            if (actual === expected) {
+                return undefined;
+            } else {
+                return actual;
+            }
+        },
         /**
          * Checks that two values are loosely equal (using
          * [`==`](https://developer.mozilla.org/docs/Web/JavaScript/Equality_comparisons_and_sameness#loose_equality_using)).
@@ -711,7 +802,13 @@ export const simpleEqualityGuards = {
          * - {@link checkWrap.notLooseEquals} : the opposite check.
          * - {@link checkWrap.strictEquals} : the strict equality check.
          */
-        looseEquals: autoGuardSymbol,
+        looseEquals<Actual>(this: void, actual: Actual, expected: unknown): Actual | undefined {
+            if (actual == expected) {
+                return actual;
+            } else {
+                return undefined;
+            }
+        },
         /**
          * Checks that two values are _not_ loosely equal (using
          * [`==`](https://developer.mozilla.org/docs/Web/JavaScript/Equality_comparisons_and_sameness#loose_equality_using)).
@@ -739,7 +836,13 @@ export const simpleEqualityGuards = {
          * - {@link checkWrap.looseEquals} : the opposite check.
          * - {@link checkWrap.strictEquals} : the strict equality check.
          */
-        notLooseEquals: autoGuardSymbol,
+        notLooseEquals<Actual>(this: void, actual: Actual, expected: unknown): Actual | undefined {
+            if (actual === expected) {
+                return undefined;
+            } else {
+                return actual;
+            }
+        },
         /**
          * Checks that two values are deeply equal using the
          * [deep-eql](https://www.npmjs.com/package/deep-eql) package. Returns the first value if
@@ -771,13 +874,17 @@ export const simpleEqualityGuards = {
          * - {@link checkWrap.entriesEqual} : a less expensive (but less thorough) deep equality check.
          * - {@link checkWrap.jsonEquals} : a less expensive (but less thorough) deep equality check.
          */
-        deepEquals:
-            autoGuard<
-                <Actual, Expected extends Actual>(
-                    actual: Actual,
-                    expected: Expected,
-                ) => NarrowToExpected<Actual, Expected> | undefined
-            >(),
+        deepEquals<Actual, Expected extends Actual>(
+            this: void,
+            actual: Actual,
+            expected: Expected,
+        ): NarrowToExpected<Actual, Expected> | undefined {
+            if (deepEqual(actual, expected)) {
+                return actual as NarrowToExpected<Actual, Expected>;
+            } else {
+                return undefined;
+            }
+        },
         /**
          * Checks that two values are _not_ deeply equal using the
          * [deep-eql](https://www.npmjs.com/package/deep-eql) package. Returns the first value if
@@ -809,7 +916,13 @@ export const simpleEqualityGuards = {
          * - {@link checkWrap.entriesEqual} : a less expensive (but less thorough) deep equality check.
          * - {@link checkWrap.jsonEquals} : a less expensive (but less thorough) deep equality check.
          */
-        notDeepEquals: autoGuardSymbol,
+        notDeepEquals<Actual>(this: void, actual: Actual, expected: unknown): Actual | undefined {
+            if (deepEqual(actual, expected)) {
+                return undefined;
+            } else {
+                return actual;
+            }
+        },
     },
     waitUntil: {
         /**
@@ -843,15 +956,13 @@ export const simpleEqualityGuards = {
          * - {@link waitUntil.notStrictEquals} : the opposite assertion.
          * - {@link waitUntil.looseEquals} : the loose equality assertion.
          */
-        strictEquals:
-            autoGuard<
-                <Actual, Expected extends Actual>(
-                    expected: Expected,
-                    callback: () => MaybePromise<Actual>,
-                    options?: WaitUntilOptions | undefined,
-                    failureMessage?: string | undefined,
-                ) => Promise<NarrowToExpected<Actual, Expected>>
-            >(),
+        strictEquals: createWaitUntil(assertions.strictEquals) as <Actual, Expected extends Actual>(
+            this: void,
+            expected: Expected,
+            callback: () => MaybePromise<Actual>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<NarrowToExpected<Actual, Expected>>,
         /**
          * Repeatedly calls a callback until its output does _not_ strictly equal (using
          * [`===`](https://developer.mozilla.org/docs/Web/JavaScript/Equality_comparisons_and_sameness#strict_equality_using))
@@ -883,7 +994,13 @@ export const simpleEqualityGuards = {
          * - {@link waitUntil.strictEquals} : the opposite assertion.
          * - {@link waitUntil.notLooseEquals} : the loose equality assertion.
          */
-        notStrictEquals: autoGuardSymbol,
+        notStrictEquals: createWaitUntil(assertions.notStrictEquals) as <Actual>(
+            this: void,
+            expected: unknown,
+            callback: () => MaybePromise<Actual>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<Actual>,
         /**
          * Repeatedly calls a callback until its output loosely equals (using
          * [`==`](https://developer.mozilla.org/docs/Web/JavaScript/Equality_comparisons_and_sameness#loose_equality_using))
@@ -915,7 +1032,13 @@ export const simpleEqualityGuards = {
          * - {@link waitUntil.notLooseEquals} : the opposite assertion.
          * - {@link waitUntil.strictEquals} : the strict equality assertion.
          */
-        looseEquals: autoGuardSymbol,
+        looseEquals: createWaitUntil(assertions.looseEquals) as <Actual>(
+            this: void,
+            expected: unknown,
+            callback: () => MaybePromise<Actual>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<Actual>,
         /**
          * Repeatedly calls a callback until its output does _not_ loosely equal (using
          * [`==`](https://developer.mozilla.org/docs/Web/JavaScript/Equality_comparisons_and_sameness#loose_equality_using))
@@ -947,7 +1070,13 @@ export const simpleEqualityGuards = {
          * - {@link waitUntil.looseEquals} : the opposite assertion.
          * - {@link waitUntil.notStrictEquals} : the strict equality assertion.
          */
-        notLooseEquals: autoGuardSymbol,
+        notLooseEquals: createWaitUntil(assertions.notLooseEquals) as <Actual>(
+            this: void,
+            expected: unknown,
+            callback: () => MaybePromise<Actual>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<Actual>,
         /**
          * Repeatedly calls a callback until its output deeply equals (using the
          * [deep-eql](https://www.npmjs.com/package/deep-eql) package) the first input. Once the
@@ -982,15 +1111,13 @@ export const simpleEqualityGuards = {
          * - {@link waitUntil.entriesEqual} : a less expensive (but less thorough) deep equality assertion.
          * - {@link waitUntil.jsonEquals} : a less expensive (but less thorough) deep equality assertion.
          */
-        deepEquals:
-            autoGuard<
-                <Actual, Expected extends Actual>(
-                    expected: Expected,
-                    callback: () => MaybePromise<Actual>,
-                    options?: WaitUntilOptions | undefined,
-                    failureMessage?: string | undefined,
-                ) => Promise<NarrowToExpected<Actual, Expected>>
-            >(),
+        deepEquals: createWaitUntil(assertions.deepEquals) as <Actual, Expected extends Actual>(
+            this: void,
+            expected: Expected,
+            callback: () => MaybePromise<Actual>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<NarrowToExpected<Actual, Expected>>,
         /**
          * Repeatedly calls a callback until its output does _not_ deeply equal (using the
          * [deep-eql](https://www.npmjs.com/package/deep-eql) package) the first input. Once the
@@ -1025,6 +1152,12 @@ export const simpleEqualityGuards = {
          * - {@link waitUntil.entriesEqual} : a less expensive (but less thorough) deep equality assertion.
          * - {@link waitUntil.jsonEquals} : a less expensive (but less thorough) deep equality assertion.
          */
-        notDeepEquals: autoGuardSymbol,
+        notDeepEquals: createWaitUntil(assertions.notDeepEquals) as <Actual>(
+            this: void,
+            expected: unknown,
+            callback: () => MaybePromise<Actual>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<Actual>,
     },
 } satisfies GuardGroup<typeof assertions>;

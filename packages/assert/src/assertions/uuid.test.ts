@@ -66,6 +66,9 @@ describe('isUuid', () => {
             const newValue = assertWrap.isUuid(actualPassUnion);
             assert.tsType(newValue).equals<ExpectedUnionNarrowedType>();
         });
+        it('rejects', () => {
+            assert.throws(() => assertWrap.isUuid('abcd'));
+        });
     });
     describe('checkWrap', () => {
         it('guards', () => {
@@ -167,6 +170,9 @@ describe('isNotUuid', () => {
         it('narrows', () => {
             const newValue = assertWrap.isNotUuid(actualPassUnion);
             assert.tsType(newValue).equals<ExpectedUnionNarrowedType>();
+        });
+        it('rejects', () => {
+            assert.throws(() => assertWrap.isNotUuid(actualReject));
         });
     });
     describe('checkWrap', () => {

@@ -20,11 +20,7 @@ describe('isPrimitive', () => {
         null,
     ];
 
-    const nonPrimitives: ReadonlyArray<unknown> = [
-        {},
-        () => {},
-        [],
-    ];
+    const nonPrimitives: ReadonlyArray<unknown> = [{}, () => {}, []];
 
     const primitiveTestCases = [
         {
@@ -91,10 +87,7 @@ describe('isPrimitive', () => {
                 const errorMessage = 'some message';
                 return {
                     it: testCase.it,
-                    inputs: [
-                        testCase.input,
-                        errorMessage,
-                    ],
+                    inputs: [testCase.input, errorMessage],
                     throws: testCase.expect
                         ? undefined
                         : {
@@ -205,11 +198,7 @@ describe('isNotPrimitive', () => {
         null,
     ];
 
-    const nonPrimitives: ReadonlyArray<unknown> = [
-        {},
-        () => {},
-        [],
-    ];
+    const nonPrimitives: ReadonlyArray<unknown> = [{}, () => {}, []];
 
     const notPrimitiveTestCases = [
         {
@@ -277,10 +266,7 @@ describe('isNotPrimitive', () => {
                     const errorMessage = 'some message';
                     return {
                         it: testCase.it,
-                        inputs: [
-                            testCase.input,
-                            errorMessage,
-                        ],
+                        inputs: [testCase.input, errorMessage],
                         throws: {
                             matchMessage: testCase.expect ? undefined : errorMessage,
                         },
@@ -447,10 +433,7 @@ describe('isPropertyKey', () => {
                 const errorMessage = 'some message';
                 return {
                     it: testCase.it,
-                    inputs: [
-                        testCase.input,
-                        errorMessage,
-                    ],
+                    inputs: [testCase.input, errorMessage],
                     throws: {
                         matchMessage: testCase.expect ? undefined : errorMessage,
                     },
@@ -598,10 +581,7 @@ describe('isNotPropertyKey', () => {
                     const errorMessage = 'some message';
                     return {
                         it: testCase.it,
-                        inputs: [
-                            testCase.input,
-                            errorMessage,
-                        ],
+                        inputs: [testCase.input, errorMessage],
                         throws: {
                             matchMessage: testCase.expect ? undefined : errorMessage,
                         },

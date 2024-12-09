@@ -6,41 +6,8 @@ import {
 } from '@augment-vir/core';
 import {type SetRequired} from 'type-fest';
 import {AssertionError} from '../augments/assertion.error.js';
-import {createCheck} from '../guard-types/check-function.js';
 import type {GuardGroup} from '../guard-types/guard-group.js';
-import {autoGuard} from '../guard-types/guard-override.js';
-import {type WaitUntilOptions} from '../guard-types/wait-until-function.js';
-
-function isKeyOf<const Parent>(
-    key: PropertyKey,
-    parent: Parent,
-    failureMessage?: string | undefined,
-): asserts key is keyof Parent {
-    try {
-        hasKey(parent, key);
-    } catch {
-        throw new AssertionError(
-            `'${String(key)}' is not a key of '${stringify(parent)}'.`,
-            failureMessage,
-        );
-    }
-}
-function isNotKeyOf<const Key extends PropertyKey, const Parent>(
-    key: Key,
-    parent: Parent,
-    failureMessage?: string | undefined,
-): asserts key is Exclude<Key, RequiredKeysOf<Parent>> {
-    try {
-        isKeyOf(key, parent);
-    } catch {
-        return;
-    }
-
-    throw new AssertionError(
-        `'${String(key)}' is a key of '${stringify(parent)}'.`,
-        failureMessage,
-    );
-}
+import {createWaitUntil, type WaitUntilOptions} from '../guard-types/wait-until-function.js';
 
 /** Helper type for `hasKey`. */
 type ExtractValue<Key extends PropertyKey, Parent> = Key extends keyof Parent
@@ -67,74 +34,21 @@ const hasKeyAttempts: ReadonlyArray<(object: object, key: PropertyKey) => boolea
     },
 ];
 
-/** Check if an object has the given property. */
 function hasKey<const Key extends PropertyKey, const Parent>(
+    this: void,
     parent: Parent,
     key: Key,
-    failureMessage?: string | undefined,
-): asserts parent is CombineTypeWithKey<Key, Parent> {
-    const doesHaveKey = hasKeyAttempts.some((attemptCallback) => {
+): parent is CombineTypeWithKey<Key, Parent> {
+    return hasKeyAttempts.some((attemptCallback) => {
         try {
             return attemptCallback(parent as object, key);
         } catch {
             return false;
         }
     });
-
-    if (!doesHaveKey) {
-        throw new AssertionError(
-            `'${stringify(parent)}' does not have key '${String(key)}'.`,
-            failureMessage,
-        );
-    }
-}
-function lacksKey<const Parent, const Key extends PropertyKey>(
-    parent: Parent,
-    key: Key,
-    failureMessage?: string | undefined,
-): asserts parent is Exclude<Parent, Record<Key, any>> {
-    try {
-        hasKey(parent, key);
-    } catch {
-        return;
-    }
-
-    throw new AssertionError(`'${stringify(parent)}' has key '${String(key)}'.`, failureMessage);
 }
 
-const checkHasKey = createCheck(hasKey);
-
-/** Check if an object has all the given properties. */
-function hasKeys<const Keys extends PropertyKey, const Parent>(
-    parent: Parent,
-    keys: ReadonlyArray<Keys>,
-    failureMessage?: string | undefined,
-): asserts parent is CombineTypeWithKey<Keys, Parent> {
-    const missingKeys = keys.filter((key) => !checkHasKey(parent, key));
-
-    if (missingKeys.length) {
-        throw new AssertionError(
-            `'${stringify(parent)}' does not have keys '${missingKeys.join(',')}'.`,
-            failureMessage,
-        );
-    }
-}
-function lacksKeys<const Parent, const Key extends PropertyKey>(
-    parent: Parent,
-    keys: ReadonlyArray<Key>,
-    failureMessage?: string | undefined,
-): asserts parent is Exclude<Parent, Partial<Record<Key, any>>> {
-    const existingKeys = keys.filter((key) => checkHasKey(parent, key));
-
-    if (existingKeys.length) {
-        throw new AssertionError(
-            `'${stringify(parent)}' does not lack keys '${existingKeys.join(',')}'.`,
-            failureMessage,
-        );
-    }
-}
-
-const assertions: {
+const assertions = {
     /**
      * Asserts that a key is contained within a parent value.
      *
@@ -153,7 +67,19 @@ const assertions: {
      * @see
      * - {@link assert.isNotKeyOf} : the opposite assertion.
      */
-    isKeyOf: typeof isKeyOf;
+    isKeyOf<const Parent>(
+        this: void,
+        key: PropertyKey,
+        parent: Parent,
+        failureMessage?: string | undefined,
+    ): asserts key is keyof Parent {
+        if (!hasKey(parent, key)) {
+            throw new AssertionError(
+                `'${String(key)}' is not a key of '${stringify(parent)}'.`,
+                failureMessage,
+            );
+        }
+    },
     /**
      * Asserts that a key is _not_ contained within a parent value.
      *
@@ -172,7 +98,19 @@ const assertions: {
      * @see
      * - {@link assert.isKeyOf} : the opposite assertion.
      */
-    isNotKeyOf: typeof isNotKeyOf;
+    isNotKeyOf<const Key extends PropertyKey, const Parent>(
+        this: void,
+        key: Key,
+        parent: Parent,
+        failureMessage?: string | undefined,
+    ): asserts key is Exclude<Key, RequiredKeysOf<Parent>> {
+        if (hasKey(parent, key)) {
+            throw new AssertionError(
+                `'${String(key)}' is a key of '${stringify(parent)}'.`,
+                failureMessage,
+            );
+        }
+    },
     /**
      * Asserts that a parent value has the key.
      *
@@ -192,7 +130,19 @@ const assertions: {
      * - {@link assert.lacksKey} : the opposite assertion.
      * - {@link assert.hasKeys} : the multi-key assertion.
      */
-    hasKey: typeof hasKey;
+    hasKey<const Key extends PropertyKey, const Parent>(
+        this: void,
+        parent: Parent,
+        key: Key,
+        failureMessage?: string | undefined,
+    ): asserts parent is CombineTypeWithKey<Key, Parent> {
+        if (!hasKey(parent, key)) {
+            throw new AssertionError(
+                `'${stringify(parent)}' does not have key '${String(key)}'.`,
+                failureMessage,
+            );
+        }
+    },
     /**
      * Asserts that a parent value does not have the key.
      *
@@ -212,7 +162,19 @@ const assertions: {
      * - {@link assert.hasKey} : the opposite assertion.
      * - {@link assert.lacksKeys} : the multi-key assertion.
      */
-    lacksKey: typeof lacksKey;
+    lacksKey<const Parent, const Key extends PropertyKey>(
+        this: void,
+        parent: Parent,
+        key: Key,
+        failureMessage?: string | undefined,
+    ): asserts parent is Exclude<Parent, Record<Key, any>> {
+        if (hasKey(parent, key)) {
+            throw new AssertionError(
+                `'${stringify(parent)}' has key '${String(key)}'.`,
+                failureMessage,
+            );
+        }
+    },
     /**
      * Asserts that a parent value has all the keys.
      *
@@ -223,14 +185,8 @@ const assertions: {
      * ```ts
      * import {assert} from '@augment-vir/assert';
      *
-     * assert.hasKeys({a: 0, b: 1}, [
-     *     'a',
-     *     'b',
-     * ]); // passes
-     * assert.hasKeys({a: 0, b: 1}, [
-     *     'b',
-     *     'c',
-     * ]); // fails
+     * assert.hasKeys({a: 0, b: 1}, ['a', 'b']); // passes
+     * assert.hasKeys({a: 0, b: 1}, ['b', 'c']); // fails
      * ```
      *
      * @throws {@link AssertionError} If the parent does not have all the keys.
@@ -238,7 +194,21 @@ const assertions: {
      * - {@link assert.lacksKeys} : the opposite assertion.
      * - {@link assert.hasKey} : the single-key assertion.
      */
-    hasKeys: typeof hasKeys;
+    hasKeys<const Keys extends PropertyKey, const Parent>(
+        this: void,
+        parent: Parent,
+        keys: ReadonlyArray<Keys>,
+        failureMessage?: string | undefined,
+    ): asserts parent is CombineTypeWithKey<Keys, Parent> {
+        const missingKeys = keys.filter((key) => !hasKey(parent, key));
+
+        if (missingKeys.length) {
+            throw new AssertionError(
+                `'${stringify(parent)}' does not have keys '${missingKeys.join(',')}'.`,
+                failureMessage,
+            );
+        }
+    },
     /**
      * Asserts that a parent value none of the keys.
      *
@@ -249,14 +219,8 @@ const assertions: {
      * ```ts
      * import {assert} from '@augment-vir/assert';
      *
-     * assert.lacksKeys({a: 0, b: 1}, [
-     *     'b',
-     *     'c',
-     * ]); // fails
-     * assert.lacksKeys({a: 0, b: 1}, [
-     *     'c',
-     *     'd',
-     * ]); // passes
+     * assert.lacksKeys({a: 0, b: 1}, ['b', 'c']); // fails
+     * assert.lacksKeys({a: 0, b: 1}, ['c', 'd']); // passes
      * ```
      *
      * @throws {@link AssertionError} If the parent has any of the keys.
@@ -264,14 +228,21 @@ const assertions: {
      * - {@link assert.hasKeys} : the opposite assertion.
      * - {@link assert.lacksKey} : the single-key assertion.
      */
-    lacksKeys: typeof lacksKeys;
-} = {
-    isKeyOf,
-    isNotKeyOf,
-    hasKey,
-    lacksKey,
-    hasKeys,
-    lacksKeys,
+    lacksKeys<const Parent, const Key extends PropertyKey>(
+        this: void,
+        parent: Parent,
+        keys: ReadonlyArray<Key>,
+        failureMessage?: string | undefined,
+    ): asserts parent is Exclude<Parent, Partial<Record<Key, any>>> {
+        const existingKeys = keys.filter((key) => hasKey(parent, key));
+
+        if (existingKeys.length) {
+            throw new AssertionError(
+                `'${stringify(parent)}' does not lack keys '${existingKeys.join(',')}'.`,
+                failureMessage,
+            );
+        }
+    },
 };
 
 export const keyGuards = {
@@ -294,8 +265,9 @@ export const keyGuards = {
          * @see
          * - {@link check.isNotKeyOf} : the opposite check.
          */
-        isKeyOf:
-            autoGuard<<const Parent>(key: PropertyKey, parent: Parent) => key is keyof Parent>(),
+        isKeyOf<const Parent>(this: void, key: PropertyKey, parent: Parent): key is keyof Parent {
+            return hasKey(parent, key);
+        },
         /**
          * Checks that a key is _not_ contained within a parent value.
          *
@@ -313,14 +285,13 @@ export const keyGuards = {
          * @see
          * - {@link check.isKeyOf} : the opposite check.
          */
-        isNotKeyOf:
-            autoGuard<
-                <const Key extends PropertyKey, const Parent>(
-                    key: Key,
-                    parent: Parent,
-                    failureMessage?: string | undefined,
-                ) => key is Exclude<Key, RequiredKeysOf<Parent>>
-            >(),
+        isNotKeyOf<const Key extends PropertyKey, const Parent>(
+            this: void,
+            key: Key,
+            parent: Parent,
+        ): key is Exclude<Key, RequiredKeysOf<Parent>> {
+            return !hasKey(parent, key);
+        },
         /**
          * Checks that a parent value has the key.
          *
@@ -339,12 +310,7 @@ export const keyGuards = {
          * - {@link check.lacksKey} : the opposite check.
          * - {@link check.hasKeys} : the multi-key check.
          */
-        hasKey: autoGuard<
-            <const Parent, const Key extends PropertyKey>(
-                parent: Parent,
-                key: Key,
-            ) => parent is CombineTypeWithKey<Key, Parent>
-        >(),
+        hasKey,
         /**
          * Checks that a parent value does not have the key.
          *
@@ -363,14 +329,13 @@ export const keyGuards = {
          * - {@link check.hasKey} : the opposite check.
          * - {@link check.lacksKeys} : the multi-key check.
          */
-        lacksKey:
-            autoGuard<
-                <const Parent, const Key extends PropertyKey>(
-                    parent: Parent,
-                    key: Key,
-                    failureMessage?: string | undefined,
-                ) => parent is Exclude<Parent, Record<Key, any>>
-            >(),
+        lacksKey<const Parent, const Key extends PropertyKey>(
+            this: void,
+            parent: Parent,
+            key: Key,
+        ): parent is Exclude<Parent, Record<Key, any>> {
+            return !hasKey(parent, key);
+        },
         /**
          * Checks that a parent value has all the keys.
          *
@@ -381,27 +346,21 @@ export const keyGuards = {
          * ```ts
          * import {check} from '@augment-vir/assert';
          *
-         * check.hasKeys({a: 0, b: 1}, [
-         *     'a',
-         *     'b',
-         * ]); // returns `true`
-         * check.hasKeys({a: 0, b: 1}, [
-         *     'b',
-         *     'c',
-         * ]); // returns `false`
+         * check.hasKeys({a: 0, b: 1}, ['a', 'b']); // returns `true`
+         * check.hasKeys({a: 0, b: 1}, ['b', 'c']); // returns `false`
          * ```
          *
          * @see
          * - {@link check.lacksKeys} : the opposite check.
          * - {@link check.hasKey} : the single-key check.
          */
-        hasKeys:
-            autoGuard<
-                <const Keys extends PropertyKey, const Parent>(
-                    parent: Parent,
-                    keys: ReadonlyArray<Keys>,
-                ) => parent is CombineTypeWithKey<Keys, Parent>
-            >(),
+        hasKeys<const Keys extends PropertyKey, const Parent>(
+            this: void,
+            parent: Parent,
+            keys: ReadonlyArray<Keys>,
+        ): parent is CombineTypeWithKey<Keys, Parent> {
+            return keys.every((key) => hasKey(parent, key));
+        },
         /**
          * Checks that a parent value none of the keys.
          *
@@ -412,27 +371,21 @@ export const keyGuards = {
          * ```ts
          * import {check} from '@augment-vir/assert';
          *
-         * check.lacksKeys({a: 0, b: 1}, [
-         *     'b',
-         *     'c',
-         * ]); // returns `false`
-         * check.lacksKeys({a: 0, b: 1}, [
-         *     'c',
-         *     'd',
-         * ]); // returns `true`
+         * check.lacksKeys({a: 0, b: 1}, ['b', 'c']); // returns `false`
+         * check.lacksKeys({a: 0, b: 1}, ['c', 'd']); // returns `true`
          * ```
          *
          * @see
          * - {@link check.hasKeys} : the opposite check.
          * - {@link check.lacksKey} : the single-key check.
          */
-        lacksKeys:
-            autoGuard<
-                <const Parent, const Key extends PropertyKey>(
-                    parent: Parent,
-                    key: ReadonlyArray<Key>,
-                ) => parent is Exclude<Parent, Partial<Record<Key, any>>>
-            >(),
+        lacksKeys<const Parent, const Key extends PropertyKey>(
+            this: void,
+            parent: Parent,
+            keys: ReadonlyArray<Key>,
+        ): parent is Exclude<Parent, Partial<Record<Key, any>>> {
+            return keys.every((key) => !hasKey(parent, key));
+        },
     },
     assertWrap: {
         /**
@@ -455,14 +408,21 @@ export const keyGuards = {
          * @see
          * - {@link assertWrap.isNotKeyOf} : the opposite assertion.
          */
-        isKeyOf:
-            autoGuard<
-                <const Key extends PropertyKey, const Parent>(
-                    key: Key,
-                    parent: Parent,
-                    failureMessage?: string | undefined,
-                ) => NarrowToExpected<Key, keyof Parent>
-            >(),
+        isKeyOf<const Key extends PropertyKey, const Parent>(
+            this: void,
+            key: Key,
+            parent: Parent,
+            failureMessage?: string | undefined,
+        ): NarrowToExpected<Key, keyof Parent> {
+            if (!hasKey(parent, key)) {
+                throw new AssertionError(
+                    `'${String(key)}' is not a key of '${stringify(parent)}'.`,
+                    failureMessage,
+                );
+            }
+
+            return key as NarrowToExpected<Key, keyof Parent>;
+        },
         /**
          * Asserts that a key is _not_ contained within a parent value. Returns the key if the
          * assertion passes.
@@ -483,14 +443,21 @@ export const keyGuards = {
          * @see
          * - {@link assertWrap.isKeyOf} : the opposite assertion.
          */
-        isNotKeyOf:
-            autoGuard<
-                <const Key extends PropertyKey, const Parent>(
-                    key: Key,
-                    parent: Parent,
-                    failureMessage?: string | undefined,
-                ) => Exclude<Key, RequiredKeysOf<Parent>>
-            >(),
+        isNotKeyOf<const Key extends PropertyKey, const Parent>(
+            this: void,
+            key: Key,
+            parent: Parent,
+            failureMessage?: string | undefined,
+        ): Exclude<Key, RequiredKeysOf<Parent>> {
+            if (hasKey(parent, key)) {
+                throw new AssertionError(
+                    `'${String(key)}' is a key of '${stringify(parent)}'.`,
+                    failureMessage,
+                );
+            }
+
+            return key as Exclude<Key, RequiredKeysOf<Parent>>;
+        },
         /**
          * Asserts that a parent value has the key. Returns the parent if the assertion passes.
          *
@@ -511,13 +478,21 @@ export const keyGuards = {
          * - {@link assertWrap.lacksKey} : the opposite assertion.
          * - {@link assertWrap.hasKeys} : the multi-key assertion.
          */
-        hasKey: autoGuard<
-            <const Parent, const Key extends PropertyKey>(
-                parent: Parent,
-                key: Key,
-                failureMessage?: string | undefined,
-            ) => CombineTypeWithKey<Key, Parent>
-        >(),
+        hasKey<const Parent, const Key extends PropertyKey>(
+            this: void,
+            parent: Parent,
+            key: Key,
+            failureMessage?: string | undefined,
+        ): CombineTypeWithKey<Key, Parent> {
+            if (!hasKey(parent, key)) {
+                throw new AssertionError(
+                    `'${stringify(parent)}' does not have key '${String(key)}'.`,
+                    failureMessage,
+                );
+            }
+
+            return parent;
+        },
         /**
          * Asserts that a parent value does not have the key. Returns the parent if the assertion
          * passes.
@@ -539,14 +514,21 @@ export const keyGuards = {
          * - {@link assertWrap.hasKey} : the opposite assertion.
          * - {@link assertWrap.lacksKeys} : the multi-key assertion.
          */
-        lacksKey:
-            autoGuard<
-                <const Parent, const Key extends PropertyKey>(
-                    parent: Parent,
-                    key: Key,
-                    failureMessage?: string | undefined,
-                ) => Exclude<Parent, Record<Key, any>>
-            >(),
+        lacksKey<const Parent, const Key extends PropertyKey>(
+            this: void,
+            parent: Parent,
+            key: Key,
+            failureMessage?: string | undefined,
+        ): Exclude<Parent, Record<Key, any>> {
+            if (hasKey(parent, key)) {
+                throw new AssertionError(
+                    `'${stringify(parent)}' has key '${String(key)}'.`,
+                    failureMessage,
+                );
+            }
+
+            return parent as Exclude<Parent, Record<Key, any>>;
+        },
         /**
          * Asserts that a parent value has all the keys. Returns the parent if the assertion passes.
          *
@@ -557,14 +539,8 @@ export const keyGuards = {
          * ```ts
          * import {assertWrap} from '@augment-vir/assert';
          *
-         * assertWrap.hasKeys({a: 0, b: 1}, [
-         *     'a',
-         *     'b',
-         * ]); // returns `{a: 0, b: 1}`
-         * assertWrap.hasKeys({a: 0, b: 1}, [
-         *     'b',
-         *     'c',
-         * ]); // throws an error
+         * assertWrap.hasKeys({a: 0, b: 1}, ['a', 'b']); // returns `{a: 0, b: 1}`
+         * assertWrap.hasKeys({a: 0, b: 1}, ['b', 'c']); // throws an error
          * ```
          *
          * @returns The parent if it has all the keys.
@@ -573,14 +549,23 @@ export const keyGuards = {
          * - {@link assertWrap.lacksKeys} : the opposite assertion.
          * - {@link assertWrap.hasKey} : the single-key assertion.
          */
-        hasKeys:
-            autoGuard<
-                <const Keys extends PropertyKey, const Parent>(
-                    parent: Parent,
-                    keys: ReadonlyArray<Keys>,
-                    failureMessage?: string | undefined,
-                ) => CombineTypeWithKey<Keys, Parent>
-            >(),
+        hasKeys<const Keys extends PropertyKey, const Parent>(
+            this: void,
+            parent: Parent,
+            keys: ReadonlyArray<Keys>,
+            failureMessage?: string | undefined,
+        ): CombineTypeWithKey<Keys, Parent> {
+            const missingKeys = keys.filter((key) => !hasKey(parent, key));
+
+            if (missingKeys.length) {
+                throw new AssertionError(
+                    `'${stringify(parent)}' does not have keys '${missingKeys.join(',')}'.`,
+                    failureMessage,
+                );
+            }
+
+            return parent as CombineTypeWithKey<Keys, Parent>;
+        },
         /**
          * Asserts that a parent value none of the keys. Returns the parent if the assertion passes.
          *
@@ -591,14 +576,8 @@ export const keyGuards = {
          * ```ts
          * import {assertWrap} from '@augment-vir/assert';
          *
-         * assertWrap.lacksKeys({a: 0, b: 1}, [
-         *     'b',
-         *     'c',
-         * ]); // throws an error
-         * assertWrap.lacksKeys({a: 0, b: 1}, [
-         *     'c',
-         *     'd',
-         * ]); // returns `{a: 0, b: 1}`
+         * assertWrap.lacksKeys({a: 0, b: 1}, ['b', 'c']); // throws an error
+         * assertWrap.lacksKeys({a: 0, b: 1}, ['c', 'd']); // returns `{a: 0, b: 1}`
          * ```
          *
          * @returns The parent if it does not have any of the keys.
@@ -607,14 +586,23 @@ export const keyGuards = {
          * - {@link assertWrap.hasKeys} : the opposite assertion.
          * - {@link assertWrap.lacksKey} : the single-key assertion.
          */
-        lacksKeys:
-            autoGuard<
-                <const Parent, const Key extends PropertyKey>(
-                    parent: Parent,
-                    key: ReadonlyArray<Key>,
-                    failureMessage?: string | undefined,
-                ) => Exclude<Parent, Partial<Record<Key, any>>>
-            >(),
+        lacksKeys<const Parent, const Key extends PropertyKey>(
+            this: void,
+            parent: Parent,
+            keys: ReadonlyArray<Key>,
+            failureMessage?: string | undefined,
+        ): Exclude<Parent, Partial<Record<Key, any>>> {
+            const existingKeys = keys.filter((key) => hasKey(parent, key));
+
+            if (existingKeys.length) {
+                throw new AssertionError(
+                    `'${stringify(parent)}' does not lack keys '${existingKeys.join(',')}'.`,
+                    failureMessage,
+                );
+            }
+
+            return parent as Exclude<Parent, Partial<Record<Key, any>>>;
+        },
     },
     checkWrap: {
         /**
@@ -636,13 +624,17 @@ export const keyGuards = {
          * @see
          * - {@link checkWrap.isNotKeyOf} : the opposite check.
          */
-        isKeyOf:
-            autoGuard<
-                <const Key extends PropertyKey, const Parent>(
-                    key: Key,
-                    parent: Parent,
-                ) => NarrowToExpected<Key, keyof Parent> | undefined
-            >(),
+        isKeyOf<const Key extends PropertyKey, const Parent>(
+            this: void,
+            key: Key,
+            parent: Parent,
+        ): NarrowToExpected<Key, keyof Parent> | undefined {
+            if (hasKey(parent, key)) {
+                return key as NarrowToExpected<Key, keyof Parent>;
+            } else {
+                return undefined;
+            }
+        },
         /**
          * Checks that a key is _not_ contained within a parent value. Returns the key if the check
          * passes, otherwise `undefined`.
@@ -662,14 +654,17 @@ export const keyGuards = {
          * @see
          * - {@link checkWrap.isKeyOf} : the opposite check.
          */
-        isNotKeyOf:
-            autoGuard<
-                <const Key extends PropertyKey, const Parent>(
-                    key: Key,
-                    parent: Parent,
-                    failureMessage?: string | undefined,
-                ) => Exclude<Key, RequiredKeysOf<Parent>> | undefined
-            >(),
+        isNotKeyOf<const Key extends PropertyKey, const Parent>(
+            this: void,
+            key: Key,
+            parent: Parent,
+        ): Exclude<Key, RequiredKeysOf<Parent>> | undefined {
+            if (hasKey(parent, key)) {
+                return undefined;
+            } else {
+                return key as Exclude<Key, RequiredKeysOf<Parent>>;
+            }
+        },
         /**
          * Checks that a parent value has the key. Returns the parent value if the check passes,
          * otherwise `undefined`.
@@ -690,12 +685,17 @@ export const keyGuards = {
          * - {@link checkWrap.lacksKey} : the opposite check.
          * - {@link checkWrap.hasKeys} : the multi-key check.
          */
-        hasKey: autoGuard<
-            <const Parent, const Key extends PropertyKey>(
-                parent: Parent,
-                key: Key,
-            ) => CombineTypeWithKey<Key, Parent> | undefined
-        >(),
+        hasKey<const Parent, const Key extends PropertyKey>(
+            this: void,
+            parent: Parent,
+            key: Key,
+        ): CombineTypeWithKey<Key, Parent> | undefined {
+            if (hasKey(parent, key)) {
+                return parent;
+            } else {
+                return undefined;
+            }
+        },
         /**
          * Checks that a parent value does not have the key. Returns the parent value if the check
          * passes, otherwise `undefined`.
@@ -716,14 +716,17 @@ export const keyGuards = {
          * - {@link checkWrap.hasKey} : the opposite check.
          * - {@link checkWrap.lacksKeys} : the multi-key check.
          */
-        lacksKey:
-            autoGuard<
-                <const Parent, const Key extends PropertyKey>(
-                    parent: Parent,
-                    key: Key,
-                    failureMessage?: string | undefined,
-                ) => Exclude<Parent, Record<Key, any>> | undefined
-            >(),
+        lacksKey<const Parent, const Key extends PropertyKey>(
+            this: void,
+            parent: Parent,
+            key: Key,
+        ): Exclude<Parent, Record<Key, any>> | undefined {
+            if (hasKey(parent, key)) {
+                return undefined;
+            } else {
+                return parent as Exclude<Parent, Record<Key, any>>;
+            }
+        },
         /**
          * Checks that a parent value has all the keys. Returns the parent value if the check
          * passes, otherwise `undefined`.
@@ -735,14 +738,8 @@ export const keyGuards = {
          * ```ts
          * import {checkWrap} from '@augment-vir/assert';
          *
-         * checkWrap.hasKeys({a: 0, b: 1}, [
-         *     'a',
-         *     'b',
-         * ]); // returns `{a: 0, b: 1}`
-         * checkWrap.hasKeys({a: 0, b: 1}, [
-         *     'b',
-         *     'c',
-         * ]); // returns `undefined`
+         * checkWrap.hasKeys({a: 0, b: 1}, ['a', 'b']); // returns `{a: 0, b: 1}`
+         * checkWrap.hasKeys({a: 0, b: 1}, ['b', 'c']); // returns `undefined`
          * ```
          *
          * @returns The parent value if the check passes, otherwise `undefined`.
@@ -750,13 +747,17 @@ export const keyGuards = {
          * - {@link checkWrap.lacksKeys} : the opposite check.
          * - {@link checkWrap.hasKey} : the single-key check.
          */
-        hasKeys:
-            autoGuard<
-                <const Keys extends PropertyKey, const Parent>(
-                    parent: Parent,
-                    keys: ReadonlyArray<Keys>,
-                ) => CombineTypeWithKey<Keys, Parent> | undefined
-            >(),
+        hasKeys<const Keys extends PropertyKey, const Parent>(
+            this: void,
+            parent: Parent,
+            keys: ReadonlyArray<Keys>,
+        ): CombineTypeWithKey<Keys, Parent> | undefined {
+            if (keys.every((key) => hasKey(parent, key))) {
+                return parent as CombineTypeWithKey<Keys, Parent>;
+            } else {
+                return undefined;
+            }
+        },
         /**
          * Checks that a parent value none of the keys. Returns the parent value if the check
          * passes, otherwise `undefined`.
@@ -768,14 +769,8 @@ export const keyGuards = {
          * ```ts
          * import {checkWrap} from '@augment-vir/assert';
          *
-         * checkWrap.lacksKeys({a: 0, b: 1}, [
-         *     'b',
-         *     'c',
-         * ]); // returns `undefined`
-         * checkWrap.lacksKeys({a: 0, b: 1}, [
-         *     'c',
-         *     'd',
-         * ]); // returns `{a: 0, b: 1}`
+         * checkWrap.lacksKeys({a: 0, b: 1}, ['b', 'c']); // returns `undefined`
+         * checkWrap.lacksKeys({a: 0, b: 1}, ['c', 'd']); // returns `{a: 0, b: 1}`
          * ```
          *
          * @returns The parent value if the check passes, otherwise `undefined`.
@@ -783,13 +778,17 @@ export const keyGuards = {
          * - {@link checkWrap.hasKeys} : the opposite check.
          * - {@link checkWrap.lacksKey} : the single-key check.
          */
-        lacksKeys:
-            autoGuard<
-                <const Parent, const Key extends PropertyKey>(
-                    parent: Parent,
-                    key: ReadonlyArray<Key>,
-                ) => Exclude<Parent, Partial<Record<Key, any>>> | undefined
-            >(),
+        lacksKeys<const Parent, const Key extends PropertyKey>(
+            this: void,
+            parent: Parent,
+            keys: ReadonlyArray<Key>,
+        ): Exclude<Parent, Partial<Record<Key, any>>> | undefined {
+            if (keys.every((key) => !hasKey(parent, key))) {
+                return parent as Exclude<Parent, Partial<Record<Key, any>>>;
+            } else {
+                return undefined;
+            }
+        },
     },
     waitUntil: {
         /**
@@ -813,15 +812,16 @@ export const keyGuards = {
          * @see
          * - {@link waitUntil.isNotKeyOf} : the opposite assertion.
          */
-        isKeyOf:
-            autoGuard<
-                <const Key extends PropertyKey, const Parent>(
-                    parent: Parent,
-                    callback: () => MaybePromise<Key>,
-                    options?: WaitUntilOptions | undefined,
-                    failureMessage?: string | undefined,
-                ) => Promise<NarrowToExpected<Key, keyof Parent>>
-            >(),
+        isKeyOf: createWaitUntil(assertions.isKeyOf) as <
+            const Key extends PropertyKey,
+            const Parent,
+        >(
+            this: void,
+            parent: Parent,
+            callback: () => MaybePromise<Key>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<NarrowToExpected<Key, keyof Parent>>,
         /**
          * Repeatedly calls a callback until its output is a key that is _not_ contained within the
          * first, parent value. Once the callback output passes, it is returned. If the attempts
@@ -843,15 +843,16 @@ export const keyGuards = {
          * @see
          * - {@link waitUntil.isNotKeyOf} : the opposite assertion.
          */
-        isNotKeyOf:
-            autoGuard<
-                <const Key extends PropertyKey, const Parent>(
-                    parent: Parent,
-                    callback: () => MaybePromise<Key>,
-                    options?: WaitUntilOptions | undefined,
-                    failureMessage?: string | undefined,
-                ) => Promise<Exclude<Key, RequiredKeysOf<Parent>>>
-            >(),
+        isNotKeyOf: createWaitUntil(assertions.isNotKeyOf) as <
+            const Key extends PropertyKey,
+            const Parent,
+        >(
+            this: void,
+            parent: Parent,
+            callback: () => MaybePromise<Key>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<Exclude<Key, RequiredKeysOf<Parent>>>,
         /**
          * Repeatedly calls a callback until its output is a parent value that has the first, key
          * input. Once the callback output passes, it is returned. If the attempts time out, an
@@ -878,14 +879,13 @@ export const keyGuards = {
          * - {@link waitUntil.lacksKey} : the opposite assertion.
          * - {@link waitUntil.hasKeys} : the multi-key assertion.
          */
-        hasKey: autoGuard<
-            <const Parent, const Key extends PropertyKey>(
-                key: Key,
-                callback: () => MaybePromise<Parent>,
-                options?: WaitUntilOptions | undefined,
-                failureMessage?: string | undefined,
-            ) => Promise<CombineTypeWithKey<Key, Parent>>
-        >(),
+        hasKey: createWaitUntil(assertions.hasKey) as <const Parent, const Key extends PropertyKey>(
+            this: void,
+            key: Key,
+            callback: () => MaybePromise<Parent>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<CombineTypeWithKey<Key, Parent>>,
         /**
          * Repeatedly calls a callback until its output is a parent value that does not have the
          * first, key input. Once the callback output passes, it is returned. If the attempts time
@@ -912,15 +912,16 @@ export const keyGuards = {
          * - {@link waitUntil.hasKey} : the opposite assertion.
          * - {@link waitUntil.lacksKeys} : the multi-key assertion.
          */
-        lacksKey:
-            autoGuard<
-                <const Parent, const Key extends PropertyKey>(
-                    key: Key,
-                    callback: () => MaybePromise<Parent>,
-                    options?: WaitUntilOptions | undefined,
-                    failureMessage?: string | undefined,
-                ) => Promise<Exclude<Parent, Record<Key, any>>>
-            >(),
+        lacksKey: createWaitUntil(assertions.lacksKey) as <
+            const Parent,
+            const Key extends PropertyKey,
+        >(
+            this: void,
+            key: Key,
+            callback: () => MaybePromise<Parent>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<Exclude<Parent, Record<Key, any>>>,
         /**
          * Repeatedly calls a callback until its output is a parent value that has all of the first,
          * keys input. Once the callback output passes, it is returned. If the attempts time out, an
@@ -933,24 +934,12 @@ export const keyGuards = {
          * ```ts
          * import {waitUntil} from '@augment-vir/assert';
          *
-         * await waitUntil.hasKeys(
-         *     [
-         *         'a',
-         *         'b',
-         *     ],
-         *     () => {
-         *         return {a: 0, b: 1};
-         *     },
-         * ); // returns `{a: 0, b: 1}`
-         * await waitUntil.hasKeys(
-         *     [
-         *         'b',
-         *         'c',
-         *     ],
-         *     () => {
-         *         return {a: 0, b: 1};
-         *     },
-         * ); // throws an error
+         * await waitUntil.hasKeys(['a', 'b'], () => {
+         *     return {a: 0, b: 1};
+         * }); // returns `{a: 0, b: 1}`
+         * await waitUntil.hasKeys(['b', 'c'], () => {
+         *     return {a: 0, b: 1};
+         * }); // throws an error
          * ```
          *
          * @returns The callback output once it passes.
@@ -959,15 +948,16 @@ export const keyGuards = {
          * - {@link waitUntil.lacksKeys} : the opposite assertion.
          * - {@link waitUntil.hasKey} : the single-key assertion.
          */
-        hasKeys:
-            autoGuard<
-                <const Keys extends PropertyKey, const Parent>(
-                    keys: ReadonlyArray<Keys>,
-                    callback: () => MaybePromise<Parent>,
-                    options?: WaitUntilOptions | undefined,
-                    failureMessage?: string | undefined,
-                ) => Promise<CombineTypeWithKey<Keys, Parent>>
-            >(),
+        hasKeys: createWaitUntil(assertions.hasKeys) as <
+            const Keys extends PropertyKey,
+            const Parent,
+        >(
+            this: void,
+            keys: ReadonlyArray<Keys>,
+            callback: () => MaybePromise<Parent>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<CombineTypeWithKey<Keys, Parent>>,
         /**
          * Repeatedly calls a callback until its output is a parent value that does not have any of
          * the first, keys input. Once the callback output passes, it is returned. If the attempts
@@ -980,24 +970,12 @@ export const keyGuards = {
          * ```ts
          * import {waitUntil} from '@augment-vir/assert';
          *
-         * await waitUntil.hasKeys(
-         *     [
-         *         'a',
-         *         'b',
-         *     ],
-         *     () => {
-         *         return {a: 0, b: 1};
-         *     },
-         * ); // throws an error
-         * await waitUntil.hasKeys(
-         *     [
-         *         'b',
-         *         'c',
-         *     ],
-         *     () => {
-         *         return {a: 0, b: 1};
-         *     },
-         * ); // returns `{a: 0, b: 1}`
+         * await waitUntil.hasKeys(['a', 'b'], () => {
+         *     return {a: 0, b: 1};
+         * }); // throws an error
+         * await waitUntil.hasKeys(['b', 'c'], () => {
+         *     return {a: 0, b: 1};
+         * }); // returns `{a: 0, b: 1}`
          * ```
          *
          * @returns The callback output once it passes.
@@ -1006,14 +984,15 @@ export const keyGuards = {
          * - {@link waitUntil.hasKeys} : the opposite assertion.
          * - {@link waitUntil.lacksKey} : the single-key assertion.
          */
-        lacksKeys:
-            autoGuard<
-                <const Parent, const Keys extends PropertyKey>(
-                    keys: ReadonlyArray<Keys>,
-                    callback: () => MaybePromise<Parent>,
-                    options?: WaitUntilOptions | undefined,
-                    failureMessage?: string | undefined,
-                ) => Promise<Exclude<Parent, Partial<Record<Keys, any>>>>
-            >(),
+        lacksKeys: createWaitUntil(assertions.lacksKeys) as <
+            const Parent,
+            const Keys extends PropertyKey,
+        >(
+            this: void,
+            keys: ReadonlyArray<Keys>,
+            callback: () => MaybePromise<Parent>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<Exclude<Parent, Partial<Record<Keys, any>>>>,
     },
 } satisfies GuardGroup<typeof assertions>;

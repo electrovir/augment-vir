@@ -1,19 +1,9 @@
+import type {MaybePromise} from '@augment-vir/core';
 import {AssertionError} from '../augments/assertion.error.js';
 import type {GuardGroup} from '../guard-types/guard-group.js';
-import {autoGuardSymbol} from '../guard-types/guard-override.js';
+import {createWaitUntil, WaitUntilOptions} from '../guard-types/wait-until-function.js';
 
-function matches(actual: string, expected: RegExp, failureMessage?: string | undefined) {
-    if (!expected.test(actual)) {
-        throw new AssertionError(`'${actual}' does not match ${expected}`, failureMessage);
-    }
-}
-function mismatches(actual: string, expected: RegExp, failureMessage?: string | undefined) {
-    if (expected.test(actual)) {
-        throw new AssertionError(`'${actual}' matches ${expected}`, failureMessage);
-    }
-}
-
-const assertions: {
+const assertions = {
     /**
      * Asserts that a string (first input, `actual`) matches a RegExp (second input, `expected`).
      *
@@ -32,7 +22,11 @@ const assertions: {
      * @see
      * - {@link assert.mismatches} : the opposite assertion.
      */
-    matches: typeof matches;
+    matches(this: void, actual: string, expected: RegExp, failureMessage?: string | undefined) {
+        if (!expected.test(actual)) {
+            throw new AssertionError(`'${actual}' does not match ${expected}`, failureMessage);
+        }
+    },
     /**
      * Asserts that a string (first input, `actual`) does _not_ match a RegExp (second input,
      * `expected`).
@@ -52,10 +46,11 @@ const assertions: {
      * @see
      * - {@link assert.matches} : the opposite assertion.
      */
-    mismatches: typeof mismatches;
-} = {
-    matches,
-    mismatches,
+    mismatches(this: void, actual: string, expected: RegExp, failureMessage?: string | undefined) {
+        if (expected.test(actual)) {
+            throw new AssertionError(`'${actual}' matches ${expected}`, failureMessage);
+        }
+    },
 };
 
 export const regexpGuards = {
@@ -78,7 +73,9 @@ export const regexpGuards = {
          * @see
          * - {@link check.mismatches} : the opposite check.
          */
-        matches: autoGuardSymbol,
+        matches(this: void, actual: string, expected: RegExp): boolean {
+            return !!expected.test(actual);
+        },
         /**
          * Checks that a string (first input, `actual`) does _not_ match a RegExp (second input,
          * `expected`).
@@ -97,7 +94,9 @@ export const regexpGuards = {
          * @see
          * - {@link check.matches} : the opposite check.
          */
-        mismatches: autoGuardSymbol,
+        mismatches(this: void, actual: string, expected: RegExp): boolean {
+            return !expected.test(actual);
+        },
     },
     assertWrap: {
         /**
@@ -120,7 +119,18 @@ export const regexpGuards = {
          * @see
          * - {@link assertWrap.mismatches} : the opposite assertion.
          */
-        matches: autoGuardSymbol,
+        matches(
+            this: void,
+            actual: string,
+            expected: RegExp,
+            failureMessage?: string | undefined,
+        ): string {
+            if (!expected.test(actual)) {
+                throw new AssertionError(`'${actual}' does not match ${expected}`, failureMessage);
+            }
+
+            return actual;
+        },
         /**
          * Asserts that a string (first input, `actual`) does _not_ match a RegExp (second input,
          * `expected`). Returns the string if the assertion passes.
@@ -141,7 +151,18 @@ export const regexpGuards = {
          * @see
          * - {@link assertWrap.matches} : the opposite assertion.
          */
-        mismatches: autoGuardSymbol,
+        mismatches(
+            this: void,
+            actual: string,
+            expected: RegExp,
+            failureMessage?: string | undefined,
+        ): string {
+            if (expected.test(actual)) {
+                throw new AssertionError(`'${actual}' matches ${expected}`, failureMessage);
+            }
+
+            return actual;
+        },
     },
     checkWrap: {
         /**
@@ -163,7 +184,13 @@ export const regexpGuards = {
          * @see
          * - {@link checkWrap.mismatches} : the opposite check.
          */
-        matches: autoGuardSymbol,
+        matches(this: void, actual: string, expected: RegExp): string | undefined {
+            if (expected.test(actual)) {
+                return actual;
+            } else {
+                return undefined;
+            }
+        },
         /**
          * Checks that a string (first input, `actual`) does _not_ match a RegExp (second input,
          * `expected`). Returns the string if the check passes, otherwise `undefined`.
@@ -183,7 +210,13 @@ export const regexpGuards = {
          * @see
          * - {@link checkWrap.matches} : the opposite check.
          */
-        mismatches: autoGuardSymbol,
+        mismatches(this: void, actual: string, expected: RegExp): string | undefined {
+            if (expected.test(actual)) {
+                return undefined;
+            } else {
+                return actual;
+            }
+        },
     },
     waitUntil: {
         /**
@@ -207,7 +240,13 @@ export const regexpGuards = {
          * @see
          * - {@link waitUntil.mismatches} : the opposite assertion.
          */
-        matches: autoGuardSymbol,
+        matches: createWaitUntil(assertions.matches, true) as (
+            this: void,
+            expected: RegExp,
+            callback: () => MaybePromise<string>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<string>,
         /**
          * Repeatedly calls a callback until its output is a string that does _not_ match a RegExp
          * (first input, `expected`). Once the callback output passes, it is returned. If the
@@ -229,6 +268,12 @@ export const regexpGuards = {
          * @see
          * - {@link waitUntil.matches} : the opposite assertion.
          */
-        mismatches: autoGuardSymbol,
+        mismatches: createWaitUntil(assertions.mismatches, true) as (
+            this: void,
+            expected: RegExp,
+            callback: () => MaybePromise<string>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<string>,
     },
 } satisfies GuardGroup<typeof assertions>;

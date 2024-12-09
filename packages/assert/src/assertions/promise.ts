@@ -1,60 +1,9 @@
 import {stringify} from '@augment-vir/core';
 import {AssertionError} from '../augments/assertion.error.js';
 import type {GuardGroup} from '../guard-types/guard-group.js';
-import {autoGuard, autoGuardSymbol} from '../guard-types/guard-override.js';
 import {createWaitUntil, type WaitUntilOptions} from '../guard-types/wait-until-function.js';
 
-function isPromiseLike(
-    actual: unknown,
-    failureMessage?: string | undefined,
-): asserts actual is PromiseLike<any> {
-    if (
-        !(actual instanceof Promise) &&
-        !(
-            actual &&
-            typeof actual === 'object' &&
-            'then' in actual &&
-            typeof actual.then === 'function'
-        )
-    ) {
-        throw new AssertionError(`'${stringify(actual)}' is not a PromiseLike.`, failureMessage);
-    }
-}
-function isNotPromiseLike<const Actual>(
-    actual: Actual,
-    failureMessage?: string | undefined,
-): asserts actual is Exclude<Actual, PromiseLike<any>> {
-    try {
-        isPromiseLike(actual);
-    } catch {
-        return;
-    }
-
-    throw new AssertionError(`'${stringify(actual)}' is a PromiseLike.`, failureMessage);
-}
-
-/**
- * Checks if a value is an actual `Promise` object. In reality this is just a simple wrapper for
- * `instanceof Promise`, but it makes checking a bit more ergonomic.
- */
-function isPromise(
-    actual: unknown,
-    failureMessage?: string | undefined,
-): asserts actual is Promise<any> {
-    if (!(actual instanceof Promise)) {
-        throw new AssertionError(`'${stringify(actual)}' is not a Promise.`, failureMessage);
-    }
-}
-function isNotPromise<const Actual>(
-    actual: Actual,
-    failureMessage?: string | undefined,
-): asserts actual is Exclude<Actual, Promise<any>> {
-    if (actual instanceof Promise) {
-        throw new AssertionError(`'${stringify(actual)}' is a Promise.`, failureMessage);
-    }
-}
-
-const assertions: {
+const assertions = {
     /**
      * Asserts that a value is a `PromiseLike`.
      *
@@ -87,7 +36,26 @@ const assertions: {
      * - {@link assert.isNotPromiseLike} : the opposite assertion.
      * - {@link assert.isPromise} : the more precise assertion.
      */
-    isPromiseLike: typeof isPromiseLike;
+    isPromiseLike(
+        this: void,
+        actual: unknown,
+        failureMessage?: string | undefined,
+    ): asserts actual is PromiseLike<any> {
+        if (
+            !(actual instanceof Promise) &&
+            !(
+                actual &&
+                typeof actual === 'object' &&
+                'then' in actual &&
+                typeof actual.then === 'function'
+            )
+        ) {
+            throw new AssertionError(
+                `'${stringify(actual)}' is not a PromiseLike.`,
+                failureMessage,
+            );
+        }
+    },
     /**
      * Asserts that a value is _not_ a `PromiseLike`.
      *
@@ -120,7 +88,21 @@ const assertions: {
      * - {@link assert.isPromiseLike} : the opposite assertion.
      * - {@link assert.isNotPromise} : the more precise assertion.
      */
-    isNotPromiseLike: typeof isNotPromiseLike;
+    isNotPromiseLike<const Actual>(
+        this: void,
+        actual: Actual,
+        failureMessage?: string | undefined,
+    ): asserts actual is Exclude<Actual, PromiseLike<any>> {
+        if (
+            actual instanceof Promise ||
+            (actual &&
+                typeof actual === 'object' &&
+                'then' in actual &&
+                typeof actual.then === 'function')
+        ) {
+            throw new AssertionError(`'${stringify(actual)}' is a PromiseLike.`, failureMessage);
+        }
+    },
     /**
      * Asserts that a value is a `Promise` instance.
      *
@@ -149,7 +131,15 @@ const assertions: {
      * - {@link assert.isNotPromise} : the opposite assertion.
      * - {@link assert.isPromiseLike} : the more lenient assertion.
      */
-    isPromise: typeof isPromise;
+    isPromise(
+        this: void,
+        actual: unknown,
+        failureMessage?: string | undefined,
+    ): asserts actual is Promise<any> {
+        if (!(actual instanceof Promise)) {
+            throw new AssertionError(`'${stringify(actual)}' is not a Promise.`, failureMessage);
+        }
+    },
     /**
      * Asserts that a value is a _not_ `Promise` instance.
      *
@@ -178,12 +168,15 @@ const assertions: {
      * - {@link assert.isPromise} : the opposite assertion.
      * - {@link assert.isNotPromiseLike} : the more lenient assertion.
      */
-    isNotPromise: typeof isNotPromise;
-} = {
-    isPromiseLike,
-    isNotPromiseLike,
-    isPromise,
-    isNotPromise,
+    isNotPromise<const Actual>(
+        this: void,
+        actual: Actual,
+        failureMessage?: string | undefined,
+    ): asserts actual is Exclude<Actual, Promise<any>> {
+        if (actual instanceof Promise) {
+            throw new AssertionError(`'${stringify(actual)}' is a Promise.`, failureMessage);
+        }
+    },
 };
 
 export const promiseGuards = {
@@ -222,7 +215,18 @@ export const promiseGuards = {
          * - {@link check.isNotPromiseLike} : the opposite check.
          * - {@link check.isPromise} : the more precise check.
          */
-        isPromiseLike: autoGuardSymbol,
+        isPromiseLike<Actual>(
+            this: void,
+            actual: Actual,
+        ): actual is Extract<Actual, PromiseLike<any>> {
+            return !!(
+                actual instanceof Promise ||
+                (actual &&
+                    typeof actual === 'object' &&
+                    'then' in actual &&
+                    typeof actual.then === 'function')
+            );
+        },
         /**
          * Checks that a value is _not_ a `PromiseLike`.
          *
@@ -256,13 +260,18 @@ export const promiseGuards = {
          * - {@link check.isPromiseLike} : the opposite check.
          * - {@link check.isNotPromise} : the more precise check.
          */
-        isNotPromiseLike:
-            autoGuard<
-                <const Actual>(
-                    actual: Actual,
-                    failureMessage?: string | undefined,
-                ) => actual is Exclude<Actual, PromiseLike<any>>
-            >(),
+        isNotPromiseLike<const Actual>(
+            this: void,
+            actual: Actual,
+        ): actual is Exclude<Actual, PromiseLike<any>> {
+            return !(
+                actual instanceof Promise ||
+                (actual &&
+                    typeof actual === 'object' &&
+                    'then' in actual &&
+                    typeof actual.then === 'function')
+            );
+        },
         /**
          * Checks that a value is a `Promise` instance.
          *
@@ -292,7 +301,9 @@ export const promiseGuards = {
          * - {@link check.isNotPromise} : the opposite check.
          * - {@link check.isPromiseLike} : the more lenient check.
          */
-        isPromise: autoGuardSymbol,
+        isPromise<Actual>(this: void, actual: Actual): actual is Extract<Actual, Promise<any>> {
+            return actual instanceof Promise;
+        },
         /**
          * Checks that a value is a _not_ `Promise` instance.
          *
@@ -322,13 +333,9 @@ export const promiseGuards = {
          * - {@link check.isPromise} : the opposite check.
          * - {@link check.isNotPromiseLike} : the more lenient check.
          */
-        isNotPromise:
-            autoGuard<
-                <const Actual>(
-                    actual: Actual,
-                    failureMessage?: string | undefined,
-                ) => actual is Exclude<Actual, Promise<any>>
-            >(),
+        isNotPromise<Actual>(this: void, actual: Actual): actual is Exclude<Actual, Promise<any>> {
+            return !(actual instanceof Promise);
+        },
     },
     assertWrap: {
         /**
@@ -366,13 +373,28 @@ export const promiseGuards = {
          * - {@link assertWrap.isNotPromiseLike} : the opposite assertion.
          * - {@link assertWrap.isPromise} : the more precise assertion.
          */
-        isPromiseLike:
-            autoGuard<
-                <const Actual>(
-                    actual: Actual,
-                    failureMessage?: string | undefined,
-                ) => Extract<Actual, PromiseLike<any>>
-            >(),
+        isPromiseLike<Actual>(
+            this: void,
+            actual: Actual,
+            failureMessage?: string | undefined,
+        ): Extract<Actual, PromiseLike<any>> {
+            if (
+                !(actual instanceof Promise) &&
+                !(
+                    actual &&
+                    typeof actual === 'object' &&
+                    'then' in actual &&
+                    typeof actual.then === 'function'
+                )
+            ) {
+                throw new AssertionError(
+                    `'${stringify(actual)}' is not a PromiseLike.`,
+                    failureMessage,
+                );
+            }
+
+            return actual as Extract<Actual, PromiseLike<any>>;
+        },
         /**
          * Asserts that a value is _not_ a `PromiseLike`. Returns the value if the assertion passes.
          *
@@ -408,13 +430,26 @@ export const promiseGuards = {
          * - {@link assertWrap.isPromiseLike} : the opposite assertion.
          * - {@link assertWrap.isNotPromise} : the more precise assertion.
          */
-        isNotPromiseLike:
-            autoGuard<
-                <const Actual>(
-                    actual: Actual,
-                    failureMessage?: string | undefined,
-                ) => Exclude<Actual, PromiseLike<any>>
-            >(),
+        isNotPromiseLike<Actual>(
+            this: void,
+            actual: Actual,
+            failureMessage?: string | undefined,
+        ): Exclude<Actual, PromiseLike<any>> {
+            if (
+                actual instanceof Promise ||
+                (actual &&
+                    typeof actual === 'object' &&
+                    'then' in actual &&
+                    typeof actual.then === 'function')
+            ) {
+                throw new AssertionError(
+                    `'${stringify(actual)}' is a PromiseLike.`,
+                    failureMessage,
+                );
+            }
+
+            return actual as Exclude<Actual, PromiseLike<any>>;
+        },
         /**
          * Asserts that a value is a `Promise` instance. Returns the value if the assertion passes.
          *
@@ -446,13 +481,20 @@ export const promiseGuards = {
          * - {@link assertWrap.isNotPromise} : the opposite assertion.
          * - {@link assertWrap.isPromiseLike} : the more lenient assertion.
          */
-        isPromise:
-            autoGuard<
-                <const Actual>(
-                    actual: Actual,
-                    failureMessage?: string | undefined,
-                ) => Extract<Actual, Promise<any>>
-            >(),
+        isPromise<Actual>(
+            this: void,
+            actual: Actual,
+            failureMessage?: string | undefined,
+        ): Extract<Actual, Promise<any>> {
+            if (!(actual instanceof Promise)) {
+                throw new AssertionError(
+                    `'${stringify(actual)}' is not a Promise.`,
+                    failureMessage,
+                );
+            }
+
+            return actual as Extract<Actual, Promise<any>>;
+        },
         /**
          * Asserts that a value is a _not_ `Promise` instance. Returns the value if the assertion
          * passes.
@@ -485,13 +527,17 @@ export const promiseGuards = {
          * - {@link assertWrap.isPromise} : the opposite assertion.
          * - {@link assertWrap.isNotPromiseLike} : the more lenient assertion.
          */
-        isNotPromise:
-            autoGuard<
-                <const Actual>(
-                    actual: Actual,
-                    failureMessage?: string | undefined,
-                ) => Exclude<Actual, Promise<any>>
-            >(),
+        isNotPromise<Actual>(
+            this: void,
+            actual: Actual,
+            failureMessage?: string | undefined,
+        ): Exclude<Actual, Promise<any>> {
+            if (actual instanceof Promise) {
+                throw new AssertionError(`'${stringify(actual)}' is a Promise.`, failureMessage);
+            }
+
+            return actual as Exclude<Actual, Promise<any>>;
+        },
     },
     checkWrap: {
         /**
@@ -528,13 +574,22 @@ export const promiseGuards = {
          * - {@link checkWrap.isNotPromiseLike} : the opposite check.
          * - {@link checkWrap.isPromise} : the more precise check.
          */
-        isNotPromise:
-            autoGuard<
-                <const Actual>(
-                    actual: Actual,
-                    failureMessage?: string | undefined,
-                ) => Exclude<Actual, Promise<any>> | undefined
-            >(),
+        isPromiseLike<Actual>(
+            this: void,
+            actual: Actual,
+        ): Extract<Actual, PromiseLike<any>> | undefined {
+            if (
+                actual instanceof Promise ||
+                (actual &&
+                    typeof actual === 'object' &&
+                    'then' in actual &&
+                    typeof actual.then === 'function')
+            ) {
+                return actual as Extract<Actual, PromiseLike<any>>;
+            } else {
+                return undefined;
+            }
+        },
         /**
          * Checks that a value is _not_ a `PromiseLike`. Returns the value if the check passes,
          * otherwise `undefined`.
@@ -569,13 +624,22 @@ export const promiseGuards = {
          * - {@link checkWrap.isPromiseLike} : the opposite check.
          * - {@link checkWrap.isNotPromise} : the more precise check.
          */
-        isNotPromiseLike:
-            autoGuard<
-                <const Actual>(
-                    actual: Actual,
-                    failureMessage?: string | undefined,
-                ) => Exclude<Actual, PromiseLike<any>> | undefined
-            >(),
+        isNotPromiseLike<Actual>(
+            this: void,
+            actual: Actual,
+        ): Exclude<Actual, PromiseLike<any>> | undefined {
+            if (
+                actual instanceof Promise ||
+                (actual &&
+                    typeof actual === 'object' &&
+                    'then' in actual &&
+                    typeof actual.then === 'function')
+            ) {
+                return undefined;
+            } else {
+                return actual as Exclude<Actual, PromiseLike<any>>;
+            }
+        },
         /**
          * Checks that a value is a `Promise` instance. Returns the value if the check passes,
          * otherwise `undefined`.
@@ -606,7 +670,13 @@ export const promiseGuards = {
          * - {@link checkWrap.isNotPromise} : the opposite check.
          * - {@link checkWrap.isPromiseLike} : the more lenient check.
          */
-        isPromise: autoGuardSymbol,
+        isPromise<Actual>(this: void, actual: Actual): Extract<Actual, Promise<any>> | undefined {
+            if (actual instanceof Promise) {
+                return actual as Extract<Actual, Promise<any>>;
+            } else {
+                return undefined;
+            }
+        },
         /**
          * Checks that a value is a _not_ `Promise` instance. Returns the value if the check passes,
          * otherwise `undefined`.
@@ -637,7 +707,16 @@ export const promiseGuards = {
          * - {@link checkWrap.isPromise} : the opposite check.
          * - {@link checkWrap.isNotPromiseLike} : the more lenient check.
          */
-        isPromiseLike: autoGuardSymbol,
+        isNotPromise<Actual>(
+            this: void,
+            actual: Actual,
+        ): Exclude<Actual, Promise<any>> | undefined {
+            if (actual instanceof Promise) {
+                return undefined;
+            } else {
+                return actual as Exclude<Actual, Promise<any>>;
+            }
+        },
     },
     waitUntil: {
         /**
@@ -676,7 +755,8 @@ export const promiseGuards = {
          * - {@link waitUntil.isNotPromiseLike} : the opposite assertion.
          * - {@link waitUntil.isPromise} : the more precise assertion.
          */
-        isPromiseLike: createWaitUntil(isPromiseLike, true) as <const Actual>(
+        isPromiseLike: createWaitUntil(assertions.isPromiseLike, true) as <const Actual>(
+            this: void,
             callback: () => Actual,
             options?: WaitUntilOptions | undefined,
             failureMessage?: string | undefined,
@@ -717,7 +797,8 @@ export const promiseGuards = {
          * - {@link waitUntil.isPromiseLike} : the opposite assertion.
          * - {@link waitUntil.isNotPromise} : the more precise assertion.
          */
-        isNotPromiseLike: createWaitUntil(isNotPromiseLike, true) as <const Actual>(
+        isNotPromiseLike: createWaitUntil(assertions.isNotPromiseLike, true) as <const Actual>(
+            this: void,
             callback: () => Actual,
             options?: WaitUntilOptions | undefined,
             failureMessage?: string | undefined,
@@ -754,7 +835,8 @@ export const promiseGuards = {
          * - {@link waitUntil.isNotPromise} : the opposite assertion.
          * - {@link waitUntil.isPromiseLike} : the more lenient assertion.
          */
-        isPromise: createWaitUntil(isPromise, true) as <const Actual>(
+        isPromise: createWaitUntil(assertions.isPromise, true) as <const Actual>(
+            this: void,
             callback: () => Actual,
             options?: WaitUntilOptions | undefined,
             failureMessage?: string | undefined,
@@ -791,7 +873,8 @@ export const promiseGuards = {
          * - {@link waitUntil.isPromise} : the opposite assertion.
          * - {@link waitUntil.isNotPromiseLike} : the more lenient assertion.
          */
-        isNotPromise: createWaitUntil(isNotPromise, true) as <const Actual>(
+        isNotPromise: createWaitUntil(assertions.isNotPromise, true) as <const Actual>(
+            this: void,
             callback: () => Actual,
             options?: WaitUntilOptions | undefined,
             failureMessage?: string | undefined,

@@ -32,20 +32,14 @@ describe('entriesEqual', () => {
         itCases(assert.entriesEqual, [
             {
                 it: 'handles a non-object first arg',
-                inputs: [
-                    'hi' as any,
-                    {a: 'hi'},
-                ],
+                inputs: ['hi' as any, {a: 'hi'}],
                 throws: {
                     matchMessage: 'is not an object',
                 },
             },
             {
                 it: 'handles a non-object second arg',
-                inputs: [
-                    {a: 'hi'},
-                    'hi' as any,
-                ],
+                inputs: [{a: 'hi'}, 'hi' as any],
                 throws: {
                     matchMessage: 'is not an object',
                 },
@@ -64,6 +58,14 @@ describe('entriesEqual', () => {
         });
         it('rejects', () => {
             assert.isFalse(check.entriesEqual(actualReject, expected));
+
+            // @ts-expect-error: intentionally incorrect input
+            assert.isFalse(check.entriesEqual(null, {}));
+            // @ts-expect-error: intentionally incorrect input
+            assert.isFalse(check.entriesEqual('hi', {}));
+            // @ts-expect-error: intentionally incorrect input
+            assert.isFalse(check.entriesEqual({}, null));
+            assert.isFalse(check.entriesEqual({}, 'hi'));
         });
     });
     describe('assertWrap', () => {
@@ -75,6 +77,14 @@ describe('entriesEqual', () => {
         });
         it('rejects', () => {
             assert.throws(() => assertWrap.entriesEqual(actualReject, expected));
+
+            // @ts-expect-error: intentionally incorrect input
+            assert.throws(() => assertWrap.entriesEqual(null, {}));
+            // @ts-expect-error: intentionally incorrect input
+            assert.throws(() => assertWrap.entriesEqual('hi', {}));
+            // @ts-expect-error: intentionally incorrect input
+            assert.throws(() => assertWrap.entriesEqual({}, null));
+            assert.throws(() => assertWrap.entriesEqual({}, 'hi'));
         });
     });
     describe('checkWrap', () => {
@@ -83,6 +93,14 @@ describe('entriesEqual', () => {
 
             assert.tsType(newValue).equals<ExpectedType | undefined>();
             assert.tsType(actualPass).notEquals<ExpectedType>();
+
+            // @ts-expect-error: intentionally invalid input
+            assert.isUndefined(checkWrap.entriesEqual(null, {}));
+            // @ts-expect-error: intentionally invalid input
+            assert.isUndefined(checkWrap.entriesEqual('hi', {}));
+            // @ts-expect-error: intentionally invalid input
+            assert.isUndefined(checkWrap.entriesEqual({}, null));
+            assert.isUndefined(checkWrap.entriesEqual({}, 'hi'));
         });
         it('rejects', () => {
             assert.isUndefined(checkWrap.entriesEqual(actualReject, expected));
@@ -114,11 +132,11 @@ describe('entriesEqual', () => {
 });
 
 describe('notEntriesEqual', () => {
-    const actualPass: object = {
+    const actualPass = {
         a: 'first',
         b: 'second',
     } as any;
-    const actualReject: object = {
+    const actualReject = {
         a: 'first',
         c: 'second',
     } as any;
@@ -127,6 +145,15 @@ describe('notEntriesEqual', () => {
     describe('assert', () => {
         it('accepts', () => {
             assert.notEntriesEqual(actualPass, expected);
+
+            // @ts-expect-error: intentionally incorrect input
+            assert.notEntriesEqual(null, {});
+            // @ts-expect-error: intentionally incorrect input
+            assert.notEntriesEqual('hi', {});
+            // @ts-expect-error: intentionally incorrect input
+            assert.notEntriesEqual({}, null);
+            // @ts-expect-error: intentionally incorrect input
+            assert.notEntriesEqual({}, 'hi');
         });
         it('rejects', () => {
             assert.throws(() => assert.notEntriesEqual(actualReject, expected));
@@ -135,6 +162,15 @@ describe('notEntriesEqual', () => {
     describe('check', () => {
         it('accepts', () => {
             assert.isTrue(check.notEntriesEqual(actualPass, expected));
+
+            // @ts-expect-error: intentionally incorrect input
+            assert.isTrue(check.notEntriesEqual(null, {}));
+            // @ts-expect-error: intentionally incorrect input
+            assert.isTrue(check.notEntriesEqual('hi', {}));
+            // @ts-expect-error: intentionally incorrect input
+            assert.isTrue(check.notEntriesEqual({}, null));
+            // @ts-expect-error: intentionally incorrect input
+            assert.isTrue(check.notEntriesEqual({}, 'hi'));
         });
         it('rejects', () => {
             assert.isFalse(check.notEntriesEqual(actualReject, expected));
@@ -145,6 +181,15 @@ describe('notEntriesEqual', () => {
             const newValue = assertWrap.notEntriesEqual(actualPass, expected);
             assert.tsType(newValue).equals(actualPass);
             assert.deepEquals(actualPass, newValue);
+
+            // @ts-expect-error: intentionally incorrect input
+            assert.strictEquals(assertWrap.notEntriesEqual(null, {}), null);
+            // @ts-expect-error: intentionally incorrect input
+            assert.strictEquals(assertWrap.notEntriesEqual('', {}), '');
+            // @ts-expect-error: intentionally incorrect input
+            assert.deepEquals(assertWrap.notEntriesEqual({}, null), {});
+            // @ts-expect-error: intentionally incorrect input
+            assert.deepEquals(assertWrap.notEntriesEqual({}, null), {});
         });
         it('rejects', () => {
             assert.throws(() => assertWrap.notEntriesEqual(actualReject, expected));
@@ -156,6 +201,15 @@ describe('notEntriesEqual', () => {
             assert.deepEquals(newValue, actualPass);
 
             assert.tsType(newValue).equals(actualPass);
+
+            // @ts-expect-error: intentionally invalid input
+            assert.isNull(checkWrap.notEntriesEqual(null, {}));
+            // @ts-expect-error: intentionally invalid input
+            assert.strictEquals(checkWrap.notEntriesEqual('', {}), '');
+            // @ts-expect-error: intentionally invalid input
+            assert.deepEquals(checkWrap.notEntriesEqual({}, null), {});
+            // @ts-expect-error: intentionally invalid input
+            assert.deepEquals(checkWrap.notEntriesEqual({}, ''), {});
         });
         it('rejects', () => {
             assert.isUndefined(checkWrap.notEntriesEqual(actualReject, expected));

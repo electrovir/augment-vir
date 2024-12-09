@@ -12,18 +12,12 @@ describe('isAbove', () => {
         itCases(assert.isAbove, [
             {
                 it: 'passes',
-                inputs: [
-                    50,
-                    30,
-                ],
+                inputs: [50, 30],
                 throws: undefined,
             },
             {
                 it: 'rejects identical',
-                inputs: [
-                    30,
-                    30,
-                ],
+                inputs: [30, 30],
                 throws: {
                     matchConstructor: AssertionError,
                     matchMessage: '30 is not above 30',
@@ -31,10 +25,7 @@ describe('isAbove', () => {
             },
             {
                 it: 'rejects',
-                inputs: [
-                    30,
-                    50,
-                ],
+                inputs: [30, 50],
                 throws: {
                     matchConstructor: AssertionError,
                     matchMessage: '30 is not above 50',
@@ -46,26 +37,17 @@ describe('isAbove', () => {
         itCases(check.isAbove, [
             {
                 it: 'passes',
-                inputs: [
-                    50,
-                    30,
-                ],
+                inputs: [50, 30],
                 expect: true,
             },
             {
                 it: 'rejects identical',
-                inputs: [
-                    30,
-                    30,
-                ],
+                inputs: [30, 30],
                 expect: false,
             },
             {
                 it: 'rejects',
-                inputs: [
-                    30,
-                    50,
-                ],
+                inputs: [30, 50],
                 expect: false,
             },
         ]);
@@ -74,18 +56,12 @@ describe('isAbove', () => {
         itCases(assertWrap.isAbove, [
             {
                 it: 'passes',
-                inputs: [
-                    50,
-                    30,
-                ],
+                inputs: [50, 30],
                 expect: 50,
             },
             {
                 it: 'rejects identical',
-                inputs: [
-                    30,
-                    30,
-                ],
+                inputs: [30, 30],
                 throws: {
                     matchConstructor: AssertionError,
                     matchMessage: '30 is not above 30',
@@ -93,10 +69,7 @@ describe('isAbove', () => {
             },
             {
                 it: 'rejects',
-                inputs: [
-                    30,
-                    50,
-                ],
+                inputs: [30, 50],
                 throws: {
                     matchConstructor: AssertionError,
                     matchMessage: '30 is not above 50',
@@ -108,26 +81,17 @@ describe('isAbove', () => {
         itCases(checkWrap.isAbove, [
             {
                 it: 'passes',
-                inputs: [
-                    50,
-                    30,
-                ],
+                inputs: [50, 30],
                 expect: 50,
             },
             {
                 it: 'rejects identical',
-                inputs: [
-                    30,
-                    30,
-                ],
+                inputs: [30, 30],
                 expect: undefined,
             },
             {
                 it: 'rejects',
-                inputs: [
-                    30,
-                    50,
-                ],
+                inputs: [30, 50],
                 expect: undefined,
             },
         ]);
@@ -700,12 +664,12 @@ describe('isInteger', () => {
         itCases(checkWrap.isInteger, [
             {
                 it: 'passes',
-                inputs: [5],
+                input: 5,
                 expect: 5,
             },
             {
                 it: 'rejects',
-                inputs: [5.1],
+                input: 5.1,
                 expect: undefined,
             },
         ]);
@@ -784,12 +748,12 @@ describe('isNotInteger', () => {
         itCases(checkWrap.isNotInteger, [
             {
                 it: 'rejects',
-                inputs: [5],
+                input: 5,
                 expect: undefined,
             },
             {
                 it: 'rejects',
-                inputs: [5.1],
+                input: 5.1,
                 expect: 5.1,
             },
         ]);
@@ -819,26 +783,17 @@ describe('isAtLeast', () => {
         itCases(assert.isAtLeast, [
             {
                 it: 'passes',
-                inputs: [
-                    50,
-                    30,
-                ],
+                inputs: [50, 30],
                 throws: undefined,
             },
             {
                 it: 'passes identical',
-                inputs: [
-                    30,
-                    30,
-                ],
+                inputs: [30, 30],
                 throws: undefined,
             },
             {
                 it: 'rejects',
-                inputs: [
-                    30,
-                    50,
-                ],
+                inputs: [30, 50],
                 throws: {
                     matchConstructor: AssertionError,
                     matchMessage: '30 is not at least 50',
@@ -850,26 +805,17 @@ describe('isAtLeast', () => {
         itCases(check.isAtLeast, [
             {
                 it: 'passes',
-                inputs: [
-                    50,
-                    30,
-                ],
+                inputs: [50, 30],
                 expect: true,
             },
             {
                 it: 'passes identical',
-                inputs: [
-                    30,
-                    30,
-                ],
+                inputs: [30, 30],
                 expect: true,
             },
             {
                 it: 'rejects',
-                inputs: [
-                    30,
-                    50,
-                ],
+                inputs: [30, 50],
                 expect: false,
             },
         ]);
@@ -878,26 +824,17 @@ describe('isAtLeast', () => {
         itCases(assertWrap.isAtLeast, [
             {
                 it: 'passes',
-                inputs: [
-                    50,
-                    30,
-                ],
+                inputs: [50, 30],
                 expect: 50,
             },
             {
                 it: 'passes identical',
-                inputs: [
-                    30,
-                    30,
-                ],
+                inputs: [30, 30],
                 expect: 30,
             },
             {
                 it: 'rejects',
-                inputs: [
-                    30,
-                    50,
-                ],
+                inputs: [30, 50],
                 throws: {
                     matchConstructor: AssertionError,
                     matchMessage: '30 is not at least 50',
@@ -909,26 +846,17 @@ describe('isAtLeast', () => {
         itCases(checkWrap.isAtLeast, [
             {
                 it: 'passes',
-                inputs: [
-                    50,
-                    30,
-                ],
+                inputs: [50, 30],
                 expect: 50,
             },
             {
                 it: 'passes identical',
-                inputs: [
-                    30,
-                    30,
-                ],
+                inputs: [30, 30],
                 expect: 30,
             },
             {
                 it: 'rejects',
-                inputs: [
-                    30,
-                    50,
-                ],
+                inputs: [30, 50],
                 expect: undefined,
             },
         ]);
@@ -976,18 +904,12 @@ describe('isBelow', () => {
         itCases(assert.isBelow, [
             {
                 it: 'passes',
-                inputs: [
-                    30,
-                    50,
-                ],
+                inputs: [30, 50],
                 throws: undefined,
             },
             {
                 it: 'rejects identical',
-                inputs: [
-                    30,
-                    30,
-                ],
+                inputs: [30, 30],
                 throws: {
                     matchConstructor: AssertionError,
                     matchMessage: '30 is not below 30',
@@ -995,10 +917,7 @@ describe('isBelow', () => {
             },
             {
                 it: 'rejects',
-                inputs: [
-                    50,
-                    30,
-                ],
+                inputs: [50, 30],
                 throws: {
                     matchConstructor: AssertionError,
                     matchMessage: '50 is not below 30',
@@ -1010,26 +929,17 @@ describe('isBelow', () => {
         itCases(check.isBelow, [
             {
                 it: 'passes',
-                inputs: [
-                    30,
-                    50,
-                ],
+                inputs: [30, 50],
                 expect: true,
             },
             {
                 it: 'rejects identical',
-                inputs: [
-                    30,
-                    30,
-                ],
+                inputs: [30, 30],
                 expect: false,
             },
             {
                 it: 'rejects',
-                inputs: [
-                    50,
-                    30,
-                ],
+                inputs: [50, 30],
                 expect: false,
             },
         ]);
@@ -1038,18 +948,12 @@ describe('isBelow', () => {
         itCases(assertWrap.isBelow, [
             {
                 it: 'passes',
-                inputs: [
-                    30,
-                    50,
-                ],
+                inputs: [30, 50],
                 expect: 30,
             },
             {
                 it: 'rejects identical',
-                inputs: [
-                    30,
-                    30,
-                ],
+                inputs: [30, 30],
                 throws: {
                     matchConstructor: AssertionError,
                     matchMessage: '30 is not below 30',
@@ -1057,10 +961,7 @@ describe('isBelow', () => {
             },
             {
                 it: 'rejects',
-                inputs: [
-                    50,
-                    30,
-                ],
+                inputs: [50, 30],
                 throws: {
                     matchConstructor: AssertionError,
                     matchMessage: '50 is not below 30',
@@ -1072,26 +973,17 @@ describe('isBelow', () => {
         itCases(checkWrap.isBelow, [
             {
                 it: 'passes',
-                inputs: [
-                    30,
-                    50,
-                ],
+                inputs: [30, 50],
                 expect: 30,
             },
             {
                 it: 'fails identical',
-                inputs: [
-                    30,
-                    30,
-                ],
+                inputs: [30, 30],
                 expect: undefined,
             },
             {
                 it: 'rejects',
-                inputs: [
-                    50,
-                    30,
-                ],
+                inputs: [50, 30],
                 expect: undefined,
             },
         ]);
@@ -1140,26 +1032,17 @@ describe('isAtMost', () => {
         itCases(assert.isAtMost, [
             {
                 it: 'passes',
-                inputs: [
-                    30,
-                    50,
-                ],
+                inputs: [30, 50],
                 throws: undefined,
             },
             {
                 it: 'passes identical',
-                inputs: [
-                    30,
-                    30,
-                ],
+                inputs: [30, 30],
                 throws: undefined,
             },
             {
                 it: 'rejects',
-                inputs: [
-                    50,
-                    30,
-                ],
+                inputs: [50, 30],
                 throws: {
                     matchConstructor: AssertionError,
                     matchMessage: '50 is not at most 30',
@@ -1171,26 +1054,17 @@ describe('isAtMost', () => {
         itCases(check.isAtMost, [
             {
                 it: 'passes',
-                inputs: [
-                    30,
-                    50,
-                ],
+                inputs: [30, 50],
                 expect: true,
             },
             {
                 it: 'passes identical',
-                inputs: [
-                    30,
-                    30,
-                ],
+                inputs: [30, 30],
                 expect: true,
             },
             {
                 it: 'rejects',
-                inputs: [
-                    50,
-                    30,
-                ],
+                inputs: [50, 30],
                 expect: false,
             },
         ]);
@@ -1199,26 +1073,17 @@ describe('isAtMost', () => {
         itCases(assertWrap.isAtMost, [
             {
                 it: 'passes',
-                inputs: [
-                    30,
-                    50,
-                ],
+                inputs: [30, 50],
                 expect: 30,
             },
             {
                 it: 'passes identical',
-                inputs: [
-                    30,
-                    30,
-                ],
+                inputs: [30, 30],
                 expect: 30,
             },
             {
                 it: 'rejects',
-                inputs: [
-                    50,
-                    30,
-                ],
+                inputs: [50, 30],
                 throws: {
                     matchConstructor: AssertionError,
                     matchMessage: '50 is not at most 30',
@@ -1230,26 +1095,17 @@ describe('isAtMost', () => {
         itCases(checkWrap.isAtMost, [
             {
                 it: 'passes',
-                inputs: [
-                    30,
-                    50,
-                ],
+                inputs: [30, 50],
                 expect: 30,
             },
             {
                 it: 'passes identical',
-                inputs: [
-                    30,
-                    30,
-                ],
+                inputs: [30, 30],
                 expect: 30,
             },
             {
                 it: 'rejects',
-                inputs: [
-                    50,
-                    30,
-                ],
+                inputs: [50, 30],
                 expect: undefined,
             },
         ]);
@@ -1345,12 +1201,12 @@ describe('isNaN', () => {
         itCases(checkWrap.isNaN, [
             {
                 it: 'passes',
-                inputs: [NaN],
+                input: NaN,
                 expect: NaN,
             },
             {
                 it: 'rejects',
-                inputs: [30],
+                input: 30,
                 expect: undefined,
             },
         ]);
@@ -1471,22 +1327,22 @@ describe('isFinite', () => {
         itCases(checkWrap.isFinite, [
             {
                 it: 'passes',
-                inputs: [5],
+                input: 5,
                 expect: 5,
             },
             {
                 it: 'rejects NaN',
-                inputs: [NaN],
+                input: NaN,
                 expect: undefined,
             },
             {
                 it: 'rejects Infinity',
-                inputs: [Infinity],
+                input: Infinity,
                 expect: undefined,
             },
             {
                 it: 'rejects -Infinity',
-                inputs: [-Infinity],
+                input: -Infinity,
                 expect: undefined,
             },
         ]);
@@ -1602,22 +1458,22 @@ describe('isInfinite', () => {
         itCases(checkWrap.isInfinite, [
             {
                 it: 'rejects a number',
-                inputs: [5],
+                input: 5,
                 expect: undefined,
             },
             {
                 it: 'rejects NaN',
-                inputs: [NaN],
+                input: NaN,
                 expect: undefined,
             },
             {
                 it: 'accepts Infinity',
-                inputs: [Infinity],
+                input: Infinity,
                 expect: Infinity,
             },
             {
                 it: 'accepts -Infinity',
-                inputs: [-Infinity],
+                input: -Infinity,
                 expect: -Infinity,
             },
         ]);
@@ -1650,20 +1506,12 @@ describe('isApproximately', () => {
         itCases(assert.isApproximately, [
             {
                 it: 'passes within range',
-                inputs: [
-                    1,
-                    5,
-                    10,
-                ],
+                inputs: [1, 5, 10],
                 throws: undefined,
             },
             {
                 it: 'rejects below range',
-                inputs: [
-                    1,
-                    5,
-                    1,
-                ],
+                inputs: [1, 5, 1],
                 throws: {
                     matchConstructor: AssertionError,
                     matchMessage: '1 is not within ±1 of 5',
@@ -1671,11 +1519,7 @@ describe('isApproximately', () => {
             },
             {
                 it: 'rejects above range',
-                inputs: [
-                    10,
-                    5,
-                    1,
-                ],
+                inputs: [10, 5, 1],
                 throws: {
                     matchConstructor: AssertionError,
                     matchMessage: '10 is not within ±1 of 5',
@@ -1687,29 +1531,17 @@ describe('isApproximately', () => {
         itCases(check.isApproximately, [
             {
                 it: 'passes within range',
-                inputs: [
-                    1,
-                    5,
-                    10,
-                ],
+                inputs: [1, 5, 10],
                 expect: true,
             },
             {
                 it: 'rejects below range',
-                inputs: [
-                    1,
-                    5,
-                    1,
-                ],
+                inputs: [1, 5, 1],
                 expect: false,
             },
             {
                 it: 'rejects above range',
-                inputs: [
-                    10,
-                    5,
-                    1,
-                ],
+                inputs: [10, 5, 1],
                 expect: false,
             },
         ]);
@@ -1718,20 +1550,12 @@ describe('isApproximately', () => {
         itCases(assertWrap.isApproximately, [
             {
                 it: 'passes within range',
-                inputs: [
-                    1,
-                    5,
-                    10,
-                ],
+                inputs: [1, 5, 10],
                 expect: 1,
             },
             {
                 it: 'rejects below range',
-                inputs: [
-                    1,
-                    5,
-                    1,
-                ],
+                inputs: [1, 5, 1],
                 throws: {
                     matchConstructor: AssertionError,
                     matchMessage: '1 is not within ±1 of 5',
@@ -1739,11 +1563,7 @@ describe('isApproximately', () => {
             },
             {
                 it: 'rejects above range',
-                inputs: [
-                    10,
-                    5,
-                    1,
-                ],
+                inputs: [10, 5, 1],
                 throws: {
                     matchConstructor: AssertionError,
                     matchMessage: '10 is not within ±1 of 5',
@@ -1755,29 +1575,17 @@ describe('isApproximately', () => {
         itCases(checkWrap.isApproximately, [
             {
                 it: 'passes within range',
-                inputs: [
-                    1,
-                    5,
-                    10,
-                ],
+                inputs: [1, 5, 10],
                 expect: 1,
             },
             {
                 it: 'rejects below range',
-                inputs: [
-                    1,
-                    5,
-                    1,
-                ],
+                inputs: [1, 5, 1],
                 expect: undefined,
             },
             {
                 it: 'rejects above range',
-                inputs: [
-                    10,
-                    5,
-                    1,
-                ],
+                inputs: [10, 5, 1],
                 expect: undefined,
             },
         ]);
@@ -1815,11 +1623,7 @@ describe('isNotApproximately', () => {
         itCases(assert.isNotApproximately, [
             {
                 it: 'rejects within range',
-                inputs: [
-                    1,
-                    5,
-                    10,
-                ],
+                inputs: [1, 5, 10],
                 throws: {
                     matchConstructor: AssertionError,
                     matchMessage: '1 is within ±10 of 5',
@@ -1827,20 +1631,12 @@ describe('isNotApproximately', () => {
             },
             {
                 it: 'accepts below range',
-                inputs: [
-                    1,
-                    5,
-                    1,
-                ],
+                inputs: [1, 5, 1],
                 throws: undefined,
             },
             {
                 it: 'accepts above range',
-                inputs: [
-                    10,
-                    5,
-                    1,
-                ],
+                inputs: [10, 5, 1],
                 throws: undefined,
             },
         ]);
@@ -1849,29 +1645,17 @@ describe('isNotApproximately', () => {
         itCases(check.isNotApproximately, [
             {
                 it: 'rejects within range',
-                inputs: [
-                    1,
-                    5,
-                    10,
-                ],
+                inputs: [1, 5, 10],
                 expect: false,
             },
             {
                 it: 'accepts below range',
-                inputs: [
-                    1,
-                    5,
-                    1,
-                ],
+                inputs: [1, 5, 1],
                 expect: true,
             },
             {
                 it: 'accepts above range',
-                inputs: [
-                    10,
-                    5,
-                    1,
-                ],
+                inputs: [10, 5, 1],
                 expect: true,
             },
         ]);
@@ -1880,11 +1664,7 @@ describe('isNotApproximately', () => {
         itCases(assertWrap.isNotApproximately, [
             {
                 it: 'rejects within range',
-                inputs: [
-                    1,
-                    5,
-                    10,
-                ],
+                inputs: [1, 5, 10],
                 throws: {
                     matchConstructor: AssertionError,
                     matchMessage: '1 is within ±10 of 5',
@@ -1892,20 +1672,12 @@ describe('isNotApproximately', () => {
             },
             {
                 it: 'accepts below range',
-                inputs: [
-                    1,
-                    5,
-                    1,
-                ],
+                inputs: [1, 5, 1],
                 expect: 1,
             },
             {
                 it: 'accepts above range',
-                inputs: [
-                    10,
-                    5,
-                    1,
-                ],
+                inputs: [10, 5, 1],
                 expect: 10,
             },
         ]);
@@ -1914,29 +1686,17 @@ describe('isNotApproximately', () => {
         itCases(checkWrap.isNotApproximately, [
             {
                 it: 'rejects within range',
-                inputs: [
-                    1,
-                    5,
-                    10,
-                ],
+                inputs: [1, 5, 10],
                 expect: undefined,
             },
             {
                 it: 'accepts below range',
-                inputs: [
-                    1,
-                    5,
-                    1,
-                ],
+                inputs: [1, 5, 1],
                 expect: 1,
             },
             {
                 it: 'accepts above range',
-                inputs: [
-                    10,
-                    5,
-                    1,
-                ],
+                inputs: [10, 5, 1],
                 expect: 10,
             },
         ]);

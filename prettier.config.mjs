@@ -8,6 +8,13 @@ import {basePrettierConfig} from '@virmator/format/configs/prettier.config.base.
  */
 const prettierConfig = {
     ...basePrettierConfig,
+    plugins: [
+        'prettier-plugin-toml',
+        'prettier-plugin-sort-json',
+        'prettier-plugin-packagejson',
+        'prettier-plugin-organize-imports',
+        'prettier-plugin-jsdoc',
+    ],
 };
 
 export default prettierConfig;

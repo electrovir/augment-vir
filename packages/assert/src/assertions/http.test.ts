@@ -113,6 +113,7 @@ describe('isHttpStatusCategory', () => {
         });
         it('rejects', () => {
             assert.throws(() => assert.isHttpStatusCategory(actualReject, expected));
+            assert.throws(() => assert.isHttpStatusCategory('invalid', expected));
         });
     });
     describe('check', () => {
@@ -140,6 +141,7 @@ describe('isHttpStatusCategory', () => {
         });
         it('rejects', () => {
             assert.throws(() => assertWrap.isHttpStatusCategory(actualReject, expected));
+            assert.throws(() => assertWrap.isHttpStatusCategory('invalid', expected));
         });
     });
     describe('checkWrap', () => {

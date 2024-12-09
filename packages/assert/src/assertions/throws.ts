@@ -3,13 +3,13 @@ import {
     ensureError,
     extractErrorMessage,
     type MaybePromise,
+    type NarrowToExpected,
     type PartialWithNullable,
     stringify,
     type TypedFunction,
 } from '@augment-vir/core';
 import {AssertionError} from '../augments/assertion.error.js';
 import type {GuardGroup} from '../guard-types/guard-group.js';
-import {autoGuardSymbol} from '../guard-types/guard-override.js';
 import {createWaitUntil, type WaitUntilOptions} from '../guard-types/wait-until-function.js';
 
 enum ThrowsCheckType {
@@ -20,6 +20,7 @@ enum ThrowsCheckType {
 }
 
 function isError(
+    this: void,
     actual: unknown,
     matchOptions?: ErrorMatchOptions | undefined,
     failureMessage?: string | undefined,
@@ -36,6 +37,7 @@ function isError(
 }
 
 function assertThrownError(
+    this: void,
     actual: unknown,
     matchOptions?: ErrorMatchOptions | undefined,
     failureMessage?: string | undefined,
@@ -52,6 +54,7 @@ function assertThrownError(
 }
 
 function internalAssertError(
+    this: void,
     actual: unknown,
     errorMessages: {
         noError: string;
@@ -93,7 +96,37 @@ function internalAssertError(
     }
 }
 
+function internalCheckError(
+    this: void,
+    actual: unknown,
+    matchOptions?: ErrorMatchOptions | undefined,
+): actual is Error {
+    if (!actual) {
+        return false;
+    } else if (!(actual instanceof Error)) {
+        return false;
+    } else if (
+        matchOptions?.matchConstructor &&
+        !((actual as any) instanceof matchOptions.matchConstructor)
+    ) {
+        return false;
+    } else if (matchOptions?.matchMessage) {
+        const message = extractErrorMessage(actual);
+
+        if (typeof matchOptions.matchMessage === 'string') {
+            if (!message.includes(matchOptions.matchMessage)) {
+                return false;
+            }
+        } else if (!message.match(matchOptions.matchMessage)) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
 function internalThrowsCheck(
+    this: void,
     checkType: ThrowsCheckType,
     callbackOrPromise: TypedFunction<void, any> | Promise<any>,
     matchOptions?: ErrorMatchOptions | undefined,
@@ -206,26 +239,31 @@ export type ErrorMatchOptions = PartialWithNullable<{
 }>;
 
 function throws(
+    this: void,
     callbackOrPromise: TypedFunction<void, never>,
     matchOptions?: ErrorMatchOptions | undefined,
     failureMessage?: string | undefined,
 ): void;
 function throws(
+    this: void,
     callbackOrPromise: TypedFunction<void, Promise<any>> | Promise<any>,
     matchOptions?: ErrorMatchOptions | undefined,
     failureMessage?: string | undefined,
 ): Promise<void>;
 function throws(
+    this: void,
     callback: TypedFunction<void, any>,
     matchOptions?: ErrorMatchOptions | undefined,
     failureMessage?: string | undefined,
 ): void;
 function throws(
+    this: void,
     callback: TypedFunction<void, MaybePromise<any>> | Promise<any>,
     matchOptions?: ErrorMatchOptions | undefined,
     failureMessage?: string | undefined,
 ): MaybePromise<void>;
 function throws(
+    this: void,
     callbackOrPromise: TypedFunction<void, any> | Promise<any>,
     matchOptions?: ErrorMatchOptions | undefined,
     failureMessage?: string | undefined,
@@ -239,22 +277,27 @@ function throws(
 }
 
 function throwsCheck(
+    this: void,
     callbackOrPromise: TypedFunction<void, never>,
     matchOptions?: ErrorMatchOptions | undefined,
 ): boolean;
 function throwsCheck(
+    this: void,
     callbackOrPromise: TypedFunction<void, Promise<any>> | Promise<any>,
     matchOptions?: ErrorMatchOptions | undefined,
 ): Promise<boolean>;
 function throwsCheck(
+    this: void,
     callback: TypedFunction<void, any>,
     matchOptions?: ErrorMatchOptions | undefined,
 ): boolean;
 function throwsCheck(
+    this: void,
     callback: TypedFunction<void, MaybePromise<any>> | Promise<any>,
     matchOptions?: ErrorMatchOptions | undefined,
 ): MaybePromise<boolean>;
 function throwsCheck(
+    this: void,
     callbackOrPromise: TypedFunction<void, any> | Promise<any>,
     matchOptions?: ErrorMatchOptions | undefined,
 ): MaybePromise<boolean> {
@@ -266,26 +309,31 @@ function throwsCheck(
 }
 
 function throwsAssertWrap(
+    this: void,
     callbackOrPromise: TypedFunction<void, never>,
     matchOptions?: ErrorMatchOptions | undefined,
     failureMessage?: string | undefined,
 ): Error;
 function throwsAssertWrap(
+    this: void,
     callbackOrPromise: TypedFunction<void, Promise<any>> | Promise<any>,
     matchOptions?: ErrorMatchOptions | undefined,
     failureMessage?: string | undefined,
 ): Promise<Error>;
 function throwsAssertWrap(
+    this: void,
     callback: TypedFunction<void, any>,
     matchOptions?: ErrorMatchOptions | undefined,
     failureMessage?: string | undefined,
 ): Error;
 function throwsAssertWrap(
+    this: void,
     callback: TypedFunction<void, MaybePromise<any>> | Promise<any>,
     matchOptions?: ErrorMatchOptions | undefined,
     failureMessage?: string | undefined,
 ): MaybePromise<Error>;
 function throwsAssertWrap(
+    this: void,
     callbackOrPromise: TypedFunction<void, any> | Promise<any>,
     matchOptions?: ErrorMatchOptions | undefined,
     failureMessage?: string | undefined,
@@ -299,26 +347,31 @@ function throwsAssertWrap(
 }
 
 function throwsCheckWrap(
+    this: void,
     callbackOrPromise: TypedFunction<void, never>,
     matchOptions?: ErrorMatchOptions | undefined,
     failureMessage?: string | undefined,
 ): Error | undefined;
 function throwsCheckWrap(
+    this: void,
     callbackOrPromise: TypedFunction<void, Promise<any>> | Promise<any>,
     matchOptions?: ErrorMatchOptions | undefined,
     failureMessage?: string | undefined,
 ): Promise<Error | undefined>;
 function throwsCheckWrap(
+    this: void,
     callback: TypedFunction<void, any>,
     matchOptions?: ErrorMatchOptions | undefined,
     failureMessage?: string | undefined,
 ): Error | undefined;
 function throwsCheckWrap(
+    this: void,
     callback: TypedFunction<void, MaybePromise<any>> | Promise<any>,
     matchOptions?: ErrorMatchOptions | undefined,
     failureMessage?: string | undefined,
 ): MaybePromise<Error | undefined>;
 function throwsCheckWrap(
+    this: void,
     callbackOrPromise: TypedFunction<void, any> | Promise<any>,
     matchOptions?: ErrorMatchOptions | undefined,
     failureMessage?: string | undefined,
@@ -334,17 +387,20 @@ function throwsCheckWrap(
 const internalWaitUntilThrows = createWaitUntil(isError);
 
 function throwsWaitUntil(
+    this: void,
     callback: TypedFunction<void, any>,
     options?: WaitUntilOptions | undefined,
     failureMessage?: string | undefined,
 ): Promise<Error>;
 function throwsWaitUntil(
+    this: void,
     matchOptions: ErrorMatchOptions,
     callback: TypedFunction<void, any>,
     options?: WaitUntilOptions | undefined,
     failureMessage?: string | undefined,
 ): Promise<Error>;
 function throwsWaitUntil(
+    this: void,
     matchOptionsOrCallback: ErrorMatchOptions | TypedFunction<void, any>,
     callbackOrOptions?: TypedFunction<void, any> | WaitUntilOptions,
     optionsOrFailureMessage?: WaitUntilOptions | string | undefined,
@@ -500,7 +556,13 @@ export const throwGuards = {
          * check.isError({message: 'not an error'}); // returns `false`
          * ```
          */
-        isError: autoGuardSymbol,
+        isError(
+            this: void,
+            actual: unknown,
+            matchOptions?: ErrorMatchOptions | undefined,
+        ): actual is Error {
+            return internalCheckError(actual, matchOptions);
+        },
     },
     assertWrap: {
         /**
@@ -562,7 +624,24 @@ export const throwGuards = {
          * @returns The value if the assertion passes.
          * @throws {@link AssertionError} If the assertion fails.
          */
-        isError: autoGuardSymbol,
+        isError<Actual>(
+            this: void,
+            actual: Actual,
+            matchOptions?: ErrorMatchOptions | undefined,
+            failureMessage?: string | undefined,
+        ): NarrowToExpected<Actual, Error> {
+            internalAssertError(
+                actual,
+                {
+                    noError: 'No error.',
+                    notInstance: `'${stringify(actual)}' is not an error instance.`,
+                },
+                matchOptions,
+                failureMessage,
+            );
+
+            return actual as NarrowToExpected<Actual, Error>;
+        },
     },
     checkWrap: {
         /**
@@ -617,7 +696,17 @@ export const throwGuards = {
          *
          * @returns The Error if the check passes, otherwise `undefined`.
          */
-        isError: autoGuardSymbol,
+        isError<Actual>(
+            this: void,
+            actual: Actual,
+            matchOptions?: ErrorMatchOptions | undefined,
+        ): NarrowToExpected<Actual, Error> | undefined {
+            if (internalCheckError(actual, matchOptions)) {
+                return actual as NarrowToExpected<Actual, Error>;
+            } else {
+                return undefined;
+            }
+        },
     },
     waitUntil: {
         /**
@@ -672,6 +761,12 @@ export const throwGuards = {
          * @returns The callback output once it passes.
          * @throws {@link AssertionError} On timeout.
          */
-        isError: autoGuardSymbol,
+        isError: createWaitUntil(isError) as <Actual>(
+            this: void,
+            matchOptions: ErrorMatchOptions | undefined,
+            callback: () => MaybePromise<Actual>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<NarrowToExpected<Actual, Error>>,
     },
 } satisfies GuardGroup<typeof assertions>;

@@ -1,12 +1,15 @@
-import {type AnyFunction} from '@augment-vir/core';
-import {checkWrapOverrides, extendableAssertions} from '../../assertions/extendable-assertions.js';
-import {
-    CheckWrapGroup,
-    createCheckWrapGroup,
-} from '../../guard-types/check-wrap-wrapper-function.js';
+import {AnyFunction, ArrayElement} from '@augment-vir/core';
+import {UnionToIntersection} from 'type-fest';
+import {guardOverrides} from '../../assertions/extendable-assertions.js';
 
-const checkWrapGroup: CheckWrapGroup<typeof extendableAssertions, typeof checkWrapOverrides> =
-    createCheckWrapGroup(extendableAssertions, checkWrapOverrides);
+export const checkWrapMethods: UnionToIntersection<
+    Extract<ArrayElement<typeof guardOverrides>, {checkWrap: any}>['checkWrap']
+> = Object.assign(
+    {},
+    ...guardOverrides.map((entry) => {
+        return entry.checkWrap;
+    }),
+);
 
 /**
  * A group of guard methods that do the following:
@@ -42,11 +45,11 @@ const checkWrapGroup: CheckWrapGroup<typeof extendableAssertions, typeof checkWr
  * @package [`@augment-vir/assert`](https://www.npmjs.com/package/@augment-vir/assert)
  */
 export const checkWrap: (<T>(input: T) => undefined | T) &
-    typeof checkWrapGroup &
+    typeof checkWrapMethods &
     Record<keyof AnyFunction, never> = Object.assign(function checkWrap<T>(this: void, input: T) {
     if (!input) {
         return undefined;
     }
 
     return input;
-}, checkWrapGroup);
+}, checkWrapMethods);

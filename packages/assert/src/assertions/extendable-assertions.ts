@@ -1,5 +1,3 @@
-import type {ArrayElement} from '@augment-vir/core';
-import type {UnionToIntersection} from 'type-fest';
 import {type AssertFunction} from '../guard-types/assert-function.js';
 import {type GuardGroup} from '../guard-types/guard-group.js';
 import {booleanGuards} from './boolean.js';
@@ -113,38 +111,3 @@ export const guardOverrides: [
     httpGuards,
     outputGuards,
 ] as const satisfies GuardGroup<any>[];
-
-export const checkOverrides: UnionToIntersection<ArrayElement<typeof guardOverrides>['check']> =
-    Object.assign(
-        {},
-        ...guardOverrides.map((entry) => {
-            return entry.check;
-        }),
-    );
-
-export const assertWrapOverrides: UnionToIntersection<
-    Extract<ArrayElement<typeof guardOverrides>, {assertWrap: any}>['assertWrap']
-> = Object.assign(
-    {},
-    ...guardOverrides.map((entry) => {
-        return entry.assertWrap;
-    }),
-);
-
-export const checkWrapOverrides: UnionToIntersection<
-    Extract<ArrayElement<typeof guardOverrides>, {checkWrap: any}>['checkWrap']
-> = Object.assign(
-    {},
-    ...guardOverrides.map((entry) => {
-        return entry.checkWrap;
-    }),
-);
-
-export const waitUntilOverrides: UnionToIntersection<
-    Extract<ArrayElement<typeof guardOverrides>, {waitUntil: any}>['waitUntil']
-> = Object.assign(
-    {},
-    ...guardOverrides.map((entry) => {
-        return entry.waitUntil;
-    }),
-);

@@ -1,44 +1,19 @@
 import {
-    type AnyObject,
     extractErrorMessage,
+    type AnyObject,
     type MaybePromise,
     type NarrowToExpected,
 } from '@augment-vir/core';
 import {AssertionError} from '../../augments/assertion.error.js';
 import type {GuardGroup} from '../../guard-types/guard-group.js';
-import {autoGuard, autoGuardSymbol} from '../../guard-types/guard-override.js';
-import {type WaitUntilOptions} from '../../guard-types/wait-until-function.js';
+import {WaitUntilOptions, createWaitUntil} from '../../guard-types/wait-until-function.js';
 
 function baseJsonEquals(a: unknown, b: unknown): boolean {
     return JSON.stringify(a) === JSON.stringify(b);
 }
 
-function jsonEquals<const Actual, const Expected extends Actual>(
-    actual: Actual,
-    expected: Expected,
-    failureMessage?: string | undefined,
-): asserts actual is Expected {
-    try {
-        recursiveJsonEquals(actual, expected);
-    } catch (error) {
-        throw new AssertionError(extractErrorMessage(error), failureMessage);
-    }
-}
-
-function notJsonEquals(actual: unknown, expected: unknown, failureMessage?: string | undefined) {
-    try {
-        jsonEquals(actual, expected);
-    } catch {
-        return;
-    }
-
-    throw new AssertionError('Values are JSON equal.', failureMessage);
-}
-
-function recursiveJsonEquals(actual: any, expected: any) {
-    const isBaseJsonEqual = baseJsonEquals(actual, expected);
-
-    if (actual === expected || isBaseJsonEqual) {
+function recursiveAssertJsonEquals(actual: any, expected: any) {
+    if (actual === expected || baseJsonEquals(actual, expected)) {
         return;
     }
 
@@ -51,29 +26,66 @@ function recursiveJsonEquals(actual: any, expected: any) {
         const aKeys = Object.keys(actual).sort();
         const bKeys = Object.keys(expected).sort();
 
-        if (aKeys.length || bKeys.length) {
-            const areKeysEqual = baseJsonEquals(aKeys, bKeys);
-
-            if (!areKeysEqual) {
-                throw new Error('Values are JSON equal.');
-            }
-
-            Object.keys(actual).forEach((key) => {
-                try {
-                    jsonEquals((actual as AnyObject)[key], (expected as AnyObject)[key]);
-                } catch (error) {
-                    throw new Error(
-                        `JSON objects are not equal at key '${key}': ${extractErrorMessage(error)}`,
-                    );
-                }
-            });
+        if (aKeys.length !== bKeys.length) {
+            throw new Error('Values are not JSON equal.');
         }
+
+        const areKeysEqual = baseJsonEquals(aKeys, bKeys);
+
+        if (!areKeysEqual) {
+            throw new Error('Values are JSON equal.');
+        }
+
+        Object.keys(actual).forEach((key) => {
+            try {
+                recursiveAssertJsonEquals((actual as AnyObject)[key], (expected as AnyObject)[key]);
+            } catch (error) {
+                throw new Error(
+                    `JSON objects are not equal at key '${key}': ${extractErrorMessage(error)}`,
+                );
+            }
+        });
     }
 
     throw new Error('Values are not JSON equal.');
 }
 
-const assertions: {
+function recursiveCheckJsonEquals(actual: any, expected: any): boolean {
+    if (actual === expected || baseJsonEquals(actual, expected)) {
+        return true;
+    }
+
+    if (
+        actual != null &&
+        expected != null &&
+        typeof actual === 'object' &&
+        typeof expected === 'object'
+    ) {
+        const aKeys = Object.keys(actual).sort();
+        const bKeys = Object.keys(expected).sort();
+
+        if (aKeys.length !== bKeys.length) {
+            return false;
+        }
+
+        const areKeysEqual = baseJsonEquals(aKeys, bKeys);
+
+        if (!areKeysEqual) {
+            return false;
+        }
+
+        return Object.keys(actual).every((key) => {
+            return recursiveCheckJsonEquals(
+                (actual as AnyObject)[key],
+                (expected as AnyObject)[key],
+            );
+        });
+    }
+
+    return false;
+}
+
+const assertions = {
     /**
      * Asserts that two values are deeply equal when stringified into JSON. This will fail or may
      * not make any sense if the values are not valid JSON. This internally sorts all given object
@@ -97,7 +109,18 @@ const assertions: {
      * - {@link assert.entriesEqual} : another deep equality assertion.
      * - {@link assert.deepEquals} : the most thorough (but also slow) deep equality assertion.
      */
-    jsonEquals: typeof jsonEquals;
+    jsonEquals<const Actual, const Expected extends Actual>(
+        this: void,
+        actual: Actual,
+        expected: Expected,
+        failureMessage?: string | undefined,
+    ): asserts actual is Expected {
+        try {
+            recursiveAssertJsonEquals(actual, expected);
+        } catch (error) {
+            throw new AssertionError(extractErrorMessage(error), failureMessage);
+        }
+    },
     /**
      * Asserts that two values are _not_ deeply equal when stringified into JSON. This may not make
      * any sense if the values are not valid JSON. This internally sorts all given object keys so it
@@ -121,10 +144,19 @@ const assertions: {
      * - {@link assert.entriesEqual} : another deep equality assertion.
      * - {@link assert.deepEquals} : the most thorough (but also slow) deep equality assertion.
      */
-    notJsonEquals: typeof notJsonEquals;
-} = {
-    jsonEquals,
-    notJsonEquals,
+    notJsonEquals(
+        this: void,
+        actual: unknown,
+        expected: unknown,
+        failureMessage?: string | undefined,
+    ) {
+        try {
+            recursiveAssertJsonEquals(actual, expected);
+        } catch {
+            return;
+        }
+        throw new AssertionError('Values are JSON equal.', failureMessage);
+    },
 };
 
 export const jsonEqualityGuards = {
@@ -152,13 +184,13 @@ export const jsonEqualityGuards = {
          * - {@link check.entriesEqual} : another deep equality check.
          * - {@link check.deepEquals} : the most thorough (but also slow) deep equality check.
          */
-        jsonEquals:
-            autoGuard<
-                <Actual, Expected extends Actual>(
-                    actual: Actual,
-                    expected: Expected,
-                ) => actual is Expected
-            >(),
+        jsonEquals<Actual, Expected extends Actual>(
+            this: void,
+            actual: Actual,
+            expected: Expected,
+        ): actual is Expected {
+            return recursiveCheckJsonEquals(actual, expected);
+        },
         /**
          * Checks that two values are _not_ deeply equal when stringified into JSON. This may not
          * make any sense if the values are not valid JSON. This internally sorts all given object
@@ -181,7 +213,9 @@ export const jsonEqualityGuards = {
          * - {@link check.entriesEqual} : another deep equality check.
          * - {@link check.deepEquals} : the most thorough (but also slow) deep equality check.
          */
-        notJsonEquals: autoGuardSymbol,
+        notJsonEquals(this: void, actual: unknown, expected: unknown): boolean {
+            return !recursiveCheckJsonEquals(actual, expected);
+        },
     },
     assertWrap: {
         /**
@@ -208,14 +242,19 @@ export const jsonEqualityGuards = {
          * - {@link assertWrap.entriesEqual} : another deep equality assertion.
          * - {@link assertWrap.deepEquals} : the most thorough (but also slow) deep equality assertion.
          */
-        jsonEquals:
-            autoGuard<
-                <Actual, Expected extends Actual>(
-                    actual: Actual,
-                    expected: Expected,
-                    failureMessage?: string | undefined,
-                ) => NarrowToExpected<Actual, Expected>
-            >(),
+        jsonEquals<Actual, Expected extends Actual>(
+            this: void,
+            actual: Actual,
+            expected: Expected,
+            failureMessage?: string | undefined,
+        ): NarrowToExpected<Actual, Expected> {
+            try {
+                recursiveAssertJsonEquals(actual, expected);
+                return actual as NarrowToExpected<Actual, Expected>;
+            } catch (error) {
+                throw new AssertionError(extractErrorMessage(error), failureMessage);
+            }
+        },
         /**
          * Asserts that two values are _not_ deeply equal when stringified into JSON. This may not
          * make any sense if the values are not valid JSON. This internally sorts all given object
@@ -240,7 +279,19 @@ export const jsonEqualityGuards = {
          * - {@link assertWrap.entriesEqual} : another deep equality assertion.
          * - {@link assertWrap.deepEquals} : the most thorough (but also slow) deep equality assertion.
          */
-        notJsonEquals: autoGuardSymbol,
+        notJsonEquals<Actual>(
+            this: void,
+            actual: Actual,
+            expected: unknown,
+            failureMessage?: string | undefined,
+        ): Actual {
+            try {
+                recursiveAssertJsonEquals(actual, expected);
+            } catch {
+                return actual;
+            }
+            throw new AssertionError('Values are JSON equal.', failureMessage);
+        },
     },
     checkWrap: {
         /**
@@ -266,13 +317,17 @@ export const jsonEqualityGuards = {
          * - {@link checkWrap.entriesEqual} : another deep equality check.
          * - {@link checkWrap.deepEquals} : the most thorough (but also slow) deep equality check.
          */
-        jsonEquals:
-            autoGuard<
-                <Actual, Expected extends Actual>(
-                    actual: Actual,
-                    expected: Expected,
-                ) => NarrowToExpected<Actual, Expected> | undefined
-            >(),
+        jsonEquals<Actual, Expected extends Actual>(
+            this: void,
+            actual: Actual,
+            expected: Expected,
+        ): NarrowToExpected<Actual, Expected> | undefined {
+            if (recursiveCheckJsonEquals(actual, expected)) {
+                return actual as NarrowToExpected<Actual, Expected>;
+            } else {
+                return undefined;
+            }
+        },
         /**
          * Checks that two values are _not_ deeply equal when stringified into JSON. This may not
          * make any sense if the values are not valid JSON. This internally sorts all given object
@@ -296,7 +351,13 @@ export const jsonEqualityGuards = {
          * - {@link checkWrap.entriesEqual} : another deep equality check.
          * - {@link checkWrap.deepEquals} : the most thorough (but also slow) deep equality check.
          */
-        notJsonEquals: autoGuardSymbol,
+        notJsonEquals<Actual>(this: void, actual: Actual, expected: unknown): Actual | undefined {
+            if (recursiveCheckJsonEquals(actual, expected)) {
+                return undefined;
+            } else {
+                return actual;
+            }
+        },
     },
     waitUntil: {
         /**
@@ -328,15 +389,13 @@ export const jsonEqualityGuards = {
          * - {@link waitUntil.entriesEqual} : another deep equality assertion.
          * - {@link waitUntil.deepEquals} : the most thorough (but also slow) deep equality assertion.
          */
-        jsonEquals:
-            autoGuard<
-                <Actual, Expected extends Actual>(
-                    expected: Expected,
-                    callback: () => MaybePromise<Actual>,
-                    options?: WaitUntilOptions | undefined,
-                    failureMessage?: string | undefined,
-                ) => Promise<NarrowToExpected<Actual, Expected>>
-            >(),
+        jsonEquals: createWaitUntil(assertions.jsonEquals) as <Actual, Expected extends Actual>(
+            this: void,
+            expected: Expected,
+            callback: () => MaybePromise<Actual>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<NarrowToExpected<Actual, Expected>>,
         /**
          * Repeatedly calls a callback until its output is _not_ deeply equal to the first input
          * when stringified into JSON. This may not make any sense if the values are not valid JSON.
@@ -367,6 +426,12 @@ export const jsonEqualityGuards = {
          * - {@link waitUntil.entriesEqual} : another not deep equality assertion.
          * - {@link waitUntil.deepEquals} : the most thorough (but also slow) not deep equality assertion.
          */
-        notJsonEquals: autoGuardSymbol,
+        notJsonEquals: createWaitUntil(assertions.notJsonEquals) as <Actual>(
+            this: void,
+            expected: unknown,
+            callback: () => MaybePromise<Actual>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<Actual>,
     },
 } satisfies GuardGroup<typeof assertions>;

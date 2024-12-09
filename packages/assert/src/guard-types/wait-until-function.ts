@@ -8,16 +8,9 @@ import type {
     RemoveLastTupleEntry,
     RequiredAndNotNull,
 } from '@augment-vir/core';
-import {
-    ensureError,
-    ensureErrorAndPrependMessage,
-    type ExtractKeysWithMatchingValues,
-    type Overwrite,
-    wait,
-} from '@augment-vir/core';
+import {ensureError, ensureErrorAndPrependMessage, wait} from '@augment-vir/core';
 import {type AnyDuration, convertDuration} from '@date-vir/duration';
 import type {AssertFunction} from './assert-function.js';
-import {autoGuardSymbol, pickOverride} from './guard-override.js';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type {AssertionError} from '../augments/assertion.error.js';
@@ -94,7 +87,7 @@ export async function executeWaitUntil<const Assert extends AssertFunction<any>>
 }
 
 export type WaitUntilOverridesBase<Keys extends PropertyKey = string> = Readonly<
-    Record<Keys, AnyFunction | typeof autoGuardSymbol | undefined>
+    Partial<Record<Keys, AnyFunction | undefined>>
 >;
 
 export type WaitUntilFunctionParameters<Assert extends AssertFunction<any>, Input> = [
@@ -105,6 +98,7 @@ export type WaitUntilFunctionParameters<Assert extends AssertFunction<any>, Inpu
 export type WaitUntilFunction<Assert extends AssertFunction<any>> =
     Assert extends AssertFunction<infer Guard>
         ? <Input extends Parameters<Assert>[0]>(
+              this: void,
               ...params: [
                   ...WaitUntilFunctionParameters<Assert, Input>,
                   options?: WaitUntilOptions | undefined,
@@ -112,52 +106,6 @@ export type WaitUntilFunction<Assert extends AssertFunction<any>> =
               ]
           ) => Promise<NarrowToExpected<Input, Guard>>
         : never;
-
-export type WaitUntilGroup<
-    Asserts extends Readonly<Record<string, AssertFunction<any>>>,
-    WaitUntilOverrides extends WaitUntilOverridesBase,
-> = Omit<
-    Overwrite<
-        {
-            [Name in keyof Asserts as Asserts[Name] extends AssertFunction<any>
-                ? Name
-                : never]: WaitUntilFunction<Asserts[Name]>;
-        },
-        {
-            [Name in keyof WaitUntilOverrides]: WaitUntilOverrides[Name] extends typeof autoGuardSymbol
-                ? Name extends keyof Asserts
-                    ? Asserts[Name] extends AssertFunction<any>
-                        ? WaitUntilFunction<Asserts[Name]>
-                        : never
-                    : never
-                : WaitUntilOverrides[Name];
-        }
-    >,
-    ExtractKeysWithMatchingValues<WaitUntilOverrides, undefined>
->;
-
-export function createWaitUntilGroup<
-    const Asserts extends Readonly<Record<string, AssertFunction<any>>>,
-    const WaitUntilOverrides extends WaitUntilOverridesBase,
->(asserts: Asserts, waitUntilOverrides: WaitUntilOverrides) {
-    const waitUntilGroup = Object.entries(asserts).reduce(
-        (
-            accum,
-            [
-                name,
-                assert,
-            ],
-        ) => {
-            accum[name] = pickOverride(waitUntilOverrides, name, () =>
-                createWaitUntil(assert),
-            ) as any;
-            return accum;
-        },
-        {} as Record<string, WaitUntilFunction<any>>,
-    );
-
-    return waitUntilGroup as WaitUntilGroup<Asserts, WaitUntilOverrides>;
-}
 
 export function createWaitUntil<const Assert extends AssertFunction<any>>(
     assert: Assert,

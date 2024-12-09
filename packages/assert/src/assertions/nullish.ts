@@ -1,32 +1,9 @@
 import {type MaybePromise, stringify} from '@augment-vir/core';
 import {AssertionError} from '../augments/assertion.error.js';
 import type {GuardGroup} from '../guard-types/guard-group.js';
-import {autoGuard, autoGuardSymbol} from '../guard-types/guard-override.js';
-import {type WaitUntilOptions} from '../guard-types/wait-until-function.js';
+import {createWaitUntil, type WaitUntilOptions} from '../guard-types/wait-until-function.js';
 
-function isDefined<const Actual>(
-    /** The value to check. */
-    input: Actual,
-    /** Message to include in error message if this assertion fails. */
-    failureMessage?: string | undefined,
-): asserts input is Exclude<Actual, undefined | null> {
-    if (input == undefined) {
-        throw new AssertionError(`'${stringify(input)}' is not defined.`, failureMessage);
-    }
-}
-
-function isNullish(
-    /** The value to check. */
-    input: unknown,
-    /** Message to include in error message if this assertion fails. */
-    failureMessage?: string | undefined,
-): asserts input is null | undefined {
-    if (input != undefined) {
-        throw new AssertionError(`'${stringify(input)}' is not a nullish.`, failureMessage);
-    }
-}
-
-const assertions: {
+const assertions = {
     /**
      * Asserts that a value is defined (not `null` and not `undefined`).
      *
@@ -47,7 +24,17 @@ const assertions: {
      * @see
      * - {@link assert.isNullish} : the opposite assertion.
      */
-    isDefined: typeof isDefined;
+    isDefined<const Actual>(
+        this: void,
+        /** The value to check. */
+        input: Actual,
+        /** Message to include in error message if this assertion fails. */
+        failureMessage?: string | undefined,
+    ): asserts input is Exclude<Actual, undefined | null> {
+        if (input == undefined) {
+            throw new AssertionError(`'${stringify(input)}' is not defined.`, failureMessage);
+        }
+    },
     /**
      * Asserts that a value is nullish (`null` or `undefined`).
      *
@@ -68,10 +55,17 @@ const assertions: {
      * @see
      * - {@link assert.isDefined} : the opposite assertion.
      */
-    isNullish: typeof isNullish;
-} = {
-    isDefined,
-    isNullish,
+    isNullish(
+        this: void,
+        /** The value to check. */
+        input: unknown,
+        /** Message to include in error message if this assertion fails. */
+        failureMessage?: string | undefined,
+    ): asserts input is null | undefined {
+        if (input != undefined) {
+            throw new AssertionError(`'${stringify(input)}' is not a nullish.`, failureMessage);
+        }
+    },
 };
 
 export const nullishGuards = {
@@ -96,8 +90,9 @@ export const nullishGuards = {
          * @see
          * - {@link check.isNullish} : the opposite check.
          */
-        isDefined:
-            autoGuard<<Actual>(input: Actual) => input is Exclude<Actual, undefined | null>>(),
+        isDefined<Actual>(this: void, input: Actual): input is Exclude<Actual, undefined | null> {
+            return input != undefined;
+        },
         /**
          * Checks that a value is nullish (`null` or `undefined`).
          *
@@ -117,7 +112,13 @@ export const nullishGuards = {
          * @see
          * - {@link check.isDefined} : the opposite check.
          */
-        isNullish: autoGuardSymbol,
+        isNullish(
+            this: void,
+            /** The value to check. */
+            input: unknown,
+        ): input is null | undefined {
+            return input == undefined;
+        },
     },
     assertWrap: {
         /**
@@ -142,13 +143,17 @@ export const nullishGuards = {
          * @see
          * - {@link assertWrap.isNullish} : the opposite assertion.
          */
-        isDefined:
-            autoGuard<
-                <Actual>(
-                    input: Actual,
-                    failureMessage?: string | undefined,
-                ) => Exclude<Actual, undefined | null>
-            >(),
+        isDefined<Actual>(
+            this: void,
+            input: Actual,
+            failureMessage?: string | undefined,
+        ): Exclude<Actual, undefined | null> {
+            if (input == undefined) {
+                throw new AssertionError(`'${stringify(input)}' is not defined.`, failureMessage);
+            } else {
+                return input as Exclude<Actual, undefined | null>;
+            }
+        },
         /**
          * Asserts that a value is nullish (`null` or `undefined`). Returns the value if the
          * assertion passes.
@@ -171,7 +176,17 @@ export const nullishGuards = {
          * @see
          * - {@link assertWrap.isDefined} : the opposite assertion.
          */
-        isNullish: autoGuardSymbol,
+        isNullish<Actual>(
+            this: void,
+            input: Actual,
+            failureMessage?: string | undefined,
+        ): Extract<Actual, undefined | null> {
+            if (input == undefined) {
+                return input as Extract<Actual, undefined | null>;
+            } else {
+                throw new AssertionError(`'${stringify(input)}' is not nullish.`, failureMessage);
+            }
+        },
     },
     /** Nullish checks don't make any sense on `checkWrap`. */
     checkWrap: {
@@ -202,14 +217,12 @@ export const nullishGuards = {
          * @see
          * - {@link waitUntil.isNullish} : the opposite assertion.
          */
-        isDefined:
-            autoGuard<
-                <Actual>(
-                    callback: () => MaybePromise<Actual>,
-                    options?: WaitUntilOptions | undefined,
-                    failureMessage?: string | undefined,
-                ) => Promise<Exclude<Actual, undefined | null>>
-            >(),
+        isDefined: createWaitUntil(assertions.isDefined) as <Actual>(
+            this: void,
+            callback: () => MaybePromise<Actual>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<Exclude<Actual, undefined | null>>,
         /**
          * Repeatedly calls a callback until its output is a value that is nullish (`null` or
          * `undefined`). Once the callback output passes, it is returned. If the attempts time out,
@@ -233,6 +246,11 @@ export const nullishGuards = {
          * @see
          * - {@link waitUntil.isDefined} : the opposite assertion.
          */
-        isNullish: autoGuardSymbol,
+        isNullish: createWaitUntil(assertions.isNullish) as <Actual>(
+            this: void,
+            callback: () => MaybePromise<Actual>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<Extract<Actual, undefined | null>>,
     },
 } satisfies GuardGroup<typeof assertions>;

@@ -210,6 +210,7 @@ describe('looseEquals', () => {
     describe('checkWrap', () => {
         it('guards without types', () => {
             const newValue = checkWrap.looseEquals(actualPass, expected);
+            assert.strictEquals(newValue, actualPass);
 
             assert.tsType(newValue).notEquals<ExpectedType | undefined>();
             assert.tsType(newValue).notEquals<ExpectedType>();
@@ -324,14 +325,8 @@ describe('deepEquals', () => {
         doesNotIgnore: {
             nonJson: 'props',
             value: new Map([
-                [
-                    'a',
-                    'b',
-                ],
-                [
-                    'c',
-                    'd',
-                ],
+                ['a', 'b'],
+                ['c', 'd'],
             ]),
         },
     } as any;
@@ -344,14 +339,8 @@ describe('deepEquals', () => {
         doesNotIgnore: {
             nonJson: 'props',
             value: new Map([
-                [
-                    'a',
-                    'r',
-                ],
-                [
-                    'c',
-                    'd',
-                ],
+                ['a', 'r'],
+                ['c', 'd'],
             ]),
         },
     } as any;
@@ -364,14 +353,8 @@ describe('deepEquals', () => {
         doesNotIgnore: {
             nonJson: 'props',
             value: new Map([
-                [
-                    'a',
-                    'b',
-                ],
-                [
-                    'c',
-                    'd',
-                ],
+                ['a', 'b'],
+                ['c', 'd'],
             ]),
         },
     };

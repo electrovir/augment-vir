@@ -8,172 +8,18 @@ import {
 } from '@augment-vir/core';
 import {AssertionError} from '../augments/assertion.error.js';
 import type {GuardGroup} from '../guard-types/guard-group.js';
-import {autoGuard, autoGuardSymbol} from '../guard-types/guard-override.js';
-import {type WaitUntilOptions} from '../guard-types/wait-until-function.js';
+import {createWaitUntil, type WaitUntilOptions} from '../guard-types/wait-until-function.js';
 
 type ArrayNarrow<Actual> =
-    Extract<Actual, unknown[]> extends never
-        ? Extract<Actual, ReadonlyArray<unknown>> extends never
+    NarrowToExpected<Actual, unknown[]> extends never
+        ? NarrowToExpected<Actual, ReadonlyArray<unknown>> extends never
             ? unknown[] extends Actual
                 ? unknown[]
                 : never
-            : Extract<Actual, ReadonlyArray<unknown>>
-        : Extract<Actual, unknown[]>;
+            : NarrowToExpected<Actual, ReadonlyArray<unknown>>
+        : NarrowToExpected<Actual, unknown[]>;
 
-function isNotArray<const Actual>(
-    actual: Actual,
-    failureMessage?: string | undefined,
-): asserts actual is Exclude<Actual, ReadonlyArray<unknown>> {
-    if (Array.isArray(actual)) {
-        throw new AssertionError(`'${stringify(actual)}' is an array.`, failureMessage);
-    }
-}
-function isNotBigInt<const Actual>(
-    actual: Actual,
-    failureMessage?: string | undefined,
-): asserts actual is Exclude<Actual, bigint> {
-    if (typeof actual === 'bigint') {
-        throw new AssertionError(`'${stringify(actual)}' is a bigint.`, failureMessage);
-    }
-}
-function isNotBoolean<const Actual>(
-    actual: Actual,
-    failureMessage?: string | undefined,
-): asserts actual is Exclude<Actual, boolean> {
-    if (typeof actual === 'boolean') {
-        throw new AssertionError(`'${stringify(actual)}' is a boolean.`, failureMessage);
-    }
-}
-function isNotFunction<const Actual>(
-    actual: Actual,
-    failureMessage?: string | undefined,
-): asserts actual is Exclude<Actual, AnyFunction> {
-    if (typeof actual === 'function') {
-        throw new AssertionError(`'${stringify(actual)}' is a function.`, failureMessage);
-    }
-}
-function isNotNumber<const Actual>(
-    actual: Actual,
-    failureMessage?: string | undefined,
-): asserts actual is Exclude<Actual, number> {
-    if (typeof actual === 'number') {
-        throw new AssertionError(`'${stringify(actual)}' is a number.`, failureMessage);
-    }
-}
-function isNotObject<const Actual>(
-    actual: Actual,
-    failureMessage?: string | undefined,
-): asserts actual is Exclude<Actual, UnknownObject> {
-    if (!Array.isArray(actual) && typeof actual === 'object' && !!actual) {
-        throw new AssertionError(`'${stringify(actual)}' is a non-null object.`, failureMessage);
-    }
-}
-function isNotString<const Actual>(
-    actual: Actual,
-    failureMessage?: string | undefined,
-): asserts actual is Exclude<Actual, string> {
-    if (typeof actual === 'string') {
-        throw new AssertionError(`'${stringify(actual)}' is a string.`, failureMessage);
-    }
-}
-function isNotSymbol<const Actual>(
-    actual: Actual,
-    failureMessage?: string | undefined,
-): asserts actual is Exclude<Actual, symbol> {
-    if (typeof actual === 'symbol') {
-        throw new AssertionError(`'${stringify(actual)}' is a symbol.`, failureMessage);
-    }
-}
-function isNotUndefined<const Actual>(
-    actual: Actual,
-    failureMessage?: string | undefined,
-): asserts actual is Exclude<Actual, undefined> {
-    if (typeof actual === 'undefined') {
-        throw new AssertionError(`'${stringify(actual)}' is a undefined.`, failureMessage);
-    }
-}
-function isNotNull<const Actual>(
-    actual: Actual,
-    failureMessage?: string | undefined,
-): asserts actual is Exclude<Actual, null> {
-    if (actual === null) {
-        throw new AssertionError(`'${stringify(actual)}' is a null.`, failureMessage);
-    }
-}
-
-function isArray<const Actual>(
-    actual: Actual,
-    failureMessage?: string | undefined,
-): asserts actual is ArrayNarrow<Actual> {
-    if (!Array.isArray(actual)) {
-        throw new AssertionError(`'${stringify(actual)}' is not an array.`, failureMessage);
-    }
-}
-function isBigInt(actual: unknown, failureMessage?: string | undefined): asserts actual is bigint {
-    if (typeof actual !== 'bigint') {
-        throw new AssertionError(`'${stringify(actual)}' is not a bigint.`, failureMessage);
-    }
-}
-function isBoolean(
-    actual: unknown,
-    failureMessage?: string | undefined,
-): asserts actual is boolean {
-    if (typeof actual !== 'boolean') {
-        throw new AssertionError(`'${stringify(actual)}' is not a boolean.`, failureMessage);
-    }
-}
-function isFunction<const Actual>(
-    actual: Actual,
-    failureMessage?: string | undefined,
-): asserts actual is NarrowToActual<Actual, AnyFunction> {
-    if (typeof actual !== 'function') {
-        throw new AssertionError(`'${stringify(actual)}' is not a function.`, failureMessage);
-    }
-}
-export function isNumber(
-    actual: unknown,
-    failureMessage?: string | undefined,
-): asserts actual is number {
-    if (typeof actual !== 'number' || isNaN(actual)) {
-        throw new AssertionError(`'${stringify(actual)}' is not a number.`, failureMessage);
-    }
-}
-function isObject(
-    actual: unknown,
-    failureMessage?: string | undefined,
-): asserts actual is UnknownObject {
-    if (Array.isArray(actual) || typeof actual !== 'object' || !actual) {
-        throw new AssertionError(
-            `'${stringify(actual)}' is not a non-null object.`,
-            failureMessage,
-        );
-    }
-}
-function isString(actual: unknown, failureMessage?: string | undefined): asserts actual is string {
-    if (typeof actual !== 'string') {
-        throw new AssertionError(`'${stringify(actual)}' is not a string.`, failureMessage);
-    }
-}
-function isSymbol(actual: unknown, failureMessage?: string | undefined): asserts actual is symbol {
-    if (typeof actual !== 'symbol') {
-        throw new AssertionError(`'${stringify(actual)}' is not a symbol.`, failureMessage);
-    }
-}
-function isUndefined(
-    actual: unknown,
-    failureMessage?: string | undefined,
-): asserts actual is undefined {
-    if (typeof actual !== 'undefined') {
-        throw new AssertionError(`'${stringify(actual)}' is not a undefined.`, failureMessage);
-    }
-}
-function isNull(actual: unknown, failureMessage?: string | undefined): asserts actual is null {
-    if (actual !== null) {
-        throw new AssertionError(`'${stringify(actual)}' is not nul.`, failureMessage);
-    }
-}
-
-const assertions: {
+const assertions = {
     /**
      * Asserts that a value is an array.
      *
@@ -192,7 +38,15 @@ const assertions: {
      * @see
      * - {@link assert.isNotArray} : the opposite assertion.
      */
-    isArray: typeof isArray;
+    isArray<Actual>(
+        this: void,
+        actual: Actual,
+        failureMessage?: string | undefined,
+    ): asserts actual is ArrayNarrow<Actual> {
+        if (!Array.isArray(actual)) {
+            throw new AssertionError(`'${stringify(actual)}' is not an array.`, failureMessage);
+        }
+    },
     /**
      * Asserts that a value is a BigInt.
      *
@@ -211,7 +65,15 @@ const assertions: {
      * @see
      * - {@link assert.isNotBigInt} : the opposite assertion.
      */
-    isBigInt: typeof isBigInt;
+    isBigInt(
+        this: void,
+        actual: unknown,
+        failureMessage?: string | undefined,
+    ): asserts actual is bigint {
+        if (typeof actual !== 'bigint') {
+            throw new AssertionError(`'${stringify(actual)}' is not a bigint.`, failureMessage);
+        }
+    },
     /**
      * Asserts that a value is a boolean.
      *
@@ -230,7 +92,15 @@ const assertions: {
      * @see
      * - {@link assert.isNotBoolean} : the opposite assertion.
      */
-    isBoolean: typeof isBoolean;
+    isBoolean(
+        this: void,
+        actual: unknown,
+        failureMessage?: string | undefined,
+    ): asserts actual is boolean {
+        if (typeof actual !== 'boolean') {
+            throw new AssertionError(`'${stringify(actual)}' is not a boolean.`, failureMessage);
+        }
+    },
     /**
      * Asserts that a value is a function.
      *
@@ -249,7 +119,15 @@ const assertions: {
      * @see
      * - {@link assert.isNotFunction} : the opposite assertion.
      */
-    isFunction: typeof isFunction;
+    isFunction<Actual>(
+        this: void,
+        actual: Actual,
+        failureMessage?: string | undefined,
+    ): asserts actual is NarrowToActual<Actual, AnyFunction> {
+        if (typeof actual !== 'function') {
+            throw new AssertionError(`'${stringify(actual)}' is not a function.`, failureMessage);
+        }
+    },
     /**
      * Asserts that a value is exactly `null`.
      *
@@ -268,7 +146,15 @@ const assertions: {
      * @see
      * - {@link assert.isNotFunction} : the opposite assertion.
      */
-    isNull: typeof isNull;
+    isNull(
+        this: void,
+        actual: unknown,
+        failureMessage?: string | undefined,
+    ): asserts actual is null {
+        if (actual !== null) {
+            throw new AssertionError(`'${stringify(actual)}' is not nul.`, failureMessage);
+        }
+    },
     /**
      * Asserts that a value is a number. This excludes `NaN`.
      *
@@ -287,7 +173,15 @@ const assertions: {
      * @see
      * - {@link assert.isNotFunction} : the opposite assertion.
      */
-    isNumber: typeof isNumber;
+    isNumber(
+        this: void,
+        actual: unknown,
+        failureMessage?: string | undefined,
+    ): asserts actual is number {
+        if (typeof actual !== 'number' || isNaN(actual)) {
+            throw new AssertionError(`'${stringify(actual)}' is not a number.`, failureMessage);
+        }
+    },
     /**
      * Asserts that a value is an object. This excludes arrays.
      *
@@ -306,7 +200,18 @@ const assertions: {
      * @see
      * - {@link assert.isNotFunction} : the opposite assertion.
      */
-    isObject: typeof isObject;
+    isObject(
+        this: void,
+        actual: unknown,
+        failureMessage?: string | undefined,
+    ): asserts actual is UnknownObject {
+        if (Array.isArray(actual) || typeof actual !== 'object' || !actual) {
+            throw new AssertionError(
+                `'${stringify(actual)}' is not a non-null object.`,
+                failureMessage,
+            );
+        }
+    },
     /**
      * Asserts that a value is a string.
      *
@@ -325,7 +230,15 @@ const assertions: {
      * @see
      * - {@link assert.isNotFunction} : the opposite assertion.
      */
-    isString: typeof isString;
+    isString(
+        this: void,
+        actual: unknown,
+        failureMessage?: string | undefined,
+    ): asserts actual is string {
+        if (typeof actual !== 'string') {
+            throw new AssertionError(`'${stringify(actual)}' is not a string.`, failureMessage);
+        }
+    },
     /**
      * Asserts that a value is a symbol.
      *
@@ -344,7 +257,15 @@ const assertions: {
      * @see
      * - {@link assert.isNotFunction} : the opposite assertion.
      */
-    isSymbol: typeof isSymbol;
+    isSymbol(
+        this: void,
+        actual: unknown,
+        failureMessage?: string | undefined,
+    ): asserts actual is symbol {
+        if (typeof actual !== 'symbol') {
+            throw new AssertionError(`'${stringify(actual)}' is not a symbol.`, failureMessage);
+        }
+    },
     /**
      * Asserts that a value is exactly `undefined`.
      *
@@ -363,7 +284,15 @@ const assertions: {
      * @see
      * - {@link assert.isNotFunction} : the opposite assertion.
      */
-    isUndefined: typeof isUndefined;
+    isUndefined(
+        this: void,
+        actual: unknown,
+        failureMessage?: string | undefined,
+    ): asserts actual is undefined {
+        if (typeof actual !== 'undefined') {
+            throw new AssertionError(`'${stringify(actual)}' is not a undefined.`, failureMessage);
+        }
+    },
 
     /**
      * Asserts that a value is _not_ an array.
@@ -383,7 +312,15 @@ const assertions: {
      * @see
      * - {@link assert.isArray} : the opposite assertion.
      */
-    isNotArray: typeof isNotArray;
+    isNotArray<Actual>(
+        this: void,
+        actual: Actual,
+        failureMessage?: string | undefined,
+    ): asserts actual is Exclude<Actual, ReadonlyArray<unknown>> {
+        if (Array.isArray(actual)) {
+            throw new AssertionError(`'${stringify(actual)}' is an array.`, failureMessage);
+        }
+    },
     /**
      * Asserts that a value is _not_ a BigInt.
      *
@@ -402,7 +339,15 @@ const assertions: {
      * @see
      * - {@link assert.isBigInt} : the opposite assertion.
      */
-    isNotBigInt: typeof isNotBigInt;
+    isNotBigInt<Actual>(
+        this: void,
+        actual: Actual,
+        failureMessage?: string | undefined,
+    ): asserts actual is Exclude<Actual, bigint> {
+        if (typeof actual === 'bigint') {
+            throw new AssertionError(`'${stringify(actual)}' is a bigint.`, failureMessage);
+        }
+    },
     /**
      * Asserts that a value is _not_ a boolean.
      *
@@ -421,7 +366,15 @@ const assertions: {
      * @see
      * - {@link assert.isBoolean} : the opposite assertion.
      */
-    isNotBoolean: typeof isNotBoolean;
+    isNotBoolean<Actual>(
+        this: void,
+        actual: Actual,
+        failureMessage?: string | undefined,
+    ): asserts actual is Exclude<Actual, boolean> {
+        if (typeof actual === 'boolean') {
+            throw new AssertionError(`'${stringify(actual)}' is a boolean.`, failureMessage);
+        }
+    },
     /**
      * Asserts that a value is _not_ a function.
      *
@@ -440,7 +393,15 @@ const assertions: {
      * @see
      * - {@link assert.isFunction} : the opposite assertion.
      */
-    isNotFunction: typeof isNotFunction;
+    isNotFunction<Actual>(
+        this: void,
+        actual: Actual,
+        failureMessage?: string | undefined,
+    ): asserts actual is Exclude<Actual, AnyFunction> {
+        if (typeof actual === 'function') {
+            throw new AssertionError(`'${stringify(actual)}' is a function.`, failureMessage);
+        }
+    },
     /**
      * Asserts that a value is _not_ exactly `null`.
      *
@@ -459,7 +420,15 @@ const assertions: {
      * @see
      * - {@link assert.isFunction} : the opposite assertion.
      */
-    isNotNull: typeof isNotNull;
+    isNotNull<Actual>(
+        this: void,
+        actual: Actual,
+        failureMessage?: string | undefined,
+    ): asserts actual is Exclude<Actual, null> {
+        if (actual === null) {
+            throw new AssertionError(`'${stringify(actual)}' is a null.`, failureMessage);
+        }
+    },
     /**
      * Asserts that a value is _not_ a number. This includes `NaN`.
      *
@@ -478,7 +447,15 @@ const assertions: {
      * @see
      * - {@link assert.isNotFunction} : the opposite assertion.
      */
-    isNotNumber: typeof isNotNumber;
+    isNotNumber<Actual>(
+        this: void,
+        actual: Actual,
+        failureMessage?: string | undefined,
+    ): asserts actual is Exclude<Actual, number> {
+        if (typeof actual === 'number') {
+            throw new AssertionError(`'${stringify(actual)}' is a number.`, failureMessage);
+        }
+    },
     /**
      * Asserts that a value is _not_ an object. This includes arrays.
      *
@@ -497,7 +474,18 @@ const assertions: {
      * @see
      * - {@link assert.isFunction} : the opposite assertion.
      */
-    isNotObject: typeof isNotObject;
+    isNotObject<Actual>(
+        this: void,
+        actual: Actual,
+        failureMessage?: string | undefined,
+    ): asserts actual is Exclude<Actual, UnknownObject> {
+        if (!Array.isArray(actual) && typeof actual === 'object' && !!actual) {
+            throw new AssertionError(
+                `'${stringify(actual)}' is a non-null object.`,
+                failureMessage,
+            );
+        }
+    },
     /**
      * Asserts that a value is _not_ a string.
      *
@@ -516,7 +504,15 @@ const assertions: {
      * @see
      * - {@link assert.isFunction} : the opposite assertion.
      */
-    isNotString: typeof isNotString;
+    isNotString<Actual>(
+        this: void,
+        actual: Actual,
+        failureMessage?: string | undefined,
+    ): asserts actual is Exclude<Actual, string> {
+        if (typeof actual === 'string') {
+            throw new AssertionError(`'${stringify(actual)}' is a string.`, failureMessage);
+        }
+    },
     /**
      * Asserts that a value is _not_ a symbol.
      *
@@ -535,7 +531,15 @@ const assertions: {
      * @see
      * - {@link assert.isFunction} : the opposite assertion.
      */
-    isNotSymbol: typeof isNotSymbol;
+    isNotSymbol<Actual>(
+        this: void,
+        actual: Actual,
+        failureMessage?: string | undefined,
+    ): asserts actual is Exclude<Actual, symbol> {
+        if (typeof actual === 'symbol') {
+            throw new AssertionError(`'${stringify(actual)}' is a symbol.`, failureMessage);
+        }
+    },
     /**
      * Asserts that a value is _not_ exactly `undefined`.
      *
@@ -554,29 +558,15 @@ const assertions: {
      * @see
      * - {@link assert.isFunction} : the opposite assertion.
      */
-    isNotUndefined: typeof isNotUndefined;
-} = {
-    isArray,
-    isBigInt,
-    isBoolean,
-    isFunction,
-    isNull,
-    isNumber,
-    isObject,
-    isString,
-    isSymbol,
-    isUndefined,
-
-    isNotArray,
-    isNotBigInt,
-    isNotBoolean,
-    isNotFunction,
-    isNotNull,
-    isNotNumber,
-    isNotObject,
-    isNotString,
-    isNotSymbol,
-    isNotUndefined,
+    isNotUndefined<Actual>(
+        this: void,
+        actual: Actual,
+        failureMessage?: string | undefined,
+    ): asserts actual is Exclude<Actual, undefined> {
+        if (typeof actual === 'undefined') {
+            throw new AssertionError(`'${stringify(actual)}' is a undefined.`, failureMessage);
+        }
+    },
 };
 
 export const runtimeTypeGuards = {
@@ -599,7 +589,9 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link check.isNotArray} : the opposite check.
          */
-        isArray: autoGuard<<Actual>(actual: Actual) => actual is ArrayNarrow<Actual>>(),
+        isArray<Actual>(this: void, actual: Actual): actual is ArrayNarrow<Actual> {
+            return Array.isArray(actual);
+        },
         /**
          * Checks that a value is a BigInt.
          *
@@ -617,7 +609,9 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link check.isNotBigInt} : the opposite check.
          */
-        isBigInt: autoGuardSymbol,
+        isBigInt<Actual>(this: void, actual: Actual): actual is NarrowToActual<Actual, bigint> {
+            return typeof actual === 'bigint';
+        },
         /**
          * Checks that a value is a boolean.
          *
@@ -635,7 +629,9 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link check.isNotBoolean} : the opposite check.
          */
-        isBoolean: autoGuardSymbol,
+        isBoolean<Actual>(this: void, actual: Actual): actual is NarrowToActual<Actual, boolean> {
+            return typeof actual === 'boolean';
+        },
         /**
          * Checks that a value is a function.
          *
@@ -653,10 +649,12 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link check.isNotFunction} : the opposite check.
          */
-        isFunction:
-            autoGuard<
-                <const Actual>(actual: Actual) => actual is NarrowToActual<Actual, AnyFunction>
-            >(),
+        isFunction<Actual>(
+            this: void,
+            actual: Actual,
+        ): actual is NarrowToActual<Actual, AnyFunction> {
+            return typeof actual === 'function';
+        },
         /**
          * Checks that a value is exactly `null`.
          *
@@ -674,7 +672,9 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link check.isNotFunction} : the opposite check.
          */
-        isNull: autoGuardSymbol,
+        isNull<Actual>(this: void, actual: Actual): actual is NarrowToActual<Actual, null> {
+            return actual === null;
+        },
         /**
          * Checks that a value is a number. This excludes `NaN`.
          *
@@ -692,7 +692,9 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link check.isNotFunction} : the opposite check.
          */
-        isNumber: autoGuardSymbol,
+        isNumber<Actual>(this: void, actual: Actual): actual is NarrowToActual<Actual, number> {
+            return typeof actual === 'number';
+        },
         /**
          * Checks that a value is an object. This excludes arrays.
          *
@@ -710,7 +712,12 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link check.isNotFunction} : the opposite check.
          */
-        isObject: autoGuardSymbol,
+        isObject<Actual>(
+            this: void,
+            actual: Actual,
+        ): actual is NarrowToActual<Actual, UnknownObject> {
+            return !Array.isArray(actual) && typeof actual === 'object' && !!actual;
+        },
         /**
          * Checks that a value is a string.
          *
@@ -728,7 +735,9 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link check.isNotFunction} : the opposite check.
          */
-        isString: autoGuardSymbol,
+        isString<Actual>(this: void, actual: Actual): actual is NarrowToActual<Actual, string> {
+            return typeof actual === 'string';
+        },
         /**
          * Checks that a value is a symbol.
          *
@@ -746,7 +755,9 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link check.isNotFunction} : the opposite check.
          */
-        isSymbol: autoGuardSymbol,
+        isSymbol<Actual>(this: void, actual: Actual): actual is NarrowToActual<Actual, symbol> {
+            return typeof actual === 'symbol';
+        },
         /**
          * Checks that a value is exactly `undefined`.
          *
@@ -764,7 +775,12 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link check.isNotFunction} : the opposite check.
          */
-        isUndefined: autoGuardSymbol,
+        isUndefined<Actual>(
+            this: void,
+            actual: Actual,
+        ): actual is NarrowToActual<Actual, undefined> {
+            return actual === undefined;
+        },
 
         /**
          * Checks that a value is _not_ an array.
@@ -783,13 +799,12 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link check.isArray} : the opposite check.
          */
-        isNotArray:
-            autoGuard<
-                <const Actual>(
-                    actual: Actual,
-                    failureMessage?: string | undefined,
-                ) => actual is Exclude<Actual, ReadonlyArray<unknown>>
-            >(),
+        isNotArray<Actual>(
+            this: void,
+            actual: Actual,
+        ): actual is Exclude<Actual, ReadonlyArray<unknown>> {
+            return !Array.isArray(actual);
+        },
         /**
          * Checks that a value is _not_ a BigInt.
          *
@@ -807,13 +822,9 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link check.isBigInt} : the opposite check.
          */
-        isNotBigInt:
-            autoGuard<
-                <const Actual>(
-                    actual: Actual,
-                    failureMessage?: string | undefined,
-                ) => actual is Exclude<Actual, bigint>
-            >(),
+        isNotBigInt<Actual>(this: void, actual: Actual): actual is Exclude<Actual, bigint> {
+            return typeof actual !== 'bigint';
+        },
         /**
          * Checks that a value is _not_ a boolean.
          *
@@ -831,13 +842,9 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link check.isBoolean} : the opposite check.
          */
-        isNotBoolean:
-            autoGuard<
-                <const Actual>(
-                    actual: Actual,
-                    failureMessage?: string | undefined,
-                ) => actual is Exclude<Actual, boolean>
-            >(),
+        isNotBoolean<Actual>(this: void, actual: Actual): actual is Exclude<Actual, boolean> {
+            return typeof actual !== 'boolean';
+        },
         /**
          * Checks that a value is _not_ a function.
          *
@@ -855,13 +862,9 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link check.isFunction} : the opposite check.
          */
-        isNotFunction:
-            autoGuard<
-                <const Actual>(
-                    actual: Actual,
-                    failureMessage?: string | undefined,
-                ) => actual is Exclude<Actual, AnyFunction>
-            >(),
+        isNotFunction<Actual>(this: void, actual: Actual): actual is Exclude<Actual, AnyFunction> {
+            return typeof actual !== 'function';
+        },
         /**
          * Checks that a value is _not_ exactly `null`.
          *
@@ -879,13 +882,9 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link check.isFunction} : the opposite check.
          */
-        isNotNull:
-            autoGuard<
-                <const Actual>(
-                    actual: Actual,
-                    failureMessage?: string | undefined,
-                ) => actual is Exclude<Actual, null>
-            >(),
+        isNotNull<Actual>(this: void, actual: Actual): actual is Exclude<Actual, null> {
+            return actual !== null;
+        },
         /**
          * Checks that a value is _not_ a number. This includes `NaN`.
          *
@@ -903,13 +902,9 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link check.isNotFunction} : the opposite check.
          */
-        isNotNumber:
-            autoGuard<
-                <const Actual>(
-                    actual: Actual,
-                    failureMessage?: string | undefined,
-                ) => actual is Exclude<Actual, number>
-            >(),
+        isNotNumber<Actual>(this: void, actual: Actual): actual is Exclude<Actual, number> {
+            return typeof actual !== 'number';
+        },
         /**
          * Checks that a value is _not_ an object. This includes arrays.
          *
@@ -927,13 +922,9 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link check.isFunction} : the opposite check.
          */
-        isNotObject:
-            autoGuard<
-                <const Actual>(
-                    actual: Actual,
-                    failureMessage?: string | undefined,
-                ) => actual is Exclude<Actual, UnknownObject>
-            >(),
+        isNotObject<Actual>(this: void, actual: Actual): actual is Exclude<Actual, UnknownObject> {
+            return Array.isArray(actual) || typeof actual !== 'object' || !actual;
+        },
         /**
          * Checks that a value is _not_ a string.
          *
@@ -951,13 +942,9 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link check.isFunction} : the opposite check.
          */
-        isNotString:
-            autoGuard<
-                <const Actual>(
-                    actual: Actual,
-                    failureMessage?: string | undefined,
-                ) => actual is Exclude<Actual, string>
-            >(),
+        isNotString<Actual>(this: void, actual: Actual): actual is Exclude<Actual, string> {
+            return typeof actual !== 'string';
+        },
         /**
          * Checks that a value is _not_ a symbol.
          *
@@ -975,13 +962,9 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link check.isFunction} : the opposite check.
          */
-        isNotSymbol:
-            autoGuard<
-                <const Actual>(
-                    actual: Actual,
-                    failureMessage?: string | undefined,
-                ) => actual is Exclude<Actual, symbol>
-            >(),
+        isNotSymbol<Actual>(this: void, actual: Actual): actual is Exclude<Actual, symbol> {
+            return typeof actual !== 'symbol';
+        },
         /**
          * Checks that a value is _not_ exactly `undefined`.
          *
@@ -999,13 +982,9 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link check.isFunction} : the opposite check.
          */
-        isNotUndefined:
-            autoGuard<
-                <const Actual>(
-                    actual: Actual,
-                    failureMessage?: string | undefined,
-                ) => actual is Exclude<Actual, undefined>
-            >(),
+        isNotUndefined<Actual>(this: void, actual: Actual): actual is Exclude<Actual, undefined> {
+            return typeof actual !== 'undefined';
+        },
     },
     assertWrap: {
         /**
@@ -1027,7 +1006,17 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link assertWrap.isNotArray} : the opposite assertion.
          */
-        isArray: autoGuard<<Actual>(actual: Actual) => ArrayNarrow<Actual>>(),
+        isArray<Actual>(
+            this: void,
+            actual: Actual,
+            failureMessage?: string | undefined,
+        ): ArrayNarrow<Actual> {
+            if (!Array.isArray(actual)) {
+                throw new AssertionError(`'${stringify(actual)}' is not an array.`, failureMessage);
+            }
+
+            return actual as ArrayNarrow<Actual>;
+        },
         /**
          * Asserts that a value is a BigInt. Returns the value if the assertion passes.
          *
@@ -1047,7 +1036,17 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link assertWrap.isNotBigInt} : the opposite assertion.
          */
-        isBigInt: autoGuardSymbol,
+        isBigInt<Actual>(
+            this: void,
+            actual: Actual,
+            failureMessage?: string | undefined,
+        ): NarrowToExpected<Actual, bigint> {
+            if (typeof actual !== 'bigint') {
+                throw new AssertionError(`'${stringify(actual)}' is not a bigint.`, failureMessage);
+            }
+
+            return actual as NarrowToExpected<Actual, bigint>;
+        },
         /**
          * Asserts that a value is a boolean. Returns the value if the assertion passes.
          *
@@ -1067,7 +1066,20 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link assertWrap.isNotBoolean} : the opposite assertion.
          */
-        isBoolean: autoGuardSymbol,
+        isBoolean<Actual>(
+            this: void,
+            actual: Actual,
+            failureMessage?: string | undefined,
+        ): NarrowToExpected<Actual, boolean> {
+            if (typeof actual !== 'boolean') {
+                throw new AssertionError(
+                    `'${stringify(actual)}' is not a boolean.`,
+                    failureMessage,
+                );
+            }
+
+            return actual as NarrowToExpected<Actual, boolean>;
+        },
         /**
          * Asserts that a value is a function. Returns the value if the assertion passes.
          *
@@ -1087,13 +1099,20 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link assertWrap.isNotFunction} : the opposite assertion.
          */
-        isFunction:
-            autoGuard<
-                <const Actual>(
-                    actual: Actual,
-                    failureMessage?: string | undefined,
-                ) => NarrowToActual<Actual, AnyFunction>
-            >(),
+        isFunction<Actual>(
+            this: void,
+            actual: Actual,
+            failureMessage?: string | undefined,
+        ): NarrowToActual<Actual, AnyFunction> {
+            if (typeof actual !== 'function') {
+                throw new AssertionError(
+                    `'${stringify(actual)}' is not a function.`,
+                    failureMessage,
+                );
+            }
+
+            return actual as NarrowToActual<Actual, AnyFunction>;
+        },
         /**
          * Asserts that a value is exactly `null. Returns the value if the assertion passes.
          *
@@ -1113,7 +1132,17 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link assertWrap.isNotFunction} : the opposite assertion.
          */
-        isNull: autoGuardSymbol,
+        isNull<Actual>(
+            this: void,
+            actual: Actual,
+            failureMessage?: string | undefined,
+        ): NarrowToExpected<Actual, null> {
+            if (actual !== null) {
+                throw new AssertionError(`'${stringify(actual)}' is not nul.`, failureMessage);
+            }
+
+            return actual as NarrowToExpected<Actual, null>;
+        },
         /**
          * Asserts that a value is a number. This excludes `NaN. Returns the value if the assertion
          * passes.
@@ -1134,7 +1163,17 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link assertWrap.isNotFunction} : the opposite assertion.
          */
-        isNumber: autoGuardSymbol,
+        isNumber<Actual>(
+            this: void,
+            actual: Actual,
+            failureMessage?: string | undefined,
+        ): NarrowToExpected<Actual, number> {
+            if (typeof actual !== 'number' || isNaN(actual)) {
+                throw new AssertionError(`'${stringify(actual)}' is not a number.`, failureMessage);
+            }
+
+            return actual as NarrowToExpected<Actual, number>;
+        },
         /**
          * Asserts that a value is an object. This excludes arrays. Returns the value if the
          * assertion passes.
@@ -1155,7 +1194,20 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link assertWrap.isNotFunction} : the opposite assertion.
          */
-        isObject: autoGuardSymbol,
+        isObject<Actual>(
+            this: void,
+            actual: Actual,
+            failureMessage?: string | undefined,
+        ): NarrowToExpected<Actual, UnknownObject> {
+            if (Array.isArray(actual) || typeof actual !== 'object' || !actual) {
+                throw new AssertionError(
+                    `'${stringify(actual)}' is not a non-null object.`,
+                    failureMessage,
+                );
+            }
+
+            return actual as NarrowToExpected<Actual, UnknownObject>;
+        },
         /**
          * Asserts that a value is a string. Returns the value if the assertion passes.
          *
@@ -1175,7 +1227,17 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link assertWrap.isNotFunction} : the opposite assertion.
          */
-        isString: autoGuardSymbol,
+        isString<Actual>(
+            this: void,
+            actual: Actual,
+            failureMessage?: string | undefined,
+        ): NarrowToExpected<Actual, string> {
+            if (typeof actual !== 'string') {
+                throw new AssertionError(`'${stringify(actual)}' is not a string.`, failureMessage);
+            }
+
+            return actual as NarrowToExpected<Actual, string>;
+        },
         /**
          * Trying to assign a unique symbol to another variable kills the `unique` part of the
          * symbol. this seems to be a bug with TypeScript itself.
@@ -1204,13 +1266,17 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link assertWrap.isNotFunction} : the opposite assertion.
          */
-        isSymbol:
-            autoGuard<
-                <const Actual>(
-                    actual: Actual,
-                    failureMessage?: string | undefined,
-                ) => NarrowToExpected<Actual, symbol>
-            >(),
+        isSymbol<Actual>(
+            this: void,
+            actual: Actual,
+            failureMessage?: string | undefined,
+        ): NarrowToExpected<Actual, symbol> {
+            if (typeof actual !== 'symbol') {
+                throw new AssertionError(`'${stringify(actual)}' is not a symbol.`, failureMessage);
+            }
+
+            return actual as NarrowToExpected<Actual, symbol>;
+        },
         /**
          * Asserts that a value is exactly `undefined. Returns the value if the assertion passes.
          *
@@ -1230,7 +1296,20 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link assertWrap.isNotFunction} : the opposite assertion.
          */
-        isUndefined: autoGuardSymbol,
+        isUndefined<Actual>(
+            this: void,
+            actual: Actual,
+            failureMessage?: string | undefined,
+        ): NarrowToExpected<Actual, undefined> {
+            if (typeof actual !== 'undefined') {
+                throw new AssertionError(
+                    `'${stringify(actual)}' is not a undefined.`,
+                    failureMessage,
+                );
+            }
+
+            return actual as NarrowToExpected<Actual, undefined>;
+        },
 
         /**
          * Asserts that a value is _not_ an array. Returns the value if the assertion passes.
@@ -1251,13 +1330,17 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link assertWrap.isArray} : the opposite assertion.
          */
-        isNotArray:
-            autoGuard<
-                <const Actual>(
-                    actual: Actual,
-                    failureMessage?: string | undefined,
-                ) => Exclude<Actual, ReadonlyArray<unknown>>
-            >(),
+        isNotArray<Actual>(
+            this: void,
+            actual: Actual,
+            failureMessage?: string | undefined,
+        ): Exclude<Actual, ReadonlyArray<unknown>> {
+            if (Array.isArray(actual)) {
+                throw new AssertionError(`'${stringify(actual)}' is an array.`, failureMessage);
+            }
+
+            return actual as Exclude<Actual, ReadonlyArray<unknown>>;
+        },
         /**
          * Asserts that a value is _not_ a BigInt. Returns the value if the assertion passes.
          *
@@ -1277,13 +1360,16 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link assertWrap.isBigInt} : the opposite assertion.
          */
-        isNotBigInt:
-            autoGuard<
-                <const Actual>(
-                    actual: Actual,
-                    failureMessage?: string | undefined,
-                ) => Exclude<Actual, bigint>
-            >(),
+        isNotBigInt<Actual>(
+            this: void,
+            actual: Actual,
+            failureMessage?: string | undefined,
+        ): Exclude<Actual, bigint> {
+            if (typeof actual === 'bigint') {
+                throw new AssertionError(`'${stringify(actual)}' is a bigint.`, failureMessage);
+            }
+            return actual as Exclude<Actual, bigint>;
+        },
         /**
          * Asserts that a value is _not_ a boolean. Returns the value if the assertion passes.
          *
@@ -1303,13 +1389,17 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link assertWrap.isBoolean} : the opposite assertion.
          */
-        isNotBoolean:
-            autoGuard<
-                <const Actual>(
-                    actual: Actual,
-                    failureMessage?: string | undefined,
-                ) => Exclude<Actual, boolean>
-            >(),
+        isNotBoolean<Actual>(
+            this: void,
+            actual: Actual,
+            failureMessage?: string | undefined,
+        ): Exclude<Actual, boolean> {
+            if (typeof actual === 'boolean') {
+                throw new AssertionError(`'${stringify(actual)}' is a boolean.`, failureMessage);
+            }
+
+            return actual as Exclude<Actual, boolean>;
+        },
         /**
          * Asserts that a value is _not_ a function. Returns the value if the assertion passes.
          *
@@ -1329,13 +1419,17 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link assertWrap.isFunction} : the opposite assertion.
          */
-        isNotFunction:
-            autoGuard<
-                <const Actual>(
-                    actual: Actual,
-                    failureMessage?: string | undefined,
-                ) => Exclude<Actual, AnyFunction>
-            >(),
+        isNotFunction<Actual>(
+            this: void,
+            actual: Actual,
+            failureMessage?: string | undefined,
+        ): Exclude<Actual, AnyFunction> {
+            if (typeof actual === 'function') {
+                throw new AssertionError(`'${stringify(actual)}' is a function.`, failureMessage);
+            }
+
+            return actual as Exclude<Actual, AnyFunction>;
+        },
         /**
          * Asserts that a value is _not_ exactly `null. Returns the value if the assertion passes.
          *
@@ -1355,13 +1449,17 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link assertWrap.isFunction} : the opposite assertion.
          */
-        isNotNull:
-            autoGuard<
-                <const Actual>(
-                    actual: Actual,
-                    failureMessage?: string | undefined,
-                ) => Exclude<Actual, null>
-            >(),
+        isNotNull<Actual>(
+            this: void,
+            actual: Actual,
+            failureMessage?: string | undefined,
+        ): Exclude<Actual, null> {
+            if (actual === null) {
+                throw new AssertionError(`'${stringify(actual)}' is a null.`, failureMessage);
+            }
+
+            return actual as Exclude<Actual, null>;
+        },
         /**
          * Asserts that a value is _not_ a number. This includes `NaN. Returns the value if the
          * assertion passes.
@@ -1382,13 +1480,17 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link assertWrap.isNotFunction} : the opposite assertion.
          */
-        isNotNumber:
-            autoGuard<
-                <const Actual>(
-                    actual: Actual,
-                    failureMessage?: string | undefined,
-                ) => Exclude<Actual, number>
-            >(),
+        isNotNumber<Actual>(
+            this: void,
+            actual: Actual,
+            failureMessage?: string | undefined,
+        ): Exclude<Actual, number> {
+            if (typeof actual === 'number') {
+                throw new AssertionError(`'${stringify(actual)}' is a number.`, failureMessage);
+            }
+
+            return actual as Exclude<Actual, number>;
+        },
         /**
          * Asserts that a value is _not_ an object. This includes arrays. Returns the value if the
          * assertion passes.
@@ -1409,13 +1511,20 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link assertWrap.isFunction} : the opposite assertion.
          */
-        isNotObject:
-            autoGuard<
-                <const Actual>(
-                    actual: Actual,
-                    failureMessage?: string | undefined,
-                ) => Exclude<Actual, UnknownObject>
-            >(),
+        isNotObject<Actual>(
+            this: void,
+            actual: Actual,
+            failureMessage?: string | undefined,
+        ): Exclude<Actual, UnknownObject> {
+            if (!Array.isArray(actual) && typeof actual === 'object' && !!actual) {
+                throw new AssertionError(
+                    `'${stringify(actual)}' is a non-null object.`,
+                    failureMessage,
+                );
+            }
+
+            return actual as Exclude<Actual, UnknownObject>;
+        },
         /**
          * Asserts that a value is _not_ a string. Returns the value if the assertion passes.
          *
@@ -1435,13 +1544,17 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link assertWrap.isFunction} : the opposite assertion.
          */
-        isNotString:
-            autoGuard<
-                <const Actual>(
-                    actual: Actual,
-                    failureMessage?: string | undefined,
-                ) => Exclude<Actual, string>
-            >(),
+        isNotString<Actual>(
+            this: void,
+            actual: Actual,
+            failureMessage?: string | undefined,
+        ): Exclude<Actual, string> {
+            if (typeof actual === 'string') {
+                throw new AssertionError(`'${stringify(actual)}' is a string.`, failureMessage);
+            }
+
+            return actual as Exclude<Actual, string>;
+        },
         /**
          * Asserts that a value is _not_ a symbol. Returns the value if the assertion passes.
          *
@@ -1461,13 +1574,17 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link assertWrap.isFunction} : the opposite assertion.
          */
-        isNotSymbol:
-            autoGuard<
-                <const Actual>(
-                    actual: Actual,
-                    failureMessage?: string | undefined,
-                ) => Exclude<Actual, symbol>
-            >(),
+        isNotSymbol<Actual>(
+            this: void,
+            actual: Actual,
+            failureMessage?: string | undefined,
+        ): Exclude<Actual, symbol> {
+            if (typeof actual === 'symbol') {
+                throw new AssertionError(`'${stringify(actual)}' is a symbol.`, failureMessage);
+            }
+
+            return actual as Exclude<Actual, symbol>;
+        },
         /**
          * Asserts that a value is _not_ exactly `undefined. Returns the value if the assertion
          * passes.
@@ -1488,13 +1605,17 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link assertWrap.isFunction} : the opposite assertion.
          */
-        isNotUndefined:
-            autoGuard<
-                <const Actual>(
-                    actual: Actual,
-                    failureMessage?: string | undefined,
-                ) => Exclude<Actual, undefined>
-            >(),
+        isNotUndefined<Actual>(
+            this: void,
+            actual: Actual,
+            failureMessage?: string | undefined,
+        ): Exclude<Actual, undefined> {
+            if (typeof actual === 'undefined') {
+                throw new AssertionError(`'${stringify(actual)}' is a undefined.`, failureMessage);
+            }
+
+            return actual as Exclude<Actual, undefined>;
+        },
     },
     checkWrap: {
         /**
@@ -1516,7 +1637,13 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link checkWrap.isNotArray} : the opposite check.
          */
-        isArray: autoGuard<<Actual>(actual: Actual) => ArrayNarrow<Actual> | undefined>(),
+        isArray<Actual>(this: void, actual: Actual): ArrayNarrow<Actual> | undefined {
+            if (Array.isArray(actual)) {
+                return actual as ArrayNarrow<Actual>;
+            } else {
+                return undefined;
+            }
+        },
         /**
          * Checks that a value is a BigInt. Returns the value if the check passes, otherwise
          * `undefined`.
@@ -1536,7 +1663,13 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link checkWrap.isNotBigInt} : the opposite check.
          */
-        isBigInt: autoGuardSymbol,
+        isBigInt<Actual>(this: void, actual: Actual): NarrowToActual<Actual, bigint> | undefined {
+            if (typeof actual === 'bigint') {
+                return actual as NarrowToActual<Actual, bigint>;
+            } else {
+                return undefined;
+            }
+        },
         /**
          * Checks that a value is a boolean. Returns the value if the check passes, otherwise
          * `undefined`.
@@ -1556,7 +1689,13 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link checkWrap.isNotBoolean} : the opposite check.
          */
-        isBoolean: autoGuardSymbol,
+        isBoolean<Actual>(this: void, actual: Actual): NarrowToActual<Actual, boolean> | undefined {
+            if (typeof actual === 'boolean') {
+                return actual as NarrowToActual<Actual, boolean>;
+            } else {
+                return undefined;
+            }
+        },
         /**
          * Checks that a value is a function. Returns the value if the check passes, otherwise
          * `undefined`.
@@ -1576,10 +1715,16 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link checkWrap.isNotFunction} : the opposite check.
          */
-        isFunction:
-            autoGuard<
-                <const Actual>(actual: Actual) => NarrowToActual<Actual, AnyFunction> | undefined
-            >(),
+        isFunction<Actual>(
+            this: void,
+            actual: Actual,
+        ): NarrowToActual<Actual, AnyFunction> | undefined {
+            if (typeof actual === 'function') {
+                return actual as NarrowToActual<Actual, AnyFunction>;
+            } else {
+                return undefined;
+            }
+        },
         /**
          * Checks that a value is exactly `null. Returns the value if the check passes, otherwise
          * `undefined`.
@@ -1599,7 +1744,13 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link checkWrap.isNotFunction} : the opposite check.
          */
-        isNull: autoGuardSymbol,
+        isNull<Actual>(this: void, actual: Actual): NarrowToActual<Actual, null> | undefined {
+            if (actual === null) {
+                return actual as NarrowToActual<Actual, null>;
+            } else {
+                return undefined;
+            }
+        },
         /**
          * Checks that a value is a number. This excludes `NaN. Returns the value if the check
          * passes, otherwise `undefined`.
@@ -1619,7 +1770,13 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link checkWrap.isNotFunction} : the opposite check.
          */
-        isNumber: autoGuardSymbol,
+        isNumber<Actual>(this: void, actual: Actual): NarrowToActual<Actual, number> | undefined {
+            if (typeof actual === 'number') {
+                return actual as NarrowToActual<Actual, number>;
+            } else {
+                return undefined;
+            }
+        },
         /**
          * Checks that a value is an object. This excludes arrays. Returns the value if the check
          * passes, otherwise `undefined`.
@@ -1639,7 +1796,16 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link checkWrap.isNotFunction} : the opposite check.
          */
-        isObject: autoGuardSymbol,
+        isObject<Actual>(
+            this: void,
+            actual: Actual,
+        ): NarrowToActual<Actual, UnknownObject> | undefined {
+            if (!Array.isArray(actual) && typeof actual === 'object' && !!actual) {
+                return actual as NarrowToActual<Actual, UnknownObject>;
+            } else {
+                return undefined;
+            }
+        },
         /**
          * Checks that a value is a string. Returns the value if the check passes, otherwise
          * `undefined`.
@@ -1659,7 +1825,13 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link checkWrap.isNotFunction} : the opposite check.
          */
-        isString: autoGuardSymbol,
+        isString<Actual>(this: void, actual: Actual): NarrowToActual<Actual, string> | undefined {
+            if (typeof actual === 'string') {
+                return actual as NarrowToActual<Actual, string>;
+            } else {
+                return undefined;
+            }
+        },
         /**
          * Checks that a value is a symbol. Returns the value if the check passes, otherwise
          * `undefined`.
@@ -1679,32 +1851,13 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link checkWrap.isNotFunction} : the opposite check.
          */
-        isSymbol: autoGuardSymbol,
-        /**
-         * It doesn't make any sense for `checkWrap.isUndefined` to exist. If the input is
-         * `undefined`, it returns `undefined`. If the input isn't `undefined`, it still returns
-         * `undefined`.
-         */
-        /**
-         * Checks that a value is exactly `undefined. Returns the value if the check passes,
-         * otherwise `undefined`.
-         *
-         * Type guards the value.
-         *
-         * @example
-         *
-         * ```ts
-         * import {checkWrap} from '@augment-vir/assert';
-         *
-         * checkWrap.isUndefined(undefined); // returns `undefined`
-         * checkWrap.isUndefined(null); // returns `undefined`
-         * ```
-         *
-         * @returns The value if the check passes. Otherwise, `undefined`.
-         * @see
-         * - {@link checkWrap.isNotFunction} : the opposite check.
-         */
-        isUndefined: undefined,
+        isSymbol<Actual>(this: void, actual: Actual): NarrowToActual<Actual, symbol> | undefined {
+            if (typeof actual === 'symbol') {
+                return actual as NarrowToActual<Actual, symbol>;
+            } else {
+                return undefined;
+            }
+        },
 
         /**
          * Checks that a value is _not_ an array. Returns the value if the check passes, otherwise
@@ -1725,13 +1878,16 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link checkWrap.isArray} : the opposite check.
          */
-        isNotArray:
-            autoGuard<
-                <const Actual>(
-                    actual: Actual,
-                    failureMessage?: string | undefined,
-                ) => Exclude<Actual, ReadonlyArray<unknown>> | undefined
-            >(),
+        isNotArray<Actual>(
+            this: void,
+            actual: Actual,
+        ): Exclude<Actual, ReadonlyArray<unknown>> | undefined {
+            if (Array.isArray(actual)) {
+                return undefined;
+            } else {
+                return actual as Exclude<Actual, ReadonlyArray<unknown>>;
+            }
+        },
         /**
          * Checks that a value is _not_ a BigInt. Returns the value if the check passes, otherwise
          * `undefined`.
@@ -1751,13 +1907,13 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link checkWrap.isBigInt} : the opposite check.
          */
-        isNotBigInt:
-            autoGuard<
-                <const Actual>(
-                    actual: Actual,
-                    failureMessage?: string | undefined,
-                ) => Exclude<Actual, bigint> | undefined
-            >(),
+        isNotBigInt<Actual>(this: void, actual: Actual): Exclude<Actual, bigint> | undefined {
+            if (typeof actual === 'bigint') {
+                return undefined;
+            } else {
+                return actual as Exclude<Actual, bigint>;
+            }
+        },
         /**
          * Checks that a value is _not_ a boolean. Returns the value if the check passes, otherwise
          * `undefined`.
@@ -1777,13 +1933,13 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link checkWrap.isBoolean} : the opposite check.
          */
-        isNotBoolean:
-            autoGuard<
-                <const Actual>(
-                    actual: Actual,
-                    failureMessage?: string | undefined,
-                ) => Exclude<Actual, boolean> | undefined
-            >(),
+        isNotBoolean<Actual>(this: void, actual: Actual): Exclude<Actual, boolean> | undefined {
+            if (typeof actual === 'boolean') {
+                return undefined;
+            } else {
+                return actual as Exclude<Actual, boolean>;
+            }
+        },
         /**
          * Checks that a value is _not_ a function. Returns the value if the check passes, otherwise
          * `undefined`.
@@ -1803,13 +1959,16 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link checkWrap.isFunction} : the opposite check.
          */
-        isNotFunction:
-            autoGuard<
-                <const Actual>(
-                    actual: Actual,
-                    failureMessage?: string | undefined,
-                ) => Exclude<Actual, AnyFunction> | undefined
-            >(),
+        isNotFunction<Actual>(
+            this: void,
+            actual: Actual,
+        ): Exclude<Actual, AnyFunction> | undefined {
+            if (typeof actual === 'function') {
+                return undefined;
+            } else {
+                return actual as Exclude<Actual, AnyFunction>;
+            }
+        },
         /**
          * Checks that a value is _not_ exactly `null. Returns the value if the check passes,
          * otherwise `undefined`.
@@ -1829,13 +1988,13 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link checkWrap.isFunction} : the opposite check.
          */
-        isNotNull:
-            autoGuard<
-                <const Actual>(
-                    actual: Actual,
-                    failureMessage?: string | undefined,
-                ) => Exclude<Actual, null> | undefined
-            >(),
+        isNotNull<Actual>(this: void, actual: Actual): Exclude<Actual, null> | undefined {
+            if (actual === null) {
+                return undefined;
+            } else {
+                return actual as Exclude<Actual, null>;
+            }
+        },
         /**
          * Checks that a value is _not_ a number. This includes `NaN. Returns the value if the check
          * passes, otherwise `undefined`.
@@ -1855,13 +2014,13 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link checkWrap.isNotFunction} : the opposite check.
          */
-        isNotNumber:
-            autoGuard<
-                <const Actual>(
-                    actual: Actual,
-                    failureMessage?: string | undefined,
-                ) => Exclude<Actual, number> | undefined
-            >(),
+        isNotNumber<Actual>(this: void, actual: Actual): Exclude<Actual, number> | undefined {
+            if (typeof actual === 'number') {
+                return undefined;
+            } else {
+                return actual as Exclude<Actual, number>;
+            }
+        },
         /**
          * Checks that a value is _not_ an object. This includes arrays. Returns the value if the
          * check passes, otherwise `undefined`.
@@ -1881,13 +2040,16 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link checkWrap.isFunction} : the opposite check.
          */
-        isNotObject:
-            autoGuard<
-                <const Actual>(
-                    actual: Actual,
-                    failureMessage?: string | undefined,
-                ) => Exclude<Actual, UnknownObject> | undefined
-            >(),
+        isNotObject<Actual>(
+            this: void,
+            actual: Actual,
+        ): Exclude<Actual, UnknownObject> | undefined {
+            if (Array.isArray(actual) || typeof actual !== 'object' || !actual) {
+                return actual as Exclude<Actual, UnknownObject>;
+            } else {
+                return undefined;
+            }
+        },
         /**
          * Checks that a value is _not_ a string. Returns the value if the check passes, otherwise
          * `undefined`.
@@ -1907,13 +2069,13 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link checkWrap.isFunction} : the opposite check.
          */
-        isNotString:
-            autoGuard<
-                <const Actual>(
-                    actual: Actual,
-                    failureMessage?: string | undefined,
-                ) => Exclude<Actual, string> | undefined
-            >(),
+        isNotString<Actual>(this: void, actual: Actual): Exclude<Actual, string> | undefined {
+            if (typeof actual === 'string') {
+                return undefined;
+            } else {
+                return actual as Exclude<Actual, string>;
+            }
+        },
         /**
          * Checks that a value is _not_ a symbol. Returns the value if the check passes, otherwise
          * `undefined`.
@@ -1933,18 +2095,13 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link checkWrap.isFunction} : the opposite check.
          */
-        isNotSymbol:
-            autoGuard<
-                <const Actual>(
-                    actual: Actual,
-                    failureMessage?: string | undefined,
-                ) => Exclude<Actual, symbol> | undefined
-            >(),
-        /**
-         * It doesn't make any sense for `checkWrap.isNotUndefined` to exist. If the input is not
-         * `undefined`, then it still returns `undefined`.
-         */
-        isNotUndefined: undefined,
+        isNotSymbol<Actual>(this: void, actual: Actual): Exclude<Actual, symbol> | undefined {
+            if (typeof actual === 'symbol') {
+                return undefined;
+            } else {
+                return actual as Exclude<Actual, symbol>;
+            }
+        },
     },
     waitUntil: {
         /**
@@ -1968,14 +2125,12 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link waitUntil.isNotArray} : the opposite assertion.
          */
-        isArray:
-            autoGuard<
-                <const Actual>(
-                    callback: () => MaybePromise<Actual>,
-                    options?: WaitUntilOptions | undefined,
-                    failureMessage?: string | undefined,
-                ) => Promise<ArrayNarrow<Actual>>
-            >(),
+        isArray: createWaitUntil(assertions.isArray) as <Actual>(
+            this: void,
+            callback: () => MaybePromise<Actual>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<ArrayNarrow<Actual>>,
         /**
          * Repeatedly calls a callback until its output is a BigInt. Once the callback output
          * passes, it is returned. If the attempts time out, an error is thrown.
@@ -1995,7 +2150,12 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link waitUntil.isNotBigInt} : the opposite assertion.
          */
-        isBigInt: autoGuardSymbol,
+        isBigInt: createWaitUntil(assertions.isBigInt) as <Actual>(
+            this: void,
+            callback: () => MaybePromise<Actual>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<NarrowToExpected<Actual, bigint>>,
         /**
          * Repeatedly calls a callback until its output is a boolean. Once the callback output
          * passes, it is returned. If the attempts time out, an error is thrown.
@@ -2015,7 +2175,12 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link waitUntil.isNotBoolean} : the opposite assertion.
          */
-        isBoolean: autoGuardSymbol,
+        isBoolean: createWaitUntil(assertions.isBoolean) as <Actual>(
+            this: void,
+            callback: () => MaybePromise<Actual>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<NarrowToExpected<Actual, boolean>>,
         /**
          * Repeatedly calls a callback until its output is a function. Once the callback output
          * passes, it is returned. If the attempts time out, an error is thrown.
@@ -2039,14 +2204,12 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link waitUntil.isNotFunction} : the opposite assertion.
          */
-        isFunction:
-            autoGuard<
-                <const Actual>(
-                    callback: () => MaybePromise<Actual>,
-                    options?: WaitUntilOptions | undefined,
-                    failureMessage?: string | undefined,
-                ) => Promise<NarrowToActual<Actual, AnyFunction>>
-            >(),
+        isFunction: createWaitUntil(assertions.isFunction) as <Actual>(
+            this: void,
+            callback: () => MaybePromise<Actual>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<NarrowToActual<Actual, AnyFunction>>,
         /**
          * Repeatedly calls a callback until its output is exactly `null`. Once the callback output
          * passes, it is returned. If the attempts time out, an error is thrown.
@@ -2066,7 +2229,12 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link waitUntil.isNotFunction} : the opposite assertion.
          */
-        isNull: autoGuardSymbol,
+        isNull: createWaitUntil(assertions.isNull) as <Actual>(
+            this: void,
+            callback: () => MaybePromise<Actual>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<NarrowToExpected<Actual, null>>,
         /**
          * Repeatedly calls a callback until its output is a number. This excludes `NaN`. Once the
          * callback output passes, it is returned. If the attempts time out, an error is thrown.
@@ -2086,7 +2254,12 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link waitUntil.isNotFunction} : the opposite assertion.
          */
-        isNumber: autoGuardSymbol,
+        isNumber: createWaitUntil(assertions.isNumber) as <Actual>(
+            this: void,
+            callback: () => MaybePromise<Actual>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<NarrowToExpected<Actual, number>>,
         /**
          * Repeatedly calls a callback until its output is an object. This excludes arrays. Once the
          * callback output passes, it is returned. If the attempts time out, an error is thrown.
@@ -2108,7 +2281,12 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link waitUntil.isNotFunction} : the opposite assertion.
          */
-        isObject: autoGuardSymbol,
+        isObject: createWaitUntil(assertions.isObject) as <Actual>(
+            this: void,
+            callback: () => MaybePromise<Actual>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<NarrowToExpected<Actual, UnknownObject>>,
         /**
          * Repeatedly calls a callback until its output is a string. Once the callback output
          * passes, it is returned. If the attempts time out, an error is thrown.
@@ -2128,7 +2306,12 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link waitUntil.isNotFunction} : the opposite assertion.
          */
-        isString: autoGuardSymbol,
+        isString: createWaitUntil(assertions.isString) as <Actual>(
+            this: void,
+            callback: () => MaybePromise<Actual>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<NarrowToExpected<Actual, string>>,
         /**
          * Repeatedly calls a callback until its output is a symbol. Once the callback output
          * passes, it is returned. If the attempts time out, an error is thrown.
@@ -2148,7 +2331,12 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link waitUntil.isNotFunction} : the opposite assertion.
          */
-        isSymbol: autoGuardSymbol,
+        isSymbol: createWaitUntil(assertions.isSymbol) as <Actual>(
+            this: void,
+            callback: () => MaybePromise<Actual>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<NarrowToExpected<Actual, symbol>>,
         /**
          * Repeatedly calls a callback until its output is exactly `undefined`. Once the callback
          * output passes, it is returned. If the attempts time out, an error is thrown.
@@ -2168,7 +2356,12 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link waitUntil.isNotFunction} : the opposite assertion.
          */
-        isUndefined: autoGuardSymbol,
+        isUndefined: createWaitUntil(assertions.isUndefined) as <Actual>(
+            this: void,
+            callback: () => MaybePromise<Actual>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<NarrowToExpected<Actual, undefined>>,
 
         /**
          * Repeatedly calls a callback until its output is _not_ an array. Once the callback output
@@ -2191,14 +2384,12 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link waitUntil.isArray} : the opposite assertion.
          */
-        isNotArray:
-            autoGuard<
-                <const Actual>(
-                    callback: () => MaybePromise<Actual>,
-                    options?: WaitUntilOptions | undefined,
-                    failureMessage?: string | undefined,
-                ) => Promise<Exclude<Actual, ReadonlyArray<unknown>>>
-            >(),
+        isNotArray: createWaitUntil(assertions.isNotArray) as <Actual>(
+            this: void,
+            callback: () => MaybePromise<Actual>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<Exclude<Actual, ReadonlyArray<unknown>>>,
         /**
          * Repeatedly calls a callback until its output is _not_ a BigInt. Once the callback output
          * passes, it is returned. If the attempts time out, an error is thrown.
@@ -2218,14 +2409,12 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link waitUntil.isBigInt} : the opposite assertion.
          */
-        isNotBigInt:
-            autoGuard<
-                <const Actual>(
-                    callback: () => MaybePromise<Actual>,
-                    options?: WaitUntilOptions | undefined,
-                    failureMessage?: string | undefined,
-                ) => Promise<Exclude<Actual, bigint>>
-            >(),
+        isNotBigInt: createWaitUntil(assertions.isNotBigInt) as <Actual>(
+            this: void,
+            callback: () => MaybePromise<Actual>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<Exclude<Actual, bigint>>,
         /**
          * Repeatedly calls a callback until its output is _not_ a boolean. Once the callback output
          * passes, it is returned. If the attempts time out, an error is thrown.
@@ -2245,14 +2434,12 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link waitUntil.isBoolean} : the opposite assertion.
          */
-        isNotBoolean:
-            autoGuard<
-                <const Actual>(
-                    callback: () => MaybePromise<Actual>,
-                    options?: WaitUntilOptions | undefined,
-                    failureMessage?: string | undefined,
-                ) => Promise<Exclude<Actual, boolean>>
-            >(),
+        isNotBoolean: createWaitUntil(assertions.isNotBoolean) as <Actual>(
+            this: void,
+            callback: () => MaybePromise<Actual>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<Exclude<Actual, boolean>>,
         /**
          * Repeatedly calls a callback until its output is _not_ a function. Once the callback
          * output passes, it is returned. If the attempts time out, an error is thrown.
@@ -2276,14 +2463,12 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link waitUntil.isFunction} : the opposite assertion.
          */
-        isNotFunction:
-            autoGuard<
-                <const Actual>(
-                    callback: () => MaybePromise<Actual>,
-                    options?: WaitUntilOptions | undefined,
-                    failureMessage?: string | undefined,
-                ) => Promise<Exclude<Actual, AnyFunction>>
-            >(),
+        isNotFunction: createWaitUntil(assertions.isNotFunction) as <Actual>(
+            this: void,
+            callback: () => MaybePromise<Actual>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<Exclude<Actual, AnyFunction>>,
         /**
          * Repeatedly calls a callback until its output is _not_ exactly `null`. Once the callback
          * output passes, it is returned. If the attempts time out, an error is thrown.
@@ -2303,14 +2488,12 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link waitUntil.isFunction} : the opposite assertion.
          */
-        isNotNull:
-            autoGuard<
-                <const Actual>(
-                    callback: () => MaybePromise<Actual>,
-                    options?: WaitUntilOptions | undefined,
-                    failureMessage?: string | undefined,
-                ) => Promise<Exclude<Actual, null>>
-            >(),
+        isNotNull: createWaitUntil(assertions.isNotNull) as <Actual>(
+            this: void,
+            callback: () => MaybePromise<Actual>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<Exclude<Actual, null>>,
         /**
          * Repeatedly calls a callback until its output is _not_ a number. This includes `NaN`. Once
          * the callback output passes, it is returned. If the attempts time out, an error is
@@ -2331,14 +2514,12 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link waitUntil.isNotFunction} : the opposite assertion.
          */
-        isNotNumber:
-            autoGuard<
-                <const Actual>(
-                    callback: () => MaybePromise<Actual>,
-                    options?: WaitUntilOptions | undefined,
-                    failureMessage?: string | undefined,
-                ) => Promise<Exclude<Actual, number>>
-            >(),
+        isNotNumber: createWaitUntil(assertions.isNotNumber) as <Actual>(
+            this: void,
+            callback: () => MaybePromise<Actual>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<Exclude<Actual, number>>,
         /**
          * Repeatedly calls a callback until its output is _not_ an object. This includes arrays.
          * Once the callback output passes, it is returned. If the attempts time out, an error is
@@ -2361,14 +2542,12 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link waitUntil.isFunction} : the opposite assertion.
          */
-        isNotObject:
-            autoGuard<
-                <const Actual>(
-                    callback: () => MaybePromise<Actual>,
-                    options?: WaitUntilOptions | undefined,
-                    failureMessage?: string | undefined,
-                ) => Promise<Exclude<Actual, UnknownObject>>
-            >(),
+        isNotObject: createWaitUntil(assertions.isNotObject) as <Actual>(
+            this: void,
+            callback: () => MaybePromise<Actual>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<Exclude<Actual, UnknownObject>>,
         /**
          * Repeatedly calls a callback until its output is _not_ a string. Once the callback output
          * passes, it is returned. If the attempts time out, an error is thrown.
@@ -2388,14 +2567,12 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link waitUntil.isFunction} : the opposite assertion.
          */
-        isNotString:
-            autoGuard<
-                <const Actual>(
-                    callback: () => MaybePromise<Actual>,
-                    options?: WaitUntilOptions | undefined,
-                    failureMessage?: string | undefined,
-                ) => Promise<Exclude<Actual, string>>
-            >(),
+        isNotString: createWaitUntil(assertions.isNotString) as <Actual>(
+            this: void,
+            callback: () => MaybePromise<Actual>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<Exclude<Actual, string>>,
         /**
          * Repeatedly calls a callback until its output is _not_ a symbol. Once the callback output
          * passes, it is returned. If the attempts time out, an error is thrown.
@@ -2415,14 +2592,12 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link waitUntil.isFunction} : the opposite assertion.
          */
-        isNotSymbol:
-            autoGuard<
-                <const Actual>(
-                    callback: () => MaybePromise<Actual>,
-                    options?: WaitUntilOptions | undefined,
-                    failureMessage?: string | undefined,
-                ) => Promise<Exclude<Actual, symbol>>
-            >(),
+        isNotSymbol: createWaitUntil(assertions.isNotSymbol) as <Actual>(
+            this: void,
+            callback: () => MaybePromise<Actual>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<Exclude<Actual, symbol>>,
         /**
          * Repeatedly calls a callback until its output is _not_ exactly `undefined`. Once the
          * callback output passes, it is returned. If the attempts time out, an error is thrown.
@@ -2442,13 +2617,11 @@ export const runtimeTypeGuards = {
          * @see
          * - {@link waitUntil.isFunction} : the opposite assertion.
          */
-        isNotUndefined:
-            autoGuard<
-                <const Actual>(
-                    callback: () => MaybePromise<Actual>,
-                    options?: WaitUntilOptions | undefined,
-                    failureMessage?: string | undefined,
-                ) => Promise<Exclude<Actual, undefined>>
-            >(),
+        isNotUndefined: createWaitUntil(assertions.isNotUndefined) as <Actual>(
+            this: void,
+            callback: () => MaybePromise<Actual>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<Exclude<Actual, undefined>>,
     },
 } satisfies GuardGroup<typeof assertions>;

@@ -2,38 +2,9 @@ import {type MaybePromise, stringify} from '@augment-vir/core';
 import {type Constructor} from 'type-fest';
 import {AssertionError} from '../augments/assertion.error.js';
 import type {GuardGroup} from '../guard-types/guard-group.js';
-import {autoGuard} from '../guard-types/guard-override.js';
-import {type WaitUntilOptions} from '../guard-types/wait-until-function.js';
+import {createWaitUntil, type WaitUntilOptions} from '../guard-types/wait-until-function.js';
 
-/** Wraps the JavaScript built-in "instanceof" in a type guard assertion. */
-function instanceOf<const Instance>(
-    instance: unknown,
-    /** The constructor that the "instance" input will be checked against. */
-    constructor: Constructor<Instance>,
-    /** Message to include in error message if this assertion fails. */
-    failureMessage?: string | undefined,
-): asserts instance is Instance {
-    if (!(instance instanceof constructor)) {
-        throw new AssertionError(
-            `'${stringify(instance)}' is not an instance of '${constructor.name}'`,
-            failureMessage,
-        );
-    }
-}
-function notInstanceOf<const Actual, const Instance>(
-    instance: Actual,
-    constructor: Constructor<Instance>,
-    failureMessage?: string | undefined,
-): asserts instance is Exclude<Actual, Instance> {
-    if (instance instanceof constructor) {
-        throw new AssertionError(
-            `'${stringify(instance)}' is an instance of '${constructor.name}'`,
-            failureMessage,
-        );
-    }
-}
-
-const assertions: {
+const assertions = {
     /**
      * Asserts that a value is an instance of the given class constructor.
      *
@@ -53,7 +24,21 @@ const assertions: {
      * @see
      * - {@link assert.notInstanceOf} : the opposite assertion.
      */
-    instanceOf: typeof instanceOf;
+    instanceOf<const Instance>(
+        this: void,
+        instance: unknown,
+        /** The constructor that the "instance" input will be checked against. */
+        constructor: Constructor<Instance>,
+        /** Message to include in error message if this assertion fails. */
+        failureMessage?: string | undefined,
+    ): asserts instance is Instance {
+        if (!(instance instanceof constructor)) {
+            throw new AssertionError(
+                `'${stringify(instance)}' is not an instance of '${constructor.name}'`,
+                failureMessage,
+            );
+        }
+    },
     /**
      * Asserts that a value is _not_ an instance of the given class constructor.
      *
@@ -72,10 +57,19 @@ const assertions: {
      * @see
      * - {@link assert.instanceOf} : the opposite assertion.
      */
-    notInstanceOf: typeof notInstanceOf;
-} = {
-    instanceOf,
-    notInstanceOf,
+    notInstanceOf<const Actual, const Instance>(
+        this: void,
+        instance: Actual,
+        constructor: Constructor<Instance>,
+        failureMessage?: string | undefined,
+    ): asserts instance is Exclude<Actual, Instance> {
+        if (instance instanceof constructor) {
+            throw new AssertionError(
+                `'${stringify(instance)}' is an instance of '${constructor.name}'`,
+                failureMessage,
+            );
+        }
+    },
 };
 
 export const instanceGuards = {
@@ -98,13 +92,13 @@ export const instanceGuards = {
          * @see
          * - {@link check.notInstanceOf} : the opposite check.
          */
-        instanceOf:
-            autoGuard<
-                <const Instance>(
-                    instance: unknown,
-                    constructor: Constructor<Instance>,
-                ) => instance is Instance
-            >(),
+        instanceOf<const Instance>(
+            this: void,
+            instance: unknown,
+            constructor: Constructor<Instance>,
+        ): instance is Instance {
+            return instance instanceof constructor;
+        },
         /**
          * Checks that a value is _not_ an instance of the given class constructor.
          *
@@ -122,13 +116,13 @@ export const instanceGuards = {
          * @see
          * - {@link check.instanceOf} : the opposite check.
          */
-        notInstanceOf:
-            autoGuard<
-                <const Actual, const Instance>(
-                    instance: Actual,
-                    constructor: Constructor<Instance>,
-                ) => instance is Exclude<Actual, Instance>
-            >(),
+        notInstanceOf<const Actual, const Instance>(
+            this: void,
+            instance: Actual,
+            constructor: Constructor<Instance>,
+        ): instance is Exclude<Actual, Instance> {
+            return !(instance instanceof constructor);
+        },
     },
     assertWrap: {
         /**
@@ -151,14 +145,21 @@ export const instanceGuards = {
          * @see
          * - {@link assertWrap.notInstanceOf} : the opposite assertion.
          */
-        instanceOf:
-            autoGuard<
-                <const Instance>(
-                    instance: unknown,
-                    constructor: Constructor<Instance>,
-                    failureMessage?: string | undefined,
-                ) => Instance
-            >(),
+        instanceOf<const Instance>(
+            this: void,
+            instance: unknown,
+            constructor: Constructor<Instance>,
+            failureMessage?: string | undefined,
+        ): Instance {
+            if (instance instanceof constructor) {
+                return instance;
+            } else {
+                throw new AssertionError(
+                    `'${stringify(instance)}' is not an instance of '${constructor.name}'`,
+                    failureMessage,
+                );
+            }
+        },
         /**
          * Asserts that a value is _not_ an instance of the given class constructor. Returns the
          * value if the assertion passes.
@@ -179,14 +180,21 @@ export const instanceGuards = {
          * @see
          * - {@link assertWrap.instanceOf} : the opposite assertion.
          */
-        notInstanceOf:
-            autoGuard<
-                <const Actual, const Instance>(
-                    instance: Actual,
-                    constructor: Constructor<Instance>,
-                    failureMessage?: string | undefined,
-                ) => Exclude<Actual, Instance>
-            >(),
+        notInstanceOf<const Actual, const Instance>(
+            this: void,
+            instance: Actual,
+            constructor: Constructor<Instance>,
+            failureMessage?: string | undefined,
+        ): Exclude<Actual, Instance> {
+            if (instance instanceof constructor) {
+                throw new AssertionError(
+                    `'${stringify(instance)}' is an instance of '${constructor.name}'`,
+                    failureMessage,
+                );
+            } else {
+                return instance as Exclude<Actual, Instance>;
+            }
+        },
     },
     checkWrap: {
         /**
@@ -208,13 +216,17 @@ export const instanceGuards = {
          * @see
          * - {@link checkWrap.notInstanceOf} : the opposite check.
          */
-        instanceOf:
-            autoGuard<
-                <const Instance>(
-                    instance: unknown,
-                    constructor: Constructor<Instance>,
-                ) => Instance | undefined
-            >(),
+        instanceOf<const Instance>(
+            this: void,
+            instance: unknown,
+            constructor: Constructor<Instance>,
+        ): Instance | undefined {
+            if (instance instanceof constructor) {
+                return instance;
+            } else {
+                return undefined;
+            }
+        },
         /**
          * Checks that a value is _not_ an instance of the given class constructor. Returns the
          * value if the check passes, otherwise `undefined`.
@@ -234,13 +246,17 @@ export const instanceGuards = {
          * @see
          * - {@link checkWrap.instanceOf} : the opposite check.
          */
-        notInstanceOf:
-            autoGuard<
-                <const Actual, const Instance>(
-                    instance: Actual,
-                    constructor: Constructor<Instance>,
-                ) => Exclude<Actual, Instance> | undefined
-            >(),
+        notInstanceOf<const Actual, const Instance>(
+            this: void,
+            instance: Actual,
+            constructor: Constructor<Instance>,
+        ): Exclude<Actual, Instance> | undefined {
+            if (instance instanceof constructor) {
+                return undefined;
+            } else {
+                return instance as Exclude<Actual, Instance>;
+            }
+        },
     },
     waitUntil: {
         /**
@@ -264,15 +280,13 @@ export const instanceGuards = {
          * @see
          * - {@link waitUntil.notInstanceOf} : the opposite assertion.
          */
-        instanceOf:
-            autoGuard<
-                <const Instance>(
-                    constructor: Constructor<Instance>,
-                    callback: () => MaybePromise<unknown>,
-                    options?: WaitUntilOptions | undefined,
-                    failureMessage?: string | undefined,
-                ) => Promise<Instance>
-            >(),
+        instanceOf: createWaitUntil(assertions.instanceOf) as <const Instance>(
+            this: void,
+            constructor: Constructor<Instance>,
+            callback: () => MaybePromise<unknown>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<Instance>,
         /**
          * Repeatedly calls a callback until its output is not an instance of the given class
          * constructor. Once the callback output passes, it is returned. If the attempts time out,
@@ -294,14 +308,12 @@ export const instanceGuards = {
          * @see
          * - {@link waitUntil.instanceOf} : the opposite assertion.
          */
-        notInstanceOf:
-            autoGuard<
-                <const Actual, const Instance>(
-                    constructor: Constructor<Instance>,
-                    callback: () => MaybePromise<Actual>,
-                    options?: WaitUntilOptions | undefined,
-                    failureMessage?: string | undefined,
-                ) => Promise<Exclude<Actual, Instance>>
-            >(),
+        notInstanceOf: createWaitUntil(assertions.notInstanceOf) as <const Actual, const Instance>(
+            this: void,
+            constructor: Constructor<Instance>,
+            callback: () => MaybePromise<Actual>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<Exclude<Actual, Instance>>,
     },
 } satisfies GuardGroup<typeof assertions>;

@@ -16,14 +16,8 @@ describe('jsonEquals', () => {
         ignores: {
             nonJson: 'props',
             value: new Map([
-                [
-                    'a',
-                    'b',
-                ],
-                [
-                    'c',
-                    'd',
-                ],
+                ['a', 'b'],
+                ['c', 'd'],
             ]),
         },
     } as any;
@@ -36,14 +30,8 @@ describe('jsonEquals', () => {
         ignores: {
             nonJson: 'props',
             value: new Map([
-                [
-                    'a',
-                    'b',
-                ],
-                [
-                    'c',
-                    'd',
-                ],
+                ['a', 'b'],
+                ['c', 'd'],
             ]),
         },
     } as any;
@@ -55,12 +43,7 @@ describe('jsonEquals', () => {
         },
         ignores: {
             nonJson: 'props',
-            value: new Map([
-                [
-                    'q',
-                    'r',
-                ],
-            ]),
+            value: new Map([['q', 'r']]),
         },
     };
     type ExpectedType = {
@@ -83,12 +66,14 @@ describe('jsonEquals', () => {
             assert.tsType(actualPass).notEquals<ExpectedType>();
 
             assert.jsonEquals(actualPass, expected);
+            assert.jsonEquals({}, {});
 
             assert.tsType(actualPass).equals<ExpectedType>();
             assert.tsType(actualPass).notEquals<UnexpectedType>();
         });
         it('rejects', () => {
             assert.throws(() => assert.jsonEquals(actualReject, expected));
+            assert.throws(() => assert.jsonEquals({a: '1'}, {a: '1', b: '2'}));
         });
     });
     describe('check', () => {
@@ -109,18 +94,12 @@ describe('jsonEquals', () => {
         itCases(check.jsonEquals, [
             {
                 it: 'handles empty first arg',
-                inputs: [
-                    {},
-                    {a: 'b'},
-                ],
+                inputs: [{}, {a: 'b'}],
                 expect: false,
             },
             {
                 it: 'handles empty last arg',
-                inputs: [
-                    {a: 'b'},
-                    {},
-                ],
+                inputs: [{a: 'b'}, {}],
                 expect: false,
             },
         ]);

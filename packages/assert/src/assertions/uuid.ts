@@ -1,27 +1,11 @@
-import {type MaybePromise, type Uuid} from '@augment-vir/core';
+import {type MaybePromise, type NarrowToExpected, type Uuid} from '@augment-vir/core';
 import {AssertionError} from '../augments/assertion.error.js';
 import {type GuardGroup} from '../guard-types/guard-group.js';
-import {autoGuard, autoGuardSymbol} from '../guard-types/guard-override.js';
-import {type WaitUntilOptions} from '../guard-types/wait-until-function.js';
+import {createWaitUntil, type WaitUntilOptions} from '../guard-types/wait-until-function.js';
 
 const uuidRegExp = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
-/** Checks if the input string is a valid v4 UUID. */
-function isUuid(actual: unknown, failureMessage?: string | undefined): asserts actual is Uuid {
-    if (!String(actual).match(uuidRegExp)) {
-        throw new AssertionError(`'${String(actual)}' is not a UUID.`, failureMessage);
-    }
-}
-function isNotUuid<const Actual>(
-    actual: Actual,
-    failureMessage?: string | undefined,
-): asserts actual is Exclude<Actual, Uuid> {
-    if (String(actual).match(uuidRegExp)) {
-        throw new AssertionError(`'${String(actual)}' is a UUID.`, failureMessage);
-    }
-}
-
-const assertions: {
+const assertions = {
     /**
      * Asserts that a value is a valid UUID. Does not accept the nil or max UUIDs.
      *
@@ -44,7 +28,15 @@ const assertions: {
      * @see
      * - {@link assert.isNotUuid} : the opposite assertion.
      */
-    isUuid: typeof isUuid;
+    isUuid(
+        this: void,
+        actual: unknown,
+        failureMessage?: string | undefined,
+    ): asserts actual is Uuid {
+        if (!String(actual).match(uuidRegExp)) {
+            throw new AssertionError(`'${String(actual)}' is not a UUID.`, failureMessage);
+        }
+    },
     /**
      * Asserts that a value is _not_ a valid UUID. The nil or max UUIDs are included as _not_ valid.
      *
@@ -67,10 +59,15 @@ const assertions: {
      * @see
      * - {@link assert.isUuid} : the opposite assertion.
      */
-    isNotUuid: typeof isNotUuid;
-} = {
-    isUuid,
-    isNotUuid,
+    isNotUuid<const Actual>(
+        this: void,
+        actual: Actual,
+        failureMessage?: string | undefined,
+    ): asserts actual is Exclude<Actual, Uuid> {
+        if (String(actual).match(uuidRegExp)) {
+            throw new AssertionError(`'${String(actual)}' is a UUID.`, failureMessage);
+        }
+    },
 };
 
 export const uuidGuards = {
@@ -97,7 +94,9 @@ export const uuidGuards = {
          * @see
          * - {@link check.isNotUuid} : the opposite check.
          */
-        isUuid: autoGuardSymbol,
+        isUuid(this: void, actual: unknown): actual is Uuid {
+            return !!String(actual).match(uuidRegExp);
+        },
         /**
          * Checks that a value is _not_ a valid UUID. The nil or max UUIDs are included as _not_
          * valid.
@@ -120,13 +119,9 @@ export const uuidGuards = {
          * @see
          * - {@link check.isUuid} : the opposite check.
          */
-        isNotUuid:
-            autoGuard<
-                <const Actual>(
-                    actual: Actual,
-                    failureMessage?: string | undefined,
-                ) => actual is Exclude<Actual, Uuid>
-            >(),
+        isNotUuid<Actual>(this: void, actual: Actual): actual is Exclude<Actual, Uuid> {
+            return !String(actual).match(uuidRegExp);
+        },
     },
     assertWrap: {
         /**
@@ -152,7 +147,17 @@ export const uuidGuards = {
          * @see
          * - {@link assertWrap.isNotUuid} : the opposite assertion.
          */
-        isUuid: autoGuardSymbol,
+        isUuid<Actual>(
+            this: void,
+            actual: unknown,
+            failureMessage?: string | undefined,
+        ): NarrowToExpected<Actual, Uuid> {
+            if (!String(actual).match(uuidRegExp)) {
+                throw new AssertionError(`'${String(actual)}' is not a UUID.`, failureMessage);
+            }
+
+            return actual as NarrowToExpected<Actual, Uuid>;
+        },
         /**
          * Asserts that a value is _not_ a valid UUID. The nil or max UUIDs are included as _not_
          * valid. Returns the value if the assertion passes.
@@ -176,13 +181,17 @@ export const uuidGuards = {
          * @see
          * - {@link assertWrap.isUuid} : the opposite assertion.
          */
-        isNotUuid:
-            autoGuard<
-                <const Actual>(
-                    actual: Actual,
-                    failureMessage?: string | undefined,
-                ) => Exclude<Actual, Uuid>
-            >(),
+        isNotUuid<const Actual>(
+            this: void,
+            actual: Actual,
+            failureMessage?: string | undefined,
+        ): Exclude<Actual, Uuid> {
+            if (String(actual).match(uuidRegExp)) {
+                throw new AssertionError(`'${String(actual)}' is a UUID.`, failureMessage);
+            }
+
+            return actual as Exclude<Actual, Uuid>;
+        },
     },
     checkWrap: {
         /**
@@ -208,7 +217,13 @@ export const uuidGuards = {
          * @see
          * - {@link checkWrap.isNotUuid} : the opposite check.
          */
-        isUuid: autoGuardSymbol,
+        isUuid<Actual>(this: void, actual: Actual): NarrowToExpected<Actual, Uuid> | undefined {
+            if (String(actual).match(uuidRegExp)) {
+                return actual as NarrowToExpected<Actual, Uuid>;
+            } else {
+                return undefined;
+            }
+        },
         /**
          * Checks that a value is _not_ a valid UUID. The nil or max UUIDs are included as _not_
          * valid. Returns the value if the check passes, otherwise `undefined`.
@@ -232,13 +247,13 @@ export const uuidGuards = {
          * @see
          * - {@link checkWrap.isUuid} : the opposite check.
          */
-        isNotUuid:
-            autoGuard<
-                <const Actual>(
-                    actual: Actual,
-                    failureMessage?: string | undefined,
-                ) => Exclude<Actual, Uuid> | undefined
-            >(),
+        isNotUuid<Actual>(this: void, actual: Actual): Exclude<Actual, Uuid> | undefined {
+            if (String(actual).match(uuidRegExp)) {
+                return undefined;
+            } else {
+                return actual as Exclude<Actual, Uuid>;
+            }
+        },
     },
     waitUntil: {
         /**
@@ -266,7 +281,12 @@ export const uuidGuards = {
          * @see
          * - {@link waitUntil.isNotUuid} : the opposite assertion.
          */
-        isUuid: autoGuardSymbol,
+        isUuid: createWaitUntil(assertions.isUuid) as <const Actual>(
+            this: void,
+            callback: () => MaybePromise<Actual>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<NarrowToExpected<Actual, Uuid>>,
         /**
          * Repeatedly calls a callback until its output is _not_ a valid UUID. The nil or max UUIDs
          * are included as _not_ valid. Returns the value if the assertion passes. Once the callback
@@ -292,13 +312,11 @@ export const uuidGuards = {
          * @see
          * - {@link waitUntil.isUuid} : the opposite assertion.
          */
-        isNotUuid:
-            autoGuard<
-                <const Actual>(
-                    callback: () => MaybePromise<Actual>,
-                    options?: WaitUntilOptions | undefined,
-                    failureMessage?: string | undefined,
-                ) => Promise<Exclude<Actual, Uuid>>
-            >(),
+        isNotUuid: createWaitUntil(assertions.isNotUuid) as <const Actual>(
+            this: void,
+            callback: () => MaybePromise<Actual>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<Exclude<Actual, Uuid>>,
     },
 } satisfies GuardGroup<typeof assertions>;
