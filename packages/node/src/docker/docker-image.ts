@@ -15,12 +15,7 @@ export async function updateImage(
     const command = [
         'docker',
         'pull',
-        ...(platform
-            ? [
-                  '--platform',
-                  platform,
-              ]
-            : []),
+        ...(platform ? ['--platform', platform] : []),
         wrapString({value: imageName, wrapper: "'"}),
     ].join(' ');
 

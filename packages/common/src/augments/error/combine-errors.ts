@@ -15,10 +15,7 @@ import {extractErrorMessage} from '@augment-vir/core';
  * ```ts
  * import {combineErrors} from '@augment-vir/common';
  *
- * const result1 = combineErrors([
- *     new Error('message 1'),
- *     new Error('message 2'),
- * ]); // result1 is a single error with the message 'message 1\nmessage 2'
+ * const result1 = combineErrors([new Error('message 1'), new Error('message 2')]); // result1 is a single error with the message 'message 1\nmessage 2'
  * ```
  *
  * @returns A single error.

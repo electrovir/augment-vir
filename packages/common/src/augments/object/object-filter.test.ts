@@ -35,10 +35,7 @@ describe(filterObject.name, () => {
                 5: testObject[5],
                 numeric: testObject.numeric,
             },
-            inputs: [
-                testObject,
-                () => true,
-            ],
+            inputs: [testObject, () => true],
         },
         {
             it: 'should be able to remove symbol keys',

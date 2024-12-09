@@ -55,12 +55,7 @@ describe(appendPositionDebugDiv.name, () => {
         const debugDiv = appendPositionDebugDiv(getCenterOfElement(fixture));
 
         function findDebugDiv() {
-            return document.body.querySelector(
-                [
-                    '.',
-                    debugDiv.className,
-                ].join(''),
-            );
+            return document.body.querySelector(['.', debugDiv.className].join(''));
         }
 
         assert.isDefined(findDebugDiv(), 'failed to find the debug div');

@@ -66,19 +66,9 @@ describe(mergePropertyArrays.name, () => {
                 },
             ],
             expect: {
-                prop1: [
-                    'hi',
-                    'hi2',
-                    'hi3',
-                ],
-                prop2: [
-                    'bye',
-                    'bye2',
-                ],
-                prop3: [
-                    'another',
-                    'another2',
-                ],
+                prop1: ['hi', 'hi2', 'hi3'],
+                prop2: ['bye', 'bye2'],
+                prop3: ['another', 'another2'],
             },
         },
         {

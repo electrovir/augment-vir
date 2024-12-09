@@ -10,11 +10,7 @@ describe(parseWaitUntilArgs.name, () => {
     itCases(parseWaitUntilArgs, [
         {
             it: 'works',
-            input: [
-                callback1,
-                waitUntilTestOptions satisfies WaitUntilOptions,
-                'failure',
-            ],
+            input: [callback1, waitUntilTestOptions satisfies WaitUntilOptions, 'failure'],
             expect: {
                 callback: callback1,
                 extraAssertionArgs: [],

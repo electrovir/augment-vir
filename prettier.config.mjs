@@ -1,3 +1,4 @@
+import {omitObjectKeys} from '@augment-vir/common';
 import {basePrettierConfig} from '@virmator/format/configs/prettier.config.base.mjs';
 
 /**
@@ -7,7 +8,11 @@ import {basePrettierConfig} from '@virmator/format/configs/prettier.config.base.
  * @type {PrettierOptions & MultilineOptions}
  */
 const prettierConfig = {
-    ...basePrettierConfig,
+    ...omitObjectKeys(basePrettierConfig, ['multilineArraysWrapThreshold']),
+    /**
+     * Formatting without my own plugins so they actually work in VS Code (otherwise they circularly
+     * depend too much on this package itself).
+     */
     plugins: [
         'prettier-plugin-toml',
         'prettier-plugin-sort-json',

@@ -99,26 +99,17 @@ const unsetError = Symbol('unset-error');
  *     itCases(myFunctionToTest, [
  *         {
  *             it: 'handles negative numbers',
- *             inputs: [
- *                 -1,
- *                 -2,
- *             ],
+ *             inputs: [-1, -2],
  *             expect: -3,
  *         },
  *         {
  *             it: 'handles 0',
- *             inputs: [
- *                 0,
- *                 0,
- *             ],
+ *             inputs: [0, 0],
  *             expect: 0,
  *         },
  *         {
  *             it: 'adds',
- *             inputs: [
- *                 3,
- *                 5,
- *             ],
+ *             inputs: [3, 5],
  *             expect: 8,
  *         },
  *     ]);
@@ -153,26 +144,17 @@ export function itCases<const FunctionToTest extends AnyFunction>(
  *     itCases(myFunctionToTest, [
  *         {
  *             it: 'handles negative numbers',
- *             inputs: [
- *                 -1,
- *                 -2,
- *             ],
+ *             inputs: [-1, -2],
  *             expect: -3,
  *         },
  *         {
  *             it: 'handles 0',
- *             inputs: [
- *                 0,
- *                 0,
- *             ],
+ *             inputs: [0, 0],
  *             expect: 0,
  *         },
  *         {
  *             it: 'adds',
- *             inputs: [
- *                 3,
- *                 5,
- *             ],
+ *             inputs: [3, 5],
  *             expect: 8,
  *         },
  *     ]);
@@ -206,26 +188,17 @@ export function itCases<const FunctionToTest extends AnyFunction>(
  *     itCases(myFunctionToTest, [
  *         {
  *             it: 'handles negative numbers',
- *             inputs: [
- *                 -1,
- *                 -2,
- *             ],
+ *             inputs: [-1, -2],
  *             expect: -3,
  *         },
  *         {
  *             it: 'handles 0',
- *             inputs: [
- *                 0,
- *                 0,
- *             ],
+ *             inputs: [0, 0],
  *             expect: 0,
  *         },
  *         {
  *             it: 'adds',
- *             inputs: [
- *                 3,
- *                 5,
- *             ],
+ *             inputs: [3, 5],
  *             expect: 8,
  *         },
  *     ]);

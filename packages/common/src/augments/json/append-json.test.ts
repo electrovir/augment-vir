@@ -5,14 +5,8 @@ describe(appendJson.name, () => {
     itCases(appendJson, [
         {
             it: 'converts first raw string into an array',
-            inputs: [
-                'a',
-                ['b'],
-            ],
-            expect: [
-                'a',
-                'b',
-            ],
+            inputs: ['a', ['b']],
+            expect: ['a', 'b'],
         },
         {
             it: 'falls back to empty object without inputs',
@@ -21,32 +15,17 @@ describe(appendJson.name, () => {
         },
         {
             it: 'appends subsequent raw strings into an array',
-            inputs: [
-                'a',
-                'b',
-            ],
-            expect: [
-                'a',
-                'b',
-            ],
+            inputs: ['a', 'b'],
+            expect: ['a', 'b'],
         },
         {
             it: 'appends an object into an array',
-            inputs: [
-                'a',
-                {a: 'b'},
-            ],
-            expect: [
-                'a',
-                {a: 'b'},
-            ],
+            inputs: ['a', {a: 'b'}],
+            expect: ['a', {a: 'b'}],
         },
         {
             it: 'appends a string into an object',
-            inputs: [
-                {a: 'b'},
-                'a',
-            ],
+            inputs: [{a: 'b'}, 'a'],
             expect: {
                 a: 'b',
                 '0': 'a',

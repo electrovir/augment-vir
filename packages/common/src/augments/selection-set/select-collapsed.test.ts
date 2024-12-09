@@ -47,10 +47,7 @@ describe(selectCollapsedFrom.name, () => {
                     },
                 },
             ],
-            expect: [
-                3,
-                4,
-            ],
+            expect: [3, 4],
         },
         {
             it: 'collapses a simpler case',
@@ -77,10 +74,7 @@ describe(selectCollapsedFrom.name, () => {
                     },
                 },
             ],
-            expect: [
-                3,
-                4,
-            ],
+            expect: [3, 4],
         },
         {
             it: 'stops collapsing if there are more than 1 key',
@@ -215,10 +209,7 @@ describe(selectCollapsedFrom.name, () => {
                     },
                 },
             ],
-            expect: [
-                undefined,
-                4,
-            ],
+            expect: [undefined, 4],
         },
     ]);
 

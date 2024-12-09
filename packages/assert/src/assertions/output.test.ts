@@ -39,14 +39,7 @@ describe('output', () => {
             );
         });
         it('works with multiple function inputs without custom asserter', () => {
-            assert.output(
-                (input: number, input2: string) => String(input),
-                [
-                    5,
-                    'word',
-                ],
-                '5',
-            );
+            assert.output((input: number, input2: string) => String(input), [5, 'word'], '5');
         });
         it('works without custom asserter', () => {
             assert.output((input: number) => String(input), [5], '5');
@@ -83,10 +76,7 @@ describe('output', () => {
         it('works with multiple function inputs without custom asserter and async callback', async () => {
             const result = assert.output(
                 (input: number, input2: string) => Promise.resolve(String(input)),
-                [
-                    5,
-                    'word',
-                ],
+                [5, 'word'],
                 '5',
             );
             assert.tsType(result).equals<Promise<void>>();
@@ -123,10 +113,7 @@ describe('output', () => {
             assert.output(
                 assert.notStrictEquals,
                 (input: number, input2: string) => String(input),
-                [
-                    5,
-                    'word',
-                ],
+                [5, 'word'],
                 'not equal',
             );
         });
@@ -142,54 +129,24 @@ describe('output', () => {
         itCases(assert.output as OutputAssertWithoutAsserter, [
             {
                 it: 'passes when the values match',
-                inputs: [
-                    () => 'five',
-                    [],
-                    'five',
-                ],
+                inputs: [() => 'five', [], 'five'],
                 throws: undefined,
             },
             {
                 it: 'passes when the values match with inputs',
-                inputs: [
-                    (a: string, b: number) =>
-                        [
-                            a,
-                            b,
-                        ].join(','),
-                    [
-                        'first',
-                        45,
-                    ],
-                    'first,45',
-                ],
+                inputs: [(a: string, b: number) => [a, b].join(','), ['first', 45], 'first,45'],
                 throws: undefined,
             },
             {
                 it: 'fails when the values do not match',
-                inputs: [
-                    () => 'sixty',
-                    [],
-                    'fifty',
-                ],
+                inputs: [() => 'sixty', [], 'fifty'],
                 throws: {
                     matchConstructor: AssertionError,
                 },
             },
             {
                 it: 'fails when the values do not match with inputs',
-                inputs: [
-                    (a: string, b: number) =>
-                        [
-                            a,
-                            b,
-                        ].join(','),
-                    [
-                        'second',
-                        67,
-                    ],
-                    'second,67',
-                ],
+                inputs: [(a: string, b: number) => [a, b].join(','), ['second', 67], 'second,67'],
                 throws: undefined,
             },
             {
@@ -210,16 +167,10 @@ describe('output', () => {
                 inputs: [
                     (a: string, b: number) => {
                         return {
-                            value: [
-                                a,
-                                b,
-                            ].join(','),
+                            value: [a, b].join(','),
                         };
                     },
-                    [
-                        'other',
-                        46,
-                    ],
+                    ['other', 46],
                     {value: `other,46`},
                 ],
                 throws: undefined,
@@ -265,14 +216,7 @@ describe('output', () => {
         });
         it('works with multiple function inputs without custom asserter', () => {
             assert.isTrue(
-                check.output(
-                    (input: number, input2: string) => String(input),
-                    [
-                        5,
-                        'word',
-                    ],
-                    '5',
-                ),
+                check.output((input: number, input2: string) => String(input), [5, 'word'], '5'),
             );
         });
         it('works without custom asserter', () => {
@@ -306,10 +250,7 @@ describe('output', () => {
         it('works with multiple function inputs without custom asserter and async callback', async () => {
             const result = check.output(
                 (input: number, input2: string) => Promise.resolve(String(input)),
-                [
-                    5,
-                    'word',
-                ],
+                [5, 'word'],
                 '5',
             );
             assert.tsType(result).equals<Promise<boolean>>();
@@ -351,10 +292,7 @@ describe('output', () => {
                 check.output(
                     assert.notStrictEquals,
                     (input: number, input2: string) => String(input),
-                    [
-                        5,
-                        'word',
-                    ],
+                    [5, 'word'],
                     'not equal',
                 ),
             );
@@ -373,52 +311,22 @@ describe('output', () => {
         itCases(check.output as OutputCheckWithoutAsserter, [
             {
                 it: 'passes when the values match',
-                inputs: [
-                    () => 'five',
-                    [],
-                    'five',
-                ],
+                inputs: [() => 'five', [], 'five'],
                 expect: true,
             },
             {
                 it: 'passes when the values match with inputs',
-                inputs: [
-                    (a: string, b: number) =>
-                        [
-                            a,
-                            b,
-                        ].join(','),
-                    [
-                        'first',
-                        45,
-                    ],
-                    'first,45',
-                ],
+                inputs: [(a: string, b: number) => [a, b].join(','), ['first', 45], 'first,45'],
                 expect: true,
             },
             {
                 it: 'fails when the values do not match',
-                inputs: [
-                    () => 'sixty',
-                    [],
-                    'fifty',
-                ],
+                inputs: [() => 'sixty', [], 'fifty'],
                 expect: false,
             },
             {
                 it: 'fails when the values do not match with inputs',
-                inputs: [
-                    (a: string, b: number) =>
-                        [
-                            a,
-                            b,
-                        ].join(','),
-                    [
-                        'second',
-                        67,
-                    ],
-                    'second,67',
-                ],
+                inputs: [(a: string, b: number) => [a, b].join(','), ['second', 67], 'second,67'],
                 expect: true,
             },
             {
@@ -439,16 +347,10 @@ describe('output', () => {
                 inputs: [
                     (a: string, b: number) => {
                         return {
-                            value: [
-                                a,
-                                b,
-                            ].join(','),
+                            value: [a, b].join(','),
                         };
                     },
-                    [
-                        'other',
-                        46,
-                    ],
+                    ['other', 46],
                     {value: `other,46`},
                 ],
                 expect: true,
@@ -494,10 +396,7 @@ describe('output', () => {
             assert.strictEquals(
                 assertWrap.output(
                     (input: number, input2: string) => String(input),
-                    [
-                        5,
-                        'word',
-                    ],
+                    [5, 'word'],
                     '5',
                 ),
                 '5',
@@ -541,10 +440,7 @@ describe('output', () => {
         it('works with multiple function inputs without custom asserter and async callback', async () => {
             const result = assertWrap.output(
                 (input: number, input2: string) => Promise.resolve(String(input)),
-                [
-                    5,
-                    'word',
-                ],
+                [5, 'word'],
                 '5',
             );
             assert.tsType(result).equals<Promise<string>>();
@@ -595,10 +491,7 @@ describe('output', () => {
                 assertWrap.output(
                     assert.notStrictEquals,
                     (input: number, input2: string) => String(input),
-                    [
-                        5,
-                        'word',
-                    ],
+                    [5, 'word'],
                     'not equal',
                 ),
                 '5',
@@ -619,54 +512,24 @@ describe('output', () => {
         itCases(assertWrap.output as OutputAssertWrapWithoutAsserter, [
             {
                 it: 'passes when the values match',
-                inputs: [
-                    () => 'five',
-                    [],
-                    'five',
-                ],
+                inputs: [() => 'five', [], 'five'],
                 expect: 'five',
             },
             {
                 it: 'passes when the values match with inputs',
-                inputs: [
-                    (a: string, b: number) =>
-                        [
-                            a,
-                            b,
-                        ].join(','),
-                    [
-                        'first',
-                        45,
-                    ],
-                    'first,45',
-                ],
+                inputs: [(a: string, b: number) => [a, b].join(','), ['first', 45], 'first,45'],
                 expect: 'first,45',
             },
             {
                 it: 'fails when the values do not match',
-                inputs: [
-                    () => 'sixty',
-                    [],
-                    'fifty',
-                ],
+                inputs: [() => 'sixty', [], 'fifty'],
                 throws: {
                     matchConstructor: AssertionError,
                 },
             },
             {
                 it: 'fails when the values do not match with inputs',
-                inputs: [
-                    (a: string, b: number) =>
-                        [
-                            a,
-                            b,
-                        ].join(','),
-                    [
-                        'second',
-                        67,
-                    ],
-                    'second,67',
-                ],
+                inputs: [(a: string, b: number) => [a, b].join(','), ['second', 67], 'second,67'],
                 expect: 'second,67',
             },
             {
@@ -687,16 +550,10 @@ describe('output', () => {
                 inputs: [
                     (a: string, b: number) => {
                         return {
-                            value: [
-                                a,
-                                b,
-                            ].join(','),
+                            value: [a, b].join(','),
                         };
                     },
-                    [
-                        'other',
-                        46,
-                    ],
+                    ['other', 46],
                     {value: `other,46`},
                 ],
                 expect: {value: `other,46`},
@@ -744,10 +601,7 @@ describe('output', () => {
             assert.strictEquals(
                 checkWrap.output(
                     (input: number, input2: string) => String(input),
-                    [
-                        5,
-                        'word',
-                    ],
+                    [5, 'word'],
                     '5',
                 ),
                 '5',
@@ -787,10 +641,7 @@ describe('output', () => {
         it('works with multiple function inputs without custom asserter and async callback', async () => {
             const result = checkWrap.output(
                 (input: number, input2: string) => Promise.resolve(String(input)),
-                [
-                    5,
-                    'word',
-                ],
+                [5, 'word'],
                 '5',
             );
             assert.tsType(result).equals<Promise<string | undefined>>();
@@ -836,10 +687,7 @@ describe('output', () => {
                 checkWrap.output(
                     assert.notStrictEquals,
                     (input: number, input2: string) => String(input),
-                    [
-                        5,
-                        'word',
-                    ],
+                    [5, 'word'],
                     'not equal',
                 ),
                 '5',
@@ -860,52 +708,22 @@ describe('output', () => {
         itCases(checkWrap.output as OutputCheckWrapWithoutAsserter, [
             {
                 it: 'passes when the values match',
-                inputs: [
-                    () => 'five',
-                    [],
-                    'five',
-                ],
+                inputs: [() => 'five', [], 'five'],
                 expect: 'five',
             },
             {
                 it: 'passes when the values match with inputs',
-                inputs: [
-                    (a: string, b: number) =>
-                        [
-                            a,
-                            b,
-                        ].join(','),
-                    [
-                        'first',
-                        45,
-                    ],
-                    'first,45',
-                ],
+                inputs: [(a: string, b: number) => [a, b].join(','), ['first', 45], 'first,45'],
                 expect: 'first,45',
             },
             {
                 it: 'fails when the values do not match',
-                inputs: [
-                    () => 'sixty',
-                    [],
-                    'fifty',
-                ],
+                inputs: [() => 'sixty', [], 'fifty'],
                 expect: undefined,
             },
             {
                 it: 'fails when the values do not match with inputs',
-                inputs: [
-                    (a: string, b: number) =>
-                        [
-                            a,
-                            b,
-                        ].join(','),
-                    [
-                        'second',
-                        67,
-                    ],
-                    'second,67',
-                ],
+                inputs: [(a: string, b: number) => [a, b].join(','), ['second', 67], 'second,67'],
                 expect: 'second,67',
             },
             {
@@ -926,16 +744,10 @@ describe('output', () => {
                 inputs: [
                     (a: string, b: number) => {
                         return {
-                            value: [
-                                a,
-                                b,
-                            ].join(','),
+                            value: [a, b].join(','),
                         };
                     },
-                    [
-                        'other',
-                        46,
-                    ],
+                    ['other', 46],
                     {value: `other,46`},
                 ],
                 expect: {value: `other,46`},
@@ -978,10 +790,7 @@ describe('output', () => {
             assert.strictEquals(
                 await waitUntil.output(
                     (input: number, input2: string) => String(input),
-                    [
-                        5,
-                        'word',
-                    ],
+                    [5, 'word'],
                     '5',
                 ),
                 '5',
@@ -1025,10 +834,7 @@ describe('output', () => {
                 await waitUntil.output(
                     assert.notStrictEquals,
                     (input: number, input2: string) => String(input),
-                    [
-                        5,
-                        'word',
-                    ],
+                    [5, 'word'],
                     'not equal',
                 ),
                 '5',
@@ -1049,55 +855,24 @@ describe('output', () => {
         itCases(waitUntil.output as OutputWaitUntilWithoutAsserter, [
             {
                 it: 'passes when the values match',
-                inputs: [
-                    () => 'five',
-                    [],
-                    'five',
-                ],
+                inputs: [() => 'five', [], 'five'],
                 expect: 'five',
             },
             {
                 it: 'passes when the values match with inputs',
-                inputs: [
-                    (a: string, b: number) =>
-                        [
-                            a,
-                            b,
-                        ].join(','),
-                    [
-                        'first',
-                        45,
-                    ],
-                    'first,45',
-                ],
+                inputs: [(a: string, b: number) => [a, b].join(','), ['first', 45], 'first,45'],
                 expect: 'first,45',
             },
             {
                 it: 'fails when the values do not match',
-                inputs: [
-                    () => 'sixty',
-                    [],
-                    'fifty',
-                    waitUntilTestOptions,
-                ],
+                inputs: [() => 'sixty', [], 'fifty', waitUntilTestOptions],
                 throws: {
                     matchConstructor: AssertionError,
                 },
             },
             {
                 it: 'fails when the values do not match with inputs',
-                inputs: [
-                    (a: string, b: number) =>
-                        [
-                            a,
-                            b,
-                        ].join(','),
-                    [
-                        'second',
-                        67,
-                    ],
-                    'second,67',
-                ],
+                inputs: [(a: string, b: number) => [a, b].join(','), ['second', 67], 'second,67'],
                 expect: 'second,67',
             },
             {
@@ -1118,16 +893,10 @@ describe('output', () => {
                 inputs: [
                     (a: string, b: number) => {
                         return {
-                            value: [
-                                a,
-                                b,
-                            ].join(','),
+                            value: [a, b].join(','),
                         };
                     },
-                    [
-                        'other',
-                        46,
-                    ],
+                    ['other', 46],
                     {value: `other,46`},
                 ],
                 expect: {value: `other,46`},

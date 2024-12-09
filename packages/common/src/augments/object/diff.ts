@@ -16,10 +16,7 @@ export function diffObjects<
     T1 extends Readonly<Record<PropertyKey, unknown>>,
 >(object0: T0, object1: T1): [PartialDeep<T0>, PartialDeep<T1>] | [] {
     const allObjectKeys = Array.from(
-        new Set([
-            ...getObjectTypedKeys(object0),
-            ...getObjectTypedKeys(object1),
-        ]),
+        new Set([...getObjectTypedKeys(object0), ...getObjectTypedKeys(object1)]),
     );
 
     const diffOutput = allObjectKeys.reduce(
@@ -44,10 +41,7 @@ export function diffObjects<
 
             return accum;
         },
-        [
-            {},
-            {},
-        ] as [Record<PropertyKey, unknown>, Record<PropertyKey, unknown>],
+        [{}, {}] as [Record<PropertyKey, unknown>, Record<PropertyKey, unknown>],
     );
 
     if (!Object.keys(diffOutput[0]).length && !Object.keys(diffOutput[1]).length) {
@@ -71,12 +65,7 @@ export function diffArrays<T0, T1>(
     array1: ReadonlyArray<T1>,
 ): [Array<T0>, Array<T1>] | [] {
     const allArrayIndexes: ReadonlyArray<number> = Array.from(
-        new Set(
-            [
-                ...Object.keys(array0),
-                ...Object.keys(array1),
-            ].map((index) => Number(index)),
-        ),
+        new Set([...Object.keys(array0), ...Object.keys(array1)].map((index) => Number(index))),
     ).sort();
 
     const diffArrays = allArrayIndexes.reduce(
@@ -99,10 +88,7 @@ export function diffArrays<T0, T1>(
 
             return accum;
         },
-        [
-            [],
-            [],
-        ] as [Array<T0>, Array<T1>],
+        [[], []] as [Array<T0>, Array<T1>],
     );
 
     if (!diffArrays[0].length && !diffArrays[1].length) {
@@ -140,10 +126,7 @@ export function diffBasic<T0, T1>(
     if (areEqual(value0, value1)) {
         return [];
     } else {
-        return [
-            value0,
-            value1,
-        ];
+        return [value0, value1];
     }
 }
 

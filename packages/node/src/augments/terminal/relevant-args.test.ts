@@ -17,11 +17,7 @@ describe(extractRelevantArgs.name, () => {
                     'more-value',
                 ],
             },
-            expect: [
-                'script-arg',
-                '--more-arg',
-                'more-value',
-            ],
+            expect: ['script-arg', '--more-arg', 'more-value'],
         },
         {
             it: 'errors if no file name is given',
@@ -55,11 +51,7 @@ describe(extractRelevantArgs.name, () => {
                     'more-value',
                 ],
             },
-            expect: [
-                'script-arg',
-                '--more-arg',
-                'more-value',
-            ],
+            expect: ['script-arg', '--more-arg', 'more-value'],
         },
         {
             it: 'does nothing if no match',

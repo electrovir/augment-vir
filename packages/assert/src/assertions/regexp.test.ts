@@ -16,18 +16,12 @@ describe('matches', () => {
         itCases(assert.matches, [
             {
                 it: 'passes',
-                inputs: [
-                    valuePass,
-                    regexp,
-                ],
+                inputs: [valuePass, regexp],
                 throws: undefined,
             },
             {
                 it: 'rejects',
-                inputs: [
-                    valueFail,
-                    regexp,
-                ],
+                inputs: [valueFail, regexp],
                 throws: {
                     matchConstructor: AssertionError,
                     matchMessage: "'a b c' does not match /abc/",
@@ -39,18 +33,12 @@ describe('matches', () => {
         itCases(check.matches, [
             {
                 it: 'passes',
-                inputs: [
-                    valuePass,
-                    regexp,
-                ],
+                inputs: [valuePass, regexp],
                 expect: true,
             },
             {
                 it: 'rejects',
-                inputs: [
-                    valueFail,
-                    regexp,
-                ],
+                inputs: [valueFail, regexp],
                 expect: false,
             },
         ]);
@@ -59,18 +47,12 @@ describe('matches', () => {
         itCases(assertWrap.matches, [
             {
                 it: 'passes',
-                inputs: [
-                    valuePass,
-                    regexp,
-                ],
+                inputs: [valuePass, regexp],
                 expect: valuePass,
             },
             {
                 it: 'rejects',
-                inputs: [
-                    valueFail,
-                    regexp,
-                ],
+                inputs: [valueFail, regexp],
                 throws: {
                     matchConstructor: AssertionError,
                     matchMessage: "'a b c' does not match /abc/",
@@ -82,18 +64,12 @@ describe('matches', () => {
         itCases(checkWrap.matches, [
             {
                 it: 'passes',
-                inputs: [
-                    valuePass,
-                    regexp,
-                ],
+                inputs: [valuePass, regexp],
                 expect: valuePass,
             },
             {
                 it: 'rejects',
-                inputs: [
-                    valueFail,
-                    regexp,
-                ],
+                inputs: [valueFail, regexp],
                 expect: undefined,
             },
         ]);
@@ -139,18 +115,12 @@ describe('mismatches', () => {
         itCases(assert.mismatches, [
             {
                 it: 'rejects',
-                inputs: [
-                    valuePass,
-                    regexp,
-                ],
+                inputs: [valuePass, regexp],
                 throws: undefined,
             },
             {
                 it: 'rejects',
-                inputs: [
-                    valueFail,
-                    regexp,
-                ],
+                inputs: [valueFail, regexp],
                 throws: {
                     matchConstructor: AssertionError,
                     matchMessage: 'matches',
@@ -162,18 +132,12 @@ describe('mismatches', () => {
         itCases(check.mismatches, [
             {
                 it: 'passes',
-                inputs: [
-                    valuePass,
-                    regexp,
-                ],
+                inputs: [valuePass, regexp],
                 expect: true,
             },
             {
                 it: 'rejects',
-                inputs: [
-                    valueFail,
-                    regexp,
-                ],
+                inputs: [valueFail, regexp],
                 expect: false,
             },
         ]);
@@ -182,18 +146,12 @@ describe('mismatches', () => {
         itCases(assertWrap.mismatches, [
             {
                 it: 'passes',
-                inputs: [
-                    valuePass,
-                    regexp,
-                ],
+                inputs: [valuePass, regexp],
                 expect: valuePass,
             },
             {
                 it: 'rejects',
-                inputs: [
-                    valueFail,
-                    regexp,
-                ],
+                inputs: [valueFail, regexp],
                 throws: {
                     matchConstructor: AssertionError,
                     matchMessage: 'matches',
@@ -205,18 +163,12 @@ describe('mismatches', () => {
         itCases(checkWrap.mismatches, [
             {
                 it: 'passes',
-                inputs: [
-                    valuePass,
-                    regexp,
-                ],
+                inputs: [valuePass, regexp],
                 expect: valuePass,
             },
             {
                 it: 'rejects',
-                inputs: [
-                    valueFail,
-                    regexp,
-                ],
+                inputs: [valueFail, regexp],
                 expect: undefined,
             },
         ]);

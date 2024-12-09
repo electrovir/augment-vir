@@ -157,18 +157,8 @@ describe(logShellOutput.name, () => {
                 },
             ],
             expect: {
-                stdout: [
-                    'exit code',
-                    '1',
-                    'stdout',
-                    'hi out',
-                    'stderr',
-                    'error',
-                ],
-                stderr: [
-                    'hi err',
-                    'fake error',
-                ],
+                stdout: ['exit code', '1', 'stdout', 'hi out', 'stderr', 'error'],
+                stderr: ['hi err', 'fake error'],
             },
         },
         {
@@ -180,30 +170,16 @@ describe(logShellOutput.name, () => {
                 },
             ],
             expect: {
-                stdout: [
-                    'exit code',
-                    '1',
-                    'stdout',
-                    'hi out',
-                    'stderr',
-                ],
-                stderr: [
-                    'hi err',
-                ],
+                stdout: ['exit code', '1', 'stdout', 'hi out', 'stderr'],
+                stderr: ['hi err'],
             },
         },
         {
             it: 'omits labels',
             inputs: [{}],
             expect: {
-                stdout: [
-                    '1',
-                    'hi out',
-                ],
-                stderr: [
-                    'hi err',
-                    'fake error',
-                ],
+                stdout: ['1', 'hi out'],
+                stderr: ['hi err', 'fake error'],
             },
         },
         {

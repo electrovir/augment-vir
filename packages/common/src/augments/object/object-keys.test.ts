@@ -9,10 +9,9 @@ describe(omitObjectKeys.name, () => {
             4: 3,
             somethingElse: 4,
         } as const;
-        const keysToRemove = [
-            'five',
-            'somethingElse',
-        ] as const satisfies ReadonlyArray<keyof typeof exampleObject>;
+        const keysToRemove = ['five', 'somethingElse'] as const satisfies ReadonlyArray<
+            keyof typeof exampleObject
+        >;
 
         exampleObject.five;
         exampleObject.somethingElse;
@@ -32,10 +31,7 @@ describe(omitObjectKeys.name, () => {
         [
             {
                 it: 'should remove basic keys',
-                inputs: [
-                    {a: 1, b: 2, c: 3},
-                    ['b'],
-                ],
+                inputs: [{a: 1, b: 2, c: 3}, ['b']],
                 expect: {a: 1, c: 3},
             },
         ],
@@ -49,10 +45,9 @@ describe(pickObjectKeys.name, () => {
             another: 'hi',
             somethingElse: 4,
         } as const;
-        const keysToKeep = [
-            'five',
-            'somethingElse',
-        ] as const satisfies ReadonlyArray<keyof typeof exampleObject>;
+        const keysToKeep = ['five', 'somethingElse'] as const satisfies ReadonlyArray<
+            keyof typeof exampleObject
+        >;
 
         assert.tsType(exampleObject.another).equals<'hi'>();
 
@@ -69,10 +64,7 @@ describe(pickObjectKeys.name, () => {
         [
             {
                 it: 'should keep basic keys',
-                inputs: [
-                    {a: 1, b: 2, c: 3},
-                    ['b'],
-                ],
+                inputs: [{a: 1, b: 2, c: 3}, ['b']],
                 expect: {b: 2},
             },
         ],

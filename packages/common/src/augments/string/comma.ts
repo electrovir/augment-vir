@@ -36,10 +36,7 @@ export function addCommasToNumber(input: number | string): string {
     const isNegative: boolean = numericValue < 0;
 
     const stringValue: string = String(Math.abs(numericValue));
-    const [
-        digits = '',
-        decimalValues,
-    ] = stringValue.split('.');
+    const [digits = '', decimalValues] = stringValue.split('.');
     const decimalString = decimalValues ? `.${decimalValues}` : '';
 
     const separated = safeMatch(digits.split('').reverse().join(''), /.{1,3}/g)
@@ -50,9 +47,5 @@ export function addCommasToNumber(input: number | string): string {
 
     const negativeMarker = isNegative ? '-' : '';
 
-    return [
-        negativeMarker,
-        valueWithCommas,
-        decimalString,
-    ].join('');
+    return [negativeMarker, valueWithCommas, decimalString].join('');
 }

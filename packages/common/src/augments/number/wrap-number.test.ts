@@ -5,26 +5,17 @@ describe(wrapNumber.name, () => {
     itCases(wrapNumber, [
         {
             it: 'wraps above max',
-            inputs: [
-                10,
-                {min: 0, max: 5},
-            ],
+            inputs: [10, {min: 0, max: 5}],
             expect: 0,
         },
         {
             it: 'wraps below min',
-            inputs: [
-                1,
-                {min: 5, max: 10},
-            ],
+            inputs: [1, {min: 5, max: 10}],
             expect: 10,
         },
         {
             it: 'ignores in-between values',
-            inputs: [
-                5,
-                {min: 0, max: 10},
-            ],
+            inputs: [5, {min: 0, max: 10}],
             expect: 5,
         },
     ]);

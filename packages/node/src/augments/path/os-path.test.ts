@@ -9,13 +9,7 @@ import {
 
 describe(replaceWithWindowsPathIfNeeded.name, () => {
     it('works', () => {
-        assert.strictEquals(
-            replaceWithWindowsPathIfNeeded('a/b'),
-            [
-                'a',
-                'b',
-            ].join(sep),
-        );
+        assert.strictEquals(replaceWithWindowsPathIfNeeded('a/b'), ['a', 'b'].join(sep));
     });
 });
 

@@ -5,10 +5,7 @@ describe(removeDuplicateCharacters.name, () => {
     itCases(removeDuplicateCharacters, [
         {
             it: 'removes from multiple inputs',
-            inputs: [
-                'aAaBc',
-                'QrsAa',
-            ],
+            inputs: ['aAaBc', 'QrsAa'],
             expect: 'aABcQrs',
         },
     ]);

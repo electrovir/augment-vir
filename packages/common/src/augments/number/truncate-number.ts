@@ -43,10 +43,7 @@ function combineBeforeAndAfterDot({
             if (!Number(slicedAfterDot)) {
                 return beforeDot;
             }
-            return [
-                beforeDot,
-                slicedAfterDot,
-            ].join('.');
+            return [beforeDot, slicedAfterDot].join('.');
         }
     }
 
@@ -58,10 +55,7 @@ function truncateBigNumber(
     suffixes: ReadonlyArray<string>,
     maxLength: number,
 ): string {
-    const [
-        beforeDot,
-        afterDot,
-    ] = safeSplit(numberAsString, '.');
+    const [beforeDot, afterDot] = safeSplit(numberAsString, '.');
 
     const withCommas = addCommasToNumber(beforeDot);
 
@@ -69,32 +63,19 @@ function truncateBigNumber(
 
     const suffix = suffixes[truncationDepth - 1];
 
-    const [
-        beforeComma,
-        afterComma,
-    ] = safeSplit(withCommas, ',');
-    const trailing = [
-        afterComma,
-        afterDot,
-    ].join('');
+    const [beforeComma, afterComma] = safeSplit(withCommas, ',');
+    const trailing = [afterComma, afterDot].join('');
 
     if (beforeComma.length + 1 > maxLength) {
         // will look like 0.9M
-        return [
-            '0.',
-            beforeComma[0],
-            suffixes[truncationDepth],
-        ].join('');
+        return ['0.', beforeComma[0], suffixes[truncationDepth]].join('');
     } else {
         const combined = combineBeforeAndAfterDot({
             beforeDot: beforeComma,
             afterDot: trailing,
             maxLength: maxLength - 1 /* -1 to account for the suffix*/,
         });
-        return [
-            combined,
-            suffix,
-        ].join('');
+        return [combined, suffix].join('');
     }
 }
 
@@ -108,33 +89,20 @@ function truncateScientificNotation({
     maxLength: number;
 }): string {
     const valueString = String(input);
-    const [
-        beforeExponent,
-        rawExponent,
-    ] = safeSplit(valueString, 'e') as [string, string];
+    const [beforeExponent, rawExponent] = safeSplit(valueString, 'e') as [string, string];
     const exponent = rawExponent.replace(/^[-+]/, '');
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const plusOrMinus = rawExponent[0]!;
 
-    const eSuffix = [
-        'e',
-        plusOrMinus,
-        exponent,
-    ].join('');
+    const eSuffix = ['e', plusOrMinus, exponent].join('');
 
-    const [
-        beforeDot,
-        afterDot,
-    ] = safeSplit(beforeExponent, '.');
+    const [beforeDot, afterDot] = safeSplit(beforeExponent, '.');
 
     const minLength = exponent.length + minScientificNotationLength;
 
     if (minLength === maxLength) {
         // this will look like "4e+4" or "5e-234"
-        return [
-            beforeDot,
-            eSuffix,
-        ].join('');
+        return [beforeDot, eSuffix].join('');
     } else if (minLength > maxLength) {
         // in this case the number is either way too big or way to small for its exponent to fit within the max length so we just jump to 0 or Infinity
         if (plusOrMinus === '-') {
@@ -150,18 +118,12 @@ function truncateScientificNotation({
             maxLength: maxLength - exponent.length + minScientificNotationLength,
         });
 
-        return [
-            beforeE,
-            eSuffix,
-        ].join('');
+        return [beforeE, eSuffix].join('');
     }
 }
 
 function handleSmallNumbers(numberAsString: string, maxLength: number): string | undefined {
-    const [
-        beforeDot,
-        afterDot,
-    ] = safeSplit(addCommasToNumber(numberAsString), '.');
+    const [beforeDot, afterDot] = safeSplit(addCommasToNumber(numberAsString), '.');
 
     if (beforeDot.length <= maxLength) {
         return combineBeforeAndAfterDot({

@@ -26,25 +26,15 @@ describe(readDirFilesByExtension.name, () => {
             {
                 it: 'filters to dir files with a single extension',
                 input: {dirPath: nodePackageDir, extension: '.json'},
-                expect: [
-                    'package.json',
-                    'tsconfig.json',
-                ].sort(),
+                expect: ['package.json', 'tsconfig.json'].sort(),
             },
             {
                 it: 'filters to dir files with multiple extensions',
                 input: {
                     dirPath: nodePackageDir,
-                    extensions: [
-                        '.json',
-                        '.md',
-                    ],
+                    extensions: ['.json', '.md'],
                 },
-                expect: [
-                    'README.md',
-                    'package.json',
-                    'tsconfig.json',
-                ].sort(),
+                expect: ['README.md', 'package.json', 'tsconfig.json'].sort(),
             },
         ],
     );

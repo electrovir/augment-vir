@@ -10,9 +10,7 @@ async function main() {
     const typeDocConfig: Partial<TypeDocOptions> = {
         ...baseTypedocConfig,
         out: join(monoRepoDirPath, 'dist-docs'),
-        entryPoints: [
-            join(packagePaths.scripts, 'src', 'typedoc-entry-point.ts'),
-        ],
+        entryPoints: [join(packagePaths.scripts, 'src', 'typedoc-entry-point.ts')],
         intentionallyNotExported: [],
         defaultCategory: 'MISSING CATEGORY',
         categoryOrder: [

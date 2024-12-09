@@ -3,7 +3,7 @@ import {UnionToIntersection} from 'type-fest';
 import {guardOverrides} from '../../assertions/extendable-assertions.js';
 import {AssertionError} from '../assertion.error.js';
 
-export const assertWrapMethods: UnionToIntersection<
+const assertWrapMethods: UnionToIntersection<
     Extract<ArrayElement<typeof guardOverrides>, {assertWrap: any}>['assertWrap']
 > = Object.assign(
     {},

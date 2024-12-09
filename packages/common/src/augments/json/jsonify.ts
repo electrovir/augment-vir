@@ -17,14 +17,8 @@ import type {copyThroughJson} from './copy-through-json.js';
  * // `result` is `{b: 'b'}`
  * const result = jsonify({
  *     map: new Map([
- *         [
- *             'q',
- *             'r',
- *         ],
- *         [
- *             's',
- *             't',
- *         ],
+ *         ['q', 'r'],
+ *         ['s', 't'],
  *     ]),
  *     b: 'b',
  * });

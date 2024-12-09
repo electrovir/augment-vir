@@ -7,10 +7,7 @@ describe(wrapInTry.name, () => {
     itCases(wrapInTry<any, any>, [
         {
             it: 'returns the callback return if it does not error',
-            inputs: [
-                () => 'success!',
-                {},
-            ],
+            inputs: [() => 'success!', {}],
             expect: 'success!',
         },
         {

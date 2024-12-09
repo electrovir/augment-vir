@@ -12,33 +12,13 @@ describe(splitIncludeSplit.name, () => {
                 /yo.*?u/i,
                 {caseSensitive: false},
             ],
-            expect: [
-                'hello ',
-                'YoAaAaAu',
-                ' do ',
-                'you',
-                ' have some time for ',
-                'yoZzZu',
-                '?',
-            ],
+            expect: ['hello ', 'YoAaAaAu', ' do ', 'you', ' have some time for ', 'yoZzZu', '?'],
         },
         {
             it: 'splits by a simple string',
 
-            inputs: [
-                'hello You do you have some time for you?',
-                'you',
-                {caseSensitive: false},
-            ],
-            expect: [
-                'hello ',
-                'You',
-                ' do ',
-                'you',
-                ' have some time for ',
-                'you',
-                '?',
-            ],
+            inputs: ['hello You do you have some time for you?', 'you', {caseSensitive: false}],
+            expect: ['hello ', 'You', ' do ', 'you', ' have some time for ', 'you', '?'],
         },
     ]);
 });
@@ -47,22 +27,13 @@ describe(safeSplit.name, () => {
     itCases(safeSplit, [
         {
             it: 'should still split like normal',
-            inputs: [
-                '1.2',
-                '.',
-            ],
-            expect: [
-                '1',
-                '2',
-            ],
+            inputs: ['1.2', '.'],
+            expect: ['1', '2'],
         },
     ]);
 
     it('should have the correct types', () => {
-        const [
-            first,
-            second,
-        ] = safeSplit('1.2', '.');
+        const [first, second] = safeSplit('1.2', '.');
         assert.tsType(first).equals<string>();
         assert.tsType(second).equals<string | undefined>();
     });

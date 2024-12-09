@@ -14,11 +14,7 @@ describe(trimArrayStrings.name, () => {
                     
                 `.split('\n'),
             ),
-            [
-                'who is this',
-                'what do you want',
-                'hello there',
-            ],
+            ['who is this', 'what do you want', 'hello there'],
         );
     });
 });

@@ -8,10 +8,7 @@ async function sendMouseToMiddleOfElement(
     const center = getCenterOfElement(element);
 
     await sendMouse({
-        position: [
-            center.x,
-            center.y,
-        ],
+        position: [center.x, center.y],
         type: operationType,
     });
 }

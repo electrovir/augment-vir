@@ -28,20 +28,10 @@ describe(copyThroughJson.name, () => {
     it('ignores non-JSON data', () => {
         const testObjectA = {
             a: new Map([
-                [
-                    'a',
-                    'b',
-                ],
-                [
-                    'c',
-                    'd',
-                ],
+                ['a', 'b'],
+                ['c', 'd'],
             ]),
-            b: new Set([
-                'a',
-                'b',
-                'c',
-            ]),
+            b: new Set(['a', 'b', 'c']),
             c: () => {},
         };
         assert.deepEquals(copyThroughJson(testObjectA), {

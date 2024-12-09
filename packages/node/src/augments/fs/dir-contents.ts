@@ -104,18 +104,13 @@ export async function writeDirContents(
     contents: Readonly<DirContents>,
 ): Promise<void> {
     await Promise.all(
-        getObjectTypedEntries(contents).map(
-            async ([
-                relativePath,
-                content,
-            ]) => {
-                const fullPath = join(rootDir, relativePath);
-                if (check.isString(content)) {
-                    await writeFileAndDir(fullPath, content);
-                } else {
-                    await writeDirContents(fullPath, content);
-                }
-            },
-        ),
+        getObjectTypedEntries(contents).map(async ([relativePath, content]) => {
+            const fullPath = join(rootDir, relativePath);
+            if (check.isString(content)) {
+                await writeFileAndDir(fullPath, content);
+            } else {
+                await writeDirContents(fullPath, content);
+            }
+        }),
     );
 }

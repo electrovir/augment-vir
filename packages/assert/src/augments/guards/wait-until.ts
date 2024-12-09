@@ -1,10 +1,10 @@
 import {AnyFunction, ArrayElement} from '@augment-vir/core';
-import {executeWaitUntil, type WaitUntilOptions} from '../../guard-types/wait-until-function.js';
-import {AssertionError} from '../assertion.error.js';
 import {UnionToIntersection} from 'type-fest';
 import {guardOverrides} from '../../assertions/extendable-assertions.js';
+import {executeWaitUntil, type WaitUntilOptions} from '../../guard-types/wait-until-function.js';
+import {AssertionError} from '../assertion.error.js';
 
-export const waitUntilMethods: UnionToIntersection<
+const waitUntilMethods: UnionToIntersection<
     Extract<ArrayElement<typeof guardOverrides>, {waitUntil: any}>['waitUntil']
 > = Object.assign(
     {},

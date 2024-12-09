@@ -20,25 +20,10 @@ describe(filterToEnumValues.name, () => {
     });
 
     it('excludes invalid enum values', () => {
-        assert.deepEquals(
-            filterToEnumValues(
-                [
-                    'derby',
-                    'who',
-                    'done',
-                    'it',
-                ],
-                TestEnum,
-            ),
-            [],
-        );
+        assert.deepEquals(filterToEnumValues(['derby', 'who', 'done', 'it'], TestEnum), []);
     });
 
-    const validValuesTest = [
-        TestEnum.A,
-        TestEnum.B,
-        TestEnum.C,
-    ];
+    const validValuesTest = [TestEnum.A, TestEnum.B, TestEnum.C];
 
     it('includes valid enum values', () => {
         assert.deepEquals(filterToEnumValues(validValuesTest, TestEnum), validValuesTest);
@@ -47,14 +32,7 @@ describe(filterToEnumValues.name, () => {
     it('filters out non-enum values', () => {
         assert.deepEquals(
             filterToEnumValues(
-                [
-                    'MeRcUrY',
-                    Planet.Venus,
-                    'EARth',
-                    'MOON',
-                    'luNA',
-                    'not A planET',
-                ],
+                ['MeRcUrY', Planet.Venus, 'EARth', 'MOON', 'luNA', 'not A planET'],
                 Planet,
             ),
             [Planet.Venus],
@@ -64,22 +42,10 @@ describe(filterToEnumValues.name, () => {
     it('output order matches input order', () => {
         assert.deepEquals(
             filterToEnumValues(
-                [
-                    'what',
-                    TestEnum.C,
-                    'who',
-                    'where',
-                    'why',
-                    TestEnum.B,
-                    TestEnum.A,
-                ],
+                ['what', TestEnum.C, 'who', 'where', 'why', TestEnum.B, TestEnum.A],
                 TestEnum,
             ),
-            [
-                TestEnum.C,
-                TestEnum.B,
-                TestEnum.A,
-            ],
+            [TestEnum.C, TestEnum.B, TestEnum.A],
         );
     });
 });

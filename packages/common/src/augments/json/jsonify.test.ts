@@ -8,11 +8,7 @@ describe(jsonify.name, () => {
         b: 'five',
         c: false,
         d: null,
-        e: [
-            4,
-            'five',
-            false,
-        ],
+        e: [4, 'five', false],
     };
 
     itCases(jsonify, [

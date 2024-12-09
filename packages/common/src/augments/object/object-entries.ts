@@ -12,10 +12,7 @@ import {CompleteRequire, getObjectTypedKeys} from '@augment-vir/core';
 export function getObjectTypedEntries<const ObjectGeneric>(
     input: ObjectGeneric,
 ): [keyof ObjectGeneric, CompleteRequire<ObjectGeneric>[keyof CompleteRequire<ObjectGeneric>]][] {
-    return getObjectTypedKeys(input).map((key) => [
-        key,
-        input[key],
-    ]) as [
+    return getObjectTypedKeys(input).map((key) => [key, input[key]]) as [
         keyof ObjectGeneric,
         CompleteRequire<ObjectGeneric>[keyof CompleteRequire<ObjectGeneric>],
     ][];

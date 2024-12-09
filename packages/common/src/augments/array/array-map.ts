@@ -24,18 +24,9 @@ type LibMapCallbackType<ArrayType extends ReadonlyArray<any>, OutputType> = (
  * ```ts
  * import {typedMap} from '@augment-vir/common';
  *
- * const result = await typedMap(
- *     [
- *         1,
- *         2,
- *         3,
- *         4,
- *         5,
- *     ],
- *     (value) => {
- *         return value + 1;
- *     },
- * );
+ * const result = await typedMap([1, 2, 3, 4, 5], (value) => {
+ *     return value + 1;
+ * });
  * ```
  *
  * @returns A new array (does not mutate).

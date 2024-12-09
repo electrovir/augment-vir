@@ -20,10 +20,7 @@ describe(mergeDefinedProperties.name, () => {
     itCases(mergeDefinedProperties, [
         {
             it: 'handles undefined',
-            inputs: [
-                {a: 'b'},
-                undefined,
-            ],
+            inputs: [{a: 'b'}, undefined],
             expect: {a: 'b'},
         },
     ]);

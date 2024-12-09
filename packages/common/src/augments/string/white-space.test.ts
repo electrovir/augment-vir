@@ -35,9 +35,7 @@ describe(collapseWhiteSpace.name, () => {
         },
         {
             it: 'replaces tabs with spaces',
-            inputs: [
-                'hello\tthere',
-            ],
+            inputs: ['hello\tthere'],
             expect: 'hello there',
         },
     ]);

@@ -15,13 +15,7 @@ import {filterMap} from './filter.js';
  * ```ts
  * import {arrayToObject} from '@augment-vir/common';
  *
- * const result = arrayToObject(
- *     [
- *         'a',
- *         'b',
- *     ],
- *     (value) => `key-${value}`,
- * );
+ * const result = arrayToObject(['a', 'b'], (value) => `key-${value}`);
  * // result is `{key-a: ['a'], key-b: ['b']}`
  * ```
  */
@@ -101,15 +95,9 @@ export function arrayToObject<ElementType, NewKey extends PropertyKey, NewValue>
  * ```ts
  * import {arrayToObject} from '@augment-vir/common';
  *
- * const result = arrayToObject(
- *     [
- *         'a',
- *         'b',
- *     ],
- *     (value) => {
- *         return {key: `key-${value}`, value};
- *     },
- * );
+ * const result = arrayToObject(['a', 'b'], (value) => {
+ *     return {key: `key-${value}`, value};
+ * });
  * // result is `{key-a: 'a', key-b: 'b'}`
  * ```
  *
@@ -139,10 +127,7 @@ export function arrayToObject<ElementType, NewKey extends PropertyKey, NewValue>
                     gotAPromise = true;
                     return output;
                 } else if (output) {
-                    return [
-                        output.key,
-                        output.value,
-                    ] as [NewKey, NewValue];
+                    return [output.key, output.value] as [NewKey, NewValue];
                 } else {
                     return undefined;
                 }
@@ -160,10 +145,7 @@ export function arrayToObject<ElementType, NewKey extends PropertyKey, NewValue>
                             } else if (Array.isArray(entry)) {
                                 return entry;
                             } else {
-                                return [
-                                    entry.key,
-                                    entry.value,
-                                ] as [NewKey, NewValue];
+                                return [entry.key, entry.value] as [NewKey, NewValue];
                             }
                         },
                         check.isTruthy,

@@ -29,16 +29,11 @@ export function mergeDefinedProperties<const T extends AnyObject>(
             return;
         }
 
-        getObjectTypedEntries(entry).forEach(
-            ([
-                key,
-                value,
-            ]) => {
-                if (value != undefined) {
-                    finalObject[key] = value as T[keyof T];
-                }
-            },
-        );
+        getObjectTypedEntries(entry).forEach(([key, value]) => {
+            if (value != undefined) {
+                finalObject[key] = value as T[keyof T];
+            }
+        });
     });
 
     return finalObject;

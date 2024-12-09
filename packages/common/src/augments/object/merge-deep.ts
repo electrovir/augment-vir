@@ -41,33 +41,23 @@ export function mergeDeep<const T extends object>(
             result = {...individualInput};
         }
 
-        Object.entries(individualInput).forEach(
-            ([
-                key,
-                value,
-            ]) => {
-                if (!mergeProps[key]) {
-                    mergeProps[key] = [];
-                }
-                mergeProps[key].push(value);
-            },
-        );
+        Object.entries(individualInput).forEach(([key, value]) => {
+            if (!mergeProps[key]) {
+                mergeProps[key] = [];
+            }
+            mergeProps[key].push(value);
+        });
     });
 
     if (check.isObject(result)) {
-        Object.entries(mergeProps).forEach(
-            ([
-                key,
-                mergeValues,
-            ]) => {
-                const newValue = mergeDeep(...mergeValues) as unknown;
-                if (newValue === undefined && key in result) {
-                    delete result[key];
-                } else if (newValue !== undefined) {
-                    result[key] = newValue;
-                }
-            },
-        );
+        Object.entries(mergeProps).forEach(([key, mergeValues]) => {
+            const newValue = mergeDeep(...mergeValues) as unknown;
+            if (newValue === undefined && key in result) {
+                delete result[key];
+            } else if (newValue !== undefined) {
+                result[key] = newValue;
+            }
+        });
     }
 
     return result as T;

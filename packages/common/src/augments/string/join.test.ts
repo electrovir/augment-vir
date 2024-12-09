@@ -10,63 +10,27 @@ describe(joinWithFinalConjunction.name, () => {
         },
         {
             it: 'should not add a comma to only two items',
-            inputs: [
-                [
-                    'a',
-                    'b',
-                ],
-            ],
+            inputs: [['a', 'b']],
             expect: 'a and b',
         },
         {
             it: 'should join 3 strings',
-            inputs: [
-                [
-                    'a',
-                    'b',
-                    'c',
-                ],
-            ],
+            inputs: [['a', 'b', 'c']],
             expect: 'a, b, and c',
         },
         {
             it: 'should join 5 strings',
-            inputs: [
-                [
-                    1,
-                    2,
-                    3,
-                    4,
-                    5,
-                ],
-            ],
+            inputs: [[1, 2, 3, 4, 5]],
             expect: '1, 2, 3, 4, and 5',
         },
         {
             it: 'should use a custom conjunction',
-            inputs: [
-                [
-                    1,
-                    2,
-                    3,
-                    4,
-                    5,
-                ],
-                'or',
-            ],
+            inputs: [[1, 2, 3, 4, 5], 'or'],
             expect: '1, 2, 3, 4, or 5',
         },
         {
             it: 'should even join non-string inputs',
-            inputs: [
-                [
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                ],
-            ],
+            inputs: [[{}, {}, {}, {}, {}]],
             expect: '[object Object], [object Object], [object Object], [object Object], and [object Object]',
         },
     ]);

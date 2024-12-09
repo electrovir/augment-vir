@@ -188,10 +188,7 @@ describe(arrayToObject.name, () => {
         {
             it: 'filters out undefined async values',
             inputs: [
-                [
-                    true,
-                    false,
-                ],
+                [true, false],
                 (value) => {
                     if (!value) {
                         return Promise.resolve(undefined);
@@ -208,10 +205,7 @@ describe(arrayToObject.name, () => {
         {
             it: 'handles a mix of sync and async values',
             inputs: [
-                [
-                    true,
-                    false,
-                ],
+                [true, false],
                 (value) => {
                     if (value) {
                         return Promise.resolve({
@@ -234,10 +228,7 @@ describe(arrayToObject.name, () => {
         {
             it: 'filters out undefined sync values',
             inputs: [
-                [
-                    true,
-                    false,
-                ],
+                [true, false],
                 (value) => {
                     if (!value) {
                         return undefined;

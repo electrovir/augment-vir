@@ -15,17 +15,7 @@ import type {EnumBaseType} from '@augment-vir/core';
  *     B = 'b',
  * }
  *
- * const result = filterToEnumValues(
- *     [
- *         1,
- *         2,
- *         3,
- *         'a',
- *         'b',
- *         MyEnum.A,
- *     ],
- *     MyEnum,
- * ); // result is `[MyEnum.A, MyEnum.B, MyEnum.A]`
+ * const result = filterToEnumValues([1, 2, 3, 'a', 'b', MyEnum.A], MyEnum); // result is `[MyEnum.A, MyEnum.B, MyEnum.A]`
  * ```
  *
  * @returns A new array (does not mutate).

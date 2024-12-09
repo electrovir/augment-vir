@@ -10,25 +10,17 @@ describe(AssertionError.name, () => {
     itCases(testAssertionError, [
         {
             it: 'combines messages',
-            inputs: [
-                'base',
-                'custom',
-            ],
+            inputs: ['base', 'custom'],
             expect: 'custom: base',
         },
         {
             it: 'ignores missing custom message',
-            inputs: [
-                'base',
-            ],
+            inputs: ['base'],
             expect: 'base',
         },
         {
             it: 'has a fallback message if both are empty',
-            inputs: [
-                '',
-                '',
-            ],
+            inputs: ['', ''],
             expect: 'Assertion failed.',
         },
     ]);

@@ -79,10 +79,7 @@ function flattenMochaParentTitles(node: MochaNode): string[] {
     if (node.root) {
         return [];
     } else {
-        return [
-            ...flattenMochaParentTitles(node.parent),
-            node.title,
-        ];
+        return [...flattenMochaParentTitles(node.parent), node.title];
     }
 }
 
@@ -98,10 +95,7 @@ function getTestName(testContext: UniversalTestContext) {
     const newSnapshotCount = currentSnapshotCount + 1;
     snapshotCountObject[testName] = newSnapshotCount;
 
-    const snapshotName = [
-        testName,
-        newSnapshotCount,
-    ].join(' ');
+    const snapshotName = [testName, newSnapshotCount].join(' ');
 
     return {
         snapshotName,

@@ -114,68 +114,45 @@ export const logColors: Readonly<Record<LogColorKey, string>> = await determineD
  */
 export const defaultLogColorConfig: LogColorConfig = {
     [LogColorKey.Bold]: {
-        colors: [
-            logColors.bold,
-        ],
+        colors: [logColors.bold],
         logType: LogOutputType.Standard,
     },
     [LogColorKey.Debug]: {
-        colors: [
-            logColors.debug,
-        ],
+        colors: [logColors.debug],
         logType: LogOutputType.Standard,
     },
     [LogColorKey.Faint]: {
-        colors: [
-            logColors.faint,
-        ],
+        colors: [logColors.faint],
         logType: LogOutputType.Standard,
     },
     [LogColorKey.Info]: {
-        colors: [
-            logColors.info,
-        ],
+        colors: [logColors.info],
         logType: LogOutputType.Standard,
     },
     [LogColorKey.Mutate]: {
-        colors: [
-            logColors.mutate,
-            logColors.bold,
-        ],
+        colors: [logColors.mutate, logColors.bold],
         logType: LogOutputType.Standard,
     },
     [LogColorKey.NormalWeight]: {
-        colors: [
-            logColors.normalWeight,
-        ],
+        colors: [logColors.normalWeight],
         logType: LogOutputType.Standard,
     },
     [LogColorKey.Plain]: {colors: [], logType: LogOutputType.Standard},
     [LogColorKey.Reset]: {
-        colors: [
-            logColors.reset,
-        ],
+        colors: [logColors.reset],
         logType: LogOutputType.Standard,
     },
     [LogColorKey.Success]: {
-        colors: [
-            logColors.success,
-            logColors.bold,
-        ],
+        colors: [logColors.success, logColors.bold],
         logType: LogOutputType.Standard,
     },
 
     [LogColorKey.Error]: {
-        colors: [
-            logColors.error,
-            logColors.bold,
-        ],
+        colors: [logColors.error, logColors.bold],
         logType: LogOutputType.Error,
     },
     [LogColorKey.Warning]: {
-        colors: [
-            logColors.warning,
-        ],
+        colors: [logColors.warning],
         logType: LogOutputType.Error,
     },
 };

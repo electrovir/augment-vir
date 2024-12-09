@@ -17,14 +17,8 @@ import {Jsonify, Writable} from 'type-fest';
  * // `copy2` will be `{map: {}, b: 'b'}`
  * const copy2 = copyThroughJson({
  *     map: new Map([
- *         [
- *             'q',
- *             'r',
- *         ],
- *         [
- *             's',
- *             't',
- *         ],
+ *         ['q', 'r'],
+ *         ['s', 't'],
  *     ]),
  *     b: 'b',
  * });

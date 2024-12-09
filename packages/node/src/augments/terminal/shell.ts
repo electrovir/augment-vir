@@ -247,10 +247,7 @@ export async function runShellCommand(
 
             shellTarget.destroy();
 
-            const rejectionErrorMessage: Error = combineErrors([
-                new Error(stderr),
-                ...errors,
-            ]);
+            const rejectionErrorMessage: Error = combineErrors([new Error(stderr), ...errors]);
             /** Reject now because the "done" listener won't get fired after killing the process. */
             reject(rejectionErrorMessage);
         });

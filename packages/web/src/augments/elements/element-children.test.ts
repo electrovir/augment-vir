@@ -60,12 +60,7 @@ describe(getDirectChildren.name, () => {
                     </section>
                 `,
             ],
-            expect: [
-                'div',
-                'div',
-                'div',
-                'div',
-            ],
+            expect: ['div', 'div', 'div', 'div'],
         },
         {
             it: 'ignores nested children of light DOM',
@@ -80,13 +75,7 @@ describe(getDirectChildren.name, () => {
                     </section>
                 `,
             ],
-            expect: [
-                'div',
-                'div',
-                'p',
-                'p',
-                'div',
-            ],
+            expect: ['div', 'div', 'p', 'p', 'div'],
         },
         {
             it: 'includes no extra children for shadow DOM with no children',
@@ -98,10 +87,7 @@ describe(getDirectChildren.name, () => {
                     </section>
                 `,
             ],
-            expect: [
-                TextOnly,
-                'p',
-            ],
+            expect: [TextOnly, 'p'],
         },
         {
             it: 'includes no shadow DOM children when there are none',
@@ -119,10 +105,7 @@ describe(getDirectChildren.name, () => {
                     <${HasChildren}></${HasChildren}>
                 `,
             ],
-            expect: [
-                'div',
-                'p',
-            ],
+            expect: ['div', 'p'],
         },
         {
             it: 'includes slotted elements',
@@ -131,12 +114,7 @@ describe(getDirectChildren.name, () => {
                     <${HasSlot}><h1></h1></${HasSlot}>
                 `,
             ],
-            expect: [
-                'h1',
-                'div',
-                'slot',
-                'span',
-            ],
+            expect: ['h1', 'div', 'slot', 'span'],
         },
         {
             it: 'includes slot even if nothing is slotted',
@@ -145,11 +123,7 @@ describe(getDirectChildren.name, () => {
                     <${HasSlot}></${HasSlot}>
                 `,
             ],
-            expect: [
-                'div',
-                'slot',
-                'span',
-            ],
+            expect: ['div', 'slot', 'span'],
         },
     ]);
 });
@@ -168,14 +142,7 @@ describe(getNestedChildren.name, () => {
                     </section>
                 `,
             ],
-            expect: [
-                'div',
-                'span',
-                'div',
-                'p',
-                'p',
-                'div',
-            ],
+            expect: ['div', 'span', 'div', 'p', 'p', 'div'],
         },
         {
             it: 'includes no extra descendants for shadow DOM with no children',
@@ -187,10 +154,7 @@ describe(getNestedChildren.name, () => {
                     </section>
                 `,
             ],
-            expect: [
-                TextOnly,
-                'p',
-            ],
+            expect: [TextOnly, 'p'],
         },
         {
             it: 'includes no shadow DOM descendants when there are none',
@@ -208,12 +172,7 @@ describe(getNestedChildren.name, () => {
                     <${HasChildren}></${HasChildren}>
                 `,
             ],
-            expect: [
-                'div',
-                'span',
-                'span',
-                'p',
-            ],
+            expect: ['div', 'span', 'span', 'p'],
         },
         {
             it: 'includes slotted descendants and slot defaults',
@@ -222,13 +181,7 @@ describe(getNestedChildren.name, () => {
                     <${HasSlot}><h1></h1></${HasSlot}>
                 `,
             ],
-            expect: [
-                'h1',
-                'div',
-                'slot',
-                'p',
-                'span',
-            ],
+            expect: ['h1', 'div', 'slot', 'p', 'span'],
         },
         {
             it: 'includes descendants nested in Shadow DOM',
@@ -239,13 +192,7 @@ describe(getNestedChildren.name, () => {
                     </section>
                 `,
             ],
-            expect: [
-                HasSlot,
-                'div',
-                'slot',
-                'p',
-                'span',
-            ],
+            expect: [HasSlot, 'div', 'slot', 'p', 'span'],
         },
         {
             it: 'includes all Shadow DOM descendants',
@@ -257,18 +204,7 @@ describe(getNestedChildren.name, () => {
                     </section>
                 `,
             ],
-            expect: [
-                HasSlot,
-                'div',
-                'slot',
-                'p',
-                'span',
-                HasChildren,
-                'div',
-                'span',
-                'span',
-                'p',
-            ],
+            expect: [HasSlot, 'div', 'slot', 'p', 'span', HasChildren, 'div', 'span', 'span', 'p'],
         },
         {
             it: 'includes slotted Shadow DOM descendants',
@@ -281,18 +217,7 @@ describe(getNestedChildren.name, () => {
                     </section>
                 `,
             ],
-            expect: [
-                HasSlot,
-                HasChildren,
-                'div',
-                'span',
-                'span',
-                'p',
-                'div',
-                'slot',
-                'p',
-                'span',
-            ],
+            expect: [HasSlot, HasChildren, 'div', 'span', 'span', 'p', 'div', 'slot', 'p', 'span'],
         },
         {
             it: 'only goes down 1 level',
@@ -306,9 +231,7 @@ describe(getNestedChildren.name, () => {
                 `,
                 1,
             ],
-            expect: [
-                HasSlot,
-            ],
+            expect: [HasSlot],
         },
         {
             it: 'only goes down 2 levels',
@@ -322,13 +245,7 @@ describe(getNestedChildren.name, () => {
                 `,
                 2,
             ],
-            expect: [
-                HasSlot,
-                HasChildren,
-                'div',
-                'slot',
-                'span',
-            ],
+            expect: [HasSlot, HasChildren, 'div', 'slot', 'span'],
         },
         {
             it: 'only goes down 3 levels',
@@ -342,16 +259,7 @@ describe(getNestedChildren.name, () => {
                 `,
                 3,
             ],
-            expect: [
-                HasSlot,
-                HasChildren,
-                'div',
-                'p',
-                'div',
-                'slot',
-                'p',
-                'span',
-            ],
+            expect: [HasSlot, HasChildren, 'div', 'p', 'div', 'slot', 'p', 'span'],
         },
     ]);
 });

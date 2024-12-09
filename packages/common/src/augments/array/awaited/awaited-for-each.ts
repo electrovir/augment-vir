@@ -14,18 +14,9 @@ import {awaitedBlockingMap} from './awaited-map.js';
  * ```ts
  * import {awaitedForEach} from '@augment-vir/common';
  *
- * await awaitedForEach(
- *     [
- *         1,
- *         2,
- *         3,
- *         4,
- *         5,
- *     ],
- *     async (value) => {
- *         await Promise.resolve(value);
- *     },
- * );
+ * await awaitedForEach([1, 2, 3, 4, 5], async (value) => {
+ *     await Promise.resolve(value);
+ * });
  * ```
  *
  * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)

@@ -2,7 +2,7 @@ import {AnyFunction, ArrayElement} from '@augment-vir/core';
 import {UnionToIntersection} from 'type-fest';
 import {guardOverrides} from '../../assertions/extendable-assertions.js';
 
-export const checkMethods: UnionToIntersection<ArrayElement<typeof guardOverrides>['check']> =
+const checkMethods: UnionToIntersection<ArrayElement<typeof guardOverrides>['check']> =
     Object.assign(
         {},
         ...guardOverrides.map((entry) => {

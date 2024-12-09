@@ -3,9 +3,7 @@ import {interpolationSafeWindowsPath} from '../augments/path/os-path.js';
 import {runShellCommand, type ShellOutput} from '../augments/terminal/shell.js';
 import {PrismaSchemaError} from './prisma-errors.js';
 
-const prismaCommandsThatSupportNoHints = [
-    'generate',
-];
+const prismaCommandsThatSupportNoHints = ['generate'];
 
 export async function runPrismaCommand(
     {
@@ -19,12 +17,7 @@ export async function runPrismaCommand(
     schemaFilePath: string | undefined,
     env: Record<string, string> | undefined = {},
 ) {
-    const schemaFileArgs = schemaFilePath
-        ? [
-              '--schema',
-              schemaFilePath,
-          ]
-        : [];
+    const schemaFileArgs = schemaFilePath ? ['--schema', schemaFilePath] : [];
 
     /** Disable Prisma's in-CLI ads. */
     const noHintsArg = prismaCommandsThatSupportNoHints.some((commandName) =>
@@ -33,12 +26,7 @@ export async function runPrismaCommand(
         ? '--no-hints'
         : '';
 
-    const fullCommand = [
-        'prisma',
-        command,
-        ...schemaFileArgs,
-        noHintsArg,
-    ].join(' ');
+    const fullCommand = ['prisma', command, ...schemaFileArgs, noHintsArg].join(' ');
 
     log.faint(`> ${fullCommand}`);
 
