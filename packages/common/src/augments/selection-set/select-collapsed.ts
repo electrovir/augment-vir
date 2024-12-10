@@ -62,7 +62,7 @@ export function selectCollapsedFrom<
     return collapseObject(selected, selectionSet) as PickCollapsedSelection<Full, Selection>;
 }
 
-function collapseObject(input: Readonly<AnyObject>, selectionSet: unknown): AnyObject {
+function collapseObject(input: any, selectionSet: unknown): AnyObject {
     if (shouldPreserveInSelectionSet(input)) {
         return input;
     }

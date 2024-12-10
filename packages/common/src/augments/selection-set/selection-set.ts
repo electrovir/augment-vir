@@ -1,10 +1,16 @@
-import type {AnyObject} from '@augment-vir/core';
-import {IsAny, IsNever, Primitive, UnionToIntersection} from 'type-fest';
+import {type AnyObject, type RequiredKeysOf} from '@augment-vir/core';
 import {
-    TsRecurse,
-    TsRecursionStart,
-    TsRecursionTracker,
-    TsTooMuchRecursion,
+    type IsAny,
+    type IsNever,
+    type OptionalKeysOf,
+    type Primitive,
+    type UnionToIntersection,
+} from 'type-fest';
+import {
+    type TsRecurse,
+    type TsRecursionStart,
+    type TsRecursionTracker,
+    type TsTooMuchRecursion,
 } from '../type/type-recursion.js';
 
 /** All types that won't be recursed into when defining a {@link SelectionSet}. */
@@ -20,6 +26,16 @@ type SelectionTypesToPreserve = Primitive | RegExp | Promise<any>;
 export type GenericSelectionSet = {
     [Key in PropertyKey]: unknown;
 };
+
+type MakeKeysOptional<Full extends AnyObject, T extends AnyObject> =
+    IsNever<Extract<OptionalKeysOf<Full>, keyof T>> extends true
+        ? /** No optional keys. */
+          {[Key in keyof T]: T[Key]}
+        : IsNever<Extract<RequiredKeysOf<Full>, keyof T>> extends true
+          ? /** Only optional keys. */ {[Key in keyof T]?: T[Key]}
+          : /** Optional and required keys. */ {
+                [Key in Extract<RequiredKeysOf<Full>, keyof T>]: T[Key];
+            } & {[Key in Extract<OptionalKeysOf<Full>, keyof T>]?: T[Key]};
 
 /**
  * Performs a SQL-like nested selection on an object, extracting the selected values. This produces
@@ -40,21 +56,24 @@ export type SelectFrom<
             | SelectFrom<Extract<Element, AnyObject>, Selection, TsRecurse<Depth>>
             | Exclude<Element, AnyObject>
         )[]
-      : {
-            -readonly [Key in keyof Selection as Selection[Key] extends false
-                ? never
-                : Key extends keyof Full
-                  ? Key
-                  : never]:
-                | (Selection[Key] extends GenericSelectionSet
-                      ? SelectFrom<
-                            NonNullable<Extract<Full[Key], AnyObject>>,
-                            Selection[Key],
-                            TsRecurse<Depth>
-                        >
-                      : Full[Key])
-                | Exclude<Full[Key], AnyObject>;
-        };
+      : MakeKeysOptional<
+            Full,
+            {
+                -readonly [Key in keyof Selection as Selection[Key] extends false
+                    ? never
+                    : Key extends keyof Full
+                      ? Key
+                      : never]:
+                    | (Selection[Key] extends GenericSelectionSet
+                          ? SelectFrom<
+                                NonNullable<Extract<Full[Key], AnyObject>>,
+                                Selection[Key],
+                                TsRecurse<Depth>
+                            >
+                          : Full[Key])
+                    | Exclude<Full[Key], AnyObject>;
+            }
+        >;
 
 /**
  * Defines a selection set for a given object type. This is used in {@link SelectFrom}.

@@ -4,6 +4,42 @@ import {selectFrom} from './select-from.js';
 import {SelectFrom} from './selection-set.js';
 
 describe(selectFrom.name, () => {
+    it('preserves nested optional properties', () => {
+        type ExampleWithOptional = {
+            a: string;
+            b?: number;
+            c: {
+                d?: RegExp;
+                e?: {
+                    f?: Set<string>;
+                };
+            };
+        };
+
+        assert
+            .tsType<
+                SelectFrom<
+                    ExampleWithOptional,
+                    {
+                        b: true;
+                        c: {
+                            d: true;
+                            e: true;
+                        };
+                    }
+                >
+            >()
+            .slowEquals<{
+                b?: number;
+                c: {
+                    d?: RegExp;
+                    e?: {
+                        f?: Set<string>;
+                    };
+                };
+            }>();
+    });
+
     it('has proper types', () => {
         selectFrom(
             {

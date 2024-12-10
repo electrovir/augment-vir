@@ -67,7 +67,7 @@ describe('PickSelection', () => {
                 >
             >()
             .equals<{
-                top:
+                top?:
                     | undefined
                     | {
                           mid: {low: string[]};
