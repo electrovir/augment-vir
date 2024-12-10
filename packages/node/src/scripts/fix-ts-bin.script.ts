@@ -1,8 +1,21 @@
+/* node:coverage disable */
+
+/**
+ * To use this script properly, call it directly in your postinstall script. Like this:
+ *
+ * ```json
+ * {
+ *     "scripts": {
+ *         "postinstall": "tsx node_modules/@augment-vir/node/src/scripts/fix-ts-bin.script.ts"
+ *     }
+ * }
+ * ```
+ */
+
 import {log} from '@augment-vir/common';
 import {interpolationSafeWindowsPath, runShellCommand} from '@augment-vir/node';
 import {rm, writeFile} from 'node:fs/promises';
 import {join, sep} from 'node:path/posix';
-import {monoRepoNodeModulesDirPath} from '../file-paths.js';
 
 type PackageToFix = {
     packageName: string;
@@ -37,7 +50,7 @@ function createBinFileContents({scriptPath}: Readonly<Pick<PackageToFix, 'script
 }
 
 async function fixTsBin(packageToFix: Readonly<PackageToFix>) {
-    const binFilePath = join(monoRepoNodeModulesDirPath, '.bin', packageToFix.binName);
+    const binFilePath = join(process.cwd(), 'node_modules', '.bin', packageToFix.binName);
     await rm(binFilePath, {force: true});
     await writeFile(binFilePath, createBinFileContents(packageToFix));
     await runShellCommand(`chmod +x ${interpolationSafeWindowsPath(binFilePath)}`);

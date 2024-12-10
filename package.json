@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/mono-repo-root",
-    "version": "31.0.1",
+    "version": "31.1.0",
     "private": true,
     "homepage": "https://github.com/electrovir/augment-vir",
     "bugs": {
@@ -23,7 +23,7 @@
         "compile": "virmator compile",
         "docs": "npm run exec --workspace @augment-vir/scripts src/scripts/run-typedoc.script.ts",
         "format": "virmator format",
-        "postinstall": "cd packages/common && tsc -b -f --pretty && cd ../.. && tsx packages/scripts/src/scripts/fix-ts-bin.script.ts",
+        "postinstall": "cd packages/common && tsc -b -f --pretty && cd ../.. && tsx packages/node/src/scripts/fix-ts-bin.script.ts",
         "lint": "virmator lint fix",
         "publish": "virmator publish \"npm run test:all\"",
         "test": "mono-vir for-each npm run test",
