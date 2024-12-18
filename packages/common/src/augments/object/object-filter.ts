@@ -1,4 +1,4 @@
-import {type Values} from '@augment-vir/core';
+import {type CompleteValues} from '@augment-vir/core';
 import {getObjectTypedEntries, typedObjectFromEntries} from './object-entries.js';
 
 /**
@@ -25,7 +25,7 @@ export function filterObject<ObjectGeneric>(
     inputObject: ObjectGeneric,
     callback: (
         key: keyof ObjectGeneric,
-        value: Values<ObjectGeneric>,
+        value: CompleteValues<ObjectGeneric>,
         fullObject: ObjectGeneric,
     ) => boolean,
 ): Partial<ObjectGeneric> {

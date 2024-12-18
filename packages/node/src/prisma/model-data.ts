@@ -91,9 +91,9 @@ async function addModelDataObject(
     /** Add the mock data to the mock prisma client. */
     await awaitedForEach(getObjectTypedEntries(data), async ([modelName, mockData]) => {
         /**
-         * This type is dumbed down to just `AnyObject[]` because the union of all possible
-         * model data is just way too big (and not helpful as the inputs to this function are
-         * already type guarded).
+         * This type is dumbed down to just `AnyObject[]` because the union of all possible model
+         * data is just way too big (and not helpful as the inputs to this function are already type
+         * guarded).
          */
         const mockModelInstances: AnyObject[] = Array.isArray(mockData)
             ? mockData

@@ -1,5 +1,5 @@
 import {check} from '@augment-vir/assert';
-import {Values, ensureError, type MaybePromise} from '@augment-vir/core';
+import {Values, ensureError, type CompleteValues, type MaybePromise} from '@augment-vir/core';
 import {filterMap} from '../array/filter.js';
 import {getObjectTypedEntries, typedObjectFromEntries} from './object-entries.js';
 
@@ -61,7 +61,7 @@ export function mapObject<
     originalObject: OriginalObject,
     mapCallback: (
         originalKey: keyof OriginalObject,
-        originalValue: Values<OriginalObject>,
+        originalValue: CompleteValues<OriginalObject>,
         originalObject: OriginalObject,
     ) => MaybePromise<{key: NewKey; value: NewValue} | undefined>,
 ): MaybePromise<Record<NewKey, NewValue>> {
