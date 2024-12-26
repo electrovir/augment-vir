@@ -36,3 +36,5 @@
     -   like this: https://github.com/electrovir/proxy-vir/actions/runs/11876323290/job/33094520685
 -   remove type guard from equality checks? (like jsonEquals)
 -   add `this:void` to all functions
+-   better type guarding for `check.isIn`
+    -   like in this situation: `check.isIn(someString, ['a', 'b', 'c'] as const)`
