@@ -41,10 +41,10 @@
     "dependencies": {
         "@augment-vir/assert": "^31.2.1",
         "@augment-vir/core": "^31.2.1",
-        "@date-vir/duration": "^7.0.1",
+        "@date-vir/duration": "^7.1.1",
         "ansi-styles": "^6.2.1",
         "json5": "^2.2.3",
-        "type-fest": "^4.29.0",
+        "type-fest": "^4.31.0",
         "typed-event-target": "^4.0.2"
     },
     "devDependencies": {
@@ -53,9 +53,10 @@
         "@web/test-runner-commands": "^0.9.0",
         "@web/test-runner-playwright": "^0.11.0",
         "@web/test-runner-visual-regression": "^0.10.0",
-        "concurrently": "^9.1.0",
+        "concurrently": "^9.1.2",
         "execute-in-browser": "^1.0.4",
-        "istanbul-smart-text-reporter": "^1.1.5"
+        "istanbul-smart-text-reporter": "^1.1.5",
+        "typescript": "^5.7.2"
     },
     "engines": {
         "node": ">=22"

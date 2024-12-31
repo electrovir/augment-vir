@@ -11,9 +11,13 @@ import {createWaitUntil, type WaitUntilOptions} from '../guard-types/wait-until-
 
 /** Helper type for `hasKey`. */
 type ExtractValue<Key extends PropertyKey, Parent> = Key extends keyof Parent
-    ? SetRequired<Parent, Key>[Key]
+    ? Key extends keyof SetRequired<Parent, Key>
+        ? SetRequired<Parent, Key>[Key]
+        : never
     : Key extends keyof Extract<Parent, Record<Key, any>>
-      ? SetRequired<Extract<Parent, Record<Key, any>>, Key>[Key]
+      ? Key extends keyof SetRequired<Extract<Parent, Record<Key, any>>, Key>
+          ? SetRequired<Extract<Parent, Record<Key, any>>, Key>[Key]
+          : never
       : never;
 
 /** Helper type for `hasKey`. */
