@@ -8,3 +8,5 @@
 **/package-lock.json
 **/tsconfig.tsbuildinfo
 /Icon?
+
+packages/node/test-files/invalid-json-tsconfig/tsconfig.json

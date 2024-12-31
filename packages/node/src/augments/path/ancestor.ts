@@ -3,14 +3,39 @@ import {type MaybePromise} from '@augment-vir/common';
 import {dirname, join} from 'node:path';
 import {systemRootPath} from './root.js';
 
+/**
+ * Find an ancestor file path that matches the given `callback`. If no matches are found all the way
+ * up until the system root, this returns `undefined`.
+ *
+ * @category Path : Node
+ * @category Package : @augment-vir/node
+ * @returns `undefined` if no matches are found.
+ * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
+ */
 export function findAncestor(
     currentPath: string,
     callback: (path: string) => Promise<boolean>,
-): Promise<string | undefined>;
+): Promise<string | undefined>; /**
+ * Find an ancestor file path that matches the given `callback`. If no matches are found all the
+ * way up until the system root, this returns `undefined`.
+ *
+ * @category Path : Node
+ * @category Package : @augment-vir/node
+ * @returns `undefined` if no matches are found.
+ * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
+ */
 export function findAncestor(
     currentPath: string,
     callback: (path: string) => boolean,
-): string | undefined;
+): string | undefined; /**
+ * Find an ancestor file path that matches the given `callback`. If no matches are found all the
+ * way up until the system root, this returns `undefined`.
+ *
+ * @category Path : Node
+ * @category Package : @augment-vir/node
+ * @returns `undefined` if no matches are found.
+ * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
+ */
 export function findAncestor(
     currentPath: string,
     callback: (path: string) => MaybePromise<boolean>,

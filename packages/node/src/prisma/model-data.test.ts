@@ -54,7 +54,7 @@ describe([addData.name, dumpData.name].join(' and '), () => {
             user: [
                 {
                     email: 'fake@example.com',
-                    // eslint-disable-next-line sonarjs/no-hardcoded-credentials
+                    // eslint-disable-next-line sonarjs/no-hardcoded-passwords
                     password: 'fake password',
                 },
             ],
@@ -109,7 +109,7 @@ describe([addData.name, dumpData.name].join(' and '), () => {
             user: [
                 {
                     email: 'fake@example.com',
-                    // eslint-disable-next-line sonarjs/no-hardcoded-credentials
+                    // eslint-disable-next-line sonarjs/no-hardcoded-passwords
                     password: 'fake password',
                     id: 'fake-id',
                 },
@@ -133,7 +133,7 @@ describe([addData.name, dumpData.name].join(' and '), () => {
             user: [
                 {
                     email: 'fake2@example.com',
-                    // eslint-disable-next-line sonarjs/no-hardcoded-credentials
+                    // eslint-disable-next-line sonarjs/no-hardcoded-passwords
                     password: 'fake password 2',
                     id: 'fake-id-2',
                     [prismaModelCreateOmitId]: true,
@@ -168,7 +168,7 @@ describe([addData.name, dumpData.name].join(' and '), () => {
                     user: [
                         {
                             email: 'fake@example.com',
-                            // eslint-disable-next-line sonarjs/no-hardcoded-credentials
+                            // eslint-disable-next-line sonarjs/no-hardcoded-passwords
                             password: 'fake password',
                         },
                     ],
@@ -184,7 +184,7 @@ describe([addData.name, dumpData.name].join(' and '), () => {
                 user: [
                     {
                         email: 'fake@example.com',
-                        // eslint-disable-next-line sonarjs/no-hardcoded-credentials
+                        // eslint-disable-next-line sonarjs/no-hardcoded-passwords
                         password: 'fake password',
                         firstName: null,
                         lastName: null,
@@ -200,7 +200,7 @@ describe([addData.name, dumpData.name].join(' and '), () => {
                 user: [
                     {
                         email: 'fake@example.com',
-                        // eslint-disable-next-line sonarjs/no-hardcoded-credentials
+                        // eslint-disable-next-line sonarjs/no-hardcoded-passwords
                         password: 'fake password',
                     },
                 ],
@@ -215,7 +215,7 @@ describe([addData.name, dumpData.name].join(' and '), () => {
                 user: [
                     {
                         email: 'fake@example.com',
-                        // eslint-disable-next-line sonarjs/no-hardcoded-credentials
+                        // eslint-disable-next-line sonarjs/no-hardcoded-passwords
                         password: 'fake password',
                         firstName: null,
                         lastName: null,
@@ -231,13 +231,13 @@ describe([addData.name, dumpData.name].join(' and '), () => {
                 user: [
                     {
                         email: 'fake@example.com',
-                        // eslint-disable-next-line sonarjs/no-hardcoded-credentials
+                        // eslint-disable-next-line sonarjs/no-hardcoded-passwords
                         password: 'fake password',
                         [prismaModelCreateExclude]: true,
                     },
                     {
                         email: 'fake2@example.com',
-                        // eslint-disable-next-line sonarjs/no-hardcoded-credentials
+                        // eslint-disable-next-line sonarjs/no-hardcoded-passwords
                         password: 'fake password 2',
                     },
                 ],
@@ -248,7 +248,7 @@ describe([addData.name, dumpData.name].join(' and '), () => {
                 user: [
                     {
                         email: 'fake2@example.com',
-                        // eslint-disable-next-line sonarjs/no-hardcoded-credentials
+                        // eslint-disable-next-line sonarjs/no-hardcoded-passwords
                         password: 'fake password 2',
                         firstName: null,
                         lastName: null,

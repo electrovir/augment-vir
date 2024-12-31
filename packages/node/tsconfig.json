@@ -1,6 +1,9 @@
 {
     "compilerOptions": {
         "outDir": "./dist/",
+        "paths": {
+            "something-crazy/*": ["./src/*"]
+        },
         "rootDir": "./src/"
     },
     "exclude": [
