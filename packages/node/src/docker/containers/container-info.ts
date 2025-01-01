@@ -3,7 +3,7 @@ import {runShellCommand} from '../../augments/terminal/shell.js';
 import type {DockerContainerStatus} from './container-status.js';
 
 /**
- * Properties on {@link DockerContainerInfo}.State, retrieved from {@link getContainerInfo}.
+ * Properties on {@link DockerContainerInfo}.State, retrieved from `docker.container.getInfo()`.
  *
  * @category Node : Docker : Util
  * @category Package : @augment-vir/node
@@ -26,7 +26,7 @@ export type DockerContainerInfoState = {
 /** This type signature is incomplete. Add to it as necessary. */
 
 /**
- * Properties on the output from {@link getContainerInfo}. Not all these properties are filled in all
+ * Properties on the output from `docker.container.getInfo()`. Not all these properties are filled in all
  * the way, particularly most of properties with nested objects.
  *
  * @category Node : Docker : Util

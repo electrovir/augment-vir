@@ -5,7 +5,6 @@ import {type TypeDocOptions} from 'typedoc';
 import {eslintTsconfigPath, monoRepoDirPath, packagePaths} from '../file-paths.js';
 
 async function main() {
-    const checkOnly = process.argv.includes('check');
 
     const typeDocConfig: Partial<TypeDocOptions> = {
         ...baseTypedocConfig,
@@ -51,7 +50,7 @@ async function main() {
 
     await runTypedoc({
         config: typeDocConfig,
-        checkOnly,
+        checkOnly: false,
         packageDir: monoRepoDirPath,
     });
 }

@@ -29,17 +29,17 @@ export type {PrismaMigrationStatus} from '../prisma/prisma-migrations.js';
  *
  * - Deploy to production
  *
- *   - {@link prisma.migration.applyProd}
+ *   - `prisma.migration.applyProd()`
  * - Update dev environment
  *
- *   - Apply migrations: {@link prisma.migration.applyDev}
+ *   - Apply migrations: `prisma.migration.applyDev`
  *
  *       - If throws {@link PrismaMigrationNeededError}, prompt user for a new migration name and pass it to
- *               {@link prisma.migration.create}
- *       - If throws {@link PrismaResetNeededError}, reset the database with {@link prisma.database.resetDev}
+ *               `prisma.migration.create`
+ *       - If throws {@link PrismaResetNeededError}, reset the database with `prisma.database.resetDev`
  *   - Generate client: `prisma.client.isCurrent`
  *
- *       - If `false`, run {@link prisma.client.generate}
+ *       - If `false`, run `prisma.client.generate`
  *
  * @category Prisma : Node
  * @category Package : @augment-vir/node
@@ -67,7 +67,7 @@ export const prisma = {
         applyProd: applyPrismaMigrationsToProd,
         /**
          * Apply all migrations. Meant for a development environment, with less protections than
-         * {@link prisma.migration.applyProd}.
+         * `prisma.migration.applyProd()`
          *
          * @throws `PrismaMigrationNeededError` when a new migration is required so the user needs
          *   to input a name.
@@ -87,7 +87,7 @@ export const prisma = {
          */
         resetDev: resetDevPrismaDatabase,
         /**
-         * Uses {@link prisma.database.diff} to detect if there are any differences between the
+         * Uses `prisma.database.diff` to detect if there are any differences between the
          * current database and the Prisma schema that should control it.
          */
         hasDiff: doesPrismaDiffExist,
@@ -119,7 +119,7 @@ export const prisma = {
          */
         isCurrent: isGeneratedPrismaClientCurrent,
         /**
-         * Adds a collection of create data to a database through a `PrismaClient` instance. This is
+         * Adds a collection of create data entries to a database through a `PrismaClient` instance. This is
          * particularly useful for setting up mocks in a mock PrismaClient.
          *
          * @example
@@ -161,7 +161,7 @@ export const prisma = {
          * ]);
          * ```
          */
-        addData: addData,
+        addData,
         /**
          * Dump data from the current database through a `PrismaClient` instance.
          *

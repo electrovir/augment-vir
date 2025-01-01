@@ -30,7 +30,7 @@
         "test:all": "npm run compile && npm run test:coverage && concurrently --colors --kill-others-on-fail -c auto --names spelling,format,deps,lint,exports,docs \"npm run test:spelling\" \"npm run test:format\" \"npm run test:deps\" \"npm run test:lint\" \"npm run test:exports\" \"npm run test:docs\"",
         "test:coverage": "mono-vir for-each npm run test:coverage",
         "test:deps": "virmator deps check",
-        "test:docs": "npm run exec --workspace @augment-vir/scripts src/scripts/run-typedoc.script.ts check",
+        "test:docs": "npm run docs",
         "test:exports": "npm run exec --workspace @augment-vir/scripts src/scripts/verify-exports.script.ts",
         "test:format": "virmator format check",
         "test:lint": "virmator lint",

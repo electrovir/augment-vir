@@ -20,7 +20,7 @@ import {
 import type {IsAny} from 'type-fest';
 
 /**
- * Params for {@link addData}. This is similar to {@link PrismaAllModelsCreate} but allows an array of
+ * Params for `prisma.client.addData()`. This is similar to {@link PrismaAllModelsCreate} but allows an array of
  * {@link PrismaAllModelsCreate} for sequential data creation.
  *
  * @category Prisma : Node
