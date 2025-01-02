@@ -1,7 +1,9 @@
 import {RuntimeEnv} from '@augment-vir/core';
-import {TestContext as NodeTestContextImport} from 'node:test';
-import {OmitIndexSignature, Simplify} from 'type-fest';
-import {MochaTestContext} from './mocha-types.js';
+import {type TestContext as NodeTestContextImport} from 'node:test';
+import {type OmitIndexSignature, type Simplify} from 'type-fest';
+import {type MochaTestContext} from './mocha-types.js';
+
+export {RuntimeEnv} from '@augment-vir/core';
 
 /**
  * The test context for [Node.js's test runner](https://nodejs.org/api/test.html).
