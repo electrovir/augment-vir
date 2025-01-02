@@ -20,7 +20,7 @@
         "packages/*"
     ],
     "scripts": {
-        "compile": "virmator compile",
+        "compile": "bash compile.sh",
         "docs": "npm run exec --workspace @augment-vir/scripts src/scripts/run-typedoc.script.ts",
         "format": "virmator format",
         "postinstall": "cd packages/common && tsc -b -f --pretty && cd ../.. && tsx packages/node/src/scripts/fix-ts-bin.script.ts",

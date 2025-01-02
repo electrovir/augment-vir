@@ -21,17 +21,21 @@ jobs:
             - uses: actions/setup-node@v4.0.3
               with:
                   node-version-file: '.nvmrc'
+            - name: Convert symlinks
+              uses: electrovir/convert-symlinks@dev
             # handle NPM / Node.js repeatedly bricking their npm setup on Windows
             # Note that this won't work if it uses --no-save
-            - if: runner.os == 'Windows'
+            - name: Fix Windows npm installation
+              if: runner.os == 'Windows'
               shell: bash
               run: |
                   npm i npm
             # format package.json is to account for the above `npm i npm` command
-            - name: run test
+            - name: Run tests
               shell: bash
               run: |
                   npm ci
                   npx playwright install --with-deps
+                  npm run compile
                   npm run format package.json
                   npm run test:all
