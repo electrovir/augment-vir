@@ -87,8 +87,8 @@ export const prisma = {
          */
         resetDev: resetDevPrismaDatabase,
         /**
-         * Uses `prisma.database.diff` to detect if there are any differences between the
-         * current database and the Prisma schema that should control it.
+         * Uses `prisma.database.diff` to detect if there are any differences between the current
+         * database and the Prisma schema that should control it.
          */
         hasDiff: doesPrismaDiffExist,
         /**
@@ -119,8 +119,8 @@ export const prisma = {
          */
         isCurrent: isGeneratedPrismaClientCurrent,
         /**
-         * Adds a collection of create data entries to a database through a `PrismaClient` instance. This is
-         * particularly useful for setting up mocks in a mock PrismaClient.
+         * Adds a collection of create data entries to a database through a `PrismaClient` instance.
+         * This is particularly useful for setting up mocks in a mock PrismaClient.
          *
          * @example
          *

@@ -5,7 +5,6 @@ import {type TypeDocOptions} from 'typedoc';
 import {eslintTsconfigPath, monoRepoDirPath, packagePaths} from '../file-paths.js';
 
 async function main() {
-
     const typeDocConfig: Partial<TypeDocOptions> = {
         ...baseTypedocConfig,
         out: join(monoRepoDirPath, 'dist-docs'),

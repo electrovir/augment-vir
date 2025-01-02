@@ -26,8 +26,8 @@ export type DockerContainerInfoState = {
 /** This type signature is incomplete. Add to it as necessary. */
 
 /**
- * Properties on the output from `docker.container.getInfo()`. Not all these properties are filled in all
- * the way, particularly most of properties with nested objects.
+ * Properties on the output from `docker.container.getInfo()`. Not all these properties are filled
+ * in all the way, particularly most of properties with nested objects.
  *
  * @category Node : Docker : Util
  * @category Package : @augment-vir/node
