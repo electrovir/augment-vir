@@ -6,6 +6,7 @@ export * from './augments/fs/read-dir.js';
 export * from './augments/fs/read-file.js';
 export * from './augments/fs/symlink.js';
 export * from './augments/fs/write.js';
+export * from './augments/npm/find-bin-path.js';
 export * from './augments/npm/query-workspace.js';
 export * from './augments/npm/read-package-json.js';
 export * from './augments/os/operating-system.js';
