@@ -1,7 +1,9 @@
 /* node:coverage disable */
 /** This file cannot be tested because it calls `process.exit`. */
 
-import {extname} from 'node:path';
+import {check} from '@augment-vir/assert';
+import {dirname, extname} from 'node:path';
+import {findNpmBinPath} from '../npm/find-bin-path.js';
 import {interpolationSafeWindowsPath} from '../path/os-path.js';
 import {extractRelevantArgs} from './relevant-args.js';
 import {runShellCommand} from './shell.js';
@@ -13,8 +15,10 @@ import {runShellCommand} from './shell.js';
  * @category Package : @augment-vir/node
  * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
  */
-export const ExtensionToRunner: Record<string, string> = {
-    '.ts': 'tsx',
+export const ExtensionToRunner: Record<string, string | {npx: string}> = {
+    '.ts': {
+        npx: 'tsx',
+    },
     '.js': 'node',
     '.sh': 'bash',
 };
@@ -27,7 +31,7 @@ export const ExtensionToRunner: Record<string, string> = {
  * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
  */
 export async function runCliScript(
-    path: string,
+    scriptPath: string,
     /** This should just be `__filename` (for CJS) or `import.meta.filename` (for ESM). */
     cliScriptFilePath: string,
     /**
@@ -42,7 +46,7 @@ export async function runCliScript(
         fileName: cliScriptFilePath,
     });
 
-    const extension = extname(path);
+    const extension = extname(scriptPath);
 
     const runner = ExtensionToRunner[extension];
 
@@ -50,8 +54,15 @@ export async function runCliScript(
         throw new Error("No runner configured for file extension '${extension}' in '${path}'");
     }
 
+    const runnerPath = check.isString(runner)
+        ? runner
+        : findNpmBinPath({
+              binName: runner.npx,
+              startPath: dirname(cliScriptFilePath),
+          }) || runner.npx;
+
     const results = await runShellCommand(
-        interpolationSafeWindowsPath([runner, path, ...args].join(' ')),
+        interpolationSafeWindowsPath([runnerPath, scriptPath, ...args].join(' ')),
         {
             hookUpToConsole: true,
         },
