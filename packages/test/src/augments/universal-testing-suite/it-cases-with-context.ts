@@ -1,39 +1,28 @@
-import {assert, check, ErrorMatchOptions, type CustomOutputAsserter} from '@augment-vir/assert';
+import {assert, check, type CustomOutputAsserter} from '@augment-vir/assert';
 import {
     ensureErrorAndPrependMessage,
     type AnyFunction,
     type MaybePromise,
+    type RemoveFirstTupleEntry,
     type TypedFunction,
 } from '@augment-vir/core';
-import {RequireExactlyOne} from 'type-fest';
+import {type BaseTestCase} from './it-cases.js';
 import {it} from './universal-it.js';
+import {type UniversalTestContext} from './universal-test-context.js';
+
+export type BaseFunctionWithContext = (testContext: UniversalTestContext, ...args: any[]) => any;
 
 /**
- * Base test case for {@link itCases}.
+ * Input for a test function with context that only has a single input.
  *
  * @category Test : Util
  * @category Package : @augment-vir/test
  * @package [`@augment-vir/test`](https://www.npmjs.com/package/@augment-vir/test)
  */
-export type BaseTestCase<OutputGeneric> = {
-    it: string;
-    only?: boolean | undefined;
-    skip?: boolean | undefined;
-} & RequireExactlyOne<{
-    expect: OutputGeneric;
-    throws: ErrorMatchOptions | undefined;
-}>;
-
-/**
- * Input for a function test that only has a single input.
- *
- * @category Test : Util
- * @category Package : @augment-vir/test
- * @package [`@augment-vir/test`](https://www.npmjs.com/package/@augment-vir/test)
- */
-export type FunctionTestCaseSingleInput<FunctionToTest extends AnyFunction> = {
-    input: Parameters<FunctionToTest>[0];
-} & BaseTestCase<Awaited<ReturnType<FunctionToTest>>>;
+export type FunctionWithContextTestCaseSingleInput<FunctionToTest extends BaseFunctionWithContext> =
+    {
+        input: Parameters<FunctionToTest>[1];
+    } & BaseTestCase<Awaited<ReturnType<FunctionToTest>>>;
 
 /**
  * Input for a function test that has multiple inputs.
@@ -42,36 +31,38 @@ export type FunctionTestCaseSingleInput<FunctionToTest extends AnyFunction> = {
  * @category Package : @augment-vir/test
  * @package [`@augment-vir/test`](https://www.npmjs.com/package/@augment-vir/test)
  */
-export type FunctionTestCaseMultipleInputs<FunctionToTest extends AnyFunction> = {
+export type FunctionWithContextTestCaseMultipleInputs<
+    FunctionToTest extends BaseFunctionWithContext,
+> = {
     inputs: Parameters<FunctionToTest>['length'] extends never
-        ? FunctionToTest extends TypedFunction<[infer ArgumentsType], any>
+        ? FunctionToTest extends TypedFunction<[UniversalTestContext, ...infer ArgumentsType], any>
             ? // readonly rest params case
               ArgumentsType[]
             : // leftover case, haven't figured out how to trigger this yet
               never
         : // all other cases
-          Parameters<FunctionToTest>;
+          RemoveFirstTupleEntry<Parameters<FunctionToTest>>;
 } & BaseTestCase<Awaited<ReturnType<FunctionToTest>>>;
 
 /**
- * A function test case used for {@link itCases}.
+ * A function test case used for {@link itCasesWithContext}.
  *
  * @category Test : Util
  * @category Package : @augment-vir/test
  * @package [`@augment-vir/test`](https://www.npmjs.com/package/@augment-vir/test)
  */
-export type FunctionTestCase<FunctionToTest extends AnyFunction> =
-    1 extends Parameters<FunctionToTest>['length']
-        ? Parameters<FunctionToTest>['length'] extends 0 | 1
+export type FunctionWithContextTestCase<FunctionToTest extends BaseFunctionWithContext> =
+    2 extends Parameters<FunctionToTest>['length']
+        ? Parameters<FunctionToTest>['length'] extends 1 | 2
             ? // only one param case
-              FunctionTestCaseSingleInput<FunctionToTest>
+              FunctionWithContextTestCaseSingleInput<FunctionToTest>
             : // multiple params with a rest param
-              FunctionTestCaseMultipleInputs<FunctionToTest>
-        : 0 extends Parameters<FunctionToTest>['length']
+              FunctionWithContextTestCaseMultipleInputs<FunctionToTest>
+        : 1 extends Parameters<FunctionToTest>['length']
           ? // no param case
             BaseTestCase<Awaited<ReturnType<FunctionToTest>>>
           : // multiple param case
-            FunctionTestCaseMultipleInputs<FunctionToTest>;
+            FunctionWithContextTestCaseMultipleInputs<FunctionToTest>;
 
 const unsetError = Symbol('unset-error');
 
@@ -115,10 +106,11 @@ const unsetError = Symbol('unset-error');
  *
  * @package [`@augment-vir/test`](https://www.npmjs.com/package/@augment-vir/test)
  */
-export function itCases<const FunctionToTest extends AnyFunction>(
+export function itCasesWithContext<const FunctionToTest extends BaseFunctionWithContext>(
+    this: void,
     functionToTest: FunctionToTest,
     customAsserter: CustomOutputAsserter<NoInfer<FunctionToTest>>,
-    testCases: ReadonlyArray<FunctionTestCase<NoInfer<FunctionToTest>>>,
+    testCases: ReadonlyArray<FunctionWithContextTestCase<NoInfer<FunctionToTest>>>,
 ): unknown[];
 /**
  * Succinctly run many input / output tests for a pure function without repeating `it` boilerplate.
@@ -160,9 +152,10 @@ export function itCases<const FunctionToTest extends AnyFunction>(
  *
  * @package [`@augment-vir/test`](https://www.npmjs.com/package/@augment-vir/test)
  */
-export function itCases<const FunctionToTest extends AnyFunction>(
+export function itCasesWithContext<const FunctionToTest extends BaseFunctionWithContext>(
+    this: void,
     functionToTest: FunctionToTest,
-    testCases: ReadonlyArray<FunctionTestCase<NoInfer<FunctionToTest>>>,
+    testCases: ReadonlyArray<FunctionWithContextTestCase<NoInfer<FunctionToTest>>>,
 ): unknown[];
 /**
  * Succinctly run many input / output tests for a pure function without repeating `it` boilerplate.
@@ -204,12 +197,13 @@ export function itCases<const FunctionToTest extends AnyFunction>(
  *
  * @package [`@augment-vir/test`](https://www.npmjs.com/package/@augment-vir/test)
  */
-export function itCases(
-    functionToTest: AnyFunction,
+export function itCasesWithContext(
+    this: void,
+    functionToTest: BaseFunctionWithContext,
     testCasesOrCustomAsserter:
         | CustomOutputAsserter<AnyFunction>
-        | ReadonlyArray<FunctionTestCase<AnyFunction>>,
-    maybeTestCases?: ReadonlyArray<FunctionTestCase<AnyFunction>> | undefined,
+        | ReadonlyArray<FunctionWithContextTestCase<AnyFunction>>,
+    maybeTestCases?: ReadonlyArray<FunctionWithContextTestCase<AnyFunction>> | undefined,
 ): unknown[] {
     const testCases: ReadonlyArray<BaseTestCase<unknown>> | undefined = (maybeTestCases ||
         testCasesOrCustomAsserter) as ReadonlyArray<BaseTestCase<unknown>> | undefined;
@@ -225,7 +219,7 @@ export function itCases(
 
     return testCases.map((testCase) => {
         const itFunction = testCase.only ? it.only : testCase.skip ? it.skip : it;
-        return itFunction(testCase.it, async () => {
+        return itFunction(testCase.it, async (testContext) => {
             const functionInputs: unknown[] =
                 'input' in testCase
                     ? ([testCase.input] as unknown[])
@@ -238,14 +232,14 @@ export function itCases(
                 await (assert.output(
                     asserter,
                     functionToTest,
-                    functionInputs,
+                    [testContext, ...functionInputs],
                     testCase.expect,
                     testCase.it,
                 ) as MaybePromise<any>);
             } else {
                 let caughtError: unknown = unsetError;
                 try {
-                    await functionToTest(...functionInputs);
+                    await functionToTest(testContext, ...functionInputs);
                 } catch (thrownError) {
                     caughtError = thrownError;
                 }
