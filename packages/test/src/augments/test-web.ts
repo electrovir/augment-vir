@@ -1,6 +1,6 @@
 import {isRuntimeEnv, RuntimeEnv, RuntimeEnvError} from '@augment-vir/core';
 
-async function importWebTestApi() {
+async function importWebTestApi(this: void) {
     if (!isRuntimeEnv(RuntimeEnv.Web)) {
         return new RuntimeEnvError(
             "The 'testWeb' api cannot be used outside of a browser context.",

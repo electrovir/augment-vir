@@ -35,7 +35,7 @@ export class SnapshotFileMissingError extends Error {
  * @category Package : @augment-vir/test
  * @package [`@augment-vir/test`](https://www.npmjs.com/package/@augment-vir/test)
  */
-export async function assertSnapshot(testContext: UniversalTestContext, data: unknown) {
+export async function assertSnapshot(this: void, testContext: UniversalTestContext, data: unknown) {
     const {snapshotName, testName} = getTestName(testContext);
     const serializedData = check.isString(data) ? data : JSON.stringify(data);
 
@@ -75,7 +75,7 @@ export async function assertSnapshot(testContext: UniversalTestContext, data: un
     }
 }
 
-function flattenMochaParentTitles(node: MochaNode): string[] {
+function flattenMochaParentTitles(this: void, node: MochaNode): string[] {
     if (node.root) {
         return [];
     } else {
@@ -83,7 +83,7 @@ function flattenMochaParentTitles(node: MochaNode): string[] {
     }
 }
 
-function getTestName(testContext: UniversalTestContext) {
+function getTestName(this: void, testContext: UniversalTestContext) {
     const testName = isTestContext(testContext, RuntimeEnv.Node)
         ? testContext.fullName
         : flattenMochaParentTitles(testContext.test).join(' > ');

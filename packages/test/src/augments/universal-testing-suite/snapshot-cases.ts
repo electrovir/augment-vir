@@ -42,6 +42,7 @@ import {assertSnapshot} from './universal-snapshot.js';
  * @package [`@augment-vir/test`](https://www.npmjs.com/package/@augment-vir/test)
  */
 export function snapshotCases<const FunctionToTest extends AnyFunction>(
+    this: void,
     functionToTest: FunctionToTest,
     testCases: ReadonlyArray<Omit<FunctionTestCase<NoInfer<FunctionToTest>>, 'expect' | 'throws'>>,
 ) {

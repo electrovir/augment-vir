@@ -53,6 +53,7 @@ export type ContextByEnv = {
  * @package [`@augment-vir/test`](https://www.npmjs.com/package/@augment-vir/test)
  */
 export function assertWrapTestContext<const SpecificEnv extends RuntimeEnv>(
+    this: void,
     context: UniversalTestContext,
     env: SpecificEnv,
 ): ContextByEnv[SpecificEnv] {
@@ -69,6 +70,7 @@ export function assertWrapTestContext<const SpecificEnv extends RuntimeEnv>(
  * @package [`@augment-vir/test`](https://www.npmjs.com/package/@augment-vir/test)
  */
 export function assertTestContext<const SpecificEnv extends RuntimeEnv>(
+    this: void,
     context: UniversalTestContext,
     env: SpecificEnv,
 ): asserts context is ContextByEnv[SpecificEnv] {
@@ -87,6 +89,7 @@ export function assertTestContext<const SpecificEnv extends RuntimeEnv>(
  * @package [`@augment-vir/test`](https://www.npmjs.com/package/@augment-vir/test)
  */
 export function isTestContext<const SpecificEnv extends RuntimeEnv>(
+    this: void,
     context: UniversalTestContext,
     env: SpecificEnv,
 ): context is ContextByEnv[SpecificEnv] {
@@ -112,6 +115,6 @@ const nodeOnlyCheckKey = 'diagnostic' satisfies NodeOnlyTestContextKeys;
  * @category Package : @augment-vir/test
  * @package [`@augment-vir/test`](https://www.npmjs.com/package/@augment-vir/test)
  */
-export function determineTestContextEnv(context: UniversalTestContext): RuntimeEnv {
+export function determineTestContextEnv(this: void, context: UniversalTestContext): RuntimeEnv {
     return nodeOnlyCheckKey in context ? RuntimeEnv.Node : RuntimeEnv.Web;
 }

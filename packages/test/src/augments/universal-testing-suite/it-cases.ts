@@ -116,6 +116,7 @@ const unsetError = Symbol('unset-error');
  * @package [`@augment-vir/test`](https://www.npmjs.com/package/@augment-vir/test)
  */
 export function itCases<const FunctionToTest extends AnyFunction>(
+    this: void,
     functionToTest: FunctionToTest,
     customAsserter: CustomOutputAsserter<NoInfer<FunctionToTest>>,
     testCases: ReadonlyArray<FunctionTestCase<NoInfer<FunctionToTest>>>,
@@ -161,6 +162,7 @@ export function itCases<const FunctionToTest extends AnyFunction>(
  * @package [`@augment-vir/test`](https://www.npmjs.com/package/@augment-vir/test)
  */
 export function itCases<const FunctionToTest extends AnyFunction>(
+    this: void,
     functionToTest: FunctionToTest,
     testCases: ReadonlyArray<FunctionTestCase<NoInfer<FunctionToTest>>>,
 ): unknown[];
@@ -205,6 +207,7 @@ export function itCases<const FunctionToTest extends AnyFunction>(
  * @package [`@augment-vir/test`](https://www.npmjs.com/package/@augment-vir/test)
  */
 export function itCases(
+    this: void,
     functionToTest: AnyFunction,
     testCasesOrCustomAsserter:
         | CustomOutputAsserter<AnyFunction>

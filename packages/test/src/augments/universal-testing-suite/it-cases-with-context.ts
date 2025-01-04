@@ -10,6 +10,13 @@ import {type BaseTestCase} from './it-cases.js';
 import {it} from './universal-it.js';
 import {type UniversalTestContext} from './universal-test-context.js';
 
+/**
+ * Base function under test type for all test cases that pass in the test context.
+ *
+ * @category Test : Util
+ * @category Package : @augment-vir/test
+ * @package [`@augment-vir/test`](https://www.npmjs.com/package/@augment-vir/test)
+ */
 export type BaseFunctionWithContext = (testContext: UniversalTestContext, ...args: any[]) => any;
 
 /**
