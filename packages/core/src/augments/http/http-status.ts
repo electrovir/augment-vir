@@ -1,4 +1,5 @@
 import type {ArrayElement} from '../array/array.js';
+import type {ExtractKeysWithMatchingValues} from '../object/object-keys.js';
 
 /**
  * All standardized HTTP status codes.
@@ -511,6 +512,138 @@ export enum HttpStatusCategory {
 }
 
 /**
+ * All {@link HttpStatusCategory} entries that indicate a failed response as a runtime value that can
+ * be used to check actual response statuses.
+ *
+ * @category HTTP
+ * @category Package : @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
+ */
+export const errorHttpStatusCategories = [
+    HttpStatusCategory.ClientError,
+    HttpStatusCategory.ServerError,
+] as const;
+
+/**
+ * All {@link HttpStatusCategory} entries that indicate a failed response.
+ *
+ * @category HTTP
+ * @category Package : @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
+ */
+export type ErrorHttpStatusCategories = ArrayElement<typeof errorHttpStatusCategories>;
+/**
+ * All {@link HttpStatusCategory} entries that indicate a successful response.
+ *
+ * @category HTTP
+ * @category Package : @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
+ */
+export type SuccessHttpStatusCategories = Exclude<HttpStatusCategory, ErrorHttpStatusCategories>;
+
+/**
+ * Checks if the given HTTP status is an error status. Type guards the input.
+ *
+ * @category HTTP
+ * @category Package : @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
+ */
+export function isErrorHttpStatus(
+    input: HttpStatus,
+): input is ExtractKeysWithMatchingValues<typeof httpStatusToCategory, ErrorHttpStatusCategories> {
+    return (errorHttpStatusCategories as ReadonlyArray<HttpStatusCategory>).includes(
+        httpStatusToCategory[input],
+    );
+}
+
+/**
+ * A type that maps the given {@link HttpStatus} type parameter to its respective
+ * {@link HttpStatusCategory}.
+ *
+ * @category HTTP
+ * @category Package : @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
+ */
+export type HttpStatusToCategory<Status extends HttpStatus> = (typeof httpStatusToCategory)[Status];
+
+/**
+ * All standardized HTTP statuses mapped to their respective category.
+ *
+ * @category HTTP
+ * @category Package : @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
+ */
+export const httpStatusToCategory = {
+    [HttpStatus.Continue]: HttpStatusCategory.Information,
+    [HttpStatus.SwitchingProtocols]: HttpStatusCategory.Information,
+    [HttpStatus.Processing]: HttpStatusCategory.Information,
+    [HttpStatus.EarlyHints]: HttpStatusCategory.Information,
+
+    [HttpStatus.Ok]: HttpStatusCategory.Success,
+    [HttpStatus.Created]: HttpStatusCategory.Success,
+    [HttpStatus.Accepted]: HttpStatusCategory.Success,
+    [HttpStatus.NonAuthoritativeInformation]: HttpStatusCategory.Success,
+    [HttpStatus.NoContent]: HttpStatusCategory.Success,
+    [HttpStatus.ResetContent]: HttpStatusCategory.Success,
+    [HttpStatus.PartialContent]: HttpStatusCategory.Success,
+    [HttpStatus.MultiStatus]: HttpStatusCategory.Success,
+    [HttpStatus.AlreadyReported]: HttpStatusCategory.Success,
+    [HttpStatus.ImUsed]: HttpStatusCategory.Success,
+
+    [HttpStatus.MultipleChoices]: HttpStatusCategory.Redirect,
+    [HttpStatus.MovedPermanently]: HttpStatusCategory.Redirect,
+    [HttpStatus.Found]: HttpStatusCategory.Redirect,
+    [HttpStatus.SeeOther]: HttpStatusCategory.Redirect,
+    [HttpStatus.NotModified]: HttpStatusCategory.Redirect,
+    [HttpStatus.UseProxy]: HttpStatusCategory.Redirect,
+    [HttpStatus.Unused]: HttpStatusCategory.Redirect,
+    [HttpStatus.TemporaryRedirect]: HttpStatusCategory.Redirect,
+    [HttpStatus.PermanentRedirect]: HttpStatusCategory.Redirect,
+
+    [HttpStatus.BadRequest]: HttpStatusCategory.ClientError,
+    [HttpStatus.Unauthorized]: HttpStatusCategory.ClientError,
+    [HttpStatus.PaymentRequired]: HttpStatusCategory.ClientError,
+    [HttpStatus.Forbidden]: HttpStatusCategory.ClientError,
+    [HttpStatus.NotFound]: HttpStatusCategory.ClientError,
+    [HttpStatus.MethodNotAllowed]: HttpStatusCategory.ClientError,
+    [HttpStatus.NotAcceptable]: HttpStatusCategory.ClientError,
+    [HttpStatus.ProxyAuthenticationRequired]: HttpStatusCategory.ClientError,
+    [HttpStatus.RequestTimeout]: HttpStatusCategory.ClientError,
+    [HttpStatus.Conflict]: HttpStatusCategory.ClientError,
+    [HttpStatus.Gone]: HttpStatusCategory.ClientError,
+    [HttpStatus.LengthRequired]: HttpStatusCategory.ClientError,
+    [HttpStatus.PreconditionFailed]: HttpStatusCategory.ClientError,
+    [HttpStatus.PayloadTooLarge]: HttpStatusCategory.ClientError,
+    [HttpStatus.UriTooLong]: HttpStatusCategory.ClientError,
+    [HttpStatus.UnsupportedMediaType]: HttpStatusCategory.ClientError,
+    [HttpStatus.RangeNotSatisfiable]: HttpStatusCategory.ClientError,
+    [HttpStatus.ExpectationFailed]: HttpStatusCategory.ClientError,
+    [HttpStatus.ImATeapot]: HttpStatusCategory.ClientError,
+    [HttpStatus.MisdirectedRequest]: HttpStatusCategory.ClientError,
+    [HttpStatus.UnprocessableContent]: HttpStatusCategory.ClientError,
+    [HttpStatus.Locked]: HttpStatusCategory.ClientError,
+    [HttpStatus.FailedDependency]: HttpStatusCategory.ClientError,
+    [HttpStatus.TooEarly]: HttpStatusCategory.ClientError,
+    [HttpStatus.UpgradeRequired]: HttpStatusCategory.ClientError,
+    [HttpStatus.PreconditionRequired]: HttpStatusCategory.ClientError,
+    [HttpStatus.TooManyRequests]: HttpStatusCategory.ClientError,
+    [HttpStatus.RequestHeaderFieldsTooLarge]: HttpStatusCategory.ClientError,
+    [HttpStatus.UnavailableForLegalReasons]: HttpStatusCategory.ClientError,
+
+    [HttpStatus.InternalServerError]: HttpStatusCategory.ServerError,
+    [HttpStatus.NotImplemented]: HttpStatusCategory.ServerError,
+    [HttpStatus.BadGateway]: HttpStatusCategory.ServerError,
+    [HttpStatus.ServiceUnavailable]: HttpStatusCategory.ServerError,
+    [HttpStatus.GatewayTimeout]: HttpStatusCategory.ServerError,
+    [HttpStatus.HttpVersionNotSupported]: HttpStatusCategory.ServerError,
+    [HttpStatus.VariantAlsoNegotiates]: HttpStatusCategory.ServerError,
+    [HttpStatus.InsufficientStorage]: HttpStatusCategory.ServerError,
+    [HttpStatus.LoopDetected]: HttpStatusCategory.ServerError,
+    [HttpStatus.NotExtended]: HttpStatusCategory.ServerError,
+    [HttpStatus.NetworkAuthenticationRequired]: HttpStatusCategory.ServerError,
+} as const satisfies Record<HttpStatus, HttpStatusCategory>;
+
+/**
  * All standardized HTTP status codes grouped into their respective categories.
  *
  * @category HTTP
@@ -591,7 +724,7 @@ export const httpStatusByCategory = {
         HttpStatus.NotExtended,
         HttpStatus.NetworkAuthenticationRequired,
     ],
-} as const;
+} as const satisfies Record<HttpStatusCategory, HttpStatus[]>;
 
 /**
  * All possible HTTP status codes for the given {@link HttpStatusCategory}.
