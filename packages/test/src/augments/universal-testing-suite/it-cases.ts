@@ -118,7 +118,6 @@ const unsetError = Symbol('unset-error');
 export function itCases<const FunctionToTest extends AnyFunction>(
     this: void,
     functionToTest: FunctionToTest,
-    customAsserter: CustomOutputAsserter<NoInfer<FunctionToTest>>,
     testCases: ReadonlyArray<FunctionTestCase<NoInfer<FunctionToTest>>>,
 ): unknown[];
 /**
@@ -164,6 +163,7 @@ export function itCases<const FunctionToTest extends AnyFunction>(
 export function itCases<const FunctionToTest extends AnyFunction>(
     this: void,
     functionToTest: FunctionToTest,
+    customAsserter: CustomOutputAsserter<NoInfer<FunctionToTest>>,
     testCases: ReadonlyArray<FunctionTestCase<NoInfer<FunctionToTest>>>,
 ): unknown[];
 /**
