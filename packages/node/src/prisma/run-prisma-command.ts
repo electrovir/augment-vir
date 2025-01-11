@@ -1,4 +1,4 @@
-import {log} from '@augment-vir/common';
+import {log, wrapString} from '@augment-vir/common';
 import {dirname} from 'node:path';
 import {interpolationSafeWindowsPath} from '../augments/path/os-path.js';
 import {runShellCommand, type ShellOutput} from '../augments/terminal/shell.js';
@@ -18,7 +18,9 @@ export async function runPrismaCommand(
     schemaFilePath: string | undefined,
     env: Record<string, string> | undefined = {},
 ) {
-    const schemaFileArgs = schemaFilePath ? ['--schema', schemaFilePath] : [];
+    const schemaFileArgs = schemaFilePath
+        ? ['--schema', wrapString({value: schemaFilePath, wrapper: "'"})]
+        : [];
 
     /** Disable Prisma's in-CLI ads. */
     const noHintsArg = prismaCommandsThatSupportNoHints.some((commandName) =>
