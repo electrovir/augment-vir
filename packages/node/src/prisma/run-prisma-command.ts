@@ -1,4 +1,5 @@
 import {log} from '@augment-vir/common';
+import {dirname} from 'node:path';
 import {interpolationSafeWindowsPath} from '../augments/path/os-path.js';
 import {runShellCommand, type ShellOutput} from '../augments/terminal/shell.js';
 import {PrismaSchemaError} from './prisma-errors.js';
@@ -35,6 +36,8 @@ export async function runPrismaCommand(
             ...process.env,
             ...env,
         },
+        hookUpToConsole: true,
+        cwd: schemaFilePath ? dirname(schemaFilePath) : process.cwd(),
     });
 
     return verifyOutput(schemaFilePath || '', result, ignoreExitCode);
