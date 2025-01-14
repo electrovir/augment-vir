@@ -1,4 +1,4 @@
-import {type MaybePromise} from '@augment-vir/core';
+import {DeferredPromise, type MaybePromise} from '@augment-vir/core';
 
 /**
  * Call a function asynchronously without interrupting current synchronous execution, even if the
@@ -24,5 +24,9 @@ import {type MaybePromise} from '@augment-vir/core';
  * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export async function callAsynchronously<T>(callback: () => MaybePromise<T>) {
-    return await Promise.resolve().then(() => callback());
+    const deferredPromise = new DeferredPromise<T>();
+    
+    setTimeout(async () => {deferredPromise.resolve(await callback())})
+    
+    return deferredPromise.promise;
 }
