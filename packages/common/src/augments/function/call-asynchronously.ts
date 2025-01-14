@@ -25,8 +25,10 @@ import {DeferredPromise, type MaybePromise} from '@augment-vir/core';
  */
 export async function callAsynchronously<T>(callback: () => MaybePromise<T>) {
     const deferredPromise = new DeferredPromise<T>();
-    
-    setTimeout(async () => {deferredPromise.resolve(await callback())})
-    
+
+    setTimeout(async () => {
+        deferredPromise.resolve(await callback());
+    });
+
     return deferredPromise.promise;
 }
