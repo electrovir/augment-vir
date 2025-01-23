@@ -6,6 +6,7 @@ export * from './augments/error/ensure-error.js';
 export * from './augments/error/error-message.js';
 export * from './augments/function/generic-function-type.js';
 export * from './augments/function/typed-function-type.js';
+export * from './augments/http/http-method.js';
 export * from './augments/http/http-status.js';
 export * from './augments/json/json-compatible.js';
 export * from './augments/min-max.js';
