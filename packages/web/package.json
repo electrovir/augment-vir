@@ -39,7 +39,7 @@
         "@augment-vir/common": "^31.8.1",
         "@date-vir/duration": "^7.1.2",
         "html-spec-tags": "^2.2.2",
-        "type-fest": "^4.32.0"
+        "type-fest": "^4.33.0"
     },
     "devDependencies": {
         "@augment-vir/test": "^31.8.1",

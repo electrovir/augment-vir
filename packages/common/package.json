@@ -44,7 +44,7 @@
         "@date-vir/duration": "^7.1.2",
         "ansi-styles": "^6.2.1",
         "json5": "^2.2.3",
-        "type-fest": "^4.32.0",
+        "type-fest": "^4.33.0",
         "typed-event-target": "^4.0.2"
     },
     "devDependencies": {

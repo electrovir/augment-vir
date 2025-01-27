@@ -45,7 +45,7 @@
         "@date-vir/duration": "^7.1.2",
         "deep-eql": "^5.0.2",
         "expect-type": "^1.1.0",
-        "type-fest": "^4.32.0"
+        "type-fest": "^4.33.0"
     },
     "devDependencies": {
         "@types/deep-eql": "^4.0.2",
