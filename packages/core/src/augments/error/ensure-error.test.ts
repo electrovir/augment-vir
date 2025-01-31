@@ -68,4 +68,18 @@ describe(ensureErrorClass.name, () => {
             },
         );
     });
+
+    it('requires constructor parameters', () => {
+        class MyCustomError2 extends Error {
+            public override readonly name = 'MyCustomError';
+
+            constructor(param1: string, param2: number) {
+                super();
+            }
+        }
+
+        // @ts-expect-error: missing parameters
+        const result = ensureErrorClass({}, MyCustomError2);
+        ensureErrorClass({}, MyCustomError2, 'hi', 3);
+    });
 });

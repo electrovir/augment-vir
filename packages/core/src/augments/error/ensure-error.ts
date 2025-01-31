@@ -56,14 +56,14 @@ export function ensureErrorAndPrependMessage(maybeError: unknown, prependMessage
  *
  * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
-export function ensureErrorClass<const ErrorClass extends Error>(
+export function ensureErrorClass<const ErrorClass extends Constructor<Error>>(
     originalError: unknown,
-    errorClass: Constructor<ErrorClass>,
-    ...params: ConstructorParameters<Constructor<ErrorClass>>
-): ErrorClass {
+    errorClass: ErrorClass,
+    ...params: ConstructorParameters<ErrorClass>
+): InstanceType<ErrorClass> {
     if (originalError instanceof errorClass) {
-        return originalError;
+        return originalError as InstanceType<ErrorClass>;
     } else {
-        return new errorClass(...params);
+        return new errorClass(...params) as InstanceType<ErrorClass>;
     }
 }
