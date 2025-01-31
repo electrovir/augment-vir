@@ -34,7 +34,7 @@
     "devDependencies": {
         "@augment-vir/test": "^31.8.1",
         "@types/jsdom": "^21.1.7",
-        "@types/node": "^22.10.10",
+        "@types/node": "^22.13.0",
         "typescript": "^5.7.2"
     },
     "engines": {
