@@ -1,3 +1,4 @@
+import {Constructor} from 'type-fest';
 import {combineErrorMessages, extractErrorMessage} from './error-message.js';
 
 /**
@@ -27,4 +28,42 @@ export function ensureErrorAndPrependMessage(maybeError: unknown, prependMessage
     const error = ensureError(maybeError);
     error.message = combineErrorMessages(prependMessage, error.message);
     return error;
+}
+
+/**
+ * Ensures that the given `originalError` is an instance of the given `errorClass`.
+ *
+ * - If it is, `originalError` is directly returned.
+ * - If it is _not_, a new instance of `errorClass` is constructed with the given parameters.
+ *
+ * @category Error
+ * @category Package : @augment-vir/common
+ * @example
+ *
+ * ```ts
+ * import {ensureErrorClass, extractErrorMessage} from '@augment-vir/common';
+ *
+ * class MyCustomError extends Error {
+ *     public override readonly name = 'MyCustomError';
+ * }
+ *
+ * try {
+ *     // do some stuff
+ * } catch (error) {
+ *     throw ensureErrorClass(error, MyCustomError, extractErrorMessage(error));
+ * }
+ * ```
+ *
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
+ */
+export function ensureErrorClass<const ErrorClass extends Error>(
+    originalError: unknown,
+    errorClass: Constructor<ErrorClass>,
+    ...params: ConstructorParameters<Constructor<ErrorClass>>
+): ErrorClass {
+    if (originalError instanceof errorClass) {
+        return originalError;
+    } else {
+        return new errorClass(...params);
+    }
 }

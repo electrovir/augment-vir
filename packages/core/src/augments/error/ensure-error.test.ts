@@ -1,6 +1,7 @@
 import {assert} from '@augment-vir/assert';
 import {describe, it} from '@augment-vir/test';
-import {ensureError, ensureErrorAndPrependMessage} from './ensure-error.js';
+import {ensureError, ensureErrorAndPrependMessage, ensureErrorClass} from './ensure-error.js';
+import {extractErrorMessage} from './error-message.js';
 
 describe(ensureError.name, () => {
     it('converts into an error', () => {
@@ -27,5 +28,44 @@ describe(ensureErrorAndPrependMessage.name, () => {
             'the error stack should not get modified',
         );
         assert.strictEquals(prependedError, error, 'should not create a new error');
+    });
+});
+
+describe(ensureErrorClass.name, () => {
+    it('converts an error', () => {
+        class MyCustomError extends Error {
+            public override readonly name = 'MyCustomError';
+        }
+
+        assert.throws(
+            () => {
+                try {
+                    throw new TypeError('derp');
+                } catch (error) {
+                    throw ensureErrorClass(error, MyCustomError, extractErrorMessage(error));
+                }
+            },
+            {
+                matchConstructor: MyCustomError,
+            },
+        );
+    });
+    it('does not convert an error', () => {
+        class MyCustomError extends Error {
+            public override readonly name = 'MyCustomError';
+        }
+
+        assert.throws(
+            () => {
+                try {
+                    throw new MyCustomError('derp');
+                } catch (error) {
+                    throw ensureErrorClass(error, MyCustomError, extractErrorMessage(error));
+                }
+            },
+            {
+                matchConstructor: MyCustomError,
+            },
+        );
     });
 });
