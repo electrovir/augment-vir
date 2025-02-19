@@ -83,7 +83,10 @@ function parseStatusEntries(htmlString: string) {
                 removePrefix({value: hyperlinkChild.href, prefix: '/'}),
             ].join('/');
 
-            const [code, ...description] = element.id.split('_');
+            const [
+                code,
+                ...description
+            ] = element.id.split('_');
             const name = kebabCaseToCamelCase(description.join('-'), {capitalizeFirstLetter: true});
 
             const newStatus: ParsedHttpStatus = {

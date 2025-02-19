@@ -13,9 +13,18 @@
  * ```ts
  * import {awaitedBlockingMap} from '@augment-vir/common';
  *
- * const result = await awaitedBlockingMap([1, 2, 3, 4, 5], async (value) => {
- *     return await Promise.resolve(value);
- * });
+ * const result = await awaitedBlockingMap(
+ *     [
+ *         1,
+ *         2,
+ *         3,
+ *         4,
+ *         5,
+ *     ],
+ *     async (value) => {
+ *         return await Promise.resolve(value);
+ *     },
+ * );
  * ```
  *
  * @returns A new array (does not mutate).

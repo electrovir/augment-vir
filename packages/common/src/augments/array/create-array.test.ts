@@ -8,8 +8,15 @@ describe(createArray.name, () => {
     itCases(createArray, [
         {
             it: 'handles a sync callback',
-            inputs: [3, (index) => `hi ${index}`],
-            expect: ['hi 0', 'hi 1', 'hi 2'],
+            inputs: [
+                3,
+                (index) => `hi ${index}`,
+            ],
+            expect: [
+                'hi 0',
+                'hi 1',
+                'hi 2',
+            ],
         },
         {
             it: 'handles maybe async callback',
@@ -25,7 +32,11 @@ describe(createArray.name, () => {
                     }
                 },
             ],
-            expect: ['hi 0', 'hi 1', 'hi 2'],
+            expect: [
+                'hi 0',
+                'hi 1',
+                'hi 2',
+            ],
         },
         {
             it: 'handles async callbacks',
@@ -35,7 +46,11 @@ describe(createArray.name, () => {
                     return waitValue({milliseconds: 1}, `hi ${index}`);
                 },
             ],
-            expect: ['hi 0', 'hi 1', 'hi 2'],
+            expect: [
+                'hi 0',
+                'hi 1',
+                'hi 2',
+            ],
         },
     ]);
 

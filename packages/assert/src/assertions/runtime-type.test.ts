@@ -15,7 +15,10 @@ import {waitUntil} from '../augments/guards/wait-until.js';
 import {waitUntilTestOptions} from '../test-timeout.mock.js';
 
 describe('isArray', () => {
-    const actualPass: unknown = ['hi', 'bye'] as any;
+    const actualPass: unknown = [
+        'hi',
+        'bye',
+    ] as any;
     const actualReject: unknown = 'two' as any;
     type ExpectedType = unknown[];
     type UnexpectedType = unknown;

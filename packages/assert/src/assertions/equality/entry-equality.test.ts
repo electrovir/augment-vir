@@ -32,14 +32,20 @@ describe('entriesEqual', () => {
         itCases(assert.entriesEqual, [
             {
                 it: 'handles a non-object first arg',
-                inputs: ['hi' as any, {a: 'hi'}],
+                inputs: [
+                    'hi' as any,
+                    {a: 'hi'},
+                ],
                 throws: {
                     matchMessage: 'is not an object',
                 },
             },
             {
                 it: 'handles a non-object second arg',
-                inputs: [{a: 'hi'}, 'hi' as any],
+                inputs: [
+                    {a: 'hi'},
+                    'hi' as any,
+                ],
                 throws: {
                     matchMessage: 'is not an object',
                 },

@@ -3,9 +3,16 @@
     "all": true,
     "checkCoverage": true,
     "clean": true,
-    "exclude": ["**/*.test.ts", "**/*.example.ts", "src/docker"],
+    "exclude": [
+        "**/*.test.ts",
+        "**/*.example.ts",
+        "src/docker"
+    ],
     "include": ["src/**/*.ts"],
     "perFile": true,
-    "reporter": ["html", "istanbul-smart-text-reporter"],
+    "reporter": [
+        "html",
+        "istanbul-smart-text-reporter"
+    ],
     "skipFull": true
 }

@@ -9,7 +9,11 @@
  * ```ts
  * import {repeatArray} from '@augment-vir/common';
  *
- * const result = repeatArray(3, ['a', 'b', 'c']);
+ * const result = repeatArray(3, [
+ *     'a',
+ *     'b',
+ *     'c',
+ * ]);
  * // result is `['a', 'b', 'c', 'a', 'b', 'c', 'a', 'b', 'c']`
  * ```
  *

@@ -116,8 +116,14 @@ describe(createArrayLogger.name, () => {
         log.if(true).plain('not missing log');
 
         assert.deepEquals(logs, {
-            stderr: ['this is an error', 'not missing error'],
-            stdout: ['this is a log', 'not missing log'],
+            stderr: [
+                'this is an error',
+                'not missing error',
+            ],
+            stdout: [
+                'this is a log',
+                'not missing log',
+            ],
         });
     });
 });

@@ -33,7 +33,12 @@ export async function applyPrismaMigrationsToDev(
     schemaFilePath: string,
     env: Record<string, string> = {},
 ) {
-    const command = ['prisma', 'migrate', 'dev', `--schema='${schemaFilePath}'`].join(' ');
+    const command = [
+        'prisma',
+        'migrate',
+        'dev',
+        `--schema='${schemaFilePath}'`,
+    ].join(' ');
 
     log.faint(`> ${command}`);
 
@@ -106,7 +111,10 @@ export async function getMigrationStatus(
         } else if (line.endsWith('not yet been applied:')) {
             foundNotAppliedMigrations = true;
         } else {
-            const [, countMatch] = safeMatch(line, /^([\d,]+) migrations? found in/);
+            const [
+                ,
+                countMatch,
+            ] = safeMatch(line, /^([\d,]+) migrations? found in/);
 
             if (countMatch) {
                 listedMigrations.totalMigrations = toEnsuredNumber(countMatch);

@@ -19,7 +19,10 @@ export async function runPrismaCommand(
     env: Record<string, string> | undefined = {},
 ) {
     const schemaFileArgs = schemaFilePath
-        ? ['--schema', wrapString({value: schemaFilePath, wrapper: "'"})]
+        ? [
+              '--schema',
+              wrapString({value: schemaFilePath, wrapper: "'"}),
+          ]
         : [];
 
     /** Disable Prisma's in-CLI ads. */
@@ -29,7 +32,12 @@ export async function runPrismaCommand(
         ? '--no-hints'
         : '';
 
-    const fullCommand = ['prisma', command, ...schemaFileArgs, noHintsArg].join(' ');
+    const fullCommand = [
+        'prisma',
+        command,
+        ...schemaFileArgs,
+        noHintsArg,
+    ].join(' ');
 
     log.faint(`> ${fullCommand}`);
 

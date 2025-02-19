@@ -9,7 +9,10 @@ describe(awaitedFilter.name, () => {
             it: 'handles boolean return values',
             expect: ['yo'],
             inputs: [
-                ['hello there', 'yo'],
+                [
+                    'hello there',
+                    'yo',
+                ],
                 async (entry) => {
                     return Promise.resolve(entry === 'yo');
                 },
@@ -17,9 +20,17 @@ describe(awaitedFilter.name, () => {
         },
         {
             it: 'handles non-boolean return values',
-            expect: ['hello there', 'yo'],
+            expect: [
+                'hello there',
+                'yo',
+            ],
             inputs: [
-                ['hello there', 'yo', '', 0],
+                [
+                    'hello there',
+                    'yo',
+                    '',
+                    0,
+                ],
                 async (entry) => {
                     return Promise.resolve(entry);
                 },
@@ -27,9 +38,17 @@ describe(awaitedFilter.name, () => {
         },
         {
             it: 'handles async callbacks',
-            expect: ['hello there', 'yo'],
+            expect: [
+                'hello there',
+                'yo',
+            ],
             inputs: [
-                ['hello there', 'yo', '', 0],
+                [
+                    'hello there',
+                    'yo',
+                    '',
+                    0,
+                ],
                 async (entry) => {
                     await wait({milliseconds: 1});
                     return entry;

@@ -29,8 +29,13 @@ export function filterObject<ObjectGeneric>(
         fullObject: ObjectGeneric,
     ) => boolean,
 ): Partial<ObjectGeneric> {
-    const filteredEntries = getObjectTypedEntries(inputObject).filter(([key, value]) => {
-        return callback(key, value, inputObject);
-    });
+    const filteredEntries = getObjectTypedEntries(inputObject).filter(
+        ([
+            key,
+            value,
+        ]) => {
+            return callback(key, value, inputObject);
+        },
+    );
     return typedObjectFromEntries(filteredEntries) as Partial<ObjectGeneric>;
 }

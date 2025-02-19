@@ -15,28 +15,43 @@ describe('hasValue', () => {
         stringKey: a,
         [Symbol('symbolKey')]: b,
     };
-    const parentArray = [a, b];
+    const parentArray = [
+        a,
+        b,
+    ];
 
     describe('assert', () => {
         itCases(assert.hasValue, [
             {
                 it: 'passes on a string key',
-                inputs: [parentObject, a],
+                inputs: [
+                    parentObject,
+                    a,
+                ],
                 throws: undefined,
             },
             {
                 it: 'passes on a symbol key',
-                inputs: [parentObject, b],
+                inputs: [
+                    parentObject,
+                    b,
+                ],
                 throws: undefined,
             },
             {
                 it: 'passes on an array',
-                inputs: [parentArray, a],
+                inputs: [
+                    parentArray,
+                    a,
+                ],
                 throws: undefined,
             },
             {
                 it: 'rejects on an object',
-                inputs: [parentObject, 'c'],
+                inputs: [
+                    parentObject,
+                    'c',
+                ],
                 throws: {
                     matchConstructor: AssertionError,
                     matchMessage: 'does not have value',
@@ -44,7 +59,10 @@ describe('hasValue', () => {
             },
             {
                 it: 'rejects on an array',
-                inputs: [parentArray, 'c'],
+                inputs: [
+                    parentArray,
+                    'c',
+                ],
                 throws: {
                     matchConstructor: AssertionError,
                     matchMessage: 'does not have value',
@@ -52,7 +70,10 @@ describe('hasValue', () => {
             },
             {
                 it: 'works on a string input',
-                inputs: ['abc', 'c'],
+                inputs: [
+                    'abc',
+                    'c',
+                ],
                 throws: undefined,
             },
         ]);
@@ -61,27 +82,42 @@ describe('hasValue', () => {
         itCases(check.hasValue, [
             {
                 it: 'passes on a string key',
-                inputs: [parentObject, a],
+                inputs: [
+                    parentObject,
+                    a,
+                ],
                 expect: true,
             },
             {
                 it: 'passes on a symbol key',
-                inputs: [parentObject, b],
+                inputs: [
+                    parentObject,
+                    b,
+                ],
                 expect: true,
             },
             {
                 it: 'passes on an array',
-                inputs: [parentArray, a],
+                inputs: [
+                    parentArray,
+                    a,
+                ],
                 expect: true,
             },
             {
                 it: 'rejects on an object',
-                inputs: [parentObject, 'c'],
+                inputs: [
+                    parentObject,
+                    'c',
+                ],
                 expect: false,
             },
             {
                 it: 'rejects on an array',
-                inputs: [parentArray, 'c'],
+                inputs: [
+                    parentArray,
+                    'c',
+                ],
                 expect: false,
             },
             {
@@ -99,22 +135,34 @@ describe('hasValue', () => {
         itCases(assertWrap.hasValue, [
             {
                 it: 'passes on a string key',
-                inputs: [parentObject, a],
+                inputs: [
+                    parentObject,
+                    a,
+                ],
                 expect: parentObject,
             },
             {
                 it: 'passes on a symbol key',
-                inputs: [parentObject, b],
+                inputs: [
+                    parentObject,
+                    b,
+                ],
                 expect: parentObject,
             },
             {
                 it: 'passes on an array',
-                inputs: [parentArray, a],
+                inputs: [
+                    parentArray,
+                    a,
+                ],
                 expect: parentArray,
             },
             {
                 it: 'rejects on an object',
-                inputs: [parentObject, 'c'],
+                inputs: [
+                    parentObject,
+                    'c',
+                ],
                 throws: {
                     matchConstructor: AssertionError,
                     matchMessage: 'does not have value',
@@ -122,7 +170,10 @@ describe('hasValue', () => {
             },
             {
                 it: 'rejects on an array',
-                inputs: [parentArray, 'c'],
+                inputs: [
+                    parentArray,
+                    'c',
+                ],
                 throws: {
                     matchConstructor: AssertionError,
                     matchMessage: 'does not have value',
@@ -134,27 +185,42 @@ describe('hasValue', () => {
         itCases(checkWrap.hasValue, [
             {
                 it: 'passes on a string key',
-                inputs: [parentObject, a],
+                inputs: [
+                    parentObject,
+                    a,
+                ],
                 expect: parentObject,
             },
             {
                 it: 'passes on a symbol key',
-                inputs: [parentObject, b],
+                inputs: [
+                    parentObject,
+                    b,
+                ],
                 expect: parentObject,
             },
             {
                 it: 'passes on an array',
-                inputs: [parentArray, a],
+                inputs: [
+                    parentArray,
+                    a,
+                ],
                 expect: parentArray,
             },
             {
                 it: 'rejects on an object',
-                inputs: [parentObject, 'c'],
+                inputs: [
+                    parentObject,
+                    'c',
+                ],
                 expect: undefined,
             },
             {
                 it: 'rejects on an array',
-                inputs: [parentArray, 'c'],
+                inputs: [
+                    parentArray,
+                    'c',
+                ],
                 expect: undefined,
             },
         ]);
@@ -198,13 +264,19 @@ describe('lacksValue', () => {
         stringKey: a,
         [Symbol('symbolKey')]: b,
     };
-    const parentArray = [a, b];
+    const parentArray = [
+        a,
+        b,
+    ];
 
     describe('assert', () => {
         itCases(assert.lacksValue, [
             {
                 it: 'rejects on a string key',
-                inputs: [parentObject, a],
+                inputs: [
+                    parentObject,
+                    a,
+                ],
                 throws: {
                     matchConstructor: AssertionError,
                     matchMessage: 'has value',
@@ -212,7 +284,10 @@ describe('lacksValue', () => {
             },
             {
                 it: 'rejects on a symbol key',
-                inputs: [parentObject, b],
+                inputs: [
+                    parentObject,
+                    b,
+                ],
                 throws: {
                     matchConstructor: AssertionError,
                     matchMessage: 'has value',
@@ -220,7 +295,10 @@ describe('lacksValue', () => {
             },
             {
                 it: 'rejects on an array',
-                inputs: [parentArray, a],
+                inputs: [
+                    parentArray,
+                    a,
+                ],
                 throws: {
                     matchConstructor: AssertionError,
                     matchMessage: 'has value',
@@ -228,12 +306,18 @@ describe('lacksValue', () => {
             },
             {
                 it: 'passes on an object',
-                inputs: [parentObject, 'c'],
+                inputs: [
+                    parentObject,
+                    'c',
+                ],
                 throws: undefined,
             },
             {
                 it: 'passes on an array',
-                inputs: [parentArray, 'c'],
+                inputs: [
+                    parentArray,
+                    'c',
+                ],
                 throws: undefined,
             },
         ]);
@@ -242,27 +326,42 @@ describe('lacksValue', () => {
         itCases(check.lacksValue, [
             {
                 it: 'rejects on a string key',
-                inputs: [parentObject, a],
+                inputs: [
+                    parentObject,
+                    a,
+                ],
                 expect: false,
             },
             {
                 it: 'rejects on a symbol key',
-                inputs: [parentObject, b],
+                inputs: [
+                    parentObject,
+                    b,
+                ],
                 expect: false,
             },
             {
                 it: 'rejects on an array',
-                inputs: [parentArray, a],
+                inputs: [
+                    parentArray,
+                    a,
+                ],
                 expect: false,
             },
             {
                 it: 'passes on an object',
-                inputs: [parentObject, 'c'],
+                inputs: [
+                    parentObject,
+                    'c',
+                ],
                 expect: true,
             },
             {
                 it: 'passes on an array',
-                inputs: [parentArray, 'c'],
+                inputs: [
+                    parentArray,
+                    'c',
+                ],
                 expect: true,
             },
         ]);
@@ -271,7 +370,10 @@ describe('lacksValue', () => {
         itCases(assertWrap.lacksValue, [
             {
                 it: 'rejects on a string key',
-                inputs: [parentObject, a],
+                inputs: [
+                    parentObject,
+                    a,
+                ],
                 throws: {
                     matchConstructor: AssertionError,
                     matchMessage: 'has value',
@@ -279,7 +381,10 @@ describe('lacksValue', () => {
             },
             {
                 it: 'rejects on a symbol key',
-                inputs: [parentObject, b],
+                inputs: [
+                    parentObject,
+                    b,
+                ],
                 throws: {
                     matchConstructor: AssertionError,
                     matchMessage: 'has value',
@@ -287,7 +392,10 @@ describe('lacksValue', () => {
             },
             {
                 it: 'rejects on an array',
-                inputs: [parentArray, a],
+                inputs: [
+                    parentArray,
+                    a,
+                ],
                 throws: {
                     matchConstructor: AssertionError,
                     matchMessage: 'has value',
@@ -295,12 +403,18 @@ describe('lacksValue', () => {
             },
             {
                 it: 'passes on an object',
-                inputs: [parentObject, 'c'],
+                inputs: [
+                    parentObject,
+                    'c',
+                ],
                 expect: parentObject,
             },
             {
                 it: 'passes on an array',
-                inputs: [parentArray, 'c'],
+                inputs: [
+                    parentArray,
+                    'c',
+                ],
                 expect: parentArray,
             },
         ]);
@@ -309,27 +423,42 @@ describe('lacksValue', () => {
         itCases(checkWrap.lacksValue, [
             {
                 it: 'rejects on a string key',
-                inputs: [parentObject, a],
+                inputs: [
+                    parentObject,
+                    a,
+                ],
                 expect: undefined,
             },
             {
                 it: 'rejects on a symbol key',
-                inputs: [parentObject, b],
+                inputs: [
+                    parentObject,
+                    b,
+                ],
                 expect: undefined,
             },
             {
                 it: 'rejects on an array',
-                inputs: [parentArray, a],
+                inputs: [
+                    parentArray,
+                    a,
+                ],
                 expect: undefined,
             },
             {
                 it: 'passes on an object',
-                inputs: [parentObject, 'c'],
+                inputs: [
+                    parentObject,
+                    'c',
+                ],
                 expect: parentObject,
             },
             {
                 it: 'passes on an array',
-                inputs: [parentArray, 'c'],
+                inputs: [
+                    parentArray,
+                    'c',
+                ],
                 expect: parentArray,
             },
         ]);
@@ -374,23 +503,41 @@ describe('hasValues', () => {
         stringKey: a,
         [Symbol('symbolKey')]: b,
     };
-    const parentArray = [a, b];
+    const parentArray = [
+        a,
+        b,
+    ];
 
     describe('assert', () => {
         itCases(assert.hasValues, [
             {
                 it: 'passes on an object',
-                inputs: [parentObject, [a, b]],
+                inputs: [
+                    parentObject,
+                    [
+                        a,
+                        b,
+                    ],
+                ],
                 throws: undefined,
             },
             {
                 it: 'passes on an array',
-                inputs: [parentArray, [a, b]],
+                inputs: [
+                    parentArray,
+                    [
+                        a,
+                        b,
+                    ],
+                ],
                 throws: undefined,
             },
             {
                 it: 'rejects on an object',
-                inputs: [parentObject, ['c']],
+                inputs: [
+                    parentObject,
+                    ['c'],
+                ],
                 throws: {
                     matchConstructor: AssertionError,
                     matchMessage: 'does not have values',
@@ -398,7 +545,10 @@ describe('hasValues', () => {
             },
             {
                 it: 'rejects on an array',
-                inputs: [parentArray, ['c']],
+                inputs: [
+                    parentArray,
+                    ['c'],
+                ],
                 throws: {
                     matchConstructor: AssertionError,
                     matchMessage: 'does not have values',
@@ -406,12 +556,24 @@ describe('hasValues', () => {
             },
             {
                 it: 'passes a string',
-                inputs: ['abc', ['a', 'c']],
+                inputs: [
+                    'abc',
+                    [
+                        'a',
+                        'c',
+                    ],
+                ],
                 throws: undefined,
             },
             {
                 it: 'rejects a string',
-                inputs: ['abc', ['a', 'q']],
+                inputs: [
+                    'abc',
+                    [
+                        'a',
+                        'q',
+                    ],
+                ],
                 throws: {
                     matchConstructor: AssertionError,
                     matchMessage: 'does not have values',
@@ -435,22 +597,40 @@ describe('hasValues', () => {
         itCases(check.hasValues, [
             {
                 it: 'passes on an object',
-                inputs: [parentObject, [a, b]],
+                inputs: [
+                    parentObject,
+                    [
+                        a,
+                        b,
+                    ],
+                ],
                 expect: true,
             },
             {
                 it: 'passes on an array',
-                inputs: [parentArray, [a, b]],
+                inputs: [
+                    parentArray,
+                    [
+                        a,
+                        b,
+                    ],
+                ],
                 expect: true,
             },
             {
                 it: 'rejects on an object',
-                inputs: [parentObject, ['c']],
+                inputs: [
+                    parentObject,
+                    ['c'],
+                ],
                 expect: false,
             },
             {
                 it: 'rejects on an array',
-                inputs: [parentArray, ['c']],
+                inputs: [
+                    parentArray,
+                    ['c'],
+                ],
                 expect: false,
             },
         ]);
@@ -459,17 +639,32 @@ describe('hasValues', () => {
         itCases(assertWrap.hasValues, [
             {
                 it: 'passes on a string key',
-                inputs: [parentObject, [a, b]],
+                inputs: [
+                    parentObject,
+                    [
+                        a,
+                        b,
+                    ],
+                ],
                 expect: parentObject,
             },
             {
                 it: 'passes on an array',
-                inputs: [parentArray, [a, b]],
+                inputs: [
+                    parentArray,
+                    [
+                        a,
+                        b,
+                    ],
+                ],
                 expect: parentArray,
             },
             {
                 it: 'rejects on an object',
-                inputs: [parentObject, ['c']],
+                inputs: [
+                    parentObject,
+                    ['c'],
+                ],
                 throws: {
                     matchConstructor: AssertionError,
                     matchMessage: 'does not have values',
@@ -477,7 +672,10 @@ describe('hasValues', () => {
             },
             {
                 it: 'rejects on an array',
-                inputs: [parentArray, ['c']],
+                inputs: [
+                    parentArray,
+                    ['c'],
+                ],
                 throws: {
                     matchConstructor: AssertionError,
                     matchMessage: 'does not have values',
@@ -485,12 +683,24 @@ describe('hasValues', () => {
             },
             {
                 it: 'works on a string',
-                inputs: ['abc', ['a', 'c']],
+                inputs: [
+                    'abc',
+                    [
+                        'a',
+                        'c',
+                    ],
+                ],
                 expect: 'abc',
             },
             {
                 it: 'rejects a string',
-                inputs: ['abc', ['a', 'r']],
+                inputs: [
+                    'abc',
+                    [
+                        'a',
+                        'r',
+                    ],
+                ],
                 throws: {
                     matchConstructor: AssertionError,
                     matchMessage: 'does not have values',
@@ -514,22 +724,40 @@ describe('hasValues', () => {
         itCases(checkWrap.hasValues, [
             {
                 it: 'passes on a string key',
-                inputs: [parentObject, [a, b]],
+                inputs: [
+                    parentObject,
+                    [
+                        a,
+                        b,
+                    ],
+                ],
                 expect: parentObject,
             },
             {
                 it: 'passes on an array',
-                inputs: [parentArray, [a, b]],
+                inputs: [
+                    parentArray,
+                    [
+                        a,
+                        b,
+                    ],
+                ],
                 expect: parentArray,
             },
             {
                 it: 'rejects on an object',
-                inputs: [parentObject, ['c']],
+                inputs: [
+                    parentObject,
+                    ['c'],
+                ],
                 expect: undefined,
             },
             {
                 it: 'rejects on an array',
-                inputs: [parentArray, ['c']],
+                inputs: [
+                    parentArray,
+                    ['c'],
+                ],
                 expect: undefined,
             },
         ]);
@@ -538,7 +766,10 @@ describe('hasValues', () => {
         it('passes', async () => {
             let counter = 0;
             const newValue = await waitUntil.hasValues(
-                [a, b],
+                [
+                    a,
+                    b,
+                ],
                 () => {
                     ++counter;
                     if (counter > 2) {
@@ -555,7 +786,10 @@ describe('hasValues', () => {
         it('rejects', async () => {
             await assert.throws(
                 waitUntil.hasValues(
-                    [a, 'c'],
+                    [
+                        a,
+                        'c',
+                    ],
                     () => {
                         return [];
                     },
@@ -573,13 +807,22 @@ describe('lacksValues', () => {
         stringKey: a,
         [Symbol('symbolKey')]: b,
     };
-    const parentArray = [a, b];
+    const parentArray = [
+        a,
+        b,
+    ];
 
     describe('assert', () => {
         itCases(assert.lacksValues, [
             {
                 it: 'rejects on an object',
-                inputs: [parentObject, [a, b]],
+                inputs: [
+                    parentObject,
+                    [
+                        a,
+                        b,
+                    ],
+                ],
                 throws: {
                     matchConstructor: AssertionError,
                     matchMessage: 'has values',
@@ -587,7 +830,13 @@ describe('lacksValues', () => {
             },
             {
                 it: 'rejects on an array',
-                inputs: [parentArray, [a, b]],
+                inputs: [
+                    parentArray,
+                    [
+                        a,
+                        b,
+                    ],
+                ],
                 throws: {
                     matchConstructor: AssertionError,
                     matchMessage: 'has values',
@@ -595,22 +844,40 @@ describe('lacksValues', () => {
             },
             {
                 it: 'passes on an object',
-                inputs: [parentObject, ['c']],
+                inputs: [
+                    parentObject,
+                    ['c'],
+                ],
                 throws: undefined,
             },
             {
                 it: 'passes on an array',
-                inputs: [parentArray, ['c']],
+                inputs: [
+                    parentArray,
+                    ['c'],
+                ],
                 throws: undefined,
             },
             {
                 it: 'passes a string',
-                inputs: ['abc', ['q', 'r']],
+                inputs: [
+                    'abc',
+                    [
+                        'q',
+                        'r',
+                    ],
+                ],
                 throws: undefined,
             },
             {
                 it: 'rejects a string',
-                inputs: ['abc', ['q', 'a']],
+                inputs: [
+                    'abc',
+                    [
+                        'q',
+                        'a',
+                    ],
+                ],
                 throws: {
                     matchConstructor: AssertionError,
                     matchMessage: 'has values',
@@ -631,22 +898,40 @@ describe('lacksValues', () => {
         itCases(check.lacksValues, [
             {
                 it: 'rejects on an object',
-                inputs: [parentObject, [a, b]],
+                inputs: [
+                    parentObject,
+                    [
+                        a,
+                        b,
+                    ],
+                ],
                 expect: false,
             },
             {
                 it: 'rejects on an array',
-                inputs: [parentArray, [a, b]],
+                inputs: [
+                    parentArray,
+                    [
+                        a,
+                        b,
+                    ],
+                ],
                 expect: false,
             },
             {
                 it: 'passes on an object',
-                inputs: [parentObject, ['c']],
+                inputs: [
+                    parentObject,
+                    ['c'],
+                ],
                 expect: true,
             },
             {
                 it: 'passes on an array',
-                inputs: [parentArray, ['c']],
+                inputs: [
+                    parentArray,
+                    ['c'],
+                ],
                 expect: true,
             },
         ]);
@@ -655,7 +940,13 @@ describe('lacksValues', () => {
         itCases(assertWrap.lacksValues, [
             {
                 it: 'rejects on a string key',
-                inputs: [parentObject, [a, b]],
+                inputs: [
+                    parentObject,
+                    [
+                        a,
+                        b,
+                    ],
+                ],
                 throws: {
                     matchConstructor: AssertionError,
                     matchMessage: 'has values',
@@ -663,7 +954,13 @@ describe('lacksValues', () => {
             },
             {
                 it: 'rejects on an array',
-                inputs: [parentArray, [a, b]],
+                inputs: [
+                    parentArray,
+                    [
+                        a,
+                        b,
+                    ],
+                ],
                 throws: {
                     matchConstructor: AssertionError,
                     matchMessage: 'has values',
@@ -671,22 +968,40 @@ describe('lacksValues', () => {
             },
             {
                 it: 'passes on an object',
-                inputs: [parentObject, ['c']],
+                inputs: [
+                    parentObject,
+                    ['c'],
+                ],
                 expect: parentObject,
             },
             {
                 it: 'passes on an array',
-                inputs: [parentArray, ['c']],
+                inputs: [
+                    parentArray,
+                    ['c'],
+                ],
                 expect: parentArray,
             },
             {
                 it: 'works on a string',
-                inputs: ['abc', ['q', 'r']],
+                inputs: [
+                    'abc',
+                    [
+                        'q',
+                        'r',
+                    ],
+                ],
                 expect: 'abc',
             },
             {
                 it: 'rejects a string',
-                inputs: ['abc', ['q', 'c']],
+                inputs: [
+                    'abc',
+                    [
+                        'q',
+                        'c',
+                    ],
+                ],
                 throws: {
                     matchConstructor: AssertionError,
                     matchMessage: 'has values',
@@ -708,22 +1023,40 @@ describe('lacksValues', () => {
         itCases(checkWrap.lacksValues, [
             {
                 it: 'rejects on a string key',
-                inputs: [parentObject, [a, b]],
+                inputs: [
+                    parentObject,
+                    [
+                        a,
+                        b,
+                    ],
+                ],
                 expect: undefined,
             },
             {
                 it: 'rejects on an array',
-                inputs: [parentArray, [a, b]],
+                inputs: [
+                    parentArray,
+                    [
+                        a,
+                        b,
+                    ],
+                ],
                 expect: undefined,
             },
             {
                 it: 'passes on an object',
-                inputs: [parentObject, ['c']],
+                inputs: [
+                    parentObject,
+                    ['c'],
+                ],
                 expect: parentObject,
             },
             {
                 it: 'passes on an array',
-                inputs: [parentArray, ['c']],
+                inputs: [
+                    parentArray,
+                    ['c'],
+                ],
                 expect: parentArray,
             },
         ]);
@@ -749,7 +1082,10 @@ describe('lacksValues', () => {
         it('rejects', async () => {
             await assert.throws(
                 waitUntil.lacksValues(
-                    [a, 'c'],
+                    [
+                        a,
+                        'c',
+                    ],
                     () => {
                         return [a];
                     },
@@ -764,7 +1100,11 @@ describe('lacksValues', () => {
 describe('isIn', () => {
     const actualPass: 'yo' | 'missing' = 'yo' as any;
     const actualReject: 'yo' | 'missing' = 'missing' as any;
-    const expected = ['yo', 'hello', 'hi'] as const;
+    const expected = [
+        'yo',
+        'hello',
+        'hi',
+    ] as const;
     type ExpectedType = 'yo';
     type UnexpectedType = string;
     const expectedObject = {
@@ -932,7 +1272,11 @@ describe('isIn', () => {
 describe('isNotIn', () => {
     const actualPass: 'yo' | 'missing' = 'missing' as any;
     const actualReject: 'yo' | 'missing' = 'yo' as any;
-    const expected = ['yo', 'hello', 'hi'] as const;
+    const expected = [
+        'yo',
+        'hello',
+        'hi',
+    ] as const;
     type ExpectedType = 'missing';
     type UnexpectedType = 'yo';
     const expectedObject = {
@@ -1122,7 +1466,12 @@ describe('isEmpty', () => {
             },
             {
                 it: 'rejects a non-empty Map',
-                input: new Map([['hi', 'hi']]),
+                input: new Map([
+                    [
+                        'hi',
+                        'hi',
+                    ],
+                ]),
                 expect: false,
             },
             {

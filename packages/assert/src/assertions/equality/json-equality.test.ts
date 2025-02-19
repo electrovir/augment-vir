@@ -16,8 +16,14 @@ describe('jsonEquals', () => {
         ignores: {
             nonJson: 'props',
             value: new Map([
-                ['a', 'b'],
-                ['c', 'd'],
+                [
+                    'a',
+                    'b',
+                ],
+                [
+                    'c',
+                    'd',
+                ],
             ]),
         },
     } as any;
@@ -30,8 +36,14 @@ describe('jsonEquals', () => {
         ignores: {
             nonJson: 'props',
             value: new Map([
-                ['a', 'b'],
-                ['c', 'd'],
+                [
+                    'a',
+                    'b',
+                ],
+                [
+                    'c',
+                    'd',
+                ],
             ]),
         },
     } as any;
@@ -43,7 +55,12 @@ describe('jsonEquals', () => {
         },
         ignores: {
             nonJson: 'props',
-            value: new Map([['q', 'r']]),
+            value: new Map([
+                [
+                    'q',
+                    'r',
+                ],
+            ]),
         },
     };
     type ExpectedType = {
@@ -94,12 +111,18 @@ describe('jsonEquals', () => {
         itCases(check.jsonEquals, [
             {
                 it: 'handles empty first arg',
-                inputs: [{}, {a: 'b'}],
+                inputs: [
+                    {},
+                    {a: 'b'},
+                ],
                 expect: false,
             },
             {
                 it: 'handles empty last arg',
-                inputs: [{a: 'b'}, {}],
+                inputs: [
+                    {a: 'b'},
+                    {},
+                ],
                 expect: false,
             },
         ]);

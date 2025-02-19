@@ -141,9 +141,21 @@ const assertions = {
      * const child = {a: 'a'};
      * const child2 = {b: 'b'};
      *
-     * assert.hasValues({child, child2}, [child, child2]); // passes
-     * assert.hasValues({child: {a: 'a'}, child2}, [child, child2]); // fails
-     * assert.hasValues([child], [child, child2]); // passes
+     * assert.hasValues({child, child2}, [
+     *     child,
+     *     child2,
+     * ]); // passes
+     * assert.hasValues({child: {a: 'a'}, child2}, [
+     *     child,
+     *     child2,
+     * ]); // fails
+     * assert.hasValues(
+     *     [child],
+     *     [
+     *         child,
+     *         child2,
+     *     ],
+     * ); // passes
      * ```
      *
      * @throws {@link AssertionError} If the assertion fails.
@@ -202,9 +214,18 @@ const assertions = {
      * const child = {a: 'a'};
      * const child2 = {b: 'b'};
      *
-     * assert.lacksValues({}, [child, child2]); // passes
-     * assert.lacksValues({child, child2}, [child, child2]); // fails
-     * assert.lacksValues({child: {a: 'a'}, child2}, [child, child2]); // fails
+     * assert.lacksValues({}, [
+     *     child,
+     *     child2,
+     * ]); // passes
+     * assert.lacksValues({child, child2}, [
+     *     child,
+     *     child2,
+     * ]); // fails
+     * assert.lacksValues({child: {a: 'a'}, child2}, [
+     *     child,
+     *     child2,
+     * ]); // fails
      * ```
      *
      * @throws {@link AssertionError} If the assertion fails.
@@ -486,9 +507,21 @@ export const valueGuards = {
          * const child = {a: 'a'};
          * const child2 = {b: 'b'};
          *
-         * check.hasValues({child, child2}, [child, child2]); // returns `true`
-         * check.hasValues({child: {a: 'a'}, child2}, [child, child2]); // returns `false`
-         * check.hasValues([child], [child, child2]); // returns `true`
+         * check.hasValues({child, child2}, [
+         *     child,
+         *     child2,
+         * ]); // returns `true`
+         * check.hasValues({child: {a: 'a'}, child2}, [
+         *     child,
+         *     child2,
+         * ]); // returns `false`
+         * check.hasValues(
+         *     [child],
+         *     [
+         *         child,
+         *         child2,
+         *     ],
+         * ); // returns `true`
          * ```
          *
          * @see
@@ -512,9 +545,18 @@ export const valueGuards = {
          * const child = {a: 'a'};
          * const child2 = {b: 'b'};
          *
-         * check.lacksValues({}, [child, child2]); // returns `true`
-         * check.lacksValues({child, child2}, [child, child2]); // returns `false`
-         * check.lacksValues({child: {a: 'a'}, child2}, [child, child2]); // returns `false`
+         * check.lacksValues({}, [
+         *     child,
+         *     child2,
+         * ]); // returns `true`
+         * check.lacksValues({child, child2}, [
+         *     child,
+         *     child2,
+         * ]); // returns `false`
+         * check.lacksValues({child: {a: 'a'}, child2}, [
+         *     child,
+         *     child2,
+         * ]); // returns `false`
          * ```
          *
          * @see
@@ -762,9 +804,21 @@ export const valueGuards = {
          * const child = {a: 'a'};
          * const child2 = {b: 'b'};
          *
-         * assertWrap.hasValues({child, child2}, [child, child2]); // returns `{child, child2}`;
-         * assertWrap.hasValues({child: {a: 'a'}, child2}, [child, child2]); // throws an error
-         * assertWrap.hasValues([child], [child, child2]); // returns `[child]`;
+         * assertWrap.hasValues({child, child2}, [
+         *     child,
+         *     child2,
+         * ]); // returns `{child, child2}`;
+         * assertWrap.hasValues({child: {a: 'a'}, child2}, [
+         *     child,
+         *     child2,
+         * ]); // throws an error
+         * assertWrap.hasValues(
+         *     [child],
+         *     [
+         *         child,
+         *         child2,
+         *     ],
+         * ); // returns `[child]`;
          * ```
          *
          * @returns The value if the assertion passes.
@@ -825,9 +879,18 @@ export const valueGuards = {
          * const child = {a: 'a'};
          * const child2 = {b: 'b'};
          *
-         * assertWrap.lacksValues({}, [child, child2]); // returns `{}`;
-         * assertWrap.lacksValues({child, child2}, [child, child2]); // throws an error
-         * assertWrap.lacksValues({child: {a: 'a'}, child2}, [child, child2]); // throws an error
+         * assertWrap.lacksValues({}, [
+         *     child,
+         *     child2,
+         * ]); // returns `{}`;
+         * assertWrap.lacksValues({child, child2}, [
+         *     child,
+         *     child2,
+         * ]); // throws an error
+         * assertWrap.lacksValues({child: {a: 'a'}, child2}, [
+         *     child,
+         *     child2,
+         * ]); // throws an error
          * ```
          *
          * @returns The value if the assertion passes.
@@ -1136,9 +1199,21 @@ export const valueGuards = {
          * const child = {a: 'a'};
          * const child2 = {b: 'b'};
          *
-         * checkWrap.hasValues({child, child2}, [child, child2]); // returns `{child, child2}`
-         * checkWrap.hasValues({child: {a: 'a'}, child2}, [child, child2]); // returns `undefined`
-         * checkWrap.hasValues([child], [child, child2]); // returns `[child]`
+         * checkWrap.hasValues({child, child2}, [
+         *     child,
+         *     child2,
+         * ]); // returns `{child, child2}`
+         * checkWrap.hasValues({child: {a: 'a'}, child2}, [
+         *     child,
+         *     child2,
+         * ]); // returns `undefined`
+         * checkWrap.hasValues(
+         *     [child],
+         *     [
+         *         child,
+         *         child2,
+         *     ],
+         * ); // returns `[child]`
          * ```
          *
          * @see
@@ -1170,9 +1245,18 @@ export const valueGuards = {
          * const child = {a: 'a'};
          * const child2 = {b: 'b'};
          *
-         * checkWrap.lacksValues({}, [child, child2]); // returns `{}`
-         * checkWrap.lacksValues({child, child2}, [child, child2]); // returns `undefined`
-         * checkWrap.lacksValues({child: {a: 'a'}, child2}, [child, child2]); // returns `undefined`
+         * checkWrap.lacksValues({}, [
+         *     child,
+         *     child2,
+         * ]); // returns `{}`
+         * checkWrap.lacksValues({child, child2}, [
+         *     child,
+         *     child2,
+         * ]); // returns `undefined`
+         * checkWrap.lacksValues({child: {a: 'a'}, child2}, [
+         *     child,
+         *     child2,
+         * ]); // returns `undefined`
          * ```
          *
          * @see
@@ -1443,13 +1527,31 @@ export const valueGuards = {
          * const child = {a: 'a'};
          * const child2 = {b: 'b'};
          *
-         * await waitUntil.hasValues([child, child2], () => {
-         *     return {child, child2};
-         * }); // returns `{child, child2}`;
-         * await waitUntil.hasValues([child, child2], () => {
-         *     return {child: {a: 'a'}, child2};
-         * }); // throws an error
-         * await waitUntil.hasValues([child, child2], () => [child]); // returns `[child]`;
+         * await waitUntil.hasValues(
+         *     [
+         *         child,
+         *         child2,
+         *     ],
+         *     () => {
+         *         return {child, child2};
+         *     },
+         * ); // returns `{child, child2}`;
+         * await waitUntil.hasValues(
+         *     [
+         *         child,
+         *         child2,
+         *     ],
+         *     () => {
+         *         return {child: {a: 'a'}, child2};
+         *     },
+         * ); // throws an error
+         * await waitUntil.hasValues(
+         *     [
+         *         child,
+         *         child2,
+         *     ],
+         *     () => [child],
+         * ); // returns `[child]`;
          * ```
          *
          * @returns The callback output once it passes.
@@ -1480,15 +1582,33 @@ export const valueGuards = {
          * const child = {a: 'a'};
          * const child2 = {b: 'b'};
          *
-         * await waitUntil.lacksValues([child, child2], () => {
-         *     return {};
-         * }); // returns `{}`;
-         * await waitUntil.lacksValues([child, child2], () => {
-         *     return {child, child2};
-         * }); // throws an error
-         * await waitUntil.lacksValues([child, child2], () => {
-         *     return {child: {a: 'a'}, child2};
-         * }); // throws an error
+         * await waitUntil.lacksValues(
+         *     [
+         *         child,
+         *         child2,
+         *     ],
+         *     () => {
+         *         return {};
+         *     },
+         * ); // returns `{}`;
+         * await waitUntil.lacksValues(
+         *     [
+         *         child,
+         *         child2,
+         *     ],
+         *     () => {
+         *         return {child, child2};
+         *     },
+         * ); // throws an error
+         * await waitUntil.lacksValues(
+         *     [
+         *         child,
+         *         child2,
+         *     ],
+         *     () => {
+         *         return {child: {a: 'a'}, child2};
+         *     },
+         * ); // throws an error
          * ```
          *
          * @returns The callback output once it passes.

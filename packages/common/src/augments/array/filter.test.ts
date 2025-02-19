@@ -3,24 +3,63 @@ import {describe, it, itCases} from '@augment-vir/test';
 import {filterMap, filterOutIndexes} from './filter.js';
 
 describe(filterOutIndexes.name, () => {
-    const exampleArray = ['a', 'b', 'c', 'd', 'e', 'f', 'g'];
+    const exampleArray = [
+        'a',
+        'b',
+        'c',
+        'd',
+        'e',
+        'f',
+        'g',
+    ];
 
     itCases(filterOutIndexes, [
         {
             it: 'removes entries by index',
-            inputs: [exampleArray, [1, 4, 5, 6]],
-            expect: ['a', 'c', 'd'],
+            inputs: [
+                exampleArray,
+                [
+                    1,
+                    4,
+                    5,
+                    6,
+                ],
+            ],
+            expect: [
+                'a',
+                'c',
+                'd',
+            ],
         },
         {
             it: "doesn't do anything if no indexes are given to remove",
-            inputs: [exampleArray, []],
+            inputs: [
+                exampleArray,
+                [],
+            ],
             expect: exampleArray,
         },
     ]);
 
     it('does not modify the original array', () => {
-        filterOutIndexes(exampleArray, [1, 4, 5, 6]);
-        assert.deepEquals(exampleArray, ['a', 'b', 'c', 'd', 'e', 'f', 'g']);
+        filterOutIndexes(
+            exampleArray,
+            [
+                1,
+                4,
+                5,
+                6,
+            ],
+        );
+        assert.deepEquals(exampleArray, [
+            'a',
+            'b',
+            'c',
+            'd',
+            'e',
+            'f',
+            'g',
+        ]);
     });
 });
 
@@ -28,13 +67,24 @@ describe(filterMap.name, () => {
     itCases(filterMap, [
         {
             it: 'handles an empty array',
-            inputs: [[], (entry: any) => entry * 2, (mappedEntry: any) => mappedEntry > 10],
+            inputs: [
+                [],
+                (entry: any) => entry * 2,
+                (mappedEntry: any) => mappedEntry > 10,
+            ],
             expect: [],
         },
         {
             it: 'maps and filters',
             inputs: [
-                [1, 2, 3, 4, 5, 6],
+                [
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                ],
                 (entry: any) => entry * 2,
                 (mappedEntry: any) => mappedEntry > 10,
             ],
@@ -43,7 +93,16 @@ describe(filterMap.name, () => {
     ]);
 
     it('has proper types', () => {
-        const exampleArray = ['1', '2', '3', '4', '5', 'fake number', '1,123', '6'];
+        const exampleArray = [
+            '1',
+            '2',
+            '3',
+            '4',
+            '5',
+            'fake number',
+            '1,123',
+            '6',
+        ];
 
         const output = filterMap(
             exampleArray,
@@ -65,11 +124,30 @@ describe(filterMap.name, () => {
 
         assert.tsType(output).equals<number[]>();
 
-        assert.deepEquals(output, [1, 2, 3, 4, 5, 6]);
+        assert.deepEquals(
+            output,
+            [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+            ],
+        );
     });
 
     it('supports type guard filters', () => {
-        const exampleArray = ['1', '2', '3', '4', '5', 'fake number', '1,123', '6'];
+        const exampleArray = [
+            '1',
+            '2',
+            '3',
+            '4',
+            '5',
+            'fake number',
+            '1,123',
+            '6',
+        ];
 
         const output = filterMap(
             exampleArray,
@@ -80,6 +158,13 @@ describe(filterMap.name, () => {
             check.isTruthy,
         );
         assert.tsType(output).equals<number[]>();
-        assert.deepEquals(output, [1, 3, 5]);
+        assert.deepEquals(
+            output,
+            [
+                1,
+                3,
+                5,
+            ],
+        );
     });
 });

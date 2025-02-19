@@ -8,7 +8,17 @@
  * ```ts
  * import {filterOutIndexes} from '@augment-vir/common';
  *
- * const result = filterOutIndexes(['a', 'b', ''], [0, 2]);
+ * const result = filterOutIndexes(
+ *     [
+ *         'a',
+ *         'b',
+ *         '',
+ *     ],
+ *     [
+ *         0,
+ *         2,
+ *     ],
+ * );
  * // result is `['b']`
  * ```
  *
@@ -64,7 +74,11 @@ export function filterMap<ElementType, MappedEntry>(
  * import {filterMap} from '@augment-vir/common';
  *
  * const result = filterMap(
- *     ['a', 'b', ''],
+ *     [
+ *         'a',
+ *         'b',
+ *         '',
+ *     ],
  *     // map callback
  *     (value) => {
  *         return `value-${value}`;

@@ -12,9 +12,18 @@ import {awaitedBlockingMap} from './awaited-map.js';
  * ```ts
  * import {awaitedFilter} from '@augment-vir/common';
  *
- * const result = await awaitedFilter([1, 2, 3, 4, 5], async (value) => {
- *     return await Promise.resolve(value > 2);
- * });
+ * const result = await awaitedFilter(
+ *     [
+ *         1,
+ *         2,
+ *         3,
+ *         4,
+ *         5,
+ *     ],
+ *     async (value) => {
+ *         return await Promise.resolve(value > 2);
+ *     },
+ * );
  * ```
  *
  * @returns A new array (does not mutate).

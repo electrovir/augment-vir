@@ -62,7 +62,10 @@ describe(appendJsonFile.name, () => {
             await writeJsonFile(tempOutFilePath, ['a']);
             await appendJsonFile(tempOutFilePath, ['b']);
 
-            assert.deepEquals(await readJsonFile(tempOutFilePath), ['a', 'b']);
+            assert.deepEquals(await readJsonFile(tempOutFilePath), [
+                'a',
+                'b',
+            ]);
         } finally {
             await rm(tempOutFilePath, {force: true});
         }
@@ -81,7 +84,10 @@ describe(appendJsonFile.name, () => {
             await writeJsonFile(tempOutFilePath, 'a');
             await appendJsonFile(tempOutFilePath, ['b']);
 
-            assert.deepEquals(await readJsonFile(tempOutFilePath), ['a', 'b']);
+            assert.deepEquals(await readJsonFile(tempOutFilePath), [
+                'a',
+                'b',
+            ]);
         } finally {
             await rm(tempOutFilePath, {force: true});
         }

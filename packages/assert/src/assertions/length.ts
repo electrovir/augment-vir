@@ -201,9 +201,29 @@ const assertions: {
      * ```ts
      * import {assert} from '@augment-vir/assert';
      *
-     * assert.isLengthAtLeast(['a', 'b', 'c'], 2); // passes
-     * assert.isLengthAtLeast(['a', 'b', 'c'], 3); // passes
-     * assert.isLengthAtLeast(['a', 'b'], 3); // fails
+     * assert.isLengthAtLeast(
+     *     [
+     *         'a',
+     *         'b',
+     *         'c',
+     *     ],
+     *     2,
+     * ); // passes
+     * assert.isLengthAtLeast(
+     *     [
+     *         'a',
+     *         'b',
+     *         'c',
+     *     ],
+     *     3,
+     * ); // passes
+     * assert.isLengthAtLeast(
+     *     [
+     *         'a',
+     *         'b',
+     *     ],
+     *     3,
+     * ); // fails
      * ```
      *
      * @throws {@link AssertionError} If the value is less than the given length.
@@ -221,9 +241,29 @@ const assertions: {
      * ```ts
      * import {assert} from '@augment-vir/assert';
      *
-     * assert.isLengthExactly(['a', 'b', 'c'], 2); // fails
-     * assert.isLengthExactly(['a', 'b', 'c'], 3); // passes
-     * assert.isLengthExactly(['a', 'b'], 3); // fails
+     * assert.isLengthExactly(
+     *     [
+     *         'a',
+     *         'b',
+     *         'c',
+     *     ],
+     *     2,
+     * ); // fails
+     * assert.isLengthExactly(
+     *     [
+     *         'a',
+     *         'b',
+     *         'c',
+     *     ],
+     *     3,
+     * ); // passes
+     * assert.isLengthExactly(
+     *     [
+     *         'a',
+     *         'b',
+     *     ],
+     *     3,
+     * ); // fails
      * ```
      *
      * @throws {@link AssertionError} If the value is not exactly the given length.
@@ -242,9 +282,29 @@ const assertions: {
      * ```ts
      * import {assert} from '@augment-vir/assert';
      *
-     * assert.isLengthAtLeast(['a', 'b', 'c'], 2); // passes
-     * assert.isLengthAtLeast(['a', 'b', 'c'], 3); // passes
-     * assert.isLengthAtLeast(['a', 'b'], 3); // fails
+     * assert.isLengthAtLeast(
+     *     [
+     *         'a',
+     *         'b',
+     *         'c',
+     *     ],
+     *     2,
+     * ); // passes
+     * assert.isLengthAtLeast(
+     *     [
+     *         'a',
+     *         'b',
+     *         'c',
+     *     ],
+     *     3,
+     * ); // passes
+     * assert.isLengthAtLeast(
+     *     [
+     *         'a',
+     *         'b',
+     *     ],
+     *     3,
+     * ); // fails
      * ```
      *
      * @throws {@link AssertionError} If the value is less than the given length.
@@ -262,9 +322,29 @@ const assertions: {
      * ```ts
      * import {assert} from '@augment-vir/assert';
      *
-     * assert.isLengthExactly(['a', 'b', 'c'], 2); // fails
-     * assert.isLengthExactly(['a', 'b', 'c'], 3); // passes
-     * assert.isLengthExactly(['a', 'b'], 3); // fails
+     * assert.isLengthExactly(
+     *     [
+     *         'a',
+     *         'b',
+     *         'c',
+     *     ],
+     *     2,
+     * ); // fails
+     * assert.isLengthExactly(
+     *     [
+     *         'a',
+     *         'b',
+     *         'c',
+     *     ],
+     *     3,
+     * ); // passes
+     * assert.isLengthExactly(
+     *     [
+     *         'a',
+     *         'b',
+     *     ],
+     *     3,
+     * ); // fails
      * ```
      *
      * @throws {@link AssertionError} If the value is not exactly the given length.
@@ -287,9 +367,29 @@ export const lengthGuards = {
          * ```ts
          * import {check} from '@augment-vir/assert';
          *
-         * check.isLengthAtLeast(['a', 'b', 'c'], 2); // returns `true`
-         * check.isLengthAtLeast(['a', 'b', 'c'], 3); // returns `true`
-         * check.isLengthAtLeast(['a', 'b'], 3); // returns `false`
+         * check.isLengthAtLeast(
+         *     [
+         *         'a',
+         *         'b',
+         *         'c',
+         *     ],
+         *     2,
+         * ); // returns `true`
+         * check.isLengthAtLeast(
+         *     [
+         *         'a',
+         *         'b',
+         *         'c',
+         *     ],
+         *     3,
+         * ); // returns `true`
+         * check.isLengthAtLeast(
+         *     [
+         *         'a',
+         *         'b',
+         *     ],
+         *     3,
+         * ); // returns `false`
          * ```
          *
          * @see
@@ -316,9 +416,29 @@ export const lengthGuards = {
          * ```ts
          * import {check} from '@augment-vir/assert';
          *
-         * check.isLengthExactly(['a', 'b', 'c'], 2); // fails
-         * check.isLengthExactly(['a', 'b', 'c'], 3); // passes
-         * check.isLengthExactly(['a', 'b'], 3); // fails
+         * check.isLengthExactly(
+         *     [
+         *         'a',
+         *         'b',
+         *         'c',
+         *     ],
+         *     2,
+         * ); // fails
+         * check.isLengthExactly(
+         *     [
+         *         'a',
+         *         'b',
+         *         'c',
+         *     ],
+         *     3,
+         * ); // passes
+         * check.isLengthExactly(
+         *     [
+         *         'a',
+         *         'b',
+         *     ],
+         *     3,
+         * ); // fails
          * ```
          *
          * @see
@@ -348,9 +468,29 @@ export const lengthGuards = {
          * ```ts
          * import {assertWrap} from '@augment-vir/assert';
          *
-         * assertWrap.isLengthAtLeast(['a', 'b', 'c'], 2); // returns `['a', 'b', 'c']`
-         * assertWrap.isLengthAtLeast(['a', 'b', 'c'], 3); // returns `['a', 'b', 'c']`
-         * assertWrap.isLengthAtLeast(['a', 'b'], 3); // throws an error
+         * assertWrap.isLengthAtLeast(
+         *     [
+         *         'a',
+         *         'b',
+         *         'c',
+         *     ],
+         *     2,
+         * ); // returns `['a', 'b', 'c']`
+         * assertWrap.isLengthAtLeast(
+         *     [
+         *         'a',
+         *         'b',
+         *         'c',
+         *     ],
+         *     3,
+         * ); // returns `['a', 'b', 'c']`
+         * assertWrap.isLengthAtLeast(
+         *     [
+         *         'a',
+         *         'b',
+         *     ],
+         *     3,
+         * ); // throws an error
          * ```
          *
          * @returns The value if it has at least the given length.
@@ -388,9 +528,29 @@ export const lengthGuards = {
          * ```ts
          * import {assertWrap} from '@augment-vir/assert';
          *
-         * assertWrap.isLengthExactly(['a', 'b', 'c'], 2); // throws an error
-         * assertWrap.isLengthExactly(['a', 'b', 'c'], 3); // returns `['a', 'b', 'c']`
-         * assertWrap.isLengthExactly(['a', 'b'], 3); // throws an error
+         * assertWrap.isLengthExactly(
+         *     [
+         *         'a',
+         *         'b',
+         *         'c',
+         *     ],
+         *     2,
+         * ); // throws an error
+         * assertWrap.isLengthExactly(
+         *     [
+         *         'a',
+         *         'b',
+         *         'c',
+         *     ],
+         *     3,
+         * ); // returns `['a', 'b', 'c']`
+         * assertWrap.isLengthExactly(
+         *     [
+         *         'a',
+         *         'b',
+         *     ],
+         *     3,
+         * ); // throws an error
          * ```
          *
          * @returns The value if it has exactly the given length.
@@ -430,9 +590,29 @@ export const lengthGuards = {
          * ```ts
          * import {checkWrap} from '@augment-vir/assert';
          *
-         * checkWrap.isLengthAtLeast(['a', 'b', 'c'], 2); // returns `['a', 'b', 'c']`
-         * checkWrap.isLengthAtLeast(['a', 'b', 'c'], 3); // returns `['a', 'b', 'c']`
-         * checkWrap.isLengthAtLeast(['a', 'b'], 3); // returns `undefined`
+         * checkWrap.isLengthAtLeast(
+         *     [
+         *         'a',
+         *         'b',
+         *         'c',
+         *     ],
+         *     2,
+         * ); // returns `['a', 'b', 'c']`
+         * checkWrap.isLengthAtLeast(
+         *     [
+         *         'a',
+         *         'b',
+         *         'c',
+         *     ],
+         *     3,
+         * ); // returns `['a', 'b', 'c']`
+         * checkWrap.isLengthAtLeast(
+         *     [
+         *         'a',
+         *         'b',
+         *     ],
+         *     3,
+         * ); // returns `undefined`
          * ```
          *
          * @returns The value if the check passes, otherwise `undefined`.
@@ -465,9 +645,29 @@ export const lengthGuards = {
          * ```ts
          * import {checkWrap} from '@augment-vir/assert';
          *
-         * checkWrap.isLengthExactly(['a', 'b', 'c'], 2); // returns `undefined`
-         * checkWrap.isLengthExactly(['a', 'b', 'c'], 3); // returns `['a', 'b', 'c']`
-         * checkWrap.isLengthExactly(['a', 'b'], 3); // returns `undefined`
+         * checkWrap.isLengthExactly(
+         *     [
+         *         'a',
+         *         'b',
+         *         'c',
+         *     ],
+         *     2,
+         * ); // returns `undefined`
+         * checkWrap.isLengthExactly(
+         *     [
+         *         'a',
+         *         'b',
+         *         'c',
+         *     ],
+         *     3,
+         * ); // returns `['a', 'b', 'c']`
+         * checkWrap.isLengthExactly(
+         *     [
+         *         'a',
+         *         'b',
+         *     ],
+         *     3,
+         * ); // returns `undefined`
          * ```
          *
          * @returns The value if the check passes, otherwise `undefined`.
@@ -503,9 +703,20 @@ export const lengthGuards = {
          * ```ts
          * import {waitUntil} from '@augment-vir/assert';
          *
-         * await waitUntil.isLengthAtLeast(2, () => ['a', 'b', 'c']); // returns `['a', 'b', 'c']`
-         * await waitUntil.isLengthAtLeast(3, () => ['a', 'b', 'c']); // returns `['a', 'b', 'c']`
-         * await waitUntil.isLengthAtLeast(3, () => ['a', 'b']); // throws an error
+         * await waitUntil.isLengthAtLeast(2, () => [
+         *     'a',
+         *     'b',
+         *     'c',
+         * ]); // returns `['a', 'b', 'c']`
+         * await waitUntil.isLengthAtLeast(3, () => [
+         *     'a',
+         *     'b',
+         *     'c',
+         * ]); // returns `['a', 'b', 'c']`
+         * await waitUntil.isLengthAtLeast(3, () => [
+         *     'a',
+         *     'b',
+         * ]); // throws an error
          * ```
          *
          * @returns The callback output once it passes.
@@ -528,9 +739,20 @@ export const lengthGuards = {
          * ```ts
          * import {waitUntil} from '@augment-vir/assert';
          *
-         * await waitUntil.isLengthAtLeast(2, () => ['a', 'b', 'c']); // throws an error
-         * await waitUntil.isLengthAtLeast(3, () => ['a', 'b', 'c']); // returns `['a', 'b', 'c']`
-         * await waitUntil.isLengthAtLeast(3, () => ['a', 'b']); // throws an error
+         * await waitUntil.isLengthAtLeast(2, () => [
+         *     'a',
+         *     'b',
+         *     'c',
+         * ]); // throws an error
+         * await waitUntil.isLengthAtLeast(3, () => [
+         *     'a',
+         *     'b',
+         *     'c',
+         * ]); // returns `['a', 'b', 'c']`
+         * await waitUntil.isLengthAtLeast(3, () => [
+         *     'a',
+         *     'b',
+         * ]); // throws an error
          * ```
          *
          * @returns The callback output once it passes.

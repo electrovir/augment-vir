@@ -32,15 +32,24 @@ import {assertSnapshot} from './universal-snapshot.js';
  *     snapshotCasesWithContext(myFunctionToTest, [
  *         {
  *             it: 'handles negative numbers',
- *             inputs: [-1, -2],
+ *             inputs: [
+ *                 -1,
+ *                 -2,
+ *             ],
  *         },
  *         {
  *             it: 'handles 0',
- *             inputs: [0, 0],
+ *             inputs: [
+ *                 0,
+ *                 0,
+ *             ],
  *         },
  *         {
  *             it: 'adds',
- *             inputs: [3, 5],
+ *             inputs: [
+ *                 3,
+ *                 5,
+ *             ],
  *         },
  *     ]);
  * });

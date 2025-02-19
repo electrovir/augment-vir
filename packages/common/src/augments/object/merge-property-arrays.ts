@@ -12,10 +12,16 @@ import {getOrSet} from './get-or-set.js';
  *
  * mergePropertyArrays(
  *     {
- *         a: ['a', 'b'],
+ *         a: [
+ *             'a',
+ *             'b',
+ *         ],
  *     },
  *     {
- *         a: ['c', 'd'],
+ *         a: [
+ *             'c',
+ *             'd',
+ *         ],
  *     },
  * ); // output is `{a: ['a', 'b', 'c', 'd']}`
  * ```
@@ -28,10 +34,15 @@ export function mergePropertyArrays<T extends Record<PropertyKey, unknown[]>>(
     const combined: Record<PropertyKey, unknown[]> = {};
 
     inputs.forEach((input) => {
-        Object.entries(input).forEach(([key, newArray]) => {
-            const currentArray = getOrSet(combined, key, () => []);
-            currentArray.push(...newArray);
-        });
+        Object.entries(input).forEach(
+            ([
+                key,
+                newArray,
+            ]) => {
+                const currentArray = getOrSet(combined, key, () => []);
+                currentArray.push(...newArray);
+            },
+        );
     });
 
     return combined as T;

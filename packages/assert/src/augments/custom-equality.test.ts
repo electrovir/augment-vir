@@ -8,12 +8,20 @@ describe(checkCustomDeepQuality.name, () => {
     itCases(checkCustomDeepQuality, [
         {
             it: 'accepts primitive equality',
-            inputs: ['a', 'a', check.strictEquals],
+            inputs: [
+                'a',
+                'a',
+                check.strictEquals,
+            ],
             expect: true,
         },
         {
             it: 'rejects primitive inequality',
-            inputs: ['a', 'b', check.strictEquals],
+            inputs: [
+                'a',
+                'b',
+                check.strictEquals,
+            ],
             expect: false,
         },
         {
@@ -64,24 +72,61 @@ describe(checkCustomDeepQuality.name, () => {
         },
         {
             it: 'accepts array equality',
-            inputs: [['a', 'b'], ['a', 'b'], check.strictEquals],
+            inputs: [
+                [
+                    'a',
+                    'b',
+                ],
+                [
+                    'a',
+                    'b',
+                ],
+                check.strictEquals,
+            ],
             expect: true,
         },
         {
             it: 'rejects array inequality',
-            inputs: [['a', 'a'], ['a', 'b'], check.strictEquals],
+            inputs: [
+                [
+                    'a',
+                    'a',
+                ],
+                [
+                    'a',
+                    'b',
+                ],
+                check.strictEquals,
+            ],
             expect: false,
         },
         {
             it: 'rejects array length mismatch',
-            inputs: [['a', 'a'], ['a', 'a', 'c'], check.strictEquals],
+            inputs: [
+                [
+                    'a',
+                    'a',
+                ],
+                [
+                    'a',
+                    'a',
+                    'c',
+                ],
+                check.strictEquals,
+            ],
             expect: false,
         },
         {
             it: 'passes along async errors',
             inputs: [
-                ['a', 'a'],
-                ['a', 'a'],
+                [
+                    'a',
+                    'a',
+                ],
+                [
+                    'a',
+                    'a',
+                ],
                 async () => {
                     await wait({milliseconds: 0});
                     throw new Error('fake failure');
@@ -93,24 +138,44 @@ describe(checkCustomDeepQuality.name, () => {
         },
         {
             it: 'accepts RegExp equality',
-            inputs: [/a/, /a/, check.strictEquals],
+            inputs: [
+                /a/,
+                /a/,
+                check.strictEquals,
+            ],
             expect: true,
         },
         {
             it: 'rejects RegExp inequality',
-            inputs: [/a/, /b/, check.strictEquals],
+            inputs: [
+                /a/,
+                /b/,
+                check.strictEquals,
+            ],
             expect: false,
         },
         {
             it: 'accepts Map equality',
             inputs: [
                 new Map([
-                    ['a', 'b'],
-                    ['b', 'c'],
+                    [
+                        'a',
+                        'b',
+                    ],
+                    [
+                        'b',
+                        'c',
+                    ],
                 ]),
                 new Map([
-                    ['a', 'b'],
-                    ['b', 'c'],
+                    [
+                        'a',
+                        'b',
+                    ],
+                    [
+                        'b',
+                        'c',
+                    ],
                 ]),
                 check.strictEquals,
             ],
@@ -120,12 +185,24 @@ describe(checkCustomDeepQuality.name, () => {
             it: 'accepts out of order Map equality',
             inputs: [
                 new Map([
-                    ['b', 'c'],
-                    ['a', 'b'],
+                    [
+                        'b',
+                        'c',
+                    ],
+                    [
+                        'a',
+                        'b',
+                    ],
                 ]),
                 new Map([
-                    ['a', 'b'],
-                    ['b', 'c'],
+                    [
+                        'a',
+                        'b',
+                    ],
+                    [
+                        'b',
+                        'c',
+                    ],
                 ]),
                 check.strictEquals,
             ],
@@ -135,12 +212,24 @@ describe(checkCustomDeepQuality.name, () => {
             it: 'rejects Map inequality',
             inputs: [
                 new Map([
-                    ['a', 'b'],
-                    ['b', 'c'],
+                    [
+                        'a',
+                        'b',
+                    ],
+                    [
+                        'b',
+                        'c',
+                    ],
                 ]),
                 new Map([
-                    ['a', 'b'],
-                    ['b', 'd'],
+                    [
+                        'a',
+                        'b',
+                    ],
+                    [
+                        'b',
+                        'd',
+                    ],
                 ]),
                 check.strictEquals,
             ],
@@ -148,12 +237,36 @@ describe(checkCustomDeepQuality.name, () => {
         },
         {
             it: 'accepts set equality',
-            inputs: [new Set(['a', 'b', 'c']), new Set(['a', 'b', 'c']), check.strictEquals],
+            inputs: [
+                new Set([
+                    'a',
+                    'b',
+                    'c',
+                ]),
+                new Set([
+                    'a',
+                    'b',
+                    'c',
+                ]),
+                check.strictEquals,
+            ],
             expect: true,
         },
         {
             it: 'rejects set inequality',
-            inputs: [new Set(['a', 'b', 'c']), new Set(['a', 'b', 'd']), check.strictEquals],
+            inputs: [
+                new Set([
+                    'a',
+                    'b',
+                    'c',
+                ]),
+                new Set([
+                    'a',
+                    'b',
+                    'd',
+                ]),
+                check.strictEquals,
+            ],
             expect: false,
         },
         {

@@ -8,7 +8,15 @@ describe(combineErrors.name, () => {
         assert.tsType(combineErrors([])).equals<Error>();
         assert.tsType(combineErrors([new Error()])).equals<Error>();
 
-        assert.tsType(combineErrors([new Error(), new Error(), new Error()])).equals<Error>();
+        assert
+            .tsType(
+                combineErrors([
+                    new Error(),
+                    new Error(),
+                    new Error(),
+                ]),
+            )
+            .equals<Error>();
 
         const potentiallyEmptyErrorArray: Error[] = [];
         assert.tsType(combineErrors(potentiallyEmptyErrorArray)).equals<Error>();

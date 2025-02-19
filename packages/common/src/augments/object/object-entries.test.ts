@@ -27,8 +27,14 @@ describe(getObjectTypedEntries.name, () => {
                 what: 4,
             },
             expect: [
-                ['hi', 'bye'],
-                ['what', 4],
+                [
+                    'hi',
+                    'bye',
+                ],
+                [
+                    'what',
+                    4,
+                ],
             ],
         },
     ]);
@@ -125,7 +131,10 @@ describe(typedObjectFromEntries.name, () => {
         }
 
         const entries = getEnumValues(MyEnum).map((enumValue): [MyEnum, string] => {
-            return [enumValue, `${enumValue}-derp`];
+            return [
+                enumValue,
+                `${enumValue}-derp`,
+            ];
         });
 
         const formedObject = typedObjectFromEntries(entries);
@@ -150,22 +159,55 @@ describe(getEntriesSortedByKey.name, () => {
         };
 
         assert.deepEquals(getEntriesSortedByKey(testObjectA), [
-            ['a', 2],
-            ['b', 5],
-            ['c', 4],
-            ['d', 3],
-            ['q', 9],
+            [
+                'a',
+                2,
+            ],
+            [
+                'b',
+                5,
+            ],
+            [
+                'c',
+                4,
+            ],
+            [
+                'd',
+                3,
+            ],
+            [
+                'q',
+                9,
+            ],
         ]);
 
         testObjectA.aaa = 6;
 
         assert.deepEquals(getEntriesSortedByKey(testObjectA), [
-            ['a', 2],
-            ['aaa', 6],
-            ['b', 5],
-            ['c', 4],
-            ['d', 3],
-            ['q', 9],
+            [
+                'a',
+                2,
+            ],
+            [
+                'aaa',
+                6,
+            ],
+            [
+                'b',
+                5,
+            ],
+            [
+                'c',
+                4,
+            ],
+            [
+                'd',
+                3,
+            ],
+            [
+                'q',
+                9,
+            ],
         ]);
     });
 });

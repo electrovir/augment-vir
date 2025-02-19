@@ -61,7 +61,10 @@ export const waitUntil: (<T>(
                     throw new AssertionError('Assertion failed.', failureMessage);
                 }
             },
-            [input, failureMessage],
+            [
+                input,
+                failureMessage,
+            ],
             false,
         );
     } as AnyFunction,

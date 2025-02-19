@@ -9,7 +9,10 @@ export async function runMockLongLivingContainer(
         containerName: containerName,
         detach: true,
         imageName: 'alpine:3.20.2',
-        dockerFlags: ['-i', '-t'],
+        dockerFlags: [
+            '-i',
+            '-t',
+        ],
         command: 'sh',
         platform: 'amd64',
         ...args,

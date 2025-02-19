@@ -33,7 +33,10 @@ function getTestFileName(args, repoDir, type) {
     const screenshotName = `${
         args.name
     }.${process.platform.toLowerCase()}.${args.browser.toLowerCase()}.${extension}`;
-    const dirs = [screenshotDir, type === 'diff' ? 'failure-diff' : ''].filter((a) => !!a);
+    const dirs = [
+        screenshotDir,
+        type === 'diff' ? 'failure-diff' : '',
+    ].filter((a) => !!a);
     return join(...dirs, screenshotName);
 }
 
@@ -122,7 +125,10 @@ export function defineConfig({
         },
         coverageConfig: {
             include: ['src/**/*.ts'],
-            exclude: ['**/*.test.ts', '**/*.example.ts'],
+            exclude: [
+                '**/*.test.ts',
+                '**/*.example.ts',
+            ],
             threshold: {
                 statements: coveragePercent,
                 branches: coveragePercent,
@@ -130,7 +136,10 @@ export function defineConfig({
                 lines: coveragePercent,
             },
             report: true,
-            reporters: ['html', 'istanbul-smart-text-reporter'],
+            reporters: [
+                'html',
+                'istanbul-smart-text-reporter',
+            ],
         },
         filterBrowserLogs({args}) {
             const fullLog = args.join(' ');

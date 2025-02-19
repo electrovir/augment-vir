@@ -10,12 +10,18 @@ describe(kebabCaseToCamelCase.name, () => {
         },
         {
             it: 'should work on long string with undefined options',
-            inputs: ['hello-there-what-have-we-here', undefined],
+            inputs: [
+                'hello-there-what-have-we-here',
+                undefined,
+            ],
             expect: 'helloThereWhatHaveWeHere',
         },
         {
             it: 'should work on long string with empty options',
-            inputs: ['hello-there-what-have-we-here', {}],
+            inputs: [
+                'hello-there-what-have-we-here',
+                {},
+            ],
             expect: 'helloThereWhatHaveWeHere',
         },
         {

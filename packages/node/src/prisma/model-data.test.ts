@@ -17,154 +17,195 @@ import {clearTestDatabaseOutputs} from './prisma-database.mock.js';
 // eslint-disable-next-line sonarjs/no-internal-api-use
 import type {PrismaClient} from '../../node_modules/.prisma/index.js';
 
-describe([addData.name, dumpData.name].join(' and '), () => {
-    async function setupPrismaClient() {
-        await clearTestDatabaseOutputs();
+describe(
+    [
+        addData.name,
+        dumpData.name,
+    ].join(' and '),
+    () => {
+        async function setupPrismaClient() {
+            await clearTestDatabaseOutputs();
 
-        await prisma.client.generate(testPrismaSchemaPath);
-        await prisma.migration.create({migrationName: 'init'}, testPrismaSchemaPath);
+            await prisma.client.generate(testPrismaSchemaPath);
+            await prisma.migration.create({migrationName: 'init'}, testPrismaSchemaPath);
 
-        // @ts-ignore: this might not be generated yet
-        const {PrismaClient} = await import('../../node_modules/.prisma/index.js');
+            // @ts-ignore: this might not be generated yet
+            const {PrismaClient} = await import('../../node_modules/.prisma/index.js');
 
-        return new PrismaClient();
-    }
+            return new PrismaClient();
+        }
 
-    async function testData(
-        data: IsAny<PrismaClient> extends true ? any : PrismaAddDataData<PrismaClient>,
-    ) {
-        const prismaClient = await setupPrismaClient();
-        try {
-            await prisma.client.addData(prismaClient, data);
+        async function testData(
+            data: IsAny<PrismaClient> extends true ? any : PrismaAddDataData<PrismaClient>,
+        ) {
+            const prismaClient = await setupPrismaClient();
+            try {
+                await prisma.client.addData(prismaClient, data);
 
-            const dumpedData = await prisma.client.dumpData(prismaClient, {
-                omitFields: ['createdAt', 'updatedAt', 'id'],
+                const dumpedData = await prisma.client.dumpData(prismaClient, {
+                    omitFields: [
+                        'createdAt',
+                        'updatedAt',
+                        'id',
+                    ],
+                });
+
+                return dumpedData;
+            } finally {
+                await prismaClient.$disconnect();
+            }
+        }
+
+        it('includes all fields by default', async () => {
+            const prismaClient = await setupPrismaClient();
+
+            await prisma.client.addData<any>(prismaClient, {
+                user: [
+                    {
+                        email: 'fake@example.com',
+                        // eslint-disable-next-line sonarjs/no-hardcoded-passwords
+                        password: 'fake password',
+                    },
+                ],
+                region: {
+                    region1: {
+                        regionName: 'fake',
+                    },
+                },
             });
 
-            return dumpedData;
-        } finally {
+            assert.hasKeys((await prisma.client.dumpData(prismaClient)).user?.[0], [
+                'createdAt',
+                'email',
+                'firstName',
+                'id',
+                'lastName',
+                'password',
+                'phoneNumber',
+                'role',
+                'updatedAt',
+            ]);
             await prismaClient.$disconnect();
-        }
-    }
-
-    it('includes all fields by default', async () => {
-        const prismaClient = await setupPrismaClient();
-
-        await prisma.client.addData<any>(prismaClient, {
-            user: [
-                {
-                    email: 'fake@example.com',
-                    // eslint-disable-next-line sonarjs/no-hardcoded-passwords
-                    password: 'fake password',
-                },
-            ],
-            region: {
-                region1: {
-                    regionName: 'fake',
-                },
-            },
         });
 
-        assert.hasKeys((await prisma.client.dumpData(prismaClient)).user?.[0], [
-            'createdAt',
-            'email',
-            'firstName',
-            'id',
-            'lastName',
-            'password',
-            'phoneNumber',
-            'role',
-            'updatedAt',
-        ]);
-        await prismaClient.$disconnect();
-    });
+        it('handles a dump error', async () => {
+            const prismaClient = await setupPrismaClient();
 
-    it('handles a dump error', async () => {
-        const prismaClient = await setupPrismaClient();
+            (prismaClient as AnyObject).invalidMode = {};
 
-        (prismaClient as AnyObject).invalidMode = {};
+            await assert.throws(prisma.client.dumpData(prismaClient), {
+                matchMessage: 'Failed to read data for model',
+            });
 
-        await assert.throws(prisma.client.dumpData(prismaClient), {
-            matchMessage: 'Failed to read data for model',
+            await prismaClient.$disconnect();
         });
 
-        await prismaClient.$disconnect();
-    });
+        it('dumps without limit', async () => {
+            const prismaClient = await setupPrismaClient();
+            assert.isDefined(
+                await prisma.client.dumpData(prismaClient, {
+                    limit: 0,
+                }),
+            );
 
-    it('dumps without limit', async () => {
-        const prismaClient = await setupPrismaClient();
-        assert.isDefined(
-            await prisma.client.dumpData(prismaClient, {
-                limit: 0,
-            }),
-        );
-
-        await prismaClient.$disconnect();
-    });
-
-    it('adds without id', async () => {
-        const prismaClient = await setupPrismaClient();
-
-        await prisma.client.addData<any>(prismaClient, {
-            user: [
-                {
-                    email: 'fake@example.com',
-                    // eslint-disable-next-line sonarjs/no-hardcoded-passwords
-                    password: 'fake password',
-                    id: 'fake-id',
-                },
-            ],
+            await prismaClient.$disconnect();
         });
 
-        assert.deepEquals(
-            await prismaClient.user.findMany({
-                select: {
-                    id: true,
-                },
-            }),
-            [
-                {
-                    id: 'fake-id',
-                },
-            ],
-        );
+        it('adds without id', async () => {
+            const prismaClient = await setupPrismaClient();
 
-        await prisma.client.addData<any>(prismaClient, {
-            user: [
-                {
-                    email: 'fake2@example.com',
-                    // eslint-disable-next-line sonarjs/no-hardcoded-passwords
-                    password: 'fake password 2',
-                    id: 'fake-id-2',
-                    [prismaModelCreateOmitId]: true,
-                },
-            ],
-        });
-
-        assert.notStrictEquals(
-            (
-                await prismaClient.user.findFirstOrThrow({
-                    where: {
-                        id: {
-                            not: 'fake-id',
-                        },
+            await prisma.client.addData<any>(prismaClient, {
+                user: [
+                    {
+                        email: 'fake@example.com',
+                        // eslint-disable-next-line sonarjs/no-hardcoded-passwords
+                        password: 'fake password',
+                        id: 'fake-id',
                     },
+                ],
+            });
+
+            assert.deepEquals(
+                await prismaClient.user.findMany({
                     select: {
                         id: true,
                     },
-                })
-            ).id,
-            'fake-id-2',
-        );
+                }),
+                [
+                    {
+                        id: 'fake-id',
+                    },
+                ],
+            );
 
-        await prismaClient.$disconnect();
-    });
+            await prisma.client.addData<any>(prismaClient, {
+                user: [
+                    {
+                        email: 'fake2@example.com',
+                        // eslint-disable-next-line sonarjs/no-hardcoded-passwords
+                        password: 'fake password 2',
+                        id: 'fake-id-2',
+                        [prismaModelCreateOmitId]: true,
+                    },
+                ],
+            });
 
-    itCases(testData, [
-        {
-            it: 'adds a mix of keyed and array data',
-            input: [
-                {
+            assert.notStrictEquals(
+                (
+                    await prismaClient.user.findFirstOrThrow({
+                        where: {
+                            id: {
+                                not: 'fake-id',
+                            },
+                        },
+                        select: {
+                            id: true,
+                        },
+                    })
+                ).id,
+                'fake-id-2',
+            );
+
+            await prismaClient.$disconnect();
+        });
+
+        itCases(testData, [
+            {
+                it: 'adds a mix of keyed and array data',
+                input: [
+                    {
+                        user: [
+                            {
+                                email: 'fake@example.com',
+                                // eslint-disable-next-line sonarjs/no-hardcoded-passwords
+                                password: 'fake password',
+                            },
+                        ],
+                        region: {
+                            region1: {
+                                regionName: 'fake',
+                            },
+                        },
+                    },
+                ],
+                expect: {
+                    region: [{regionName: 'fake'}],
+                    user: [
+                        {
+                            email: 'fake@example.com',
+                            // eslint-disable-next-line sonarjs/no-hardcoded-passwords
+                            password: 'fake password',
+                            firstName: null,
+                            lastName: null,
+                            role: null,
+                            phoneNumber: null,
+                        },
+                    ],
+                },
+            },
+            {
+                it: 'adds keyed-only data',
+                input: {
                     user: [
                         {
                             email: 'fake@example.com',
@@ -178,103 +219,72 @@ describe([addData.name, dumpData.name].join(' and '), () => {
                         },
                     },
                 },
-            ],
-            expect: {
-                region: [{regionName: 'fake'}],
-                user: [
-                    {
-                        email: 'fake@example.com',
-                        // eslint-disable-next-line sonarjs/no-hardcoded-passwords
-                        password: 'fake password',
-                        firstName: null,
-                        lastName: null,
-                        role: null,
-                        phoneNumber: null,
-                    },
-                ],
-            },
-        },
-        {
-            it: 'adds keyed-only data',
-            input: {
-                user: [
-                    {
-                        email: 'fake@example.com',
-                        // eslint-disable-next-line sonarjs/no-hardcoded-passwords
-                        password: 'fake password',
-                    },
-                ],
-                region: {
-                    region1: {
-                        regionName: 'fake',
-                    },
+                expect: {
+                    region: [{regionName: 'fake'}],
+                    user: [
+                        {
+                            email: 'fake@example.com',
+                            // eslint-disable-next-line sonarjs/no-hardcoded-passwords
+                            password: 'fake password',
+                            firstName: null,
+                            lastName: null,
+                            role: null,
+                            phoneNumber: null,
+                        },
+                    ],
                 },
             },
-            expect: {
-                region: [{regionName: 'fake'}],
-                user: [
-                    {
-                        email: 'fake@example.com',
-                        // eslint-disable-next-line sonarjs/no-hardcoded-passwords
-                        password: 'fake password',
-                        firstName: null,
-                        lastName: null,
-                        role: null,
-                        phoneNumber: null,
-                    },
-                ],
+            {
+                it: 'leaves out excluded entries',
+                input: {
+                    user: [
+                        {
+                            email: 'fake@example.com',
+                            // eslint-disable-next-line sonarjs/no-hardcoded-passwords
+                            password: 'fake password',
+                            [prismaModelCreateExclude]: true,
+                        },
+                        {
+                            email: 'fake2@example.com',
+                            // eslint-disable-next-line sonarjs/no-hardcoded-passwords
+                            password: 'fake password 2',
+                        },
+                    ],
+                    region: [{regionName: 'fake'}],
+                },
+                expect: {
+                    region: [{regionName: 'fake'}],
+                    user: [
+                        {
+                            email: 'fake2@example.com',
+                            // eslint-disable-next-line sonarjs/no-hardcoded-passwords
+                            password: 'fake password 2',
+                            firstName: null,
+                            lastName: null,
+                            role: null,
+                            phoneNumber: null,
+                        },
+                    ],
+                },
             },
-        },
-        {
-            it: 'leaves out excluded entries',
-            input: {
-                user: [
-                    {
-                        email: 'fake@example.com',
-                        // eslint-disable-next-line sonarjs/no-hardcoded-passwords
-                        password: 'fake password',
-                        [prismaModelCreateExclude]: true,
-                    },
-                    {
-                        email: 'fake2@example.com',
-                        // eslint-disable-next-line sonarjs/no-hardcoded-passwords
-                        password: 'fake password 2',
-                    },
-                ],
-                region: [{regionName: 'fake'}],
+            {
+                it: 'fails with informative message',
+                input: {
+                    user: [
+                        // @ts-ignore: intentionally missing fields
+                        {},
+                    ],
+                },
+                throws: {
+                    matchMessage: "Failed to create many 'user' entries",
+                },
             },
-            expect: {
-                region: [{regionName: 'fake'}],
-                user: [
-                    {
-                        email: 'fake2@example.com',
-                        // eslint-disable-next-line sonarjs/no-hardcoded-passwords
-                        password: 'fake password 2',
-                        firstName: null,
-                        lastName: null,
-                        role: null,
-                        phoneNumber: null,
-                    },
-                ],
-            },
-        },
-        {
-            it: 'fails with informative message',
-            input: {
-                user: [
-                    // @ts-ignore: intentionally missing fields
-                    {},
-                ],
-            },
-            throws: {
-                matchMessage: "Failed to create many 'user' entries",
-            },
-        },
-    ]);
-});
+        ]);
+    },
+);
 
 describe(getAllPrismaModelNames.name, () => {
-    it('works', async () => {
+    it('gets all model names', async () => {
         await clearTestDatabaseOutputs();
 
         await prisma.client.generate(testPrismaSchemaPath);

@@ -6,13 +6,33 @@ import {typedMap} from './array-map.js';
 describe(typedMap.name, () => {
     it('maps', () => {
         assert.deepEquals(
-            typedMap(['1', '2', '3'], (entry) => toNumber(entry)),
-            [1, 2, 3],
+            typedMap(
+                [
+                    '1',
+                    '2',
+                    '3',
+                ],
+                (entry) => toNumber(entry),
+            ),
+            [
+                1,
+                2,
+                3,
+            ],
         );
     });
     it('preserves tuple size', () => {
         assert
-            .tsType(typedMap(['1', '2', '3'], (entry) => toNumber(entry)))
+            .tsType(
+                typedMap(
+                    [
+                        '1',
+                        '2',
+                        '3',
+                    ],
+                    (entry) => toNumber(entry),
+                ),
+            )
             .equals<[number, number, number]>();
     });
 });

@@ -8,8 +8,15 @@ import {waitUntil} from '../augments/guards/wait-until.js';
 import {waitUntilTestOptions} from '../test-timeout.mock.js';
 
 describe('isLengthAtLeast', () => {
-    const actualPass: string[] = ['a', 'b', 'c'] as any;
-    const actualReject: string[] = ['a', 'c'] as any;
+    const actualPass: string[] = [
+        'a',
+        'b',
+        'c',
+    ] as any;
+    const actualReject: string[] = [
+        'a',
+        'c',
+    ] as any;
     const expected = 3;
     type ExpectedType = AtLeastTuple<string, 3>;
     type UnexpectedType = string[];
@@ -174,8 +181,15 @@ describe('isLengthAtLeast', () => {
 });
 
 describe('isLengthExactly', () => {
-    const actualPass: string[] = ['a', 'b', 'c'] as any;
-    const actualReject: string[] = ['a', 'c'] as any;
+    const actualPass: string[] = [
+        'a',
+        'b',
+        'c',
+    ] as any;
+    const actualReject: string[] = [
+        'a',
+        'c',
+    ] as any;
     const expected = 3;
     type ExpectedType = Tuple<string, 3>;
     type UnexpectedType = string[];
@@ -341,15 +355,43 @@ describe('isLengthExactly', () => {
 
 describe('AtLeastTuple', () => {
     it('should be assignable to from a Tuple', () => {
-        const atLeastTuple: AtLeastTuple<any, 5> = [1, 2, 3, 4, 5] as Tuple<any, 5>;
+        const atLeastTuple: AtLeastTuple<any, 5> = [
+            1,
+            2,
+            3,
+            4,
+            5,
+        ] as Tuple<any, 5>;
     });
     it('should not be assignable to a Tuple', () => {
         // @ts-expect-error: `AtLeastTuple` can be bigger than `Tuple`
-        const strictTuple: Tuple<any, 5> = [1, 2, 3, 4, 5] as AtLeastTuple<any, 5>;
+        const strictTuple: Tuple<any, 5> = [
+            1,
+            2,
+            3,
+            4,
+            5,
+        ] as AtLeastTuple<any, 5>;
     });
 
     it('should match arrays with more than the expected length', () => {
-        assert.tsType([1, 2, 3, 4, 5, 6, 7] as const).matches<AtLeastTuple<any, 5>>();
-        assert.tsType([1, 2, 3] as const).notMatches<AtLeastTuple<any, 5>>();
+        assert
+            .tsType([
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+            ] as const)
+            .matches<AtLeastTuple<any, 5>>();
+        assert
+            .tsType([
+                1,
+                2,
+                3,
+            ] as const)
+            .notMatches<AtLeastTuple<any, 5>>();
     });
 });

@@ -28,7 +28,11 @@ describe(getOrSet.name, () => {
     itCases(testGetOrSet, [
         {
             it: 'adds a missing value',
-            inputs: [{}, 'hi', 'new value'],
+            inputs: [
+                {},
+                'hi',
+                'new value',
+            ],
             expect: {
                 got: 'new value',
                 object: {hi: 'new value'},
@@ -36,7 +40,11 @@ describe(getOrSet.name, () => {
         },
         {
             it: 'does not modify a value that already exists',
-            inputs: [{myKey: 'hello'}, 'myKey', randomString()],
+            inputs: [
+                {myKey: 'hello'},
+                'myKey',
+                randomString(),
+            ],
             expect: {
                 got: 'hello',
                 object: {myKey: 'hello'},
@@ -44,7 +52,11 @@ describe(getOrSet.name, () => {
         },
         {
             it: 'keeps undefined values',
-            inputs: [{myKey: undefined}, 'myKey', randomString()],
+            inputs: [
+                {myKey: undefined},
+                'myKey',
+                randomString(),
+            ],
             expect: {
                 got: undefined,
                 object: {myKey: undefined},
@@ -117,7 +129,12 @@ describe(getOrSetFromMap.name, () => {
     it('retrieves an existing item', () => {
         const exampleKey = {};
         const exampleValue = randomString();
-        const exampleMap = new Map([[exampleKey, exampleValue]]);
+        const exampleMap = new Map([
+            [
+                exampleKey,
+                exampleValue,
+            ],
+        ]);
 
         assert.strictEquals(
             getOrSetFromMap(exampleMap, exampleKey, () => ''),

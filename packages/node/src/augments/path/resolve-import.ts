@@ -93,7 +93,10 @@ function mapImportPath(
 
     const mappedPaths = filterMap(
         getObjectTypedEntries(paths),
-        ([alias, paths]) => {
+        ([
+            alias,
+            paths,
+        ]) => {
             const aliasRegex = new RegExp('^' + String(alias).replace(/\*/g, '(.*)') + '$');
             const match = importPath.match(aliasRegex);
 

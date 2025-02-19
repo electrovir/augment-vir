@@ -19,7 +19,10 @@ import {escapeStringForRegExp} from './regexp-string.js';
  */
 export function addRegExpFlags(originalRegExpOrString: RegExp | string, flags: string): RegExp {
     const allFlags = removeDuplicateCharacters(
-        [typeof originalRegExpOrString === 'string' ? '' : originalRegExpOrString.flags, flags]
+        [
+            typeof originalRegExpOrString === 'string' ? '' : originalRegExpOrString.flags,
+            flags,
+        ]
             .join('')
             .toLowerCase(),
     );

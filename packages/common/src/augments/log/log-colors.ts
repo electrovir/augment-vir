@@ -130,7 +130,10 @@ export const defaultLogColorConfig: LogColorConfig = {
         logType: LogOutputType.Standard,
     },
     [LogColorKey.Mutate]: {
-        colors: [logColors.mutate, logColors.bold],
+        colors: [
+            logColors.mutate,
+            logColors.bold,
+        ],
         logType: LogOutputType.Standard,
     },
     [LogColorKey.NormalWeight]: {
@@ -143,12 +146,18 @@ export const defaultLogColorConfig: LogColorConfig = {
         logType: LogOutputType.Standard,
     },
     [LogColorKey.Success]: {
-        colors: [logColors.success, logColors.bold],
+        colors: [
+            logColors.success,
+            logColors.bold,
+        ],
         logType: LogOutputType.Standard,
     },
 
     [LogColorKey.Error]: {
-        colors: [logColors.error, logColors.bold],
+        colors: [
+            logColors.error,
+            logColors.bold,
+        ],
         logType: LogOutputType.Error,
     },
     [LogColorKey.Warning]: {

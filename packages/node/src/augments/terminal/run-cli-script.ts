@@ -62,7 +62,13 @@ export async function runCliScript(
           }) || runner.npx;
 
     const results = await runShellCommand(
-        interpolationSafeWindowsPath([runnerPath, scriptPath, ...args].join(' ')),
+        interpolationSafeWindowsPath(
+            [
+                runnerPath,
+                scriptPath,
+                ...args,
+            ].join(' '),
+        ),
         {
             hookUpToConsole: true,
         },

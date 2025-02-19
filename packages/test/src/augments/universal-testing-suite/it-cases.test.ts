@@ -70,7 +70,10 @@ describe('itCases', () => {
             {
                 it: 'passes',
                 expect: true,
-                inputs: ['derp', 'derp'],
+                inputs: [
+                    'derp',
+                    'derp',
+                ],
             },
             {
                 it: 'excludes this test',

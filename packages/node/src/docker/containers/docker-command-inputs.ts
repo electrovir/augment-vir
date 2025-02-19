@@ -109,7 +109,10 @@ export function makeEnvFlags(envMapping?: DockerEnvMap | undefined): string {
         return '';
     }
     const flags: ReadonlyArray<string> = Object.entries(envMapping).map(
-        ([key, {value, allowInterpolation}]) => {
+        ([
+            key,
+            {value, allowInterpolation},
+        ]) => {
             const quote = allowInterpolation ? '"' : "'";
             return `-e ${key}=${wrapString({value, wrapper: quote})}`;
         },

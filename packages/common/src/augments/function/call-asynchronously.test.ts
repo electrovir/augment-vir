@@ -12,7 +12,14 @@ describe(callAsynchronously.name, () => {
         });
         values.push(2);
         await asyncOutput;
-        assert.deepEquals(values, [1, 2, 3]);
+        assert.deepEquals(
+            values,
+            [
+                1,
+                2,
+                3,
+            ],
+        );
     });
 
     it("returns the callback's output", async () => {

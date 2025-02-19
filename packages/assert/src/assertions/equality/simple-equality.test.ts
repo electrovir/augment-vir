@@ -325,8 +325,14 @@ describe('deepEquals', () => {
         doesNotIgnore: {
             nonJson: 'props',
             value: new Map([
-                ['a', 'b'],
-                ['c', 'd'],
+                [
+                    'a',
+                    'b',
+                ],
+                [
+                    'c',
+                    'd',
+                ],
             ]),
         },
     } as any;
@@ -339,8 +345,14 @@ describe('deepEquals', () => {
         doesNotIgnore: {
             nonJson: 'props',
             value: new Map([
-                ['a', 'r'],
-                ['c', 'd'],
+                [
+                    'a',
+                    'r',
+                ],
+                [
+                    'c',
+                    'd',
+                ],
             ]),
         },
     } as any;
@@ -353,8 +365,14 @@ describe('deepEquals', () => {
         doesNotIgnore: {
             nonJson: 'props',
             value: new Map([
-                ['a', 'b'],
-                ['c', 'd'],
+                [
+                    'a',
+                    'b',
+                ],
+                [
+                    'c',
+                    'd',
+                ],
             ]),
         },
     };

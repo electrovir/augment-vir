@@ -189,8 +189,14 @@ const assertions = {
      * ```ts
      * import {assert} from '@augment-vir/assert';
      *
-     * assert.hasKeys({a: 0, b: 1}, ['a', 'b']); // passes
-     * assert.hasKeys({a: 0, b: 1}, ['b', 'c']); // fails
+     * assert.hasKeys({a: 0, b: 1}, [
+     *     'a',
+     *     'b',
+     * ]); // passes
+     * assert.hasKeys({a: 0, b: 1}, [
+     *     'b',
+     *     'c',
+     * ]); // fails
      * ```
      *
      * @throws {@link AssertionError} If the parent does not have all the keys.
@@ -223,8 +229,14 @@ const assertions = {
      * ```ts
      * import {assert} from '@augment-vir/assert';
      *
-     * assert.lacksKeys({a: 0, b: 1}, ['b', 'c']); // fails
-     * assert.lacksKeys({a: 0, b: 1}, ['c', 'd']); // passes
+     * assert.lacksKeys({a: 0, b: 1}, [
+     *     'b',
+     *     'c',
+     * ]); // fails
+     * assert.lacksKeys({a: 0, b: 1}, [
+     *     'c',
+     *     'd',
+     * ]); // passes
      * ```
      *
      * @throws {@link AssertionError} If the parent has any of the keys.
@@ -350,8 +362,14 @@ export const keyGuards = {
          * ```ts
          * import {check} from '@augment-vir/assert';
          *
-         * check.hasKeys({a: 0, b: 1}, ['a', 'b']); // returns `true`
-         * check.hasKeys({a: 0, b: 1}, ['b', 'c']); // returns `false`
+         * check.hasKeys({a: 0, b: 1}, [
+         *     'a',
+         *     'b',
+         * ]); // returns `true`
+         * check.hasKeys({a: 0, b: 1}, [
+         *     'b',
+         *     'c',
+         * ]); // returns `false`
          * ```
          *
          * @see
@@ -375,8 +393,14 @@ export const keyGuards = {
          * ```ts
          * import {check} from '@augment-vir/assert';
          *
-         * check.lacksKeys({a: 0, b: 1}, ['b', 'c']); // returns `false`
-         * check.lacksKeys({a: 0, b: 1}, ['c', 'd']); // returns `true`
+         * check.lacksKeys({a: 0, b: 1}, [
+         *     'b',
+         *     'c',
+         * ]); // returns `false`
+         * check.lacksKeys({a: 0, b: 1}, [
+         *     'c',
+         *     'd',
+         * ]); // returns `true`
          * ```
          *
          * @see
@@ -543,8 +567,14 @@ export const keyGuards = {
          * ```ts
          * import {assertWrap} from '@augment-vir/assert';
          *
-         * assertWrap.hasKeys({a: 0, b: 1}, ['a', 'b']); // returns `{a: 0, b: 1}`
-         * assertWrap.hasKeys({a: 0, b: 1}, ['b', 'c']); // throws an error
+         * assertWrap.hasKeys({a: 0, b: 1}, [
+         *     'a',
+         *     'b',
+         * ]); // returns `{a: 0, b: 1}`
+         * assertWrap.hasKeys({a: 0, b: 1}, [
+         *     'b',
+         *     'c',
+         * ]); // throws an error
          * ```
          *
          * @returns The parent if it has all the keys.
@@ -580,8 +610,14 @@ export const keyGuards = {
          * ```ts
          * import {assertWrap} from '@augment-vir/assert';
          *
-         * assertWrap.lacksKeys({a: 0, b: 1}, ['b', 'c']); // throws an error
-         * assertWrap.lacksKeys({a: 0, b: 1}, ['c', 'd']); // returns `{a: 0, b: 1}`
+         * assertWrap.lacksKeys({a: 0, b: 1}, [
+         *     'b',
+         *     'c',
+         * ]); // throws an error
+         * assertWrap.lacksKeys({a: 0, b: 1}, [
+         *     'c',
+         *     'd',
+         * ]); // returns `{a: 0, b: 1}`
          * ```
          *
          * @returns The parent if it does not have any of the keys.
@@ -742,8 +778,14 @@ export const keyGuards = {
          * ```ts
          * import {checkWrap} from '@augment-vir/assert';
          *
-         * checkWrap.hasKeys({a: 0, b: 1}, ['a', 'b']); // returns `{a: 0, b: 1}`
-         * checkWrap.hasKeys({a: 0, b: 1}, ['b', 'c']); // returns `undefined`
+         * checkWrap.hasKeys({a: 0, b: 1}, [
+         *     'a',
+         *     'b',
+         * ]); // returns `{a: 0, b: 1}`
+         * checkWrap.hasKeys({a: 0, b: 1}, [
+         *     'b',
+         *     'c',
+         * ]); // returns `undefined`
          * ```
          *
          * @returns The parent value if the check passes, otherwise `undefined`.
@@ -773,8 +815,14 @@ export const keyGuards = {
          * ```ts
          * import {checkWrap} from '@augment-vir/assert';
          *
-         * checkWrap.lacksKeys({a: 0, b: 1}, ['b', 'c']); // returns `undefined`
-         * checkWrap.lacksKeys({a: 0, b: 1}, ['c', 'd']); // returns `{a: 0, b: 1}`
+         * checkWrap.lacksKeys({a: 0, b: 1}, [
+         *     'b',
+         *     'c',
+         * ]); // returns `undefined`
+         * checkWrap.lacksKeys({a: 0, b: 1}, [
+         *     'c',
+         *     'd',
+         * ]); // returns `{a: 0, b: 1}`
          * ```
          *
          * @returns The parent value if the check passes, otherwise `undefined`.
@@ -938,12 +986,24 @@ export const keyGuards = {
          * ```ts
          * import {waitUntil} from '@augment-vir/assert';
          *
-         * await waitUntil.hasKeys(['a', 'b'], () => {
-         *     return {a: 0, b: 1};
-         * }); // returns `{a: 0, b: 1}`
-         * await waitUntil.hasKeys(['b', 'c'], () => {
-         *     return {a: 0, b: 1};
-         * }); // throws an error
+         * await waitUntil.hasKeys(
+         *     [
+         *         'a',
+         *         'b',
+         *     ],
+         *     () => {
+         *         return {a: 0, b: 1};
+         *     },
+         * ); // returns `{a: 0, b: 1}`
+         * await waitUntil.hasKeys(
+         *     [
+         *         'b',
+         *         'c',
+         *     ],
+         *     () => {
+         *         return {a: 0, b: 1};
+         *     },
+         * ); // throws an error
          * ```
          *
          * @returns The callback output once it passes.
@@ -974,12 +1034,24 @@ export const keyGuards = {
          * ```ts
          * import {waitUntil} from '@augment-vir/assert';
          *
-         * await waitUntil.hasKeys(['a', 'b'], () => {
-         *     return {a: 0, b: 1};
-         * }); // throws an error
-         * await waitUntil.hasKeys(['b', 'c'], () => {
-         *     return {a: 0, b: 1};
-         * }); // returns `{a: 0, b: 1}`
+         * await waitUntil.hasKeys(
+         *     [
+         *         'a',
+         *         'b',
+         *     ],
+         *     () => {
+         *         return {a: 0, b: 1};
+         *     },
+         * ); // throws an error
+         * await waitUntil.hasKeys(
+         *     [
+         *         'b',
+         *         'c',
+         *     ],
+         *     () => {
+         *         return {a: 0, b: 1};
+         *     },
+         * ); // returns `{a: 0, b: 1}`
          * ```
          *
          * @returns The callback output once it passes.

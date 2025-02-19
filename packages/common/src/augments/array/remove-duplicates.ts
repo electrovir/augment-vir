@@ -9,7 +9,15 @@
  * ```ts
  * import {removeDuplicates} from '@augment-vir/common';
  *
- * const result = removeDuplicates([1, 1, 1, 1, 1, 2, 4]);
+ * const result = removeDuplicates([
+ *     1,
+ *     1,
+ *     1,
+ *     1,
+ *     1,
+ *     2,
+ *     4,
+ * ]);
  * // result is `[1, 2, 4]`
  *
  * const exampleEntry = {id: 5};
@@ -34,7 +42,13 @@
  * const exampleEntry = {id: 5};
  *
  * const result2 = removeDuplicates(
- *     [{id: 1}, {id: 1}, exampleEntry, exampleEntry, {id: 4}],
+ *     [
+ *         {id: 1},
+ *         {id: 1},
+ *         exampleEntry,
+ *         exampleEntry,
+ *         {id: 4},
+ *     ],
  *     (entry) => entry.id,
  * );
  * // result2 is `[{id: 1}, exampleEntry, {id: 4}]`

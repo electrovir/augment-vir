@@ -230,8 +230,20 @@ const assertions: {
      *
      * assert.endsWith('ab', 'b'); // passes
      * assert.endsWith('ab', 'a'); // fails
-     * assert.endsWith(['a', 'b'], 'b'); // passes
-     * assert.endsWith(['a', 'b'], 'a'); // fails
+     * assert.endsWith(
+     *     [
+     *         'a',
+     *         'b',
+     *     ],
+     *     'b',
+     * ); // passes
+     * assert.endsWith(
+     *     [
+     *         'a',
+     *         'b',
+     *     ],
+     *     'a',
+     * ); // fails
      * ```
      *
      * @throws {@link AssertionError} If the parent does not end with the child.
@@ -253,8 +265,20 @@ const assertions: {
      *
      * assert.endsWithout('ab', 'b'); // fails
      * assert.endsWithout('ab', 'a'); // passes
-     * assert.endsWithout(['a', 'b'], 'b'); // fails
-     * assert.endsWithout(['a', 'b'], 'a'); // passes
+     * assert.endsWithout(
+     *     [
+     *         'a',
+     *         'b',
+     *     ],
+     *     'b',
+     * ); // fails
+     * assert.endsWithout(
+     *     [
+     *         'a',
+     *         'b',
+     *     ],
+     *     'a',
+     * ); // passes
      * ```
      *
      * @throws {@link AssertionError} If the parent ends with the child.
@@ -276,8 +300,20 @@ const assertions: {
      *
      * assert.startsWith('ab', 'b'); // fails
      * assert.startsWith('ab', 'a'); // passes
-     * assert.startsWith(['a', 'b'], 'b'); // fails
-     * assert.startsWith(['a', 'b'], 'a'); // passes
+     * assert.startsWith(
+     *     [
+     *         'a',
+     *         'b',
+     *     ],
+     *     'b',
+     * ); // fails
+     * assert.startsWith(
+     *     [
+     *         'a',
+     *         'b',
+     *     ],
+     *     'a',
+     * ); // passes
      * ```
      *
      * @throws {@link AssertionError} If the parent does not start with the child.
@@ -299,8 +335,20 @@ const assertions: {
      *
      * assert.startsWith('ab', 'b'); // passes
      * assert.startsWith('ab', 'a'); // fails
-     * assert.startsWith(['a', 'b'], 'b'); // passes
-     * assert.startsWith(['a', 'b'], 'a'); // fails
+     * assert.startsWith(
+     *     [
+     *         'a',
+     *         'b',
+     *     ],
+     *     'b',
+     * ); // passes
+     * assert.startsWith(
+     *     [
+     *         'a',
+     *         'b',
+     *     ],
+     *     'a',
+     * ); // fails
      * ```
      *
      * @throws {@link AssertionError} If the parent does start with the child.
@@ -323,8 +371,20 @@ const assertions: {
      *
      * assert.endsWith('ab', 'b'); // passes
      * assert.endsWith('ab', 'a'); // fails
-     * assert.endsWith(['a', 'b'], 'b'); // passes
-     * assert.endsWith(['a', 'b'], 'a'); // fails
+     * assert.endsWith(
+     *     [
+     *         'a',
+     *         'b',
+     *     ],
+     *     'b',
+     * ); // passes
+     * assert.endsWith(
+     *     [
+     *         'a',
+     *         'b',
+     *     ],
+     *     'a',
+     * ); // fails
      * ```
      *
      * @throws {@link AssertionError} If the parent does not end with the child.
@@ -346,8 +406,20 @@ const assertions: {
      *
      * assert.endsWithout('ab', 'b'); // fails
      * assert.endsWithout('ab', 'a'); // passes
-     * assert.endsWithout(['a', 'b'], 'b'); // fails
-     * assert.endsWithout(['a', 'b'], 'a'); // passes
+     * assert.endsWithout(
+     *     [
+     *         'a',
+     *         'b',
+     *     ],
+     *     'b',
+     * ); // fails
+     * assert.endsWithout(
+     *     [
+     *         'a',
+     *         'b',
+     *     ],
+     *     'a',
+     * ); // passes
      * ```
      *
      * @throws {@link AssertionError} If the parent ends with the child.
@@ -369,8 +441,20 @@ const assertions: {
      *
      * assert.startsWith('ab', 'b'); // fails
      * assert.startsWith('ab', 'a'); // passes
-     * assert.startsWith(['a', 'b'], 'b'); // fails
-     * assert.startsWith(['a', 'b'], 'a'); // passes
+     * assert.startsWith(
+     *     [
+     *         'a',
+     *         'b',
+     *     ],
+     *     'b',
+     * ); // fails
+     * assert.startsWith(
+     *     [
+     *         'a',
+     *         'b',
+     *     ],
+     *     'a',
+     * ); // passes
      * ```
      *
      * @throws {@link AssertionError} If the parent does not start with the child.
@@ -392,8 +476,20 @@ const assertions: {
      *
      * assert.startsWith('ab', 'b'); // passes
      * assert.startsWith('ab', 'a'); // fails
-     * assert.startsWith(['a', 'b'], 'b'); // passes
-     * assert.startsWith(['a', 'b'], 'a'); // fails
+     * assert.startsWith(
+     *     [
+     *         'a',
+     *         'b',
+     *     ],
+     *     'b',
+     * ); // passes
+     * assert.startsWith(
+     *     [
+     *         'a',
+     *         'b',
+     *     ],
+     *     'a',
+     * ); // fails
      * ```
      *
      * @throws {@link AssertionError} If the parent does start with the child.
@@ -420,8 +516,20 @@ export const boundaryGuards = {
          *
          * check.endsWith('ab', 'b'); // returns `true`
          * check.endsWith('ab', 'a'); // returns `false`
-         * check.endsWith(['a', 'b'], 'b'); // returns `true`
-         * check.endsWith(['a', 'b'], 'a'); // returns `false`
+         * check.endsWith(
+         *     [
+         *         'a',
+         *         'b',
+         *     ],
+         *     'b',
+         * ); // returns `true`
+         * check.endsWith(
+         *     [
+         *         'a',
+         *         'b',
+         *     ],
+         *     'a',
+         * ); // returns `false`
          * ```
          *
          * @see
@@ -448,8 +556,20 @@ export const boundaryGuards = {
          *
          * check.endsWithout('ab', 'b'); // returns `false`
          * check.endsWithout('ab', 'a'); // returns `true`
-         * check.endsWithout(['a', 'b'], 'b'); // returns `false`
-         * check.endsWithout(['a', 'b'], 'a'); // returns `true`
+         * check.endsWithout(
+         *     [
+         *         'a',
+         *         'b',
+         *     ],
+         *     'b',
+         * ); // returns `false`
+         * check.endsWithout(
+         *     [
+         *         'a',
+         *         'b',
+         *     ],
+         *     'a',
+         * ); // returns `true`
          * ```
          *
          * @see
@@ -477,8 +597,20 @@ export const boundaryGuards = {
          *
          * check.startsWith('ab', 'b'); // returns `false`
          * check.startsWith('ab', 'a'); // returns `true`
-         * check.startsWith(['a', 'b'], 'b'); // returns `false`
-         * check.startsWith(['a', 'b'], 'a'); // returns `true`
+         * check.startsWith(
+         *     [
+         *         'a',
+         *         'b',
+         *     ],
+         *     'b',
+         * ); // returns `false`
+         * check.startsWith(
+         *     [
+         *         'a',
+         *         'b',
+         *     ],
+         *     'a',
+         * ); // returns `true`
          * ```
          *
          * @see
@@ -505,8 +637,20 @@ export const boundaryGuards = {
          *
          * check.startsWith('ab', 'b'); // returns `false`
          * check.startsWith('ab', 'a'); // returns `true`
-         * check.startsWith(['a', 'b'], 'b'); // returns `false`
-         * check.startsWith(['a', 'b'], 'a'); // returns `true`
+         * check.startsWith(
+         *     [
+         *         'a',
+         *         'b',
+         *     ],
+         *     'b',
+         * ); // returns `false`
+         * check.startsWith(
+         *     [
+         *         'a',
+         *         'b',
+         *     ],
+         *     'a',
+         * ); // returns `true`
          * ```
          *
          * @see
@@ -535,8 +679,20 @@ export const boundaryGuards = {
          *
          * assertWrap.endsWith('ab', 'b'); // returns `'ab'`
          * assertWrap.endsWith('ab', 'a'); // throws an error
-         * assertWrap.endsWith(['a', 'b'], 'b'); // returns `['a', 'b']`
-         * assertWrap.endsWith(['a', 'b'], 'a'); // throws an error
+         * assertWrap.endsWith(
+         *     [
+         *         'a',
+         *         'b',
+         *     ],
+         *     'b',
+         * ); // returns `['a', 'b']`
+         * assertWrap.endsWith(
+         *     [
+         *         'a',
+         *         'b',
+         *     ],
+         *     'a',
+         * ); // throws an error
          * ```
          *
          * @returns The parent value if it does end with the child.
@@ -579,8 +735,20 @@ export const boundaryGuards = {
          *
          * assertWrap.endsWithout('ab', 'b'); // throws an error
          * assertWrap.endsWithout('ab', 'a'); // returns `'ab'`
-         * assertWrap.endsWithout(['a', 'b'], 'b'); // throws an error
-         * assertWrap.endsWithout(['a', 'b'], 'a'); // returns `['a', 'b']`
+         * assertWrap.endsWithout(
+         *     [
+         *         'a',
+         *         'b',
+         *     ],
+         *     'b',
+         * ); // throws an error
+         * assertWrap.endsWithout(
+         *     [
+         *         'a',
+         *         'b',
+         *     ],
+         *     'a',
+         * ); // returns `['a', 'b']`
          * ```
          *
          * @returns The parent value if it does not end with the child.
@@ -622,8 +790,20 @@ export const boundaryGuards = {
          *
          * assertWrap.startsWith('ab', 'b'); // throws an error
          * assertWrap.startsWith('ab', 'a'); // returns `'ab'`
-         * assertWrap.startsWith(['a', 'b'], 'b'); // throws an error
-         * assertWrap.startsWith(['a', 'b'], 'a'); // returns `['a', 'b']`
+         * assertWrap.startsWith(
+         *     [
+         *         'a',
+         *         'b',
+         *     ],
+         *     'b',
+         * ); // throws an error
+         * assertWrap.startsWith(
+         *     [
+         *         'a',
+         *         'b',
+         *     ],
+         *     'a',
+         * ); // returns `['a', 'b']`
          * ```
          *
          * @returns The parent value if it starts with the child.
@@ -665,8 +845,20 @@ export const boundaryGuards = {
          *
          * assertWrap.startsWith('ab', 'b'); // returns `'ab'`
          * assertWrap.startsWith('ab', 'a'); // throws an error
-         * assertWrap.startsWith(['a', 'b'], 'b'); // returns `['a', 'b']`
-         * assertWrap.startsWith(['a', 'b'], 'a'); // throws an error
+         * assertWrap.startsWith(
+         *     [
+         *         'a',
+         *         'b',
+         *     ],
+         *     'b',
+         * ); // returns `['a', 'b']`
+         * assertWrap.startsWith(
+         *     [
+         *         'a',
+         *         'b',
+         *     ],
+         *     'a',
+         * ); // throws an error
          * ```
          *
          * @returns The parent value if it does not start with the child.
@@ -711,8 +903,20 @@ export const boundaryGuards = {
          *
          * checkWrap.endsWith('ab', 'b'); // returns `'ab'`
          * checkWrap.endsWith('ab', 'a'); // returns `undefined`
-         * checkWrap.endsWith(['a', 'b'], 'b'); // returns `['a', 'b']`
-         * checkWrap.endsWith(['a', 'b'], 'a'); // returns `undefined`
+         * checkWrap.endsWith(
+         *     [
+         *         'a',
+         *         'b',
+         *     ],
+         *     'b',
+         * ); // returns `['a', 'b']`
+         * checkWrap.endsWith(
+         *     [
+         *         'a',
+         *         'b',
+         *     ],
+         *     'a',
+         * ); // returns `undefined`
          * ```
          *
          * @returns The first value if the check passes, otherwise `undefined`.
@@ -749,8 +953,20 @@ export const boundaryGuards = {
          *
          * checkWrap.endsWithout('ab', 'b'); // returns `undefined`
          * checkWrap.endsWithout('ab', 'a'); // returns `'ab'`
-         * checkWrap.endsWithout(['a', 'b'], 'b'); // returns `undefined`
-         * checkWrap.endsWithout(['a', 'b'], 'a'); // returns `['a', 'b']`
+         * checkWrap.endsWithout(
+         *     [
+         *         'a',
+         *         'b',
+         *     ],
+         *     'b',
+         * ); // returns `undefined`
+         * checkWrap.endsWithout(
+         *     [
+         *         'a',
+         *         'b',
+         *     ],
+         *     'a',
+         * ); // returns `['a', 'b']`
          * ```
          *
          * @returns The first value if the check passes, otherwise `undefined`.
@@ -790,8 +1006,20 @@ export const boundaryGuards = {
          *
          * checkWrap.startsWith('ab', 'b'); // returns `undefined`
          * checkWrap.startsWith('ab', 'a'); // returns `'ab'`
-         * checkWrap.startsWith(['a', 'b'], 'b'); // returns `undefined`
-         * checkWrap.startsWith(['a', 'b'], 'a'); // returns `['a', 'b']`
+         * checkWrap.startsWith(
+         *     [
+         *         'a',
+         *         'b',
+         *     ],
+         *     'b',
+         * ); // returns `undefined`
+         * checkWrap.startsWith(
+         *     [
+         *         'a',
+         *         'b',
+         *     ],
+         *     'a',
+         * ); // returns `['a', 'b']`
          * ```
          *
          * @returns The first value if the check passes, otherwise `undefined`.
@@ -831,8 +1059,20 @@ export const boundaryGuards = {
          *
          * checkWrap.startsWith('ab', 'b'); // returns `undefined`
          * checkWrap.startsWith('ab', 'a'); // returns `'ab'`
-         * checkWrap.startsWith(['a', 'b'], 'b'); // returns `undefined`
-         * checkWrap.startsWith(['a', 'b'], 'a'); // returns `['a', 'b']`
+         * checkWrap.startsWith(
+         *     [
+         *         'a',
+         *         'b',
+         *     ],
+         *     'b',
+         * ); // returns `undefined`
+         * checkWrap.startsWith(
+         *     [
+         *         'a',
+         *         'b',
+         *     ],
+         *     'a',
+         * ); // returns `['a', 'b']`
          * ```
          *
          * @returns The first value if the check passes, otherwise `undefined`.
@@ -874,8 +1114,14 @@ export const boundaryGuards = {
          *
          * await waitUntil.endsWith('b', () => 'ab'); // returns `'ab'`
          * await waitUntil.endsWith('a', () => 'ab'); // throws an error
-         * await waitUntil.endsWith('b', () => ['a', 'b']); // returns `['a', 'b']`
-         * await waitUntil.endsWith('a', () => ['a', 'b']); // throws an error
+         * await waitUntil.endsWith('b', () => [
+         *     'a',
+         *     'b',
+         * ]); // returns `['a', 'b']`
+         * await waitUntil.endsWith('a', () => [
+         *     'a',
+         *     'b',
+         * ]); // throws an error
          * ```
          *
          * @returns The callback output once it passes.
@@ -899,8 +1145,14 @@ export const boundaryGuards = {
          *
          * await waitUntil.endsWith('b', () => 'ab'); // throws an error
          * await waitUntil.endsWith('a', () => 'ab'); // returns `'ab'`
-         * await waitUntil.endsWith('b', () => ['a', 'b']); // throws an error
-         * await waitUntil.endsWith('a', () => ['a', 'b']); // returns `['a', 'b']`
+         * await waitUntil.endsWith('b', () => [
+         *     'a',
+         *     'b',
+         * ]); // throws an error
+         * await waitUntil.endsWith('a', () => [
+         *     'a',
+         *     'b',
+         * ]); // returns `['a', 'b']`
          * ```
          *
          * @returns The callback output once it passes.
@@ -924,8 +1176,14 @@ export const boundaryGuards = {
          *
          * await waitUntil.endsWith('b', () => 'ab'); // throws an error
          * await waitUntil.endsWith('a', () => 'ab'); // returns `'ab'`
-         * await waitUntil.endsWith('b', () => ['a', 'b']); // throws an error
-         * await waitUntil.endsWith('a', () => ['a', 'b']); // returns `['a', 'b']`
+         * await waitUntil.endsWith('b', () => [
+         *     'a',
+         *     'b',
+         * ]); // throws an error
+         * await waitUntil.endsWith('a', () => [
+         *     'a',
+         *     'b',
+         * ]); // returns `['a', 'b']`
          * ```
          *
          * @returns The callback output once it passes.
@@ -948,8 +1206,14 @@ export const boundaryGuards = {
          * ```ts
          * await waitUntil.endsWith('b', () => 'ab'); // returns `'ab'`
          * await waitUntil.endsWith('a', () => 'ab'); // throws an error
-         * await waitUntil.endsWith('b', () => ['a', 'b']); // returns `['a', 'b']`
-         * await waitUntil.endsWith('a', () => ['a', 'b']); // throws an error
+         * await waitUntil.endsWith('b', () => [
+         *     'a',
+         *     'b',
+         * ]); // returns `['a', 'b']`
+         * await waitUntil.endsWith('a', () => [
+         *     'a',
+         *     'b',
+         * ]); // throws an error
          * ```
          *
          * @returns The callback output once it passes.

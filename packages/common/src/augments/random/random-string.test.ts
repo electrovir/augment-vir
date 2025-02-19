@@ -49,9 +49,14 @@ describe(randomString.name, () => {
         const expectedAmount = (iterationCount * stringLength) / allowedRandomStringLetters.length;
 
         try {
-            letterEntries.forEach(([, letterCount]) => {
-                assert.isApproximately(letterCount, expectedAmount, expectedAmount * 0.008);
-            });
+            letterEntries.forEach(
+                ([
+                    ,
+                    letterCount,
+                ]) => {
+                    assert.isApproximately(letterCount, expectedAmount, expectedAmount * 0.008);
+                },
+            );
         } catch (error) {
             console.error(letters);
             throw error;

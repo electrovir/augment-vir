@@ -69,17 +69,25 @@ export function mapObject<
         let gotAPromise = false as boolean;
 
         const mappedEntries = getObjectTypedEntries(originalObject)
-            .map(([originalKey, originalValue]) => {
-                const output = mapCallback(originalKey, originalValue, originalObject);
-                if (output instanceof Promise) {
-                    gotAPromise = true;
-                    return output;
-                } else if (output) {
-                    return [output.key, output.value] as [NewKey, NewValue];
-                } else {
-                    return undefined;
-                }
-            })
+            .map(
+                ([
+                    originalKey,
+                    originalValue,
+                ]) => {
+                    const output = mapCallback(originalKey, originalValue, originalObject);
+                    if (output instanceof Promise) {
+                        gotAPromise = true;
+                        return output;
+                    } else if (output) {
+                        return [
+                            output.key,
+                            output.value,
+                        ] as [NewKey, NewValue];
+                    } else {
+                        return undefined;
+                    }
+                },
+            )
             .filter(check.isTruthy);
 
         if (gotAPromise) {
@@ -93,7 +101,10 @@ export function mapObject<
                             } else if (Array.isArray(entry)) {
                                 return entry;
                             } else {
-                                return [entry.key, entry.value] as [NewKey, NewValue];
+                                return [
+                                    entry.key,
+                                    entry.value,
+                                ] as [NewKey, NewValue];
                             }
                         },
                         check.isTruthy,

@@ -98,7 +98,10 @@ async function readIndexFileExports(indexFilePath: string): Promise<string[]> {
     const exportLines = safeMatch(condensedContents, /export \* from '[^']+';/g);
     return exportLines
         .map((exportLine) => {
-            const [, exportPath] = safeMatch(exportLine, /export \* from '([^']+)';/);
+            const [
+                ,
+                exportPath,
+            ] = safeMatch(exportLine, /export \* from '([^']+)';/);
             return exportPath;
         })
         .filter(check.isTruthy);

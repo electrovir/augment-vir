@@ -30,7 +30,10 @@ function recursivelyGetNestedChildren(
             maxDepth && nextDepth >= maxDepth
                 ? []
                 : recursivelyGetNestedChildren(child, maxDepth, nextDepth);
-        return [child, nested].flat();
+        return [
+            child,
+            nested,
+        ].flat();
     });
 }
 
@@ -47,5 +50,8 @@ function recursivelyGetNestedChildren(
  * @package [`@augment-vir/web`](https://www.npmjs.com/package/@augment-vir/web)
  */
 export function getDirectChildren(startingElement: Readonly<Element>): Element[] {
-    return [...startingElement.children, ...(startingElement.shadowRoot?.children ?? [])];
+    return [
+        ...startingElement.children,
+        ...(startingElement.shadowRoot?.children ?? []),
+    ];
 }

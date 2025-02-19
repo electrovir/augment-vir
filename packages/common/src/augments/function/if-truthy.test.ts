@@ -6,12 +6,20 @@ describe(ifTruthy.name, () => {
     itCases(ifTruthy, [
         {
             it: 'triggers the truthy callback',
-            inputs: [true, () => 'hi', () => 'bye'],
+            inputs: [
+                true,
+                () => 'hi',
+                () => 'bye',
+            ],
             expect: 'hi',
         },
         {
             it: 'triggers the falsy callback',
-            inputs: [false, () => 'hi', () => 'bye'],
+            inputs: [
+                false,
+                () => 'hi',
+                () => 'bye',
+            ],
             expect: 'bye',
         },
     ]);

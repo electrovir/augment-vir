@@ -35,37 +35,62 @@ describe(combineErrorMessages.name, () => {
     itCases(combineErrorMessages, [
         {
             it: 'combines messages',
-            input: ['a', 'b', 'c'],
+            input: [
+                'a',
+                'b',
+                'c',
+            ],
             expect: 'a: b: c',
         },
         {
             it: 'removes punctuation',
-            input: ['a.', 'b.', 'c.'],
+            input: [
+                'a.',
+                'b.',
+                'c.',
+            ],
             expect: 'a: b: c.',
         },
         {
             it: 'filters empty messages',
-            input: ['a.', '', ''],
+            input: [
+                'a.',
+                '',
+                '',
+            ],
             expect: 'a.',
         },
         {
             it: 'filters empty punctuation messages',
-            input: ['a.', '', '.'],
+            input: [
+                'a.',
+                '',
+                '.',
+            ],
             expect: 'a.',
         },
         {
             it: 'handles all empty messages',
-            input: ['', ''],
+            input: [
+                '',
+                '',
+            ],
             expect: '',
         },
         {
             it: 'handles all empty messages with punctuation',
-            input: ['', '.'],
+            input: [
+                '',
+                '.',
+            ],
             expect: '',
         },
         {
             it: 'handles all empty messages with punctuation',
-            input: ['', '.'],
+            input: [
+                '',
+                '.',
+            ],
             expect: '',
         },
     ]);

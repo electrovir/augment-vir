@@ -38,42 +38,66 @@ describe('isKeyOf', () => {
         itCases(check.isKeyOf, [
             {
                 it: 'passes with a string prop on an object',
-                inputs: [stringKey, {[stringKey]: 0}],
+                inputs: [
+                    stringKey,
+                    {[stringKey]: 0},
+                ],
                 expect: true,
             },
             {
                 it: 'passes with a symbol prop on an object',
-                inputs: [symbolKey, {[symbolKey]: 0}],
+                inputs: [
+                    symbolKey,
+                    {[symbolKey]: 0},
+                ],
                 expect: true,
             },
             {
                 it: 'passes with a numeric prop on an object',
-                inputs: [numberKey, {[numberKey]: 0}],
+                inputs: [
+                    numberKey,
+                    {[numberKey]: 0},
+                ],
                 expect: true,
             },
             {
                 it: 'passes with a prop from a function',
-                inputs: ['name', () => {}],
+                inputs: [
+                    'name',
+                    () => {},
+                ],
                 expect: true,
             },
             {
                 it: 'fails with a string key that does not exists in a function',
-                inputs: [stringKey, () => {}],
+                inputs: [
+                    stringKey,
+                    () => {},
+                ],
                 expect: false,
             },
             {
                 it: 'fails with a string key that does not exists in a object',
-                inputs: [stringKey, {}],
+                inputs: [
+                    stringKey,
+                    {},
+                ],
                 expect: false,
             },
             {
                 it: 'fails with a numeric key that does not exists in a object',
-                inputs: [numberKey, {}],
+                inputs: [
+                    numberKey,
+                    {},
+                ],
                 expect: false,
             },
             {
                 it: 'fails with a symbol key that does not exists in a object',
-                inputs: [symbolKey, {}],
+                inputs: [
+                    symbolKey,
+                    {},
+                ],
                 expect: false,
             },
         ]);
@@ -169,42 +193,66 @@ describe('isNotKeyOf', () => {
         itCases(check.isNotKeyOf, [
             {
                 it: 'rejects with a string prop on an object',
-                inputs: [stringKey, {[stringKey]: 0}],
+                inputs: [
+                    stringKey,
+                    {[stringKey]: 0},
+                ],
                 expect: false,
             },
             {
                 it: 'rejects with a symbol prop on an object',
-                inputs: [symbolKey, {[symbolKey]: 0}],
+                inputs: [
+                    symbolKey,
+                    {[symbolKey]: 0},
+                ],
                 expect: false,
             },
             {
                 it: 'rejects with a numeric prop on an object',
-                inputs: [numberKey, {[numberKey]: 0}],
+                inputs: [
+                    numberKey,
+                    {[numberKey]: 0},
+                ],
                 expect: false,
             },
             {
                 it: 'rejects with a prop from a function',
-                inputs: ['name', () => {}],
+                inputs: [
+                    'name',
+                    () => {},
+                ],
                 expect: false,
             },
             {
                 it: 'accepts with a string key that does not exists in a function',
-                inputs: [stringKey, () => {}],
+                inputs: [
+                    stringKey,
+                    () => {},
+                ],
                 expect: true,
             },
             {
                 it: 'accepts with a string key that does not exists in a object',
-                inputs: [stringKey, {}],
+                inputs: [
+                    stringKey,
+                    {},
+                ],
                 expect: true,
             },
             {
                 it: 'accepts with a numeric key that does not exists in a object',
-                inputs: [numberKey, {}],
+                inputs: [
+                    numberKey,
+                    {},
+                ],
                 expect: true,
             },
             {
                 it: 'accepts with a symbol key that does not exists in a object',
-                inputs: [symbolKey, {}],
+                inputs: [
+                    symbolKey,
+                    {},
+                ],
                 expect: true,
             },
         ]);
@@ -298,30 +346,58 @@ describe('hasKey', () => {
             assert.throws(() => assert.hasKey(actualReject, expected));
         });
         it('works on arrays', () => {
-            assert.hasKey([1, 2, 3], 0);
-            assert.throws(() => assert.hasKey([1, 2, 3], 10));
+            assert.hasKey(
+                [
+                    1,
+                    2,
+                    3,
+                ],
+                0,
+            );
+            assert.throws(() =>
+                assert.hasKey(
+                    [
+                        1,
+                        2,
+                        3,
+                    ],
+                    10,
+                ),
+            );
         });
     });
     describe('check', () => {
         itCases(check.hasKey, [
             {
                 it: 'accepts function keys',
-                inputs: [() => {}, 'name'],
+                inputs: [
+                    () => {},
+                    'name',
+                ],
                 expect: true,
             },
             {
                 it: 'rejects missing functions keys',
-                inputs: [() => {}, 'concat'],
+                inputs: [
+                    () => {},
+                    'concat',
+                ],
                 expect: false,
             },
             {
                 it: 'accepts string object keys',
-                inputs: ['hello there', 'concat'],
+                inputs: [
+                    'hello there',
+                    'concat',
+                ],
                 expect: true,
             },
             {
                 it: 'rejects missing string object keys',
-                inputs: ['hello there', 'name'],
+                inputs: [
+                    'hello there',
+                    'name',
+                ],
                 expect: false,
             },
         ]);
@@ -511,30 +587,58 @@ describe('lacksKey', () => {
             assert.throws(() => assert.lacksKey(actualReject, expected));
         });
         it('works on arrays', () => {
-            assert.lacksKey([1, 2, 3], 10);
-            assert.throws(() => assert.lacksKey([1, 2, 3], 0));
+            assert.lacksKey(
+                [
+                    1,
+                    2,
+                    3,
+                ],
+                10,
+            );
+            assert.throws(() =>
+                assert.lacksKey(
+                    [
+                        1,
+                        2,
+                        3,
+                    ],
+                    0,
+                ),
+            );
         });
     });
     describe('check', () => {
         itCases(check.lacksKey, [
             {
                 it: 'rejects function keys',
-                inputs: [() => {}, 'name'],
+                inputs: [
+                    () => {},
+                    'name',
+                ],
                 expect: false,
             },
             {
                 it: 'accepts missing functions keys',
-                inputs: [() => {}, 'concat'],
+                inputs: [
+                    () => {},
+                    'concat',
+                ],
                 expect: true,
             },
             {
                 it: 'rejects string object keys',
-                inputs: ['hello there', 'concat'],
+                inputs: [
+                    'hello there',
+                    'concat',
+                ],
                 expect: false,
             },
             {
                 it: 'accepts missing string object keys',
-                inputs: ['hello there', 'name'],
+                inputs: [
+                    'hello there',
+                    'name',
+                ],
                 expect: true,
             },
         ]);
@@ -608,7 +712,10 @@ describe('hasKeys', () => {
     const actualReject: UnknownObject = {
         three: 3,
     } as any;
-    const expected = ['one', 'two'] as const;
+    const expected = [
+        'one',
+        'two',
+    ] as const;
     type ExpectedType = {
         one: unknown;
         two: unknown;
@@ -644,7 +751,12 @@ describe('hasKeys', () => {
 
                 assert.tsType(whatever.name).matches<string>();
             }
-            if (check.hasKeys(whatever, ['name', 'value'])) {
+            if (
+                check.hasKeys(whatever, [
+                    'name',
+                    'value',
+                ])
+            ) {
                 whatever.name;
                 whatever.value;
 
@@ -735,7 +847,10 @@ describe('lacksKeys', () => {
     const actualReject: {one: number} | {two: number} | {three: number} = {
         two: 2,
     } as any;
-    const expected = ['two', 'three'] as const;
+    const expected = [
+        'two',
+        'three',
+    ] as const;
     type ExpectedType = {one: number};
     type UnexpectedType = {one: number} | {two: number} | {three: number};
 

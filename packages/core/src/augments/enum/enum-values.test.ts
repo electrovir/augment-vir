@@ -10,6 +10,10 @@ enum Planet {
 
 describe(getEnumValues.name, () => {
     it('gets basic enum values properly', () => {
-        assert.deepEquals(getEnumValues(Planet), [Planet.Mercury, Planet.Venus, Planet.Earth]);
+        assert.deepEquals(getEnumValues(Planet), [
+            Planet.Mercury,
+            Planet.Venus,
+            Planet.Earth,
+        ]);
     });
 });

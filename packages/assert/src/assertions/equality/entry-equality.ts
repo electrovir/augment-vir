@@ -47,7 +47,10 @@ const assertions = {
         }
 
         const allKeys = Array.from(
-            new Set([...Reflect.ownKeys(actual), ...Reflect.ownKeys(expected)]),
+            new Set([
+                ...Reflect.ownKeys(actual),
+                ...Reflect.ownKeys(expected),
+            ]),
         );
 
         allKeys.forEach((key) => {
@@ -101,7 +104,10 @@ const assertions = {
         }
 
         const allKeys = Array.from(
-            new Set([...Reflect.ownKeys(actual), ...Reflect.ownKeys(expected)]),
+            new Set([
+                ...Reflect.ownKeys(actual),
+                ...Reflect.ownKeys(expected),
+            ]),
         );
 
         const valid = allKeys.some((key) => {
@@ -163,7 +169,10 @@ export const entryEqualityGuards = {
             }
 
             const allKeys = Array.from(
-                new Set([...Reflect.ownKeys(actual), ...Reflect.ownKeys(expected)]),
+                new Set([
+                    ...Reflect.ownKeys(actual),
+                    ...Reflect.ownKeys(expected),
+                ]),
             );
 
             return allKeys.every((key) => {
@@ -212,7 +221,10 @@ export const entryEqualityGuards = {
             }
 
             const allKeys = Array.from(
-                new Set([...Reflect.ownKeys(actual), ...Reflect.ownKeys(expected)]),
+                new Set([
+                    ...Reflect.ownKeys(actual),
+                    ...Reflect.ownKeys(expected),
+                ]),
             );
 
             return allKeys.some((key) => {
@@ -270,7 +282,10 @@ export const entryEqualityGuards = {
             }
 
             const allKeys = Array.from(
-                new Set([...Reflect.ownKeys(actual), ...Reflect.ownKeys(expected)]),
+                new Set([
+                    ...Reflect.ownKeys(actual),
+                    ...Reflect.ownKeys(expected),
+                ]),
             );
 
             allKeys.forEach((key) => {
@@ -333,7 +348,10 @@ export const entryEqualityGuards = {
             }
 
             const allKeys = Array.from(
-                new Set([...Reflect.ownKeys(actual), ...Reflect.ownKeys(expected)]),
+                new Set([
+                    ...Reflect.ownKeys(actual),
+                    ...Reflect.ownKeys(expected),
+                ]),
             );
 
             const valid = allKeys.some((key) => {
@@ -396,7 +414,10 @@ export const entryEqualityGuards = {
             }
 
             const allKeys = Array.from(
-                new Set([...Reflect.ownKeys(actual), ...Reflect.ownKeys(expected)]),
+                new Set([
+                    ...Reflect.ownKeys(actual),
+                    ...Reflect.ownKeys(expected),
+                ]),
             );
 
             const valid = allKeys.every((key) => {
@@ -453,7 +474,10 @@ export const entryEqualityGuards = {
             }
 
             const allKeys = Array.from(
-                new Set([...Reflect.ownKeys(actual), ...Reflect.ownKeys(expected)]),
+                new Set([
+                    ...Reflect.ownKeys(actual),
+                    ...Reflect.ownKeys(expected),
+                ]),
             );
 
             const valid = allKeys.some((key) => {

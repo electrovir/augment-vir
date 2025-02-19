@@ -31,10 +31,29 @@ describe(mergeDeep.name, () => {
         {
             it: 'overrides array values',
             inputs: [
-                ['a', 'b', 'c', 'd', 'e', 'f'],
-                ['a', 'b', undefined, undefined, 'e'],
+                [
+                    'a',
+                    'b',
+                    'c',
+                    'd',
+                    'e',
+                    'f',
+                ],
+                [
+                    'a',
+                    'b',
+                    undefined,
+                    undefined,
+                    'e',
+                ],
             ],
-            expect: ['a', 'b', undefined, undefined, 'e'],
+            expect: [
+                'a',
+                'b',
+                undefined,
+                undefined,
+                'e',
+            ],
         },
         {
             it: 'overwrites array entries',
@@ -55,12 +74,19 @@ describe(mergeDeep.name, () => {
         },
         {
             it: 'does a shallow merge',
-            inputs: [{first: 'hello'}, {second: 'hi'}],
+            inputs: [
+                {first: 'hello'},
+                {second: 'hi'},
+            ],
             expect: {first: 'hello', second: 'hi'},
         },
         {
             it: 'overwrite previous properties',
-            inputs: [{first: 'hello'}, {second: 'hi'}, {first: 'goodbye'}],
+            inputs: [
+                {first: 'hello'},
+                {second: 'hi'},
+                {first: 'goodbye'},
+            ],
             expect: {first: 'goodbye', second: 'hi'},
         },
         {
@@ -95,17 +121,28 @@ describe(mergeDeep.name, () => {
             inputs: [
                 {
                     first: 'hello',
-                    arrayProp: [1, 2, 3, 4],
+                    arrayProp: [
+                        1,
+                        2,
+                        3,
+                        4,
+                    ],
                 },
                 {
                     second: 'hi',
-                    arrayProp: [9, 10],
+                    arrayProp: [
+                        9,
+                        10,
+                    ],
                 },
             ],
             expect: {
                 first: 'hello',
                 second: 'hi',
-                arrayProp: [9, 10],
+                arrayProp: [
+                    9,
+                    10,
+                ],
             },
         },
     ]);

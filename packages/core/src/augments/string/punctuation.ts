@@ -7,7 +7,14 @@ import type {ArrayElement} from '../array/array.js';
  * @category Package : @augment-vir/common
  * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
-export const punctuationLetters = ['.', ':', ';', ',', '?', '!'] as const;
+export const punctuationLetters = [
+    '.',
+    ':',
+    ';',
+    ',',
+    '?',
+    '!',
+] as const;
 
 /**
  * A RegExp matching all letters that are considered punctuation.

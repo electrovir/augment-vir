@@ -7,12 +7,20 @@ import {findAncestor, joinFilesToDir} from './ancestor.js';
 
 describe(joinFilesToDir.name, () => {
     it('works', () => {
-        assert.deepEquals(joinFilesToDir(join('a', 'b'), ['c', 'd', 'e', 'f']), [
-            join('a', 'b', 'c'),
-            join('a', 'b', 'd'),
-            join('a', 'b', 'e'),
-            join('a', 'b', 'f'),
-        ]);
+        assert.deepEquals(
+            joinFilesToDir(join('a', 'b'), [
+                'c',
+                'd',
+                'e',
+                'f',
+            ]),
+            [
+                join('a', 'b', 'c'),
+                join('a', 'b', 'd'),
+                join('a', 'b', 'e'),
+                join('a', 'b', 'f'),
+            ],
+        );
     });
 });
 

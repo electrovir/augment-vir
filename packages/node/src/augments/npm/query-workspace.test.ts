@@ -27,7 +27,12 @@ describe(queryNpmWorkspace.name, () => {
         );
 
         if (result.exitCode) {
-            throw new Error([result.stdout, result.stderr].join('\n'));
+            throw new Error(
+                [
+                    result.stdout,
+                    result.stderr,
+                ].join('\n'),
+            );
         }
 
         await rm(tempWorkspaceQueryFile, {force: true});

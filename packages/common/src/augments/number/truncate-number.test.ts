@@ -58,7 +58,11 @@ describe(truncateNumber.name, () => {
             in: 111_456_789,
             out: '0.1C',
             maxLength: 3,
-            customSuffixes: ['A', 'B', 'C'],
+            customSuffixes: [
+                'A',
+                'B',
+                'C',
+            ],
         },
         {
             in: 12_345_678,
@@ -106,7 +110,10 @@ describe(truncateNumber.name, () => {
                       customSuffixes: testCase.customSuffixes,
                   }
                 : undefined;
-        const inputs: Parameters<typeof truncateNumber> = [testCase.in, options];
+        const inputs: Parameters<typeof truncateNumber> = [
+            testCase.in,
+            options,
+        ];
 
         return {
             it: `should convert ${testCase.in} to ${testCase.out}`,

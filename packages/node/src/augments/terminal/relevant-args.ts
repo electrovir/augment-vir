@@ -40,7 +40,13 @@ export type RelevantArgsInput = {
  *
  * ```ts
  * extractRelevantArgs({
- *     rawArgs: ['npx', 'ts-node', './my-script.ts', 'arg1', '--arg2'], // typically will be process.argv
+ *     rawArgs: [
+ *         'npx',
+ *         'ts-node',
+ *         './my-script.ts',
+ *         'arg1',
+ *         '--arg2',
+ *     ], // typically will be process.argv
  *     binName: 'my-script', // should be your package.json "bin" property name, can be undefined
  *     fileName: 'my-script.ts', // should be __filename from the script that will be executed
  * });

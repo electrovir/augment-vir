@@ -36,7 +36,17 @@ export function appendJson(
  * // `result2` will be `[{a: 'a'}, {b: 'b'}, {a: 'q'}, 'r']`
  * const result2 = appendJson([{a: 'a'}], {b: 'b'}, {a: 'q'}, 'r');
  * // `result3` will be `['a', ['b', 'c'], 'd', 'e']`
- * const result3 = appendJson(['a'], [['b', 'c']], ['d'], 'e');
+ * const result3 = appendJson(
+ *     ['a'],
+ *     [
+ *         [
+ *             'b',
+ *             'c',
+ *         ],
+ *     ],
+ *     ['d'],
+ *     'e',
+ * );
  * ```
  *
  * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)

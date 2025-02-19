@@ -35,7 +35,19 @@ describe(getObjectTypedValues.name, () => {
         {
             it: 'does something with non-objects',
             input: 'hello there',
-            expect: ['h', 'e', 'l', 'l', 'o', ' ', 't', 'h', 'e', 'r', 'e'],
+            expect: [
+                'h',
+                'e',
+                'l',
+                'l',
+                'o',
+                ' ',
+                't',
+                'h',
+                'e',
+                'r',
+                'e',
+            ],
         },
     ]);
 

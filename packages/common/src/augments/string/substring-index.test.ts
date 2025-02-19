@@ -10,7 +10,14 @@ describe(findSubstringIndexes.name, () => {
                 searchFor: 'o',
                 caseSensitive: false,
             },
-            expect: [2, 5, 11, 18, 24, 31],
+            expect: [
+                2,
+                5,
+                11,
+                18,
+                24,
+                31,
+            ],
         },
         {
             it: 'should return nothing if no instances were found',
@@ -28,7 +35,14 @@ describe(findSubstringIndexes.name, () => {
                 searchFor: /o/,
                 caseSensitive: false,
             },
-            expect: [2, 5, 11, 18, 24, 31],
+            expect: [
+                2,
+                5,
+                11,
+                18,
+                24,
+                31,
+            ],
         },
         {
             it: 'should find all RegExp matches with a capture group',
@@ -37,7 +51,14 @@ describe(findSubstringIndexes.name, () => {
                 searchFor: /(o)/,
                 caseSensitive: false,
             },
-            expect: [2, 5, 11, 18, 24, 31],
+            expect: [
+                2,
+                5,
+                11,
+                18,
+                24,
+                31,
+            ],
         },
         {
             it: 'should handle substring at the beginning of the string correctly',
@@ -46,7 +67,10 @@ describe(findSubstringIndexes.name, () => {
                 searchFor: 'a',
                 caseSensitive: false,
             },
-            expect: [0, 3],
+            expect: [
+                0,
+                3,
+            ],
         },
         {
             it: 'should handle the substring at the end of the string only',
@@ -64,7 +88,10 @@ describe(findSubstringIndexes.name, () => {
                 searchFor: 's',
                 caseSensitive: false,
             },
-            expect: [0, 8],
+            expect: [
+                0,
+                8,
+            ],
         },
         {
             it: 'should handle longer words',
@@ -73,7 +100,13 @@ describe(findSubstringIndexes.name, () => {
                 searchFor: 'you',
                 caseSensitive: true,
             },
-            expect: [5, 15, 29, 41, 50],
+            expect: [
+                5,
+                15,
+                29,
+                41,
+                50,
+            ],
         },
         {
             it: 'should match multiple in a row',
@@ -82,7 +115,14 @@ describe(findSubstringIndexes.name, () => {
                 searchFor: 'You',
                 caseSensitive: false,
             },
-            expect: [0, 3, 6, 9, 12, 15],
+            expect: [
+                0,
+                3,
+                6,
+                9,
+                12,
+                15,
+            ],
         },
         {
             it: 'should not match case mismatch',
@@ -91,7 +131,10 @@ describe(findSubstringIndexes.name, () => {
                 searchFor: 'You',
                 caseSensitive: true,
             },
-            expect: [0, 20],
+            expect: [
+                0,
+                20,
+            ],
         },
         {
             it: 'should honor case insensitive set to true',
@@ -100,7 +143,11 @@ describe(findSubstringIndexes.name, () => {
                 searchFor: 'You',
                 caseSensitive: false,
             },
-            expect: [0, 12, 20],
+            expect: [
+                0,
+                12,
+                20,
+            ],
         },
         {
             it: 'includes correct lengths for simple strings',

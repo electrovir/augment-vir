@@ -2,6 +2,15 @@ const {baseConfig} = require('@virmator/spellcheck/configs/cspell.config.base.cj
 
 module.exports = {
     ...baseConfig,
-    ignorePaths: [...baseConfig.ignorePaths, 'packages/test/src/mocha.d.ts'],
-    words: [...baseConfig.words, 'nocheck', 'propstat', 'resolv', 'prismock'],
+    ignorePaths: [
+        ...baseConfig.ignorePaths,
+        'packages/test/src/mocha.d.ts',
+    ],
+    words: [
+        ...baseConfig.words,
+        'nocheck',
+        'propstat',
+        'resolv',
+        'prismock',
+    ],
 };

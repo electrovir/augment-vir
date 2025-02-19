@@ -11,7 +11,14 @@ describe('Tuple', () => {
 
 describe('MappedTuple', () => {
     it('has proper types', () => {
-        const myArray = [1, 2, 3, 4, 'a', 'b'] as const;
+        const myArray = [
+            1,
+            2,
+            3,
+            4,
+            'a',
+            'b',
+        ] as const;
         type MappedMyArray = MappedTuple<typeof myArray, RegExp>;
 
         assert

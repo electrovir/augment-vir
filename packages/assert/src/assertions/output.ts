@@ -132,7 +132,13 @@ function extractOutputArgs(
         ? emptyOrFailureMessage
         : (failureMessageOrExpectedOutput as string | undefined);
 
-    return [asserter, functionToCall, inputs, expectedOutput, failureMessage] as const;
+    return [
+        asserter,
+        functionToCall,
+        inputs,
+        expectedOutput,
+        failureMessage,
+    ] as const;
 }
 
 function innerAssertOutput<const ShouldReturnResult extends boolean>(

@@ -69,7 +69,10 @@ export function queryThroughShadow(
         const nestedResults = shadowRootChildren.flatMap((shadowRootChild) => {
             return queryThroughShadow(shadowRootChild, query, options) as Element[];
         });
-        return [...outerResults, ...nestedResults];
+        return [
+            ...outerResults,
+            ...nestedResults,
+        ];
     } else {
         const basicResult = element.querySelector(query);
 
