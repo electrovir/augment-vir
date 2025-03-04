@@ -21,6 +21,7 @@ export type {
 } from '../prisma/model-data.js';
 export * from '../prisma/prisma-errors.js';
 export type {PrismaMigrationStatus} from '../prisma/prisma-migrations.js';
+export {prismaCommandsThatSupportNoHints, runPrismaCommand} from '../prisma/run-prisma-command.js';
 
 /**
  * Centralized Prisma API from `@augment-vir/node`.

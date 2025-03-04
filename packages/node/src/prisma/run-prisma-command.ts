@@ -4,8 +4,22 @@ import {interpolationSafeWindowsPath} from '../augments/path/os-path.js';
 import {runShellCommand, type ShellOutput} from '../augments/terminal/shell.js';
 import {PrismaSchemaError} from './prisma-errors.js';
 
-const prismaCommandsThatSupportNoHints = ['generate'];
+/**
+ * All commands in the Prisma CLI that support the `--no-hints` flag, used to turn off ads.
+ *
+ * @category Prisma : Node : Util
+ * @category Package : @augment-vir/node
+ * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
+ */
+export const prismaCommandsThatSupportNoHints = ['generate'];
 
+/**
+ * Directly run a Prisma command.
+ *
+ * @category Prisma : Node : Util
+ * @category Package : @augment-vir/node
+ * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
+ */
 export async function runPrismaCommand(
     {
         command,
