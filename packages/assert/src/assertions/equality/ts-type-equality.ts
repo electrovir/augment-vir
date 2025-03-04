@@ -7,8 +7,8 @@ type AssertTypeOf<TestingType> = {
 
     slowEquals: ExpectTypeOf<TestingType, {positive: true}>['branded']['toEqualTypeOf'];
 
-    matches: ExpectTypeOf<TestingType, {positive: true}>['toMatchTypeOf'];
-    notMatches: ExpectTypeOf<TestingType, {positive: false}>['toMatchTypeOf'];
+    matches: ExpectTypeOf<TestingType, {positive: true}>['toExtend'];
+    notMatches: ExpectTypeOf<TestingType, {positive: false}>['toExtend'];
 };
 
 function tsType<Actual>(
