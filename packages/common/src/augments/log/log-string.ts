@@ -1,5 +1,11 @@
 import {check} from '@augment-vir/assert';
-import {perEnv, RuntimeEnv, stringify, type MaybePromise} from '@augment-vir/core';
+import {
+    extractErrorMessage,
+    perEnv,
+    RuntimeEnv,
+    stringify,
+    type MaybePromise,
+} from '@augment-vir/core';
 import {filterMap} from '../array/filter.js';
 import {removeSuffix} from '../string/suffix.js';
 import {LogColorKey, type LogColorConfig} from './log-colors.js';
@@ -84,6 +90,8 @@ async function createToLogString(): Promise<ToLogString> {
                 const argStrings = args.map((arg) => {
                     if (typeof arg === 'string') {
                         return arg;
+                    } else if (arg instanceof Error) {
+                        return extractErrorMessage(arg);
                     } else {
                         return stringify(arg);
                     }
