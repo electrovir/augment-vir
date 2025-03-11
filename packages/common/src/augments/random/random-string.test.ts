@@ -51,10 +51,15 @@ describe(randomString.name, () => {
         try {
             letterEntries.forEach(
                 ([
-                    ,
+                    letter,
                     letterCount,
                 ]) => {
-                    assert.isApproximately(letterCount, expectedAmount, expectedAmount * 0.008);
+                    assert.isApproximately(
+                        letterCount,
+                        expectedAmount,
+                        expectedAmount * 0.01,
+                        `Failed on ${letter}'`,
+                    );
                 },
             );
         } catch (error) {

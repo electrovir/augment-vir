@@ -55,14 +55,7 @@ export async function applyPrismaMigrationsToDev(
                     terminate(childProcess.pid);
                 }
                 dbRequirement = DbChangeRequired.MigrationNeeded;
-            }
-        },
-        stderrCallback(stderr, childProcess) {
-            if (
-                stderr.includes(
-                    'Prisma Migrate has detected that the environment is non-interactive, which is not supported',
-                )
-            ) {
+            } else if (stdout.includes('We need to reset the SQLite database')) {
                 if (childProcess.pid) {
                     terminate(childProcess.pid);
                 }

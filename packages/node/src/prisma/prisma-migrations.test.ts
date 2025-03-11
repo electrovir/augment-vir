@@ -1,7 +1,8 @@
 import {assert} from '@augment-vir/assert';
 import {describe, it} from '@augment-vir/test';
 import {existsSync} from 'node:fs';
-import {readdir, rm} from 'node:fs/promises';
+import {readdir, rename, rm} from 'node:fs/promises';
+import {join} from 'node:path';
 import {prisma} from '../augments/prisma.js';
 import {
     testInvalidPrismaSchemaPath,
@@ -169,7 +170,16 @@ describe(prisma.migration.applyDev.name, () => {
             totalMigrations: 1,
             unappliedMigrations: [],
         });
-        await rm(testPrismaMigrationsDirPath, {force: true, recursive: true});
+        const migrationFolder = (await readdir(testPrismaMigrationsDirPath)).find(
+            (entry) => !entry.endsWith('.toml'),
+        );
+
+        assert.isDefined(migrationFolder);
+
+        await rename(
+            join(testPrismaMigrationsDirPath, migrationFolder),
+            join(testPrismaMigrationsDirPath, '20250311000000_init'),
+        );
 
         await assert.throws(prisma.migration.applyDev(testPrismaSchema2Path), {
             matchMessage: 'A database reset is needed for',
