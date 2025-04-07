@@ -1,11 +1,12 @@
 import {runTypedoc} from '@virmator/docs';
 import {baseTypedocConfig} from '@virmator/docs/configs/typedoc.config.base';
 import {join} from 'node:path';
-import {type TypeDocOptions} from 'typedoc';
+import {type PartialDeep} from 'type-fest';
+import {type TypeDocOptionMap} from 'typedoc';
 import {eslintTsconfigPath, monoRepoDirPath, packagePaths} from '../file-paths.js';
 
 async function main() {
-    const typeDocConfig: Partial<TypeDocOptions> = {
+    const typeDocConfig: PartialDeep<TypeDocOptionMap> = {
         ...baseTypedocConfig,
         out: join(monoRepoDirPath, 'dist-docs'),
         entryPoints: [join(packagePaths.scripts, 'src', 'typedoc-entry-point.ts')],
