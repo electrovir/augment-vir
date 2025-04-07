@@ -29,6 +29,19 @@ describe(ensureErrorAndPrependMessage.name, () => {
         );
         assert.strictEquals(prependedError, error, 'should not create a new error');
     });
+    it('handles readonly message', () => {
+        class ReadonlyMessageError extends Error {
+            public override get message() {
+                return 'message here';
+            }
+        }
+
+        const originalError = new ReadonlyMessageError();
+        const ensuredError = ensureErrorAndPrependMessage(originalError, 'Appended');
+
+        assert.strictEquals(ensuredError.message, 'Appended: message here');
+        assert.strictEquals(ensuredError.cause, originalError);
+    });
 });
 
 describe(ensureErrorClass.name, () => {

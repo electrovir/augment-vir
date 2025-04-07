@@ -26,8 +26,14 @@ export function ensureError(maybeError: unknown): Error {
  */
 export function ensureErrorAndPrependMessage(maybeError: unknown, prependMessage: string): Error {
     const error = ensureError(maybeError);
-    error.message = combineErrorMessages(prependMessage, error.message);
-    return error;
+    const combinedMessage = combineErrorMessages(prependMessage, error.message);
+    try {
+        /** Some error sub classes make `message` readonly. */
+        error.message = combinedMessage;
+        return error;
+    } catch {
+        return new Error(combinedMessage, {cause: maybeError});
+    }
 }
 
 /**
