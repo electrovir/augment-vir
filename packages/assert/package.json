@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/assert",
-    "version": "31.10.2",
+    "version": "31.11.0",
     "description": "A collection of assertions for test and production code alike.",
     "keywords": [
         "augment",
@@ -41,7 +41,7 @@
         "test:update": "npm test"
     },
     "dependencies": {
-        "@augment-vir/core": "^31.10.2",
+        "@augment-vir/core": "^31.11.0",
         "@date-vir/duration": "^7.3.1",
         "deep-eql": "^5.0.2",
         "expect-type": "^1.2.1",
@@ -50,7 +50,7 @@
     "devDependencies": {
         "@types/deep-eql": "^4.0.2",
         "@web/dev-server-esbuild": "^1.0.4",
-        "@web/test-runner": "^0.20.0",
+        "@web/test-runner": "^0.20.1",
         "@web/test-runner-commands": "^0.9.0",
         "@web/test-runner-playwright": "^0.11.0",
         "@web/test-runner-visual-regression": "^0.10.0",
