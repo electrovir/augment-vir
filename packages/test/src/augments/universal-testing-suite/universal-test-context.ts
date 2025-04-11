@@ -1,7 +1,7 @@
 import {RuntimeEnv} from '@augment-vir/core';
 import {type TestContext as NodeTestContextImport} from 'node:test';
 import {type OmitIndexSignature, type Simplify} from 'type-fest';
-import {type MochaTestContext} from './mocha-types.js';
+import {MochaNode, MochaTestContext} from './mocha-types.js';
 
 export {RuntimeEnv} from '@augment-vir/core';
 
@@ -43,6 +43,33 @@ export type ContextByEnv = {
     [RuntimeEnv.Node]: NodeTestContext;
     [RuntimeEnv.Web]: MochaTestContext;
 };
+
+/**
+ * Extracts the full test name (including parent describes) of a given test context. Whether the
+ * test be run in web or node tests, the name will be the same.
+ *
+ * @category Test : Util
+ * @category Package : @augment-vir/test
+ * @package [`@augment-vir/test`](https://www.npmjs.com/package/@augment-vir/test)
+ */
+export function extractTestName(testContext: UniversalTestContext): string {
+    if (isTestContext(testContext, RuntimeEnv.Node)) {
+        return testContext.fullName;
+    } else {
+        return flattenMochaParentTitles(testContext.test).join(' > ');
+    }
+}
+
+function flattenMochaParentTitles(this: void, node: MochaNode): string[] {
+    if (node.root) {
+        return [];
+    } else {
+        return [
+            ...flattenMochaParentTitles(node.parent),
+            node.title,
+        ];
+    }
+}
 
 /**
  * Asserts that the given context is for the given env and returns that context.

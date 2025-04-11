@@ -4,8 +4,7 @@ import {
     type CompareCommandResult,
     type SnapshotPayload,
 } from '@virmator/test/dist/web-snapshot-plugin/snapshot-payload.js';
-import {type MochaNode} from './mocha-types.js';
-import {isTestContext, UniversalTestContext} from './universal-test-context.js';
+import {extractTestName, isTestContext, UniversalTestContext} from './universal-test-context.js';
 
 /**
  * An error that is thrown from {@link assertSnapshot} when the snapshot comparison fails due to the
@@ -75,21 +74,8 @@ export async function assertSnapshot(this: void, testContext: UniversalTestConte
     }
 }
 
-function flattenMochaParentTitles(this: void, node: MochaNode): string[] {
-    if (node.root) {
-        return [];
-    } else {
-        return [
-            ...flattenMochaParentTitles(node.parent),
-            node.title,
-        ];
-    }
-}
-
 function getTestName(this: void, testContext: UniversalTestContext) {
-    const testName = isTestContext(testContext, RuntimeEnv.Node)
-        ? testContext.fullName
-        : flattenMochaParentTitles(testContext.test).join(' > ');
+    const testName = extractTestName(testContext);
 
     const snapshotCountObject = getOrSet(testContext, 'snapshotCount', () => {
         return {};
