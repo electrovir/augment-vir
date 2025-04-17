@@ -28,14 +28,14 @@
         "@augment-vir/common": "^31.11.0",
         "@augment-vir/node": "^31.11.0",
         "@virmator/docs": "^13.13.5",
-        "jsdom": "^26.0.0",
+        "jsdom": "^26.1.0",
         "typedoc": "^0.28.2"
     },
     "devDependencies": {
         "@augment-vir/test": "^31.11.0",
         "@types/jsdom": "^21.1.7",
-        "@types/node": "^22.14.0",
-        "type-fest": "^4.39.1",
+        "@types/node": "^22.14.1",
+        "type-fest": "^4.40.0",
         "typescript": "^5.8.3"
     },
     "engines": {
