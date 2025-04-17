@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/test",
-    "version": "31.11.0",
+    "version": "31.12.0",
     "description": "A universal testing suite that works with Mocha style test runners _and_ Node.js's built-in test runner.",
     "keywords": [
         "test",
@@ -28,6 +28,7 @@
         "name": "electrovir",
         "url": "https://github.com/electrovir"
     },
+    "sideEffects": false,
     "type": "module",
     "main": "src/index.ts",
     "module": "src/index.ts",
@@ -42,8 +43,8 @@
         "test:web": "virmator test --no-deps web 'src/test-web/**/*.test.ts' 'src/augments/universal-testing-suite/**/*.test.ts'"
     },
     "dependencies": {
-        "@augment-vir/assert": "^31.11.0",
-        "@augment-vir/common": "^31.11.0",
+        "@augment-vir/assert": "^31.12.0",
+        "@augment-vir/common": "^31.12.0",
         "@open-wc/testing-helpers": "^3.0.1",
         "@virmator/test": "^13.13.5",
         "type-fest": "^4.40.0"
