@@ -1,7 +1,6 @@
 {
     "name": "@augment-vir/common",
-    "version": "31.12.0",
-    "sideEffects": false,
+    "version": "31.13.0",
     "description": "A collection of augments, helpers types, functions, and classes for any JavaScript environment.",
     "keywords": [
         "augment",
@@ -27,6 +26,7 @@
         "name": "electrovir",
         "url": "https://github.com/electrovir"
     },
+    "sideEffects": false,
     "type": "module",
     "main": "src/index.ts",
     "module": "src/index.ts",
@@ -40,8 +40,8 @@
         "test:web": "virmator --no-deps test web"
     },
     "dependencies": {
-        "@augment-vir/assert": "^31.12.0",
-        "@augment-vir/core": "^31.12.0",
+        "@augment-vir/assert": "^31.13.0",
+        "@augment-vir/core": "^31.13.0",
         "@date-vir/duration": "^7.3.1",
         "ansi-styles": "^6.2.1",
         "json5": "^2.2.3",
