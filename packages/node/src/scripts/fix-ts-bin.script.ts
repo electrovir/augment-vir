@@ -1,6 +1,10 @@
 /* node:coverage disable */
 
 /**
+ * This script is used to replace `node_modules/.bin` files so that they run with typescript. This
+ * is used in dev for packages that are dependencies of the listed packages (in `packagesToFix`),
+ * such as `augment-vir` itself.
+ *
  * To use this script properly, call it directly in your postinstall script. Like this:
  *
  * ```json
