@@ -30,7 +30,7 @@
         "@augment-vir/node": "^31.14.0",
         "@virmator/docs": "^13.13.5",
         "jsdom": "^26.1.0",
-        "typedoc": "^0.28.2"
+        "typedoc": "^0.28.3"
     },
     "devDependencies": {
         "@augment-vir/test": "^31.14.0",
