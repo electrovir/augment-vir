@@ -34,7 +34,6 @@ async function findFilesThatNeedImportFixes(monoRepoPath: string) {
     const {stdout} = await runShellCommand(
         'find . -type d -name "node_modules" -prune -o -type f -path "*/dist/*.js" -exec grep -lE "from \'.*?/src/.*?\';" {} +',
         {
-            rejectOnError: true,
             cwd: monoRepoPath,
         },
     );
