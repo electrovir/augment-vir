@@ -12,5 +12,7 @@ module.exports = {
         'propstat',
         'resolv',
         'prismock',
+        'alea',
+        'baagøe',
     ],
 };

@@ -61,6 +61,7 @@ export * from './augments/promise/timed-promise.js';
 export * from './augments/random/random-boolean.js';
 export * from './augments/random/random-integer.js';
 export * from './augments/random/random-string.js';
+export * from './augments/random/seeded-random.js';
 export * from './augments/regexp/match.js';
 export * from './augments/regexp/regexp-flags.js';
 export * from './augments/regexp/regexp-string.js';
