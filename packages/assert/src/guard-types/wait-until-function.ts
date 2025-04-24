@@ -1,19 +1,21 @@
-import type {
-    AnyFunction,
-    AnyObject,
-    MaybePromise,
-    NarrowToExpected,
-    PartialWithUndefined,
-    RemoveFirstTupleEntry,
-    RemoveLastTupleEntry,
-    RequiredAndNotNull,
+import {
+    type AnyFunction,
+    type AnyObject,
+    ensureError,
+    ensureErrorAndPrependMessage,
+    type MaybePromise,
+    type NarrowToExpected,
+    type PartialWithUndefined,
+    type RemoveFirstTupleEntry,
+    type RemoveLastTupleEntry,
+    type RequiredAndNotNull,
+    wait,
 } from '@augment-vir/core';
-import {ensureError, ensureErrorAndPrependMessage, wait} from '@augment-vir/core';
 import {type AnyDuration, convertDuration} from '@date-vir/duration';
-import type {AssertFunction} from './assert-function.js';
+import {type AssertFunction} from './assert-function.js';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import type {AssertionError} from '../augments/assertion.error.js';
+import {AssertionError} from '../augments/assertion.error.js';
 
 /**
  * Options for configuring the timing of `waitUntil`.

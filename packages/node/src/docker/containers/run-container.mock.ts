@@ -1,5 +1,5 @@
 import {docker} from '../../augments/docker.js';
-import {RunDockerContainerParams} from './run-container.js';
+import {type RunDockerContainerParams} from './run-container.js';
 
 export async function runMockLongLivingContainer(
     containerName: string,

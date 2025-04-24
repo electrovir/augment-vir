@@ -1,8 +1,8 @@
 import {assert} from '@augment-vir/assert';
-import {PartialWithUndefined, type AnyObject} from '@augment-vir/core';
+import {type AnyObject, type PartialWithUndefined} from '@augment-vir/core';
 import {describe, it, itCases} from '@augment-vir/test';
-import {PickCollapsedSelection, selectCollapsedFrom} from './select-collapsed.js';
-import {GenericSelectionSet} from './selection-set.js';
+import {type PickCollapsedSelection, selectCollapsedFrom} from './select-collapsed.js';
+import {type GenericSelectionSet} from './selection-set.js';
 
 describe(selectCollapsedFrom.name, () => {
     function testSelectCollapsedFrom(full: AnyObject, selection: GenericSelectionSet) {

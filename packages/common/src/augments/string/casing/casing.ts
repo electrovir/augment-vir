@@ -1,4 +1,4 @@
-import {PartialWithUndefined} from '@augment-vir/core';
+import {type PartialWithUndefined} from '@augment-vir/core';
 
 /**
  * Options for casing functions in `@augment-vir/common`.

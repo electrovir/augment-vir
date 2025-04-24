@@ -1,7 +1,7 @@
-import type {MaybePromise} from '@augment-vir/core';
+import {type MaybePromise} from '@augment-vir/core';
 import {AssertionError} from '../augments/assertion.error.js';
-import type {GuardGroup} from '../guard-types/guard-group.js';
-import {createWaitUntil, WaitUntilOptions} from '../guard-types/wait-until-function.js';
+import {type GuardGroup} from '../guard-types/guard-group.js';
+import {createWaitUntil, type WaitUntilOptions} from '../guard-types/wait-until-function.js';
 
 const assertions = {
     /**

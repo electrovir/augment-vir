@@ -1,8 +1,8 @@
 import {check} from '@augment-vir/assert';
-import type {AnyObject} from '@augment-vir/core';
+import {type AnyObject} from '@augment-vir/core';
 import {mapObjectValues} from '../object/map-values.js';
 import {omitObjectKeys} from '../object/object-keys.js';
-import {SelectFrom, SelectionSet} from './selection-set.js';
+import {type SelectFrom, type SelectionSet} from './selection-set.js';
 
 /**
  * Determine if the given input should be preserved in the selection output, meaning it won't be

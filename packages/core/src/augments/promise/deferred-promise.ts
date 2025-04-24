@@ -1,4 +1,4 @@
-import type {Writable} from 'type-fest';
+import {type Writable} from 'type-fest';
 import {ensureError} from '../error/ensure-error.js';
 
 /**

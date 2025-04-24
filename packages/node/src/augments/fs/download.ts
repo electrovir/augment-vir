@@ -3,7 +3,7 @@ import {mkdir} from 'node:fs/promises';
 import {dirname} from 'node:path';
 import {Readable} from 'node:stream';
 import {finished} from 'node:stream/promises';
-import type {ReadableStream} from 'node:stream/web';
+import {type ReadableStream} from 'node:stream/web';
 
 /**
  * Download a file.

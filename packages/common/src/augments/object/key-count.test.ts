@@ -1,7 +1,7 @@
 import {assert} from '@augment-vir/assert';
-import type {AnyObject} from '@augment-vir/core';
+import {type AnyObject} from '@augment-vir/core';
 import {describe, it} from '@augment-vir/test';
-import {KeyCount} from './key-count.js';
+import {type KeyCount} from './key-count.js';
 
 describe('KeyCount', () => {
     it('counts keys', () => {

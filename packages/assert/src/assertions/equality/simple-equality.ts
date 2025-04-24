@@ -1,8 +1,8 @@
 import {type MaybePromise, type NarrowToExpected, stringify} from '@augment-vir/core';
 import deepEqual from 'deep-eql';
 import {AssertionError} from '../../augments/assertion.error.js';
-import type {GuardGroup} from '../../guard-types/guard-group.js';
-import {WaitUntilOptions, createWaitUntil} from '../../guard-types/wait-until-function.js';
+import {type GuardGroup} from '../../guard-types/guard-group.js';
+import {type WaitUntilOptions, createWaitUntil} from '../../guard-types/wait-until-function.js';
 
 const assertions = {
     /**

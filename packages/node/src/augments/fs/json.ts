@@ -1,10 +1,10 @@
 import {
     appendJson,
-    JsonCompatibleArray,
-    JsonCompatibleObject,
+    type JsonCompatibleArray,
+    type JsonCompatibleObject,
     type JsonCompatibleValue,
 } from '@augment-vir/common';
-import type {PartialWithUndefined} from '@augment-vir/core';
+import {type PartialWithUndefined} from '@augment-vir/core';
 import {mkdir, readFile} from 'node:fs/promises';
 import {dirname} from 'node:path';
 import {writeFileAndDir} from './write.js';

@@ -1,10 +1,10 @@
 import {check} from '@augment-vir/assert';
-import {Values, ensureError, type CompleteValues, type MaybePromise} from '@augment-vir/core';
+import {ensureError, type CompleteValues, type MaybePromise, type Values} from '@augment-vir/core';
 import {filterMap} from '../array/filter.js';
 import {getObjectTypedEntries, typedObjectFromEntries} from './object-entries.js';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import type {mapObjectValues} from './map-values.js';
+import {mapObjectValues} from './map-values.js';
 
 export function mapObject<const OriginalObject, const NewKey extends PropertyKey, const NewValue>(
     inputObject: OriginalObject,

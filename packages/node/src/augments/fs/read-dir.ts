@@ -1,6 +1,6 @@
 import {readdir, stat} from 'node:fs/promises';
 import {join, relative} from 'node:path';
-import type {RequireExactlyOne} from 'type-fest';
+import {type RequireExactlyOne} from 'type-fest';
 
 async function internalReadDirPathsRecursive(dirPath: string, basePath: string): Promise<string[]> {
     const dirContents = await readdir(dirPath);

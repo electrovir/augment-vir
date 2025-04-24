@@ -1,6 +1,6 @@
 import {isRuntimeEnv, RuntimeEnv} from '@augment-vir/core';
-import type {MochaTestContext} from './mocha-types.js';
-import {UniversalTestContext} from './universal-test-context.js';
+import {type MochaTestContext} from './mocha-types.js';
+import {type UniversalTestContext} from './universal-test-context.js';
 
 /**
  * An interface for an {@link it} callback. Used in {@link UniversalBareIt}.

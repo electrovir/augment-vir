@@ -1,8 +1,7 @@
-import type {FalsyValue} from '@augment-vir/assert';
-import {assert} from '@augment-vir/assert';
-import {AnyFunction, type AnyObject} from '@augment-vir/core';
+import {assert, type FalsyValue} from '@augment-vir/assert';
+import {type AnyFunction, type AnyObject} from '@augment-vir/core';
 import {describe, it} from '@augment-vir/test';
-import {NarrowToActual, NarrowToExpected} from './narrow-type.js';
+import {type NarrowToActual, type NarrowToExpected} from './narrow-type.js';
 
 describe('narrow-type', () => {
     it('extracts a subset', () => {

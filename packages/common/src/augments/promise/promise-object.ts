@@ -1,4 +1,4 @@
-import type {AnyObject} from '@augment-vir/core';
+import {type AnyObject} from '@augment-vir/core';
 import {mapObjectValues} from '../object/map-values.js';
 
 /**

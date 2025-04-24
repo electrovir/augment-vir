@@ -178,7 +178,7 @@ async function writeStatuses(statusesByCategory: StatusesByCategory) {
     });
 
     const finalString = [
-        `import type {ArrayElement} from '../array/array.js';
+        `import {type ArrayElement} from '../array/array.js';
 
 /**
  * All standardized HTTP status codes.

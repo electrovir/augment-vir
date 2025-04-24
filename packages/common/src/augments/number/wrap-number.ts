@@ -1,4 +1,4 @@
-import {ensureMinMax, MinMax} from '@augment-vir/core';
+import {ensureMinMax, type MinMax} from '@augment-vir/core';
 
 /**
  * If the given value is outside the given min/max bounds, instead of clamping the number (as the

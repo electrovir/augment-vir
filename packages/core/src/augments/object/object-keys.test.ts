@@ -1,7 +1,7 @@
 import {assert} from '@augment-vir/assert';
 import {getObjectTypedKeys} from '@augment-vir/core';
 import {describe, it} from '@augment-vir/test';
-import {ExtractKeysWithMatchingValues} from './object-keys.js';
+import {type ExtractKeysWithMatchingValues} from './object-keys.js';
 
 enum Planet {
     Mercury = 'mercury',

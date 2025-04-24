@@ -1,5 +1,5 @@
-import type {ArrayElement} from '../array/array.js';
-import type {ExtractKeysWithMatchingValues} from '../object/object-keys.js';
+import {type ArrayElement} from '../array/array.js';
+import {type ExtractKeysWithMatchingValues} from '../object/object-keys.js';
 
 /**
  * All standardized HTTP status codes.

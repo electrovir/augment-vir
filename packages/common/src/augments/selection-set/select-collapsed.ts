@@ -1,15 +1,15 @@
 import {check} from '@augment-vir/assert';
-import type {AnyObject, Values} from '@augment-vir/core';
-import {ExcludeEmpty} from '../object/empty.js';
-import {KeyCount} from '../object/key-count.js';
+import {type AnyObject, type Values} from '@augment-vir/core';
+import {type ExcludeEmpty} from '../object/empty.js';
+import {type KeyCount} from '../object/key-count.js';
 import {
-    TsRecurse,
-    TsRecursionStart,
-    TsRecursionTracker,
-    TsTooMuchRecursion,
+    type TsRecurse,
+    type TsRecursionStart,
+    type TsRecursionTracker,
+    type TsTooMuchRecursion,
 } from '../type/type-recursion.js';
 import {selectFrom, shouldPreserveInSelectionSet} from './select-from.js';
-import {GenericSelectionSet, SelectFrom, SelectionSet} from './selection-set.js';
+import {type GenericSelectionSet, type SelectFrom, type SelectionSet} from './selection-set.js';
 
 /**
  * The same as {@link selectFrom} except that the final output is collapsed until the first nested

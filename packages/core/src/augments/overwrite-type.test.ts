@@ -1,5 +1,5 @@
 import {describe, it} from '@augment-vir/test';
-import {Overwrite} from './overwrite-type.js';
+import {type Overwrite} from './overwrite-type.js';
 
 describe('Overwrite', () => {
     it('has proper types', () => {

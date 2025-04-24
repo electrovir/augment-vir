@@ -2,7 +2,7 @@ import {check} from '@augment-vir/assert';
 import {filterMap, getObjectTypedEntries} from '@augment-vir/common';
 import {existsSync, realpathSync} from 'node:fs';
 import {dirname, join, resolve, sep} from 'node:path';
-import {ParsedCommandLine} from 'typescript';
+import {type ParsedCommandLine} from 'typescript';
 import {readTsconfig} from '../typescript/read-tsconfig.js';
 import {findAncestor} from './ancestor.js';
 import {replaceWithWindowsPathIfNeeded} from './os-path.js';

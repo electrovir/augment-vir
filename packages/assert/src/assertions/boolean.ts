@@ -1,6 +1,6 @@
 import {type MaybePromise, type NarrowToExpected, stringify} from '@augment-vir/core';
 import {AssertionError} from '../augments/assertion.error.js';
-import type {GuardGroup} from '../guard-types/guard-group.js';
+import {type GuardGroup} from '../guard-types/guard-group.js';
 import {createWaitUntil, type WaitUntilOptions} from '../guard-types/wait-until-function.js';
 
 /**
@@ -12,7 +12,7 @@ import {createWaitUntil, type WaitUntilOptions} from '../guard-types/wait-until-
  * @example
  *
  * ```ts
- * import type {FalsyValue} from '@augment-vir/assert';
+ * import {type FalsyValue} from '@augment-vir/assert';
  *
  * const falsy: FalsyValue = 0;
  * ```
@@ -28,7 +28,7 @@ export type FalsyValue = undefined | null | false | 0 | '' | -0 | 0n;
  * @example
  *
  * ```ts
- * import type {Falsy} from '@augment-vir/assert';
+ * import {type Falsy} from '@augment-vir/assert';
  *
  * type MyFalsy = Falsy<string | number>; // "" | 0
  * ```
@@ -46,7 +46,7 @@ export type Falsy<T> = NarrowToExpected<T, FalsyValue>;
  * @example
  *
  * ```ts
- * import type {Truthy} from '@augment-vir/assert';
+ * import {type Truthy} from '@augment-vir/assert';
  *
  * type MyTruthy = Truthy<0 | undefined | string>; // string
  * ```

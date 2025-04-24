@@ -1,4 +1,4 @@
-import {AnyDuration, convertDuration} from '@date-vir/duration';
+import {type AnyDuration, convertDuration} from '@date-vir/duration';
 import {DeferredPromise} from './deferred-promise.js';
 
 /**

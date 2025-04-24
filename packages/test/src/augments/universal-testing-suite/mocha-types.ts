@@ -4,7 +4,7 @@
  * misleadingly named. Those have been omitted.)
  */
 
-import type {AnyFunction} from '@augment-vir/common';
+import {type AnyFunction} from '@augment-vir/common';
 
 /**
  * Any Mocha context node inside {@link MochaTestContext}.

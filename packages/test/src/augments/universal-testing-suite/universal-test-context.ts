@@ -1,7 +1,7 @@
 import {RuntimeEnv} from '@augment-vir/core';
 import {type TestContext as NodeTestContextImport} from 'node:test';
 import {type OmitIndexSignature, type Simplify} from 'type-fest';
-import {MochaNode, MochaTestContext} from './mocha-types.js';
+import {type MochaNode, type MochaTestContext} from './mocha-types.js';
 
 export {RuntimeEnv} from '@augment-vir/core';
 

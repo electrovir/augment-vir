@@ -1,8 +1,8 @@
 import {isRuntimeEnv, RuntimeEnv, type PartialWithUndefined} from '@augment-vir/core';
 import {addPrefix} from '../string/prefix.js';
 import {LogOutputType} from './log-colors.js';
-import {LoggerOptions} from './log-string.js';
-import {LogWriters} from './log-writer.js';
+import {type LoggerOptions} from './log-string.js';
+import {type LogWriters} from './log-writer.js';
 import {createLogger, type Logger} from './logger.js';
 
 /**

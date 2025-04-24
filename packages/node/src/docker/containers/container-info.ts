@@ -1,6 +1,6 @@
-import type {JsonCompatibleArray, JsonCompatibleObject} from '@augment-vir/common';
+import {type JsonCompatibleArray, type JsonCompatibleObject} from '@augment-vir/common';
 import {runShellCommand} from '../../augments/terminal/shell.js';
-import type {DockerContainerStatus} from './container-status.js';
+import {type DockerContainerStatus} from './container-status.js';
 
 /**
  * Properties on {@link DockerContainerInfo}.State, retrieved from `docker.container.getInfo()`.

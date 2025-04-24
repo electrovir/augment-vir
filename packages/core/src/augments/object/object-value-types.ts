@@ -1,4 +1,4 @@
-import type {CompleteRequire} from './required-keys.js';
+import {type CompleteRequire} from './required-keys.js';
 
 /**
  * Gets the value types of an object with all parts of that object required.

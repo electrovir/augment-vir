@@ -5,7 +5,7 @@ import {it} from './universal-it.js';
 import {
     assertTestContext,
     extractTestName,
-    NodeTestContext,
+    type NodeTestContext,
     type UniversalTestContext,
 } from './universal-test-context.js';
 

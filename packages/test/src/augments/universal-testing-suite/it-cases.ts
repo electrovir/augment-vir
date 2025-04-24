@@ -1,11 +1,16 @@
-import {assert, check, ErrorMatchOptions, type CustomOutputAsserter} from '@augment-vir/assert';
+import {
+    assert,
+    check,
+    type CustomOutputAsserter,
+    type ErrorMatchOptions,
+} from '@augment-vir/assert';
 import {
     ensureErrorAndPrependMessage,
     type AnyFunction,
     type MaybePromise,
     type TypedFunction,
 } from '@augment-vir/core';
-import {RequireExactlyOne} from 'type-fest';
+import {type RequireExactlyOne} from 'type-fest';
 import {it} from './universal-it.js';
 
 /**

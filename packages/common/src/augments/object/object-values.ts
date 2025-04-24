@@ -1,4 +1,4 @@
-import {CompleteRequire, getObjectTypedKeys} from '@augment-vir/core';
+import {type CompleteRequire, getObjectTypedKeys} from '@augment-vir/core';
 
 /**
  * Gets an object's values. This is the same as

@@ -1,5 +1,5 @@
 import {assert} from '@augment-vir/assert';
-import type {Coords} from '@augment-vir/common';
+import {type Coords} from '@augment-vir/common';
 
 /**
  * Checks if the current element is completely visible in its scroll view.

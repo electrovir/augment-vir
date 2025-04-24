@@ -4,7 +4,11 @@ import {
     type CompareCommandResult,
     type SnapshotPayload,
 } from '@virmator/test/dist/web-snapshot-plugin/snapshot-payload.js';
-import {extractTestName, isTestContext, UniversalTestContext} from './universal-test-context.js';
+import {
+    extractTestName,
+    isTestContext,
+    type UniversalTestContext,
+} from './universal-test-context.js';
 
 /**
  * An error that is thrown from {@link assertSnapshot} when the snapshot comparison fails due to the

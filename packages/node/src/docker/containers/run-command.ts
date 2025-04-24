@@ -1,6 +1,6 @@
 import {check} from '@augment-vir/assert';
 import {runShellCommand} from '../../augments/terminal/shell.js';
-import {DockerEnvMap, makeEnvFlags} from './docker-command-inputs.js';
+import {type DockerEnvMap, makeEnvFlags} from './docker-command-inputs.js';
 
 /**
  * Parameters for `docker.container.runCommand`.

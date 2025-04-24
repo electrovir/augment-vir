@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-empty-object-type */
 
 import {assert} from '@augment-vir/assert';
-import {PartialWithUndefined, type AnyObject} from '@augment-vir/core';
+import {type AnyObject, type PartialWithUndefined} from '@augment-vir/core';
 import {describe, it} from '@augment-vir/test';
-import {GenericSelectionSet, SelectFrom, SelectionSet} from './selection-set.js';
+import {type GenericSelectionSet, type SelectFrom, type SelectionSet} from './selection-set.js';
 
 describe('PickSelection', () => {
     it('narrows to the selection set', () => {

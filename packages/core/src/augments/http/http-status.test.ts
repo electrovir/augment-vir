@@ -1,12 +1,12 @@
 import {assert} from '@augment-vir/assert';
 import {describe, it, itCases} from '@augment-vir/test';
-import {ArrayElement} from '../array/array.js';
+import {type ArrayElement} from '../array/array.js';
 import {
-    ErrorHttpStatusCategories,
+    type ErrorHttpStatusCategories,
     HttpStatus,
-    httpStatusByCategory,
+    type httpStatusByCategory,
     isErrorHttpStatus,
-    SuccessHttpStatusCategories,
+    type SuccessHttpStatusCategories,
 } from './http-status.js';
 
 describe(isErrorHttpStatus.name, () => {

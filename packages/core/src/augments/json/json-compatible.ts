@@ -1,4 +1,4 @@
-import {Jsonify, Primitive} from 'type-fest';
+import {type Jsonify, type Primitive} from 'type-fest';
 
 /**
  * These are similar in purpose, name, and structure to type-fest's JsonValue types but these are

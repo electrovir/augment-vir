@@ -1,4 +1,4 @@
-import {AnyObject, type AnyFunction} from '@augment-vir/core';
+import {type AnyFunction, type AnyObject} from '@augment-vir/core';
 
 /**
  * A base type for Prisma model payloads because Prisma doesn't give us one. This currently only

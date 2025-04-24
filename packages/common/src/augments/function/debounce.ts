@@ -1,5 +1,5 @@
 import {type MaybePromise} from '@augment-vir/core';
-import {AnyDuration, convertDuration} from '@date-vir/duration';
+import {type AnyDuration, convertDuration} from '@date-vir/duration';
 
 /**
  * Different types of debouncing for the {@link Debounce} class.

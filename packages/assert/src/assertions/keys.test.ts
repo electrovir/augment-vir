@@ -1,4 +1,4 @@
-import type {AnyFunction, UnknownObject} from '@augment-vir/core';
+import {type AnyFunction, type UnknownObject} from '@augment-vir/core';
 import {describe, it, itCases} from '@augment-vir/test';
 import {assertWrap} from '../augments/guards/assert-wrap.js';
 import {assert} from '../augments/guards/assert.js';

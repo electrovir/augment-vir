@@ -1,4 +1,4 @@
-import type {AnyObject, PartialWithNullable} from '@augment-vir/core';
+import {type AnyObject, type PartialWithNullable} from '@augment-vir/core';
 import {getObjectTypedEntries} from './object-entries.js';
 
 /**

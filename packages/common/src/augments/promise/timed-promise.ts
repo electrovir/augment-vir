@@ -1,6 +1,6 @@
 import {check} from '@augment-vir/assert';
 import {ensureError, type MaybePromise} from '@augment-vir/core';
-import {AnyDuration, convertDuration} from '@date-vir/duration';
+import {type AnyDuration, convertDuration} from '@date-vir/duration';
 
 /**
  * An error thrown by {@link wrapPromiseInTimeout} when the timeout is reached.

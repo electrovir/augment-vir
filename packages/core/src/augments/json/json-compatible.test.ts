@@ -1,12 +1,12 @@
 import {assert} from '@augment-vir/assert';
-import type {AnyObject} from '@augment-vir/core';
+import {type AnyObject} from '@augment-vir/core';
 import {describe, it} from '@augment-vir/test';
-import type {EmptyObject} from 'type-fest';
+import {type EmptyObject} from 'type-fest';
 import {
-    JsonCompatibleArray,
-    JsonCompatibleObject,
-    JsonCompatiblePrimitive,
-    JsonCompatibleValue,
+    type JsonCompatibleArray,
+    type JsonCompatibleObject,
+    type JsonCompatiblePrimitive,
+    type JsonCompatibleValue,
 } from './json-compatible.js';
 
 describe('JsonCompatibleValue', () => {

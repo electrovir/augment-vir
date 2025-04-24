@@ -1,4 +1,4 @@
-import {Jsonify, Writable} from 'type-fest';
+import {type Jsonify, type Writable} from 'type-fest';
 
 /**
  * Deeply copy an object through JSON. This is the fastest deep copy, but the input must already be

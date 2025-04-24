@@ -1,5 +1,5 @@
 import {check} from '@augment-vir/assert';
-import type {EnumBaseType} from '@augment-vir/core';
+import {type EnumBaseType} from '@augment-vir/core';
 
 /**
  * Filters the input array to all valid values from the given enum.

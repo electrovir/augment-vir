@@ -1,5 +1,5 @@
-import {AnyFunction, ArrayElement} from '@augment-vir/core';
-import {UnionToIntersection} from 'type-fest';
+import {type AnyFunction, type ArrayElement} from '@augment-vir/core';
+import {type UnionToIntersection} from 'type-fest';
 import {guardOverrides} from '../../assertions/extendable-assertions.js';
 
 const checkMethods: UnionToIntersection<ArrayElement<typeof guardOverrides>['check']> =

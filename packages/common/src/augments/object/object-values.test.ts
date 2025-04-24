@@ -1,5 +1,5 @@
 import {assert} from '@augment-vir/assert';
-import type {ValueAtRequiredKey} from '@augment-vir/core';
+import {type ValueAtRequiredKey} from '@augment-vir/core';
 import {describe, it, itCases} from '@augment-vir/test';
 import {getObjectTypedValues} from './object-values.js';
 

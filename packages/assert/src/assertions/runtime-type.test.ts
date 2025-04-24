@@ -1,10 +1,10 @@
-import type {
-    AnyFunction,
-    AnyObject,
-    JsonCompatibleArray,
-    JsonCompatibleObject,
-    JsonCompatibleValue,
-    UnknownObject,
+import {
+    type AnyFunction,
+    type AnyObject,
+    type JsonCompatibleArray,
+    type JsonCompatibleObject,
+    type JsonCompatibleValue,
+    type UnknownObject,
 } from '@augment-vir/core';
 import {describe, it} from '@augment-vir/test';
 import {assertWrap} from '../augments/guards/assert-wrap.js';

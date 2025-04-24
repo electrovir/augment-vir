@@ -1,9 +1,9 @@
 /* node:coverage disable */
 /** C8 fails in type-only files. */
 
-import {AnyFunction, MaybePromise} from '@augment-vir/core';
-import type {AssertFunction} from './assert-function.js';
-import type {WaitUntilOverridesBase} from './wait-until-function.js';
+import {type AnyFunction, type MaybePromise} from '@augment-vir/core';
+import {type AssertFunction} from './assert-function.js';
+import {type WaitUntilOverridesBase} from './wait-until-function.js';
 
 export type AssertWrapOverridesBase<Keys extends PropertyKey = string> = Partial<
     Readonly<Record<Keys, AnyFunction | undefined>>

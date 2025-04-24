@@ -7,15 +7,15 @@ import {
     type AnyObject,
 } from '@augment-vir/common';
 import {describe, it, itCases} from '@augment-vir/test';
-import type {IsAny} from 'type-fest';
+import {type IsAny} from 'type-fest';
 import {prisma} from '../augments/prisma.js';
 import {testPrismaSchemaPath} from '../file-paths.mock.js';
-import {addData, dumpData, getAllPrismaModelNames, PrismaAddDataData} from './model-data.js';
+import {addData, dumpData, getAllPrismaModelNames, type PrismaAddDataData} from './model-data.js';
 import {clearTestDatabaseOutputs} from './prisma-database.mock.js';
 
 // @ts-ignore: this might not be generated yet
 // eslint-disable-next-line sonarjs/no-internal-api-use
-import type {PrismaClient} from '../../node_modules/.prisma/index.js';
+import {type PrismaClient} from '../../node_modules/.prisma/index.js';
 
 describe(
     [

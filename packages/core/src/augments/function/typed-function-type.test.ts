@@ -1,6 +1,6 @@
 import {assert} from '@augment-vir/assert';
 import {describe, it} from '@augment-vir/test';
-import {TypedFunction} from './typed-function-type.js';
+import {type TypedFunction} from './typed-function-type.js';
 
 describe('TypedFunction', () => {
     it('properly assigns a single argument and a return type', () => {

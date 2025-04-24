@@ -1,5 +1,5 @@
-import {DeclarativeElement, DeclarativeElementDefinition} from 'element-vir';
-import {SpecTagName, ensureSpecTagName} from 'html-spec-tags';
+import {DeclarativeElement, type DeclarativeElementDefinition} from 'element-vir';
+import {type SpecTagName, ensureSpecTagName} from 'html-spec-tags';
 
 /**
  * Reduce an element down to its tag name or its element definition if it's a custom element defined

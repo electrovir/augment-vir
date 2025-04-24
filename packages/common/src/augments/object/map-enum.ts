@@ -1,4 +1,4 @@
-import type {EnumBaseType, MaybePromise, Values} from '@augment-vir/core';
+import {type EnumBaseType, type MaybePromise, type Values} from '@augment-vir/core';
 import {mapObject} from './map-entries.js';
 
 /**

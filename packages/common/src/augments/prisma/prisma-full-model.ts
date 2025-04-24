@@ -1,5 +1,5 @@
 import {type BasePrismaClient, type BasePrismaPayload} from './base-prisma-types.js';
-import type {PrismaModelName} from './prisma-model-name.js';
+import {type PrismaModelName} from './prisma-model-name.js';
 
 /**
  * A full model entry with all relations from the given Prisma type map and model name.
@@ -9,8 +9,8 @@ import type {PrismaModelName} from './prisma-model-name.js';
  * @example
  *
  * ```ts
- * import type {Prisma} from '@prisma/client';
- * import type {FullPrismaModel} from '@augment-vir/common';
+ * import {type Prisma} from '@prisma/client';
+ * import {type FullPrismaModel} from '@augment-vir/common';
  *
  * function doThing(fullModel: FullModel<Prisma.TypeMap, 'User'>) {}
  * ```

@@ -6,12 +6,10 @@ import {checkWrap} from '../augments/guards/check-wrap.js';
 import {check} from '../augments/guards/check.js';
 import {waitUntil} from '../augments/guards/wait-until.js';
 import {waitUntilTestOptions} from '../test-timeout.mock.js';
-import type {
-    OutputAssertWithoutAsserter,
-    OutputAssertWrapWithoutAsserter,
-    OutputCheckWithoutAsserter,
-} from './output.js';
 import {
+    type OutputAssertWithoutAsserter,
+    type OutputAssertWrapWithoutAsserter,
+    type OutputCheckWithoutAsserter,
     type OutputCheckWrapWithoutAsserter,
     type OutputWaitUntilWithoutAsserter,
 } from './output.js';

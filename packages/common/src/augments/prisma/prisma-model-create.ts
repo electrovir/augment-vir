@@ -1,5 +1,5 @@
-import type {BasePrismaClient} from './base-prisma-types.js';
-import type {PrismaModelName} from './prisma-model-name.js';
+import {type BasePrismaClient} from './base-prisma-types.js';
+import {type PrismaModelName} from './prisma-model-name.js';
 
 /**
  * Use this to define mock entries that _shouldn't_ be saved to the database so that we can easily
@@ -10,7 +10,7 @@ import type {PrismaModelName} from './prisma-model-name.js';
  * @example
  *
  * ```ts
- * import type {PrismaClient} from '@prisma/client';
+ * import {type PrismaClient} from '@prisma/client';
  * import {prismaModelCreateExclude, PrismaKeyedModelCreate} from '@augment-vir/common';
  *
  * export const mockUsers = {
@@ -40,7 +40,7 @@ export const prismaModelCreateExclude = Symbol('prisma-model-create-exclude');
  * @example
  *
  * ```ts
- * import type {PrismaClient} from '@prisma/client';
+ * import {type PrismaClient} from '@prisma/client';
  * import {prismaModelCreateOmitId, PrismaKeyedModelCreate} from '@augment-vir/common';
  *
  * export const mockUsers = {
@@ -69,8 +69,8 @@ export const prismaModelCreateOmitId = Symbol('prisma-model-create-exclude-id');
  * @example
  *
  * ```ts
- * import type {PrismaClient} from '@prisma/client';
- * import type {PrismaModelCreate} from '@augment-vir/common';
+ * import {type PrismaClient} from '@prisma/client';
+ * import {type PrismaModelCreate} from '@augment-vir/common';
  *
  * function doThing(entry: PrismaModelCreate<PrismaClient, 'User'>) {}
  * ```
@@ -98,7 +98,7 @@ export type PrismaModelCreate<
  *
  * ```ts
  * import {PrismaKeyedModelCreate} from '@augment-vir/common';
- * import type {PrismaClient} from '@prisma/client';
+ * import {type PrismaClient} from '@prisma/client';
  *
  * const mockUsers = {
  *     mockUser1: {
@@ -135,7 +135,7 @@ export type PrismaKeyedModelCreate<
  *
  * ```ts
  * import {PrismaKeyedModelCreate} from '@augment-vir/common';
- * import type {PrismaClient} from '@prisma/client';
+ * import {type PrismaClient} from '@prisma/client';
  *
  * const mockData: ModelCreateData<PrismaClient> = {
  *     user: {

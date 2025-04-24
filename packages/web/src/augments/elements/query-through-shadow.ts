@@ -1,5 +1,5 @@
 import {check} from '@augment-vir/assert';
-import type {PartialWithUndefined} from '@augment-vir/common';
+import {type PartialWithUndefined} from '@augment-vir/common';
 import {stringify} from '@augment-vir/core';
 
 /**

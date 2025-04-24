@@ -1,4 +1,4 @@
-import type {AnyFunction} from '@augment-vir/core';
+import {type AnyFunction} from '@augment-vir/core';
 import {describe, it} from '@augment-vir/test';
 import {assertWrap} from '../augments/guards/assert-wrap.js';
 import {assert} from '../augments/guards/assert.js';

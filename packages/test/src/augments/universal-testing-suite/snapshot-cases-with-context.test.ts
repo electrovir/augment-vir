@@ -1,7 +1,7 @@
 import {snapshotCasesWithContext} from './snapshot-cases-with-context.js';
 import {describe} from './universal-describe.js';
 import {it} from './universal-it.js';
-import type {UniversalTestContext} from './universal-test-context.js';
+import {type UniversalTestContext} from './universal-test-context.js';
 
 describe(snapshotCasesWithContext.name, () => {
     it('has proper types', () => {

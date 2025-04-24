@@ -1,5 +1,5 @@
 import {check} from '@augment-vir/assert';
-import {ensureError, MaybePromise, type AnyObject} from '@augment-vir/core';
+import {ensureError, type AnyObject, type MaybePromise} from '@augment-vir/core';
 
 export function getOrSetFromMap<MapKey extends object, MapValue>(
     map: WeakMap<MapKey, MapValue>,

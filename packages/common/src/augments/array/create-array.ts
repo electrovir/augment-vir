@@ -1,5 +1,5 @@
 import {check} from '@augment-vir/assert';
-import type {Tuple} from '@augment-vir/core';
+import {type Tuple} from '@augment-vir/core';
 
 /**
  * Creates an array of size `size` and calls the given `callback` for each entry in the array and

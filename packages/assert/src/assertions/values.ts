@@ -1,8 +1,14 @@
-import type {NarrowToActual, NarrowToExpected} from '@augment-vir/core';
-import {type AnyObject, type MaybePromise, stringify, type Values} from '@augment-vir/core';
-import type {EmptyObject} from 'type-fest';
+import {
+    type AnyObject,
+    type MaybePromise,
+    type NarrowToActual,
+    type NarrowToExpected,
+    stringify,
+    type Values,
+} from '@augment-vir/core';
+import {type EmptyObject} from 'type-fest';
 import {AssertionError} from '../augments/assertion.error.js';
-import type {GuardGroup} from '../guard-types/guard-group.js';
+import {type GuardGroup} from '../guard-types/guard-group.js';
 import {createWaitUntil, type WaitUntilOptions} from '../guard-types/wait-until-function.js';
 
 function hasValue(this: void, parent: object | string, value: unknown): boolean {

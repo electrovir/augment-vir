@@ -1,6 +1,6 @@
 import {mergeDefinedProperties} from '../../object/merge-defined-properties.js';
 import {maybeCapitalize} from './capitalization.js';
-import {CasingOptions, defaultCasingOptions, isCase, StringCase} from './casing.js';
+import {type CasingOptions, defaultCasingOptions, isCase, StringCase} from './casing.js';
 
 /**
  * Converts a kebab-case string to CamelCase.

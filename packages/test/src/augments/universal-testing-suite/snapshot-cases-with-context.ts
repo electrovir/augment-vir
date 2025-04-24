@@ -1,6 +1,9 @@
 import {wrapInTry} from '@augment-vir/common';
 import {ensureError, extractErrorMessage} from '@augment-vir/core';
-import {BaseFunctionWithContext, FunctionWithContextTestCase} from './it-cases-with-context.js';
+import {
+    type BaseFunctionWithContext,
+    type FunctionWithContextTestCase,
+} from './it-cases-with-context.js';
 import {it} from './universal-it.js';
 import {assertSnapshot} from './universal-snapshot.js';
 

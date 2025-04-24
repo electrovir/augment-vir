@@ -1,5 +1,5 @@
 import {describe, it} from '@augment-vir/test';
-import {Dimensions} from './dimensions.js';
+import {type Dimensions} from './dimensions.js';
 
 describe('Dimensions', () => {
     it('is assignable to from expected object shape', () => {

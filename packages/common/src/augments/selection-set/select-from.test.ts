@@ -1,7 +1,7 @@
 import {assert} from '@augment-vir/assert';
 import {describe, it, itCases} from '@augment-vir/test';
 import {selectFrom} from './select-from.js';
-import {SelectFrom} from './selection-set.js';
+import {type SelectFrom} from './selection-set.js';
 
 describe(selectFrom.name, () => {
     it('preserves nested optional properties', () => {

@@ -1,6 +1,10 @@
 import {assert} from '@augment-vir/assert';
 import {describe, it} from '@augment-vir/test';
-import {CompleteRequire, RequiredAndNotNull, SetRequiredAndNotNull} from './required-keys.js';
+import {
+    type CompleteRequire,
+    type RequiredAndNotNull,
+    type SetRequiredAndNotNull,
+} from './required-keys.js';
 
 describe('CompleteRequire', () => {
     it('requires an indexed key', () => {

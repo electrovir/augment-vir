@@ -1,4 +1,4 @@
-import {BasePrismaClient} from './base-prisma-types.js';
+import {type BasePrismaClient} from './base-prisma-types.js';
 
 /**
  * Extracts all model names from a generated `PrismaClient`.
@@ -8,8 +8,8 @@ import {BasePrismaClient} from './base-prisma-types.js';
  * @example
  *
  * ```ts
- * import type {PrismaClient} from '@prisma/client';
- * import type {PrismaModelName} from '@augment-vir/common';
+ * import {type PrismaClient} from '@prisma/client';
+ * import {type PrismaModelName} from '@augment-vir/common';
  *
  * function doThing(modelName: PrismaModelName<PrismaClient>) {}
  * ```

@@ -1,4 +1,4 @@
-import {IsEmptyObject} from 'type-fest';
+import {type IsEmptyObject} from 'type-fest';
 
 /**
  * Excludes empty objects from a union.

@@ -1,4 +1,4 @@
-import type {ArrayElement} from '../array/array.js';
+import {type ArrayElement} from '../array/array.js';
 
 /**
  * All characters that are considered punctuation.

@@ -1,5 +1,5 @@
 import {describe, itCases} from '@augment-vir/test';
-import type {AnyObject} from './generic-object-type.js';
+import {type AnyObject} from './generic-object-type.js';
 import {stringify} from './stringify.js';
 
 describe(stringify.name, () => {

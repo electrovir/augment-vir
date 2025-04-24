@@ -1,9 +1,9 @@
 import {assert} from '@augment-vir/assert';
 import {
-    BaseTestCase,
-    FunctionTestCase,
-    FunctionTestCaseMultipleInputs,
-    FunctionTestCaseSingleInput,
+    type BaseTestCase,
+    type FunctionTestCase,
+    type FunctionTestCaseMultipleInputs,
+    type FunctionTestCaseSingleInput,
     itCases,
 } from './it-cases.js';
 import {describe} from './universal-describe.js';

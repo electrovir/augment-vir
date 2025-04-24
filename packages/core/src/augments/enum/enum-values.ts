@@ -1,5 +1,5 @@
 import {getObjectTypedKeys} from '../object/object-keys.js';
-import type {EnumBaseType} from './enum-type.js';
+import {type EnumBaseType} from './enum-type.js';
 
 /** Don't export this because it's useless except for being used in {@link getEnumValues}. */
 function getEnumKeys<T extends EnumBaseType>(input: T): (keyof T)[] {

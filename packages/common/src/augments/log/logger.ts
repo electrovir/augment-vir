@@ -1,8 +1,8 @@
-import type {PartialWithUndefined} from '@augment-vir/core';
+import {type PartialWithUndefined} from '@augment-vir/core';
 import {mapEnumToObject} from '../object/map-enum.js';
 import {mergeDefinedProperties} from '../object/merge-defined-properties.js';
 import {defaultLogColorConfig, LogColorKey, LogOutputType} from './log-colors.js';
-import {toLogString, ToLogStringParams, type LoggerOptions} from './log-string.js';
+import {toLogString, type LoggerOptions, type ToLogStringParams} from './log-string.js';
 import {type LogWriters} from './log-writer.js';
 
 /**

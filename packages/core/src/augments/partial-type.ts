@@ -1,4 +1,4 @@
-import {AnyObject} from './object/generic-object-type.js';
+import {type AnyObject} from './object/generic-object-type.js';
 
 /**
  * Allow `T` to be partial or have `null` or `undefined` as the value for any of its keys.

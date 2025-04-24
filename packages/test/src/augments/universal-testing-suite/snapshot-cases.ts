@@ -1,5 +1,5 @@
 import {wrapInTry} from '@augment-vir/common';
-import {AnyFunction, ensureError, extractErrorMessage} from '@augment-vir/core';
+import {type AnyFunction, ensureError, extractErrorMessage} from '@augment-vir/core';
 import {type FunctionTestCase} from './it-cases.js';
 import {it} from './universal-it.js';
 import {assertSnapshot} from './universal-snapshot.js';

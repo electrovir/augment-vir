@@ -161,11 +161,11 @@ type TsRecursionArray = [
  * @example
  *
  * ```ts
- * import type {
- *     TsRecursionTracker,
- *     TsRecursionStart,
- *     TsRecurse,
- *     TsTooMuchRecursion,
+ * import {
+ *     type TsRecursionTracker,
+ *     type TsRecursionStart,
+ *     type TsRecurse,
+ *     type TsTooMuchRecursion,
  * } from '@augment-vir/common';
  *
  * export type SomeType<Depth extends TsRecursionTracker = TsRecursionStart> =
@@ -187,11 +187,11 @@ export type TsRecursionTracker = keyof TsRecursionArray;
  * @example
  *
  * ```ts
- * import type {
- *     TsRecursionTracker,
- *     TsRecursionStart,
- *     TsRecurse,
- *     TsTooMuchRecursion,
+ * import {
+ *     type TsRecursionTracker,
+ *     type TsRecursionStart,
+ *     type TsRecurse,
+ *     type TsTooMuchRecursion,
  * } from '@augment-vir/common';
  *
  * export type SomeType<Depth extends TsRecursionTracker = TsRecursionStart> =
@@ -212,11 +212,11 @@ export type TsTooMuchRecursion = 91;
  * @example
  *
  * ```ts
- * import type {
- *     TsRecursionTracker,
- *     TsRecursionStart,
- *     TsRecurse,
- *     TsTooMuchRecursion,
+ * import {
+ *     type TsRecursionTracker,
+ *     type TsRecursionStart,
+ *     type TsRecurse,
+ *     type TsTooMuchRecursion,
  * } from '@augment-vir/common';
  *
  * export type SomeType<Depth extends TsRecursionTracker = TsRecursionStart> =
@@ -237,11 +237,11 @@ export type TsRecursionStart = 0;
  * @example
  *
  * ```ts
- * import type {
- *     TsRecursionTracker,
- *     TsRecursionStart,
- *     TsRecurse,
- *     TsTooMuchRecursion,
+ * import {
+ *     type TsRecursionTracker,
+ *     type TsRecursionStart,
+ *     type TsRecurse,
+ *     type TsTooMuchRecursion,
  * } from '@augment-vir/common';
  *
  * export type SomeType<Depth extends TsRecursionTracker = TsRecursionStart> =

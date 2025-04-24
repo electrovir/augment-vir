@@ -1,6 +1,6 @@
 import {assert} from '@augment-vir/assert';
 import {describe, it} from '@augment-vir/test';
-import {RequireNonVoid} from './void-type.js';
+import {type RequireNonVoid} from './void-type.js';
 
 describe('RequireNonVoid', () => {
     it('blocks void values', () => {

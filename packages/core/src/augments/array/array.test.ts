@@ -1,6 +1,6 @@
 import {assert} from '@augment-vir/assert';
 import {describe, it} from '@augment-vir/test';
-import {ArrayElement, MaybeArray, MaybeReadonlyArray} from './array.js';
+import {type ArrayElement, type MaybeArray, type MaybeReadonlyArray} from './array.js';
 
 describe('ArrayElement', () => {
     it('extracts array elements', () => {

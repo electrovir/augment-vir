@@ -13,7 +13,7 @@ describe(queryNpmWorkspace.name, () => {
         const stringifiedData = JSON.stringify(data, null, 4);
 
         const tmpTsFileContent = [
-            "import type {NpmWorkspace} from '@augment-vir/node';",
+            "import {type NpmWorkspace} from '@augment-vir/node';",
             `export const testQueryData: NpmWorkspace[] = ${stringifiedData};`,
         ].join('\n\n');
 

@@ -1,5 +1,5 @@
 import {describe, itCases, testWeb} from '@augment-vir/test';
-import {HTMLTemplateResult, defineElementNoInputs, html} from 'element-vir';
+import {type HTMLTemplateResult, defineElementNoInputs, html} from 'element-vir';
 import {getDirectChildren, getNestedChildren} from './element-children.js';
 import {toTagOrDefinition} from './tag-or-definition.js';
 

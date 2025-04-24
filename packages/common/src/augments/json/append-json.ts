@@ -1,10 +1,10 @@
 import {check} from '@augment-vir/assert';
-import type {
-    JsonCompatibleArray,
-    JsonCompatibleObject,
-    JsonCompatibleValue,
+import {
+    type JsonCompatibleArray,
+    type JsonCompatibleObject,
+    type JsonCompatiblePrimitive,
+    type JsonCompatibleValue,
 } from '@augment-vir/core';
-import {JsonCompatiblePrimitive} from '@augment-vir/core';
 import {copyThroughJson} from './copy-through-json.js';
 
 export function appendJson(

@@ -1,4 +1,4 @@
-import {JsonCompatibleObject} from '@augment-vir/core';
+import {type JsonCompatibleObject} from '@augment-vir/core';
 import {describe, itCases} from '@augment-vir/test';
 import {jsonify} from './jsonify.js';
 

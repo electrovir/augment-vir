@@ -1,5 +1,5 @@
 import {ensureError} from '@augment-vir/core';
-import {Duration, DurationUnit} from '@date-vir/duration';
+import {type Duration, type DurationUnit} from '@date-vir/duration';
 
 /**
  * Measures how long (in milliseconds) the given callback takes to run to completion. By default

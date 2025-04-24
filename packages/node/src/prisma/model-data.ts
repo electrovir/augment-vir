@@ -1,23 +1,23 @@
 import {assert, check} from '@augment-vir/assert';
 import {
-    AnyObject,
+    type AnyObject,
     arrayToObject,
     awaitedForEach,
-    BasePrismaClient,
+    type BasePrismaClient,
     ensureErrorAndPrependMessage,
     filterMap,
     getObjectTypedEntries,
     getObjectTypedValues,
     mergeDefinedProperties,
     omitObjectKeys,
-    PrismaAllModelsCreate,
-    prismaModelCreateExclude,
-    prismaModelCreateOmitId,
     type PartialWithUndefined,
     type PrismaAllBasicModels,
+    type PrismaAllModelsCreate,
+    prismaModelCreateExclude,
+    prismaModelCreateOmitId,
     type PrismaModelName,
 } from '@augment-vir/common';
-import type {IsAny} from 'type-fest';
+import {type IsAny} from 'type-fest';
 
 /**
  * Params for `prisma.client.addData()`. This is similar to {@link PrismaAllModelsCreate} but allows
@@ -29,7 +29,7 @@ import type {IsAny} from 'type-fest';
  *
  * ```ts
  * import {PrismaAddModelData} from '@augment-vir/common';
- * import type {PrismaClient} from '@prisma/client';
+ * import {type PrismaClient} from '@prisma/client';
  *
  * const mockData: PrismaAddModelData<PrismaClient> = [
  *     {

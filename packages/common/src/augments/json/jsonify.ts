@@ -1,7 +1,7 @@
 import JSON5 from 'json5';
-import {Jsonify} from 'type-fest';
+import {type Jsonify} from 'type-fest';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import type {copyThroughJson} from './copy-through-json.js';
+import {copyThroughJson} from './copy-through-json.js';
 
 /**
  * Creates a JSON compatible version of the value given. Under the hood this is actually the same as

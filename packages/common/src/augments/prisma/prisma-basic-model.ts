@@ -1,5 +1,5 @@
-import type {BasePrismaClient} from './base-prisma-types.js';
-import type {PrismaModelName} from './prisma-model-name.js';
+import {type BasePrismaClient} from './base-prisma-types.js';
+import {type PrismaModelName} from './prisma-model-name.js';
 
 /**
  * A basic model entry with only its immediate properties.
@@ -9,8 +9,8 @@ import type {PrismaModelName} from './prisma-model-name.js';
  * @example
  *
  * ```ts
- * import type {PrismaClient} from '@prisma/client';
- * import type {PrismaBasicModel} from '@augment-vir/common';
+ * import {type PrismaClient} from '@prisma/client';
+ * import {type PrismaBasicModel} from '@augment-vir/common';
  *
  * function doThing(fullModel: PrismaBasicModel<PrismaClient, 'user'>) {}
  * ```

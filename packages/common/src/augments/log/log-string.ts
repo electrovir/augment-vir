@@ -9,7 +9,7 @@ import {
 import {filterMap} from '../array/filter.js';
 import {removeSuffix} from '../string/suffix.js';
 import {LogColorKey, type LogColorConfig} from './log-colors.js';
-import {LogWriterParams} from './log-writer.js';
+import {type LogWriterParams} from './log-writer.js';
 
 /**
  * Options for a custom Logger.

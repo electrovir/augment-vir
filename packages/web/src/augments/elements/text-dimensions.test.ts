@@ -1,7 +1,7 @@
 import {assert} from '@augment-vir/assert';
-import {Dimensions, awaitedBlockingMap, mapObjectValues} from '@augment-vir/common';
+import {type Dimensions, awaitedBlockingMap, mapObjectValues} from '@augment-vir/common';
 import {describe, it, testWeb} from '@augment-vir/test';
-import {CSSResult, css, html} from 'element-vir';
+import {type CSSResult, css, html} from 'element-vir';
 import {calculateTextDimensions} from './text-dimensions.js';
 
 describe(calculateTextDimensions.name, () => {

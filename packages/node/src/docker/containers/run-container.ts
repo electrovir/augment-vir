@@ -3,9 +3,9 @@ import {runShellCommand} from '../../augments/terminal/shell.js';
 import {updateImage} from '../docker-image.js';
 import {waitUntilContainerRunning} from './container-status.js';
 import {
-    DockerEnvMap,
-    DockerPortMap,
-    DockerVolumeMap,
+    type DockerEnvMap,
+    type DockerPortMap,
+    type DockerVolumeMap,
     makeEnvFlags,
     makePortMapFlags,
     makeVolumeFlags,

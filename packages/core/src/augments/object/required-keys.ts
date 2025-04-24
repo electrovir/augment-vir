@@ -1,4 +1,4 @@
-import {Except, Simplify} from 'type-fest';
+import {type Except, type Simplify} from 'type-fest';
 
 export type {SetRequired} from 'type-fest';
 

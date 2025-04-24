@@ -13,7 +13,7 @@ import {
 } from '../prisma/prisma-migrations.js';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import type {PrismaMigrationNeededError, PrismaResetNeededError} from '../prisma/prisma-errors.js';
+import {PrismaMigrationNeededError, PrismaResetNeededError} from '../prisma/prisma-errors.js';
 
 export type {
     PrismaAddDataData as PrismaAddModelData,

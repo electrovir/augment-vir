@@ -1,6 +1,6 @@
 import {assert} from '@augment-vir/assert';
 import {createArrayLogger} from '@augment-vir/common';
-import {PartialWithUndefined} from '@augment-vir/core';
+import {type PartialWithUndefined} from '@augment-vir/core';
 import {describe, it, itCases} from '@augment-vir/test';
 import {join} from 'node:path';
 import {
@@ -9,7 +9,12 @@ import {
     nodePackageDir,
 } from '../../file-paths.mock.js';
 import {interpolationSafeWindowsPath, toPosixPath} from '../path/os-path.js';
-import {logShellOutput, LogShellOutputOptions, runShellCommand, type ShellOutput} from './shell.js';
+import {
+    logShellOutput,
+    type LogShellOutputOptions,
+    runShellCommand,
+    type ShellOutput,
+} from './shell.js';
 
 describe(runShellCommand.name, () => {
     it('produces expected output', async () => {

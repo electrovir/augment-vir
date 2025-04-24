@@ -1,4 +1,4 @@
-import {PartialWithUndefined} from '@augment-vir/core';
+import {type PartialWithUndefined} from '@augment-vir/core';
 
 /**
  * Collapse all consecutive white space into just one space and trim surrounding whitespace.

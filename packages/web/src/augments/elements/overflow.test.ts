@@ -1,6 +1,6 @@
 import {assert} from '@augment-vir/assert';
 import {describe, itCases, testWeb} from '@augment-vir/test';
-import {CSSResult, HTMLTemplateResult, css, html} from 'element-vir';
+import {type CSSResult, type HTMLTemplateResult, css, html} from 'element-vir';
 import {findOverflowAncestor} from './overflow.js';
 
 describe(findOverflowAncestor.name, () => {

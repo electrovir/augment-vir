@@ -1,4 +1,4 @@
-import {CasingOptions} from './casing.js';
+import {type CasingOptions} from './casing.js';
 
 /**
  * Capitalize the first letter of the input _only if_ the given options specifies doing so.

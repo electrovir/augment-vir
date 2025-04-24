@@ -1,4 +1,4 @@
-import {Constructor} from 'type-fest';
+import {type Constructor} from 'type-fest';
 import {combineErrorMessages, extractErrorMessage} from './error-message.js';
 
 /**
