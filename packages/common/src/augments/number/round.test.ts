@@ -34,6 +34,16 @@ describe(round.name, () => {
             expect: 1.13,
         },
         {
+            it: 'ignores rounding for undefined digits',
+            inputs: [
+                1.129_556,
+                {
+                    digits: undefined,
+                },
+            ],
+            expect: 1.129_556,
+        },
+        {
             it: 'rounds up with 0 decimals',
             inputs: [
                 1.564_123,

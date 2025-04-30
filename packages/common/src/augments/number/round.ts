@@ -1,6 +1,6 @@
 /**
- * Round a value to the given number of decimal digits. If no decimal value is present, no rounding
- * occurs.
+ * Round a value to the given number of decimal digits. If no decimal value is present, or if
+ * `undefined` digits are given, no rounding occurs.
  *
  * @category Number
  * @category Package : @augment-vir/common
@@ -17,7 +17,19 @@
  *
  * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
-export function round(value: number, {digits}: {digits: number}): number {
+export function round(
+    value: number,
+    {
+        digits,
+    }: {
+        /** The number of digits to round to. Set to `undefined` to disable rounding. */
+        digits: number | undefined;
+    },
+): number {
+    if (digits == undefined) {
+        return value;
+    }
+
     const digitFactor = Math.pow(10, digits);
     const multiplied = value * digitFactor;
 
