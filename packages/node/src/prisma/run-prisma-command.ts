@@ -76,7 +76,7 @@ export function verifyOutput(
         throw new PrismaSchemaError(
             `Invalid schema file at '${schemaFilePath}':\n\n${shellOutput.stderr}`,
         );
-    } else if (shellOutput.stderr.includes('does not exist at')) {
+    } else if (shellOutput.stderr.includes('does not exist')) {
         throw new PrismaSchemaError(`Database does not exist: ${shellOutput.stderr}`);
     } else if (shellOutput.exitCode === 0 || ignoreExitCode) {
         return shellOutput;

@@ -23,7 +23,7 @@ describe(prisma.migration.status.name, () => {
         await clearTestDatabaseOutputs();
 
         await assert.throws(prisma.migration.status(testPrismaSchemaPath), {
-            matchMessage: 'does not exist at',
+            matchMessage: 'does not exist',
             matchConstructor: PrismaSchemaError,
         });
     });
