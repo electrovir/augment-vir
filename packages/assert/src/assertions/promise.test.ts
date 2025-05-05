@@ -173,7 +173,7 @@ describe('isPromiseLike', () => {
         constructor(public value: any) {}
 
         // eslint-disable-next-line unicorn/no-thenable
-        then(onFulfilled?: AnyFunction, onRejected?: AnyFunction) {
+        public then(onFulfilled?: AnyFunction, onRejected?: AnyFunction) {
             return new CustomThenable(onFulfilled ? onFulfilled(this.value) : this.value);
         }
     }
@@ -258,7 +258,7 @@ describe('isNotPromiseLike', () => {
         constructor(public value: any) {}
 
         // eslint-disable-next-line unicorn/no-thenable
-        then(onFulfilled?: AnyFunction, onRejected?: AnyFunction) {
+        public then(onFulfilled?: AnyFunction, onRejected?: AnyFunction) {
             return new CustomThenable(onFulfilled ? onFulfilled(this.value) : this.value);
         }
     }

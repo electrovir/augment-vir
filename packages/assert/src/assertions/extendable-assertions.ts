@@ -10,6 +10,7 @@ import {httpGuards} from './http.js';
 import {instanceGuards} from './instance.js';
 import {keyGuards} from './keys.js';
 import {lengthGuards} from './length.js';
+import {neverGuard} from './never.js';
 import {nullishGuards} from './nullish.js';
 import {numericGuards} from './numeric.js';
 import {outputGuards} from './output.js';
@@ -25,12 +26,15 @@ export const extendableAssertions: typeof booleanGuards.assert &
     typeof boundaryGuards.assert &
     typeof entryEqualityGuards.assert &
     typeof enumGuards.assert &
+    typeof httpGuards.assert &
     typeof instanceGuards.assert &
     typeof jsonEqualityGuards.assert &
     typeof keyGuards.assert &
     typeof lengthGuards.assert &
+    typeof neverGuard.assert &
     typeof nullishGuards.assert &
     typeof numericGuards.assert &
+    typeof outputGuards.assert &
     typeof primitiveGuards.assert &
     typeof promiseGuards.assert &
     typeof regexpGuards.assert &
@@ -38,19 +42,20 @@ export const extendableAssertions: typeof booleanGuards.assert &
     typeof simpleEqualityGuards.assert &
     typeof throwGuards.assert &
     typeof uuidGuards.assert &
-    typeof valueGuards.assert &
-    typeof httpGuards.assert &
-    typeof outputGuards.assert = {
+    typeof valueGuards.assert = {
+    ...neverGuard.assert,
     ...booleanGuards.assert,
     ...boundaryGuards.assert,
     ...entryEqualityGuards.assert,
     ...enumGuards.assert,
+    ...httpGuards.assert,
     ...instanceGuards.assert,
     ...jsonEqualityGuards.assert,
     ...keyGuards.assert,
     ...lengthGuards.assert,
     ...nullishGuards.assert,
     ...numericGuards.assert,
+    ...outputGuards.assert,
     ...primitiveGuards.assert,
     ...promiseGuards.assert,
     ...regexpGuards.assert,
@@ -59,8 +64,6 @@ export const extendableAssertions: typeof booleanGuards.assert &
     ...throwGuards.assert,
     ...uuidGuards.assert,
     ...valueGuards.assert,
-    ...httpGuards.assert,
-    ...outputGuards.assert,
 } satisfies Record<PropertyKey, AssertFunction<any>>;
 
 /**
@@ -73,12 +76,15 @@ export const guardOverrides: [
     typeof boundaryGuards,
     typeof entryEqualityGuards,
     typeof enumGuards,
+    typeof httpGuards,
     typeof instanceGuards,
     typeof jsonEqualityGuards,
     typeof keyGuards,
     typeof lengthGuards,
+    typeof neverGuard,
     typeof nullishGuards,
     typeof numericGuards,
+    typeof outputGuards,
     typeof primitiveGuards,
     typeof promiseGuards,
     typeof regexpGuards,
@@ -87,19 +93,20 @@ export const guardOverrides: [
     typeof throwGuards,
     typeof uuidGuards,
     typeof valueGuards,
-    typeof httpGuards,
-    typeof outputGuards,
 ] = [
     booleanGuards,
     boundaryGuards,
     entryEqualityGuards,
     enumGuards,
+    httpGuards,
     instanceGuards,
     jsonEqualityGuards,
     keyGuards,
     lengthGuards,
+    neverGuard,
     nullishGuards,
     numericGuards,
+    outputGuards,
     primitiveGuards,
     promiseGuards,
     regexpGuards,
@@ -108,6 +115,4 @@ export const guardOverrides: [
     throwGuards,
     uuidGuards,
     valueGuards,
-    httpGuards,
-    outputGuards,
 ] as const satisfies GuardGroup<any>[];
