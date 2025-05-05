@@ -28,9 +28,9 @@
         "@augment-vir/assert": "^31.16.0",
         "@augment-vir/common": "^31.16.0",
         "@augment-vir/node": "^31.16.0",
-        "@virmator/docs": "^13.14.1",
+        "@virmator/docs": "^13.15.0",
         "jsdom": "^26.1.0",
-        "typedoc": "^0.28.3"
+        "typedoc": "^0.28.4"
     },
     "devDependencies": {
         "@augment-vir/test": "^31.16.0",

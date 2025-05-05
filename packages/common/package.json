@@ -46,7 +46,7 @@
         "ansi-styles": "^6.2.1",
         "json5": "^2.2.3",
         "type-fest": "^4.40.1",
-        "typed-event-target": "^4.0.3"
+        "typed-event-target": "^4.0.4"
     },
     "devDependencies": {
         "@web/dev-server-esbuild": "^1.0.4",
