@@ -1,5 +1,5 @@
 import {type PartialWithUndefined} from '@augment-vir/common';
-import {type Constructor} from 'type-fest';
+import {type AbstractConstructor, type Constructor} from 'type-fest';
 
 /**
  * Extract the event target element from an Event.
@@ -16,7 +16,9 @@ import {type Constructor} from 'type-fest';
  *
  * @package [`@augment-vir/web`](https://www.npmjs.com/package/@augment-vir/web)
  */
-export function extractEventTarget<ExpectedTargetClassConstructor extends Constructor<Element>>(
+export function extractEventTarget<
+    ExpectedTargetClassConstructor extends AbstractConstructor<Element> | Constructor<Element>,
+>(
     event: Event,
     expectedTargetClass: ExpectedTargetClassConstructor,
     options: PartialWithUndefined<{

@@ -1,5 +1,5 @@
 import {type MaybePromise, stringify} from '@augment-vir/core';
-import {type Constructor} from 'type-fest';
+import {type AbstractConstructor, type Constructor} from 'type-fest';
 import {AssertionError} from '../augments/assertion.error.js';
 import {type GuardGroup} from '../guard-types/guard-group.js';
 import {createWaitUntil, type WaitUntilOptions} from '../guard-types/wait-until-function.js';
@@ -28,7 +28,7 @@ const assertions = {
         this: void,
         instance: unknown,
         /** The constructor that the "instance" input will be checked against. */
-        constructor: Constructor<Instance>,
+        constructor: Constructor<Instance> | AbstractConstructor<Instance>,
         /** Message to include in error message if this assertion fails. */
         failureMessage?: string | undefined,
     ): asserts instance is Instance {
@@ -60,7 +60,7 @@ const assertions = {
     notInstanceOf<const Actual, const Instance>(
         this: void,
         instance: Actual,
-        constructor: Constructor<Instance>,
+        constructor: Constructor<Instance> | AbstractConstructor<Instance>,
         failureMessage?: string | undefined,
     ): asserts instance is Exclude<Actual, Instance> {
         if (instance instanceof constructor) {
@@ -95,7 +95,7 @@ export const instanceGuards = {
         instanceOf<const Instance>(
             this: void,
             instance: unknown,
-            constructor: Constructor<Instance>,
+            constructor: Constructor<Instance> | AbstractConstructor<Instance>,
         ): instance is Instance {
             return instance instanceof constructor;
         },
@@ -119,7 +119,7 @@ export const instanceGuards = {
         notInstanceOf<const Actual, const Instance>(
             this: void,
             instance: Actual,
-            constructor: Constructor<Instance>,
+            constructor: Constructor<Instance> | AbstractConstructor<Instance>,
         ): instance is Exclude<Actual, Instance> {
             return !(instance instanceof constructor);
         },
@@ -148,7 +148,7 @@ export const instanceGuards = {
         instanceOf<const Instance>(
             this: void,
             instance: unknown,
-            constructor: Constructor<Instance>,
+            constructor: Constructor<Instance> | AbstractConstructor<Instance>,
             failureMessage?: string | undefined,
         ): Instance {
             if (instance instanceof constructor) {
@@ -183,7 +183,7 @@ export const instanceGuards = {
         notInstanceOf<const Actual, const Instance>(
             this: void,
             instance: Actual,
-            constructor: Constructor<Instance>,
+            constructor: Constructor<Instance> | AbstractConstructor<Instance>,
             failureMessage?: string | undefined,
         ): Exclude<Actual, Instance> {
             if (instance instanceof constructor) {
@@ -219,7 +219,7 @@ export const instanceGuards = {
         instanceOf<const Instance>(
             this: void,
             instance: unknown,
-            constructor: Constructor<Instance>,
+            constructor: Constructor<Instance> | AbstractConstructor<Instance>,
         ): Instance | undefined {
             if (instance instanceof constructor) {
                 return instance;
@@ -249,7 +249,7 @@ export const instanceGuards = {
         notInstanceOf<const Actual, const Instance>(
             this: void,
             instance: Actual,
-            constructor: Constructor<Instance>,
+            constructor: Constructor<Instance> | AbstractConstructor<Instance>,
         ): Exclude<Actual, Instance> | undefined {
             if (instance instanceof constructor) {
                 return undefined;
@@ -282,7 +282,7 @@ export const instanceGuards = {
          */
         instanceOf: createWaitUntil(assertions.instanceOf) as <const Instance>(
             this: void,
-            constructor: Constructor<Instance>,
+            constructor: Constructor<Instance> | AbstractConstructor<Instance>,
             callback: () => MaybePromise<unknown>,
             options?: WaitUntilOptions | undefined,
             failureMessage?: string | undefined,
@@ -310,7 +310,7 @@ export const instanceGuards = {
          */
         notInstanceOf: createWaitUntil(assertions.notInstanceOf) as <const Actual, const Instance>(
             this: void,
-            constructor: Constructor<Instance>,
+            constructor: Constructor<Instance> | AbstractConstructor<Instance>,
             callback: () => MaybePromise<Actual>,
             options?: WaitUntilOptions | undefined,
             failureMessage?: string | undefined,
