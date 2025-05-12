@@ -1,11 +1,12 @@
 /**
- * Gets all deeply nested elements contained within the given element. Shadow DOMs are traversed.
+ * Gets all deeply nested elements contained within the given element, flattened into a single
+ * array. Shadow DOMs are traversed.
  *
  * Note that `<slot>` elements are included, as well as their nested elements (even if a slot filler
  * is provided by the parent) and the slot filler itself (if provided).
  *
- * Optionally define a second "depth" input to control how far nestings should be pursued. Leave
- * depth out or set it to undefined or any value <= 0 to allow full depth search.
+ * Optionally define a second "depth" input to control how far nestings should be pursued. Omit
+ * depth or set it to `undefined` or `0` to allow full depth search.
  *
  * @category Web : Elements
  * @category Package : @augment-vir/web
@@ -34,6 +35,60 @@ function recursivelyGetNestedChildren(
             child,
             nested,
         ].flat();
+    });
+}
+
+/**
+ * A tree of child elements.
+ *
+ * @category Web : Elements
+ * @category Package : @augment-vir/web
+ * @package [`@augment-vir/web`](https://www.npmjs.com/package/@augment-vir/web)
+ */
+export type ElementTree = {
+    element: Element;
+    children: ElementTree[];
+};
+
+/**
+ * Gets all deeply nested elements contained within the given element in a tree. Shadow DOMs are
+ * traversed.
+ *
+ * Note that `<slot>` elements are included, as well as their nested elements (even if a slot filler
+ * is provided by the parent) and the slot filler itself (if provided).
+ *
+ * Optionally define a second "depth" input to control how far nestings should be pursued. Omit
+ * depth or set it to `undefined` or `0` to allow full depth search.
+ *
+ * @category Web : Elements
+ * @category Package : @augment-vir/web
+ * @package [`@augment-vir/web`](https://www.npmjs.com/package/@augment-vir/web)
+ */
+export function getNestedChildrenTree(
+    startingElement: Readonly<Element>,
+    depth?: number | undefined,
+): ElementTree {
+    return {
+        element: startingElement,
+        children: recursivelyGetNestedChildrenTree(startingElement, depth ?? 0, 0),
+    };
+}
+function recursivelyGetNestedChildrenTree(
+    startingElement: Readonly<Element>,
+    maxDepth: number,
+    currentDepth: number,
+): ElementTree[] {
+    return getDirectChildren(startingElement).map((child) => {
+        const nextDepth = currentDepth + 1;
+        const nested =
+            maxDepth && nextDepth >= Math.abs(maxDepth)
+                ? []
+                : recursivelyGetNestedChildrenTree(child, maxDepth, nextDepth);
+
+        return {
+            element: child,
+            children: nested,
+        };
     });
 }
 

@@ -1,9 +1,20 @@
 import {describe, itCases, testWeb} from '@augment-vir/test';
-import {type HTMLTemplateResult, defineElementNoInputs, html} from 'element-vir';
-import {getDirectChildren, getNestedChildren} from './element-children.js';
+import {
+    type DeclarativeElementDefinition,
+    type HTMLTemplateResult,
+    defineElementNoInputs,
+    html,
+} from 'element-vir';
+import {type SpecTagName} from 'html-spec-tags';
+import {
+    type ElementTree,
+    getDirectChildren,
+    getNestedChildren,
+    getNestedChildrenTree,
+} from './element-children.js';
 import {toTagOrDefinition} from './tag-or-definition.js';
 
-function createChildTester(
+function createChildArrayTester(
     functionToTest: (element: Readonly<Element>, depth?: number | undefined) => Element[],
 ) {
     async function innerTest(templateToTest: HTMLTemplateResult, depth?: number | undefined) {
@@ -15,6 +26,34 @@ function createChildTester(
     }
 
     return innerTest;
+}
+
+function createChildTreeTester(
+    functionToTest: (element: Readonly<Element>, depth?: number | undefined) => ElementTree,
+) {
+    async function innerTest(
+        templateToTest: HTMLTemplateResult,
+        depth?: number | undefined,
+    ): Promise<ConvertedTree> {
+        const fixture = await testWeb.render(templateToTest);
+
+        const tree = functionToTest(fixture, depth);
+
+        return convertTree(tree);
+    }
+
+    return innerTest;
+}
+type ConvertedTree = {
+    element: DeclarativeElementDefinition | SpecTagName;
+    children: ConvertedTree[];
+};
+
+function convertTree(tree: ElementTree): ConvertedTree {
+    return {
+        element: toTagOrDefinition(tree.element),
+        children: tree.children.map(convertTree),
+    };
 }
 
 const TextOnly = defineElementNoInputs({
@@ -47,7 +86,7 @@ const HasSlot = defineElementNoInputs({
 });
 
 describe(getDirectChildren.name, () => {
-    itCases(createChildTester(getDirectChildren), [
+    itCases(createChildArrayTester(getDirectChildren), [
         {
             it: 'includes direct children of light DOM',
             inputs: [
@@ -153,8 +192,9 @@ describe(getDirectChildren.name, () => {
         },
     ]);
 });
+
 describe(getNestedChildren.name, () => {
-    itCases(createChildTester(getNestedChildren), [
+    itCases(createChildArrayTester(getNestedChildren), [
         {
             it: 'includes all descendants of light DOM',
             inputs: [
@@ -350,6 +390,426 @@ describe(getNestedChildren.name, () => {
                 'p',
                 'span',
             ],
+        },
+    ]);
+});
+describe(getNestedChildrenTree.name, () => {
+    itCases(createChildTreeTester(getNestedChildrenTree), [
+        {
+            it: 'includes all descendants of light DOM',
+            inputs: [
+                html`
+                    <section>
+                        <div><span></span></div>
+                        <div></div>
+                        <p></p>
+                        <p></p>
+                        <div></div>
+                    </section>
+                `,
+            ],
+            expect: {
+                element: 'section',
+                children: [
+                    {
+                        element: 'div',
+                        children: [
+                            {
+                                element: 'span',
+                                children: [],
+                            },
+                        ],
+                    },
+                    {
+                        element: 'div',
+                        children: [],
+                    },
+                    {
+                        element: 'p',
+                        children: [],
+                    },
+                    {
+                        element: 'p',
+                        children: [],
+                    },
+                    {
+                        element: 'div',
+                        children: [],
+                    },
+                ],
+            },
+        },
+        {
+            it: 'includes no extra descendants for shadow DOM with no children',
+            inputs: [
+                html`
+                    <section>
+                        <${TextOnly}></${TextOnly}>
+                        <p></p>
+                    </section>
+                `,
+            ],
+            expect: {
+                element: 'section',
+                children: [
+                    {
+                        element: TextOnly,
+                        children: [],
+                    },
+                    {
+                        element: 'p',
+                        children: [],
+                    },
+                ],
+            },
+        },
+        {
+            it: 'includes no shadow DOM descendants when there are none',
+            inputs: [
+                html`
+                    <${TextOnly}></${TextOnly}>
+                `,
+            ],
+            expect: {
+                element: TextOnly,
+                children: [],
+            },
+        },
+        {
+            it: 'includes all shadow DOM descendants',
+            inputs: [
+                html`
+                    <${HasChildren}></${HasChildren}>
+                `,
+            ],
+            expect: {
+                element: HasChildren,
+                children: [
+                    {
+                        element: 'div',
+                        children: [
+                            {
+                                element: 'span',
+                                children: [],
+                            },
+                            {
+                                element: 'span',
+                                children: [],
+                            },
+                        ],
+                    },
+                    {
+                        element: 'p',
+                        children: [],
+                    },
+                ],
+            },
+        },
+        {
+            it: 'includes slotted descendants and slot defaults',
+            inputs: [
+                html`
+                    <${HasSlot}><h1></h1></${HasSlot}>
+                `,
+            ],
+            expect: {
+                element: HasSlot,
+                children: [
+                    {
+                        element: 'h1',
+                        children: [],
+                    },
+                    {
+                        element: 'div',
+                        children: [],
+                    },
+                    {
+                        element: 'slot',
+                        children: [
+                            {
+                                element: 'p',
+                                children: [],
+                            },
+                        ],
+                    },
+                    {
+                        element: 'span',
+                        children: [],
+                    },
+                ],
+            },
+        },
+        {
+            it: 'includes descendants nested in Shadow DOM',
+            inputs: [
+                html`
+                    <section>
+                        <${HasSlot}></${HasSlot}>
+                    </section>
+                `,
+            ],
+            expect: {
+                element: 'section',
+                children: [
+                    {
+                        element: HasSlot,
+                        children: [
+                            {
+                                element: 'div',
+                                children: [],
+                            },
+                            {
+                                element: 'slot',
+                                children: [
+                                    {
+                                        element: 'p',
+                                        children: [],
+                                    },
+                                ],
+                            },
+                            {
+                                element: 'span',
+                                children: [],
+                            },
+                        ],
+                    },
+                ],
+            },
+        },
+        {
+            it: 'includes all Shadow DOM descendants',
+            inputs: [
+                html`
+                    <section>
+                        <${HasSlot}></${HasSlot}>
+                        <${HasChildren}></${HasChildren}>
+                    </section>
+                `,
+            ],
+            expect: {
+                element: 'section',
+                children: [
+                    {
+                        element: HasSlot,
+                        children: [
+                            {
+                                element: 'div',
+                                children: [],
+                            },
+                            {
+                                element: 'slot',
+                                children: [
+                                    {
+                                        element: 'p',
+                                        children: [],
+                                    },
+                                ],
+                            },
+                            {
+                                element: 'span',
+                                children: [],
+                            },
+                        ],
+                    },
+                    {
+                        element: HasChildren,
+                        children: [
+                            {
+                                element: 'div',
+                                children: [
+                                    {
+                                        element: 'span',
+                                        children: [],
+                                    },
+                                    {
+                                        element: 'span',
+                                        children: [],
+                                    },
+                                ],
+                            },
+                            {
+                                element: 'p',
+                                children: [],
+                            },
+                        ],
+                    },
+                ],
+            },
+        },
+        {
+            it: 'includes slotted Shadow DOM descendants',
+            inputs: [
+                html`
+                    <section>
+                        <${HasSlot}>
+                            <${HasChildren}></${HasChildren}>
+                        </${HasSlot}>
+                    </section>
+                `,
+            ],
+            expect: {
+                element: 'section',
+                children: [
+                    {
+                        element: HasSlot,
+                        children: [
+                            {
+                                element: HasChildren,
+                                children: [
+                                    {
+                                        element: 'div',
+                                        children: [
+                                            {
+                                                element: 'span',
+                                                children: [],
+                                            },
+                                            {
+                                                element: 'span',
+                                                children: [],
+                                            },
+                                        ],
+                                    },
+                                    {
+                                        element: 'p',
+                                        children: [],
+                                    },
+                                ],
+                            },
+                            {
+                                element: 'div',
+                                children: [],
+                            },
+                            {
+                                element: 'slot',
+                                children: [
+                                    {
+                                        element: 'p',
+                                        children: [],
+                                    },
+                                ],
+                            },
+                            {
+                                element: 'span',
+                                children: [],
+                            },
+                        ],
+                    },
+                ],
+            },
+        },
+        {
+            it: 'only goes down 1 level',
+            inputs: [
+                html`
+                    <section>
+                        <${HasSlot}>
+                            <${HasChildren}></${HasChildren}>
+                        </${HasSlot}>
+                    </section>
+                `,
+                1,
+            ],
+            expect: {
+                element: 'section',
+                children: [
+                    {
+                        element: HasSlot,
+                        children: [],
+                    },
+                ],
+            },
+        },
+        {
+            it: 'only goes down 2 levels',
+            inputs: [
+                html`
+                    <section>
+                        <${HasSlot}>
+                            <${HasChildren}></${HasChildren}>
+                        </${HasSlot}>
+                    </section>
+                `,
+                2,
+            ],
+            expect: {
+                element: 'section',
+                children: [
+                    {
+                        element: HasSlot,
+                        children: [
+                            {
+                                element: HasChildren,
+                                children: [],
+                            },
+                            {
+                                element: 'div',
+                                children: [],
+                            },
+                            {
+                                element: 'slot',
+                                children: [],
+                            },
+                            {
+                                element: 'span',
+                                children: [],
+                            },
+                        ],
+                    },
+                ],
+            },
+        },
+        {
+            it: 'only goes down 3 levels',
+            inputs: [
+                html`
+                    <section>
+                        <${HasSlot}>
+                            <${HasChildren}></${HasChildren}>
+                        </${HasSlot}>
+                    </section>
+                `,
+                3,
+            ],
+            expect: {
+                element: 'section',
+                children: [
+                    {
+                        element: HasSlot,
+                        children: [
+                            {
+                                element: HasChildren,
+                                children: [
+                                    {
+                                        element: 'div',
+                                        children: [],
+                                    },
+                                    {
+                                        element: 'p',
+                                        children: [],
+                                    },
+                                ],
+                            },
+                            {
+                                element: 'div',
+                                children: [],
+                            },
+                            {
+                                element: 'slot',
+                                children: [
+                                    {
+                                        element: 'p',
+                                        children: [],
+                                    },
+                                ],
+                            },
+                            {
+                                element: 'span',
+                                children: [],
+                            },
+                        ],
+                    },
+                ],
+            },
         },
     ]);
 });
