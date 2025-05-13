@@ -5,6 +5,7 @@ module.exports = {
     ignorePaths: [
         ...baseConfig.ignorePaths,
         'packages/test/src/mocha.d.ts',
+        'packages/node/test-files/migrations/',
     ],
     words: [
         ...baseConfig.words,

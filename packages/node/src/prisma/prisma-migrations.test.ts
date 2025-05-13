@@ -29,7 +29,7 @@ describe(prisma.migration.status.name, () => {
     });
     it('works', async () => {
         await clearTestDatabaseOutputs();
-        await prisma.database.resetDev(testPrismaSchemaPath);
+        await prisma.database.resetDev(testPrismaSchemaPath, {withMigrations: true});
         await prisma.migration.create({migrationName: 'init'}, testPrismaSchemaPath);
 
         const status = await prisma.migration.status(testPrismaSchemaPath);
@@ -41,7 +41,7 @@ describe(prisma.migration.status.name, () => {
 describe(prisma.migration.create.name, () => {
     it('creates an unapplied migration', async () => {
         await clearTestDatabaseOutputs();
-        await prisma.database.resetDev(testPrismaSchemaPath);
+        await prisma.database.resetDev(testPrismaSchemaPath, {withMigrations: true});
         assert.deepEquals(await prisma.migration.status(testPrismaSchemaPath), {
             totalMigrations: 0,
             unappliedMigrations: [],
@@ -65,7 +65,7 @@ describe(prisma.migration.create.name, () => {
 
     it('creates and applies a migration', async () => {
         await clearTestDatabaseOutputs();
-        await prisma.database.resetDev(testPrismaSchemaPath);
+        await prisma.database.resetDev(testPrismaSchemaPath, {withMigrations: true});
         assert.deepEquals(await prisma.migration.status(testPrismaSchemaPath), {
             totalMigrations: 0,
             unappliedMigrations: [],
@@ -86,7 +86,7 @@ describe(prisma.migration.create.name, () => {
     });
     it('errors with invalid inputs', async () => {
         await clearTestDatabaseOutputs();
-        await prisma.database.resetDev(testPrismaSchemaPath);
+        await prisma.database.resetDev(testPrismaSchemaPath, {withMigrations: true});
         await assert.throws(
             prisma.migration.create({migrationName: "in' --boggle='it"}, testPrismaSchemaPath),
         );
@@ -96,7 +96,7 @@ describe(prisma.migration.create.name, () => {
 describe(prisma.migration.applyDev.name, () => {
     it('applies migrations', async () => {
         await clearTestDatabaseOutputs();
-        await prisma.database.resetDev(testPrismaSchemaPath);
+        await prisma.database.resetDev(testPrismaSchemaPath, {withMigrations: true});
 
         await prisma.migration.create(
             {
@@ -121,7 +121,7 @@ describe(prisma.migration.applyDev.name, () => {
     });
     it('fails on invalid schema', async () => {
         await clearTestDatabaseOutputs();
-        await prisma.database.resetDev(testPrismaSchemaPath);
+        await prisma.database.resetDev(testPrismaSchemaPath, {withMigrations: true});
 
         await prisma.migration.create(
             {
@@ -147,7 +147,7 @@ describe(prisma.migration.applyDev.name, () => {
         'fails when a new migration is needed',
         testWithNonCiEnv(async () => {
             await clearTestDatabaseOutputs();
-            await prisma.database.resetDev(testPrismaSchemaPath);
+            await prisma.database.resetDev(testPrismaSchemaPath, {withMigrations: true});
 
             await prisma.migration.create({migrationName: 'init'}, testPrismaSchemaPath);
             assert.deepEquals(await prisma.migration.status(testPrismaSchemaPath), {
@@ -163,7 +163,7 @@ describe(prisma.migration.applyDev.name, () => {
     );
     it('fails when a reset is needed', async () => {
         await clearTestDatabaseOutputs();
-        await prisma.database.resetDev(testPrismaSchemaPath);
+        await prisma.database.resetDev(testPrismaSchemaPath, {withMigrations: true});
 
         await prisma.migration.create({migrationName: 'init'}, testPrismaSchemaPath);
         assert.deepEquals(await prisma.migration.status(testPrismaSchemaPath), {
@@ -191,7 +191,7 @@ describe(prisma.migration.applyDev.name, () => {
 describe(prisma.migration.applyProd.name, () => {
     it('applies migrations', async () => {
         await clearTestDatabaseOutputs();
-        await prisma.database.resetDev(testPrismaSchemaPath);
+        await prisma.database.resetDev(testPrismaSchemaPath, {withMigrations: true});
 
         await prisma.migration.create(
             {
@@ -216,7 +216,7 @@ describe(prisma.migration.applyProd.name, () => {
     });
     it('ignores schema file changes', async () => {
         await clearTestDatabaseOutputs();
-        await prisma.database.resetDev(testPrismaSchemaPath);
+        await prisma.database.resetDev(testPrismaSchemaPath, {withMigrations: true});
 
         await prisma.migration.create({migrationName: 'init'}, testPrismaSchemaPath);
         assert.deepEquals(await prisma.migration.status(testPrismaSchemaPath), {
@@ -228,7 +228,7 @@ describe(prisma.migration.applyProd.name, () => {
     });
     it('ignores when a reset is needed', async () => {
         await clearTestDatabaseOutputs();
-        await prisma.database.resetDev(testPrismaSchemaPath);
+        await prisma.database.resetDev(testPrismaSchemaPath, {withMigrations: true});
 
         await prisma.migration.create({migrationName: 'init'}, testPrismaSchemaPath);
         assert.deepEquals(await prisma.migration.status(testPrismaSchemaPath), {
