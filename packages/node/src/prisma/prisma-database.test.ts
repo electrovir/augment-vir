@@ -18,6 +18,10 @@ describe(prisma.database.hasDiff.name, () => {
 
         assert.isFalse(await prisma.database.hasDiff(testPrismaSchemaPath));
     });
+    it('resets a database', async () => {
+        await clearTestDatabaseOutputs();
+        await prisma.database.resetDev(testPrismaSchemaPath);
+    });
     it('has diff from other schema file', async () => {
         await clearTestDatabaseOutputs();
         await prisma.database.resetDev(testPrismaSchemaPath);

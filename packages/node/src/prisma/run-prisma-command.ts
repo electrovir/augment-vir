@@ -1,4 +1,4 @@
-import {log, wrapString} from '@augment-vir/common';
+import {log, type PartialWithUndefined, wrapString} from '@augment-vir/common';
 import {dirname} from 'node:path';
 import {interpolationSafeWindowsPath} from '../augments/path/os-path.js';
 import {runShellCommand, type ShellOutput} from '../augments/terminal/shell.js';
@@ -24,10 +24,14 @@ export async function runPrismaCommand(
     {
         command,
         ignoreExitCode = false,
+        hideLogs = false,
     }: {
         command: string;
-        ignoreExitCode?: boolean | undefined;
-    },
+    } & PartialWithUndefined<{
+        /** If `true`, prevents errors from being thrown if this command exits with a non-0 status. */
+        ignoreExitCode: boolean;
+        hideLogs: boolean;
+    }>,
     /** Set to `undefined` to omit the `--schema` flag. */
     schemaFilePath: string | undefined,
     env: Record<string, string> | undefined = {},
@@ -60,7 +64,7 @@ export async function runPrismaCommand(
             ...process.env,
             ...env,
         },
-        hookUpToConsole: true,
+        hookUpToConsole: !hideLogs,
         cwd: schemaFilePath ? dirname(schemaFilePath) : process.cwd(),
     });
 

@@ -31,5 +31,18 @@ export async function resetDevPrismaDatabase(
     schemaFilePath: string,
     env: Record<string, string> = {},
 ) {
-    await runPrismaCommand({command: 'migrate reset --force'}, schemaFilePath, env);
+    await runPrismaCommand(
+        {
+            command: 'db push --accept-data-loss --skip-generate',
+            hideLogs: true,
+            ignoreExitCode: true,
+        },
+        schemaFilePath,
+        env,
+    );
+    await runPrismaCommand(
+        {command: 'migrate reset --force --skip-generate --skip-seed'},
+        schemaFilePath,
+        env,
+    );
 }
