@@ -42,6 +42,22 @@ export type SetOptionalAndNullable<
 >;
 
 /**
+ * Sets a key as optional but also potentially undefined.
+ *
+ * @category Object
+ * @category Package : @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
+ */
+export type SetOptionalWithUndefined<
+    OriginalObjectGeneric,
+    OptionalKeysGeneric extends keyof OriginalObjectGeneric,
+> = Simplify<
+    Except<OriginalObjectGeneric, OptionalKeysGeneric> & {
+        [PropKey in OptionalKeysGeneric]?: OriginalObjectGeneric[PropKey] | undefined;
+    }
+>;
+
+/**
  * Modified version of `RequiredKeys` from `type-fest` that does not require `BaseType` to extends
  * `object`.
  *
