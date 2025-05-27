@@ -4,6 +4,14 @@ import {AssertionError} from '../../augments/assertion.error.js';
 import {type GuardGroup} from '../../guard-types/guard-group.js';
 import {type WaitUntilOptions, createWaitUntil} from '../../guard-types/wait-until-function.js';
 
+function customComparator(a: unknown, b: unknown): boolean | null {
+    if (typeof a === 'function' && typeof b === 'function') {
+        return true;
+    }
+
+    return null;
+}
+
 const assertions = {
     /**
      * Asserts that two values are strictly equal (using
@@ -197,7 +205,11 @@ const assertions = {
         expected: Expected,
         failureMessage?: string | undefined,
     ): asserts actual is NarrowToExpected<Actual, Expected> {
-        if (!deepEqual(actual, expected)) {
+        if (
+            !deepEqual(actual, expected, {
+                comparator: customComparator,
+            })
+        ) {
             throw new AssertionError(
                 `\n\n${stringify(actual)}\n\ndoes not deeply equal\n\n${stringify(expected)}\n\n`,
                 failureMessage,
@@ -240,7 +252,11 @@ const assertions = {
         expected: unknown,
         failureMessage?: string | undefined,
     ) {
-        if (deepEqual(actual, expected)) {
+        if (
+            deepEqual(actual, expected, {
+                comparator: customComparator,
+            })
+        ) {
             throw new AssertionError(
                 `\n\n${stringify(actual)}\n\ndeeply equals\n\n${stringify(expected)}\n\n`,
                 failureMessage,
@@ -404,7 +420,9 @@ export const simpleEqualityGuards = {
             actual: Actual,
             expected: Expected,
         ): actual is NarrowToExpected<Actual, Expected> {
-            return deepEqual(actual, expected);
+            return deepEqual(actual, expected, {
+                comparator: customComparator,
+            });
         },
         /**
          * Checks that two values are _not_ deeply equal using the
@@ -436,7 +454,9 @@ export const simpleEqualityGuards = {
          * - {@link check.jsonEquals} : a less expensive (but less thorough) deep equality check.
          */
         notDeepEquals(this: void, actual: unknown, expected: unknown): boolean {
-            return !deepEqual(actual, expected);
+            return !deepEqual(actual, expected, {
+                comparator: customComparator,
+            });
         },
     },
     assertWrap: {
@@ -646,7 +666,11 @@ export const simpleEqualityGuards = {
             expected: Expected,
             failureMessage?: string | undefined,
         ): NarrowToExpected<Actual, Expected> {
-            if (deepEqual(actual, expected)) {
+            if (
+                deepEqual(actual, expected, {
+                    comparator: customComparator,
+                })
+            ) {
                 return actual as NarrowToExpected<Actual, Expected>;
             } else {
                 throw new AssertionError(
@@ -692,7 +716,11 @@ export const simpleEqualityGuards = {
             expected: unknown,
             failureMessage?: string | undefined,
         ): Actual {
-            if (deepEqual(actual, expected)) {
+            if (
+                deepEqual(actual, expected, {
+                    comparator: customComparator,
+                })
+            ) {
                 throw new AssertionError(
                     `\n\n${stringify(actual)}\n\ndeeply equals\n\n${stringify(expected)}\n\n`,
                     failureMessage,
@@ -879,7 +907,11 @@ export const simpleEqualityGuards = {
             actual: Actual,
             expected: Expected,
         ): NarrowToExpected<Actual, Expected> | undefined {
-            if (deepEqual(actual, expected)) {
+            if (
+                deepEqual(actual, expected, {
+                    comparator: customComparator,
+                })
+            ) {
                 return actual as NarrowToExpected<Actual, Expected>;
             } else {
                 return undefined;
@@ -917,7 +949,11 @@ export const simpleEqualityGuards = {
          * - {@link checkWrap.jsonEquals} : a less expensive (but less thorough) deep equality check.
          */
         notDeepEquals<Actual>(this: void, actual: Actual, expected: unknown): Actual | undefined {
-            if (deepEqual(actual, expected)) {
+            if (
+                deepEqual(actual, expected, {
+                    comparator: customComparator,
+                })
+            ) {
                 return undefined;
             } else {
                 return actual;

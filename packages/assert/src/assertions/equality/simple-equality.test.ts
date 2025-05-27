@@ -407,6 +407,15 @@ describe('deepEquals', () => {
             // @ts-expect-error: `1` is not a string
             assert.throws(() => assert.deepEquals('1', 1));
         });
+        it('works on functions', () => {
+            assert.deepEquals(
+                () => {},
+                () => {},
+            );
+            assert.deepEquals({a: () => {}}, {a: () => {}});
+            assert.notDeepEquals(() => {}, 'a');
+            assert.notDeepEquals(() => {}, 'a');
+        });
     });
     describe('check', () => {
         it('guards', () => {
