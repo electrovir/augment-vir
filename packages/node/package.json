@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/node",
-    "version": "31.20.1",
+    "version": "31.21.0",
     "description": "A collection of augments, helpers types, functions, and classes only for Node.js (backend) JavaScript environments.",
     "keywords": [
         "augment",
@@ -38,8 +38,8 @@
         "test:update": "npm test"
     },
     "dependencies": {
-        "@augment-vir/assert": "^31.20.1",
-        "@augment-vir/common": "^31.20.1",
+        "@augment-vir/assert": "^31.21.0",
+        "@augment-vir/common": "^31.21.0",
         "@date-vir/duration": "^7.3.1",
         "ansi-styles": "^6.2.1",
         "terminate": "^2.8.0",
@@ -48,7 +48,7 @@
         "typed-event-target": "^4.1.0"
     },
     "devDependencies": {
-        "@augment-vir/test": "^31.20.1",
+        "@augment-vir/test": "^31.21.0",
         "@prisma/client": "^6.8.2",
         "@types/node": "^22.15.24",
         "@web/dev-server-esbuild": "^1.0.4",
