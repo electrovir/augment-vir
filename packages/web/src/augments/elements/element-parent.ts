@@ -7,7 +7,7 @@
  */
 export function getParentElement(element: Node): Element | undefined {
     if (element instanceof ShadowRoot) {
-        return getParentElement(element.host);
+        return element.host;
     }
 
     const parentNode = element.parentNode;
