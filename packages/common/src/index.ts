@@ -1,4 +1,5 @@
 export * from './augments/array/array-map.js';
+export * from './augments/array/array-pagination.js';
 export * from './augments/array/array-to-object.js';
 export * from './augments/array/awaited/awaited-filter.js';
 export * from './augments/array/awaited/awaited-for-each.js';
