@@ -1,12 +1,12 @@
 import {assert} from '@augment-vir/assert';
 import {describe, it, testWeb} from '@augment-vir/test';
-import {defineElementNoInputs, html} from 'element-vir';
+import {defineElement, html} from 'element-vir';
 import {findMatchingAncestor, getParentElement} from './element-parent.js';
 import {queryThroughShadow} from './query-through-shadow.js';
 
 describe(getParentElement.name, () => {
     it('works on a shadow root', async () => {
-        const TestElement = defineElementNoInputs({
+        const TestElement = defineElement()({
             tagName: 'test-element-for-get-parent-element',
             render() {
                 return 'hi';
@@ -48,7 +48,7 @@ describe(getParentElement.name, () => {
 
 describe(findMatchingAncestor.name, () => {
     it('finds matching parent', async () => {
-        const TestElement = defineElementNoInputs({
+        const TestElement = defineElement()({
             tagName: 'test-element-for-find-matching-parent-element',
             render() {
                 return html`
@@ -75,7 +75,7 @@ describe(findMatchingAncestor.name, () => {
         );
     });
     it('gets all elements in the chain', async () => {
-        const TestElement = defineElementNoInputs({
+        const TestElement = defineElement()({
             tagName: 'test-element-for-get-parent-element-2',
             render() {
                 return html`

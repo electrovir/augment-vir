@@ -1,6 +1,6 @@
 import {assert, check} from '@augment-vir/assert';
 import {describe, it, itCases, testWeb} from '@augment-vir/test';
-import {defineElementNoInputs, html} from 'element-vir';
+import {defineElement, html} from 'element-vir';
 import {queryThroughShadow, type QueryThroughShadowOptions} from './query-through-shadow.js';
 
 const classNames = {
@@ -9,7 +9,7 @@ const classNames = {
     notNestedDiv: 'not-nested-div',
 };
 
-const NestedTestElement = defineElementNoInputs({
+const NestedTestElement = defineElement()({
     tagName: 'nested-test-element',
     render() {
         return html`
@@ -18,7 +18,7 @@ const NestedTestElement = defineElementNoInputs({
     },
 });
 
-const TestElement = defineElementNoInputs({
+const TestElement = defineElement()({
     tagName: 'test-element',
     render() {
         return html`

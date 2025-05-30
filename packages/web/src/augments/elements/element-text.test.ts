@@ -1,6 +1,6 @@
 import {assert} from '@augment-vir/assert';
 import {describe, it, itCases, testWeb} from '@augment-vir/test';
-import {defineElementNoInputs, html, type HTMLTemplateResult} from 'element-vir';
+import {defineElement, html, type HTMLTemplateResult} from 'element-vir';
 import {extractElementText} from './element-text.js';
 
 describe(extractElementText.name, () => {
@@ -44,7 +44,7 @@ describe(extractElementText.name, () => {
     ]);
 
     it('handles a shadow root', async () => {
-        const TestElement = defineElementNoInputs({
+        const TestElement = defineElement()({
             tagName: 'vir-test-extract-element-text',
             render() {
                 return html`

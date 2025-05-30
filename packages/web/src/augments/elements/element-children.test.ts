@@ -2,7 +2,7 @@ import {describe, itCases, testWeb} from '@augment-vir/test';
 import {
     type DeclarativeElementDefinition,
     type HTMLTemplateResult,
-    defineElementNoInputs,
+    defineElement,
     html,
 } from 'element-vir';
 import {type SpecTagName} from 'html-spec-tags';
@@ -56,13 +56,13 @@ function convertTree(tree: ElementTree): ConvertedTree {
     };
 }
 
-const TextOnly = defineElementNoInputs({
+const TextOnly = defineElement()({
     tagName: 'text-only',
     render() {
         return 'hello there';
     },
 });
-const HasChildren = defineElementNoInputs({
+const HasChildren = defineElement()({
     tagName: 'has-children',
     render() {
         return html`
@@ -74,7 +74,7 @@ const HasChildren = defineElementNoInputs({
         `;
     },
 });
-const HasSlot = defineElementNoInputs({
+const HasSlot = defineElement()({
     tagName: 'has-slot',
     render() {
         return html`
