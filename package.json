@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/mono-repo-root",
-    "version": "31.23.0",
+    "version": "31.23.1",
     "private": true,
     "homepage": "https://github.com/electrovir/augment-vir",
     "bugs": {
@@ -43,14 +43,14 @@
     },
     "devDependencies": {
         "@eslint/eslintrc": "^3.3.1",
-        "@eslint/js": "9.27.0",
+        "@eslint/js": "9.28.0",
         "@stylistic/eslint-plugin": "^4.4.0",
         "@stylistic/eslint-plugin-ts": "^4.4.0",
         "@typescript-eslint/eslint-plugin": "^8.33.0",
         "cspell": "^9.0.2",
         "dependency-cruiser": "^16.10.2",
         "esbuild": "^0.25.5",
-        "eslint": "^9.27.0",
+        "eslint": "^9.28.0",
         "eslint-config-prettier": "^10.1.5",
         "eslint-plugin-jsdoc": "^50.6.17",
         "eslint-plugin-monorepo-cop": "^1.0.2",
@@ -66,11 +66,11 @@
         "prettier-plugin-jsdoc": "^1.3.2",
         "prettier-plugin-multiline-arrays": "^4.0.3",
         "prettier-plugin-organize-imports": "^4.1.0",
-        "prettier-plugin-packagejson": "^2.5.14",
+        "prettier-plugin-packagejson": "^2.5.15",
         "prettier-plugin-sort-json": "^4.1.1",
         "prettier-plugin-toml": "^2.0.5",
         "typescript-eslint": "^8.33.0",
-        "virmator": "^13.15.1"
+        "virmator": "^13.15.2"
     },
     "engines": {
         "node": ">=22"
