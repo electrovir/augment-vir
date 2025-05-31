@@ -9,11 +9,13 @@ module.exports = {
     ],
     words: [
         ...baseConfig.words,
-        'nocheck',
-        'propstat',
-        'resolv',
-        'prismock',
         'alea',
         'baagøe',
+        'customizer',
+        'deepcopy',
+        'nocheck',
+        'prismock',
+        'propstat',
+        'resolv',
     ],
 };
