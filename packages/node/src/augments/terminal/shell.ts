@@ -173,12 +173,6 @@ export type RunShellCommandOptions = {
     stderrCallback?: (stderr: string, childProcess: ChildProcess) => MaybePromise<void> | undefined;
 };
 
-function prepareChunkForLogging(chunk: string | Buffer, trimEndingLine: boolean): string {
-    const stringified = chunk.toString();
-
-    return trimEndingLine ? stringified.replace(/\n$/, '') : stringified;
-}
-
 /**
  * Runs a shell command and returns its output.
  *
@@ -207,25 +201,19 @@ export async function runShellCommand(
 
         shellTarget.listen(ShellStdoutEvent, ({detail: chunk}) => {
             if (options.stdoutCallback) {
-                void options.stdoutCallback(
-                    prepareChunkForLogging(chunk, false),
-                    shellTarget.childProcess,
-                );
+                void options.stdoutCallback(chunk.toString(), shellTarget.childProcess);
             }
             if (options.hookUpToConsole) {
-                process.stdout.write(prepareChunkForLogging(chunk, true) + '\n');
+                process.stdout.write(chunk.toString());
             }
             stdout += String(chunk);
         });
         shellTarget.listen(ShellStderrEvent, ({detail: chunk}) => {
             if (options.stderrCallback) {
-                void options.stderrCallback(
-                    prepareChunkForLogging(chunk, false),
-                    shellTarget.childProcess,
-                );
+                void options.stderrCallback(chunk.toString(), shellTarget.childProcess);
             }
             if (options.hookUpToConsole) {
-                process.stderr.write(prepareChunkForLogging(chunk, true) + '\n');
+                process.stderr.write(chunk.toString());
             }
             stderr += String(chunk);
         });
