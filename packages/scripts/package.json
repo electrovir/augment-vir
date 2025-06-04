@@ -28,7 +28,7 @@
         "@augment-vir/assert": "^31.23.3",
         "@augment-vir/common": "^31.23.3",
         "@augment-vir/node": "^31.23.3",
-        "@virmator/docs": "^13.15.2",
+        "@virmator/docs": "^13.15.3",
         "jsdom": "^26.1.0",
         "typedoc": "^0.28.5"
     },
