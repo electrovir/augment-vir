@@ -60,6 +60,9 @@
         "istanbul-smart-text-reporter": "^1.1.5",
         "typescript": "^5.8.3"
     },
+    "peerDependencies": {
+        "element-vir": "*"
+    },
     "engines": {
         "node": ">=22"
     },

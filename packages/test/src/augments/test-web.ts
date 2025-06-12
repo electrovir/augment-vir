@@ -12,6 +12,7 @@ async function importWebTestApi(this: void) {
         '../test-web/type-into-element'
     );
     const {fixtureCleanup, fixture} = await import('@open-wc/testing-helpers');
+    const {renderElement} = await import('../test-web/render-element');
 
     return {
         /**
@@ -46,6 +47,11 @@ async function importWebTestApi(this: void) {
          * @returns A Promise that will resolve to the first child of the rendered HTML.
          */
         render: fixture,
+        /**
+         * Accepts an element-vir element definition, requires the elements inputs (if any), renders
+         * the element and returns the instance.
+         */
+        renderElement,
         /** Focus the given element and then type the given string. */
         typeIntoInput: typeStringIntoElement,
         /**

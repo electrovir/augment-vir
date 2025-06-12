@@ -62,8 +62,10 @@ describe(extractElementText.name, () => {
             },
         });
         const rendered = await testWeb.render(html`
-            <${TestElement2}><${TestElement2}>More text</${TestElement2}>
-            <${TestElement2}></${TestElement2}></${TestElement2}>
+            <${TestElement2}>
+                <${TestElement2}>More text</${TestElement2}>
+                <${TestElement2}></${TestElement2}>
+            </${TestElement2}>
         `);
 
         assert.strictEquals(
