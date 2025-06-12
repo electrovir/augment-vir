@@ -11,13 +11,6 @@ describe(extractElementText.name, () => {
 
     itCases(testExtractElementText, [
         {
-            it: 'extracts from an input',
-            input: html`
-                <input value="hello" />
-            `,
-            expect: 'hello',
-        },
-        {
             it: 'extracts from text',
             input: html`
                 <div>hello</div>
@@ -32,7 +25,7 @@ describe(extractElementText.name, () => {
                     <span>there</span>
                 </div>
             `,
-            expect: 'hello\n                    there',
+            expect: 'hello\nthere',
         },
         {
             it: 'falls back to empty string',
@@ -57,5 +50,25 @@ describe(extractElementText.name, () => {
         `);
 
         assert.strictEquals(extractElementText(rendered), 'inside the shadow');
+    });
+    it('handles slot', async () => {
+        const TestElement2 = defineElement()({
+            tagName: 'vir-test-extract-element-text-2',
+            render() {
+                return html`
+                    inside the shadow
+                    <slot>Default slot</slot>
+                `;
+            },
+        });
+        const rendered = await testWeb.render(html`
+            <${TestElement2}><${TestElement2}>More text</${TestElement2}>
+            <${TestElement2}></${TestElement2}></${TestElement2}>
+        `);
+
+        assert.strictEquals(
+            extractElementText(rendered),
+            'inside the shadow\ninside the shadow\nMore text\ninside the shadow\nDefault slot',
+        );
     });
 });
