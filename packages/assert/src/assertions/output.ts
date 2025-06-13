@@ -5,7 +5,6 @@ import {
     ensureErrorAndPrependMessage,
     extractErrorMessage,
     type MaybePromise,
-    stringify,
     wait,
 } from '@augment-vir/core';
 import {convertDuration} from '@date-vir/duration';
@@ -164,7 +163,7 @@ function innerAssertOutput<const ShouldReturnResult extends boolean>(
             } catch (error) {
                 reject(
                     new AssertionError(
-                        `Output from '${functionToCall.name}' did not produce expected output with input: ${stringify(inputs)}: ${extractErrorMessage(error)}`,
+                        `Output from '${functionToCall.name}' did not produce expected output. ${extractErrorMessage(error)}`,
                         failureMessage,
                     ),
                 );
@@ -180,7 +179,7 @@ function innerAssertOutput<const ShouldReturnResult extends boolean>(
             }
         } catch (error) {
             throw new AssertionError(
-                `Output from '${functionToCall.name}' did not produce expected output with input: ${stringify(inputs)}: ${extractErrorMessage(error)}`,
+                `Output from '${functionToCall.name}' did not produce expected output. ${extractErrorMessage(error)}`,
                 failureMessage,
             );
         }
