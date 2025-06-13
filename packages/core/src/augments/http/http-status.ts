@@ -548,13 +548,35 @@ export type SuccessHttpStatusCategories = Exclude<HttpStatusCategory, ErrorHttpS
  * @category Package : @augment-vir/common
  * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
-export function isErrorHttpStatus(
-    input: HttpStatus,
-): input is ExtractKeysWithMatchingValues<typeof httpStatusToCategory, ErrorHttpStatusCategories> {
+export function isErrorHttpStatus(input: HttpStatus): input is ErrorHttpStatus {
     return (errorHttpStatusCategories as ReadonlyArray<HttpStatusCategory>).includes(
         httpStatusToCategory[input],
     );
 }
+
+/**
+ * All error HTTP statuses.
+ *
+ * @category HTTP
+ * @category Package : @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
+ */
+export type ErrorHttpStatus = ExtractKeysWithMatchingValues<
+    typeof httpStatusToCategory,
+    ErrorHttpStatusCategories
+>;
+
+/**
+ * All success HTTP statuses.
+ *
+ * @category HTTP
+ * @category Package : @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
+ */
+export type SuccessHttpStatus = ExtractKeysWithMatchingValues<
+    typeof httpStatusToCategory,
+    SuccessHttpStatusCategories
+>;
 
 /**
  * A type that maps the given {@link HttpStatus} type parameter to its respective
