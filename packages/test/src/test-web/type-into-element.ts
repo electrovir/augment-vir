@@ -9,9 +9,9 @@ export async function typeString(text: string): Promise<void> {
 
 export async function typeStringIntoElement(
     text: string,
-    inputElement: Readonly<HTMLInputElement>,
+    element: Readonly<HTMLElement>,
 ): Promise<void> {
-    await focusElement(inputElement);
+    await focusElement(element);
 
     await typeString(text);
 }

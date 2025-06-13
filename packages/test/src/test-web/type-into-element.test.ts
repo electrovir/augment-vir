@@ -24,7 +24,7 @@ describe(testWeb.typeText.name, () => {
     });
 });
 
-describe(testWeb.typeIntoInput.name, () => {
+describe(testWeb.typeIntoElement.name, () => {
     it('types into a specific element', async () => {
         const element = await testWeb.render(html`
             <input />
@@ -32,7 +32,7 @@ describe(testWeb.typeIntoInput.name, () => {
 
         assert.instanceOf(element, HTMLInputElement);
 
-        await testWeb.typeIntoInput('hello there', element);
+        await testWeb.typeIntoElement('hello there', element);
 
         await waitUntil.strictEquals('hello there', () => element.value);
     });
@@ -43,7 +43,7 @@ describe(testWeb.typeIntoInput.name, () => {
 
         assert.instanceOf(element, HTMLInputElement);
 
-        await assert.throws(testWeb.typeIntoInput('hello there', element), {
+        await assert.throws(testWeb.typeIntoElement('hello there', element), {
             matchConstructor: AssertionError,
             matchMessage: 'times to focus the given input element',
         });

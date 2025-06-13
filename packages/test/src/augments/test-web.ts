@@ -53,7 +53,7 @@ async function importWebTestApi(this: void) {
          */
         renderElement,
         /** Focus the given element and then type the given string. */
-        typeIntoInput: typeStringIntoElement,
+        typeIntoElement: typeStringIntoElement,
         /**
          * Types the given string as if it were input by a keyboard. This doesn't try to type into
          * any element in particular, it'll go wherever the current focus is, if any.
