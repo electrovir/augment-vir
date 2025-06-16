@@ -51,6 +51,7 @@ export * from './augments/object/merge-property-arrays.js';
 export * from './augments/object/object-entries.js';
 export * from './augments/object/object-filter.js';
 export * from './augments/object/object-keys.js';
+export * from './augments/object/object-sort.js';
 export * from './augments/object/object-values.js';
 export * from './augments/path/esm-path.js';
 export * from './augments/prisma/base-prisma-types.js';
