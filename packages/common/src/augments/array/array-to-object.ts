@@ -2,6 +2,8 @@ import {check} from '@augment-vir/assert';
 import {type MaybePromise, ensureError} from '@augment-vir/core';
 import {getOrSet} from '../object/get-or-set.js';
 import {typedObjectFromEntries} from '../object/object-entries.js';
+import {type InverseBoolean} from '../type/boolean.js';
+import {type MakePartial} from '../type/partial.js';
 import {filterMap} from './filter.js';
 
 /**
@@ -10,12 +12,13 @@ import {filterMap} from './filter.js';
  *
  * @category Array
  * @category Object
+ * @category Package : @augment-vir/common
  * @example
  *
  * ```ts
- * import {arrayToObject} from '@augment-vir/common';
+ * import {groupArrayBy} from '@augment-vir/common';
  *
- * const result = arrayToObject(
+ * const result = groupArrayBy(
  *     [
  *         'a',
  *         'b',
@@ -24,15 +27,23 @@ import {filterMap} from './filter.js';
  * );
  * // result is `{key-a: ['a'], key-b: ['b']}`
  * ```
+ *
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
-export function groupArrayBy<ElementType, NewKey extends PropertyKey>(
+export function groupArrayBy<
+    ElementType,
+    NewKey extends PropertyKey,
+    const UseRequired extends boolean | undefined = undefined,
+>(
     inputArray: ReadonlyArray<ElementType>,
     callback: (
         value: ElementType,
         index: number,
         originalArray: ReadonlyArray<ElementType>,
     ) => NewKey,
-): Partial<Record<NewKey, ElementType[]>> {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    options: ArrayToObjectOptions<UseRequired> = {},
+): MakePartial<Record<NewKey, ElementType[]>, InverseBoolean<UseRequired>> {
     return inputArray.reduce(
         (accum, entry, index, originalArray) => {
             const key = callback(entry, index, originalArray);
@@ -43,50 +54,26 @@ export function groupArrayBy<ElementType, NewKey extends PropertyKey>(
             return accum;
         },
         {} as Record<NewKey, ElementType[]>,
-    ) as Partial<Record<NewKey, ElementType[]>>;
+    ) as MakePartial<Record<NewKey, ElementType[]>, InverseBoolean<UseRequired>>;
 }
 
-export function arrayToObject<ElementType, NewKey extends PropertyKey, NewValue>(
-    inputArray: ReadonlyArray<ElementType>,
-    callback: (
-        value: ElementType,
-        index: number,
-        originalArray: ReadonlyArray<ElementType>,
-    ) => Promise<
-        | {
-              key: NewKey;
-              value: NewValue;
-          }
-        | undefined
-    >,
-): Promise<Partial<Record<NewKey, NewValue>>>;
-export function arrayToObject<ElementType, NewKey extends PropertyKey, NewValue>(
-    inputArray: ReadonlyArray<ElementType>,
-    callback: (
-        value: ElementType,
-        index: number,
-        originalArray: ReadonlyArray<ElementType>,
-    ) =>
-        | {
-              key: NewKey;
-              value: NewValue;
-          }
-        | undefined,
-): Partial<Record<NewKey, NewValue>>;
-export function arrayToObject<ElementType, NewKey extends PropertyKey, NewValue>(
-    inputArray: ReadonlyArray<ElementType>,
-    callback: (
-        value: ElementType,
-        index: number,
-        originalArray: ReadonlyArray<ElementType>,
-    ) => MaybePromise<
-        | {
-              key: NewKey;
-              value: NewValue;
-          }
-        | undefined
-    >,
-): MaybePromise<Partial<Record<NewKey, NewValue>>>;
+/**
+ * Options for {@link groupArrayBy} and {@link arrayToObject}.
+ *
+ * @category Array
+ * @category Object
+ * @category Package : @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
+ */
+export type ArrayToObjectOptions<UseRequired extends boolean | undefined> = Partial<{
+    /**
+     * Set to `true` to make the object return type not use `Partial<>`.
+     *
+     * @default false
+     */
+    useRequired: UseRequired;
+}>;
+
 /**
  * Similar to {@link groupArrayBy} but maps array entries to a single key and requires `key` _and_
  * `value` outputs from the callback. The resulting object does not have an array of elements
@@ -115,7 +102,109 @@ export function arrayToObject<ElementType, NewKey extends PropertyKey, NewValue>
  *
  * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
-export function arrayToObject<ElementType, NewKey extends PropertyKey, NewValue>(
+export function arrayToObject<
+    ElementType,
+    NewKey extends PropertyKey,
+    NewValue,
+    const UseRequired extends boolean | undefined = undefined,
+>(
+    inputArray: ReadonlyArray<ElementType>,
+    callback: (
+        value: ElementType,
+        index: number,
+        originalArray: ReadonlyArray<ElementType>,
+    ) => Promise<
+        | {
+              key: NewKey;
+              value: NewValue;
+          }
+        | undefined
+    >,
+    /** Optional. */
+    options?: ArrayToObjectOptions<UseRequired>,
+): Promise<MakePartial<Record<NewKey, NewValue>, InverseBoolean<UseRequired>>>;
+/**
+ * Similar to {@link groupArrayBy} but maps array entries to a single key and requires `key` _and_
+ * `value` outputs from the callback. The resulting object does not have an array of elements
+ * (unless the original array itself contains arrays). Automatically handles the case where the
+ * callback returns a promise.
+ *
+ * @category Array
+ * @category Object
+ * @category Package : @augment-vir/common
+ * @example
+ *
+ * ```ts
+ * import {arrayToObject} from '@augment-vir/common';
+ *
+ * const result = arrayToObject(
+ *     [
+ *         'a',
+ *         'b',
+ *     ],
+ *     (value) => {
+ *         return {key: `key-${value}`, value};
+ *     },
+ * );
+ * // result is `{key-a: 'a', key-b: 'b'}`
+ * ```
+ *
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
+ */
+export function arrayToObject<
+    ElementType,
+    NewKey extends PropertyKey,
+    NewValue,
+    const UseRequired extends boolean | undefined = undefined,
+>(
+    inputArray: ReadonlyArray<ElementType>,
+    callback: (
+        value: ElementType,
+        index: number,
+        originalArray: ReadonlyArray<ElementType>,
+    ) =>
+        | {
+              key: NewKey;
+              value: NewValue;
+          }
+        | undefined,
+    /** Optional. */
+    options?: ArrayToObjectOptions<UseRequired>,
+): MakePartial<Record<NewKey, NewValue>, InverseBoolean<UseRequired>>;
+/**
+ * Similar to {@link groupArrayBy} but maps array entries to a single key and requires `key` _and_
+ * `value` outputs from the callback. The resulting object does not have an array of elements
+ * (unless the original array itself contains arrays). Automatically handles the case where the
+ * callback returns a promise.
+ *
+ * @category Array
+ * @category Object
+ * @category Package : @augment-vir/common
+ * @example
+ *
+ * ```ts
+ * import {arrayToObject} from '@augment-vir/common';
+ *
+ * const result = arrayToObject(
+ *     [
+ *         'a',
+ *         'b',
+ *     ],
+ *     (value) => {
+ *         return {key: `key-${value}`, value};
+ *     },
+ * );
+ * // result is `{key-a: 'a', key-b: 'b'}`
+ * ```
+ *
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
+ */
+export function arrayToObject<
+    ElementType,
+    NewKey extends PropertyKey,
+    NewValue,
+    const UseRequired extends boolean | undefined = undefined,
+>(
     inputArray: ReadonlyArray<ElementType>,
     callback: (
         value: ElementType,
@@ -128,7 +217,59 @@ export function arrayToObject<ElementType, NewKey extends PropertyKey, NewValue>
           }
         | undefined
     >,
-): MaybePromise<Partial<Record<NewKey, NewValue>>> {
+    /** Optional. */
+    options?: ArrayToObjectOptions<UseRequired>,
+): MaybePromise<MakePartial<Record<NewKey, NewValue>, InverseBoolean<UseRequired>>>;
+/**
+ * Similar to {@link groupArrayBy} but maps array entries to a single key and requires `key` _and_
+ * `value` outputs from the callback. The resulting object does not have an array of elements
+ * (unless the original array itself contains arrays). Automatically handles the case where the
+ * callback returns a promise.
+ *
+ * @category Array
+ * @category Object
+ * @category Package : @augment-vir/common
+ * @example
+ *
+ * ```ts
+ * import {arrayToObject} from '@augment-vir/common';
+ *
+ * const result = arrayToObject(
+ *     [
+ *         'a',
+ *         'b',
+ *     ],
+ *     (value) => {
+ *         return {key: `key-${value}`, value};
+ *     },
+ * );
+ * // result is `{key-a: 'a', key-b: 'b'}`
+ * ```
+ *
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
+ */
+export function arrayToObject<
+    ElementType,
+    NewKey extends PropertyKey,
+    NewValue,
+    const UseRequired extends boolean | undefined = undefined,
+>(
+    inputArray: ReadonlyArray<ElementType>,
+    callback: (
+        value: ElementType,
+        index: number,
+        originalArray: ReadonlyArray<ElementType>,
+    ) => MaybePromise<
+        | {
+              key: NewKey;
+              value: NewValue;
+          }
+        | undefined
+    >,
+    /** Optional. */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    options: ArrayToObjectOptions<UseRequired> = {},
+): MaybePromise<MakePartial<Record<NewKey, NewValue>, InverseBoolean<UseRequired>>> {
     try {
         let gotAPromise = false as boolean;
 

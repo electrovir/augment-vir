@@ -154,6 +154,24 @@ describe(groupArrayBy.name, () => {
                 }),
             )
             .equals<Partial<Record<TestEnum, {a: number; b: string}[]>>>();
+
+        assert
+            .tsType(
+                groupArrayBy(
+                    testEntries,
+                    (entry) => {
+                        if (entry.a === 1) {
+                            return TestEnum.First;
+                        } else {
+                            return TestEnum.Second;
+                        }
+                    },
+                    {
+                        useRequired: true,
+                    },
+                ),
+            )
+            .equals<Record<TestEnum, {a: number; b: string}[]>>();
     });
 });
 
@@ -411,5 +429,28 @@ describe(arrayToObject.name, () => {
                 }),
             )
             .equals<Partial<Record<TestEnum, {a: number; b: string}>>>();
+        assert
+            .tsType(
+                arrayToObject(
+                    testEntries,
+                    (value) => {
+                        if (value.a === 1) {
+                            return {
+                                key: TestEnum.First,
+                                value,
+                            };
+                        } else {
+                            return {
+                                key: TestEnum.Second,
+                                value,
+                            };
+                        }
+                    },
+                    {
+                        useRequired: true,
+                    },
+                ),
+            )
+            .equals<Record<TestEnum, {a: number; b: string}>>();
     });
 });
