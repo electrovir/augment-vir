@@ -12,9 +12,15 @@ import {DeferredPromise} from './deferred-promise.js';
  */
 export function wait(duration: Readonly<AnyDuration>): Promise<void> {
     const deferredPromise = new DeferredPromise();
-    const milliseconds = convertDuration(duration, {milliseconds: true}).milliseconds;
+    const isInfinity = Object.values(duration).some(
+        (value) => value === Infinity || value === -Infinity,
+    );
 
-    if (milliseconds !== Infinity) {
+    const milliseconds = isInfinity
+        ? Infinity
+        : convertDuration(duration, {milliseconds: true}).milliseconds;
+
+    if (milliseconds !== Infinity && milliseconds !== -Infinity) {
         setTimeout(
             () => {
                 deferredPromise.resolve();

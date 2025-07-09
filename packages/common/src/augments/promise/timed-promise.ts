@@ -40,7 +40,11 @@ export function wrapPromiseInTimeout<T>(
     originalPromise: MaybePromise<T>,
     failureMessage?: string | undefined,
 ): Promise<T> {
-    const milliseconds = convertDuration(duration, {milliseconds: true}).milliseconds;
+    const isInfinity = Object.values(duration).some((value) => value && check.isInfinite(value));
+
+    const milliseconds = isInfinity
+        ? Infinity
+        : convertDuration(duration, {milliseconds: true}).milliseconds;
 
     return new Promise<T>(async (resolve, reject) => {
         const timeoutId =
