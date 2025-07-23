@@ -39,6 +39,7 @@ export * from './augments/number/scientific.js';
 export * from './augments/number/truncate-number.js';
 export * from './augments/number/wrap-number.js';
 export * from './augments/object/deep-copy.js';
+export * from './augments/object/deep-value.js';
 export * from './augments/object/diff.js';
 export * from './augments/object/empty.js';
 export * from './augments/object/get-or-set.js';
