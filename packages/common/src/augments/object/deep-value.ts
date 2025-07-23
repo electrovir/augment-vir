@@ -1,3 +1,4 @@
+import {check} from '@augment-vir/assert';
 import {type AnyObject} from '@augment-vir/core';
 
 /**
@@ -27,12 +28,16 @@ export function getDeepValue<
     const Parent extends AnyObject,
     const Keys extends ReadonlyArray<PropertyKey>,
 >(parent: Parent, keys: Readonly<Keys>): DeepValue<Parent, Keys> {
+    if (!keys.length) {
+        return parent as DeepValue<Parent, Keys>;
+    }
+
     const innerParent = parent as Parent | undefined;
 
     const currentKey = keys[0];
 
-    if (currentKey && innerParent && currentKey in innerParent) {
-        return getDeepValue(innerParent, keys.slice(1)) as any;
+    if (currentKey != undefined && check.hasKey(innerParent, currentKey)) {
+        return getDeepValue(innerParent[currentKey], keys.slice(1));
     } else {
         return undefined as DeepValue<any, any>;
     }
