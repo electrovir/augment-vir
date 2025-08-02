@@ -1,4 +1,8 @@
-import {type PartialWithUndefined} from '@augment-vir/core';
+import {
+    type FirstLetterLowercase,
+    type FirstLetterUppercase,
+    type PartialWithUndefined,
+} from '@augment-vir/core';
 
 /**
  * Options for casing functions in `@augment-vir/common`.
@@ -37,6 +41,41 @@ export const defaultCasingOptions: Required<CasingOptions> = {
 export enum StringCase {
     Upper = 'upper',
     Lower = 'lower',
+}
+
+/**
+ * Convert the first letter of a string to either lower or uppercase.
+ *
+ * @category String
+ * @category Package : @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
+ */
+export type FirstLetterCase<
+    SpecificCase extends StringCase,
+    Value extends string,
+> = SpecificCase extends StringCase.Lower
+    ? FirstLetterLowercase<Value>
+    : FirstLetterUppercase<Value>;
+
+/**
+ * Set the first letter of the input to uppercase or lowercase.
+ *
+ * @category String
+ * @category Package : @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
+ */
+export function setFirstLetterCasing<
+    const SpecificCase extends StringCase,
+    const Value extends string,
+>(input: Value, stringCase: SpecificCase): FirstLetterCase<SpecificCase, Value> {
+    if (!input.length) {
+        return '' as FirstLetterCase<SpecificCase, Value>;
+    }
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const firstLetter: string = input[0]!;
+    return ((stringCase === StringCase.Upper
+        ? firstLetter.toUpperCase()
+        : firstLetter.toLowerCase()) + input.slice(1)) as FirstLetterCase<SpecificCase, Value>;
 }
 
 /**

@@ -1,5 +1,4 @@
-import {type BasePrismaClient} from './base-prisma-types.js';
-import {type PrismaModelName} from './prisma-model-name.js';
+import {type BaseTypeMap} from './base-prisma-types.js';
 
 /**
  * A basic model entry with only its immediate properties.
@@ -18,9 +17,9 @@ import {type PrismaModelName} from './prisma-model-name.js';
  * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type PrismaBasicModel<
-    PrismaClient extends BasePrismaClient,
-    Model extends PrismaModelName<PrismaClient>,
-> = PrismaClient['model'][Model]['payload']['scalars'];
+    TypeMap extends BaseTypeMap,
+    Model extends keyof TypeMap['model'],
+> = TypeMap['model'][Model]['payload']['scalars'];
 
 /**
  * Basic model entries for all models in the database.
@@ -29,6 +28,6 @@ export type PrismaBasicModel<
  * @category Package : @augment-vir/common
  * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
-export type PrismaAllBasicModels<PrismaClient extends BasePrismaClient> = Partial<{
-    [ModelName in PrismaModelName<PrismaClient>]: PrismaBasicModel<PrismaClient, ModelName>[];
-}>;
+export type PrismaAllBasicModels<TypeMap extends BaseTypeMap> = {
+    [ModelName in keyof TypeMap['model']]: PrismaBasicModel<TypeMap, ModelName>;
+};

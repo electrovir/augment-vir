@@ -1,4 +1,5 @@
-import {type BasePrismaClient} from './base-prisma-types.js';
+import {type FirstLetterLowercase} from '@augment-vir/core';
+import {type BasePrismaClient, type BaseTypeMap} from './base-prisma-types.js';
 import {type PrismaModelName} from './prisma-model-name.js';
 
 /**
@@ -79,9 +80,12 @@ export const prismaModelCreateOmitId = Symbol('prisma-model-create-exclude-id');
  */
 export type PrismaModelCreate<
     PrismaClient extends BasePrismaClient,
-    Model extends PrismaModelName<PrismaClient>,
+    TypeMap extends BaseTypeMap,
+    Model extends PrismaModelName<TypeMap>,
 > =
-    NonNullable<Parameters<PrismaClient[Model]['create']>[0]> extends {data?: infer Data}
+    NonNullable<Parameters<PrismaClient[FirstLetterLowercase<Model>]['create']>[0]> extends {
+        data?: infer Data;
+    }
         ? NonNullable<Data> &
               Partial<{
                   [prismaModelCreateExclude]: true;
@@ -119,10 +123,11 @@ export type PrismaModelCreate<
  */
 export type PrismaKeyedModelCreate<
     PrismaClient extends BasePrismaClient,
-    Model extends PrismaModelName<PrismaClient>,
+    TypeMap extends BaseTypeMap,
+    Model extends PrismaModelName<TypeMap>,
 > = {
     /** `EntryName` is for naming mocks. It doesn't correspond to model names or their field names. */
-    [EntryName in string]: PrismaModelCreate<PrismaClient, Model>;
+    [EntryName in string]: PrismaModelCreate<PrismaClient, TypeMap, Model>;
 };
 
 /**
@@ -168,10 +173,13 @@ export type PrismaKeyedModelCreate<
  *
  * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
-export type PrismaAllModelsCreate<PrismaClient extends BasePrismaClient> = Readonly<
+export type PrismaAllModelsCreate<
+    PrismaClient extends BasePrismaClient,
+    TypeMap extends BaseTypeMap,
+> = Readonly<
     Partial<{
-        [Model in PrismaModelName<PrismaClient>]:
-            | Readonly<PrismaKeyedModelCreate<PrismaClient, Model>>
-            | ReadonlyArray<Readonly<PrismaModelCreate<PrismaClient, Model>>>;
+        [Model in PrismaModelName<TypeMap>]:
+            | Readonly<PrismaKeyedModelCreate<PrismaClient, TypeMap, Model>>
+            | ReadonlyArray<Readonly<PrismaModelCreate<PrismaClient, TypeMap, Model>>>;
     }>
 >;

@@ -6,12 +6,13 @@
 
 import {assert} from '@augment-vir/assert';
 import {
-    capitalizeFirstLetter,
     collapseWhiteSpace,
     kebabCaseToCamelCase,
     log,
     mapObjectValues,
     removePrefix,
+    setFirstLetterCasing,
+    StringCase,
     toEnsuredNumber,
 } from '@augment-vir/common';
 import {writeFileAndDir} from '@augment-vir/node';
@@ -167,7 +168,7 @@ async function writeStatuses(statusesByCategory: StatusesByCategory) {
         const statuses = statusesByCategory[category];
 
         statusesInternals += `\n\n/** ${(index + 1) * 100} level codes (${category}) */\n\n`;
-        statusByCategoryString += `[HttpStatusCategory.${capitalizeFirstLetter(category)}]: [`;
+        statusByCategoryString += `[HttpStatusCategory.${setFirstLetterCasing(category, StringCase.Upper)}]: [`;
 
         statuses.forEach((status) => {
             statusesInternals += `/**\n* ${status.description}\n\n* See ${status.url}\n*/\n${status.name} = ${status.number},\n`;

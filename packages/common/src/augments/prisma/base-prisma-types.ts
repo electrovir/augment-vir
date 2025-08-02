@@ -1,23 +1,6 @@
 import {type AnyFunction, type AnyObject} from '@augment-vir/core';
 
 /**
- * A base type for Prisma model payloads because Prisma doesn't give us one. This currently only
- * includes the properties that are used within this package.
- *
- * Note: this omits the `composites` property because I don't have any examples of what those
- * actually are.
- *
- * @category Prisma : Common
- * @category Package : @augment-vir/common
- * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
- */
-export type BasePrismaPayload = {
-    name: string;
-    objects: Record<string, BasePrismaPayload | BasePrismaPayload[] | null>;
-    scalars: AnyObject;
-};
-
-/**
  * Base Prisma client type that all `PrismaClient` instances should be able to match, with enough
  * data that it'll omit random accidental objects.
  *
@@ -36,3 +19,22 @@ export type BasePrismaClient = {
     $queryRawUnsafe: AnyFunction;
     $transaction: AnyFunction;
 } & {[ModelName in string]: any};
+
+/**
+ * Base Prisma.TypeMap type.
+ *
+ * @category Prisma : Common
+ * @category Package : @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
+ */
+export type BaseTypeMap = {
+    model: Record<
+        string,
+        {
+            payload: {
+                scalars: AnyObject;
+                objects: AnyObject;
+            };
+        }
+    >;
+};

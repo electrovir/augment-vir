@@ -4,18 +4,22 @@ import {
     arrayToObject,
     awaitedForEach,
     type BasePrismaClient,
+    type BaseTypeMap,
     ensureErrorAndPrependMessage,
     filterMap,
+    type FirstLetterLowercase,
     getObjectTypedEntries,
     getObjectTypedValues,
     mergeDefinedProperties,
     omitObjectKeys,
     type PartialWithUndefined,
-    type PrismaAllBasicModels,
     type PrismaAllModelsCreate,
+    type PrismaBasicModel,
     prismaModelCreateExclude,
     prismaModelCreateOmitId,
     type PrismaModelName,
+    setFirstLetterCasing,
+    StringCase,
 } from '@augment-vir/common';
 import {type IsAny} from 'type-fest';
 
@@ -66,13 +70,16 @@ import {type IsAny} from 'type-fest';
  *
  * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
  */
-export type PrismaAddDataData<PrismaClient extends BasePrismaClient> =
-    | Readonly<PrismaAllModelsCreate<PrismaClient>>
-    | ReadonlyArray<Readonly<PrismaAllModelsCreate<PrismaClient>>>;
+export type PrismaAddDataData<PrismaClient extends BasePrismaClient, TypeMap extends BaseTypeMap> =
+    | Readonly<PrismaAllModelsCreate<PrismaClient, TypeMap>>
+    | ReadonlyArray<Readonly<PrismaAllModelsCreate<PrismaClient, TypeMap>>>;
 
-export async function addData<const PrismaClient extends BasePrismaClient>(
+export async function addData<
+    const PrismaClient extends BasePrismaClient,
+    const TypeMap extends BaseTypeMap,
+>(
     prismaClient: Readonly<PrismaClient>,
-    data: IsAny<PrismaClient> extends true ? any : PrismaAddDataData<PrismaClient>,
+    data: IsAny<PrismaClient> extends true ? any : PrismaAddDataData<PrismaClient, TypeMap>,
 ): Promise<void> {
     const dataArray: Record<string, AnyObject>[] = (check.isArray(data) ? data : [data]) as Record<
         string,
@@ -104,7 +111,8 @@ async function addModelDataObject(
                 ? mockData
                 : getObjectTypedValues(mockData);
 
-            const modelApi: AnyObject | undefined = prismaClient[modelName];
+            const modelApi: AnyObject | undefined =
+                prismaClient[setFirstLetterCasing(modelName, StringCase.Lower)];
 
             assert.isDefined(modelApi, `No PrismaClient API found for model '${modelName}'`);
 
@@ -141,9 +149,8 @@ const prismockKeys = [
     'setData',
 ];
 
-export function getAllPrismaModelNames<const PrismaClient extends BasePrismaClient>(
-    prismaClient: PrismaClient,
-): PrismaModelName<PrismaClient>[] {
+/** These are not the real model names, they are the names on the PrismaClient (which are lowercase). */
+export function getAllPrismaModelKeys(prismaClient: BasePrismaClient): string[] {
     return Object.keys(prismaClient)
         .filter(
             (key) =>
@@ -152,7 +159,7 @@ export function getAllPrismaModelNames<const PrismaClient extends BasePrismaClie
                 !prismockKeys.includes(key) &&
                 key !== 'constructor',
         )
-        .sort() as PrismaModelName<PrismaClient>[];
+        .sort();
 }
 
 /**
@@ -182,14 +189,28 @@ const defaultPrismaDumpDataOptions: PrismaDataDumpOptions = {
     omitFields: [],
 };
 
-export async function dumpData<const PrismaClient extends BasePrismaClient>(
-    prismaClient: PrismaClient,
+/**
+ * Output for `prisma.client.dumpData`.
+ *
+ * @category Prisma : Node
+ * @category Package : @augment-vir/node
+ * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
+ */
+export type PrismaDumpOutput<TypeMap extends BaseTypeMap> = Partial<{
+    [Model in PrismaModelName<TypeMap> as FirstLetterLowercase<Model>]: PrismaBasicModel<
+        TypeMap,
+        Model
+    >[];
+}>;
+
+export async function dumpData<const TypeMap extends BaseTypeMap>(
+    prismaClient: BasePrismaClient,
     options: Readonly<PartialWithUndefined<PrismaDataDumpOptions>> = {},
-): Promise<PrismaAllBasicModels<PrismaClient>> {
-    const modelNames = getAllPrismaModelNames(prismaClient);
+): Promise<PrismaDumpOutput<TypeMap>> {
+    const modelNames = getAllPrismaModelKeys(prismaClient);
     const finalOptions = mergeDefinedProperties(defaultPrismaDumpDataOptions, options);
 
-    const data: Partial<Record<PrismaModelName<PrismaClient>, AnyObject[]>> = await arrayToObject(
+    const data: Partial<Record<PrismaModelName<TypeMap>, AnyObject[]>> = await arrayToObject(
         modelNames,
         async (modelName) => {
             try {
@@ -222,5 +243,5 @@ export async function dumpData<const PrismaClient extends BasePrismaClient>(
         },
     );
 
-    return data as PrismaAllBasicModels<PrismaClient>;
+    return data as PrismaDumpOutput<TypeMap>;
 }

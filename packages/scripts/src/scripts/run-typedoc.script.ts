@@ -34,12 +34,13 @@ async function main() {
             /** The default tags we use. */
             '@category',
             '@default',
+            '@deprecated',
             '@example',
             '@param',
             '@returns',
+            '@see',
             '@template',
             '@throws',
-            '@see',
 
             /** Custom tags we've added. */
             '@package',

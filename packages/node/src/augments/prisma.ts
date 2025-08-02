@@ -1,4 +1,4 @@
-import {addData, dumpData, getAllPrismaModelNames} from '../prisma/model-data.js';
+import {addData, dumpData} from '../prisma/model-data.js';
 import {generatePrismaClient, isGeneratedPrismaClientCurrent} from '../prisma/prisma-client.js';
 import {
     doesPrismaDiffExist,
@@ -18,6 +18,7 @@ import {PrismaMigrationNeededError, PrismaResetNeededError} from '../prisma/pris
 export type {
     PrismaAddDataData as PrismaAddModelData,
     PrismaDataDumpOptions,
+    PrismaDumpOutput,
 } from '../prisma/model-data.js';
 export * from '../prisma/prisma-errors.js';
 export type {PrismaMigrationStatus} from '../prisma/prisma-migrations.js';
@@ -169,7 +170,5 @@ export const prisma = {
          * @see {@link PrismaDataDumpOptions}
          */
         dumpData: dumpData,
-        /** List all model names in the given Prisma client. */
-        listModelNames: getAllPrismaModelNames,
     },
 };

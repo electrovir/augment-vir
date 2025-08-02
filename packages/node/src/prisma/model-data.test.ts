@@ -10,12 +10,12 @@ import {describe, it, itCases} from '@augment-vir/test';
 import {type IsAny} from 'type-fest';
 import {prisma} from '../augments/prisma.js';
 import {testPrismaSchemaPath} from '../file-paths.mock.js';
-import {addData, dumpData, getAllPrismaModelNames, type PrismaAddDataData} from './model-data.js';
+import {addData, dumpData, getAllPrismaModelKeys, type PrismaAddDataData} from './model-data.js';
 import {clearTestDatabaseOutputs} from './prisma-database.mock.js';
 
 // @ts-ignore: this might not be generated yet
 // eslint-disable-next-line sonarjs/no-internal-api-use
-import {type PrismaClient} from '../../node_modules/.prisma/index.js';
+import {type Prisma, type PrismaClient} from '../../node_modules/.prisma/index.js';
 
 describe(
     [
@@ -36,7 +36,9 @@ describe(
         }
 
         async function testData(
-            data: IsAny<PrismaClient> extends true ? any : PrismaAddDataData<PrismaClient>,
+            data: IsAny<PrismaClient> extends true
+                ? any
+                : PrismaAddDataData<PrismaClient, Prisma.TypeMap>,
         ) {
             const prismaClient = await setupPrismaClient();
             try {
@@ -59,7 +61,7 @@ describe(
         it('includes all fields by default', async () => {
             const prismaClient = await setupPrismaClient();
 
-            await prisma.client.addData<any>(prismaClient, {
+            await prisma.client.addData<any, any>(prismaClient, {
                 user: [
                     {
                         email: 'fake@example.com',
@@ -114,7 +116,7 @@ describe(
         it('adds without id', async () => {
             const prismaClient = await setupPrismaClient();
 
-            await prisma.client.addData<any>(prismaClient, {
+            await prisma.client.addData<any, any>(prismaClient, {
                 user: [
                     {
                         email: 'fake@example.com',
@@ -138,7 +140,7 @@ describe(
                 ],
             );
 
-            await prisma.client.addData<any>(prismaClient, {
+            await prisma.client.addData<any, any>(prismaClient, {
                 user: [
                     {
                         email: 'fake2@example.com',
@@ -174,14 +176,14 @@ describe(
                 it: 'adds a mix of keyed and array data',
                 input: [
                     {
-                        user: [
+                        User: [
                             {
                                 email: 'fake@example.com',
                                 // eslint-disable-next-line sonarjs/no-hardcoded-passwords
                                 password: 'fake password',
                             },
                         ],
-                        region: {
+                        Region: {
                             region1: {
                                 regionName: 'fake',
                             },
@@ -206,14 +208,14 @@ describe(
             {
                 it: 'adds keyed-only data',
                 input: {
-                    user: [
+                    User: [
                         {
                             email: 'fake@example.com',
                             // eslint-disable-next-line sonarjs/no-hardcoded-passwords
                             password: 'fake password',
                         },
                     ],
-                    region: {
+                    Region: {
                         region1: {
                             regionName: 'fake',
                         },
@@ -237,7 +239,7 @@ describe(
             {
                 it: 'leaves out excluded entries',
                 input: {
-                    user: [
+                    User: [
                         {
                             email: 'fake@example.com',
                             // eslint-disable-next-line sonarjs/no-hardcoded-passwords
@@ -250,7 +252,7 @@ describe(
                             password: 'fake password 2',
                         },
                     ],
-                    region: [{regionName: 'fake'}],
+                    Region: [{regionName: 'fake'}],
                 },
                 expect: {
                     region: [{regionName: 'fake'}],
@@ -270,20 +272,20 @@ describe(
             {
                 it: 'fails with informative message',
                 input: {
-                    user: [
+                    User: [
                         // @ts-ignore: intentionally missing fields
                         {},
                     ],
                 },
                 throws: {
-                    matchMessage: "Failed to create many 'user' entries",
+                    matchMessage: "Failed to create many 'User' entries",
                 },
             },
         ]);
     },
 );
 
-describe(getAllPrismaModelNames.name, () => {
+describe(getAllPrismaModelKeys.name, () => {
     it('gets all model names', async () => {
         await clearTestDatabaseOutputs();
 
@@ -294,7 +296,7 @@ describe(getAllPrismaModelNames.name, () => {
 
         const prismaClient = new PrismaClient();
 
-        assert.deepEquals(prisma.client.listModelNames(prismaClient), [
+        assert.deepEquals(getAllPrismaModelKeys(prismaClient), [
             'region',
             'user',
             'userPost',

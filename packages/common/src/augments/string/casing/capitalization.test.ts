@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-deprecated */
+/* eslint-disable sonarjs/deprecation */
+
 import {describe, itCases} from '@augment-vir/test';
 import {capitalizeFirstLetter} from './capitalization.js';
 

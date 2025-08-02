@@ -1,4 +1,4 @@
-import {type BasePrismaClient} from './base-prisma-types.js';
+import {type BaseTypeMap} from './base-prisma-types.js';
 
 /**
  * Extracts all model names from a generated `PrismaClient`.
@@ -16,7 +16,4 @@ import {type BasePrismaClient} from './base-prisma-types.js';
  *
  * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
-export type PrismaModelName<PrismaClient extends BasePrismaClient> = Exclude<
-    keyof PrismaClient,
-    `$${string}` | symbol
->;
+export type PrismaModelName<TypeMap extends BaseTypeMap> = Extract<keyof TypeMap['model'], string>;

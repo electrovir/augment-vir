@@ -1,5 +1,5 @@
 import {describe, itCases} from '@augment-vir/test';
-import {hasCase, isCase, StringCase} from './casing.js';
+import {hasCase, isCase, setFirstLetterCasing, StringCase} from './casing.js';
 
 describe(hasCase.name, () => {
     itCases(hasCase, [
@@ -27,6 +27,43 @@ describe(hasCase.name, () => {
             it: 'rejects an empty string',
             input: '',
             expect: false,
+        },
+    ]);
+});
+
+describe(setFirstLetterCasing.name, () => {
+    itCases(setFirstLetterCasing, [
+        {
+            it: 'makes first letter lowercase',
+            inputs: [
+                'HELLO',
+                StringCase.Lower,
+            ],
+            expect: 'hELLO',
+        },
+        {
+            it: 'makes first letter uppercase',
+            inputs: [
+                'hello',
+                StringCase.Upper,
+            ],
+            expect: 'Hello',
+        },
+        {
+            it: 'handles setting lowercase on empty string',
+            inputs: [
+                '',
+                StringCase.Lower,
+            ],
+            expect: '',
+        },
+        {
+            it: 'handles setting uppercase on empty string',
+            inputs: [
+                '',
+                StringCase.Upper,
+            ],
+            expect: '',
         },
     ]);
 });

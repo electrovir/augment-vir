@@ -11,12 +11,14 @@ export function maybeCapitalize(
     input: string,
     casingOptions: Pick<CasingOptions, 'capitalizeFirstLetter'>,
 ): string {
+    // eslint-disable-next-line sonarjs/deprecation, @typescript-eslint/no-deprecated
     return casingOptions.capitalizeFirstLetter ? capitalizeFirstLetter(input) : input;
 }
 
 /**
  * Capitalize the first letter of the input.
  *
+ * @deprecated Prefer `setFirstLetterCasing`.
  * @category String
  * @category Package : @augment-vir/common
  * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
