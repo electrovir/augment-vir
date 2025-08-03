@@ -1,4 +1,12 @@
-import {type CompleteValues} from '@augment-vir/core';
+import {
+    type AnyObject,
+    type CompleteValues,
+    type ExcludeKeysWithMatchingValues,
+    type ExtractKeysWithMatchingValues,
+} from '@augment-vir/core';
+import {type OptionalKeysOf, type RequiredKeysOf} from 'type-fest';
+import {mapObject} from './map-entries.js';
+import {mapObjectValues} from './map-values.js';
 import {getObjectTypedEntries, typedObjectFromEntries} from './object-entries.js';
 
 /**
@@ -22,7 +30,7 @@ import {getObjectTypedEntries, typedObjectFromEntries} from './object-entries.js
  * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function filterObject<ObjectGeneric>(
-    inputObject: ObjectGeneric,
+    inputObject: Readonly<ObjectGeneric>,
     callback: (
         key: keyof ObjectGeneric,
         value: CompleteValues<ObjectGeneric>,
@@ -38,4 +46,108 @@ export function filterObject<ObjectGeneric>(
         },
     );
     return typedObjectFromEntries(filteredEntries) as Partial<ObjectGeneric>;
+}
+
+/**
+ * Converts any optionally `undefined` keys to partials with non-undefined values. This does not
+ * exclude `null`.
+ *
+ * @category Object
+ * @category Package : @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
+ */
+export type RemoveUndefinedValues<ObjectGeneric> = {
+    [Key in ExcludeKeysWithMatchingValues<ObjectGeneric, undefined>]: ObjectGeneric[Key];
+} & {
+    [Key in ExtractKeysWithMatchingValues<ObjectGeneric, undefined>]?: Exclude<
+        ObjectGeneric[Key],
+        undefined
+    >;
+};
+
+/**
+ * Converts any `undefined` values into `null`.
+ *
+ * @category Object
+ * @category Package : @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
+ */
+export type ReplaceUndefinedValuesWithNull<ObjectGeneric> = {
+    [Key in RequiredKeysOf<Extract<ObjectGeneric, object>>]: undefined extends ObjectGeneric[Key]
+        ? Exclude<ObjectGeneric[Key], undefined> | null
+        : ObjectGeneric[Key];
+} & {
+    [Key in OptionalKeysOf<
+        Extract<ObjectGeneric, object>
+    >]?: undefined extends Required<ObjectGeneric>[Key]
+        ? Exclude<ObjectGeneric[Key], undefined> | null
+        : ObjectGeneric[Key];
+};
+
+/**
+ * Converts any `null` values into `undefined`.
+ *
+ * @category Object
+ * @category Package : @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
+ */
+export type ReplaceNullValuesWithUndefined<ObjectGeneric> = {
+    [Key in RequiredKeysOf<Extract<ObjectGeneric, object>>]: null extends ObjectGeneric[Key]
+        ? Exclude<ObjectGeneric[Key], null> | undefined
+        : ObjectGeneric[Key];
+} & {
+    [Key in OptionalKeysOf<
+        Extract<ObjectGeneric, object>
+    >]?: null extends Required<ObjectGeneric>[Key]
+        ? Exclude<ObjectGeneric[Key], null> | undefined
+        : ObjectGeneric[Key];
+};
+
+/**
+ * Removes keys for values that are `undefined`.
+ *
+ * @category Object
+ * @category Package : @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
+ */
+export function removeUndefinedValues<ObjectGeneric>(
+    input: Readonly<ObjectGeneric>,
+): RemoveUndefinedValues<ObjectGeneric> {
+    return mapObject(input, (key, value) => {
+        if (value === undefined) {
+            return undefined;
+        } else {
+            return {key, value};
+        }
+    }) as AnyObject as RemoveUndefinedValues<ObjectGeneric>;
+}
+
+/**
+ * Replaces all `undefined` values with `null`.
+ *
+ * @category Object
+ * @category Package : @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
+ */
+export function replaceUndefinedValuesWithNull<ObjectGeneric>(
+    input: Readonly<ObjectGeneric>,
+): ReplaceUndefinedValuesWithNull<ObjectGeneric> {
+    return mapObjectValues(input, (key, value) =>
+        value === undefined ? null : value,
+    ) as ReplaceUndefinedValuesWithNull<ObjectGeneric>;
+}
+
+/**
+ * Replaces all `null` values with `undefined`.
+ *
+ * @category Object
+ * @category Package : @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
+ */
+export function replaceNullValuesWithUndefined<ObjectGeneric>(
+    input: Readonly<ObjectGeneric>,
+): ReplaceNullValuesWithUndefined<ObjectGeneric> {
+    return mapObjectValues(input, (key, value) =>
+        value === null ? undefined : value,
+    ) as ReplaceNullValuesWithUndefined<ObjectGeneric>;
 }

@@ -26,8 +26,7 @@ export function getObjectTypedKeys<const ObjectGeneric>(
 }
 
 /**
- * Performs `keyof` on all keys within the `OriginalObject` that have values matching the given
- * `Matcher`.
+ * Performs `keyof` on all keys within the `Original` that have values matching the given `Matcher`.
  *
  * @category Object
  * @category Package : @augment-vir/common
@@ -42,8 +41,12 @@ export function getObjectTypedKeys<const ObjectGeneric>(
  *
  * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
-export type ExtractKeysWithMatchingValues<OriginalObject extends object, Matcher> = keyof {
-    [Prop in keyof OriginalObject as OriginalObject[Prop] extends Matcher ? Prop : never]: Prop;
+export type ExtractKeysWithMatchingValues<Original, Matcher> = keyof {
+    [Key in keyof Original as Original[Key] extends Matcher
+        ? Key
+        : Matcher extends Original[Key]
+          ? Key
+          : never]: Key;
 };
 
 /**
@@ -63,6 +66,10 @@ export type ExtractKeysWithMatchingValues<OriginalObject extends object, Matcher
  *
  * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
-export type ExcludeKeysWithMatchingValues<OriginalObject extends object, Matcher> = keyof {
-    [Prop in keyof OriginalObject as OriginalObject[Prop] extends Matcher ? never : Prop]: Prop;
+export type ExcludeKeysWithMatchingValues<Original, Matcher> = keyof {
+    [Key in keyof Original as Original[Key] extends Matcher
+        ? never
+        : Matcher extends Original[Key]
+          ? never
+          : Key]: Key;
 };
