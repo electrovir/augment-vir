@@ -34,7 +34,12 @@ export type ExpandModelObjects<Objects, TypeMap extends BaseTypeMap> = {
  * @category Package : @augment-vir/common
  * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
-export type ExpandModel<TypeMap extends BaseTypeMap, Entry> =
-    Entry extends Readonly<{name: infer ModelName extends keyof TypeMap['model']}>
+export type ExpandModel<TypeMap extends BaseTypeMap, Entry> = null extends Entry
+    ? null | ExpandModel<TypeMap, NonNullable<Entry>>
+    : undefined extends Entry
+      ? undefined | ExpandModel<TypeMap, NonNullable<Entry>>
+      : Entry extends Readonly<{
+              name: infer ModelName extends keyof TypeMap['model'];
+          }>
         ? PrismaFullModel<TypeMap, ModelName>
         : never;
