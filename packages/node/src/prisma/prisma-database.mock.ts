@@ -1,4 +1,4 @@
-import {awaitedForEach, callWithRetries, wait} from '@augment-vir/common';
+import {awaitedForEach, retry, wait} from '@augment-vir/common';
 import {interpolationSafeWindowsPath} from '../augments/path/os-path.js';
 import {runShellCommand} from '../augments/terminal/shell.js';
 import {
@@ -14,7 +14,7 @@ const pathsToDelete = [
 ];
 
 export async function clearTestDatabaseOutputs() {
-    await callWithRetries(10, async () => {
+    await retry(10, async () => {
         await wait({seconds: 1});
         await awaitedForEach(pathsToDelete, async (pathToDelete) => {
             /**

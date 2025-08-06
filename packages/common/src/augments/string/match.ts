@@ -1,4 +1,4 @@
-import {escapeStringForRegExp} from '@augment-vir/common';
+import {escapeStringForRegExp} from '../regexp/regexp-string.js';
 
 /**
  * A case insensitive match between strings.
