@@ -63,6 +63,7 @@ export * from './augments/prisma/prisma-full-model.js';
 export * from './augments/prisma/prisma-model-create.js';
 export * from './augments/prisma/prisma-model-name.js';
 export * from './augments/promise/promise-object.js';
+export * from './augments/promise/race-object.js';
 export * from './augments/promise/timed-promise.js';
 export * from './augments/random/random-boolean.js';
 export * from './augments/random/random-integer.js';
