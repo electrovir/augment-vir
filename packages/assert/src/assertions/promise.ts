@@ -219,7 +219,7 @@ export const promiseGuards = {
             this: void,
             actual: Actual,
         ): actual is Extract<Actual, PromiseLike<any>> {
-            return !!(
+            return (
                 actual instanceof Promise ||
                 (actual &&
                     typeof actual === 'object' &&

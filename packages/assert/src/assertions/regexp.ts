@@ -74,7 +74,7 @@ export const regexpGuards = {
          * - {@link check.mismatches} : the opposite check.
          */
         matches(this: void, actual: string, expected: RegExp): boolean {
-            return !!expected.test(actual);
+            return expected.test(actual);
         },
         /**
          * Checks that a string (first input, `actual`) does _not_ match a RegExp (second input,

@@ -25,7 +25,7 @@ describe(getObjectTypedKeys.name, () => {
     });
 
     it('falls back to using Object.keys', () => {
-        assert.isEmpty(getObjectTypedKeys(String('')));
+        assert.isEmpty(getObjectTypedKeys(''));
     });
 
     it('includes symbols', () => {

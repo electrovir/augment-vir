@@ -72,7 +72,7 @@ describe(runShellCommand.name, () => {
             {
                 rejectOnError: true,
                 stdoutCallback: (stdout) => {
-                    output.push(stdout.toString().trim());
+                    output.push(stdout.trim());
                 },
             },
         );
@@ -96,7 +96,7 @@ describe(runShellCommand.name, () => {
             {
                 rejectOnError: true,
                 stderrCallback: (stdout) => {
-                    output.push(stdout.toString().trim());
+                    output.push(stdout.trim());
                 },
             },
         );
