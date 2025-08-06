@@ -5,7 +5,7 @@ import {racePromiseObject} from './race-object.js';
 
 describe(racePromiseObject.name, () => {
     it('gives the key that finishes', async () => {
-        assert.strictEquals(
+        assert.deepEquals(
             await racePromiseObject({
                 first: wait({milliseconds: 1}),
                 second: wait({seconds: 1}),

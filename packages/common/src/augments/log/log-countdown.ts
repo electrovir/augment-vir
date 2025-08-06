@@ -16,7 +16,7 @@ export async function logCountdown(
 
     await wait({seconds: 1.5});
     if (start) {
-        return await logCountdown(start - 1);
+        return await logCountdown(start - 1, logCallback);
     } else {
         return;
     }

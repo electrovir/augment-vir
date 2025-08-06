@@ -7,9 +7,21 @@ describe(retry.name, () => {
     it('has proper types', async () => {
         const result = retry(2, () => true);
         assert.tsType(result).equals<boolean>();
-        const resultWithInterval = retry(2, () => true, {interval: {milliseconds: 1}});
-        assert.tsType(resultWithInterval).equals<Promise<boolean>>();
-        await resultWithInterval;
+
+        const syncResultWithInterval = retry(2, () => true, {interval: {milliseconds: 1}});
+        assert.tsType(syncResultWithInterval).equals<Promise<boolean>>();
+        await syncResultWithInterval;
+
+        const asyncResultWithInterval = retry(
+            2,
+            async () => {
+                await wait({milliseconds: 0});
+                return true;
+            },
+            {interval: {milliseconds: 1}},
+        );
+        assert.tsType(asyncResultWithInterval).equals<Promise<boolean>>();
+        await asyncResultWithInterval;
 
         const promiseResult = retry(2, async () => {
             await wait({milliseconds: 0});
@@ -36,6 +48,21 @@ describe(retry.name, () => {
         });
         assert.strictEquals(result, 'hi');
     });
+    it('retries with interval', async () => {
+        let counter = 0;
+        const result = await retry(
+            2,
+            () => {
+                ++counter;
+                if (counter < 2) {
+                    throw new Error('fail');
+                }
+                return 'hi';
+            },
+            {interval: {milliseconds: 1}},
+        );
+        assert.strictEquals(result, 'hi');
+    });
     it('retries with async callback', async () => {
         let counter = 0;
         const result = await retry(2, async () => {
@@ -46,6 +73,26 @@ describe(retry.name, () => {
             }
             return 'hi';
         });
+        assert.strictEquals(result, 'hi');
+    });
+    it('retries with async callback and interval', async () => {
+        let counter = 0;
+        const result = await retry(
+            2,
+            async () => {
+                await wait({milliseconds: 0});
+                ++counter;
+                if (counter < 2) {
+                    throw new Error('fail');
+                }
+                return 'hi';
+            },
+            {
+                interval: {
+                    milliseconds: 1,
+                },
+            },
+        );
         assert.strictEquals(result, 'hi');
     });
     it('fails', () => {
