@@ -5,6 +5,7 @@ export * from './augments/array/awaited/awaited-filter.js';
 export * from './augments/array/awaited/awaited-for-each.js';
 export * from './augments/array/awaited/awaited-map.js';
 export * from './augments/array/create-array.js';
+export * from './augments/array/ensure-array.js';
 export * from './augments/array/extract-duplicates.js';
 export * from './augments/array/filter.js';
 export * from './augments/array/remove-duplicates.js';
