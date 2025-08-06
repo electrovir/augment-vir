@@ -1,21 +1,24 @@
 import {assert} from '@augment-vir/assert';
 import {wait, type MaybePromise} from '@augment-vir/core';
 import {describe, it} from '@augment-vir/test';
-import {callWithRetries} from './call-with-retries.js';
+import {retry} from './retry.js';
 
-describe(callWithRetries.name, () => {
+describe(retry.name, () => {
     it('has proper types', async () => {
-        const result = callWithRetries(2, () => true);
+        const result = retry(2, () => true);
         assert.tsType(result).equals<boolean>();
+        const resultWithInterval = retry(2, () => true, {interval: {milliseconds: 1}});
+        assert.tsType(resultWithInterval).equals<Promise<boolean>>();
+        await resultWithInterval;
 
-        const promiseResult = callWithRetries(2, async () => {
+        const promiseResult = retry(2, async () => {
             await wait({milliseconds: 0});
             return true;
         });
         assert.tsType(promiseResult).equals<Promise<boolean>>();
         await promiseResult;
 
-        const maybePromiseResult = callWithRetries(2, (): MaybePromise<boolean> => {
+        const maybePromiseResult = retry(2, (): MaybePromise<boolean> => {
             return true;
         });
         assert.tsType(maybePromiseResult).equals<MaybePromise<boolean>>();
@@ -24,7 +27,7 @@ describe(callWithRetries.name, () => {
 
     it('retries', () => {
         let counter = 0;
-        const result = callWithRetries(2, () => {
+        const result = retry(2, () => {
             ++counter;
             if (counter < 2) {
                 throw new Error('fail');
@@ -35,7 +38,7 @@ describe(callWithRetries.name, () => {
     });
     it('retries with async callback', async () => {
         let counter = 0;
-        const result = await callWithRetries(2, async () => {
+        const result = await retry(2, async () => {
             await wait({milliseconds: 0});
             ++counter;
             if (counter < 2) {
@@ -48,7 +51,7 @@ describe(callWithRetries.name, () => {
     it('fails', () => {
         assert.throws(
             () =>
-                callWithRetries(2, (): string => {
+                retry(2, (): string => {
                     throw new Error('fail');
                 }),
             {
@@ -59,7 +62,7 @@ describe(callWithRetries.name, () => {
     it('fails with async callback', async () => {
         await assert.throws(
             () =>
-                callWithRetries(2, async (): Promise<string> => {
+                retry(2, async (): Promise<string> => {
                     await wait({milliseconds: 0});
                     throw new Error('fail');
                 }),
