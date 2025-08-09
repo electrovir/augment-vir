@@ -1,3 +1,4 @@
+import {camelCaseToKebabCase} from '@augment-vir/common';
 import {RuntimeEnv} from '@augment-vir/core';
 import {type TestContext as NodeTestContextImport} from 'node:test';
 import {type OmitIndexSignature, type Simplify} from 'type-fest';
@@ -58,6 +59,21 @@ export function extractTestName(testContext: UniversalTestContext): string {
     } else {
         return flattenMochaParentTitles(testContext.test).join(' > ');
     }
+}
+
+/**
+ * Same as {@link extractTestName} but sanitizes the output so that it's safe for directory names
+ * (even on Windows).
+ *
+ * @category Test : Util
+ * @category Package : @augment-vir/test
+ * @package [`@augment-vir/test`](https://www.npmjs.com/package/@augment-vir/test)
+ */
+export function extractTestNameAsDir(testContext: UniversalTestContext) {
+    return camelCaseToKebabCase(extractTestName(testContext)).replaceAll(
+        /[<>:"/\-\\|?*_\s]+/g,
+        '_',
+    );
 }
 
 function flattenMochaParentTitles(this: void, node: MochaNode): string[] {
