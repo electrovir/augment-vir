@@ -2,6 +2,7 @@ import {
     type AnyFunction,
     ensureError,
     extractErrorMessage,
+    match,
     type MaybePromise,
     type NarrowToExpected,
     type PartialWithNullable,
@@ -81,7 +82,7 @@ function internalAssertError(
         const message = extractErrorMessage(actual);
 
         if (typeof matchOptions.matchMessage === 'string') {
-            if (!message.includes(matchOptions.matchMessage)) {
+            if (!match(message, matchOptions.matchMessage)) {
                 throw new AssertionError(
                     `Error message\n\n'${message}'\n\ndoes not contain\n\n'${matchOptions.matchMessage}'.`,
                     failureMessage,
@@ -114,7 +115,7 @@ function internalCheckError(
         const message = extractErrorMessage(actual);
 
         if (typeof matchOptions.matchMessage === 'string') {
-            if (!message.includes(matchOptions.matchMessage)) {
+            if (!match(message, matchOptions.matchMessage)) {
                 return false;
             }
         } else if (!message.match(matchOptions.matchMessage)) {

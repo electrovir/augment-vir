@@ -82,7 +82,6 @@ export * from './augments/string/casing/kebab-and-camel.js';
 export * from './augments/string/comma.js';
 export * from './augments/string/indent.js';
 export * from './augments/string/join.js';
-export * from './augments/string/match.js';
 export * from './augments/string/prefix.js';
 export * from './augments/string/remove-duplicate-characters.js';
 export * from './augments/string/replace.js';

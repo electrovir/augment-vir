@@ -24,5 +24,6 @@ export * from './augments/promise/wait.js';
 export * from './augments/runtime-env.js';
 export * from './augments/string/ansi.js';
 export * from './augments/string/casing.js';
+export * from './augments/string/match.js';
 export * from './augments/string/punctuation.js';
 export * from './augments/string/uuid.js';
