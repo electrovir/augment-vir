@@ -72,7 +72,6 @@ export * from './augments/random/random-string.js';
 export * from './augments/random/seeded-random.js';
 export * from './augments/regexp/match.js';
 export * from './augments/regexp/regexp-flags.js';
-export * from './augments/regexp/regexp-string.js';
 export * from './augments/selection-set/select-collapsed.js';
 export * from './augments/selection-set/select-from.js';
 export * from './augments/selection-set/selection-set.js';

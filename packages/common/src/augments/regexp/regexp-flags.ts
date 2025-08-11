@@ -1,5 +1,5 @@
+import {escapeStringForRegExp} from '@augment-vir/core';
 import {removeDuplicateCharacters} from '../string/remove-duplicate-characters.js';
-import {escapeStringForRegExp} from './regexp-string.js';
 
 /**
  * Creates a new RegExp by adding the given `flags` to the original RegExp.

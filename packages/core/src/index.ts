@@ -21,6 +21,7 @@ export * from './augments/partial-type.js';
 export * from './augments/promise/deferred-promise.js';
 export * from './augments/promise/maybe-promise.js';
 export * from './augments/promise/wait.js';
+export * from './augments/regexp/regexp-string.js';
 export * from './augments/runtime-env.js';
 export * from './augments/string/ansi.js';
 export * from './augments/string/casing.js';
