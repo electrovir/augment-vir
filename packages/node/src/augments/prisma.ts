@@ -169,6 +169,6 @@ export const prisma = {
          *
          * @see {@link PrismaDataDumpOptions}
          */
-        dumpData: dumpData,
+        dumpData,
     },
 };

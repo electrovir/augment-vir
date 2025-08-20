@@ -6,7 +6,7 @@ export async function runMockLongLivingContainer(
     args: Partial<RunDockerContainerParams> = {},
 ) {
     await docker.container.run({
-        containerName: containerName,
+        containerName,
         detach: true,
         imageName: 'alpine:3.20.2',
         dockerFlags: [

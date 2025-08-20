@@ -332,4 +332,19 @@ describe(PromiseQueue.name, () => {
             matchMessage: 'Cannot handle queue item',
         });
     });
+
+    it('detects when a queue id is present', async () => {
+        const innerPromise = new DeferredPromise();
+
+        const queue = new PromiseQueue();
+        const testId = 'hello';
+
+        const addPromise = queue.add(async () => {
+            await innerPromise.promise;
+        }, testId);
+        assert.isTrue(queue.hasItemById(testId));
+        innerPromise.resolve();
+        await addPromise;
+        assert.isFalse(queue.hasItemById(testId));
+    });
 });

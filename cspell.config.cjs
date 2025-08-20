@@ -17,5 +17,6 @@ module.exports = {
         'prismock',
         'propstat',
         'resolv',
+        'runstorm',
     ],
 };

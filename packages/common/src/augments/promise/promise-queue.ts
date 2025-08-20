@@ -13,6 +13,7 @@ import {defineTypedCustomEvent, ListenTarget} from 'typed-event-target';
 export type PromiseQueueItem<T = void> = {
     /** The original queue item that was added. */
     original: () => MaybePromise<T>;
+    id: undefined | PropertyKey;
     /**
      * A {@link DeferredPromise} instance with a promise that is resolved once this queue item has
      * met its turn and has finished executing.
@@ -56,6 +57,7 @@ export class PromiseQueueUpdateEvent extends defineTypedCustomEvent<PromiseQueue
 export class PromiseQueue extends ListenTarget<PromiseQueueUpdateEvent> {
     protected queue: PromiseQueueItem<any>[] = [];
     protected currentlyAwaiting: undefined | PromiseQueueItem<any> = undefined;
+    protected queueItemIds = new Set<PropertyKey>();
 
     /** The current size of the queue. */
     public get size() {
@@ -63,17 +65,23 @@ export class PromiseQueue extends ListenTarget<PromiseQueueUpdateEvent> {
     }
 
     /**
-     * Add an item to the queue.
+     * Add an item to the queue. Only await this if you want to wait for the promise to be added
+     * _and_ resolved (or rejected).
      *
      * @returns A promise that resolves at the same time as the added item.
      */
-    public add<T = void>(item: PromiseQueueItem<T>['original']): Promise<T> {
+    public add<T = void>(item: PromiseQueueItem<T>['original'], id?: PropertyKey): Promise<T> {
         const newItem: PromiseQueueItem<any> = {
             original: item,
+            id,
             wrapper: new DeferredPromise<T>(),
         };
 
         this.queue.push(newItem);
+
+        if (id != undefined) {
+            this.queueItemIds.add(id);
+        }
         this.dispatch(
             new PromiseQueueUpdateEvent({
                 detail: {
@@ -86,6 +94,16 @@ export class PromiseQueue extends ListenTarget<PromiseQueueUpdateEvent> {
         this.triggerNextQueueItem();
 
         return newItem.wrapper.promise;
+    }
+
+    /**
+     * Checks if the given id is currently in the queue.
+     *
+     * @returns `true` if the item is in the queue and has not been resolved or rejected. `false` if
+     *   the item has never been in the queue or has been resolved / rejected from the queue.
+     */
+    public hasItemById(id: PropertyKey): boolean {
+        return this.queueItemIds.has(id);
     }
 
     /** Handles a queue item finishing, whether it be a rejection or a resolution. */
@@ -113,6 +131,9 @@ export class PromiseQueue extends ListenTarget<PromiseQueueUpdateEvent> {
             item.wrapper.reject(rejection);
         } else {
             item.wrapper.resolve(resolution);
+        }
+        if (item.id != undefined) {
+            this.queueItemIds.delete(item.id);
         }
         this.currentlyAwaiting = undefined;
 

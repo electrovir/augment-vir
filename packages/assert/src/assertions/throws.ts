@@ -500,7 +500,7 @@ const assertions: {
     isError: typeof isError;
 } = {
     throws,
-    isError: isError,
+    isError,
 };
 
 export const throwGuards = {

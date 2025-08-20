@@ -18,30 +18,40 @@
 
 import {log} from '@augment-vir/common';
 import {interpolationSafeWindowsPath, runShellCommand} from '@augment-vir/node';
-import {rm, writeFile} from 'node:fs/promises';
+import {readFile, rm, writeFile} from 'node:fs/promises';
 import {join, sep} from 'node:path/posix';
 
 type PackageToFix = {
     packageName: string;
     binName: string;
     scriptPath: string;
+    fixImport: boolean;
 };
 
 const packagesToFix: ReadonlyArray<Readonly<PackageToFix>> = [
     {
+        packageName: 'runstorm',
+        binName: 'runstorm',
+        scriptPath: join('runstorm', 'src', 'cli', 'cli.script.ts'),
+        fixImport: true,
+    },
+    {
         packageName: 'mono-vir',
         binName: 'mono-vir',
         scriptPath: join('mono-vir', 'src', 'cli', 'cli.script.ts'),
+        fixImport: true,
     },
     {
         packageName: 'virmator',
         binName: 'virmator',
         scriptPath: join('virmator', 'src', 'cli.script.ts'),
+        fixImport: true,
     },
     {
         packageName: 'prettier',
         binName: 'prettier',
         scriptPath: join('prettier', 'bin', 'prettier.cjs'),
+        fixImport: false,
     },
 ];
 
@@ -58,7 +68,28 @@ async function fixTsBin(packageToFix: Readonly<PackageToFix>) {
     await rm(binFilePath, {force: true});
     await writeFile(binFilePath, createBinFileContents(packageToFix));
     await runShellCommand(`chmod +x ${interpolationSafeWindowsPath(binFilePath)}`);
+    await fixPackageJson(packageToFix);
     log.success(`Fixed ${packageToFix.packageName} bin.`);
+}
+
+async function fixPackageJson(packageToFix: Readonly<PackageToFix>) {
+    if (!packageToFix.fixImport) {
+        return;
+    }
+
+    const packageJsonPath = join(
+        process.cwd(),
+        'node_modules',
+        packageToFix.packageName,
+        'package.json',
+    );
+    const original = String(await readFile(packageJsonPath));
+    await writeFile(
+        packageJsonPath,
+        original
+            .replace('"main": "dist/index.js"', '"main": "src/index.ts"')
+            .replace('"module": "dist/index.js"', '"module": "src/index.ts"'),
+    );
 }
 
 await Promise.all(packagesToFix.map(async (packageToFix) => await fixTsBin(packageToFix)));

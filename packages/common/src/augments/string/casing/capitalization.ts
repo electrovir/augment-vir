@@ -11,7 +11,7 @@ export function maybeCapitalize(
     input: string,
     casingOptions: Pick<CasingOptions, 'capitalizeFirstLetter'>,
 ): string {
-    // eslint-disable-next-line sonarjs/deprecation, @typescript-eslint/no-deprecated
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     return casingOptions.capitalizeFirstLetter ? capitalizeFirstLetter(input) : input;
 }
 
