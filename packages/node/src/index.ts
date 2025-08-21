@@ -11,6 +11,7 @@ export * from './augments/npm/query-workspace.js';
 export * from './augments/npm/read-package-json.js';
 export * from './augments/os/operating-system.js';
 export * from './augments/path/ancestor.js';
+export * from './augments/path/contains.js';
 export * from './augments/path/os-path.js';
 export * from './augments/path/resolve-import.js';
 export * from './augments/path/root.js';
