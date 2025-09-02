@@ -46,7 +46,7 @@
         "@augment-vir/assert": "^31.33.0",
         "@augment-vir/common": "^31.33.0",
         "@open-wc/testing-helpers": "^3.0.1",
-        "@virmator/test": "^14.0.0",
+        "@virmator/test": "^14.0.2",
         "type-fest": "^4.41.0"
     },
     "devDependencies": {
@@ -55,8 +55,8 @@
         "@web/test-runner": "^0.20.2",
         "@web/test-runner-commands": "^0.9.0",
         "@web/test-runner-playwright": "^0.11.1",
-        "concurrently": "^9.2.0",
-        "element-vir": "^26.8.0",
+        "concurrently": "^9.2.1",
+        "element-vir": "^26.9.0",
         "istanbul-smart-text-reporter": "^1.1.5",
         "typescript": "^5.9.2"
     },

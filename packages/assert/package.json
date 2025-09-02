@@ -43,7 +43,7 @@
     },
     "dependencies": {
         "@augment-vir/core": "^31.33.0",
-        "@date-vir/duration": "^7.4.0",
+        "@date-vir/duration": "^7.4.2",
         "deep-eql": "^5.0.2",
         "expect-type": "^1.2.2",
         "type-fest": "^4.41.0"
