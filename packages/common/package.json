@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/common",
-    "version": "31.33.0",
+    "version": "31.33.1",
     "description": "A collection of augments, helpers types, functions, and classes for any JavaScript environment.",
     "keywords": [
         "augment",
@@ -33,15 +33,15 @@
     "types": "src/index.ts",
     "scripts": {
         "compile": "virmator compile",
-        "test": "concurrently --colors --kill-others-on-fail -c red,blue --names node,web \"npm run test:node\" \"npm run test:web\"",
+        "test": "runstorm --names node,web \"npm run test:node\" \"npm run test:web\"",
         "test:coverage": "virmator --no-deps test web coverage",
         "test:node": "virmator --no-deps test node",
         "test:update": "npm test",
         "test:web": "virmator --no-deps test web"
     },
     "dependencies": {
-        "@augment-vir/assert": "^31.33.0",
-        "@augment-vir/core": "^31.33.0",
+        "@augment-vir/assert": "^31.33.1",
+        "@augment-vir/core": "^31.33.1",
         "@date-vir/duration": "^7.4.2",
         "ansi-styles": "^6.2.1",
         "deepcopy-esm": "^2.1.1",
@@ -55,9 +55,9 @@
         "@web/test-runner-commands": "^0.9.0",
         "@web/test-runner-playwright": "^0.11.1",
         "@web/test-runner-visual-regression": "^0.10.0",
-        "concurrently": "^9.2.1",
-        "execute-in-browser": "^1.0.8",
+        "execute-in-browser": "^1.0.9",
         "istanbul-smart-text-reporter": "^1.1.5",
+        "runstorm": "^0.6.2",
         "typescript": "^5.9.2"
     },
     "engines": {

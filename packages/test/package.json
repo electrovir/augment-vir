@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/test",
-    "version": "31.33.0",
+    "version": "31.33.1",
     "description": "A universal testing suite that works with Mocha style test runners _and_ Node.js's built-in test runner.",
     "keywords": [
         "test",
@@ -36,15 +36,15 @@
     "scripts": {
         "compile": "virmator compile",
         "start": "tsx src/index.ts",
-        "test": "concurrently --colors --kill-others-on-fail -c green,blue --names node,web \"npm run test:node\" \"npm run test:web\"",
+        "test": "runstorm --names node,web \"npm run test:node\" \"npm run test:web\"",
         "test:coverage": "npm run test",
         "test:node": "virmator test --no-deps node 'src/augments/universal-testing-suite/**/*.test.ts'",
         "test:update": "npm test",
         "test:web": "virmator test --no-deps web 'src/test-web/**/*.test.ts' 'src/augments/universal-testing-suite/**/*.test.ts'"
     },
     "dependencies": {
-        "@augment-vir/assert": "^31.33.0",
-        "@augment-vir/common": "^31.33.0",
+        "@augment-vir/assert": "^31.33.1",
+        "@augment-vir/common": "^31.33.1",
         "@open-wc/testing-helpers": "^3.0.1",
         "@virmator/test": "^14.0.2",
         "type-fest": "^4.41.0"
@@ -55,9 +55,9 @@
         "@web/test-runner": "^0.20.2",
         "@web/test-runner-commands": "^0.9.0",
         "@web/test-runner-playwright": "^0.11.1",
-        "concurrently": "^9.2.1",
         "element-vir": "^26.9.0",
         "istanbul-smart-text-reporter": "^1.1.5",
+        "runstorm": "^0.6.2",
         "typescript": "^5.9.2"
     },
     "peerDependencies": {

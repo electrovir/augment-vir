@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/mono-repo-root",
-    "version": "31.33.0",
+    "version": "31.33.1",
     "private": true,
     "homepage": "https://github.com/electrovir/augment-vir",
     "bugs": {
@@ -28,7 +28,7 @@
         "lint": "virmator lint fix",
         "publish": "virmator publish \"npm run test:all\"",
         "test": "mono-vir for-each npm run test",
-        "test:all": "npm run compile && concurrently --colors --kill-others-on-fail -c auto --names spelling,format,deps,lint,exports,docs \"npm run test:spelling\" \"npm run test:format\" \"npm run test:deps\" \"npm run test:lint\" \"npm run test:exports\" \"npm run test:docs\" && npm run test:coverage",
+        "test:all": "npm run compile && runstorm --names spelling,format,deps,lint,exports,docs \"npm run test:spelling\" \"npm run test:format\" \"npm run test:deps\" \"npm run test:lint\" \"npm run test:exports\" \"npm run test:docs\" && npm run test:coverage",
         "test:coverage": "mono-vir for-each npm run test:coverage",
         "test:deps": "virmator deps check",
         "test:docs": "npm run docs",
@@ -69,6 +69,7 @@
         "prettier-plugin-packagejson": "^2.5.19",
         "prettier-plugin-sort-json": "^4.1.1",
         "prettier-plugin-toml": "^2.0.6",
+        "runstorm": "^0.6.2",
         "typescript-eslint": "^8.42.0",
         "virmator": "^14.0.2"
     },
