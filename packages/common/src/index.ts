@@ -2,6 +2,7 @@ export * from './augments/array/array-map.js';
 export * from './augments/array/array-pagination.js';
 export * from './augments/array/array-to-object.js';
 export * from './augments/array/awaited/awaited-filter.js';
+export * from './augments/array/awaited/awaited-find.js';
 export * from './augments/array/awaited/awaited-for-each.js';
 export * from './augments/array/awaited/awaited-map.js';
 export * from './augments/array/create-array.js';

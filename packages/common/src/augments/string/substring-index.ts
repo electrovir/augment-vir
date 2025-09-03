@@ -32,7 +32,6 @@ export function findSubstringIndexes<IncludeLength extends boolean | undefined>(
         length: number;
     }[] = [];
 
-    // eslint-disable-next-line sonarjs/no-ignored-return
     searchIn.replace(
         searchRegExp,
         (...matchResults: ReadonlyArray<string | undefined | number>): string => {
