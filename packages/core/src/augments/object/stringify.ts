@@ -1,6 +1,14 @@
 import JSON5 from 'json5';
 
 /**
+ * Internal sentinel used to preserve `undefined` values through JSON5 serialization. Chosen to be
+ * extremely unlikely to appear in real user content. If it _does_ appear naturally it will be
+ * incorrectly replaced (very low probability).
+ */
+const undefinedSentinel = '__@@augment-vir-undefined-sentinel@@__';
+const undefinedSentinelStringRegExp = new RegExp(`['"]${undefinedSentinel}['"]`);
+
+/**
  * Converts the input into a string. Tries first with JSON5 and, if that fails, falls back to a
  * regular `.toString()` conversion.
  *
@@ -11,7 +19,18 @@ import JSON5 from 'json5';
  */
 export function stringify(input: unknown) {
     try {
-        return JSON5.stringify(input);
+        const json5String = JSON5.stringify(
+            input,
+            // Use a replacer to turn undefined into a unique string so the key is kept.
+            (_key, value) => {
+                if (value === undefined) {
+                    return undefinedSentinel;
+                }
+                return value;
+            },
+        );
+
+        return json5String.split(undefinedSentinelStringRegExp).join('undefined');
     } catch {
         return String(input);
     }

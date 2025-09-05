@@ -20,5 +20,10 @@ describe(stringify.name, () => {
             input: circular,
             expect: '[object Object]',
         },
+        {
+            it: 'logs undefined',
+            input: {a: undefined},
+            expect: '{a:undefined}',
+        },
     ]);
 });
