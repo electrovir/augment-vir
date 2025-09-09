@@ -17,7 +17,11 @@ const undefinedSentinelStringRegExp = new RegExp(`['"]${undefinedSentinel}['"]`)
  * @category Package : @augment-vir/common
  * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
-export function stringify(input: unknown) {
+export function stringify(
+    input: unknown,
+    /** Passed directly to the `space` parameter of `JSON.stringify`. */
+    space?: string | number,
+) {
     try {
         const json5String = JSON5.stringify(
             input,
@@ -28,6 +32,7 @@ export function stringify(input: unknown) {
                 }
                 return value;
             },
+            space || undefined,
         );
 
         return json5String.split(undefinedSentinelStringRegExp).join('undefined');

@@ -12,18 +12,32 @@ describe(stringify.name, () => {
     itCases(stringify, [
         {
             it: 'handles a standard object',
-            input: {a: 'b'},
+            inputs: [
+                {a: 'b'},
+            ],
             expect: "{a:'b'}",
         },
         {
             it: 'handles a circular object',
-            input: circular,
+            inputs: [
+                circular,
+            ],
             expect: '[object Object]',
         },
         {
             it: 'logs undefined',
-            input: {a: undefined},
+            inputs: [
+                {a: undefined},
+            ],
             expect: '{a:undefined}',
+        },
+        {
+            it: 'logs with spaces',
+            inputs: [
+                {a: undefined},
+                4,
+            ],
+            expect: '{\n    a: undefined,\n}',
         },
     ]);
 });
