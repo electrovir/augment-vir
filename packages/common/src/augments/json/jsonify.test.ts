@@ -3,7 +3,7 @@ import {describe, itCases} from '@augment-vir/test';
 import {jsonify} from './jsonify.js';
 
 describe(jsonify.name, () => {
-    const jsonCompatible: JsonCompatibleObject = {
+    const jsonCompatible = {
         a: 5,
         b: 'five',
         c: false,
@@ -13,7 +13,7 @@ describe(jsonify.name, () => {
             'five',
             false,
         ],
-    };
+    } satisfies JsonCompatibleObject;
 
     itCases(jsonify, [
         {

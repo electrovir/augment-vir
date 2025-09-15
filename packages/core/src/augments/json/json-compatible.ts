@@ -31,9 +31,11 @@ export type JsonCompatiblePrimitive = Jsonify<Primitive> | undefined;
  * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type JsonCompatibleObject =
-    | Partial<{
-          readonly [key: string | number]: JsonCompatibleValue | Readonly<JsonCompatibleValue>;
-      }>
+    | Partial<
+          Readonly<{
+              [key: string | number]: JsonCompatibleValue | Readonly<JsonCompatibleValue>;
+          }>
+      >
     | Partial<{
           [key: string | number]: JsonCompatibleValue | Readonly<JsonCompatibleValue>;
       }>;

@@ -5,6 +5,16 @@ describe(sanitizePath.name, () => {
     itCases(sanitizePath, [
         // cspell:disable
         {
+            it: 'collapses null to undefined',
+            input: null,
+            expect: undefined,
+        },
+        {
+            it: 'collapses empty string to undefined',
+            input: '',
+            expect: undefined,
+        },
+        {
             it: 'passes a clean file name',
             input: 'derp.pdf',
             expect: 'derp.pdf',
@@ -42,7 +52,17 @@ describe(sanitizePath.name, () => {
         {
             it: 'removes everything',
             input: '***???!!!',
-            expect: '',
+            expect: undefined,
+        },
+        {
+            it: 'removes everything with an extension',
+            input: '***???!!!.\x00__\x00',
+            expect: '_',
+        },
+        {
+            it: 'handles incorrect extension',
+            input: '.derp',
+            expect: 'derp',
         },
         {
             it: 'fixes real file name',
