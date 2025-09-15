@@ -15,6 +15,7 @@ export * from './augments/path/contains.js';
 export * from './augments/path/os-path.js';
 export * from './augments/path/resolve-import.js';
 export * from './augments/path/root.js';
+export * from './augments/path/sanitize-path.js';
 export * from './augments/prisma.js';
 export * from './augments/terminal/question.js';
 export * from './augments/terminal/relevant-args.js';

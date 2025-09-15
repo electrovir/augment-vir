@@ -42,6 +42,7 @@
         "@augment-vir/common": "^31.35.0",
         "@date-vir/duration": "^7.4.2",
         "ansi-styles": "^6.2.1",
+        "sanitize-filename": "^1.6.3",
         "terminate": "^2.8.0",
         "tsx": "^4.20.5",
         "type-fest": "^4.41.0",
