@@ -25,6 +25,13 @@ describe(stringify.name, () => {
             expect: '[object Object]',
         },
         {
+            it: 'handles BigInt',
+            inputs: [
+                42n,
+            ],
+            expect: '42',
+        },
+        {
             it: 'logs undefined',
             inputs: [
                 {a: undefined},
