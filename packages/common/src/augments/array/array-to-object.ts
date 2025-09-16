@@ -294,6 +294,8 @@ export function arrayToObject<
             return new Promise<Record<NewKey, NewValue>>(async (resolve, reject) => {
                 try {
                     const entries: [NewKey, NewValue][] = filterMap(
+                        /** This does contain promises. */
+                        // eslint-disable-next-line @typescript-eslint/await-thenable
                         await Promise.all(mappedEntries),
                         (entry) => {
                             if (!entry) {

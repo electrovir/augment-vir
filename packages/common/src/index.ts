@@ -6,6 +6,7 @@ export * from './augments/array/awaited/awaited-find.js';
 export * from './augments/array/awaited/awaited-for-each.js';
 export * from './augments/array/awaited/awaited-map.js';
 export * from './augments/array/create-array.js';
+export * from './augments/array/cross-product.js';
 export * from './augments/array/ensure-array.js';
 export * from './augments/array/extract-duplicates.js';
 export * from './augments/array/filter.js';
