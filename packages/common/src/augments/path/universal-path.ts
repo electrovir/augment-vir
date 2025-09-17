@@ -46,6 +46,7 @@ export function replaceExtension({
  * hasExtension('/users/stuff/file.ts?tail'); // true
  * hasExtension('/users/stuff/file?tail'); // false
  * ```
+ *
  * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function hasExtension(path: string): boolean {
@@ -69,6 +70,7 @@ export type Sep = '/' | '\\';
  * @category Package : @augment-vir/common
  * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
+/* node:coverage ignore next 3: cannot test both on a single system. */
 export const defaultSep: Sep = isRuntimeEnv(RuntimeEnv.Web)
     ? '/'
     : await wrapInTry(async () => (await import('node:path')).sep, {fallbackValue: '/'});

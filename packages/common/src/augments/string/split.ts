@@ -1,5 +1,4 @@
-import {type AtLeastTuple} from '@augment-vir/core';
-import {setRegExpCaseSensitivity} from '../regexp/regexp-flags.js';
+import {setRegExpCaseSensitivity, type AtLeastTuple} from '@augment-vir/core';
 import {findSubstringIndexes} from './substring-index.js';
 
 /**

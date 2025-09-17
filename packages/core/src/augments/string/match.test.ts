@@ -1,6 +1,6 @@
+import {assert} from '@augment-vir/assert';
 import {describe, it, itCases} from '@augment-vir/test';
 import {match} from './match.js';
-import {assert} from '@augment-vir/assert';
 
 describe(match.name, () => {
     itCases(match, [
@@ -53,8 +53,8 @@ describe(match.name, () => {
             expect: true,
         },
     ]);
-    
-    it('normally wouldn\'t match', () => {
-        assert.isFalsy(/.IS./.exec('this is it'))
+
+    it("normally wouldn't match", () => {
+        assert.isFalsy(/.IS./.exec('this is it'));
     });
 });

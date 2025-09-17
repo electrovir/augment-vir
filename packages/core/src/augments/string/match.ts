@@ -1,5 +1,4 @@
-import {check} from '@augment-vir/assert';
-import {addRegExpFlags} from '@augment-vir/common';
+import {addRegExpFlags} from '../regexp/regexp-flags.js';
 import {escapeStringForRegExp} from '../regexp/regexp-string.js';
 
 /**
@@ -12,7 +11,7 @@ import {escapeStringForRegExp} from '../regexp/regexp-string.js';
 export function match(haystack: string, needle: string | RegExp): boolean {
     if (!needle) {
         return false;
-    } else if (check.isString(needle)) {
+    } else if (typeof needle === 'string') {
         return !!new RegExp(escapeStringForRegExp(needle), 'i').exec(haystack);
     } else {
         return !!addRegExpFlags(needle, 'i').exec(haystack);

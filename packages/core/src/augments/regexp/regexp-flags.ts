@@ -1,5 +1,5 @@
-import {escapeStringForRegExp} from '@augment-vir/core';
 import {removeDuplicateCharacters} from '../string/remove-duplicate-characters.js';
+import {escapeStringForRegExp} from './regexp-string.js';
 
 /**
  * Creates a new RegExp by adding the given `flags` to the original RegExp.
@@ -79,7 +79,13 @@ export function setRegExpCaseSensitivity(
     originalRegExpOrString: string | RegExp,
     {caseSensitive}: {caseSensitive: boolean},
 ) {
-    const caseSensitivityFlag: string = caseSensitive ? '' : 'i';
+    const originalFlags =
+        typeof originalRegExpOrString === 'string'
+            ? ''
+            : originalRegExpOrString.flags.toLowerCase();
+    const newFlags: string = caseSensitive
+        ? originalFlags.replaceAll('i', '')
+        : removeDuplicateCharacters(originalFlags + 'i');
 
-    return addRegExpFlags(originalRegExpOrString, caseSensitivityFlag);
+    return setRegExpFlags(originalRegExpOrString, newFlags);
 }

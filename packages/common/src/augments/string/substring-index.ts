@@ -1,4 +1,4 @@
-import {addRegExpFlags, setRegExpCaseSensitivity} from '../regexp/regexp-flags.js';
+import {addRegExpFlags, setRegExpCaseSensitivity} from '@augment-vir/core';
 
 /**
  * Finds all indexes of a `searchFor` string or RegExp in `searchIn`. Ths is similar to
