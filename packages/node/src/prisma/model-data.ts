@@ -29,6 +29,7 @@ import {type IsAny} from 'type-fest';
  * Params for `prisma.client.addData()`. This is similar to {@link PrismaAllModelsCreate} but allows
  * an array of {@link PrismaAllModelsCreate} for sequential data creation.
  *
+ * @deprecated Use the `prisma-vir` package instead.
  * @category Prisma : Node
  * @category Package : @augment-vir/node
  * @example
@@ -71,7 +72,6 @@ import {type IsAny} from 'type-fest';
  * ```
  *
  * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
- * @deprecated use the `prisma-vir` package instead.
  */
 export type PrismaAddDataData<PrismaClient extends BasePrismaClient, TypeMap extends BaseTypeMap> =
     | Readonly<PrismaAllModelsCreate<PrismaClient, TypeMap>>
@@ -168,10 +168,10 @@ export function getAllPrismaModelKeys(prismaClient: BasePrismaClient): string[] 
 /**
  * Options for `prisma.client.dumpData`.
  *
+ * @deprecated Use the `prisma-vir` package instead.
  * @category Prisma : Node
  * @category Package : @augment-vir/node
  * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
- * @deprecated use the `prisma-vir` package instead.
  */
 export type PrismaDataDumpOptions = {
     /**
@@ -196,10 +196,10 @@ const defaultPrismaDumpDataOptions: PrismaDataDumpOptions = {
 /**
  * Output for `prisma.client.dumpData`.
  *
+ * @deprecated Use the `prisma-vir` package instead.
  * @category Prisma : Node
  * @category Package : @augment-vir/node
  * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
- * @deprecated use the `prisma-vir` package instead.
  */
 export type PrismaDumpOutput<TypeMap extends BaseTypeMap> = Partial<{
     [Model in PrismaModelName<TypeMap> as FirstLetterLowercase<Model>]: PrismaBasicModel<

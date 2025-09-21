@@ -10,10 +10,10 @@ import {runPrismaCommand, verifyOutput} from './run-prisma-command.js';
 /**
  * Output of `prisma.migration.status`.
  *
+ * @deprecated Use the `prisma-vir` package instead.
  * @category Prisma : Node : Util
  * @category Package : @augment-vir/node
  * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
- * @deprecated use the `prisma-vir` package instead.
  */
 export type PrismaMigrationStatus = {
     totalMigrations: number;

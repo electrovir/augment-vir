@@ -9,20 +9,20 @@ import {PrismaSchemaError} from './prisma-errors.js';
 /**
  * All commands in the Prisma CLI that support the `--no-hints` flag, used to turn off ads.
  *
+ * @deprecated Use the `prisma-vir` package instead.
  * @category Prisma : Node : Util
  * @category Package : @augment-vir/node
  * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
- * @deprecated use the `prisma-vir` package instead.
  */
 export const prismaCommandsThatSupportNoHints = ['generate'];
 
 /**
  * Directly run a Prisma command.
  *
+ * @deprecated Use the `prisma-vir` package instead.
  * @category Prisma : Node : Util
  * @category Package : @augment-vir/node
  * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
- * @deprecated use the `prisma-vir` package instead.
  */
 export async function runPrismaCommand(
     {

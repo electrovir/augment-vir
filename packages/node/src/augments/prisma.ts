@@ -17,7 +17,6 @@ import {
     getMigrationStatus,
 } from '../prisma/prisma-migrations.js';
 
-
 export type {
     PrismaAddDataData as PrismaAddModelData,
     PrismaDataDumpOptions,
@@ -46,10 +45,10 @@ export {prismaCommandsThatSupportNoHints, runPrismaCommand} from '../prisma/run-
  *
  *       - If `false`, run `prisma.client.generate`
  *
+ * @deprecated Use the `prisma-vir` package instead.
  * @category Prisma : Node
  * @category Package : @augment-vir/node
  * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
- * @deprecated use the `prisma-vir` package instead.
  */
 export const prisma = {
     migration: {
