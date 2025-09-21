@@ -1,6 +1,7 @@
 export * from './augments/array/array.js';
 export * from './augments/array/remove-duplicates.js';
 export * from './augments/array/tuple.js';
+export * from './augments/diff/pretty-diff.js';
 export * from './augments/enum/enum-type.js';
 export * from './augments/enum/enum-values.js';
 export * from './augments/error/ensure-error.js';
