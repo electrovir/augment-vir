@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-deprecated */
+
 import {log, type PartialWithUndefined, wrapString} from '@augment-vir/common';
 import {dirname} from 'node:path';
 import {interpolationSafeWindowsPath} from '../augments/path/os-path.js';
@@ -10,6 +12,7 @@ import {PrismaSchemaError} from './prisma-errors.js';
  * @category Prisma : Node : Util
  * @category Package : @augment-vir/node
  * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
+ * @deprecated use the `prisma-vir` package instead.
  */
 export const prismaCommandsThatSupportNoHints = ['generate'];
 
@@ -19,6 +22,7 @@ export const prismaCommandsThatSupportNoHints = ['generate'];
  * @category Prisma : Node : Util
  * @category Package : @augment-vir/node
  * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
+ * @deprecated use the `prisma-vir` package instead.
  */
 export async function runPrismaCommand(
     {

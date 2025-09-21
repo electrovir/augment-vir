@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-deprecated */
+
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 
 import {assert} from '@augment-vir/assert';

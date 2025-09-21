@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-deprecated */
+
 import {assert, check} from '@augment-vir/assert';
 import {
     type AnyObject,
@@ -69,6 +71,7 @@ import {type IsAny} from 'type-fest';
  * ```
  *
  * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
+ * @deprecated use the `prisma-vir` package instead.
  */
 export type PrismaAddDataData<PrismaClient extends BasePrismaClient, TypeMap extends BaseTypeMap> =
     | Readonly<PrismaAllModelsCreate<PrismaClient, TypeMap>>
@@ -168,6 +171,7 @@ export function getAllPrismaModelKeys(prismaClient: BasePrismaClient): string[] 
  * @category Prisma : Node
  * @category Package : @augment-vir/node
  * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
+ * @deprecated use the `prisma-vir` package instead.
  */
 export type PrismaDataDumpOptions = {
     /**
@@ -195,6 +199,7 @@ const defaultPrismaDumpDataOptions: PrismaDataDumpOptions = {
  * @category Prisma : Node
  * @category Package : @augment-vir/node
  * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
+ * @deprecated use the `prisma-vir` package instead.
  */
 export type PrismaDumpOutput<TypeMap extends BaseTypeMap> = Partial<{
     [Model in PrismaModelName<TypeMap> as FirstLetterLowercase<Model>]: PrismaBasicModel<

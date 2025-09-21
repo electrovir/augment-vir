@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-deprecated */
+
 import {runPrismaCommand} from './run-prisma-command.js';
 
 export async function getPrismaDiff(

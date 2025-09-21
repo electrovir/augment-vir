@@ -1,3 +1,8 @@
+/* eslint-disable @typescript-eslint/no-deprecated */
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import {PrismaMigrationNeededError, PrismaResetNeededError} from '../prisma/prisma-errors.js';
+
 import {addData, dumpData} from '../prisma/model-data.js';
 import {generatePrismaClient, isGeneratedPrismaClientCurrent} from '../prisma/prisma-client.js';
 import {
@@ -12,8 +17,6 @@ import {
     getMigrationStatus,
 } from '../prisma/prisma-migrations.js';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import {PrismaMigrationNeededError, PrismaResetNeededError} from '../prisma/prisma-errors.js';
 
 export type {
     PrismaAddDataData as PrismaAddModelData,
@@ -46,6 +49,7 @@ export {prismaCommandsThatSupportNoHints, runPrismaCommand} from '../prisma/run-
  * @category Prisma : Node
  * @category Package : @augment-vir/node
  * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
+ * @deprecated use the `prisma-vir` package instead.
  */
 export const prisma = {
     migration: {

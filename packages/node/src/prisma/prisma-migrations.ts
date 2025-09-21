@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-deprecated */
+
 import {check} from '@augment-vir/assert';
 import {log, safeMatch, toEnsuredNumber} from '@augment-vir/common';
 import terminate from 'terminate';
@@ -11,6 +13,7 @@ import {runPrismaCommand, verifyOutput} from './run-prisma-command.js';
  * @category Prisma : Node : Util
  * @category Package : @augment-vir/node
  * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
+ * @deprecated use the `prisma-vir` package instead.
  */
 export type PrismaMigrationStatus = {
     totalMigrations: number;

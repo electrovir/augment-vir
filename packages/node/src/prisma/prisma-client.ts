@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-deprecated */
+
 import {collapseWhiteSpace} from '@augment-vir/common';
 import {existsSync} from 'node:fs';
 import {readFile} from 'node:fs/promises';
