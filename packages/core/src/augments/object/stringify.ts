@@ -22,6 +22,10 @@ export function stringify(
     /** Passed directly to the `space` parameter of `JSON.stringify`. */
     space?: string | number,
 ) {
+    if (typeof input === 'string') {
+        return input;
+    }
+
     try {
         const json5String = JSON5.stringify(
             input,
