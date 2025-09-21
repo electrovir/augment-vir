@@ -24,6 +24,9 @@ describe('strictEquals', () => {
         });
         it('rejects', () => {
             assert.throws(() => assert.strictEquals(actualReject, expected));
+            assert.throws(() => assert.strictEquals('' as any, {}));
+            assert.throws(() => assert.strictEquals({} as any, ''));
+            assert.throws(() => assert.strictEquals({}, {}));
         });
     });
     describe('check', () => {
@@ -51,6 +54,9 @@ describe('strictEquals', () => {
         });
         it('rejects', () => {
             assert.throws(() => assertWrap.strictEquals(actualReject, expected));
+            assert.throws(() => assertWrap.strictEquals('' as any, {}));
+            assert.throws(() => assertWrap.strictEquals({} as any, ''));
+            assert.throws(() => assertWrap.strictEquals({}, {}));
         });
     });
     describe('checkWrap', () => {
@@ -105,6 +111,10 @@ describe('notStrictEquals', () => {
         });
         it('rejects', () => {
             assert.throws(() => assert.notStrictEquals(actualReject, expected));
+            assert.throws(() => assert.notStrictEquals('', ''));
+            const objectExample = {};
+            assert.throws(() => assert.notStrictEquals(objectExample, objectExample));
+            assert.throws(() => assert.notStrictEquals(null, null));
         });
     });
     describe('check', () => {
@@ -123,6 +133,10 @@ describe('notStrictEquals', () => {
         });
         it('rejects', () => {
             assert.throws(() => assertWrap.notStrictEquals(actualReject, expected));
+            assert.throws(() => assertWrap.notStrictEquals('', ''));
+            const objectExample = {};
+            assert.throws(() => assertWrap.notStrictEquals(objectExample, objectExample));
+            assert.throws(() => assertWrap.notStrictEquals(null, null));
         });
     });
     describe('checkWrap', () => {
@@ -178,6 +192,9 @@ describe('looseEquals', () => {
         });
         it('rejects', () => {
             assert.throws(() => assert.looseEquals(actualReject, expected));
+            assert.throws(() => assert.looseEquals('', {}));
+            assert.throws(() => assert.looseEquals({}, {}));
+            assert.throws(() => assert.looseEquals('', 42));
         });
     });
     describe('check', () => {
@@ -205,6 +222,9 @@ describe('looseEquals', () => {
         });
         it('rejects', () => {
             assert.throws(() => assertWrap.looseEquals(actualReject, expected));
+            assert.throws(() => assertWrap.looseEquals('', {}));
+            assert.throws(() => assertWrap.looseEquals({}, {}));
+            assert.throws(() => assertWrap.looseEquals('', 42));
         });
     });
     describe('checkWrap', () => {
@@ -260,6 +280,10 @@ describe('notLooseEquals', () => {
         });
         it('rejects', () => {
             assert.throws(() => assert.notLooseEquals(actualReject, expected));
+            assert.throws(() => assert.notLooseEquals('', ''));
+            const objectExample = {};
+            assert.throws(() => assert.notLooseEquals(objectExample, objectExample));
+            assert.throws(() => assert.notLooseEquals(null, null));
         });
     });
     describe('check', () => {
@@ -278,6 +302,10 @@ describe('notLooseEquals', () => {
         });
         it('rejects', () => {
             assert.throws(() => assertWrap.notLooseEquals(actualReject, expected));
+            assert.throws(() => assertWrap.notLooseEquals('', ''));
+            const objectExample = {};
+            assert.throws(() => assertWrap.notLooseEquals(objectExample, objectExample));
+            assert.throws(() => assertWrap.notLooseEquals(null, null));
         });
     });
     describe('checkWrap', () => {

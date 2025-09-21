@@ -2,6 +2,7 @@ export {type Primitive} from 'type-fest';
 export * from './augments/assertion-exports.js';
 export * from './augments/assertion.error.js';
 export * from './augments/custom-equality.js';
+export * from './augments/diff.error.js';
 export * from './augments/guards/assert-wrap.js';
 export * from './augments/guards/assert.js';
 export * from './augments/guards/check-wrap.js';

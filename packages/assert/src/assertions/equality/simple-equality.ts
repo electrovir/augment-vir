@@ -1,6 +1,7 @@
 import {type MaybePromise, type NarrowToExpected, stringify} from '@augment-vir/core';
 import deepEqual from 'deep-eql';
 import {AssertionError} from '../../augments/assertion.error.js';
+import {DiffError} from '../../augments/diff.error.js';
 import {type GuardGroup} from '../../guard-types/guard-group.js';
 import {type WaitUntilOptions, createWaitUntil} from '../../guard-types/wait-until-function.js';
 
@@ -46,10 +47,17 @@ const assertions = {
         failureMessage?: string | undefined,
     ): asserts actual is Expected {
         if (actual !== expected) {
-            throw new AssertionError(
-                `\n\n${stringify(actual)}\n\ndoes not strictly equal\n\n${stringify(expected)}\n\n`,
-                failureMessage,
-            );
+            if (
+                (typeof actual === 'object' && actual) ||
+                (typeof expected === 'object' && expected)
+            ) {
+                throw new AssertionError(
+                    `Strict reference equality failed for \n\n${stringify(expected)}\n\n.`,
+                    failureMessage,
+                );
+            } else {
+                throw new DiffError('Not strictly equal.', actual, expected, failureMessage);
+            }
         }
     },
     /**
@@ -85,10 +93,17 @@ const assertions = {
         failureMessage?: string | undefined,
     ) {
         if (actual === expected) {
-            throw new AssertionError(
-                `\n\n${stringify(actual)}\n\nstrictly equals\n\n${stringify(expected)}\n\n`,
-                failureMessage,
-            );
+            if (typeof actual === 'object' && actual) {
+                throw new AssertionError(
+                    `Strict reference INequality failed for \n\n${stringify(expected)}\n\n.`,
+                    failureMessage,
+                );
+            } else {
+                throw new AssertionError(
+                    `\n\n${stringify(actual)}\n\nstrictly equals\n\n${stringify(expected)}\n\n`,
+                    failureMessage,
+                );
+            }
         }
     },
     /**
@@ -124,10 +139,17 @@ const assertions = {
         failureMessage?: string | undefined,
     ) {
         if (actual != expected) {
-            throw new AssertionError(
-                `\n\n${stringify(actual)}\n\ndoes not loosely equal\n\n${stringify(expected)}\n\n`,
-                failureMessage,
-            );
+            if (
+                (typeof actual === 'object' && actual) ||
+                (typeof expected === 'object' && expected)
+            ) {
+                throw new AssertionError(
+                    `Loose reference equality failed for \n\n${stringify(expected)}\n\n.`,
+                    failureMessage,
+                );
+            } else {
+                throw new DiffError('Not loosely equal.', actual, expected, failureMessage);
+            }
         }
     },
     /**
@@ -163,10 +185,17 @@ const assertions = {
         failureMessage?: string | undefined,
     ) {
         if (actual == expected) {
-            throw new AssertionError(
-                `\n\n${stringify(actual)}\n\nloosely equals\n\n${stringify(expected)}\n\n`,
-                failureMessage,
-            );
+            if (typeof actual === 'object' && actual) {
+                throw new AssertionError(
+                    `Loose reference INequality failed for \n\n${stringify(expected)}\n\n.`,
+                    failureMessage,
+                );
+            } else {
+                throw new AssertionError(
+                    `\n\n${stringify(actual)}\n\nloosely equals\n\n${stringify(expected)}\n\n`,
+                    failureMessage,
+                );
+            }
         }
     },
     /**
@@ -210,10 +239,7 @@ const assertions = {
                 comparator: customComparator,
             })
         ) {
-            throw new AssertionError(
-                `\n\n${stringify(actual)}\n\ndoes not deeply equal\n\n${stringify(expected)}\n\n`,
-                failureMessage,
-            );
+            throw new DiffError('Not deeply equal.', actual, expected, failureMessage);
         }
     },
     /**
@@ -495,11 +521,16 @@ export const simpleEqualityGuards = {
         ): NarrowToExpected<Actual, Expected> {
             if (actual === expected) {
                 return actual as NarrowToExpected<Actual, Expected>;
-            } else {
+            } else if (
+                (typeof actual === 'object' && actual) ||
+                (typeof expected === 'object' && expected)
+            ) {
                 throw new AssertionError(
-                    `\n\n${stringify(actual)}\n\ndoes not strictly equal\n\n${stringify(expected)}\n\n`,
+                    `Strict reference equality failed for \n\n${stringify(expected)}\n\n.`,
                     failureMessage,
                 );
+            } else {
+                throw new DiffError('Not strictly equal.', actual, expected, failureMessage);
             }
         },
         /**
@@ -536,10 +567,17 @@ export const simpleEqualityGuards = {
             failureMessage?: string | undefined,
         ): Actual {
             if (actual === expected) {
-                throw new AssertionError(
-                    `\n\n${stringify(actual)}\n\nstrictly equals\n\n${stringify(expected)}\n\n`,
-                    failureMessage,
-                );
+                if (typeof actual === 'object' && actual) {
+                    throw new AssertionError(
+                        `Strict reference INequality failed for \n\n${stringify(expected)}\n\n.`,
+                        failureMessage,
+                    );
+                } else {
+                    throw new AssertionError(
+                        `\n\n${stringify(actual)}\n\nstrictly equals\n\n${stringify(expected)}\n\n`,
+                        failureMessage,
+                    );
+                }
             } else {
                 return actual;
             }
@@ -579,11 +617,16 @@ export const simpleEqualityGuards = {
         ): Actual {
             if (actual == expected) {
                 return actual;
-            } else {
+            } else if (
+                (typeof actual === 'object' && actual) ||
+                (typeof expected === 'object' && expected)
+            ) {
                 throw new AssertionError(
-                    `\n\n${stringify(actual)}\n\ndoes not loosely equal\n\n${stringify(expected)}\n\n`,
+                    `Loose reference equality failed for \n\n${stringify(expected)}\n\n.`,
                     failureMessage,
                 );
+            } else {
+                throw new DiffError('Not loosely equal.', actual, expected, failureMessage);
             }
         },
         /**
@@ -620,10 +663,17 @@ export const simpleEqualityGuards = {
             failureMessage?: string | undefined,
         ): Actual {
             if (actual == expected) {
-                throw new AssertionError(
-                    `\n\n${stringify(actual)}\n\nloosely equals\n\n${stringify(expected)}\n\n`,
-                    failureMessage,
-                );
+                if (typeof actual === 'object' && actual) {
+                    throw new AssertionError(
+                        `Loose reference INequality failed for \n\n${stringify(expected)}\n\n.`,
+                        failureMessage,
+                    );
+                } else {
+                    throw new AssertionError(
+                        `\n\n${stringify(actual)}\n\nloosely equals\n\n${stringify(expected)}\n\n`,
+                        failureMessage,
+                    );
+                }
             } else {
                 return actual;
             }
@@ -673,10 +723,7 @@ export const simpleEqualityGuards = {
             ) {
                 return actual as NarrowToExpected<Actual, Expected>;
             } else {
-                throw new AssertionError(
-                    `\n\n${stringify(actual)}\n\ndoes not deeply equal\n\n${stringify(expected)}\n\n`,
-                    failureMessage,
-                );
+                throw new DiffError('Not deeply equal.', actual, expected, failureMessage);
             }
         },
         /**

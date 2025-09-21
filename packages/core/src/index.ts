@@ -28,6 +28,7 @@ export * from './augments/regexp/regexp-string.js';
 export * from './augments/runtime-env.js';
 export * from './augments/string/ansi.js';
 export * from './augments/string/casing.js';
+export * from './augments/string/indent.js';
 export * from './augments/string/match.js';
 export * from './augments/string/punctuation.js';
 export * from './augments/string/remove-duplicate-characters.js';

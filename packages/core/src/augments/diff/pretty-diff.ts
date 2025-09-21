@@ -25,11 +25,12 @@ export function prettyDiff(actual: unknown, expected: unknown): string {
 
     const useColor = isRuntimeEnv(RuntimeEnv.Node);
 
+    /* node:coverage ignore next 7: currently only tested in node */
     const explanationLine = [
         useColor ? NodeColor.Green : '',
-        '+added ',
+        ' +added',
         useColor ? NodeColor.Red : '',
-        '-missing ',
+        ' -missing',
         useColor ? NodeColor.Reset : '',
     ].join('');
 
@@ -95,6 +96,7 @@ function addColorToChange(
     const color = change.added ? NodeColor.Green : change.removed ? NodeColor.Red : NodeColor.Reset;
 
     return [
+        /* node:coverage ignore next 1 */
         useColor ? color : '',
         prefix,
         line ?? change.value,
