@@ -1,4 +1,4 @@
-import {type ArrayElement} from '@augment-vir/core';
+import {type ArrayElement, type TupleIndexesRecursive} from '@augment-vir/core';
 import {type Writable} from '../type/writable.js';
 
 /**
@@ -45,7 +45,7 @@ export function typedMap<const ArrayGeneric extends ReadonlyArray<any>, const Ou
     arrayToMap: ArrayGeneric,
     mapCallback: (
         value: ArrayElement<NoInfer<ArrayGeneric>>,
-        index: number,
+        index: TupleIndexesRecursive<ArrayGeneric>,
         array: NoInfer<ArrayGeneric>,
     ) => OutputType,
 ): Writable<{[Index in keyof ArrayGeneric]: OutputType}> {

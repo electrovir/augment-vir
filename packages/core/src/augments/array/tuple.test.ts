@@ -1,6 +1,6 @@
 import {assert} from '@augment-vir/assert';
 import {describe, it} from '@augment-vir/test';
-import {type MappedTuple, type Tuple} from './tuple.js';
+import {type MappedTuple, type Tuple, type TupleIndexes} from './tuple.js';
 
 describe('Tuple', () => {
     it('has proper types', () => {
@@ -31,5 +31,14 @@ describe('MappedTuple', () => {
             .tsType<MappedMyArray>()
             .notEquals<Readonly<[RegExp, RegExp, RegExp, RegExp, RegExp]>>();
         assert.tsType<MappedMyArray>().notEquals<ReadonlyArray<RegExp>>();
+    });
+});
+
+describe('TupleIndexes', () => {
+    it('extracts from a tuple', () => {
+        assert.tsType<TupleIndexes<['a', 'b', 'c']>>().equals<0 | 1 | 2>();
+    });
+    it('fails on a non-tuple', () => {
+        assert.tsType<TupleIndexes<[]>>().equals<never>();
     });
 });

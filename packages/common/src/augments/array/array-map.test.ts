@@ -30,7 +30,10 @@ describe(typedMap.name, () => {
                         '2',
                         '3',
                     ],
-                    (entry) => toNumber(entry),
+                    (entry, index) => {
+                        assert.tsType(index).equals<0|1|2>();
+                        return toNumber(entry)
+                    },
                 ),
             )
             .equals<[number, number, number]>();

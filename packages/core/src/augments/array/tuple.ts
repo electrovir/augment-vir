@@ -68,3 +68,28 @@ type _TupleOf<
 > = FullArrayGeneric['length'] extends LengthGeneric
     ? FullArrayGeneric
     : _TupleOf<ArrayElementGeneric, LengthGeneric, [ArrayElementGeneric, ...FullArrayGeneric]>;
+
+/**
+ * Helper type for {@link TupleIndexes}.
+ *
+ * @category Array
+ * @category Package : @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
+ */
+export type TupleIndexesRecursive<
+    T extends readonly unknown[],
+    Accumulated extends number[] = [],
+> = T extends readonly [any, ...infer Rest]
+    ? Accumulated['length'] | TupleIndexesRecursive<Rest, [...Accumulated, 1]>
+    : never;
+
+/**
+ * Extracts all the indexes of a tuple.
+ *
+ * @category Array
+ * @category Package : @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
+ */
+export type TupleIndexes<T extends readonly unknown[]> = number extends T['length']
+    ? number
+    : TupleIndexesRecursive<T>;
