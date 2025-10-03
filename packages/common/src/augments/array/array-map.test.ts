@@ -31,8 +31,8 @@ describe(typedMap.name, () => {
                         '3',
                     ],
                     (entry, index) => {
-                        assert.tsType(index).equals<0|1|2>();
-                        return toNumber(entry)
+                        assert.tsType(index).equals<0 | 1 | 2>();
+                        return toNumber(entry);
                     },
                 ),
             )
