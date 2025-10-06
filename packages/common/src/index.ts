@@ -59,6 +59,7 @@ export * from './augments/object/object-keys.js';
 export * from './augments/object/object-sort.js';
 export * from './augments/object/object-values.js';
 export * from './augments/path/esm-path.js';
+export * from './augments/path/sanitize-path.js';
 export * from './augments/path/universal-path.js';
 export * from './augments/prisma/base-prisma-types.js';
 export * from './augments/prisma/prisma-basic-model.js';

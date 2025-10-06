@@ -2,6 +2,7 @@ import {collapseWhiteSpace, safeSplit} from '@augment-vir/common';
 import {extname} from 'node:path';
 import sanitizeFileName from 'sanitize-filename';
 
+/** @deprecated: use `sanitizeFilePath` from `@augment-vir/common` instead. */
 export function sanitizePath(original: string | null | undefined): string | undefined {
     if (!original) {
         return undefined;

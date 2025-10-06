@@ -1,10 +1,8 @@
-/* eslint-disable @typescript-eslint/no-deprecated */
-
 import {describe, itCases} from '@augment-vir/test';
-import {sanitizePath} from './sanitize-path.js';
+import {sanitizeFilePath} from './sanitize-path.js';
 
-describe(sanitizePath.name, () => {
-    itCases(sanitizePath, [
+describe(sanitizeFilePath.name, () => {
+    itCases(sanitizeFilePath, [
         // cspell:disable
         {
             it: 'collapses null to undefined',
