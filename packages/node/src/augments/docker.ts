@@ -42,8 +42,9 @@ export {type RunDockerContainerCommandParams} from '../docker/containers/run-com
 export {type RunDockerContainerParams} from '../docker/containers/run-container.js';
 
 /**
- * Centralized Docker API from `@augment-vir/node`.
+ * Centralized Docker API.
  *
+ * @deprecated Use the [docker-vir](https://www.npmjs.com/package/docker-vir) package instead.
  * @category Node : Docker
  * @category Package : @augment-vir/node
  * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)

@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-deprecated */
+
 import {docker} from '../../augments/docker.js';
 import {type RunDockerContainerParams} from './run-container.js';
 

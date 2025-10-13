@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-deprecated */
+
 import {assert} from '@augment-vir/assert';
 import {describe, it} from '@augment-vir/test';
 import {docker} from '../../augments/docker.js';

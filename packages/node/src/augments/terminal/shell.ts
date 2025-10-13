@@ -133,8 +133,12 @@ export function streamShellCommand(
             const execException: ExecException & {cwd?: string | undefined} = new Error(
                 `Command failed: ${command}`,
             );
-            execException.code = exitCode;
-            execException.signal = exitSignal;
+            if (exitCode != undefined) {
+                execException.code = exitCode;
+            }
+            if (exitSignal != undefined) {
+                execException.signal = exitSignal;
+            }
             execException.cmd = command;
             execException.killed = childProcess.killed;
             execException.cwd = cwd;
