@@ -53,6 +53,12 @@ const packagesToFix: ReadonlyArray<Readonly<PackageToFix>> = [
         scriptPath: join('prettier', 'bin', 'prettier.cjs'),
         fixImport: false,
     },
+    {
+        packageName: '@web/test-runner',
+        binName: 'web-test-runner',
+        scriptPath: join('@web/test-runner', 'dist', 'bin.js'),
+        fixImport: false,
+    },
 ];
 
 function createBinFileContents({scriptPath}: Readonly<Pick<PackageToFix, 'scriptPath'>>): string {
