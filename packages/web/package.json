@@ -38,9 +38,9 @@
     "dependencies": {
         "@augment-vir/assert": "^31.40.0",
         "@augment-vir/common": "^31.40.0",
-        "@date-vir/duration": "^7.4.2",
+        "@date-vir/duration": "^7.4.3",
         "html-spec-tags": "^2.2.3",
-        "type-fest": "^5.0.1"
+        "type-fest": "^5.1.0"
     },
     "devDependencies": {
         "@augment-vir/test": "^31.40.0",

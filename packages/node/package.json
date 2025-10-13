@@ -40,18 +40,18 @@
     "dependencies": {
         "@augment-vir/assert": "^31.40.0",
         "@augment-vir/common": "^31.40.0",
-        "@date-vir/duration": "^7.4.2",
+        "@date-vir/duration": "^7.4.3",
         "ansi-styles": "^6.2.3",
         "sanitize-filename": "^1.6.3",
         "terminate": "^2.8.0",
         "tsx": "^4.20.6",
-        "type-fest": "^5.0.1",
+        "type-fest": "^5.1.0",
         "typed-event-target": "^4.1.0"
     },
     "devDependencies": {
         "@augment-vir/test": "^31.40.0",
-        "@prisma/client": "^6.16.3",
-        "@types/node": "^24.6.2",
+        "@prisma/client": "^6.17.1",
+        "@types/node": "^24.7.2",
         "@web/dev-server-esbuild": "^1.0.4",
         "@web/test-runner": "^0.20.2",
         "@web/test-runner-commands": "^0.9.0",
@@ -59,7 +59,7 @@
         "@web/test-runner-visual-regression": "^0.10.0",
         "c8": "^10.1.3",
         "istanbul-smart-text-reporter": "^1.1.5",
-        "prisma": "^6.16.3",
+        "prisma": "^6.17.1",
         "typescript": "^5.9.3"
     },
     "peerDependencies": {
