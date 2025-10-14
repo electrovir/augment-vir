@@ -39,6 +39,7 @@
         "test:update": "mono-vir for-each-async npm run test:update"
     },
     "overrides": {
+        "is-generator-function": "1.1.0",
         "playwright": "1.46.1"
     },
     "devDependencies": {
