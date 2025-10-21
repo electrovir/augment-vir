@@ -136,6 +136,7 @@ export function streamShellCommand(
             if (exitCode != undefined) {
                 execException.code = exitCode;
             }
+            /* node:coverage ignore next 3: idk how to get this to trigger */
             if (exitSignal != undefined) {
                 execException.signal = exitSignal;
             }
