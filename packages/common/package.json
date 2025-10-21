@@ -42,7 +42,7 @@
     "dependencies": {
         "@augment-vir/assert": "^31.41.0",
         "@augment-vir/core": "^31.41.0",
-        "@date-vir/duration": "^7.4.3",
+        "@date-vir/duration": "^8.0.0",
         "ansi-styles": "^6.2.3",
         "deepcopy-esm": "^2.1.1",
         "json5": "^2.2.3",
