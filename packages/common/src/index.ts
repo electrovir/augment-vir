@@ -22,6 +22,7 @@ export * from './augments/function/execution-duration.js';
 export * from './augments/function/if-truthy.js';
 export * from './augments/function/retry.js';
 export * from './augments/function/wrap-in-try.js';
+export * from './augments/interval/blocking-interval.js';
 export * from './augments/json/append-json.js';
 export * from './augments/json/copy-through-json.js';
 export * from './augments/json/json5.js';
