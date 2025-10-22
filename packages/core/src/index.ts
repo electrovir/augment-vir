@@ -33,3 +33,4 @@ export * from './augments/string/match.js';
 export * from './augments/string/punctuation.js';
 export * from './augments/string/remove-duplicate-characters.js';
 export * from './augments/string/uuid.js';
+export * from './augments/type/branded-type.js';
