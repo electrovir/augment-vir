@@ -6,11 +6,20 @@
 export type BrandedTypeTag = '$_brand_$';
 
 /**
+ * Applies a branding to types for {@link Branded}.
+ *
+ * @category Internal
+ */
+export type Brand<BrandKey extends PropertyKey> = Readonly<
+    Record<BrandedTypeTag, Record<BrandKey, never>>
+>;
+
+/**
  * Brand any type so that it is no longer assignable to itself. For example, brand a database id
  * `string` type so that standard strings cannot be assigned to it.
  *
  * Largely inspired by the `Tagged` type from the `type-fest` package at
- * https://github.com/sindresorhus/type-fest/tree/687a89d94c4403d93ac5cb969ac7f492cee006cb/source
+ * https://github.com/sindresorhus/type-fest/blob/687a89d94c4403d93ac5cb969ac7f492cee006cb/source/tagged.d.ts
  *
  * @category Type
  * @example
@@ -25,36 +34,57 @@ export type Branded<
     OriginalType,
     /** The key for this brand. Two branded types with the same key will be assignable to each other. */
     BrandKey extends PropertyKey,
-> = OriginalType & Readonly<Record<BrandedTypeTag, Record<BrandKey, never>>>;
+> = OriginalType & Brand<BrandKey>;
 
 /**
  * Unwrap a type brand applied via {@link Branded}.
  *
  * Largely inspired by the `Tagged` type from the `type-fest` package at
- * https://github.com/sindresorhus/type-fest/tree/687a89d94c4403d93ac5cb969ac7f492cee006cb/source
+ * https://github.com/sindresorhus/type-fest/blob/687a89d94c4403d93ac5cb969ac7f492cee006cb/source/tagged.d.ts
  *
  * @category Type
  */
-export type UnwrapBrand<BrandedType extends Branded<any, any>> =
-    BrandedType extends Branded<infer OriginalType, any> ? OriginalType : BrandedType;
+export type UnwrapBrand<BrandedType extends Branded<any, any>> = RemoveAllBranding<BrandedType>;
+
+/**
+ * Removes all branding for {@link UnwrapBrand}.
+ *
+ * Largely inspired by the `RemoveAllTags` type from the `type-fest` package at
+ * https://github.com/sindresorhus/type-fest/blob/687a89d94c4403d93ac5cb969ac7f492cee006cb/source/tagged.d.ts
+ *
+ * @category Internal
+ */
+export type RemoveAllBranding<T> =
+    T extends Brand<any>
+        ? {
+              [ThisBrand in keyof T[BrandedTypeTag]]: T extends Branded<
+                  infer OriginalType,
+                  ThisBrand
+              >
+                  ? RemoveAllBranding<OriginalType>
+                  : never;
+          }[keyof T[BrandedTypeTag]]
+        : T;
 
 /**
  * Wrap a value in a brand that matches its original type.
  *
  * @category Type
  */
-export function applyBrand<const Brand extends Branded<any, any> = never>(value: string): Brand;
-export function applyBrand<const Brand extends Branded<any, any> = never>(
+export function applyBrand<const NewBrand extends Branded<any, any> = never>(
+    value: string,
+): NewBrand;
+export function applyBrand<const NewBrand extends Branded<any, any> = never>(
     value: string | undefined,
-): Brand | undefined;
-export function applyBrand<const Brand extends Branded<any, any> = never>(
+): NewBrand | undefined;
+export function applyBrand<const NewBrand extends Branded<any, any> = never>(
     value: string | null,
-): Brand | null;
-export function applyBrand<const Brand extends Branded<any, any> = never>(
+): NewBrand | null;
+export function applyBrand<const NewBrand extends Branded<any, any> = never>(
     value: string | undefined | null,
-): Brand | undefined | null;
-export function applyBrand<const Brand extends Branded<any, any> = never>(
+): NewBrand | undefined | null;
+export function applyBrand<const NewBrand extends Branded<any, any> = never>(
     value: string | undefined | null,
-): Brand | undefined | null {
-    return value as Brand;
+): NewBrand | undefined | null {
+    return value as NewBrand;
 }

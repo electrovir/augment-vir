@@ -21,9 +21,9 @@ describe('Branded', () => {
 
 describe('UnwrapBrand', () => {
     it('unwraps original type', () => {
-        type MyId = Branded<string, 'my-database-id-type'>;
+        type UnwrappedId = UnwrapBrand<MyId>;
 
-        assert.tsType<UnwrapBrand<MyId>>().equals<string>();
+        assert.tsType<UnwrappedId>().equals<string>();
     });
 });
 
