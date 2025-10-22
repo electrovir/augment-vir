@@ -1,9 +1,9 @@
 /**
- * A symbol used for {@link Branded}.
+ * Property key used to mark {@link Branded}.
  *
  * @category Internal
  */
-export const brandedTypeTag = Symbol.for('augment-vir-core-branded-type-tag');
+export type BrandedTypeTag = '$_brand_$';
 
 /**
  * Brand any type so that it is no longer assignable to itself. For example, brand a database id
@@ -25,10 +25,7 @@ export type Branded<
     OriginalType,
     /** The key for this brand. Two branded types with the same key will be assignable to each other. */
     BrandKey extends PropertyKey,
-> = OriginalType &
-    Readonly<{
-        [brandedTypeTag]: Record<BrandKey, never>;
-    }>;
+> = OriginalType & Readonly<Record<BrandedTypeTag, Record<BrandKey, never>>>;
 
 /**
  * Unwrap a type brand applied via {@link Branded}.
