@@ -43,6 +43,18 @@ export type UnwrapBrand<BrandedType extends Branded<any, any>> =
  *
  * @category Type
  */
-export function applyBrand<Brand extends Branded<any, any>>(value: UnwrapBrand<Brand>): Brand {
+export function applyBrand<const Brand extends Branded<any, any> = never>(value: string): Brand;
+export function applyBrand<const Brand extends Branded<any, any> = never>(
+    value: string | undefined,
+): Brand | undefined;
+export function applyBrand<const Brand extends Branded<any, any> = never>(
+    value: string | null,
+): Brand | null;
+export function applyBrand<const Brand extends Branded<any, any> = never>(
+    value: string | undefined | null,
+): Brand | undefined | null;
+export function applyBrand<const Brand extends Branded<any, any> = never>(
+    value: string | undefined | null,
+): Brand | undefined | null {
     return value as Brand;
 }
