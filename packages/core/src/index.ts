@@ -15,6 +15,7 @@ export * from './augments/min-max.js';
 export * from './augments/narrow-type.js';
 export * from './augments/object/generic-object-type.js';
 export * from './augments/object/object-keys.js';
+export * from './augments/object/object-sort.js';
 export * from './augments/object/object-value-types.js';
 export * from './augments/object/required-keys.js';
 export * from './augments/object/stringify.js';

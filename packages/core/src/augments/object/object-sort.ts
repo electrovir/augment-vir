@@ -1,4 +1,4 @@
-import {type AnyObject} from '@augment-vir/core';
+import {type AnyObject} from './generic-object-type.js';
 
 /**
  * Creates as new sorted object copied from the the original given object.

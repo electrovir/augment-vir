@@ -1,5 +1,6 @@
 import {diffLines, diffWords, type ChangeObject} from 'diff';
 import {type TypedFunction} from '../function/typed-function-type.js';
+import {sortObject} from '../object/object-sort.js';
 import {stringify} from '../object/stringify.js';
 import {isRuntimeEnv, RuntimeEnv} from '../runtime-env.js';
 
@@ -12,25 +13,35 @@ export function prettyDiff(actual: unknown, expected: unknown): string {
     >;
     const expectedString = [
         bothStrings ? '' : '\n',
-        stringify(expected, 4),
+        stringify(
+            !!expected && typeof expected === 'object' && !Array.isArray(expected)
+                ? sortObject(expected)
+                : expected,
+            4,
+        ),
         '\n',
     ].join('');
     const actualString = [
         bothStrings ? '' : '\n',
-        stringify(actual, 4),
+        stringify(
+            !!actual && typeof actual === 'object' && !Array.isArray(actual)
+                ? sortObject(actual)
+                : actual,
+            4,
+        ),
         '\n',
     ].join('');
 
-    const changes = addDiffColors(useLines, diffFunction(expectedString, actualString));
+    const changes = addDiffColors(useLines, diffFunction(actualString, expectedString));
 
     const useColor = isRuntimeEnv(RuntimeEnv.Node);
 
     /* node:coverage ignore next 7: currently only tested in node */
     const explanationLine = [
         useColor ? NodeColor.Green : '',
-        ' +added',
+        ' +added (unexpected, added in actual)',
         useColor ? NodeColor.Red : '',
-        ' -missing',
+        ' -missing (expected, missing from actual)',
         useColor ? NodeColor.Reset : '',
     ].join('');
 
