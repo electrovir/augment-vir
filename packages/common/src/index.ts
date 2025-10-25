@@ -10,6 +10,7 @@ export * from './augments/array/cross-product.js';
 export * from './augments/array/ensure-array.js';
 export * from './augments/array/extract-duplicates.js';
 export * from './augments/array/filter.js';
+export * from './augments/array/from-async-iterable.js';
 export * from './augments/array/repeat-array.js';
 export * from './augments/array/shuffle-array.js';
 export * from './augments/array/string-array.js';

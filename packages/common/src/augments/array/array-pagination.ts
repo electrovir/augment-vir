@@ -17,6 +17,7 @@ export type ArrayPaginationOptions = {
  * `getPage` is `0` indexed.
  *
  * @category Array
+ * @category Package : @augment-vir/common
  * @example
  *
  * ```ts
@@ -62,6 +63,7 @@ export type ChunkArrayOptions = RequireExactlyOne<{
  * Split an array into multiple sub array "chunks" based on the given options.
  *
  * @category Array
+ * @category Package : @augment-vir/common
  * @example
  *
  * ```ts
