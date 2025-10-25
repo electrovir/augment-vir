@@ -16,8 +16,6 @@ async function main() {
             '*',
             'Web',
             'Web : Elements',
-            'Node : Docker',
-            'Node : Docker : Util',
             'Node : File',
             'Node : Npm',
             'Node : OS',

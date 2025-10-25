@@ -14,10 +14,6 @@ const baseConfig = defineConfig({
         'not-to-unresolvable': {
             to: [
                 'typedoc',
-                /**
-                 * This is used in some tests and it might not be generated yet.
-                 */
-                '.prisma',
             ],
         },
     },

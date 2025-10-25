@@ -1,4 +1,3 @@
-export * from './augments/docker.js';
 export * from './augments/fs/dir-contents.js';
 export * from './augments/fs/download.js';
 export * from './augments/fs/json.js';
