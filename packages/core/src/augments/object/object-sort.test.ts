@@ -1,5 +1,6 @@
 import {assert} from '@augment-vir/assert';
-import {describe, it} from '@augment-vir/test';
+import {describe, it, itCases} from '@augment-vir/test';
+import {type AnyObject} from './generic-object-type.js';
 import {sortObject} from './object-sort.js';
 
 describe(sortObject.name, () => {
@@ -40,4 +41,53 @@ describe(sortObject.name, () => {
             'original keys still should not be sorted',
         );
     });
+
+    it('handles a recursive object', () => {
+        const recursiveObject: AnyObject = {
+            c: 3,
+            a: 1,
+            b: 2,
+        };
+
+        recursiveObject.b = recursiveObject;
+
+        sortObject(recursiveObject);
+    });
+
+    itCases(
+        sortObject,
+        (actual, expected) => assert.strictEquals(JSON.stringify(actual), JSON.stringify(expected)),
+        [
+            {
+                it: 'sorts',
+                input: {
+                    c: 3,
+                    b: 2,
+                    a: 1,
+                },
+                expect: {
+                    a: 1,
+                    b: 2,
+                    c: 3,
+                },
+            },
+            {
+                it: 'sorts recursively',
+                input: {
+                    c: 5,
+                    b: 4,
+                    a: {s: 3, q: 1, r: 2},
+                },
+                expect: {
+                    a: {
+                        q: 1,
+                        r: 2,
+                        s: 3,
+                    },
+                    b: 4,
+                    c: 5,
+                },
+            },
+        ],
+    );
 });
