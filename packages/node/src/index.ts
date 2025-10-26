@@ -1,5 +1,6 @@
 export * from './augments/fs/dir-contents.js';
 export * from './augments/fs/download.js';
+export * from './augments/fs/grep.js';
 export * from './augments/fs/json.js';
 export * from './augments/fs/read-dir.js';
 export * from './augments/fs/read-file.js';

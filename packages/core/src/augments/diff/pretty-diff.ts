@@ -32,7 +32,7 @@ export function prettyDiff(actual: unknown, expected: unknown): string {
         '\n',
     ].join('');
 
-    const changes = addDiffColors(useLines, diffFunction(actualString, expectedString));
+    const changes = addDiffColors(useLines, diffFunction(expectedString, actualString));
 
     const useColor = isRuntimeEnv(RuntimeEnv.Node);
 

@@ -1,31 +1,31 @@
 exports[`prettyDiff > expected number but got string 1`] = `
-"\\u001b[32m +added (unexpected, added in actual)\\u001b[31m -missing (expected, missing from actual)\\u001b[0m\\n\\n\\u001b[31m-hello there\\u001b[0m\\n\\u001b[32m+42\\u001b[0m\\n"
-`;
-
-exports[`prettyDiff > expected object but got string 1`] = `
-"\\u001b[32m +added (unexpected, added in actual)\\u001b[31m -missing (expected, missing from actual)\\u001b[0m\\n\\n\\u001b[31m-hello there\\u001b[0m\\n\\u001b[32m+{\\u001b[0m\\n\\u001b[32m+    a: 'hello there',\\u001b[0m\\n\\u001b[32m+}\\u001b[0m\\n"
-`;
-
-exports[`prettyDiff > expected string but got number 1`] = `
 "\\u001b[32m +added (unexpected, added in actual)\\u001b[31m -missing (expected, missing from actual)\\u001b[0m\\n\\n\\u001b[31m-42\\u001b[0m\\n\\u001b[32m+hello there\\u001b[0m\\n"
 `;
 
-exports[`prettyDiff > expected string but got object 1`] = `
+exports[`prettyDiff > expected object but got string 1`] = `
 "\\u001b[32m +added (unexpected, added in actual)\\u001b[31m -missing (expected, missing from actual)\\u001b[0m\\n\\n\\u001b[31m-{\\u001b[0m\\n\\u001b[31m-    a: 'hello there',\\u001b[0m\\n\\u001b[31m-}\\u001b[0m\\n\\u001b[32m+hello there\\u001b[0m\\n"
 `;
 
+exports[`prettyDiff > expected string but got number 1`] = `
+"\\u001b[32m +added (unexpected, added in actual)\\u001b[31m -missing (expected, missing from actual)\\u001b[0m\\n\\n\\u001b[31m-hello there\\u001b[0m\\n\\u001b[32m+42\\u001b[0m\\n"
+`;
+
+exports[`prettyDiff > expected string but got object 1`] = `
+"\\u001b[32m +added (unexpected, added in actual)\\u001b[31m -missing (expected, missing from actual)\\u001b[0m\\n\\n\\u001b[31m-hello there\\u001b[0m\\n\\u001b[32m+{\\u001b[0m\\n\\u001b[32m+    a: 'hello there',\\u001b[0m\\n\\u001b[32m+}\\u001b[0m\\n"
+`;
+
 exports[`prettyDiff > got completely different strings 1`] = `
-"\\u001b[32m +added (unexpected, added in actual)\\u001b[31m -missing (expected, missing from actual)\\u001b[0m\\n\\n\\u001b[31m-nothing here\\n\\u001b[0m\\u001b[32m+hello there\\n\\u001b[0m"
+"\\u001b[32m +added (unexpected, added in actual)\\u001b[31m -missing (expected, missing from actual)\\u001b[0m\\n\\n\\u001b[31m-hello there\\n\\u001b[0m\\u001b[32m+nothing here\\n\\u001b[0m"
 `;
 
 exports[`prettyDiff > handles numbers 1`] = `
-"\\u001b[32m +added (unexpected, added in actual)\\u001b[31m -missing (expected, missing from actual)\\u001b[0m\\n\\n\\u001b[31m-52\\u001b[0m\\n\\u001b[32m+40\\u001b[0m\\n"
+"\\u001b[32m +added (unexpected, added in actual)\\u001b[31m -missing (expected, missing from actual)\\u001b[0m\\n\\n\\u001b[31m-40\\u001b[0m\\n\\u001b[32m+52\\u001b[0m\\n"
 `;
 
 exports[`prettyDiff > handles objects 1`] = `
-"\\u001b[32m +added (unexpected, added in actual)\\u001b[31m -missing (expected, missing from actual)\\u001b[0m\\n\\n\\u001b[0m {\\u001b[0m\\n\\u001b[0m     a: 'hello there',\\u001b[0m\\n\\u001b[31m-    b: 'goodbye now',\\u001b[0m\\n\\u001b[0m }\\u001b[0m\\n"
+"\\u001b[32m +added (unexpected, added in actual)\\u001b[31m -missing (expected, missing from actual)\\u001b[0m\\n\\n\\u001b[0m {\\u001b[0m\\n\\u001b[0m     a: 'hello there',\\u001b[0m\\n\\u001b[32m+    b: 'goodbye now',\\u001b[0m\\n\\u001b[0m }\\u001b[0m\\n"
 `;
 
 exports[`prettyDiff > handles strings 1`] = `
-"\\u001b[32m +added (unexpected, added in actual)\\u001b[31m -missing (expected, missing from actual)\\u001b[0m\\n\\n\\u001b[0mhello \\u001b[0m\\u001b[31m-there\\u001b[0m\\u001b[32m+what\\u001b[0m\\u001b[0m why\\n\\u001b[0m"
+"\\u001b[32m +added (unexpected, added in actual)\\u001b[31m -missing (expected, missing from actual)\\u001b[0m\\n\\n\\u001b[0mhello \\u001b[0m\\u001b[31m-what\\u001b[0m\\u001b[32m+there\\u001b[0m\\u001b[0m why\\n\\u001b[0m"
 `;
