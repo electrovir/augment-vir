@@ -18,6 +18,21 @@ describe(listAllDirectNpmDeps.name, () => {
         });
 
         assert.deepEquals(sanitizedDeps, {
+            'is-generator-function': [
+                {
+                    dependencyKey: PackageJsonDependencyKey.Overrides,
+                    requiredBy: join(monoRepoDirPath, 'package.json'),
+                    isWorkspace: false,
+                },
+            ],
+
+            playwright: [
+                {
+                    dependencyKey: PackageJsonDependencyKey.Overrides,
+                    requiredBy: join(monoRepoDirPath, 'package.json'),
+                    isWorkspace: false,
+                },
+            ],
             '@augment-vir/assert': [
                 {
                     dependencyKey: PackageJsonDependencyKey.Dependencies,

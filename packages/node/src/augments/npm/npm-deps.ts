@@ -13,6 +13,7 @@ export enum PackageJsonDependencyKey {
     DevDependencies = 'devDependencies',
     Dependencies = 'dependencies',
     PeerDependencies = 'peerDependencies',
+    Overrides = 'overrides',
 }
 
 /**
