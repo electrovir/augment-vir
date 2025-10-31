@@ -171,6 +171,7 @@ export type RunShellCommandOptions = {
     shell?: string | undefined;
     /** Automatically hook up stdout and stderr printing to the caller's console methods. */
     hookUpToConsole?: boolean | undefined;
+    /** @default false */
     rejectOnError?: boolean | undefined;
     /** Callback to call whenever the shell logs to stdout. */
     stdoutCallback?: (stdout: string, childProcess: ChildProcess) => MaybePromise<void> | undefined;
