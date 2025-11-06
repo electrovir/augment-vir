@@ -1,0 +1,8 @@
+diff --git a/node_modules/type-fest/index.js b/node_modules/type-fest/index.js
+new file mode 100644
+index 0000000..693da49
+--- /dev/null
++++ b/node_modules/type-fest/index.js
+@@ -0,0 +1 @@
++export {}
+\ No newline at end of file
