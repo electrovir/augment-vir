@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/mono-repo-root",
-    "version": "31.47.0",
+    "version": "31.48.0",
     "private": true,
     "homepage": "https://github.com/electrovir/augment-vir",
     "bugs": {
@@ -49,7 +49,7 @@
         "@stylistic/eslint-plugin": "^5.5.0",
         "@stylistic/eslint-plugin-ts": "^4.4.1",
         "@typescript-eslint/eslint-plugin": "^8.46.3",
-        "cspell": "^9.2.1",
+        "cspell": "^9.2.2",
         "dependency-cruiser": "^17.2.0",
         "esbuild": "^0.25.12",
         "eslint": "^9.39.1",

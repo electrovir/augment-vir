@@ -588,6 +588,13 @@ describe(listAllDirectNpmDeps.name, () => {
                     isWorkspace: false,
                 },
             ],
+            'patch-package': [
+                {
+                    dependencyKey: PackageJsonDependencyKey.DevDependencies,
+                    requiredBy: '/Users/electrovir/repos/electrovir/augment-vir/package.json',
+                    isWorkspace: false,
+                },
+            ],
             prettier: [
                 {
                     dependencyKey: PackageJsonDependencyKey.DevDependencies,
@@ -683,6 +690,11 @@ describe(listAllDirectNpmDeps.name, () => {
                 },
             ],
             'type-fest': [
+                {
+                    dependencyKey: PackageJsonDependencyKey.Overrides,
+                    requiredBy: '/Users/electrovir/repos/electrovir/augment-vir/package.json',
+                    isWorkspace: false,
+                },
                 {
                     dependencyKey: PackageJsonDependencyKey.Dependencies,
                     requiredBy: join(monoRepoDirPath, 'packages', 'assert', 'package.json'),
