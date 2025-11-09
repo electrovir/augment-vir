@@ -1569,6 +1569,229 @@ describe('isNotObject', () => {
     });
 });
 
+describe('isPlainObject', () => {
+    const actualPass: unknown = {} as any;
+    const actualReject: unknown = new Date() as any;
+    type ExpectedType = UnknownObject;
+    type UnexpectedType = unknown[];
+
+    type ExpectedUnionNarrowedType = {hi: string};
+    const actualPassUnion: string[] | ExpectedUnionNarrowedType = {hi: 'hello'} as any;
+
+    describe('assert', () => {
+        it('guards', () => {
+            assert.tsType(actualPass).notEquals<ExpectedType>();
+
+            assert.isPlainObject(actualPass);
+
+            assert.tsType(actualPass).equals<ExpectedType>();
+            assert.tsType(actualPass).notEquals<UnexpectedType>();
+        });
+        it('rejects', () => {
+            assert.throws(() => assert.isPlainObject(actualReject));
+        });
+        it('narrows', () => {
+            assert.isPlainObject(actualPassUnion);
+
+            assert.tsType(actualPassUnion).equals<ExpectedUnionNarrowedType>();
+        });
+    });
+    describe('check', () => {
+        it('guards', () => {
+            assert.isTrue(check.isPlainObject(actualPass));
+
+            if (check.isPlainObject(actualPass)) {
+                assert.tsType(actualPass).equals<ExpectedType>();
+                assert.tsType(actualPass).notEquals<UnexpectedType>();
+            }
+
+            assert.tsType(actualPass).notEquals<ExpectedType>();
+        });
+        it('rejects', () => {
+            assert.isFalse(check.isPlainObject(actualReject));
+            assert.isFalse(check.isPlainObject(undefined));
+            assert.isFalse(check.isPlainObject('hi'));
+        });
+        it('narrows', () => {
+            if (check.isPlainObject(actualPassUnion)) {
+                assert.tsType(actualPassUnion).equals<ExpectedUnionNarrowedType>();
+            }
+        });
+    });
+    describe('assertWrap', () => {
+        it('guards', () => {
+            const newValue = assertWrap.isPlainObject(actualPass);
+
+            assert.tsType(newValue).equals<ExpectedType>();
+            assert.tsType(newValue).notEquals<UnexpectedType>();
+            assert.tsType(actualPass).notEquals<ExpectedType>();
+        });
+        it('rejects', () => {
+            assert.throws(() => assertWrap.isPlainObject(actualReject));
+        });
+        it('narrows', () => {
+            const newValue = assertWrap.isPlainObject(actualPassUnion);
+            assert.tsType(newValue).equals<ExpectedUnionNarrowedType>();
+        });
+    });
+    describe('checkWrap', () => {
+        it('guards', () => {
+            const newValue = checkWrap.isPlainObject(actualPass);
+
+            assert.tsType(newValue).equals<ExpectedType | undefined>();
+            assert.tsType(newValue).notEquals<ExpectedType>();
+            assert.tsType(newValue).notEquals<UnexpectedType>();
+            assert.tsType(actualPass).notEquals<ExpectedType>();
+        });
+        it('rejects', () => {
+            assert.isUndefined(checkWrap.isPlainObject(actualReject));
+            assert.isUndefined(checkWrap.isPlainObject(undefined));
+            assert.isUndefined(checkWrap.isPlainObject('hi'));
+        });
+        it('narrows', () => {
+            const newValue = checkWrap.isPlainObject(actualPassUnion);
+            assert.tsType(newValue).equals<ExpectedUnionNarrowedType | undefined>();
+        });
+    });
+    describe('waitUntil', () => {
+        it('guards', async () => {
+            const newValue = await waitUntil.isPlainObject(
+                () => actualPass,
+                waitUntilTestOptions,
+                'failure',
+            );
+
+            assert.tsType(newValue).equals<ExpectedType>();
+            assert.tsType(newValue).notEquals<UnexpectedType>();
+            assert.tsType(actualPass).notEquals<ExpectedType>();
+
+            assert.deepEquals(actualPass, newValue);
+        });
+        it('rejects', async () => {
+            await assert.throws(
+                waitUntil.isPlainObject(() => actualReject, waitUntilTestOptions, 'failure'),
+            );
+        });
+        it('narrows', async () => {
+            const newValue = await waitUntil.isPlainObject(
+                () => actualPassUnion,
+                waitUntilTestOptions,
+                'failure',
+            );
+
+            assert.tsType(newValue).equals<ExpectedUnionNarrowedType>();
+        });
+    });
+});
+describe('isNotPlainObject', () => {
+    const actualPass: UnknownObject | unknown[] = new Date() as any;
+    const actualReject: UnknownObject | unknown[] = {} as any;
+    type ExpectedType = unknown[];
+    type UnexpectedType = UnknownObject;
+
+    type ExpectedUnionNarrowedType = string[];
+    const actualPassUnion: {hi: string} | ExpectedUnionNarrowedType = [] as any;
+
+    describe('assert', () => {
+        it('guards', () => {
+            assert.tsType(actualPass).notEquals<ExpectedType>();
+
+            assert.isNotPlainObject(actualPass);
+
+            assert.tsType(actualPass).equals<typeof actualPass>();
+            assert.tsType(actualPass).notEquals<UnexpectedType>();
+        });
+        it('rejects', () => {
+            assert.throws(() => assert.isNotPlainObject(actualReject));
+        });
+        it('narrows', () => {
+            assert.isNotPlainObject(actualPassUnion);
+
+            assert.tsType(actualPassUnion).equals<typeof actualPassUnion>();
+        });
+    });
+    describe('check', () => {
+        it('guards', () => {
+            assert.isTrue(check.isNotPlainObject(actualPass));
+
+            if (check.isNotPlainObject(actualPass)) {
+                assert.tsType(actualPass).equals<typeof actualPass>();
+                assert.tsType(actualPass).notEquals<UnexpectedType>();
+            }
+
+            assert.tsType(actualPass).notEquals<ExpectedType>();
+        });
+        it('rejects', () => {
+            assert.isFalse(check.isNotPlainObject(actualReject));
+        });
+        it('accepts', () => {
+            assert.isTrue(check.isNotPlainObject(undefined));
+            assert.isTrue(check.isNotPlainObject('hi'));
+        });
+        it('narrows', () => {
+            if (check.isNotPlainObject(actualPassUnion)) {
+                assert.tsType(actualPassUnion).equals<typeof actualPassUnion>();
+            }
+        });
+    });
+    describe('assertWrap', () => {
+        it('guards', () => {
+            const newValue = assertWrap.isNotPlainObject(actualPass);
+
+            assert.tsType(newValue).notEquals<UnexpectedType>();
+            assert.tsType(actualPass).notEquals<ExpectedType>();
+        });
+        it('rejects', () => {
+            assert.throws(() => assertWrap.isNotPlainObject(actualReject));
+        });
+    });
+    describe('checkWrap', () => {
+        it('guards', () => {
+            const newValue = checkWrap.isNotPlainObject(actualPass);
+
+            assert.tsType(newValue).notEquals<ExpectedType>();
+            assert.tsType(newValue).notEquals<UnexpectedType>();
+            assert.tsType(actualPass).notEquals<ExpectedType>();
+        });
+        it('rejects', () => {
+            assert.isUndefined(checkWrap.isNotPlainObject(actualReject));
+        });
+        it('accepts', () => {
+            assert.isUndefined(checkWrap.isNotPlainObject(undefined));
+            assert.strictEquals(checkWrap.isNotPlainObject('hi'), 'hi');
+        });
+    });
+    describe('waitUntil', () => {
+        it('guards', async () => {
+            const newValue = await waitUntil.isNotPlainObject(
+                () => actualPass,
+                waitUntilTestOptions,
+                'failure',
+            );
+
+            assert.tsType(newValue).equals<ExpectedType>();
+            assert.tsType(newValue).notEquals<UnexpectedType>();
+            assert.tsType(actualPass).notEquals<ExpectedType>();
+
+            assert.deepEquals(actualPass, newValue);
+        });
+        it('rejects', async () => {
+            await assert.throws(
+                waitUntil.isNotPlainObject(() => actualReject, waitUntilTestOptions, 'failure'),
+            );
+        });
+        it('narrows', async () => {
+            const newValue = await waitUntil.isNotPlainObject(
+                () => actualPassUnion,
+                waitUntilTestOptions,
+                'failure',
+            );
+
+            assert.tsType(newValue).equals<ExpectedUnionNarrowedType>();
+        });
+    });
+});
+
 describe('isString', () => {
     const actualPass: unknown = '4' as any;
     const actualReject: unknown = 4 as any;

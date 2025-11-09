@@ -213,6 +213,53 @@ const assertions = {
         }
     },
     /**
+     * Asserts that a value is a plain object. This excludes arrays and class instances.
+     *
+     * Type guards the value but does not exclude class instances from the type guard (because
+     * that's impossible).
+     *
+     * @example
+     *
+     * ```ts
+     * import {assert} from '@augment-vir/assert';
+     *
+     * assert.isPlainObject({}); // passes
+     * assert.isPlainObject({value: 'key'}); // passes
+     * assert.isPlainObject(null); // fails
+     * assert.isPlainObject(new RegExp()); // fails
+     * assert.isPlainObject(new Date()); // fails
+     * ```
+     *
+     * @throws {@link AssertionError} If the assertion failed.
+     * @see
+     * - {@link assert.isNotPlainObject} : the opposite assertion.
+     * - {@link assert.isObject} : a more generic object assertion.
+     */
+    isPlainObject(
+        this: void,
+        actual: unknown,
+        failureMessage?: string | undefined,
+    ): asserts actual is UnknownObject {
+        const prototype = Object.getPrototypeOf(actual);
+
+        if (
+            typeof actual !== 'object' ||
+            actual == undefined ||
+            !(
+                (prototype == undefined ||
+                    prototype === Object.prototype ||
+                    Object.getPrototypeOf(prototype) == undefined) &&
+                !(Symbol.toStringTag in actual) &&
+                !(Symbol.iterator in actual)
+            )
+        ) {
+            throw new AssertionError(
+                `'${stringify(actual)}' is not a plain object.`,
+                failureMessage,
+            );
+        }
+    },
+    /**
      * Asserts that a value is a string.
      *
      * Type guards the value.
@@ -487,6 +534,45 @@ const assertions = {
         }
     },
     /**
+     * Asserts that a value is not a plain object. This includes arrays and class instances.
+     *
+     * @example
+     *
+     * ```ts
+     * import {assert} from '@augment-vir/assert';
+     *
+     * assert.isNotPlainObject({}); // fails
+     * assert.isNotPlainObject({value: 'key'}); // fails
+     * assert.isNotPlainObject(null); // passes
+     * assert.isNotPlainObject(new RegExp()); // passes
+     * assert.isNotPlainObject(new Date()); // passes
+     * ```
+     *
+     * @throws {@link AssertionError} If the assertion failed.
+     * @see
+     * - {@link assert.isPlainObject} : the opposite assertion.
+     * - {@link assert.isNotObject} : a more generic non-object assertion.
+     */
+    isNotPlainObject(this: void, actual: unknown, failureMessage?: string | undefined) {
+        const prototype = Object.getPrototypeOf(actual);
+
+        if (
+            typeof actual !== 'object' ||
+            actual == undefined ||
+            !(
+                (prototype == undefined ||
+                    prototype === Object.prototype ||
+                    Object.getPrototypeOf(prototype) == undefined) &&
+                !(Symbol.toStringTag in actual) &&
+                !(Symbol.iterator in actual)
+            )
+        ) {
+            return;
+        }
+
+        throw new AssertionError(`'${stringify(actual)}' is a plain object.`, failureMessage);
+    },
+    /**
      * Asserts that a value is _not_ a string.
      *
      * Type guards the value.
@@ -719,6 +805,45 @@ export const runtimeTypeGuards = {
             return !Array.isArray(actual) && typeof actual === 'object' && !!actual;
         },
         /**
+         * Checks that a value is a plain object. This excludes arrays and class instances.
+         *
+         * Type guards the value but does not exclude class instances from the type guard (because
+         * that's impossible).
+         *
+         * @example
+         *
+         * ```ts
+         * import {check} from '@augment-vir/assert';
+         *
+         * check.isPlainObject({}); // returns `true`
+         * check.isPlainObject({value: 'key'}); // returns `true`
+         * check.isPlainObject(null); // returns `false`
+         * check.isPlainObject(new RegExp()); // returns `false`
+         * check.isPlainObject(new Date()); // returns `false`
+         * ```
+         *
+         * @see
+         * - {@link check.isNotPlainObject} : the opposite check.
+         * - {@link check.isObject} : a more generic object check.
+         */
+        isPlainObject<Actual>(
+            this: void,
+            actual: Actual,
+        ): actual is NarrowToActual<Actual, UnknownObject> {
+            if (typeof actual !== 'object' || actual == undefined) {
+                return false;
+            }
+
+            const prototype = Object.getPrototypeOf(actual);
+            return (
+                (prototype == undefined ||
+                    prototype === Object.prototype ||
+                    Object.getPrototypeOf(prototype) == undefined) &&
+                !(Symbol.toStringTag in actual) &&
+                !(Symbol.iterator in actual)
+            );
+        },
+        /**
          * Checks that a value is a string.
          *
          * Type guards the value.
@@ -924,6 +1049,39 @@ export const runtimeTypeGuards = {
          */
         isNotObject<Actual>(this: void, actual: Actual): actual is Exclude<Actual, UnknownObject> {
             return Array.isArray(actual) || typeof actual !== 'object' || !actual;
+        },
+        /**
+         * Checks that a value is not a plain object. This includes arrays and class instances.
+         *
+         * @example
+         *
+         * ```ts
+         * import {assert} from '@augment-vir/assert';
+         *
+         * check.isNotPlainObject({}); // returns `false`
+         * check.isNotPlainObject({value: 'key'}); // returns `false`
+         * check.isNotPlainObject(null); // returns `true`
+         * check.isNotPlainObject(new RegExp()); // returns `true`
+         * check.isNotPlainObject(new Date()); // returns `true`
+         * ```
+         *
+         * @see
+         * - {@link check.isPlainObject} : the opposite check.
+         * - {@link check.isNotObject} : a more generic non-object check.
+         */
+        isNotPlainObject(this: void, actual: unknown): boolean {
+            if (typeof actual !== 'object' || actual == undefined) {
+                return true;
+            }
+
+            const prototype = Object.getPrototypeOf(actual);
+            return !(
+                (prototype == undefined ||
+                    prototype === Object.prototype ||
+                    Object.getPrototypeOf(prototype) == undefined) &&
+                !(Symbol.toStringTag in actual) &&
+                !(Symbol.iterator in actual)
+            );
         },
         /**
          * Checks that a value is _not_ a string.
@@ -1202,6 +1360,56 @@ export const runtimeTypeGuards = {
             if (Array.isArray(actual) || typeof actual !== 'object' || !actual) {
                 throw new AssertionError(
                     `'${stringify(actual)}' is not a non-null object.`,
+                    failureMessage,
+                );
+            }
+
+            return actual as NarrowToExpected<Actual, UnknownObject>;
+        },
+        /**
+         * Asserts that a value is a plain object. This excludes arrays and class instances. Returns
+         * the value if the assertion passes.
+         *
+         * Type guards the value but does not exclude class instances from the type guard (because
+         * that's impossible).
+         *
+         * @example
+         *
+         * ```ts
+         * import {assertWrap} from '@augment-vir/assert';
+         *
+         * assertWrap.isPlainObject({}); // returns `{}`
+         * assertWrap.isPlainObject({value: 'key'}); // returns `{value: 'key'}`
+         * assertWrap.isPlainObject(null); // throws an error
+         * assertWrap.isPlainObject(new RegExp()); // throws an error
+         * assertWrap.isPlainObject(new Date()); // throws an error
+         * ```
+         *
+         * @throws {@link AssertionError} If the assertion failed.
+         * @see
+         * - {@link assertWrap.isNotPlainObject} : the opposite assertion.
+         * - {@link assertWrap.isObject} : a more generic object assertion.
+         */
+        isPlainObject<Actual>(
+            this: void,
+            actual: Actual,
+            failureMessage?: string | undefined,
+        ): NarrowToExpected<Actual, UnknownObject> {
+            const prototype = Object.getPrototypeOf(actual);
+
+            if (
+                typeof actual !== 'object' ||
+                actual == undefined ||
+                !(
+                    (prototype == undefined ||
+                        prototype === Object.prototype ||
+                        Object.getPrototypeOf(prototype) == undefined) &&
+                    !(Symbol.toStringTag in actual) &&
+                    !(Symbol.iterator in actual)
+                )
+            ) {
+                throw new AssertionError(
+                    `'${stringify(actual)}' is not a plain object.`,
                     failureMessage,
                 );
             }
@@ -1526,6 +1734,49 @@ export const runtimeTypeGuards = {
             return actual as Exclude<Actual, UnknownObject>;
         },
         /**
+         * Asserts that a value is a not plain object. This includes arrays and class instances.
+         * Returns the value if the assertion passes.
+         *
+         * Type guards the value but does not exclude class instances from the type guard (because
+         * that's impossible).
+         *
+         * @example
+         *
+         * ```ts
+         * import {assertWrap} from '@augment-vir/assert';
+         *
+         * assertWrap.isNotPlainObject({}); // throws an error
+         * assertWrap.isNotPlainObject({value: 'key'}); // throws an error
+         * assertWrap.isNotPlainObject(null); // returns `null`
+         * assertWrap.isNotPlainObject(new RegExp()); // returns the RegExp instance
+         * assertWrap.isNotPlainObject(new Date()); // returns the Date instance
+         * ```
+         *
+         * @throws {@link AssertionError} If the assertion failed.
+         * @see
+         * - {@link assertWrap.isPlainObject} : the opposite assertion.
+         * - {@link assertWrap.isObject} : a more generic non-object assertion.
+         */
+        isNotPlainObject(this: void, actual: unknown, failureMessage?: string | undefined) {
+            const prototype = Object.getPrototypeOf(actual);
+
+            if (
+                typeof actual !== 'object' ||
+                actual == undefined ||
+                !(
+                    (prototype == undefined ||
+                        prototype === Object.prototype ||
+                        Object.getPrototypeOf(prototype) == undefined) &&
+                    !(Symbol.toStringTag in actual) &&
+                    !(Symbol.iterator in actual)
+                )
+            ) {
+                return actual;
+            }
+
+            throw new AssertionError(`'${stringify(actual)}' is a plain object.`, failureMessage);
+        },
+        /**
          * Asserts that a value is _not_ a string. Returns the value if the assertion passes.
          *
          * Type guards the value.
@@ -1807,6 +2058,51 @@ export const runtimeTypeGuards = {
             }
         },
         /**
+         * Checks that a value is a plain object. This excludes arrays and class instances. Returns
+         * the value if the check passes, otherwise `undefined`.
+         *
+         * Type guards the value but does not exclude class instances from the type guard (because
+         * that's impossible).
+         *
+         * @example
+         *
+         * ```ts
+         * import {checkWrap} from '@augment-vir/assert';
+         *
+         * checkWrap.isPlainObject({}); // returns `{}`
+         * checkWrap.isPlainObject({value: 'key'}); // returns `{value: 'key'}`
+         * checkWrap.isPlainObject(null); // returns `undefined`
+         * checkWrap.isPlainObject(new RegExp()); // returns `undefined`
+         * checkWrap.isPlainObject(new Date()); // returns `undefined`
+         * ```
+         *
+         * @returns The value if the check passes. Otherwise, `undefined`.
+         * @see
+         * - {@link checkWrap.isNotPlainObject} : the opposite check.
+         * - {@link checkWrap.isObject} : a more generic object check.
+         */
+        isPlainObject<Actual>(
+            this: void,
+            actual: Actual,
+        ): NarrowToActual<Actual, UnknownObject> | undefined {
+            if (typeof actual !== 'object' || actual == undefined) {
+                return undefined;
+            }
+
+            const prototype = Object.getPrototypeOf(actual);
+            if (
+                (prototype == undefined ||
+                    prototype === Object.prototype ||
+                    Object.getPrototypeOf(prototype) == undefined) &&
+                !(Symbol.toStringTag in actual) &&
+                !(Symbol.iterator in actual)
+            ) {
+                return actual as NarrowToActual<Actual, UnknownObject>;
+            } else {
+                return undefined;
+            }
+        },
+        /**
          * Checks that a value is a string. Returns the value if the check passes, otherwise
          * `undefined`.
          *
@@ -2051,6 +2347,48 @@ export const runtimeTypeGuards = {
             }
         },
         /**
+         * Checks that a value is not a plain object. This includes arrays and class instances.
+         * Returns the value if the check passes, otherwise `undefined`.
+         *
+         * Type guards the value but does not exclude class instances from the type guard (because
+         * that's impossible).
+         *
+         * @example
+         *
+         * ```ts
+         * import {checkWrap} from '@augment-vir/assert';
+         *
+         * checkWrap.isNotPlainObject({}); // returns `undefined`
+         * checkWrap.isNotPlainObject({value: 'key'}); // returns `undefined`
+         * checkWrap.isNotPlainObject(null); // returns `null`
+         * checkWrap.isNotPlainObject(new RegExp()); // returns the RegExp instance
+         * checkWrap.isNotPlainObject(new Date()); // returns the Date instance
+         * ```
+         *
+         * @returns The value if the check passes. Otherwise, `undefined`.
+         * @see
+         * - {@link checkWrap.isPlainObject} : the opposite check.
+         * - {@link checkWrap.isNotObject} : a more generic non-object check.
+         */
+        isNotPlainObject(this: void, actual: unknown) {
+            if (typeof actual !== 'object' || actual == undefined) {
+                return actual;
+            }
+
+            const prototype = Object.getPrototypeOf(actual);
+            if (
+                (prototype == undefined ||
+                    prototype === Object.prototype ||
+                    Object.getPrototypeOf(prototype) == undefined) &&
+                !(Symbol.toStringTag in actual) &&
+                !(Symbol.iterator in actual)
+            ) {
+                return undefined;
+            } else {
+                return actual;
+            }
+        },
+        /**
          * Checks that a value is _not_ a string. Returns the value if the check passes, otherwise
          * `undefined`.
          *
@@ -2282,6 +2620,37 @@ export const runtimeTypeGuards = {
          * - {@link waitUntil.isNotObject} : the opposite assertion.
          */
         isObject: createWaitUntil(assertions.isObject) as <Actual>(
+            this: void,
+            callback: () => MaybePromise<Actual>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<NarrowToExpected<Actual, UnknownObject>>,
+        /**
+         * Repeatedly calls a callback until its output is a plain object. This excludes arrays and
+         * class instances. Once the callback output passes, it is returned. If the attempts time
+         * out, an error is thrown.
+         *
+         * Type guards the value but does not exclude class instances from the type guard (because
+         * that's impossible).
+         *
+         * @example
+         *
+         * ```ts
+         * import {waitUntil} from '@augment-vir/assert';
+         *
+         * waitUntil.isPlainObject({}); // returns `{}`
+         * waitUntil.isPlainObject({value: 'key'}); // returns `{value: 'key'}`
+         * waitUntil.isPlainObject(null); // throws an error
+         * waitUntil.isPlainObject(new RegExp()); // throws an error
+         * waitUntil.isPlainObject(new Date()); // throws an error
+         * ```
+         *
+         * @throws {@link AssertionError} If the assertion failed.
+         * @see
+         * - {@link waitUntil.isNotPlainObject} : the opposite assertion.
+         * - {@link waitUntil.isObject} : a more generic object assertion.
+         */
+        isPlainObject: createWaitUntil(assertions.isPlainObject) as <Actual>(
             this: void,
             callback: () => MaybePromise<Actual>,
             options?: WaitUntilOptions | undefined,
@@ -2543,6 +2912,37 @@ export const runtimeTypeGuards = {
          * - {@link waitUntil.isFunction} : the opposite assertion.
          */
         isNotObject: createWaitUntil(assertions.isNotObject) as <Actual>(
+            this: void,
+            callback: () => MaybePromise<Actual>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<Exclude<Actual, UnknownObject>>,
+        /**
+         * Repeatedly calls a callback until its output is not a plain object. This includes arrays
+         * and class instances. Once the callback output passes, it is returned. If the attempts
+         * time out, an error is thrown.
+         *
+         * Type guards the value but does not exclude class instances from the type guard (because
+         * that's impossible).
+         *
+         * @example
+         *
+         * ```ts
+         * import {waitUntil} from '@augment-vir/assert';
+         *
+         * waitUntil.isNotPlainObject({}); // throws an error
+         * waitUntil.isNotPlainObject({value: 'key'}); // throws an error
+         * waitUntil.isNotPlainObject(null); // returns `null`
+         * waitUntil.isNotPlainObject(new RegExp()); // returns the RegExp instance
+         * waitUntil.isNotPlainObject(new Date()); // returns the Date instance
+         * ```
+         *
+         * @throws {@link AssertionError} If the assertion failed.
+         * @see
+         * - {@link waitUntil.isPlainObject} : the opposite assertion.
+         * - {@link waitUntil.isNotObject} : a more generic non-object assertion.
+         */
+        isNotPlainObject: createWaitUntil(assertions.isNotPlainObject) as <Actual>(
             this: void,
             callback: () => MaybePromise<Actual>,
             options?: WaitUntilOptions | undefined,
