@@ -144,7 +144,7 @@ const assertions = {
      *
      * @throws {@link AssertionError} If the assertion failed.
      * @see
-     * - {@link assert.isNotFunction} : the opposite assertion.
+     * - {@link assert.isNotNull} : the opposite assertion.
      */
     isNull(
         this: void,
@@ -171,7 +171,7 @@ const assertions = {
      *
      * @throws {@link AssertionError} If the assertion failed.
      * @see
-     * - {@link assert.isNotFunction} : the opposite assertion.
+     * - {@link assert.isNotNumber} : the opposite assertion.
      */
     isNumber(
         this: void,
@@ -198,7 +198,7 @@ const assertions = {
      *
      * @throws {@link AssertionError} If the assertion failed.
      * @see
-     * - {@link assert.isNotFunction} : the opposite assertion.
+     * - {@link assert.isNotObject} : the opposite assertion.
      */
     isObject(
         this: void,
@@ -228,7 +228,7 @@ const assertions = {
      *
      * @throws {@link AssertionError} If the assertion failed.
      * @see
-     * - {@link assert.isNotFunction} : the opposite assertion.
+     * - {@link assert.isNotString} : the opposite assertion.
      */
     isString(
         this: void,
@@ -255,7 +255,7 @@ const assertions = {
      *
      * @throws {@link AssertionError} If the assertion failed.
      * @see
-     * - {@link assert.isNotFunction} : the opposite assertion.
+     * - {@link assert.isNotSymbol} : the opposite assertion.
      */
     isSymbol(
         this: void,
@@ -282,7 +282,7 @@ const assertions = {
      *
      * @throws {@link AssertionError} If the assertion failed.
      * @see
-     * - {@link assert.isNotFunction} : the opposite assertion.
+     * - {@link assert.isNotUndefined} : the opposite assertion.
      */
     isUndefined(
         this: void,
@@ -445,7 +445,7 @@ const assertions = {
      *
      * @throws {@link AssertionError} If the assertion failed.
      * @see
-     * - {@link assert.isNotFunction} : the opposite assertion.
+     * - {@link assert.isNumber} : the opposite assertion.
      */
     isNotNumber<Actual>(
         this: void,
@@ -670,7 +670,7 @@ export const runtimeTypeGuards = {
          * ```
          *
          * @see
-         * - {@link check.isNotFunction} : the opposite check.
+         * - {@link check.isNotNull} : the opposite check.
          */
         isNull<Actual>(this: void, actual: Actual): actual is NarrowToActual<Actual, null> {
             return actual === null;
@@ -690,7 +690,7 @@ export const runtimeTypeGuards = {
          * ```
          *
          * @see
-         * - {@link check.isNotFunction} : the opposite check.
+         * - {@link check.isNotNumber} : the opposite check.
          */
         isNumber<Actual>(this: void, actual: Actual): actual is NarrowToActual<Actual, number> {
             return typeof actual === 'number';
@@ -710,7 +710,7 @@ export const runtimeTypeGuards = {
          * ```
          *
          * @see
-         * - {@link check.isNotFunction} : the opposite check.
+         * - {@link check.isNotObject} : the opposite check.
          */
         isObject<Actual>(
             this: void,
@@ -733,7 +733,7 @@ export const runtimeTypeGuards = {
          * ```
          *
          * @see
-         * - {@link check.isNotFunction} : the opposite check.
+         * - {@link check.isNotString} : the opposite check.
          */
         isString<Actual>(this: void, actual: Actual): actual is NarrowToActual<Actual, string> {
             return typeof actual === 'string';
@@ -753,7 +753,7 @@ export const runtimeTypeGuards = {
          * ```
          *
          * @see
-         * - {@link check.isNotFunction} : the opposite check.
+         * - {@link check.isNotSymbol} : the opposite check.
          */
         isSymbol<Actual>(this: void, actual: Actual): actual is NarrowToActual<Actual, symbol> {
             return typeof actual === 'symbol';
@@ -773,7 +773,7 @@ export const runtimeTypeGuards = {
          * ```
          *
          * @see
-         * - {@link check.isNotFunction} : the opposite check.
+         * - {@link check.isNotUndefined} : the opposite check.
          */
         isUndefined<Actual>(
             this: void,
@@ -900,7 +900,7 @@ export const runtimeTypeGuards = {
          * ```
          *
          * @see
-         * - {@link check.isNotFunction} : the opposite check.
+         * - {@link check.isNumber} : the opposite check.
          */
         isNotNumber<Actual>(this: void, actual: Actual): actual is Exclude<Actual, number> {
             return typeof actual !== 'number';
@@ -1130,7 +1130,7 @@ export const runtimeTypeGuards = {
          * @returns The value if the assertion passes.
          * @throws {@link AssertionError} If the assertion failed.
          * @see
-         * - {@link assertWrap.isNotFunction} : the opposite assertion.
+         * - {@link assertWrap.isNotNull} : the opposite assertion.
          */
         isNull<Actual>(
             this: void,
@@ -1161,7 +1161,7 @@ export const runtimeTypeGuards = {
          * @returns The value if the assertion passes.
          * @throws {@link AssertionError} If the assertion failed.
          * @see
-         * - {@link assertWrap.isNotFunction} : the opposite assertion.
+         * - {@link assertWrap.isNotNumber} : the opposite assertion.
          */
         isNumber<Actual>(
             this: void,
@@ -1192,7 +1192,7 @@ export const runtimeTypeGuards = {
          * @returns The value if the assertion passes.
          * @throws {@link AssertionError} If the assertion failed.
          * @see
-         * - {@link assertWrap.isNotFunction} : the opposite assertion.
+         * - {@link assertWrap.isNotObject} : the opposite assertion.
          */
         isObject<Actual>(
             this: void,
@@ -1225,7 +1225,7 @@ export const runtimeTypeGuards = {
          * @returns The value if the assertion passes.
          * @throws {@link AssertionError} If the assertion failed.
          * @see
-         * - {@link assertWrap.isNotFunction} : the opposite assertion.
+         * - {@link assertWrap.isNotString} : the opposite assertion.
          */
         isString<Actual>(
             this: void,
@@ -1264,7 +1264,7 @@ export const runtimeTypeGuards = {
          * @returns The value if the assertion passes.
          * @throws {@link AssertionError} If the assertion failed.
          * @see
-         * - {@link assertWrap.isNotFunction} : the opposite assertion.
+         * - {@link assertWrap.isNotSymbol} : the opposite assertion.
          */
         isSymbol<Actual>(
             this: void,
@@ -1294,7 +1294,7 @@ export const runtimeTypeGuards = {
          * @returns The value if the assertion passes.
          * @throws {@link AssertionError} If the assertion failed.
          * @see
-         * - {@link assertWrap.isNotFunction} : the opposite assertion.
+         * - {@link assertWrap.isNotUndefined} : the opposite assertion.
          */
         isUndefined<Actual>(
             this: void,
@@ -1478,7 +1478,7 @@ export const runtimeTypeGuards = {
          * @returns The value if the assertion passes.
          * @throws {@link AssertionError} If the assertion failed.
          * @see
-         * - {@link assertWrap.isNotFunction} : the opposite assertion.
+         * - {@link assertWrap.isNumber} : the opposite assertion.
          */
         isNotNumber<Actual>(
             this: void,
@@ -1742,7 +1742,7 @@ export const runtimeTypeGuards = {
          *
          * @returns The value if the check passes. Otherwise, `undefined`.
          * @see
-         * - {@link checkWrap.isNotFunction} : the opposite check.
+         * - {@link checkWrap.isNotNull} : the opposite check.
          */
         isNull<Actual>(this: void, actual: Actual): NarrowToActual<Actual, null> | undefined {
             if (actual === null) {
@@ -1768,7 +1768,7 @@ export const runtimeTypeGuards = {
          *
          * @returns The value if the check passes. Otherwise, `undefined`.
          * @see
-         * - {@link checkWrap.isNotFunction} : the opposite check.
+         * - {@link checkWrap.isNotNumber} : the opposite check.
          */
         isNumber<Actual>(this: void, actual: Actual): NarrowToActual<Actual, number> | undefined {
             if (typeof actual === 'number') {
@@ -1794,7 +1794,7 @@ export const runtimeTypeGuards = {
          *
          * @returns The value if the check passes. Otherwise, `undefined`.
          * @see
-         * - {@link checkWrap.isNotFunction} : the opposite check.
+         * - {@link checkWrap.isNotObject} : the opposite check.
          */
         isObject<Actual>(
             this: void,
@@ -1823,7 +1823,7 @@ export const runtimeTypeGuards = {
          *
          * @returns The value if the check passes. Otherwise, `undefined`.
          * @see
-         * - {@link checkWrap.isNotFunction} : the opposite check.
+         * - {@link checkWrap.isNotString} : the opposite check.
          */
         isString<Actual>(this: void, actual: Actual): NarrowToActual<Actual, string> | undefined {
             if (typeof actual === 'string') {
@@ -1849,7 +1849,7 @@ export const runtimeTypeGuards = {
          *
          * @returns The value if the check passes. Otherwise, `undefined`.
          * @see
-         * - {@link checkWrap.isNotFunction} : the opposite check.
+         * - {@link checkWrap.isNotSymbol} : the opposite check.
          */
         isSymbol<Actual>(this: void, actual: Actual): NarrowToActual<Actual, symbol> | undefined {
             if (typeof actual === 'symbol') {
@@ -2012,7 +2012,7 @@ export const runtimeTypeGuards = {
          *
          * @returns The value if the check passes. Otherwise, `undefined`.
          * @see
-         * - {@link checkWrap.isNotFunction} : the opposite check.
+         * - {@link checkWrap.isNumber} : the opposite check.
          */
         isNotNumber<Actual>(this: void, actual: Actual): Exclude<Actual, number> | undefined {
             if (typeof actual === 'number') {
@@ -2227,7 +2227,7 @@ export const runtimeTypeGuards = {
          *
          * @throws {@link AssertionError} If the assertion failed.
          * @see
-         * - {@link waitUntil.isNotFunction} : the opposite assertion.
+         * - {@link waitUntil.isNotNull} : the opposite assertion.
          */
         isNull: createWaitUntil(assertions.isNull) as <Actual>(
             this: void,
@@ -2252,7 +2252,7 @@ export const runtimeTypeGuards = {
          *
          * @throws {@link AssertionError} If the assertion failed.
          * @see
-         * - {@link waitUntil.isNotFunction} : the opposite assertion.
+         * - {@link waitUntil.isNotNumber} : the opposite assertion.
          */
         isNumber: createWaitUntil(assertions.isNumber) as <Actual>(
             this: void,
@@ -2279,7 +2279,7 @@ export const runtimeTypeGuards = {
          *
          * @throws {@link AssertionError} If the assertion failed.
          * @see
-         * - {@link waitUntil.isNotFunction} : the opposite assertion.
+         * - {@link waitUntil.isNotObject} : the opposite assertion.
          */
         isObject: createWaitUntil(assertions.isObject) as <Actual>(
             this: void,
@@ -2304,7 +2304,7 @@ export const runtimeTypeGuards = {
          *
          * @throws {@link AssertionError} If the assertion failed.
          * @see
-         * - {@link waitUntil.isNotFunction} : the opposite assertion.
+         * - {@link waitUntil.isNotString} : the opposite assertion.
          */
         isString: createWaitUntil(assertions.isString) as <Actual>(
             this: void,
@@ -2329,7 +2329,7 @@ export const runtimeTypeGuards = {
          *
          * @throws {@link AssertionError} If the assertion failed.
          * @see
-         * - {@link waitUntil.isNotFunction} : the opposite assertion.
+         * - {@link waitUntil.isNotSymbol} : the opposite assertion.
          */
         isSymbol: createWaitUntil(assertions.isSymbol) as <Actual>(
             this: void,
@@ -2354,7 +2354,7 @@ export const runtimeTypeGuards = {
          *
          * @throws {@link AssertionError} If the assertion failed.
          * @see
-         * - {@link waitUntil.isNotFunction} : the opposite assertion.
+         * - {@link waitUntil.isNotUndefined} : the opposite assertion.
          */
         isUndefined: createWaitUntil(assertions.isUndefined) as <Actual>(
             this: void,
@@ -2512,7 +2512,7 @@ export const runtimeTypeGuards = {
          *
          * @throws {@link AssertionError} If the assertion failed.
          * @see
-         * - {@link waitUntil.isNotFunction} : the opposite assertion.
+         * - {@link waitUntil.isNumber} : the opposite assertion.
          */
         isNotNumber: createWaitUntil(assertions.isNotNumber) as <Actual>(
             this: void,
