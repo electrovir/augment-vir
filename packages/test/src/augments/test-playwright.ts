@@ -15,14 +15,14 @@ async function importPlaywrightTestApi(this: void) {
         );
     }
 
-    const {checkHasClass} = await import('../test-playwright/has-class');
-    const {enterTextByLabel} = await import('../test-playwright/enter-text');
+    const {checkHasClass} = await import('../test-playwright/has-class.js');
+    const {enterTextByLabel} = await import('../test-playwright/enter-text.js');
     const {expectAllVisible} = await import('../test-playwright/all-visible.js');
-    const {getMenuOption} = await import('../test-playwright/get-option');
+    const {getMenuOption} = await import('../test-playwright/get-option.js');
     const {getScreenshotPath, takeScreenshot, expectScreenshot} = await import(
         '../test-playwright/screenshot.js'
     );
-    const {handleNewPageOrDownload} = await import('../test-playwright/new-page-or-download');
+    const {handleNewPageOrDownload} = await import('../test-playwright/new-page-or-download.js');
     const {navigateTo, extractNavUrl} = await import('../test-playwright/nav.js');
     const {readLocalStorage} = await import('../test-playwright/local-storage.js');
 
