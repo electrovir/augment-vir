@@ -1,28 +1,40 @@
 import {check} from '@augment-vir/assert';
+import {omitObjectKeys} from '@augment-vir/common';
 import {type GenericTreePaths} from 'spa-router-vir';
-import {buildUrl} from 'url-vir';
+import {buildUrl, type UrlOverrides} from 'url-vir';
 import {
     assertTestContext,
+    assertWrapTestContext,
     extractTestNameAsDir,
     TestEnv,
     type UniversalTestContext,
 } from '../augments/universal-testing-suite/universal-test-context.js';
 
 /**
- * Converts {@link NavPath} into an actionable URL string.
+ * Converts {@link NavOptions} into an actionable URL string.
  *
  * @category Internal
  */
-export function extractNavUrl(frontendUrl: string, path: NavPath): string {
-    return check.isString(path)
-        ? path
-        : check.isArray(path)
-          ? buildUrl(frontendUrl, {
-                paths: path,
-            }).href
-          : buildUrl(frontendUrl, {
-                paths: path.fullPaths,
-            }).href;
+export function extractNavUrl(
+    testContext: Readonly<UniversalTestContext>,
+    options: Readonly<NavOptions>,
+): string {
+    return buildUrl(
+        options.baseFrontendUrl ||
+            assertWrapTestContext(testContext, TestEnv.Playwright).page.url(),
+        {
+            ...omitObjectKeys(options, ['paths']),
+            ...(options.paths
+                ? check.isArray(options.paths)
+                    ? {
+                          paths: options.paths,
+                      }
+                    : {
+                          paths: options.paths.fullPaths,
+                      }
+                : {}),
+        },
+    ).href;
 }
 
 /**
@@ -30,13 +42,14 @@ export function extractNavUrl(frontendUrl: string, path: NavPath): string {
  *
  * @category Internal
  */
-export type NavPath =
-    | /** A full URL to load, will not be appended to the auto detected frontend url. */
-    string
-    /** Path array to append to the auto detected frontend url. */
+export type NavOptions = Omit<UrlOverrides, 'paths'> & {
+    /** If not provided, the page's current URL will be used. */
+    baseFrontendUrl?: string | undefined;
+    paths?: /** Path array to append to the auto detected frontend url. */
     | string[]
-    /** Prefer using tree paths with `frontendPathTree` */
-    | GenericTreePaths;
+        /** Prefer using tree paths with `frontendPathTree` */
+        | GenericTreePaths;
+};
 
 /**
  * The test name appended to the frontend when `testPlaywright.nav` is used.
@@ -52,20 +65,13 @@ export const playwrightTeatNameUrlParam = 'test-name';
  */
 export async function navigateTo(
     testContext: Readonly<UniversalTestContext>,
-    {
-        path,
-        baseFrontendUrl,
-    }: {
-        path: NavPath;
-        /** If not provided, the page's current URL will be used. */
-        baseFrontendUrl?: string | undefined;
-    },
+    options: Readonly<NavOptions>,
 ) {
     assertTestContext(testContext, TestEnv.Playwright);
     const page = testContext.page;
     const testName = extractTestNameAsDir(testContext);
 
-    const finalPath = buildUrl(extractNavUrl(baseFrontendUrl || page.url(), path), {
+    const finalPath = buildUrl(extractNavUrl(testContext, options), {
         search: {
             [playwrightTeatNameUrlParam]: [testName],
         },
