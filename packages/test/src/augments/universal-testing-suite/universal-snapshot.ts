@@ -42,7 +42,11 @@ export class SnapshotFileMissingError extends Error {
  * @category Package : @augment-vir/test
  * @package [`@augment-vir/test`](https://www.npmjs.com/package/@augment-vir/test)
  */
-export async function assertSnapshot(this: void, testContext: UniversalTestContext, data: unknown) {
+export async function assertSnapshot(
+    this: void,
+    testContext: Readonly<UniversalTestContext>,
+    data: unknown,
+) {
     const serializedData = check.isString(data) ? data : JSON.stringify(data);
 
     if (isTestContext(testContext, TestEnv.Node)) {

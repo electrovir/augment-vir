@@ -2,7 +2,11 @@ import {isInsidePlaywrightTest, RuntimeEnvError} from '@augment-vir/core';
 
 export {type MenuOptionOptions} from '../test-playwright/get-option.js';
 export {playwrightTeatNameUrlParam, type NavPath} from '../test-playwright/nav.js';
-export {type LocatorScreenshotOptions} from '../test-playwright/screenshot.js';
+export {
+    type LocatorScreenshotOptions,
+    type SaveScreenshotOptions,
+    type TakeScreenshotOptions,
+} from '../test-playwright/screenshot.js';
 
 async function importPlaywrightTestApi(this: void) {
     if (!isInsidePlaywrightTest()) {
@@ -14,8 +18,10 @@ async function importPlaywrightTestApi(this: void) {
     const {checkHasClass} = await import('../test-playwright/has-class');
     const {enterTextByLabel} = await import('../test-playwright/enter-text');
     const {expectAllVisible} = await import('../test-playwright/all-visible.js');
-    const {expectScreenshot} = await import('../test-playwright/screenshot.js');
     const {getMenuOption} = await import('../test-playwright/get-option');
+    const {getScreenshotPath, takeScreenshot, expectScreenshot} = await import(
+        '../test-playwright/screenshot.js'
+    );
     const {handleNewPageOrDownload} = await import('../test-playwright/new-page-or-download');
     const {nav} = await import('../test-playwright/nav.js');
     const {readLocalStorage} = await import('../test-playwright/local-storage.js');
@@ -28,12 +34,6 @@ async function importPlaywrightTestApi(this: void) {
          * by `isVisible`).
          */
         expectAllVisible,
-        /**
-         * Similar to Playwright's `expect().toHaveScreenshot` but allows images to have different
-         * sizes and has default comparison threshold options that are wide enough to allow testing
-         * between different operating systems without failure (usually).
-         */
-        expectScreenshot,
 
         /** Clicks a label to select its input and then types the given text. */
         enterTextByLabel,
@@ -48,6 +48,24 @@ async function importPlaywrightTestApi(this: void) {
         handleNewPageOrDownload,
         /** Read from a page's local storage (using `page.evaluate`). */
         readLocalStorage,
+
+        /** Screenshot methods. */
+        screenshot: {
+            /**
+             * Similar to Playwright's `expect().toHaveScreenshot` but allows images to have
+             * different sizes and has default comparison threshold options that are wide enough to
+             * allow testing between different operating systems without failure (usually).
+             */
+            expectScreenshot,
+            /** Get the path to save the given screenshot file name to. */
+            getScreenshotPath,
+            /**
+             * Take and immediately save a screenshot.
+             *
+             * @returns The path that the screenshot was saved to.
+             */
+            takeScreenshot,
+        },
     };
 }
 

@@ -16,7 +16,7 @@ import {type PlaywrightTestContext, type UniversalTestContext} from './universal
  */
 export type UniversalItCallback = (
     this: void,
-    context: UniversalTestContext,
+    context: Readonly<UniversalTestContext>,
 ) => Promise<void> | void;
 
 /**
@@ -88,6 +88,11 @@ async function createPlaywrightIt(): Promise<UniversalIt> {
             ? rawPlaywrightImport.default
             : (rawPlaywrightImport as unknown as typeof rawPlaywrightImport.default);
 
+    /**
+     * Right now this wrapper nukes Playwright's file detection. See
+     * https://github.com/microsoft/playwright/issues/23157#issuecomment-1574955057 for possible
+     * help.
+     */
     const playwrightIt = Object.assign(
         (doesThis: string, callback: UniversalItCallback) => {
             return originalPlaywrightIt(

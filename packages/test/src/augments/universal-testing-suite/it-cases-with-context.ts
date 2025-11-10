@@ -17,7 +17,10 @@ import {type UniversalTestContext} from './universal-test-context.js';
  * @category Package : @augment-vir/test
  * @package [`@augment-vir/test`](https://www.npmjs.com/package/@augment-vir/test)
  */
-export type BaseFunctionWithContext = (testContext: UniversalTestContext, ...args: any[]) => any;
+export type BaseFunctionWithContext = (
+    testContext: Readonly<UniversalTestContext>,
+    ...args: any[]
+) => any;
 
 /**
  * Input for a test function with context that only has a single input.

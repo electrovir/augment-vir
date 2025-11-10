@@ -1,4 +1,9 @@
 import {type Page} from '@playwright/test';
+import {
+    type UniversalTestContext,
+    assertTestContext,
+    TestEnv,
+} from '../augments/universal-testing-suite/universal-test-context.js';
 
 /**
  * Options for `testPlaywright.getMenuOption`.
@@ -15,8 +20,12 @@ export type MenuOptionOptions = Parameters<Page['getByRole']>[1] &
  *
  * @category Internal
  */
-export function getMenuOption(page: Readonly<Page>, options?: MenuOptionOptions | undefined) {
-    const baseLocator = page.getByRole('option', options);
+export function getMenuOption(
+    testContext: Readonly<UniversalTestContext>,
+    options?: MenuOptionOptions | undefined,
+) {
+    assertTestContext(testContext, TestEnv.Playwright);
+    const baseLocator = testContext.page.getByRole('option', options);
 
     if (options && 'nth' in options) {
         return baseLocator.nth(options.nth);

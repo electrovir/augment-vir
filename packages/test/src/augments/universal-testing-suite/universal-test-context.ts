@@ -154,7 +154,7 @@ function flattenMochaParentTitles(this: void, node: MochaNode): string[] {
  */
 export function assertWrapTestContext<const SpecificEnv extends TestEnv>(
     this: void,
-    context: UniversalTestContext,
+    context: Readonly<UniversalTestContext>,
     env: SpecificEnv,
 ): TestContextByEnv[SpecificEnv] {
     assertTestContext(context, env);
@@ -171,7 +171,7 @@ export function assertWrapTestContext<const SpecificEnv extends TestEnv>(
  */
 export function assertTestContext<const SpecificEnv extends TestEnv>(
     this: void,
-    context: UniversalTestContext,
+    context: Readonly<UniversalTestContext>,
     env: SpecificEnv,
 ): asserts context is TestContextByEnv[SpecificEnv] {
     const actualEnv = determineTestContextEnv(context);
@@ -190,7 +190,7 @@ export function assertTestContext<const SpecificEnv extends TestEnv>(
  */
 export function isTestContext<const SpecificEnv extends TestEnv>(
     this: void,
-    context: UniversalTestContext,
+    context: Readonly<UniversalTestContext>,
     env: SpecificEnv,
 ): context is TestContextByEnv[SpecificEnv] {
     try {

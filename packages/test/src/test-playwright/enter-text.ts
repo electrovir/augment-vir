@@ -1,4 +1,8 @@
-import {type Page} from '@playwright/test';
+import {
+    type UniversalTestContext,
+    assertTestContext,
+    TestEnv,
+} from '../augments/universal-testing-suite/universal-test-context.js';
 
 /**
  * Clicks a label to select its input and then types the given text.
@@ -6,9 +10,10 @@ import {type Page} from '@playwright/test';
  * @category Internal
  */
 export async function enterTextByLabel(
-    page: Readonly<Page>,
+    testContext: Readonly<UniversalTestContext>,
     {label, text}: {label: string; text: string},
 ) {
-    await page.getByLabel(label).first().click();
-    await page.keyboard.type(text);
+    assertTestContext(testContext, TestEnv.Playwright);
+    await testContext.page.getByLabel(label).first().click();
+    await testContext.page.keyboard.type(text);
 }

@@ -7,8 +7,11 @@ describe(snapshotCasesWithContext.name, () => {
     it('has proper types', () => {
         /** Don't run this function, it's just here for testing types. */
         () => {
-            function acceptContext(testContext: UniversalTestContext, something: string) {}
-            function onlyAcceptsContext(testContext: UniversalTestContext) {}
+            function acceptContext(
+                testContext: Readonly<UniversalTestContext>,
+                something: string,
+            ) {}
+            function onlyAcceptsContext(testContext: Readonly<UniversalTestContext>) {}
             function doesNotAcceptContext(something: string) {}
 
             snapshotCasesWithContext(acceptContext, [

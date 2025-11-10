@@ -1,13 +1,19 @@
 import {assert} from '@augment-vir/assert';
-import {addSuffix, log, type Dimensions} from '@augment-vir/common';
+import {addSuffix, log, type Dimensions, type PartialWithUndefined} from '@augment-vir/common';
 import {writeFileAndDir} from '@augment-vir/node';
-import {expect, type Locator, type Page, type TestInfo} from '@playwright/test';
+import {expect, type Locator} from '@playwright/test';
 import {existsSync} from 'node:fs';
 import {readFile} from 'node:fs/promises';
 import {relative} from 'node:path';
 import pixelmatch from 'pixelmatch';
 import {PNG} from 'pngjs';
 import sharp from 'sharp';
+import {
+    assertTestContext,
+    assertWrapTestContext,
+    TestEnv,
+    type UniversalTestContext,
+} from '../augments/universal-testing-suite/universal-test-context.js';
 
 /** This is used for type extraction because Playwright does not export the types we need. */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -85,24 +91,83 @@ async function padToSameCanvas(aBuf: Buffer, bBuf: Buffer) {
     };
 }
 
-async function takeScreenshot({
-    locator,
-    page,
-    options,
-}: {
-    page: Readonly<Page>;
-    locator: Readonly<Locator> | undefined;
-    options: Partial<LocatorScreenshotOptions>;
-}): Promise<Buffer> {
-    if (locator) {
+export type TakeScreenshotOptions = PartialWithUndefined<{
+    /** If no locator is provided then the whole page is use. */
+    locator: Readonly<Locator>;
+}> &
+    Partial<LocatorScreenshotOptions>;
+
+async function takeScreenshotBuffer(
+    testContext: Readonly<UniversalTestContext>,
+    options: TakeScreenshotOptions = {},
+): Promise<Buffer> {
+    if (options.locator) {
         /** The locator expectation has different options than the page expectation. */
-        return await locator.screenshot({...defaultScreenshotOptions, ...options});
+        return await options.locator.screenshot({
+            ...defaultScreenshotOptions,
+            ...options,
+        });
     } else {
-        return await page.screenshot({
+        assertTestContext(testContext, TestEnv.Playwright);
+
+        return await testContext.page.screenshot({
             ...defaultScreenshotOptions,
             ...options,
         });
     }
+}
+
+/** @returns The path that the screenshot was saved to. */
+async function saveScreenshotBuffer(
+    testContext: Readonly<UniversalTestContext>,
+    screenshotBuffer: Buffer,
+    screenshotBaseName: string,
+): Promise<string> {
+    assertTestContext(testContext, TestEnv.Playwright);
+    const screenshotPath = getScreenshotPath(testContext, screenshotBaseName);
+    await writeFileAndDir(screenshotPath, screenshotBuffer);
+    return screenshotPath;
+}
+
+/**
+ * Get the path to save the given screenshot file name to.
+ *
+ * @category Internal
+ */
+export function getScreenshotPath(
+    testContext: Readonly<UniversalTestContext>,
+    screenshotBaseName: string,
+): string {
+    assertTestContext(testContext, TestEnv.Playwright);
+
+    const screenshotFileName = addSuffix({value: screenshotBaseName, suffix: '.png'});
+    return testContext.testInfo.snapshotPath(screenshotFileName);
+}
+
+/**
+ * Options for taking _and_ saving a screenshot.
+ *
+ * @category Internal
+ */
+export type SaveScreenshotOptions = TakeScreenshotOptions & {
+    screenshotBaseName: string;
+};
+
+/**
+ * Take and immediately save a screenshot.
+ *
+ * @category Internal
+ * @returns The path that the screenshot was saved to.
+ */
+export async function takeScreenshot(
+    testContext: Readonly<UniversalTestContext>,
+    options: Readonly<SaveScreenshotOptions>,
+): Promise<string> {
+    return await saveScreenshotBuffer(
+        testContext,
+        await takeScreenshotBuffer(testContext, options),
+        options.screenshotBaseName,
+    );
 }
 
 /**
@@ -113,41 +178,32 @@ async function takeScreenshot({
  * @category Internal
  */
 export async function expectScreenshot(
-    page: Readonly<Page>,
-    {
-        locator,
-        screenshotName,
-        testInfo,
-        options = {},
-    }: {
-        testInfo: Readonly<TestInfo>;
-        /** If no locator is provided, a screenshot of the whole page will be taken. */
-        locator: Readonly<Locator> | undefined;
-        screenshotName: string;
-        options?: Partial<LocatorScreenshotOptions> | undefined;
-    },
+    testContext: Readonly<UniversalTestContext>,
+    options: Readonly<SaveScreenshotOptions>,
 ) {
-    const screenshotFileName = addSuffix({value: screenshotName, suffix: '.png'});
+    assertTestContext(testContext, TestEnv.Playwright);
 
-    const currentScreenshotBuffer = await takeScreenshot({page, locator, options});
+    const currentScreenshotBuffer = await takeScreenshotBuffer(testContext, options);
 
-    const screenshotFilePath = testInfo.snapshotPath(screenshotFileName);
+    const screenshotFilePath = getScreenshotPath(testContext, options.screenshotBaseName);
 
     async function writeNewScreenshot() {
         log.mutate(`Updated screenshot: ${relative(process.cwd(), screenshotFilePath)}`);
-        await writeFileAndDir(screenshotFilePath, currentScreenshotBuffer);
+        await saveScreenshotBuffer(testContext, currentScreenshotBuffer, screenshotFilePath);
     }
     async function writeExpectationScreenshot(contents: Buffer, fileName: string) {
-        const filePath = testInfo.outputPath(addSuffix({value: fileName, suffix: '.png'}));
+        const filePath = assertWrapTestContext(testContext, TestEnv.Playwright).testInfo.outputPath(
+            addSuffix({value: fileName, suffix: '.png'}),
+        );
         await writeFileAndDir(filePath, contents);
     }
 
     if (existsSync(screenshotFilePath)) {
-        if (testInfo.config.updateSnapshots === 'changed') {
+        if (testContext.testInfo.config.updateSnapshots === 'changed') {
             await writeNewScreenshot();
         }
     } else {
-        if (testInfo.config.updateSnapshots !== 'none') {
+        if (testContext.testInfo.config.updateSnapshots !== 'none') {
             await writeNewScreenshot();
         }
         await writeExpectationScreenshot(currentScreenshotBuffer, 'actual');

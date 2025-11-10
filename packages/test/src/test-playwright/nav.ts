@@ -46,7 +46,7 @@ export const playwrightTeatNameUrlParam = 'test-name';
  * @category Internal
  */
 export async function nav(
-    testContext: UniversalTestContext,
+    testContext: Readonly<UniversalTestContext>,
     {
         path,
         baseFrontendUrl,
