@@ -8,7 +8,12 @@ import {
     type UniversalTestContext,
 } from '../augments/universal-testing-suite/universal-test-context.js';
 
-function extractNavUrl(frontendUrl: string, path: NavPath) {
+/**
+ * Converts {@link NavPath} into an actionable URL string.
+ *
+ * @category Internal
+ */
+export function extractNavUrl(frontendUrl: string, path: NavPath): string {
     return check.isString(path)
         ? path
         : check.isArray(path)
@@ -45,7 +50,7 @@ export const playwrightTeatNameUrlParam = 'test-name';
  *
  * @category Internal
  */
-export async function nav(
+export async function navigateTo(
     testContext: Readonly<UniversalTestContext>,
     {
         path,

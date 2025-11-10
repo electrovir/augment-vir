@@ -35,6 +35,7 @@ describe(grep.name, () => {
                 [join(nodePackageDir, 'src', 'augments', 'npm', 'npm-deps.ts')]: [
                     ' * @category Internal',
                     ' * @category Internal',
+                    ' * @category Internal',
                 ],
             },
         },
@@ -258,7 +259,7 @@ describe(grep.name, () => {
             ],
             expect: {
                 [join(nodePackageDir, 'src', 'file-paths.mock.ts')]: 12,
-                [join(nodePackageDir, 'src', 'index.ts')]: 25,
+                [join(nodePackageDir, 'src', 'index.ts')]: 24,
             },
         },
         {
@@ -332,7 +333,6 @@ describe(grep.name, () => {
                 [join(nodePackageDir, 'src', 'augments', 'path', 'os-path.test.ts')]: [],
                 [join(nodePackageDir, 'src', 'augments', 'path', 'resolve-import.test.ts')]: [],
                 [join(nodePackageDir, 'src', 'augments', 'path', 'root.test.ts')]: [],
-                [join(nodePackageDir, 'src', 'augments', 'path', 'sanitize-path.test.ts')]: [],
                 [join(nodePackageDir, 'src', 'augments', 'terminal', 'question.test.ts')]: [],
                 [join(nodePackageDir, 'src', 'augments', 'terminal', 'relevant-args.test.ts')]: [],
                 [join(nodePackageDir, 'src', 'augments', 'terminal', 'shell.test.ts')]: [],

@@ -23,12 +23,15 @@ async function importPlaywrightTestApi(this: void) {
         '../test-playwright/screenshot.js'
     );
     const {handleNewPageOrDownload} = await import('../test-playwright/new-page-or-download');
-    const {nav} = await import('../test-playwright/nav.js');
+    const {navigateTo, extractNavUrl} = await import('../test-playwright/nav.js');
     const {readLocalStorage} = await import('../test-playwright/local-storage.js');
 
     return {
-        /** Navigate to a URL in Playwright via given paths. */
-        nav,
+        navigation: {
+            /** Navigate to a URL in Playwright via given paths. */
+            navigateTo,
+            extractNavUrl,
+        },
         /**
          * Expects that all matches for the given locator are either visible or hidden (controlled
          * by `isVisible`).
