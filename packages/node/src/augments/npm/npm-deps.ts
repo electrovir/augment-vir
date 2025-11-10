@@ -21,8 +21,18 @@ export enum PackageJsonDependencyKey {
  * output from {@link listAllDirectNpmDeps}.
  *
  * @category Internal
+ * @category Package : @augment-vir/node
+ * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
  */
 export type NpmDeps = Record<string, NpmDep[]>;
+
+/**
+ * An individual dependency used in {@link NpmDeps}.
+ *
+ * @category Internal
+ * @category Package : @augment-vir/node
+ * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
+ */
 export type NpmDep = {
     /** Path to the `package.json` file that depends on this. */
     requiredBy: string;

@@ -71,6 +71,13 @@ export type PlaywrightTestContext = SelectFrom<
  */
 export type UniversalTestContext = NodeTestContext | MochaTestContext | PlaywrightTestContext;
 
+/**
+ * Used to determine which test context is in use.
+ *
+ * @category Test : Util
+ * @category Package : @augment-vir/test
+ * @package [`@augment-vir/test`](https://www.npmjs.com/package/@augment-vir/test)
+ */
 export enum TestEnv {
     Node = 'node',
     Web = 'web',

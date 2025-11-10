@@ -4,6 +4,13 @@ import {sortObject} from '../object/object-sort.js';
 import {stringify} from '../object/stringify.js';
 import {isRuntimeEnv, RuntimeEnv} from '../runtime-env.js';
 
+/**
+ * Makes a pretty diff output.
+ *
+ * @category Internal
+ * @category Package : @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
+ */
 export function prettyDiff(actual: unknown, expected: unknown): string {
     const bothStrings = typeof expected === 'string' && typeof actual === 'string';
     const useLines: boolean = typeof expected !== 'string' || typeof actual !== 'string';
