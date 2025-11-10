@@ -50,6 +50,7 @@ export const currentRuntimeEnv = determineRuntimeEnv();
  * @category Package : @augment-vir/common
  * @returns `true` if the given {@link RuntimeEnv} is the current {@link RuntimeEnv}.
  * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
+ * @see
  *  - {@link RuntimeEnv}
  *  - {@link currentRuntimeEnv}
  *  - {@link perEnv}
@@ -77,10 +78,24 @@ export class RuntimeEnvError extends Error {
  * @category Env
  * @category Package : @augment-vir/common
  * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
+ * @see
  *  - {@link RuntimeEnv}
  *  - {@link currentRuntimeEnv}
  *  - {@link isRuntimeEnv}
  */
 export function perEnv<T>(perEnv: Record<RuntimeEnv, () => T>): T {
     return perEnv[currentRuntimeEnv]();
+}
+
+/**
+ * Determines if the current code is being executed within a playwright test.
+ *
+ * @category Env
+ * @category Package : @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
+ */
+export function isInsidePlaywrightTest(): boolean {
+    /** `process` is not defined on the web. */
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    return !!globalThis.process?.env.PLAYWRIGHT_TEST;
 }

@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/test",
-    "version": "31.49.0",
+    "version": "31.50.0",
     "description": "A universal testing suite that works with Mocha style test runners _and_ Node.js's built-in test runner.",
     "keywords": [
         "test",
@@ -36,20 +36,22 @@
     "scripts": {
         "compile": "virmator compile",
         "start": "tsx src/index.ts",
-        "test": "runstorm --names node,web \"npm run test:node\" \"npm run test:web\"",
+        "test": "runstorm --names node,web,playwright \"npm run test:node\" \"npm run test:web\" \"npm run test:playwright\"",
         "test:coverage": "npm run test",
         "test:node": "virmator test --no-deps node 'src/augments/universal-testing-suite/**/*.test.ts'",
+        "test:playwright": "playwright test --config configs/playwright.config.ts",
         "test:update": "npm test",
         "test:web": "virmator test --no-deps web 'src/test-web/**/*.test.ts' 'src/augments/universal-testing-suite/**/*.test.ts'"
     },
     "dependencies": {
-        "@augment-vir/assert": "^31.49.0",
-        "@augment-vir/common": "^31.49.0",
+        "@augment-vir/assert": "^31.50.0",
+        "@augment-vir/common": "^31.50.0",
         "@open-wc/testing-helpers": "^3.0.1",
-        "@virmator/test": "^14.2.1",
+        "@virmator/test": "^14.2.2",
         "type-fest": "^5.2.0"
     },
     "devDependencies": {
+        "@playwright/test": "^1.56.1",
         "@types/node": "^24.10.0",
         "@web/dev-server-esbuild": "^1.0.4",
         "@web/test-runner": "^0.20.2",
@@ -57,11 +59,22 @@
         "@web/test-runner-playwright": "^0.11.1",
         "element-vir": "^26.11.1",
         "istanbul-smart-text-reporter": "^1.1.5",
+        "pixelmatch": "^5.3.0",
+        "pngjs": "^7.0.0",
         "runstorm": "^0.6.2",
-        "typescript": "^5.9.3"
+        "sharp": "^0.34.5",
+        "spa-router-vir": "^6.3.1",
+        "typescript": "^5.9.3",
+        "url-vir": "^2.1.6"
     },
     "peerDependencies": {
-        "element-vir": "*"
+        "@playwright/test": "*",
+        "element-vir": "*",
+        "pixelmatch": ">=5",
+        "pngjs": ">=7",
+        "sharp": ">=0.34",
+        "spa-router-vir": ">=6",
+        "url-vir": ">=2"
     },
     "engines": {
         "node": ">=22"

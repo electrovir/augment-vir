@@ -13,6 +13,7 @@ module.exports = {
         'baagøe',
         'customizer',
         'deepcopy',
+        'domcontentloaded',
         'nocheck',
         'prismock',
         'propstat',

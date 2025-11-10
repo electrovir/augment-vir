@@ -1,10 +1,15 @@
-import {camelCaseToKebabCase} from '@augment-vir/common';
-import {RuntimeEnv} from '@augment-vir/core';
+import {assertWrap} from '@augment-vir/assert';
+import {camelCaseToKebabCase, sanitizeFilePath, type SelectFrom} from '@augment-vir/common';
+import {
+    type PlaywrightTestArgs,
+    type PlaywrightTestOptions,
+    type PlaywrightWorkerArgs,
+    type PlaywrightWorkerOptions,
+    type TestInfo,
+} from '@playwright/test';
 import {type TestContext as NodeTestContextImport} from 'node:test';
 import {type OmitIndexSignature, type Simplify} from 'type-fest';
 import {type MochaNode, type MochaTestContext} from './mocha-types.js';
-
-export {RuntimeEnv} from '@augment-vir/core';
 
 /**
  * The test context for [Node.js's test runner](https://nodejs.org/api/test.html).
@@ -19,30 +24,70 @@ export type NodeTestContext = Readonly<NodeTestContextImport> & {
 };
 
 /**
- * Test context provided by `it`'s callback.
- *
- * Compatible with both [Node.js's test runner](https://nodejs.org/api/test.html) and
- * [web-test-runner](https://modern-web.dev/docs/test-runner/overview/) or other Mocha-style test
- * runners.
+ * The test context for Playwright tests.
  *
  * @category Test : Util
  * @category Package : @augment-vir/test
  * @package [`@augment-vir/test`](https://www.npmjs.com/package/@augment-vir/test)
  */
-export type UniversalTestContext = NodeTestContext | MochaTestContext;
+export type PlaywrightTestContext = SelectFrom<
+    PlaywrightTestArgs & PlaywrightTestOptions & PlaywrightWorkerArgs & PlaywrightWorkerOptions,
+    {
+        page: true;
+        baseURL: true;
+        browser: true;
+        context: true;
+        extraHTTPHeaders: true;
+        viewport: true;
+        video: true;
+        userAgent: true;
+        timezoneId: true;
+        serviceWorkers: true;
+        screenshot: true;
+        isMobile: true;
+        headless: true;
+        hasTouch: true;
+    }
+> & {
+    testInfo: TestInfo;
+    testName: {
+        /** Clean, easily readable for humans. */
+        clean: string;
+        /** Unique with a random slug appended. */
+        unique: string;
+    };
+};
 
 /**
- * Test context by runtime env when [Node.js's test runner](https://nodejs.org/api/test.html) is
- * used for Node tests and [web-test-runner](https://modern-web.dev/docs/test-runner/overview/) is
- * used for web tests.
+ * Test context provided by `it`'s callback.
+ *
+ * Compatible with both [Node.js's test runner](https://nodejs.org/api/test.html),
+ * [web-test-runner](https://modern-web.dev/docs/test-runner/overview/) or other Mocha-style test
+ * runners, and Playwright's test runner.
  *
  * @category Test : Util
  * @category Package : @augment-vir/test
  * @package [`@augment-vir/test`](https://www.npmjs.com/package/@augment-vir/test)
  */
-export type ContextByEnv = {
-    [RuntimeEnv.Node]: NodeTestContext;
-    [RuntimeEnv.Web]: MochaTestContext;
+export type UniversalTestContext = NodeTestContext | MochaTestContext | PlaywrightTestContext;
+
+export enum TestEnv {
+    Node = 'node',
+    Web = 'web',
+    Playwright = 'playwright',
+}
+
+/**
+ * Test context by the env they run in.
+ *
+ * @category Test : Util
+ * @category Package : @augment-vir/test
+ * @package [`@augment-vir/test`](https://www.npmjs.com/package/@augment-vir/test)
+ */
+export type TestContextByEnv = {
+    [TestEnv.Node]: NodeTestContext;
+    [TestEnv.Web]: MochaTestContext;
+    [TestEnv.Playwright]: PlaywrightTestContext;
 };
 
 /**
@@ -54,8 +99,10 @@ export type ContextByEnv = {
  * @package [`@augment-vir/test`](https://www.npmjs.com/package/@augment-vir/test)
  */
 export function extractTestName(testContext: UniversalTestContext): string {
-    if (isTestContext(testContext, RuntimeEnv.Node)) {
+    if (isTestContext(testContext, TestEnv.Node)) {
         return testContext.fullName;
+    } else if (isTestContext(testContext, TestEnv.Playwright)) {
+        return testContext.testName.clean;
     } else {
         return flattenMochaParentTitles(testContext.test).join(' > ');
     }
@@ -69,10 +116,20 @@ export function extractTestName(testContext: UniversalTestContext): string {
  * @category Package : @augment-vir/test
  * @package [`@augment-vir/test`](https://www.npmjs.com/package/@augment-vir/test)
  */
-export function extractTestNameAsDir(testContext: UniversalTestContext) {
-    return camelCaseToKebabCase(extractTestName(testContext)).replaceAll(
-        /[<>:"/\-\\|?*_\s]+/g,
-        '_',
+export function extractTestNameAsDir(testContext: UniversalTestContext): string {
+    return assertWrap.isTruthy(cleanTestNameAsDir(extractTestName(testContext)));
+}
+
+/**
+ * Same as {@link extractTestNameAsDir} but sanitizes any input in the same way.
+ *
+ * @category Test : Util
+ * @category Package : @augment-vir/test
+ * @package [`@augment-vir/test`](https://www.npmjs.com/package/@augment-vir/test)
+ */
+export function cleanTestNameAsDir(testName: string): string {
+    return assertWrap.isTruthy(
+        sanitizeFilePath(camelCaseToKebabCase(testName).replaceAll(/[<>:"/\-\\|?*_\s]+/g, '_')),
     );
 }
 
@@ -95,11 +152,11 @@ function flattenMochaParentTitles(this: void, node: MochaNode): string[] {
  * @throws `TypeError` if the context does not match the env.
  * @package [`@augment-vir/test`](https://www.npmjs.com/package/@augment-vir/test)
  */
-export function assertWrapTestContext<const SpecificEnv extends RuntimeEnv>(
+export function assertWrapTestContext<const SpecificEnv extends TestEnv>(
     this: void,
     context: UniversalTestContext,
     env: SpecificEnv,
-): ContextByEnv[SpecificEnv] {
+): TestContextByEnv[SpecificEnv] {
     assertTestContext(context, env);
 
     return context;
@@ -112,11 +169,11 @@ export function assertWrapTestContext<const SpecificEnv extends RuntimeEnv>(
  * @category Package : @augment-vir/test
  * @package [`@augment-vir/test`](https://www.npmjs.com/package/@augment-vir/test)
  */
-export function assertTestContext<const SpecificEnv extends RuntimeEnv>(
+export function assertTestContext<const SpecificEnv extends TestEnv>(
     this: void,
     context: UniversalTestContext,
     env: SpecificEnv,
-): asserts context is ContextByEnv[SpecificEnv] {
+): asserts context is TestContextByEnv[SpecificEnv] {
     const actualEnv = determineTestContextEnv(context);
 
     if (actualEnv !== env) {
@@ -131,11 +188,11 @@ export function assertTestContext<const SpecificEnv extends RuntimeEnv>(
  * @category Package : @augment-vir/test
  * @package [`@augment-vir/test`](https://www.npmjs.com/package/@augment-vir/test)
  */
-export function isTestContext<const SpecificEnv extends RuntimeEnv>(
+export function isTestContext<const SpecificEnv extends TestEnv>(
     this: void,
     context: UniversalTestContext,
     env: SpecificEnv,
-): context is ContextByEnv[SpecificEnv] {
+): context is TestContextByEnv[SpecificEnv] {
     try {
         assertTestContext(context, env);
         return true;
@@ -146,10 +203,16 @@ export function isTestContext<const SpecificEnv extends RuntimeEnv>(
 
 type NodeOnlyTestContextKeys = Exclude<
     Simplify<keyof NodeTestContext>,
-    Simplify<keyof OmitIndexSignature<MochaTestContext>>
+    Simplify<keyof OmitIndexSignature<MochaTestContext>> | Simplify<keyof PlaywrightTestContext>
+>;
+
+type PlaywrightOnlyTestContextKeys = Exclude<
+    Simplify<keyof PlaywrightTestContext>,
+    Simplify<keyof OmitIndexSignature<MochaTestContext>> | Simplify<keyof NodeTestContext>
 >;
 
 const nodeOnlyCheckKey = 'diagnostic' satisfies NodeOnlyTestContextKeys;
+const playwrightOnlyCheckKey = 'browser' satisfies PlaywrightOnlyTestContextKeys;
 
 /**
  * Determine the env for the given test context.
@@ -158,6 +221,12 @@ const nodeOnlyCheckKey = 'diagnostic' satisfies NodeOnlyTestContextKeys;
  * @category Package : @augment-vir/test
  * @package [`@augment-vir/test`](https://www.npmjs.com/package/@augment-vir/test)
  */
-export function determineTestContextEnv(this: void, context: UniversalTestContext): RuntimeEnv {
-    return nodeOnlyCheckKey in context ? RuntimeEnv.Node : RuntimeEnv.Web;
+export function determineTestContextEnv(this: void, context: UniversalTestContext): TestEnv {
+    if (playwrightOnlyCheckKey in context) {
+        return TestEnv.Playwright;
+    } else if (nodeOnlyCheckKey in context) {
+        return TestEnv.Node;
+    } else {
+        return TestEnv.Web;
+    }
 }

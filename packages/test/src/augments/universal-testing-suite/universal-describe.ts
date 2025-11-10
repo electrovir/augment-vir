@@ -1,4 +1,4 @@
-import {isRuntimeEnv, RuntimeEnv} from '@augment-vir/core';
+import {isInsidePlaywrightTest, isRuntimeEnv, RuntimeEnv} from '@augment-vir/core';
 
 /**
  * A minimal interface for {@link describe}. This is used in {@link UniversalDescribe}.
@@ -34,9 +34,23 @@ export type UniversalDescribe = UniversalBareDescribe & {
 };
 
 const describes = isRuntimeEnv(RuntimeEnv.Node)
-    ? {
-          node: (await import('node:test')).describe,
-      }
+    ? isInsidePlaywrightTest()
+        ? {
+              playwright: await (async () => {
+                  const playwrightImport = await import('@playwright/test');
+
+                  /** `as any` cast to prevent type guarding {@link playwrightImport}. */
+                  if ('default' in (playwrightImport as any)) {
+                      return playwrightImport.default.describe;
+                  } else {
+                      return (playwrightImport as unknown as typeof playwrightImport.default)
+                          .describe;
+                  }
+              })(),
+          }
+        : {
+              node: (await import('node:test')).describe,
+          }
     : {
           mocha: (globalThis as unknown as {describe: UniversalDescribe}).describe,
       };
@@ -68,4 +82,4 @@ const describes = isRuntimeEnv(RuntimeEnv.Node)
  *
  * @package [`@augment-vir/test`](https://www.npmjs.com/package/@augment-vir/test)
  */
-export const describe = describes.mocha || describes.node;
+export const describe = describes.mocha || describes.playwright || describes.node;

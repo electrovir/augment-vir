@@ -50,7 +50,8 @@ async function verifyPackage(packageDirPath: string): Promise<boolean> {
             !filePath.endsWith('.test.ts') &&
             !filePath.endsWith('.mock.ts') &&
             !filePath.endsWith('.example.ts') &&
-            !filePath.endsWith('.script.ts'),
+            !filePath.endsWith('.script.ts') &&
+            !filePath.endsWith('.test.e2e.ts'),
     );
 
     log.faint(`Checking ${relativeAugmentFilePaths.length} augment files...`);

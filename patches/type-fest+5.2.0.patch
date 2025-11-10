@@ -6,3 +6,26 @@ index 0000000..693da49
 @@ -0,0 +1 @@
 +export {}
 \ No newline at end of file
+diff --git a/node_modules/type-fest/package.json b/node_modules/type-fest/package.json
+index 9685aa4..67ec69d 100644
+--- a/node_modules/type-fest/package.json
++++ b/node_modules/type-fest/package.json
+@@ -11,14 +11,8 @@
+ 		"url": "https://sindresorhus.com"
+ 	},
+ 	"type": "module",
+-	"exports": {
+-		".": {
+-			"types": "./index.d.ts"
+-		},
+-		"./globals": {
+-			"types": "./source/globals/index.d.ts"
+-		}
+-	},
++	"main": "./index.js",
++	"module": "./index.js",
+ 	"types": "./index.d.ts",
+ 	"sideEffects": false,
+ 	"engines": {
+# Update this by running:
+# npx patch-package some-package --exclude 'nothing'

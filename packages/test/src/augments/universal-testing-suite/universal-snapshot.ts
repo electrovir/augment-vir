@@ -1,12 +1,16 @@
 import {check} from '@augment-vir/assert';
-import {extractErrorMessage, getOrSet, RuntimeEnv} from '@augment-vir/common';
+import {extractErrorMessage, getOrSet} from '@augment-vir/common';
 import {
     type CompareCommandResult,
     type SnapshotPayload,
 } from '@virmator/test/dist/web-snapshot-plugin/snapshot-payload.js';
+import {type MochaTestContext} from './mocha-types.js';
 import {
+    determineTestContextEnv,
     extractTestName,
     isTestContext,
+    TestEnv,
+    type NodeTestContext,
     type UniversalTestContext,
 } from './universal-test-context.js';
 
@@ -39,10 +43,10 @@ export class SnapshotFileMissingError extends Error {
  * @package [`@augment-vir/test`](https://www.npmjs.com/package/@augment-vir/test)
  */
 export async function assertSnapshot(this: void, testContext: UniversalTestContext, data: unknown) {
-    const {snapshotName, testName} = getTestName(testContext);
     const serializedData = check.isString(data) ? data : JSON.stringify(data);
 
-    if (isTestContext(testContext, RuntimeEnv.Node)) {
+    if (isTestContext(testContext, TestEnv.Node)) {
+        const {testName} = getTestName(testContext);
         try {
             testContext.assert.snapshot(serializedData);
         } catch (error) {
@@ -52,7 +56,8 @@ export async function assertSnapshot(this: void, testContext: UniversalTestConte
                 throw error;
             }
         }
-    } else {
+    } else if (isTestContext(testContext, TestEnv.Web)) {
+        const {snapshotName, testName} = getTestName(testContext);
         const {SnapshotCommand} = await import(
             '@virmator/test/dist/web-snapshot-plugin/snapshot-payload.js'
         );
@@ -75,10 +80,14 @@ export async function assertSnapshot(this: void, testContext: UniversalTestConte
                 );
             }
         }
+    } else {
+        const testEnv = determineTestContextEnv(testContext);
+
+        throw new Error(`assertSnapshot not supported for test env '${testEnv}'.`);
     }
 }
 
-function getTestName(this: void, testContext: UniversalTestContext) {
+function getTestName(this: void, testContext: NodeTestContext | MochaTestContext) {
     const testName = extractTestName(testContext);
 
     const snapshotCountObject = getOrSet(testContext, 'snapshotCount', () => {

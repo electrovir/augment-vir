@@ -1,6 +1,7 @@
-import {isRuntimeEnv, RuntimeEnv} from '@augment-vir/core';
+import {randomString} from '@augment-vir/common';
+import {isInsidePlaywrightTest, isRuntimeEnv, RuntimeEnv} from '@augment-vir/core';
 import {type MochaTestContext} from './mocha-types.js';
-import {type UniversalTestContext} from './universal-test-context.js';
+import {type PlaywrightTestContext, type UniversalTestContext} from './universal-test-context.js';
 
 /**
  * An interface for an {@link it} callback. Used in {@link UniversalBareIt}.
@@ -80,6 +81,171 @@ function createWebIt(): UniversalIt {
     return webIt;
 }
 
+async function createPlaywrightIt(): Promise<UniversalIt> {
+    const rawPlaywrightImport = await import('@playwright/test');
+    const originalPlaywrightIt: typeof rawPlaywrightImport.default =
+        'default' in (rawPlaywrightImport as any)
+            ? rawPlaywrightImport.default
+            : (rawPlaywrightImport as unknown as typeof rawPlaywrightImport.default);
+
+    const playwrightIt = Object.assign(
+        (doesThis: string, callback: UniversalItCallback) => {
+            return originalPlaywrightIt(
+                doesThis,
+                async (
+                    {
+                        page,
+                        baseURL,
+                        browser,
+                        context,
+                        extraHTTPHeaders,
+                        viewport,
+                        video,
+                        userAgent,
+                        timezoneId,
+                        serviceWorkers,
+                        screenshot,
+                        isMobile,
+                        headless,
+                        hasTouch,
+                    },
+                    testInfo,
+                ) => {
+                    const playwrightTestContext: PlaywrightTestContext = {
+                        page,
+                        baseURL,
+                        browser,
+                        context,
+                        extraHTTPHeaders,
+                        viewport,
+                        video,
+                        userAgent,
+                        timezoneId,
+                        serviceWorkers,
+                        screenshot,
+                        isMobile,
+                        headless,
+                        hasTouch,
+                        testInfo,
+                        testName: {
+                            clean: testInfo.titlePath.join(' > '),
+                            unique: [
+                                ...testInfo.titlePath,
+                                randomString(),
+                            ].join(' > '),
+                        },
+                    };
+                    await callback(playwrightTestContext);
+                },
+            );
+        },
+        {
+            skip: (doesThis: string, callback: UniversalItCallback) => {
+                return originalPlaywrightIt.skip(
+                    doesThis,
+                    async (
+                        {
+                            page,
+                            baseURL,
+                            browser,
+                            context,
+                            extraHTTPHeaders,
+                            viewport,
+                            video,
+                            userAgent,
+                            timezoneId,
+                            serviceWorkers,
+                            screenshot,
+                            isMobile,
+                            headless,
+                            hasTouch,
+                        },
+                        testInfo,
+                    ) => {
+                        const playwrightTestContext: PlaywrightTestContext = {
+                            page,
+                            baseURL,
+                            browser,
+                            context,
+                            extraHTTPHeaders,
+                            viewport,
+                            video,
+                            userAgent,
+                            timezoneId,
+                            serviceWorkers,
+                            screenshot,
+                            isMobile,
+                            headless,
+                            hasTouch,
+                            testInfo,
+                            testName: {
+                                clean: testInfo.titlePath.join(' > '),
+                                unique: [
+                                    ...testInfo.titlePath,
+                                    randomString(),
+                                ].join(' > '),
+                            },
+                        };
+                        await callback(playwrightTestContext);
+                    },
+                );
+            },
+            only: (doesThis: string, callback: UniversalItCallback) => {
+                return originalPlaywrightIt.only(
+                    doesThis,
+                    async (
+                        {
+                            page,
+                            baseURL,
+                            browser,
+                            context,
+                            extraHTTPHeaders,
+                            viewport,
+                            video,
+                            userAgent,
+                            timezoneId,
+                            serviceWorkers,
+                            screenshot,
+                            isMobile,
+                            headless,
+                            hasTouch,
+                        },
+                        testInfo,
+                    ) => {
+                        const playwrightTestContext: PlaywrightTestContext = {
+                            page,
+                            baseURL,
+                            browser,
+                            context,
+                            extraHTTPHeaders,
+                            viewport,
+                            video,
+                            userAgent,
+                            timezoneId,
+                            serviceWorkers,
+                            screenshot,
+                            isMobile,
+                            headless,
+                            hasTouch,
+                            testInfo,
+                            testName: {
+                                clean: testInfo.titlePath.join(' > '),
+                                unique: [
+                                    ...testInfo.titlePath,
+                                    randomString(),
+                                ].join(' > '),
+                            },
+                        };
+                        await callback(playwrightTestContext);
+                    },
+                );
+            },
+        },
+    );
+
+    return playwrightIt;
+}
+
 /**
  * A single test declaration. This can be used in both web tests _and_ node tests, so you only have
  * import from a single place and learn a single interface.
@@ -109,5 +275,7 @@ function createWebIt(): UniversalIt {
  * @package [`@augment-vir/test`](https://www.npmjs.com/package/@augment-vir/test)
  */
 export const it: UniversalIt = isRuntimeEnv(RuntimeEnv.Node)
-    ? (await import('node:test')).it
+    ? isInsidePlaywrightTest()
+        ? await createPlaywrightIt()
+        : (await import('node:test')).it
     : createWebIt();

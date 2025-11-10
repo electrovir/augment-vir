@@ -1,3 +1,4 @@
+export * from './augments/test-playwright.js';
 export * from './augments/test-web.js';
 export * from './augments/universal-testing-suite/it-cases-with-context.js';
 export * from './augments/universal-testing-suite/it-cases.js';
