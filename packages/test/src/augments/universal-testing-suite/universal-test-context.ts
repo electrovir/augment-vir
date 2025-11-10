@@ -136,7 +136,7 @@ export function extractTestNameAsDir(testContext: UniversalTestContext): string 
  */
 export function cleanTestNameAsDir(testName: string): string {
     return assertWrap.isTruthy(
-        sanitizeFilePath(camelCaseToKebabCase(testName).replaceAll(/[<>:"/\-\\|?*_\s]+/g, '_')),
+        sanitizeFilePath(camelCaseToKebabCase(testName).replaceAll(/[<>:"/\-\\|?*_\s.]+/g, '_')),
     );
 }
 
