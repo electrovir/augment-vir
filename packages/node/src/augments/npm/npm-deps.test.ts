@@ -29,14 +29,12 @@ describe(listAllDirectNpmDeps.name, () => {
             pixelmatch: [
                 {
                     dependencyKey: PackageJsonDependencyKey.DevDependencies,
-                    requiredBy:
-                        '/Users/electrovir/repos/electrovir/augment-vir/packages/test/package.json',
+                    requiredBy: join(monoRepoDirPath, 'packages', 'test', 'package.json'),
                     isWorkspace: false,
                 },
                 {
                     dependencyKey: PackageJsonDependencyKey.PeerDependencies,
-                    requiredBy:
-                        '/Users/electrovir/repos/electrovir/augment-vir/packages/test/package.json',
+                    requiredBy: join(monoRepoDirPath, 'packages', 'test', 'package.json'),
                     isWorkspace: false,
                 },
             ],
@@ -50,14 +48,12 @@ describe(listAllDirectNpmDeps.name, () => {
             pngjs: [
                 {
                     dependencyKey: PackageJsonDependencyKey.DevDependencies,
-                    requiredBy:
-                        '/Users/electrovir/repos/electrovir/augment-vir/packages/test/package.json',
+                    requiredBy: join(monoRepoDirPath, 'packages', 'test', 'package.json'),
                     isWorkspace: false,
                 },
                 {
                     dependencyKey: PackageJsonDependencyKey.PeerDependencies,
-                    requiredBy:
-                        '/Users/electrovir/repos/electrovir/augment-vir/packages/test/package.json',
+                    requiredBy: join(monoRepoDirPath, 'packages', 'test', 'package.json'),
                     isWorkspace: false,
                 },
             ],
@@ -197,14 +193,12 @@ describe(listAllDirectNpmDeps.name, () => {
             '@playwright/test': [
                 {
                     dependencyKey: PackageJsonDependencyKey.DevDependencies,
-                    requiredBy:
-                        '/Users/electrovir/repos/electrovir/augment-vir/packages/test/package.json',
+                    requiredBy: join(monoRepoDirPath, 'packages', 'test', 'package.json'),
                     isWorkspace: false,
                 },
                 {
                     dependencyKey: PackageJsonDependencyKey.PeerDependencies,
-                    requiredBy:
-                        '/Users/electrovir/repos/electrovir/augment-vir/packages/test/package.json',
+                    requiredBy: join(monoRepoDirPath, 'packages', 'test', 'package.json'),
                     isWorkspace: false,
                 },
             ],
@@ -720,28 +714,24 @@ describe(listAllDirectNpmDeps.name, () => {
             sharp: [
                 {
                     dependencyKey: PackageJsonDependencyKey.DevDependencies,
-                    requiredBy:
-                        '/Users/electrovir/repos/electrovir/augment-vir/packages/test/package.json',
+                    requiredBy: join(monoRepoDirPath, 'packages', 'test', 'package.json'),
                     isWorkspace: false,
                 },
                 {
                     dependencyKey: PackageJsonDependencyKey.PeerDependencies,
-                    requiredBy:
-                        '/Users/electrovir/repos/electrovir/augment-vir/packages/test/package.json',
+                    requiredBy: join(monoRepoDirPath, 'packages', 'test', 'package.json'),
                     isWorkspace: false,
                 },
             ],
             'spa-router-vir': [
                 {
                     dependencyKey: PackageJsonDependencyKey.DevDependencies,
-                    requiredBy:
-                        '/Users/electrovir/repos/electrovir/augment-vir/packages/test/package.json',
+                    requiredBy: join(monoRepoDirPath, 'packages', 'test', 'package.json'),
                     isWorkspace: false,
                 },
                 {
                     dependencyKey: PackageJsonDependencyKey.PeerDependencies,
-                    requiredBy:
-                        '/Users/electrovir/repos/electrovir/augment-vir/packages/test/package.json',
+                    requiredBy: join(monoRepoDirPath, 'packages', 'test', 'package.json'),
                     isWorkspace: false,
                 },
             ],
@@ -872,14 +862,12 @@ describe(listAllDirectNpmDeps.name, () => {
             'url-vir': [
                 {
                     dependencyKey: PackageJsonDependencyKey.DevDependencies,
-                    requiredBy:
-                        '/Users/electrovir/repos/electrovir/augment-vir/packages/test/package.json',
+                    requiredBy: join(monoRepoDirPath, 'packages', 'test', 'package.json'),
                     isWorkspace: false,
                 },
                 {
                     dependencyKey: PackageJsonDependencyKey.PeerDependencies,
-                    requiredBy:
-                        '/Users/electrovir/repos/electrovir/augment-vir/packages/test/package.json',
+                    requiredBy: join(monoRepoDirPath, 'packages', 'test', 'package.json'),
                     isWorkspace: false,
                 },
             ],
