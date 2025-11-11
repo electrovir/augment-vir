@@ -189,7 +189,11 @@ export async function expectScreenshot(
 
     async function writeNewScreenshot() {
         log.mutate(`Updated screenshot: ${relative(process.cwd(), screenshotFilePath)}`);
-        await saveScreenshotBuffer(testContext, currentScreenshotBuffer, screenshotFilePath);
+        await saveScreenshotBuffer(
+            testContext,
+            currentScreenshotBuffer,
+            options.screenshotBaseName,
+        );
     }
     async function writeExpectationScreenshot(contents: Buffer, fileName: string) {
         const filePath = assertWrapTestContext(testContext, TestEnv.Playwright).testInfo.outputPath(
