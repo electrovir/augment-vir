@@ -1,7 +1,7 @@
 import {assert} from '@augment-vir/assert';
 import {wait, type MaybePromise} from '@augment-vir/core';
 import {describe, it} from '@augment-vir/test';
-import {retry} from './retry.js';
+import {retry, type RetryCallbackParams} from './retry.js';
 
 describe(retry.name, () => {
     it('has proper types', async () => {
@@ -96,15 +96,39 @@ describe(retry.name, () => {
         assert.strictEquals(result, 'hi');
     });
     it('fails', () => {
+        const allParams: RetryCallbackParams[] = [];
+
         assert.throws(
             () =>
-                retry(2, (): string => {
+                retry(2, (params): string => {
+                    allParams.push(params);
                     throw new Error('fail');
                 }),
             {
                 matchMessage: 'Retry max reached: fail',
             },
         );
+
+        assert.deepEquals(allParams, [
+            {
+                retryCount: 0,
+                isFirstExecution: true,
+                isFirstRetry: false,
+                isLastRetry: false,
+            },
+            {
+                retryCount: 1,
+                isFirstExecution: false,
+                isFirstRetry: true,
+                isLastRetry: false,
+            },
+            {
+                retryCount: 2,
+                isFirstExecution: false,
+                isFirstRetry: false,
+                isLastRetry: true,
+            },
+        ]);
     });
     it('fails with async callback', async () => {
         await assert.throws(
