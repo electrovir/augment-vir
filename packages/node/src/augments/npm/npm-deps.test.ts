@@ -41,7 +41,7 @@ describe(listAllDirectNpmDeps.name, () => {
             playwright: [
                 {
                     dependencyKey: PackageJsonDependencyKey.Overrides,
-                    requiredBy: '/Users/electrovir/repos/electrovir/augment-vir/package.json',
+                    requiredBy: join(monoRepoDirPath, 'package.json'),
                     isWorkspace: false,
                 },
             ],
@@ -627,7 +627,7 @@ describe(listAllDirectNpmDeps.name, () => {
             'patch-package': [
                 {
                     dependencyKey: PackageJsonDependencyKey.DevDependencies,
-                    requiredBy: '/Users/electrovir/repos/electrovir/augment-vir/package.json',
+                    requiredBy: join(monoRepoDirPath, 'package.json'),
                     isWorkspace: false,
                 },
             ],
@@ -752,7 +752,7 @@ describe(listAllDirectNpmDeps.name, () => {
             'type-fest': [
                 {
                     dependencyKey: PackageJsonDependencyKey.Overrides,
-                    requiredBy: '/Users/electrovir/repos/electrovir/augment-vir/package.json',
+                    requiredBy: join(monoRepoDirPath, 'package.json'),
                     isWorkspace: false,
                 },
                 {
