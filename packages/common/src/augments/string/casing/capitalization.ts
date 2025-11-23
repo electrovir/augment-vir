@@ -1,3 +1,5 @@
+/* node:coverage disable */
+
 /**
  * Capitalize the first letter of the input _only if_ the given options specifies doing so.
  *

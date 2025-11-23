@@ -88,7 +88,9 @@ function parseStatusEntries(htmlString: string) {
                 code,
                 ...description
             ] = element.id.split('_');
-            const name = kebabCaseToCamelCase(description.join('-'), {capitalizeFirstLetter: true});
+            const name = kebabCaseToCamelCase(description.join('-'), {
+                firstLetterCase: StringCase.Upper,
+            });
 
             const newStatus: ParsedHttpStatus = {
                 description: '',

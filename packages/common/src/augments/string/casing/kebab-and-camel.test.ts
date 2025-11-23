@@ -1,6 +1,6 @@
 import {describe, itCases} from '@augment-vir/test';
-import {camelCaseToKebabCase, kebabCaseToCamelCase} from './kebab-and-camel.js';
 import {StringCase} from './casing.js';
+import {camelCaseToKebabCase, kebabCaseToCamelCase} from './kebab-and-camel.js';
 
 describe(kebabCaseToCamelCase.name, () => {
     itCases(kebabCaseToCamelCase, [

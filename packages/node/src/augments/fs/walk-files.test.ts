@@ -2,8 +2,8 @@ import {assert} from '@augment-vir/assert';
 import {filterObject} from '@augment-vir/common';
 import {describe, it} from '@augment-vir/test';
 import {join, sep} from 'node:path';
-import {walkFiles, type WalkFilesParams} from 'something-crazy/augments/fs/walk-files';
 import {dirContentsTestDir} from '../../file-paths.mock.js';
+import {walkFiles, type WalkFilesParams} from './walk-files.js';
 
 describe(walkFiles.name, () => {
     type WalkedFiles = {
