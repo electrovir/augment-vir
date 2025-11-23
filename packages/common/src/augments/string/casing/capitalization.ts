@@ -1,15 +1,14 @@
-import {type CasingOptions} from './casing.js';
-
 /**
  * Capitalize the first letter of the input _only if_ the given options specifies doing so.
  *
+ * @deprecated Prefer `setFirstLetterCasing`.
  * @category String
  * @category Package : @augment-vir/common
  * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function maybeCapitalize(
     input: string,
-    casingOptions: Pick<CasingOptions, 'capitalizeFirstLetter'>,
+    casingOptions: {capitalizeFirstLetter: boolean},
 ): string {
     // eslint-disable-next-line @typescript-eslint/no-deprecated
     return casingOptions.capitalizeFirstLetter ? capitalizeFirstLetter(input) : input;

@@ -5,33 +5,6 @@ import {
 } from '@augment-vir/core';
 
 /**
- * Options for casing functions in `@augment-vir/common`.
- *
- * @category String
- * @category Package : @augment-vir/common
- * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
- */
-export type CasingOptions = {
-    /**
-     * Capitalize the first letter of the string.
-     *
-     * @default false
-     */
-    capitalizeFirstLetter: boolean;
-};
-
-/**
- * Default options for {@link CasingOptions}.
- *
- * @category String
- * @category Package : @augment-vir/common
- * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
- */
-export const defaultCasingOptions: Required<CasingOptions> = {
-    capitalizeFirstLetter: false,
-};
-
-/**
  * The different string cases.
  *
  * @category String
@@ -42,6 +15,33 @@ export enum StringCase {
     Upper = 'upper',
     Lower = 'lower',
 }
+
+/**
+ * Options for casing functions in `@augment-vir/common`.
+ *
+ * @category String
+ * @category Package : @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
+ */
+export type CasingOptions = {
+    /**
+     * Capitalize the first letter of the string.
+     *
+     * @default StringCase.Lower
+     */
+    firstLetterCase: StringCase;
+};
+
+/**
+ * Default options for {@link CasingOptions}.
+ *
+ * @category String
+ * @category Package : @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
+ */
+export const defaultCasingOptions: Required<CasingOptions> = {
+    firstLetterCase: StringCase.Lower,
+};
 
 /**
  * Convert the first letter of a string to either lower or uppercase.
