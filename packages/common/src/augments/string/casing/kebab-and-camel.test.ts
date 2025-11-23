@@ -1,5 +1,6 @@
 import {describe, itCases} from '@augment-vir/test';
 import {camelCaseToKebabCase, kebabCaseToCamelCase} from './kebab-and-camel.js';
+import {StringCase} from './casing.js';
 
 describe(kebabCaseToCamelCase.name, () => {
     itCases(kebabCaseToCamelCase, [
@@ -29,7 +30,7 @@ describe(kebabCaseToCamelCase.name, () => {
             inputs: [
                 'hello-there-what-have-we-here',
                 {
-                    capitalizeFirstLetter: true,
+                    firstLetterCase: StringCase.Upper,
                 },
             ],
             expect: 'HelloThereWhatHaveWeHere',
@@ -64,7 +65,7 @@ describe(kebabCaseToCamelCase.name, () => {
             inputs: [
                 '----hello-there---what-have-we-here--',
                 {
-                    capitalizeFirstLetter: true,
+                    firstLetterCase: StringCase.Upper,
                 },
             ],
             expect: 'HelloThereWhatHaveWeHere',

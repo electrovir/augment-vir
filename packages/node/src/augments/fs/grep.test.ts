@@ -179,6 +179,7 @@ describe(grep.name, () => {
                     "export * from './augments/fs/read-dir.js';",
                     "export * from './augments/fs/read-file.js';",
                     "export * from './augments/fs/symlink.js';",
+                    "export * from './augments/fs/walk-files.js';",
                     "export * from './augments/fs/write.js';",
                     "export * from './augments/npm/find-bin-path.js';",
                     "export * from './augments/npm/npm-deps.js';",
@@ -221,6 +222,7 @@ describe(grep.name, () => {
                     "export * from './augments/fs/read-dir.js';",
                     "export * from './augments/fs/read-file.js';",
                     "export * from './augments/fs/symlink.js';",
+                    "export * from './augments/fs/walk-files.js';",
                     "export * from './augments/fs/write.js';",
                     "export * from './augments/npm/find-bin-path.js';",
                     "export * from './augments/npm/npm-deps.js';",
@@ -259,7 +261,7 @@ describe(grep.name, () => {
             ],
             expect: {
                 [join(nodePackageDir, 'src', 'file-paths.mock.ts')]: 12,
-                [join(nodePackageDir, 'src', 'index.ts')]: 24,
+                [join(nodePackageDir, 'src', 'index.ts')]: 25,
             },
         },
         {

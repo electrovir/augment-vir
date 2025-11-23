@@ -1,6 +1,12 @@
 import {type PartialWithUndefined} from '@augment-vir/core';
 import {mergeDefinedProperties} from '../../object/merge-defined-properties.js';
-import {type CasingOptions, defaultCasingOptions, isCase, setFirstLetterCasing, StringCase} from './casing.js';
+import {
+    type CasingOptions,
+    defaultCasingOptions,
+    isCase,
+    setFirstLetterCasing,
+    StringCase,
+} from './casing.js';
 
 /**
  * Converts a kebab-case string to CamelCase.
@@ -29,8 +35,8 @@ export function kebabCaseToCamelCase(
                 return '';
             }
         });
-        
-        const options = mergeDefinedProperties(defaultCasingOptions, casingOptions)
+
+    const options = mergeDefinedProperties(defaultCasingOptions, casingOptions);
 
     return setFirstLetterCasing(camelCase, options.firstLetterCase);
 }
