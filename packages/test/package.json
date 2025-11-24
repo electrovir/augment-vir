@@ -47,7 +47,7 @@
         "@augment-vir/assert": "^31.52.0",
         "@augment-vir/common": "^31.52.0",
         "@open-wc/testing-helpers": "^3.0.1",
-        "@virmator/test": "^14.2.2",
+        "@virmator/test": "^14.3.0",
         "type-fest": "^5.2.0"
     },
     "devDependencies": {
