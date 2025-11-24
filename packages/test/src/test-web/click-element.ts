@@ -1,10 +1,11 @@
-import {sendMouse} from '@web/test-runner-commands';
 import {getCenterOfElement} from './symlinked/element-position.js';
 
 async function sendMouseToMiddleOfElement(
     element: Element,
     operationType: 'click' | 'move',
 ): Promise<void> {
+    const {sendMouse} = await import('@web/test-runner-commands');
+
     const center = getCenterOfElement(element);
 
     await sendMouse({

@@ -1,7 +1,7 @@
-import {sendKeys} from '@web/test-runner-commands';
 import {focusElement} from './element-test-focus.js';
 
 export async function typeString(text: string): Promise<void> {
+    const {sendKeys} = await import('@web/test-runner-commands');
     return await sendKeys({
         type: text,
     });
@@ -19,6 +19,7 @@ export async function typeStringIntoElement(
 export async function deleteAllTextInInput(
     inputElement: Readonly<HTMLInputElement>,
 ): Promise<void> {
+    const {sendKeys} = await import('@web/test-runner-commands');
     const lastValue = inputElement.value;
     if (lastValue) {
         await focusElement(inputElement);

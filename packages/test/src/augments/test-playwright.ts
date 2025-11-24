@@ -1,7 +1,7 @@
 import {isInsidePlaywrightTest, RuntimeEnvError} from '@augment-vir/core';
 
 export {type MenuOptionOptions} from '../test-playwright/get-option.js';
-export {playwrightTeatNameUrlParam, type NavOptions} from '../test-playwright/nav.js';
+export {type NavOptions} from '../test-playwright/nav.js';
 export {
     type LocatorScreenshotOptions,
     type SaveScreenshotOptions,
