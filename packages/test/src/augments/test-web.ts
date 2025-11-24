@@ -1,4 +1,5 @@
 import {isRuntimeEnv, RuntimeEnv, RuntimeEnvError} from '@augment-vir/core';
+import {elementCases} from '../test-web/element-cases.js';
 
 async function importWebTestApi(this: void) {
     if (!isRuntimeEnv(RuntimeEnv.Web)) {
@@ -59,6 +60,8 @@ async function importWebTestApi(this: void) {
          * any element in particular, it'll go wherever the current focus is, if any.
          */
         typeText: typeString,
+        /** Create multiple test cases for element testing. */
+        elementCases,
     };
 }
 

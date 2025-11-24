@@ -6,9 +6,9 @@ const baseConfig = defineConfig({
         // enter file exceptions by rule name here
         'no-orphans': {
             from: [
-                'src/index.ts',
-                /** Idk why dep-cruiser thinks this file is an orphan, it's clearly imported nearby. */
-                'src/test-web/symlinked/element-focus.ts',
+                'src/index\\.ts',
+                /** Idk why dep-cruiser thinks these files are orphans, they're clearly imported nearby. */
+                'src/test-web/symlinked/.',
             ],
         },
         'not-to-unresolvable': {

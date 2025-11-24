@@ -2,7 +2,9 @@ import {fixture} from '@open-wc/testing-helpers';
 import {html, type DeclarativeElementDefinition} from 'element-vir';
 import {type EmptyObject} from 'type-fest';
 
-export async function renderElement<const Definition extends DeclarativeElementDefinition>(
+export async function renderElement<
+    const Definition extends Readonly<DeclarativeElementDefinition>,
+>(
     elementDefinition: Definition,
     ...args: Definition['InputsType'] extends EmptyObject ? [] : [Definition['InputsType']]
 ) {
