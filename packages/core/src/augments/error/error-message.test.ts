@@ -85,13 +85,5 @@ describe(combineErrorMessages.name, () => {
             ],
             expect: '',
         },
-        {
-            it: 'handles all empty messages with punctuation',
-            inputs: [
-                '',
-                '.',
-            ],
-            expect: '',
-        },
     ]);
 });

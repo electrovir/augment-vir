@@ -10,7 +10,7 @@ import {removeEndingPunctuation} from '../string/punctuation.js';
  * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function extractErrorMessage(maybeError: unknown): string {
-    if (!maybeError) {
+    if (maybeError == undefined || maybeError === '') {
         return '';
     }
 
@@ -33,25 +33,16 @@ export function extractErrorMessage(maybeError: unknown): string {
  * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function combineErrorMessages(...rawMessages: ReadonlyArray<unknown>): string {
-    const messages: ReadonlyArray<string> = rawMessages
+    const truthyMessageStrings = rawMessages
         .map((message) => extractErrorMessage(message))
-        .filter((message) => {
-            return !!message;
-        })
-        .map((message, index, originalArray) => {
-            const shouldRemovePunctuation =
-                originalArray.length > 1 && index < originalArray.length - 1;
+        .filter((message) => !!removeEndingPunctuation(message));
+    const hasTrailingPeriod = truthyMessageStrings[truthyMessageStrings.length - 1]?.endsWith('.');
 
-            if (shouldRemovePunctuation) {
-                return removeEndingPunctuation(message);
-            } else {
-                return message;
-            }
-        });
+    const messages: string[] = truthyMessageStrings.map((message) => {
+        return removeEndingPunctuation(extractErrorMessage(message));
+    });
 
-    if (messages.length < 2) {
-        return messages[0] || 'Error';
-    }
+    const combinedMessage: string = messages.length < 2 ? messages[0] || '' : messages.join(': ');
 
-    return messages.join(': ');
+    return combinedMessage + (hasTrailingPeriod ? '.' : '');
 }
