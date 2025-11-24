@@ -14,19 +14,17 @@ export function extractErrorMessage(maybeError: unknown): string {
         return '';
     }
 
-    if (maybeError instanceof Error) {
+    if (typeof maybeError === 'string') {
+        return maybeError;
+    } else if (maybeError instanceof Error) {
         return maybeError.message;
     } else if (typeof maybeError === 'object' && 'message' in maybeError) {
         return String(maybeError.message);
-    } else if (typeof maybeError === 'string') {
-        return maybeError;
     } else {
         return stringify(maybeError);
     }
 }
 
-export function combineErrorMessages(...messages: ReadonlyArray<string | undefined>): string;
-export function combineErrorMessages(messages: ReadonlyArray<string | undefined>): string;
 /**
  * Combines multiple error messages into a single error message.
  *
@@ -34,30 +32,26 @@ export function combineErrorMessages(messages: ReadonlyArray<string | undefined>
  * @category Package : @augment-vir/common
  * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
-export function combineErrorMessages(
-    ...rawMessages: [ReadonlyArray<string | undefined>] | ReadonlyArray<string | undefined>
-): string {
-    const messages: ReadonlyArray<string> = (
-        Array.isArray(rawMessages[0]) ? rawMessages[0] : rawMessages
-    ).filter((message) => {
-        return message && removeEndingPunctuation(message);
-    });
+export function combineErrorMessages(...rawMessages: ReadonlyArray<unknown>): string {
+    const messages: ReadonlyArray<string> = rawMessages
+        .map((message) => extractErrorMessage(message))
+        .filter((message) => {
+            return !!message;
+        })
+        .map((message, index, originalArray) => {
+            const shouldRemovePunctuation =
+                originalArray.length > 1 && index < originalArray.length - 1;
 
-    if (messages.length === 1) {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        return messages[0]!;
-    } else if (!messages.length) {
-        return '';
+            if (shouldRemovePunctuation) {
+                return removeEndingPunctuation(message);
+            } else {
+                return message;
+            }
+        });
+
+    if (messages.length < 2) {
+        return messages[0] || 'Error';
     }
 
-    const unPunctuatedMessages = messages.map((message, index) => {
-        if (index === messages.length - 1) {
-            /** Preserve punctuation on the last message. */
-            return message;
-        } else {
-            return removeEndingPunctuation(message);
-        }
-    });
-
-    return unPunctuatedMessages.join(': ');
+    return messages.join(': ');
 }
