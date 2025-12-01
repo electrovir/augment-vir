@@ -1,5 +1,6 @@
 import {assert, check, waitUntil} from '@augment-vir/assert';
 import {type MaybePromise, type PartialWithUndefined} from '@augment-vir/common';
+import {type AnyDuration} from '@date-vir/duration';
 import {
     type DeclarativeElementDefinition,
     type DefinedTypedEvent,
@@ -14,11 +15,25 @@ import {type UniversalTestContext} from '../augments/universal-testing-suite/uni
 import {renderElement} from './render-element.js';
 import {extractElementText} from './symlinked/element-text.js';
 
+/**
+ * Expectations for `testWeb.elementCases`.
+ *
+ * @category Test : Util
+ * @category Package : @augment-vir/test
+ * @package [`@augment-vir/test`](https://www.npmjs.com/package/@augment-vir/test)
+ */
 export type ElementTestCaseExpect = {
     text: string | string[];
     events: Map<TypedEvent | DefinedTypedEvent<any, any>, unknown[]>;
 };
 
+/**
+ * Individual test case for `testWeb.elementCases`.
+ *
+ * @category Test : Util
+ * @category Package : @augment-vir/test
+ * @package [`@augment-vir/test`](https://www.npmjs.com/package/@augment-vir/test)
+ */
 export type ElementTestCase<Definition extends Readonly<DeclarativeElementDefinition>> = {
     it: string;
 } & (IsAny<Definition> extends true
@@ -43,9 +58,26 @@ export type ElementTestCase<Definition extends Readonly<DeclarativeElementDefini
         skip: boolean;
     }>;
 
+/**
+ * Options for `testWeb.elementCases`.
+ *
+ * @category Test : Util
+ * @category Package : @augment-vir/test
+ * @package [`@augment-vir/test`](https://www.npmjs.com/package/@augment-vir/test)
+ */
+export type ElementCasesOptions = {
+    /**
+     * The timeout for checking an element case's expectations.
+     *
+     * @default {seconds: 10}
+     */
+    timeout: AnyDuration;
+};
+
 export function elementCases<const Definition extends Readonly<DeclarativeElementDefinition>>(
     elementDefinition: Readonly<Definition>,
     testCases: ReadonlyArray<Readonly<ElementTestCase<Definition>>>,
+    options: Readonly<PartialWithUndefined<ElementCasesOptions>> = {},
 ) {
     itCasesWithContext(
         testRenderElement,
@@ -58,6 +90,7 @@ export function elementCases<const Definition extends Readonly<DeclarativeElemen
                 inputs: [
                     elementDefinition,
                     testCase,
+                    options,
                 ],
                 throws: undefined,
             };
@@ -70,6 +103,7 @@ async function testRenderElement(
     testContext: Readonly<UniversalTestContext>,
     elementDefinition: Readonly<DeclarativeElementDefinition>,
     testCase: ElementTestCase<any>,
+    options: Readonly<PartialWithUndefined<ElementCasesOptions>>,
 ) {
     const eventKeys = Array.from(testCase.expect?.events?.keys() || []);
 
@@ -114,8 +148,8 @@ async function testRenderElement(
             interval: {
                 milliseconds: 100,
             },
-            timeout: {
-                minutes: 1,
+            timeout: options.timeout || {
+                seconds: 10,
             },
         },
     );

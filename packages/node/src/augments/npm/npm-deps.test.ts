@@ -165,6 +165,11 @@ describe(listAllDirectNpmDeps.name, () => {
                 },
                 {
                     dependencyKey: PackageJsonDependencyKey.Dependencies,
+                    requiredBy: join(monoRepoDirPath, 'packages', 'test', 'package.json'),
+                    isWorkspace: false,
+                },
+                {
+                    dependencyKey: PackageJsonDependencyKey.Dependencies,
                     requiredBy: join(monoRepoDirPath, 'packages', 'web', 'package.json'),
                     isWorkspace: false,
                 },

@@ -1,5 +1,11 @@
 import {isRuntimeEnv, RuntimeEnv, RuntimeEnvError} from '@augment-vir/core';
 
+export {
+    type ElementCasesOptions,
+    type ElementTestCase,
+    type ElementTestCaseExpect,
+} from '../test-web/element-cases.js';
+
 async function importWebTestApi(this: void) {
     if (!isRuntimeEnv(RuntimeEnv.Web)) {
         return new RuntimeEnvError(
