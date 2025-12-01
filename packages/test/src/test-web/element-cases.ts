@@ -1,5 +1,5 @@
-import {assert, waitUntil} from '@augment-vir/assert';
-import {ensureArray, type MaybePromise, type PartialWithUndefined} from '@augment-vir/common';
+import {assert, check, waitUntil} from '@augment-vir/assert';
+import {type MaybePromise, type PartialWithUndefined} from '@augment-vir/common';
 import {
     type DeclarativeElementDefinition,
     type DefinedTypedEvent,
@@ -96,8 +96,9 @@ async function testRenderElement(
     await waitUntil.isTrue(
         () => {
             const text = extractElementText(instance);
-            if (testCase.expect?.text) {
-                assert.hasValues(text, ensureArray(testCase.expect.text));
+            if (check.isArray(testCase.expect?.text)) {
+                assert.hasValues(text, testCase.expect.text);
+            } else if (check.isString(testCase.expect?.text)) {
                 assert.hasValue(text, testCase.expect.text);
             }
             if (testCase.expect?.events) {

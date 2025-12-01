@@ -1,5 +1,4 @@
 import {isRuntimeEnv, RuntimeEnv, RuntimeEnvError} from '@augment-vir/core';
-import {elementCases} from '../test-web/element-cases.js';
 
 async function importWebTestApi(this: void) {
     if (!isRuntimeEnv(RuntimeEnv.Web)) {
@@ -14,6 +13,7 @@ async function importWebTestApi(this: void) {
     );
     const {fixtureCleanup, fixture} = await import('@open-wc/testing-helpers');
     const {renderElement} = await import('../test-web/render-element');
+    const {elementCases} = await import('../test-web/element-cases.js');
 
     return {
         /**
