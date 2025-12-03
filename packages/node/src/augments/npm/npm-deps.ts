@@ -81,12 +81,14 @@ export async function listAllDirectNpmDeps(startDirPath: string): Promise<NpmDep
                     dependencyName,
                     versionValue,
                 ]) => {
-                    getOrSet(deps, dependencyName, () => []).push({
+                    if (typeof versionValue === 'string') {
+                    getOrSet(deps, String(dependencyName), () => []).push({
                         dependencyKey,
                         requiredBy: packageJsonFilePath,
                         versionValue,
-                        isWorkspace: allWorkspacePackageNames.includes(dependencyName),
+                        isWorkspace: allWorkspacePackageNames.includes(String(dependencyName)),
                     });
+                }
                 },
             );
         });

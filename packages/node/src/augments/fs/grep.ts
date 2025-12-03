@@ -361,7 +361,7 @@ export async function grep<const CountOnly extends boolean = false>(
             {
                 useRequired: true,
             },
-        ) satisfies Record<string, string[]> as GrepMatches<CountOnly>;
+        ) satisfies Record<string, string[]> as GrepMatches as GrepMatches<CountOnly>;
     } else {
         const outputLines = trimmedOutput.split(/[\0\n]/);
 
@@ -374,6 +374,6 @@ export async function grep<const CountOnly extends boolean = false>(
             }
         });
 
-        return fileMatches;
+        return fileMatches as GrepMatches<CountOnly>;
     }
 }
