@@ -1,5 +1,5 @@
 import {assertWrap} from '@augment-vir/assert';
-import {camelCaseToKebabCase, sanitizeFilePath, type SelectFrom} from '@augment-vir/common';
+import {camelCaseToKebabCase, sanitizeFileName, type SelectFrom} from '@augment-vir/common';
 import {
     type PlaywrightTestArgs,
     type PlaywrightTestOptions,
@@ -136,7 +136,7 @@ export function extractTestNameAsDir(testContext: UniversalTestContext): string 
  */
 export function cleanTestNameAsDir(testName: string): string {
     return assertWrap.isTruthy(
-        sanitizeFilePath(camelCaseToKebabCase(testName).replaceAll(/[<>:"/\-\\|?*_\s.]+/g, '_')),
+        sanitizeFileName(camelCaseToKebabCase(testName).replaceAll(/[<>:"/\-\\|?*_\s.]+/g, '_')),
     );
 }
 

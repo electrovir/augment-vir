@@ -1,8 +1,8 @@
 import {describe, itCases} from '@augment-vir/test';
-import {sanitizeFilePath} from './sanitize-path.js';
+import {sanitizeFileName} from './sanitize-path.js';
 
-describe(sanitizeFilePath.name, () => {
-    itCases(sanitizeFilePath, [
+describe(sanitizeFileName.name, () => {
+    itCases(sanitizeFileName, [
         // cspell:disable
         {
             it: 'collapses null to undefined',
@@ -108,6 +108,16 @@ describe(sanitizeFilePath.name, () => {
             it: 'removes pipe suffix segment',
             input: 'file|notes.pdf',
             expect: 'file_notes.pdf',
+        },
+        {
+            it: 'removes path separators',
+            input: 'folder/file.pdf',
+            expect: 'folder_file.pdf',
+        },
+        {
+            it: 'removes commas',
+            input: 'folder/file,name.pdf',
+            expect: 'folder_file_name.pdf',
         },
         {
             it: 'repairs punctuation inside extension',

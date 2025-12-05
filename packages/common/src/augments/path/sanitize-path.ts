@@ -8,20 +8,19 @@ import {collapseWhiteSpace} from '../string/white-space.js';
 import {extractExtension} from './universal-path.js';
 
 /**
- * Sanitize a file path for use within Linux, macOS, or Windows file systems.
+ * Sanitize a file name for use within Linux, macOS, or Windows file systems. This removes all file path separators. If you wish to retain the separators, split the path parts up before using this function.
  *
  * @category Path : Common
  * @category Package : @augment-vir/common
  * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
-export function sanitizeFilePath(original: string | null | undefined): string | undefined {
+export function sanitizeFileName(original: string | null | undefined): string | undefined {
     if (!original) {
         return undefined;
     }
-    const sanitized = sanitizeFileName(
+    const sanitized = rawSanitize(
         collapseWhiteSpace(original)
             .replaceAll(' ', '_')
-            /** This ESLint error is wrong. */
             .replaceAll(/['()*"![\]{}\s?=&<>:/\-\\|]/g, '_')
             .replaceAll(/_{2,}/g, '_')
             .replace(/_$/, '')
@@ -61,7 +60,7 @@ const windowsReservedRe = /^(con|prn|aux|nul|com\d|lpt\d)(\..*)?$/i;
 
 type Replacer = string | ((substring: string, ...args: any[]) => string);
 
-function internalSanitizeFileName(input: string, replacement: Replacer) {
+function internalRawSanitize(input: string, replacement: Replacer) {
     /**
      * These as casts are necessary because `.replace` is not typed correctly in the TypeScript
      * library.
@@ -76,7 +75,7 @@ function internalSanitizeFileName(input: string, replacement: Replacer) {
     return truncate(sanitized, 255);
 }
 
-function sanitizeFileName(
+function rawSanitize(
     input: string,
     {
         replacement,
@@ -84,7 +83,7 @@ function sanitizeFileName(
         replacement?: Replacer;
     } = {},
 ) {
-    return internalSanitizeFileName(internalSanitizeFileName(input, replacement || ''), '');
+    return internalRawSanitize(internalRawSanitize(input, replacement || ''), '');
 }
 
 /**
