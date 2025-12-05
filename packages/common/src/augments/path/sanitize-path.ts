@@ -21,7 +21,7 @@ export function sanitizeFileName(original: string | null | undefined): string | 
     const sanitized = rawSanitize(
         collapseWhiteSpace(original)
             .replaceAll(' ', '_')
-            .replaceAll(/['()*"![\]{}\s?=&<>:/\-\\|]/g, '_')
+            .replaceAll(/[',()*"![\]{}\s?=&<>:/\-\\|]/g, '_')
             .replaceAll(/_{2,}/g, '_')
             .replace(/_$/, '')
             .replace(/\.$/, '')
