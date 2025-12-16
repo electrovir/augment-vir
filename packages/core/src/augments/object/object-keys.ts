@@ -1,3 +1,5 @@
+import {type IsNever} from 'type-fest';
+
 /**
  * Gets all keys of an object. This is similar to
  * [`Object.keys`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object/keys)
@@ -42,11 +44,9 @@ export function getObjectTypedKeys<const ObjectGeneric>(
  * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type ExtractKeysWithMatchingValues<Original, Matcher> = keyof {
-    [Key in keyof Original as Original[Key] extends Matcher
-        ? Key
-        : Matcher extends Original[Key]
-          ? Key
-          : never]: Key;
+    [Key in keyof Original as IsNever<Extract<Original[Key], Matcher>> extends true
+        ? never
+        : Key]: Key;
 };
 
 /**
@@ -67,9 +67,7 @@ export type ExtractKeysWithMatchingValues<Original, Matcher> = keyof {
  * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type ExcludeKeysWithMatchingValues<Original, Matcher> = keyof {
-    [Key in keyof Original as Original[Key] extends Matcher
-        ? never
-        : Matcher extends Original[Key]
-          ? never
-          : Key]: Key;
+    [Key in keyof Original as IsNever<Extract<Original[Key], Matcher>> extends true
+        ? Key
+        : never]: never;
 };

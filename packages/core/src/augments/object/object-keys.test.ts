@@ -1,7 +1,10 @@
 import {assert} from '@augment-vir/assert';
 import {getObjectTypedKeys} from '@augment-vir/core';
 import {describe, it} from '@augment-vir/test';
-import {type ExtractKeysWithMatchingValues} from './object-keys.js';
+import {
+    type ExcludeKeysWithMatchingValues,
+    type ExtractKeysWithMatchingValues,
+} from './object-keys.js';
 
 enum Planet {
     Mercury = 'mercury',
@@ -47,3 +50,37 @@ describe('ExtractKeysWithMatchingValues', () => {
             .equals<'b'>();
     });
 });
+
+describe('ExcludeKeysWithMatchingValues', () => {
+    it('works on a simple exclusion', () => {
+        assert
+            .tsType<
+                ExcludeKeysWithMatchingValues<
+                    {
+                        a: string;
+                        b: string | undefined;
+                        c: number;
+                    },
+                    string
+                >
+            >()
+            .equals<'c'>();
+    });
+    it('works with a union exclusion', () => {
+        assert
+            .tsType<
+                ExcludeKeysWithMatchingValues<
+                    {
+                        a: string;
+                        b: string | undefined;
+                        c: number;
+                        d: boolean;
+                    },
+                    string | number
+                >
+            >()
+            .equals<'d'>();
+    });
+});
+
+type fjkdlalk = Extract<string | undefined, string | number>;
