@@ -190,7 +190,12 @@ describe(listAllDirectNpmDeps.name, () => {
             ],
             '@open-wc/testing-helpers': [
                 {
-                    dependencyKey: PackageJsonDependencyKey.Dependencies,
+                    dependencyKey: PackageJsonDependencyKey.DevDependencies,
+                    requiredBy: join(monoRepoDirPath, 'packages', 'test', 'package.json'),
+                    isWorkspace: false,
+                },
+                {
+                    dependencyKey: PackageJsonDependencyKey.PeerDependencies,
                     requiredBy: join(monoRepoDirPath, 'packages', 'test', 'package.json'),
                     isWorkspace: false,
                 },

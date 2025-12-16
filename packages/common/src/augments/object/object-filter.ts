@@ -50,7 +50,7 @@ export function filterObject<ObjectGeneric>(
 
 /**
  * Converts any optionally `undefined` keys to partials with non-undefined values. This does not
- * exclude `null`.
+ * exclude `null` (but {@link RemoveNullishValues} does).
  *
  * @category Object
  * @category Package : @augment-vir/common
@@ -62,6 +62,21 @@ export type RemoveUndefinedValues<ObjectGeneric> = {
     [Key in ExtractKeysWithMatchingValues<ObjectGeneric, undefined>]?: Exclude<
         ObjectGeneric[Key],
         undefined
+    >;
+};
+
+/**
+ * Converts any optionally `undefined` or `null` keys to partials with non-nullable values.
+ *
+ * @category Object
+ * @category Package : @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
+ */
+export type RemoveNullishValues<ObjectGeneric> = {
+    [Key in ExcludeKeysWithMatchingValues<ObjectGeneric, undefined | null>]: ObjectGeneric[Key];
+} & {
+    [Key in ExtractKeysWithMatchingValues<ObjectGeneric, undefined | null>]?: NonNullable<
+        ObjectGeneric[Key]
     >;
 };
 
@@ -117,9 +132,34 @@ export function removeUndefinedValues<ObjectGeneric>(
         if (value === undefined) {
             return undefined;
         } else {
-            return {key, value};
+            return {
+                key,
+                value,
+            };
         }
     }) as AnyObject as RemoveUndefinedValues<ObjectGeneric>;
+}
+
+/**
+ * Removes keys for values that are `undefined` or `null`.
+ *
+ * @category Object
+ * @category Package : @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
+ */
+export function removeNullishValues<ObjectGeneric>(
+    input: Readonly<ObjectGeneric>,
+): RemoveNullishValues<ObjectGeneric> {
+    return mapObject(input, (key, value) => {
+        if (value == undefined) {
+            return undefined;
+        } else {
+            return {
+                key,
+                value,
+            };
+        }
+    }) as AnyObject as RemoveNullishValues<ObjectGeneric>;
 }
 
 /**

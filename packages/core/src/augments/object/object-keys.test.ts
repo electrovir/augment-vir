@@ -82,5 +82,3 @@ describe('ExcludeKeysWithMatchingValues', () => {
             .equals<'d'>();
     });
 });
-
-type fjkdlalk = Extract<string | undefined, string | number>;

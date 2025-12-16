@@ -3,6 +3,7 @@ import {describe, it, itCases} from '@augment-vir/test';
 import {randomString} from '../random/random-string.js';
 import {
     filterObject,
+    removeNullishValues,
     removeUndefinedValues,
     replaceNullValuesWithUndefined,
     replaceUndefinedValuesWithNull,
@@ -117,6 +118,38 @@ describe(removeUndefinedValues.name, () => {
             expect: {
                 b: 'value',
                 c: null,
+            },
+        },
+    ]);
+});
+
+describe(removeNullishValues.name, () => {
+    it('has proper types', () => {
+        const output = removeNullishValues({
+            a: 1 as undefined | number,
+            b: 'value',
+            c: null,
+            d: undefined,
+        });
+
+        assert.tsType(output).slowEquals<{
+            a?: number;
+            b: string;
+            c?: never;
+            d?: never;
+        }>();
+        assert.deepEquals(output, {a: 1, b: 'value'});
+    });
+    itCases(removeNullishValues, [
+        {
+            it: 'removes undefined and null',
+            input: {
+                a: undefined,
+                b: 'value',
+                c: null,
+            },
+            expect: {
+                b: 'value',
             },
         },
     ]);
