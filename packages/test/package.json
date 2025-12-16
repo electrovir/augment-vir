@@ -46,27 +46,27 @@
     "dependencies": {
         "@augment-vir/assert": "^31.54.4",
         "@augment-vir/common": "^31.54.4",
-        "@date-vir/duration": "^8.0.0",
-        "@virmator/test": "^14.3.0",
-        "type-fest": "^5.2.0"
+        "@date-vir/duration": "^8.1.0",
+        "@virmator/test": "^14.3.3",
+        "type-fest": "^5.3.1"
     },
     "devDependencies": {
         "@open-wc/testing-helpers": "^3.0.1",
-        "@playwright/test": "^1.56.1",
-        "@types/node": "^24.10.1",
+        "@playwright/test": "^1.57.0",
+        "@types/node": "^25.0.2",
         "@web/dev-server-esbuild": "^1.0.4",
         "@web/test-runner": "^0.20.2",
         "@web/test-runner-commands": "^0.9.0",
         "@web/test-runner-playwright": "^0.11.1",
-        "element-vir": "^26.11.3",
+        "element-vir": "^26.12.1",
         "istanbul-smart-text-reporter": "^1.1.5",
         "pixelmatch": "^7.1.0",
         "pngjs": "^7.0.0",
-        "runstorm": "^0.6.2",
+        "runstorm": "^1.0.0",
         "sharp": "^0.34.5",
-        "spa-router-vir": "^6.3.1",
+        "spa-router-vir": "^6.4.1",
         "typescript": "^5.9.3",
-        "url-vir": "^2.1.6"
+        "url-vir": "^2.1.7"
     },
     "peerDependencies": {
         "@open-wc/testing-helpers": "*",

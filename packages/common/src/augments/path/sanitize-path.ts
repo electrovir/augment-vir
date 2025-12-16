@@ -8,7 +8,9 @@ import {collapseWhiteSpace} from '../string/white-space.js';
 import {extractExtension} from './universal-path.js';
 
 /**
- * Sanitize a file name for use within Linux, macOS, or Windows file systems. This removes all file path separators. If you wish to retain the separators, split the path parts up before using this function.
+ * Sanitize a file name for use within Linux, macOS, or Windows file systems. This removes all file
+ * path separators. If you wish to retain the separators, split the path parts up before using this
+ * function.
  *
  * @category Path : Common
  * @category Package : @augment-vir/common

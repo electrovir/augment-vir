@@ -28,15 +28,15 @@
         "@augment-vir/assert": "^31.54.4",
         "@augment-vir/common": "^31.54.4",
         "@augment-vir/node": "^31.54.4",
-        "@virmator/docs": "^14.3.0",
-        "jsdom": "^27.2.0",
-        "typedoc": "^0.28.14"
+        "@virmator/docs": "^14.3.3",
+        "jsdom": "^27.3.0",
+        "typedoc": "^0.28.15"
     },
     "devDependencies": {
         "@augment-vir/test": "^31.54.4",
         "@types/jsdom": "^27.0.0",
-        "@types/node": "^24.10.1",
-        "type-fest": "^5.2.0",
+        "@types/node": "^25.0.2",
+        "type-fest": "^5.3.1",
         "typescript": "^5.9.3"
     },
     "engines": {

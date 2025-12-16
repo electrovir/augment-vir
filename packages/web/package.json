@@ -38,13 +38,13 @@
     "dependencies": {
         "@augment-vir/assert": "^31.54.4",
         "@augment-vir/common": "^31.54.4",
-        "@date-vir/duration": "^8.0.0",
+        "@date-vir/duration": "^8.1.0",
         "html-spec-tags": "^2.2.3",
-        "type-fest": "^5.2.0"
+        "type-fest": "^5.3.1"
     },
     "devDependencies": {
         "@augment-vir/test": "^31.54.4",
-        "bowser": "^2.12.1",
+        "bowser": "^2.13.1",
         "typescript": "^5.9.3"
     },
     "peerDependencies": {
