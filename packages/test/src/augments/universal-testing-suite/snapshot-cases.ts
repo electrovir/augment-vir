@@ -5,6 +5,23 @@ import {it} from './universal-it.js';
 import {assertSnapshot} from './universal-snapshot.js';
 
 /**
+ * Test case for {@link snapshotCases}.
+ *
+ * @category Test
+ * @category Package : @augment-vir/test
+ */
+export type SnapshotTestCase<FunctionToTest extends AnyFunction> = Omit<
+    FunctionTestCase<NoInfer<FunctionToTest>>,
+    'expect' | 'throws'
+> & {
+    /**
+     * If true, allows errors to be thrown and snapshotted. Otherwise thrown errors will fail the
+     * test.
+     */
+    fails?: boolean;
+};
+
+/**
  * Similar to `itCases` but instead of defining expectation in each test case, each test case is a
  * snapshot test.
  *
@@ -53,7 +70,7 @@ import {assertSnapshot} from './universal-snapshot.js';
 export function snapshotCases<const FunctionToTest extends AnyFunction>(
     this: void,
     functionToTest: FunctionToTest,
-    testCases: ReadonlyArray<Omit<FunctionTestCase<NoInfer<FunctionToTest>>, 'expect' | 'throws'>>,
+    testCases: ReadonlyArray<SnapshotTestCase<NoInfer<FunctionToTest>>>,
 ) {
     return testCases.map((testCase) => {
         const itFunction = testCase.only ? it.only : testCase.skip ? it.skip : it;
@@ -72,13 +89,17 @@ export function snapshotCases<const FunctionToTest extends AnyFunction>(
                 },
                 {
                     handleError(caught) {
-                        const error = ensureError(caught);
+                        if (testCase.fails) {
+                            const error = ensureError(caught);
 
-                        const errorClassName = error.constructor.name;
+                            const errorClassName = error.constructor.name;
 
-                        return {
-                            [errorClassName]: extractErrorMessage(error),
-                        };
+                            return {
+                                [errorClassName]: extractErrorMessage(error),
+                            };
+                        } else {
+                            throw caught;
+                        }
                     },
                 },
             );

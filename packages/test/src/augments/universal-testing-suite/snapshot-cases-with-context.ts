@@ -1,11 +1,28 @@
 import {wrapInTry} from '@augment-vir/common';
-import {ensureError, extractErrorMessage} from '@augment-vir/core';
+import {ensureError, extractErrorMessage, type AnyFunction} from '@augment-vir/core';
 import {
     type BaseFunctionWithContext,
     type FunctionWithContextTestCase,
 } from './it-cases-with-context.js';
 import {it} from './universal-it.js';
 import {assertSnapshot} from './universal-snapshot.js';
+
+/**
+ * Test case for {@link snapshotCasesWithContext}.
+ *
+ * @category Test
+ * @category Package : @augment-vir/test
+ */
+export type SnapshotTestCaseWithContext<FunctionToTest extends AnyFunction> = Omit<
+    FunctionWithContextTestCase<NoInfer<FunctionToTest>>,
+    'expect' | 'throws'
+> & {
+    /**
+     * If true, allows errors to be thrown and snapshotted. Otherwise thrown errors will fail the
+     * test.
+     */
+    fails?: boolean;
+};
 
 /**
  * Same as `snapshotCases` but passes the test context as the first parameter to the function under
@@ -63,9 +80,7 @@ import {assertSnapshot} from './universal-snapshot.js';
 export function snapshotCasesWithContext<const FunctionToTest extends BaseFunctionWithContext>(
     this: void,
     functionToTest: FunctionToTest,
-    testCases: ReadonlyArray<
-        Omit<FunctionWithContextTestCase<NoInfer<FunctionToTest>>, 'expect' | 'throws'>
-    >,
+    testCases: ReadonlyArray<SnapshotTestCaseWithContext<NoInfer<FunctionToTest>>>,
 ) {
     return testCases.map((testCase) => {
         const itFunction = testCase.only ? it.only : testCase.skip ? it.skip : it;
@@ -84,13 +99,17 @@ export function snapshotCasesWithContext<const FunctionToTest extends BaseFuncti
                 },
                 {
                     handleError(caught) {
-                        const error = ensureError(caught);
+                        if (testCase.fails) {
+                            const error = ensureError(caught);
 
-                        const errorClassName = error.constructor.name;
+                            const errorClassName = error.constructor.name;
 
-                        return {
-                            [errorClassName]: extractErrorMessage(error),
-                        };
+                            return {
+                                [errorClassName]: extractErrorMessage(error),
+                            };
+                        } else {
+                            throw caught;
+                        }
                     },
                 },
             );
