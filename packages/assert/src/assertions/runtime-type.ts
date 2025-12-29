@@ -499,7 +499,7 @@ const assertions = {
         actual: Actual,
         failureMessage?: string | undefined,
     ): asserts actual is Exclude<Actual, number> {
-        if (typeof actual === 'number') {
+        if (typeof actual === 'number' && !isNaN(actual)) {
             throw new AssertionError(`'${stringify(actual)}' is a number.`, failureMessage);
         }
     },
@@ -779,7 +779,7 @@ export const runtimeTypeGuards = {
          * - {@link check.isNotNumber} : the opposite check.
          */
         isNumber<Actual>(this: void, actual: Actual): actual is NarrowToActual<Actual, number> {
-            return typeof actual === 'number';
+            return typeof actual === 'number' && !isNaN(actual);
         },
         /**
          * Checks that a value is an object. This excludes arrays.
@@ -1028,7 +1028,7 @@ export const runtimeTypeGuards = {
          * - {@link check.isNumber} : the opposite check.
          */
         isNotNumber<Actual>(this: void, actual: Actual): actual is Exclude<Actual, number> {
-            return typeof actual !== 'number';
+            return typeof actual !== 'number' || isNaN(actual);
         },
         /**
          * Checks that a value is _not_ an object. This includes arrays.
@@ -1693,7 +1693,7 @@ export const runtimeTypeGuards = {
             actual: Actual,
             failureMessage?: string | undefined,
         ): Exclude<Actual, number> {
-            if (typeof actual === 'number') {
+            if (typeof actual === 'number' && !isNaN(actual)) {
                 throw new AssertionError(`'${stringify(actual)}' is a number.`, failureMessage);
             }
 
@@ -2022,7 +2022,7 @@ export const runtimeTypeGuards = {
          * - {@link checkWrap.isNotNumber} : the opposite check.
          */
         isNumber<Actual>(this: void, actual: Actual): NarrowToActual<Actual, number> | undefined {
-            if (typeof actual === 'number') {
+            if (typeof actual === 'number' && !isNaN(actual)) {
                 return actual as NarrowToActual<Actual, number>;
             } else {
                 return undefined;
@@ -2311,7 +2311,7 @@ export const runtimeTypeGuards = {
          * - {@link checkWrap.isNumber} : the opposite check.
          */
         isNotNumber<Actual>(this: void, actual: Actual): Exclude<Actual, number> | undefined {
-            if (typeof actual === 'number') {
+            if (typeof actual === 'number' && !isNaN(actual)) {
                 return undefined;
             } else {
                 return actual as Exclude<Actual, number>;

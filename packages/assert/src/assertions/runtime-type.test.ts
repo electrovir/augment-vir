@@ -1144,6 +1144,7 @@ describe('isNumber', () => {
         });
         it('rejects', () => {
             assert.throws(() => assert.isNumber(actualReject));
+            assert.throws(() => assert.isNumber(NaN));
         });
         it('narrows', () => {
             assert.isNumber(actualPassUnion);
@@ -1167,6 +1168,7 @@ describe('isNumber', () => {
         });
         it('rejects', () => {
             assert.isFalse(check.isNumber(actualReject));
+            assert.isFalse(check.isNumber(NaN));
         });
         it('narrows', () => {
             if (check.isNumber(actualPassUnion)) {
@@ -1201,6 +1203,7 @@ describe('isNumber', () => {
         });
         it('rejects', () => {
             assert.isUndefined(checkWrap.isNumber(actualReject));
+            assert.isUndefined(checkWrap.isNumber(NaN));
         });
         it('narrows', () => {
             const newValue = checkWrap.isNumber(actualPassUnion);
@@ -1225,6 +1228,7 @@ describe('isNumber', () => {
             await assert.throws(
                 waitUntil.isNumber(() => actualReject, waitUntilTestOptions, 'failure'),
             );
+            await assert.throws(waitUntil.isNumber(() => NaN, waitUntilTestOptions, 'failure'));
         });
         it('narrows', async () => {
             const newValue = await waitUntil.isNumber(
@@ -1251,6 +1255,7 @@ describe('isNotNumber', () => {
             assert.tsType(actualPass).notEquals<ExpectedType>();
 
             assert.isNotNumber(actualPass);
+            assert.isNotNumber(NaN);
 
             assert.tsType(actualPass).equals<ExpectedType>();
             assert.tsType(actualPass).notEquals<UnexpectedType>();
@@ -1267,6 +1272,7 @@ describe('isNotNumber', () => {
     describe('check', () => {
         it('guards', () => {
             assert.isTrue(check.isNotNumber(actualPass));
+            assert.isTrue(check.isNotNumber(NaN));
 
             if (check.isNotNumber(actualPass)) {
                 assert.tsType(actualPass).equals<ExpectedType>();
@@ -1288,6 +1294,8 @@ describe('isNotNumber', () => {
         it('guards', () => {
             const newValue = assertWrap.isNotNumber(actualPass);
 
+            assertWrap.isNotNumber(NaN);
+
             assert.tsType(newValue).equals<ExpectedType>();
             assert.tsType(newValue).notEquals<UnexpectedType>();
             assert.tsType(actualPass).notEquals<ExpectedType>();
@@ -1303,6 +1311,8 @@ describe('isNotNumber', () => {
     describe('checkWrap', () => {
         it('guards', () => {
             const newValue = checkWrap.isNotNumber(actualPass);
+
+            assert.isDefined(checkWrap.isNotNumber(NaN));
 
             assert.tsType(newValue).equals<ExpectedType | undefined>();
             assert.tsType(newValue).notEquals<ExpectedType>();
@@ -1324,6 +1334,8 @@ describe('isNotNumber', () => {
                 waitUntilTestOptions,
                 'failure',
             );
+
+            await waitUntil.isNotNumber(() => NaN, waitUntilTestOptions, 'failure');
 
             assert.tsType(newValue).equals<ExpectedType>();
             assert.tsType(newValue).notEquals<UnexpectedType>();
