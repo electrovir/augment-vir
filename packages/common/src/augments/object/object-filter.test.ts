@@ -107,6 +107,15 @@ describe(removeUndefinedValues.name, () => {
         }>();
         assert.deepEquals(output, {a: 1, b: 'value', c: null});
     });
+    it('works with generic keys', () => {
+        const values: Record<string, string | undefined> = {
+            a: 'hi',
+            b: undefined,
+            c: '3',
+        } as Record<string, string | undefined>;
+        assert.tsType(removeUndefinedValues(values)).equals<Record<string, string>>();
+    });
+
     itCases(removeUndefinedValues, [
         {
             it: 'removes undefined',

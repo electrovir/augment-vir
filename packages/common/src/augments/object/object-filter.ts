@@ -56,14 +56,16 @@ export function filterObject<ObjectGeneric>(
  * @category Package : @augment-vir/common
  * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
-export type RemoveUndefinedValues<ObjectGeneric> = {
-    [Key in ExcludeKeysWithMatchingValues<ObjectGeneric, undefined>]: ObjectGeneric[Key];
-} & {
-    [Key in ExtractKeysWithMatchingValues<ObjectGeneric, undefined>]?: Exclude<
-        ObjectGeneric[Key],
-        undefined
-    >;
-};
+export type RemoveUndefinedValues<ObjectGeneric> = string extends keyof ObjectGeneric
+    ? Record<string, Exclude<ObjectGeneric[keyof ObjectGeneric], undefined>>
+    : {
+          [Key in ExcludeKeysWithMatchingValues<ObjectGeneric, undefined>]: ObjectGeneric[Key];
+      } & {
+          [Key in ExtractKeysWithMatchingValues<ObjectGeneric, undefined>]?: Exclude<
+              ObjectGeneric[Key],
+              undefined
+          >;
+      };
 
 /**
  * Converts any optionally `undefined` or `null` keys to partials with non-nullable values.
