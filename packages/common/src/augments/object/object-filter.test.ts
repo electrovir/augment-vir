@@ -149,6 +149,15 @@ describe(removeNullishValues.name, () => {
         }>();
         assert.deepEquals(output, {a: 1, b: 'value'});
     });
+    it('works with generic keys', () => {
+        const values: Record<string, string | undefined | null> = {
+            a: 'hi',
+            b: undefined,
+            c: '3',
+            d: null,
+        } as Record<string, string | undefined | null>;
+        assert.tsType(removeNullishValues(values)).equals<Record<string, string>>();
+    });
     itCases(removeNullishValues, [
         {
             it: 'removes undefined and null',

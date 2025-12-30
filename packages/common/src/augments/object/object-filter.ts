@@ -74,13 +74,18 @@ export type RemoveUndefinedValues<ObjectGeneric> = string extends keyof ObjectGe
  * @category Package : @augment-vir/common
  * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
-export type RemoveNullishValues<ObjectGeneric> = {
-    [Key in ExcludeKeysWithMatchingValues<ObjectGeneric, undefined | null>]: ObjectGeneric[Key];
-} & {
-    [Key in ExtractKeysWithMatchingValues<ObjectGeneric, undefined | null>]?: NonNullable<
-        ObjectGeneric[Key]
-    >;
-};
+export type RemoveNullishValues<ObjectGeneric> = string extends keyof ObjectGeneric
+    ? Record<string, Exclude<ObjectGeneric[keyof ObjectGeneric], undefined | null>>
+    : {
+          [Key in ExcludeKeysWithMatchingValues<
+              ObjectGeneric,
+              undefined | null
+          >]: ObjectGeneric[Key];
+      } & {
+          [Key in ExtractKeysWithMatchingValues<ObjectGeneric, undefined | null>]?: NonNullable<
+              ObjectGeneric[Key]
+          >;
+      };
 
 /**
  * Converts any `undefined` values into `null`.
