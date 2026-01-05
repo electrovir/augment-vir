@@ -26,9 +26,7 @@ export async function handleNewPageOrDownload(
     const openOrDownload = Promise.race([
         testContext.page
             .context()
-            .waitForEvent('page', async (newPage) => {
-                return (await newPage.opener()) === testContext.page;
-            })
+            .waitForEvent('page')
             .then((result) => {
                 return {page: result};
             }),
