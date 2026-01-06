@@ -8,6 +8,16 @@ import {
 } from '../augments/universal-testing-suite/universal-test-context.js';
 
 /**
+ * Output from {@link handleNewPageOrDownload}.
+ *
+ * @category Internal
+ */
+export type HandleNewPageOrDownloadResult = RequireExactlyOne<{
+    newPage: Page;
+    download: Download;
+}>;
+
+/**
  * Run the trigger and catch a new page _or_ a new download (sometimes Playwright inconsistently
  * chooses on or the other).
  *
@@ -16,19 +26,14 @@ import {
 export async function handleNewPageOrDownload(
     testContext: Readonly<UniversalTestContext>,
     trigger: () => MaybePromise<void>,
-): Promise<
-    RequireExactlyOne<{
-        newPage: Page;
-        download: Download;
-    }>
-> {
+): Promise<HandleNewPageOrDownloadResult> {
     assertTestContext(testContext, TestEnv.Playwright);
-    const openOrDownload = Promise.race([
+    const openOrDownload: Promise<HandleNewPageOrDownloadResult> = Promise.race([
         testContext.page
             .context()
             .waitForEvent('page')
             .then((result) => {
-                return {page: result};
+                return {newPage: result};
             }),
         testContext.page.waitForEvent('download').then((result) => {
             return {download: result};
@@ -37,14 +42,5 @@ export async function handleNewPageOrDownload(
 
     await trigger();
 
-    return (await openOrDownload) satisfies
-        | {
-              download: Download;
-          }
-        | {
-              page: Page;
-          } as RequireExactlyOne<{
-        newPage: Page;
-        download: Download;
-    }>;
+    return await openOrDownload;
 }
