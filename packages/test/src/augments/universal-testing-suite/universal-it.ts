@@ -82,11 +82,7 @@ function createWebIt(): UniversalIt {
 }
 
 async function createPlaywrightIt(): Promise<UniversalIt> {
-    const rawPlaywrightImport = await import('@playwright/test');
-    const originalPlaywrightIt: typeof rawPlaywrightImport.default =
-        'default' in (rawPlaywrightImport as any)
-            ? rawPlaywrightImport.default
-            : (rawPlaywrightImport as unknown as typeof rawPlaywrightImport.default);
+    const {test: originalPlaywrightIt} = await import('@playwright/test');
 
     /**
      * Right now this wrapper nukes Playwright's file detection. See

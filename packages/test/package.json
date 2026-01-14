@@ -47,7 +47,7 @@
         "@augment-vir/assert": "^31.57.5",
         "@augment-vir/common": "^31.57.5",
         "@date-vir/duration": "^8.1.0",
-        "@virmator/test": "^14.3.5",
+        "@virmator/test": "^14.4.2",
         "type-fest": "^5.3.1"
     },
     "devDependencies": {
@@ -58,7 +58,7 @@
         "@web/test-runner": "^0.20.2",
         "@web/test-runner-commands": "^0.9.0",
         "@web/test-runner-playwright": "^0.11.1",
-        "element-vir": "^26.12.2",
+        "element-vir": "^26.14.0",
         "istanbul-smart-text-reporter": "^1.1.5",
         "pixelmatch": "^7.1.0",
         "pngjs": "^7.0.0",

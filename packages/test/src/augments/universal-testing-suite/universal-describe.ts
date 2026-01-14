@@ -37,15 +37,9 @@ const describes = isRuntimeEnv(RuntimeEnv.Node)
     ? isInsidePlaywrightTest()
         ? {
               playwright: await (async () => {
-                  const playwrightImport = await import('@playwright/test');
-
-                  /** `as any` cast to prevent type guarding {@link playwrightImport}. */
-                  if ('default' in (playwrightImport as any)) {
-                      return playwrightImport.default.describe;
-                  } else {
-                      return (playwrightImport as unknown as typeof playwrightImport.default)
-                          .describe;
-                  }
+                  const {test} = await import('@playwright/test');
+                  
+                  return test.describe;
               })(),
           }
         : {

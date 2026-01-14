@@ -12,13 +12,13 @@ async function importWebTestApi(this: void) {
             "The 'testWeb' api cannot be used outside of a browser context.",
         );
     }
-    const {clickElement, moveToElement} = await import('../test-web/click-element');
-    const {focusElement} = await import('../test-web/element-test-focus');
+    const {clickElement, moveToElement} = await import('../test-web/click-element.js');
+    const {focusElement} = await import('../test-web/element-test-focus.js');
     const {deleteAllTextInInput, typeString, typeStringIntoElement} = await import(
-        '../test-web/type-into-element'
+        '../test-web/type-into-element.js'
     );
     const {fixtureCleanup, fixture} = await import('@open-wc/testing-helpers');
-    const {renderElement} = await import('../test-web/render-element');
+    const {renderElement} = await import('../test-web/render-element.js');
     const {elementCases} = await import('../test-web/element-cases.js');
 
     return {
