@@ -38,7 +38,7 @@ const describes = isRuntimeEnv(RuntimeEnv.Node)
         ? {
               playwright: await (async () => {
                   const {test} = await import('@playwright/test');
-                  
+
                   return test.describe;
               })(),
           }
