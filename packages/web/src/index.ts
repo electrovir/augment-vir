@@ -10,5 +10,6 @@ export * from './augments/elements/overflow.js';
 export * from './augments/elements/query-through-shadow.js';
 export * from './augments/elements/tag-or-definition.js';
 export * from './augments/elements/text-dimensions.js';
+export * from './augments/elements/walk-active-element.js';
 export * from './augments/image.js';
 export * from './augments/video.js';
