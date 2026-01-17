@@ -60,11 +60,13 @@ describe(sortObject.name, () => {
         [
             {
                 it: 'sorts',
-                input: {
-                    c: 3,
-                    b: 2,
-                    a: 1,
-                },
+                inputs: [
+                    {
+                        c: 3,
+                        b: 2,
+                        a: 1,
+                    },
+                ],
                 expect: {
                     a: 1,
                     b: 2,
@@ -73,11 +75,13 @@ describe(sortObject.name, () => {
             },
             {
                 it: 'sorts recursively',
-                input: {
-                    c: 5,
-                    b: 4,
-                    a: {s: 3, q: 1, r: 2},
-                },
+                inputs: [
+                    {
+                        c: 5,
+                        b: 4,
+                        a: {s: 3, q: 1, r: 2},
+                    },
+                ],
                 expect: {
                     a: {
                         q: 1,
@@ -86,6 +90,22 @@ describe(sortObject.name, () => {
                     },
                     b: 4,
                     c: 5,
+                },
+            },
+            {
+                it: 'uses custom comparison',
+                inputs: [
+                    {
+                        a: 1,
+                        b: 2,
+                        c: 3,
+                    },
+                    (a, b) => b.value - a.value,
+                ],
+                expect: {
+                    c: 3,
+                    b: 2,
+                    a: 1,
                 },
             },
         ],
