@@ -7,7 +7,7 @@ index 0000000..693da49
 +export {}
 \ No newline at end of file
 diff --git a/node_modules/type-fest/package.json b/node_modules/type-fest/package.json
-index cd8024b..8b24caf 100644
+index 2b080f7..c0052c5 100644
 --- a/node_modules/type-fest/package.json
 +++ b/node_modules/type-fest/package.json
 @@ -11,14 +11,8 @@
@@ -27,5 +27,7 @@ index cd8024b..8b24caf 100644
  	"types": "./index.d.ts",
  	"sideEffects": false,
  	"engines": {
-# Update this by running:
-# npx patch-package type-fest --exclude 'nothing'
+# Update this by doing the following:
+# 1. add index.js with 'export {}' to root of type-fest package
+# 2. replace exports in type-fest package.json with the above main/module properties.
+# 3. npx patch-package type-fest --exclude 'nothing'

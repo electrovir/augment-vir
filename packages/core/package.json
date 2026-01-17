@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/core",
-    "version": "31.58.0",
+    "version": "31.59.0",
     "description": "Core augment-vir augments. Use @augment-vir/common instead.",
     "homepage": "https://github.com/electrovir/augment-vir",
     "bugs": {
@@ -32,7 +32,7 @@
         "browser-or-node": "^3.0.0",
         "diff": "^8.0.3",
         "json5": "^2.2.3",
-        "type-fest": "^5.3.1"
+        "type-fest": "^5.4.1"
     },
     "devDependencies": {
         "@types/node": "^25.0.3",
