@@ -36,7 +36,12 @@ function recursivelySortObject(
     seen: Map<any, any>,
     comparison: SortObjectComparison<any> | undefined,
 ) {
-    if (original && typeof original === 'object' && !Array.isArray(original)) {
+    if (
+        original &&
+        typeof original === 'object' &&
+        !Array.isArray(original) &&
+        original.constructor === Object
+    ) {
         if (seen.has(original)) {
             return seen.get(original);
         }
