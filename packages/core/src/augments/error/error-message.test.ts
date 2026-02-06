@@ -61,6 +61,17 @@ describe(combineErrorMessages.name, () => {
             expect: 'a.',
         },
         {
+            it: 'filters undefined and null messages',
+            inputs: [
+                'a.',
+                null,
+                undefined,
+                'null',
+                'undefined',
+            ],
+            expect: 'a.',
+        },
+        {
             it: 'filters empty punctuation messages',
             inputs: [
                 'a.',

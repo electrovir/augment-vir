@@ -10,7 +10,12 @@ import {removeEndingPunctuation} from '../string/punctuation.js';
  * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function extractErrorMessage(maybeError: unknown): string {
-    if (maybeError == undefined || maybeError === '') {
+    if (
+        maybeError == undefined ||
+        maybeError === '' ||
+        maybeError === 'undefined' ||
+        maybeError === 'null'
+    ) {
         return '';
     }
 
