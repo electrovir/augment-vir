@@ -87,6 +87,8 @@ export function elementCases<const Definition extends Readonly<DeclarativeElemen
         testCases.map((testCase): FunctionWithContextTestCase<typeof testRenderElement> => {
             return {
                 it: testCase.it,
+                only: testCase.only,
+                skip: testCase.skip,
                 inputs: [
                     elementDefinition,
                     testCase,
