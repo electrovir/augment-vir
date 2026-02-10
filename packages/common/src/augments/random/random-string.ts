@@ -70,8 +70,6 @@ export const allowedRandomStringLetters: ReadonlyArray<string> = [
     '7',
     '8',
     '9',
-    '-',
-    '_',
 ];
 
 /**
