@@ -23,3 +23,15 @@ export type PartialWithNullable<T extends AnyObject> = {
 export type PartialWithUndefined<T extends AnyObject> = {
     [Prop in keyof T]?: T[Prop] | undefined;
 };
+
+/**
+ * Allow `T` to be partial or have `null` as the value for any of its keys.
+ *
+ * @category Type
+ * @category Object
+ * @category Package : @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
+ */
+export type PartialWithNull<T extends AnyObject> = {
+    [Prop in keyof T]?: T[Prop] | null;
+};
