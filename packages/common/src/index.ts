@@ -19,6 +19,7 @@ export * from './augments/enum/enum-value-check.js';
 export * from './augments/error/combine-errors.js';
 export * from './augments/function/call-asynchronously.js';
 export * from './augments/function/debounce.js';
+export * from './augments/function/execute-count.js';
 export * from './augments/function/execution-duration.js';
 export * from './augments/function/if-truthy.js';
 export * from './augments/function/retry.js';
