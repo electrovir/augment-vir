@@ -1,19 +1,17 @@
 import {assert} from '@augment-vir/assert';
-import {addSuffix, log, type Dimensions, type PartialWithUndefined} from '@augment-vir/common';
+import {addSuffix, log, type PartialWithUndefined} from '@augment-vir/common';
 import {writeFileAndDir} from '@augment-vir/node';
 import {expect, type Locator} from '@playwright/test';
 import {existsSync} from 'node:fs';
 import {readFile} from 'node:fs/promises';
 import {relative} from 'node:path';
-import pixelmatch from 'pixelmatch';
-import {PNG} from 'pngjs';
-import sharp from 'sharp';
 import {
     assertTestContext,
     assertWrapTestContext,
     TestEnv,
     type UniversalTestContext,
 } from '../augments/universal-testing-suite/universal-test-context.js';
+import {compareImages, defaultImageComparisonOptions, encodePng} from './compare-images.js';
 
 /** This is used for type extraction because Playwright does not export the types we need. */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -47,49 +45,6 @@ export const defaultScreenshotOptions = {
     threshold: 0.1,
     maxDiffPixelRatio: 0.08,
 } satisfies LocatorScreenshotOptions;
-
-async function padImage(image: Buffer, {height, width}: Dimensions) {
-    return await sharp({
-        create: {width, height, channels: 4, background: {r: 0, g: 0, b: 0, alpha: 0}},
-    })
-        /** Top-left align. */
-        .composite([{input: image, left: 0, top: 0}])
-        .png()
-        .toBuffer();
-}
-
-/** Pads both images to the same canvas (max width/height) without scaling. */
-async function padToSameCanvas(aBuf: Buffer, bBuf: Buffer) {
-    const [
-        aMeta,
-        bMeta,
-    ] = await Promise.all([
-        sharp(aBuf).metadata(),
-        sharp(bBuf).metadata(),
-    ]);
-    if (!aMeta.width || !aMeta.height || !bMeta.width || !bMeta.height) {
-        throw new Error('Unable to read image dimensions.');
-    }
-    const dimensions: Readonly<Dimensions> = {
-        width: Math.max(aMeta.width, bMeta.width),
-        height: Math.max(aMeta.height, bMeta.height),
-    };
-
-    const [
-        aPadded,
-        bPadded,
-    ] = await Promise.all([
-        padImage(aBuf, dimensions),
-        padImage(bBuf, dimensions),
-    ]);
-    const aPng = PNG.sync.read(aPadded);
-    const bPng = PNG.sync.read(bPadded);
-    return {
-        aPng,
-        bPng,
-        dimensions,
-    };
-}
 
 export type TakeScreenshotOptions = PartialWithUndefined<{
     /** If no locator is provided then the whole page is use. */
@@ -217,39 +172,21 @@ export async function expectScreenshot(
     }
 
     const baseScreenshotBuffer: Buffer = await readFile(screenshotFilePath);
-    const {
-        aPng: baseScreenshotPng,
-        bPng: currentScreenshotPng,
-        dimensions,
-    } = await padToSameCanvas(baseScreenshotBuffer, currentScreenshotBuffer);
+    const result = await compareImages(baseScreenshotBuffer, currentScreenshotBuffer, {
+        threshold: defaultScreenshotOptions.threshold,
+        maxDiffPixelRatio: defaultScreenshotOptions.maxDiffPixelRatio,
+    });
 
-    const diffPng = new PNG(dimensions);
-    const diffPixelCount = pixelmatch(
-        baseScreenshotPng.data,
-        currentScreenshotPng.data,
-        diffPng.data,
-        dimensions.width,
-        dimensions.height,
-        {
-            threshold: defaultScreenshotOptions.threshold,
-        },
-    );
-
-    const totalPixels = dimensions.width * dimensions.height;
-    const diffRatio = diffPixelCount / totalPixels;
-
-    const ratioOk = diffRatio <= defaultScreenshotOptions.maxDiffPixelRatio;
-
-    if (!ratioOk) {
+    if (!result.passed) {
         if (process.env.CI) {
             await writeNewScreenshot();
         } else {
-            await writeExpectationScreenshot(PNG.sync.write(baseScreenshotPng), 'expected');
-            await writeExpectationScreenshot(PNG.sync.write(currentScreenshotPng), 'actual');
-            await writeExpectationScreenshot(PNG.sync.write(diffPng), 'diff');
+            await writeExpectationScreenshot(encodePng(result.basePng), 'expected');
+            await writeExpectationScreenshot(encodePng(result.currentPng), 'actual');
+            await writeExpectationScreenshot(encodePng(result.diffPng), 'diff');
 
             throw new Error(
-                `Screenshot mismatch: ${screenshotFilePath}\n diff=${diffPixelCount}px (${(diffRatio * 100).toFixed(3)}%) (limit: ${(defaultScreenshotOptions.maxDiffPixelRatio * 100).toFixed(3)}%). Run with --update-snapshots to update screenshot.`,
+                `Screenshot mismatch: ${screenshotFilePath}\n diff=${result.diffPixelCount}px (${(result.diffRatio * 100).toFixed(3)}%) (limit: ${(defaultImageComparisonOptions.maxDiffPixelRatio * 100).toFixed(3)}%). Run with --update-snapshots to update screenshot.`,
             );
         }
     }
