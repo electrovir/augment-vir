@@ -2,6 +2,11 @@ import {assert} from '@augment-vir/assert';
 import {addSuffix, log, type PartialWithUndefined} from '@augment-vir/common';
 import {writeFileAndDir} from '@augment-vir/node';
 import {expect, type Locator} from '@playwright/test';
+import {
+    compareImages,
+    defaultImageComparisonOptions,
+    encodePng,
+} from '@virmator/test/dist/web-screenshot-plugin/compare-images.js';
 import {existsSync} from 'node:fs';
 import {readFile} from 'node:fs/promises';
 import {relative} from 'node:path';
@@ -11,7 +16,6 @@ import {
     TestEnv,
     type UniversalTestContext,
 } from '../augments/universal-testing-suite/universal-test-context.js';
-import {compareImages, defaultImageComparisonOptions, encodePng} from './compare-images.js';
 
 /** This is used for type extraction because Playwright does not export the types we need. */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -132,7 +136,7 @@ export async function takeScreenshot(
  *
  * @category Internal
  */
-export async function expectScreenshot(
+export async function expectPlaywrightScreenshot(
     testContext: Readonly<UniversalTestContext>,
     options: Readonly<SaveScreenshotOptions>,
 ) {

@@ -6,7 +6,7 @@ export {
     type LocatorScreenshotOptions,
     type SaveScreenshotOptions,
     type TakeScreenshotOptions,
-} from '../test-playwright/screenshot.js';
+} from '../test-playwright/playwright-screenshot.js';
 
 async function importPlaywrightTestApi(this: void) {
     if (!isInsidePlaywrightTest()) {
@@ -19,8 +19,8 @@ async function importPlaywrightTestApi(this: void) {
     const {enterTextByLabel} = await import('../test-playwright/enter-text.js');
     const {expectAllVisible} = await import('../test-playwright/all-visible.js');
     const {getMenuOption} = await import('../test-playwright/get-option.js');
-    const {getScreenshotPath, takeScreenshot, expectScreenshot} = await import(
-        '../test-playwright/screenshot.js'
+    const {getScreenshotPath, takeScreenshot, expectPlaywrightScreenshot} = await import(
+        '../test-playwright/playwright-screenshot.js'
     );
     const {handleNewPageOrDownload} = await import('../test-playwright/new-page-or-download.js');
     const {navigateTo, extractNavUrl} = await import('../test-playwright/nav.js');
@@ -57,9 +57,11 @@ async function importPlaywrightTestApi(this: void) {
             /**
              * Similar to Playwright's `expect().toHaveScreenshot` but allows images to have
              * different sizes and has default comparison threshold options that are wide enough to
-             * allow testing between different operating systems without failure (usually).
+             * allow testing between different operating systems without failure.
+             *
+             * Update screenshots with `--update`.
              */
-            expectScreenshot,
+            expectScreenshot: expectPlaywrightScreenshot,
             /** Get the path to save the given screenshot file name to. */
             getScreenshotPath,
             /**

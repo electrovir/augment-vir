@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/mono-repo-root",
-    "version": "31.64.0",
+    "version": "31.64.1",
     "private": true,
     "homepage": "https://github.com/electrovir/augment-vir",
     "bugs": {
@@ -74,7 +74,7 @@
         "prettier-plugin-toml": "^2.0.6",
         "runstorm": "^1.0.0",
         "typescript-eslint": "^8.56.0",
-        "virmator": "^14.6.0"
+        "virmator": "^14.6.1"
     },
     "engines": {
         "node": ">=22"

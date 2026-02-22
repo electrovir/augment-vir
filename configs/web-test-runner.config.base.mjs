@@ -1,15 +1,14 @@
 /**
  * This is the same base web-test-runner config as the one within `@virmator/test` except that this
- * one removes the `snapshotPlugin` because it can't be used withing the augment-vir mono-repo
- * (since it depends on augment-vir packages).
+ * one removes the `snapshotPlugin` because it can't be used within the augment-vir mono-repo (since
+ * it depends on augment-vir packages).
  */
 
+import {screenshotPlugin} from '@virmator/test/dist/web-screenshot-plugin/web-screenshot-plugin.js';
 import {esbuildPlugin} from '@web/dev-server-esbuild';
 import {defaultReporter, summaryReporter} from '@web/test-runner';
 import {playwrightLauncher} from '@web/test-runner-playwright';
-import {visualRegressionPlugin} from '@web/test-runner-visual-regression/plugin';
 import {cpus} from 'node:os';
-import {join, relative} from 'node:path';
 
 const allChildTestFilesGlob = '**/*.test.ts';
 
@@ -27,54 +26,7 @@ const testFiles = specificTests.length
 
 const oneMinuteMs = 60_000;
 
-function getTestFileName(args, repoDir, type) {
-    const screenshotDir = relative(repoDir, args.testFile.replace(/\.[jt]sx?$/, ''));
-    const extension = `${type ? `${type}.` : ''}png`;
-    const screenshotName = `${
-        args.name
-    }.${process.platform.toLowerCase()}.${args.browser.toLowerCase()}.${extension}`;
-    const dirs = [
-        screenshotDir,
-        type === 'diff' ? 'failure-diff' : '',
-    ].filter((a) => !!a);
-    return join(...dirs, screenshotName);
-}
-
-function createScreenshotsPlugin(extraOptions, repoDir) {
-    if (!repoDir) {
-        return [];
-    }
-    const defaultOptions = {
-        update: false,
-        getBaselineName: (args) => {
-            return getTestFileName(args, repoDir, '');
-        },
-        getDiffName: (args) => {
-            return getTestFileName(args, repoDir, 'diff');
-        },
-        getFailedName: (args) => {
-            return getTestFileName(args, repoDir, '');
-        },
-        saveDiff: () => {},
-
-        failureThreshold: 0,
-        failureThresholdType: 'percent',
-    };
-
-    return [
-        visualRegressionPlugin({
-            baseDir: join(repoDir, 'test-screenshots'),
-            ...defaultOptions,
-            ...extraOptions,
-        }),
-    ];
-}
-
-export function defineConfig({
-    coveragePercent = 0,
-    packageRootDirPath = '',
-    extraScreenshotOptions,
-}) {
+export function defineConfig({coveragePercent = 0, packageRootDirPath = ''}) {
     const singleBrowser = process.argv.includes('--coverage')
         ? playwrightLauncher({
               product: 'chromium',
@@ -115,8 +67,7 @@ export function defineConfig({
         nodeResolve: true,
         plugins: [
             esbuildPlugin({ts: true}),
-            ...createScreenshotsPlugin(extraScreenshotOptions, packageRootDirPath),
-            // snapshotPlugin(packageRootDirPath),
+            screenshotPlugin(packageRootDirPath),
         ],
         testFramework: {
             config: {
