@@ -54,7 +54,7 @@
         "esbuild": "^0.27.3",
         "eslint": "^9.39.2",
         "eslint-config-prettier": "^10.1.8",
-        "eslint-plugin-jsdoc": "^62.5.4",
+        "eslint-plugin-jsdoc": "^62.7.0",
         "eslint-plugin-monorepo-cop": "^1.0.2",
         "eslint-plugin-playwright": "^2.7.0",
         "eslint-plugin-prettier": "^5.5.5",
@@ -74,7 +74,7 @@
         "prettier-plugin-toml": "^2.0.6",
         "runstorm": "^1.0.0",
         "typescript-eslint": "^8.56.0",
-        "virmator": "^14.5.5"
+        "virmator": "^14.6.0"
     },
     "engines": {
         "node": ">=22"

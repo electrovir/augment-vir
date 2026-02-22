@@ -47,7 +47,7 @@
         "@augment-vir/assert": "^31.64.0",
         "@augment-vir/common": "^31.64.0",
         "@date-vir/duration": "^8.1.1",
-        "@virmator/test": "^14.5.5",
+        "@virmator/test": "^14.6.0",
         "type-fest": "^5.4.4"
     },
     "devDependencies": {
