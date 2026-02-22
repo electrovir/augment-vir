@@ -330,61 +330,54 @@ describe(listAllDirectNpmDeps.name, () => {
             '@web/test-runner-commands': [
                 {
                     dependencyKey: PackageJsonDependencyKey.DevDependencies,
-                    requiredBy: join(monoRepoDirPath, 'packages', 'assert', 'package.json'),
+                    requiredBy:
+                        '/Users/electrovir/repos/electrovir/augment-vir/packages/test/package.json',
                     isWorkspace: false,
                 },
                 {
-                    dependencyKey: PackageJsonDependencyKey.DevDependencies,
-                    requiredBy: join(monoRepoDirPath, 'packages', 'common', 'package.json'),
-                    isWorkspace: false,
-                },
-                {
-                    dependencyKey: PackageJsonDependencyKey.DevDependencies,
-                    requiredBy: join(monoRepoDirPath, 'packages', 'node', 'package.json'),
-                    isWorkspace: false,
-                },
-                {
-                    dependencyKey: PackageJsonDependencyKey.DevDependencies,
-                    requiredBy: join(monoRepoDirPath, 'packages', 'test', 'package.json'),
+                    dependencyKey: PackageJsonDependencyKey.PeerDependencies,
+                    requiredBy:
+                        '/Users/electrovir/repos/electrovir/augment-vir/packages/test/package.json',
                     isWorkspace: false,
                 },
             ],
             '@web/test-runner-playwright': [
                 {
                     dependencyKey: PackageJsonDependencyKey.DevDependencies,
-                    requiredBy: join(monoRepoDirPath, 'packages', 'assert', 'package.json'),
+                    requiredBy:
+                        '/Users/electrovir/repos/electrovir/augment-vir/packages/assert/package.json',
                     isWorkspace: false,
                 },
                 {
                     dependencyKey: PackageJsonDependencyKey.DevDependencies,
-                    requiredBy: join(monoRepoDirPath, 'packages', 'common', 'package.json'),
+                    requiredBy:
+                        '/Users/electrovir/repos/electrovir/augment-vir/packages/common/package.json',
                     isWorkspace: false,
                 },
                 {
                     dependencyKey: PackageJsonDependencyKey.DevDependencies,
-                    requiredBy: join(monoRepoDirPath, 'packages', 'node', 'package.json'),
+                    requiredBy:
+                        '/Users/electrovir/repos/electrovir/augment-vir/packages/node/package.json',
                     isWorkspace: false,
                 },
                 {
                     dependencyKey: PackageJsonDependencyKey.DevDependencies,
-                    requiredBy: join(monoRepoDirPath, 'packages', 'test', 'package.json'),
+                    requiredBy:
+                        '/Users/electrovir/repos/electrovir/augment-vir/packages/test/package.json',
                     isWorkspace: false,
                 },
             ],
             '@web/test-runner-visual-regression': [
                 {
                     dependencyKey: PackageJsonDependencyKey.DevDependencies,
-                    requiredBy: join(monoRepoDirPath, 'packages', 'assert', 'package.json'),
+                    requiredBy:
+                        '/Users/electrovir/repos/electrovir/augment-vir/packages/test/package.json',
                     isWorkspace: false,
                 },
                 {
-                    dependencyKey: PackageJsonDependencyKey.DevDependencies,
-                    requiredBy: join(monoRepoDirPath, 'packages', 'common', 'package.json'),
-                    isWorkspace: false,
-                },
-                {
-                    dependencyKey: PackageJsonDependencyKey.DevDependencies,
-                    requiredBy: join(monoRepoDirPath, 'packages', 'node', 'package.json'),
+                    dependencyKey: PackageJsonDependencyKey.PeerDependencies,
+                    requiredBy:
+                        '/Users/electrovir/repos/electrovir/augment-vir/packages/test/package.json',
                     isWorkspace: false,
                 },
             ],

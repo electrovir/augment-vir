@@ -20,6 +20,7 @@ async function importWebTestApi(this: void) {
     const {fixtureCleanup, fixture} = await import('@open-wc/testing-helpers');
     const {renderElement} = await import('../test-web/render-element.js');
     const {elementCases} = await import('../test-web/element-cases.js');
+    const {testScreenshot} = await import('../test-web/test-screenshot.js');
 
     return {
         /**
@@ -35,6 +36,13 @@ async function importWebTestApi(this: void) {
         ensureFocus: focusElement,
         /** Moves the mouse to the center of the given element. */
         moveMouseTo: moveToElement,
+        /**
+         * Test a screenshot against an already established screenshot.
+         *
+         * To update screenshots, run the test command with `--update` or
+         * `--update-visual-baseline`.
+         */
+        testScreenshot,
         /**
          * Renders a string or TemplateResult and puts it in the DOM via a fixtureWrapper.
          *
