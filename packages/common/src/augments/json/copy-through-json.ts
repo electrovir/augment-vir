@@ -1,8 +1,12 @@
-import {type Jsonify, type Writable} from 'type-fest';
+import {type JsonCompatibleValue} from '@augment-vir/core';
+import {type IsUnknown, type Jsonify, type Writable} from 'type-fest';
+import {safeJsonStringify} from './safe-json-stringify.js';
 
 /**
  * Deeply copy an object through JSON. This is the fastest deep copy, but the input must already be
  * JSON serializable otherwise the copy will not match the original.
+ *
+ * Note that this will truncate inputs if they are not safe to serialize.
  *
  * @category JSON : Common
  * @category Copy
@@ -32,9 +36,11 @@ import {type Jsonify, type Writable} from 'type-fest';
  *
  * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
-export function copyThroughJson<const T>(input: T): Writable<Jsonify<T>> {
+export function copyThroughJson<const T>(
+    input: T,
+): IsUnknown<T> extends true ? JsonCompatibleValue : Writable<Jsonify<T>> {
     try {
-        return JSON.parse(JSON.stringify(input));
+        return JSON.parse(safeJsonStringify(input));
         /* node:coverage ignore next 4 */
     } catch (error) {
         console.error(`Failed to JSON copy for`, input);

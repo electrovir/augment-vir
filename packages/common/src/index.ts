@@ -29,6 +29,7 @@ export * from './augments/json/append-json.js';
 export * from './augments/json/copy-through-json.js';
 export * from './augments/json/json5.js';
 export * from './augments/json/jsonify.js';
+export * from './augments/json/safe-json-stringify.js';
 export * from './augments/log/log-colors.js';
 export * from './augments/log/log-countdown.js';
 export * from './augments/log/log-string.js';

@@ -1,8 +1,13 @@
 import {assert} from '@augment-vir/assert';
+import {type JsonCompatibleValue} from '@augment-vir/core';
 import {describe, it} from '@augment-vir/test';
 import {copyThroughJson} from './copy-through-json.js';
 
 describe(copyThroughJson.name, () => {
+    it('handles unknown typed input', () => {
+        assert.tsType(copyThroughJson({} as any as unknown)).equals<JsonCompatibleValue>();
+    });
+
     it('should create an identical copy', () => {
         const testObjectA = {
             a: 5,
