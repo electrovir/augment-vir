@@ -54,4 +54,41 @@ describe(copyThroughJson.name, () => {
             b: {},
         });
     });
+
+    it('preserves breadth beyond safe limit', () => {
+        const wideObject: Record<string, number> = {};
+        for (let i = 0; i < 60; i++) {
+            wideObject[`key${i}`] = i;
+        }
+
+        const unsafeResult = copyThroughJson(wideObject, {enableUnsafeCopyAll: true});
+        assert.deepEquals(unsafeResult, wideObject);
+        assert.strictEquals(Object.keys(unsafeResult as Record<string, number>).length, 60);
+
+        const safeResult = copyThroughJson(wideObject);
+        assert.isBelow(
+            Object.keys(safeResult as Record<string, number>).length,
+            Object.keys(wideObject).length,
+        );
+    });
+
+    it('preserves depth beyond safe limit', () => {
+        let deepObject: Record<string, any> = {value: 'leaf'};
+        for (let i = 0; i < 20; i++) {
+            deepObject = {nested: deepObject};
+        }
+
+        const unsafeResult = copyThroughJson(deepObject, {enableUnsafeCopyAll: true});
+        assert.deepEquals(unsafeResult, deepObject);
+
+        const safeResult = copyThroughJson(deepObject) as Record<string, any>;
+        assert.notDeepEquals(safeResult, deepObject);
+    });
+
+    it('throws on circular references', () => {
+        const circular: Record<string, any> = {a: 1};
+        circular['self'] = circular;
+
+        assert.throws(() => copyThroughJson(circular, {enableUnsafeCopyAll: true}));
+    });
 });

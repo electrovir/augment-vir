@@ -1,4 +1,4 @@
-import {type JsonCompatibleValue} from '@augment-vir/core';
+import {type JsonCompatibleValue, type PartialWithUndefined} from '@augment-vir/core';
 import {type IsUnknown, type Jsonify, type Writable} from 'type-fest';
 import {safeJsonStringify} from './safe-json-stringify.js';
 
@@ -38,9 +38,19 @@ import {safeJsonStringify} from './safe-json-stringify.js';
  */
 export function copyThroughJson<const T>(
     input: T,
+    {
+        enableUnsafeCopyAll,
+    }:
+        | Readonly<
+              PartialWithUndefined<{
+                  enableUnsafeCopyAll: boolean;
+              }>
+          >
+        | undefined = {},
 ): IsUnknown<T> extends true ? JsonCompatibleValue : Writable<Jsonify<T>> {
     try {
-        return JSON.parse(safeJsonStringify(input));
+        const stringified = enableUnsafeCopyAll ? JSON.stringify(input) : safeJsonStringify(input);
+        return JSON.parse(stringified);
         /* node:coverage ignore next 4 */
     } catch (error) {
         console.error(`Failed to JSON copy for`, input);
