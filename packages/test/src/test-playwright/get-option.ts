@@ -16,7 +16,8 @@ export type MenuOptionOptions = Parameters<Page['getByRole']>[1] &
     }>;
 
 /**
- * Find the matching (or first) "option" element.
+ * Find the matching (or first) "option" or "menuitem" element. Tries both roles and returns
+ * whichever one is found.
  *
  * @category Internal
  */
@@ -25,7 +26,9 @@ export function getMenuOption(
     options?: MenuOptionOptions | undefined,
 ) {
     assertTestContext(testContext, TestEnv.Playwright);
-    const baseLocator = testContext.page.getByRole('option', options);
+    const baseLocator = testContext.page
+        .getByRole('option', options)
+        .or(testContext.page.getByRole('menuitem', options));
 
     if (options && 'nth' in options) {
         return baseLocator.nth(options.nth);

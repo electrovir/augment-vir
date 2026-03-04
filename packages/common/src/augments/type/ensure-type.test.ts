@@ -22,8 +22,8 @@ describe(ensureType.name, () => {
         // @ts-expect-error
         ensureType<string>(5);
         ensureType<string>('5');
-        // @ts-expect-error
         ensureType<{who: number}>({
+            // @ts-expect-error
             what: 5,
         });
         ensureType<{who: number}>({

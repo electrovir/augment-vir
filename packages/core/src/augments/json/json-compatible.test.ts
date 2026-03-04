@@ -70,8 +70,8 @@ describe('JsonCompatibleValue', () => {
         });
         // @ts-expect-error: string is not an array
         acceptArray('derp');
-        // @ts-expect-error: object is not an array
         acceptArray({
+            // @ts-expect-error: object is not an array
             derp: 'derp',
         });
     });

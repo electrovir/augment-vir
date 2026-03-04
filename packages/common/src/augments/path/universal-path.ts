@@ -73,7 +73,7 @@ export type Sep = '/' | '\\';
  * @category Package : @augment-vir/common
  * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
-/* node:coverage ignore next 3: cannot test both on a single system. */
+/* node:coverage ignore next 5: cannot test both on a single system. */
 export const defaultSep: Sep = isRuntimeEnv(RuntimeEnv.Web)
     ? '/'
     : await wrapInTry(async () => (await import('node:path')).sep, {

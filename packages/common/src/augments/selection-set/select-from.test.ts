@@ -61,8 +61,8 @@ describe(selectFrom.name, () => {
                     },
                 },
             },
-            // @ts-expect-error: q is not a valid key
             {
+                // @ts-expect-error: q is not a valid key
                 q: true,
             },
         );

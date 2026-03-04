@@ -127,7 +127,7 @@ export function streamShellCommand(
     });
 
     /** Idk how to trigger the 'error' event. */
-    /* node:coverage ignore next 3 */
+    /* node:coverage ignore next 7 */
     childProcess.on('error', (error) => {
         shellTarget.dispatch(
             new ShellErrorEvent({

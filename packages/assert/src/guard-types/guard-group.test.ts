@@ -3,8 +3,8 @@ import {type GuardGroup} from './guard-group.js';
 
 describe('GuardGroup', () => {
     it('requires assertions', () => {
-        // @ts-expect-error: missing properties
         const example1 = {
+            // @ts-expect-error: missing properties
             assert: {},
         } satisfies GuardGroup<typeof assertions>;
 
