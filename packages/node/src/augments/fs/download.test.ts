@@ -15,7 +15,9 @@ describe(downloadFile.name, () => {
             });
             assert.startsWith((await readFile(outputPath)).toString(), '<!DOCTYPE html>');
         } finally {
-            await rm(outputPath, {force: true});
+            await rm(outputPath, {
+                force: true,
+            });
         }
     });
     it('fails on an invalid file', async () => {
@@ -28,7 +30,9 @@ describe(downloadFile.name, () => {
                 }),
             );
         } finally {
-            await rm(outputPath, {force: true});
+            await rm(outputPath, {
+                force: true,
+            });
         }
     });
 });

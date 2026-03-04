@@ -26,7 +26,9 @@ export function createBlockingInterval(callback: () => MaybePromise<void>, inter
                 isExecuting = false;
             }
         },
-        convertDuration(interval, {milliseconds: true}).milliseconds,
+        convertDuration(interval, {
+            milliseconds: true,
+        }).milliseconds,
     );
 
     return {

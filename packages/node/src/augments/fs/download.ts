@@ -25,7 +25,9 @@ export async function downloadFile({url, writePath}: {url: string; writePath: st
         throw new Error(`Response body is missing from '${url}'.`);
     }
 
-    await mkdir(dirname(writePath), {recursive: true});
+    await mkdir(dirname(writePath), {
+        recursive: true,
+    });
     const fileStream = createWriteStream(writePath);
     await finished(Readable.fromWeb(response.body as ReadableStream).pipe(fileStream));
 }

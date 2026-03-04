@@ -11,8 +11,13 @@ export const mockPrettyDiffTestCases: {it: string; inputs: Parameters<typeof pre
     {
         it: 'handles objects',
         inputs: [
-            {a: 'hello there', b: 'goodbye now'},
-            {a: 'hello there'},
+            {
+                a: 'hello there',
+                b: 'goodbye now',
+            },
+            {
+                a: 'hello there',
+            },
         ],
     },
     {

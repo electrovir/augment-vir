@@ -99,7 +99,10 @@ export function getScreenshotPath(
 ): string {
     assertTestContext(testContext, TestEnv.Playwright);
 
-    const screenshotFileName = addSuffix({value: screenshotBaseName, suffix: '.png'});
+    const screenshotFileName = addSuffix({
+        value: screenshotBaseName,
+        suffix: '.png',
+    });
     return testContext.testInfo.snapshotPath(screenshotFileName);
 }
 
@@ -156,7 +159,10 @@ export async function expectPlaywrightScreenshot(
     }
     async function writeExpectationScreenshot(contents: Buffer, fileName: string) {
         const filePath = assertWrapTestContext(testContext, TestEnv.Playwright).testInfo.outputPath(
-            addSuffix({value: fileName, suffix: '.png'}),
+            addSuffix({
+                value: fileName,
+                suffix: '.png',
+            }),
         );
         await writeFileAndDir(filePath, contents);
     }

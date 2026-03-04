@@ -115,7 +115,9 @@ describe(isCase.name, () => {
             inputs: [
                 '',
                 StringCase.Upper,
-                {rejectNoCaseCharacters: true},
+                {
+                    rejectNoCaseCharacters: true,
+                },
             ],
             expect: false,
         },
@@ -124,7 +126,9 @@ describe(isCase.name, () => {
             inputs: [
                 '√',
                 StringCase.Upper,
-                {rejectNoCaseCharacters: true},
+                {
+                    rejectNoCaseCharacters: true,
+                },
             ],
             expect: false,
         },

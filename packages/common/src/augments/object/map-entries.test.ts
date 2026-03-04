@@ -36,7 +36,9 @@ describe(mapObject.name, () => {
             inputs: [
                 originalObject,
                 async (key, value) => {
-                    await wait({milliseconds: 0});
+                    await wait({
+                        milliseconds: 0,
+                    });
                     if (key === 'a') {
                         return undefined;
                     } else {
@@ -74,7 +76,9 @@ describe(mapObject.name, () => {
             inputs: [
                 originalObject,
                 async (key, value) => {
-                    await wait({milliseconds: 0});
+                    await wait({
+                        milliseconds: 0,
+                    });
                     return {
                         key: key + '1',
                         value: value + '1',
@@ -128,7 +132,9 @@ describe(mapObject.name, () => {
             inputs: [
                 originalObject,
                 async () => {
-                    await wait({milliseconds: 0});
+                    await wait({
+                        milliseconds: 0,
+                    });
                     throw new Error('fake error');
                 },
             ],
@@ -140,7 +146,9 @@ describe(mapObject.name, () => {
 
     it('correctly types an async callback', async () => {
         const result = mapObject(originalObject, async (key, value) => {
-            await wait({milliseconds: 0});
+            await wait({
+                milliseconds: 0,
+            });
             return {
                 key: key + '1',
                 value: value + '1',

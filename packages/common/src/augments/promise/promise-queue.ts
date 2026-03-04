@@ -156,10 +156,14 @@ export class PromiseQueue extends ListenTarget<PromiseQueueUpdateEvent> {
         this.currentlyAwaiting = item;
         item.original()
             .then((result: unknown) => {
-                this.handleItemSettle({resolution: result});
+                this.handleItemSettle({
+                    resolution: result,
+                });
             })
             .catch((error: unknown) => {
-                this.handleItemSettle({rejection: error});
+                this.handleItemSettle({
+                    rejection: error,
+                });
             });
 
         return true;

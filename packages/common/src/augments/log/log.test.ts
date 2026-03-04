@@ -41,7 +41,11 @@ if (isRuntimeEnv(RuntimeEnv.Node)) {
             assert.deepEquals(
                 toLogString({
                     colorKey: LogColorKey.Error,
-                    args: [{hi: 'bye'}],
+                    args: [
+                        {
+                            hi: 'bye',
+                        },
+                    ],
                     options: defaultLoggerOptions,
                 }),
                 {
@@ -106,7 +110,9 @@ if (isRuntimeEnv(RuntimeEnv.Node)) {
 
 describe(createArrayLogger.name, () => {
     it('stores logs', () => {
-        const {log, logs} = createArrayLogger({omitColors: true});
+        const {log, logs} = createArrayLogger({
+            omitColors: true,
+        });
 
         log.error('this is an error');
         log.plain('this is a log');

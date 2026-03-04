@@ -38,7 +38,9 @@ export function mergeDeep<const T extends object>(
             return;
         } else if (!check.isObject(result)) {
             /** If result isn't an object then we need to make it into one. */
-            result = {...individualInput};
+            result = {
+                ...individualInput,
+            };
         }
 
         Object.entries(individualInput).forEach(

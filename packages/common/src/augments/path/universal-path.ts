@@ -28,7 +28,10 @@ export function replaceExtension({
     return [
         dirname,
         basename,
-        addPrefix({value: newExtension, prefix: '.'}),
+        addPrefix({
+            value: newExtension,
+            prefix: '.',
+        }),
         tail,
     ].join('');
 }
@@ -73,7 +76,9 @@ export type Sep = '/' | '\\';
 /* node:coverage ignore next 3: cannot test both on a single system. */
 export const defaultSep: Sep = isRuntimeEnv(RuntimeEnv.Web)
     ? '/'
-    : await wrapInTry(async () => (await import('node:path')).sep, {fallbackValue: '/'});
+    : await wrapInTry(async () => (await import('node:path')).sep, {
+          fallbackValue: '/',
+      });
 
 /**
  * Extracts a path's extension, amongst other things, from the given path, without relying on

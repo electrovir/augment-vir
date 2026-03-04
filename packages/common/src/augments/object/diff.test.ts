@@ -14,31 +14,51 @@ describe(diffObjects.name, () => {
         {
             it: 'returns no diff with equivalent objects',
             inputs: [
-                {a: 'hi'},
-                {a: 'hi'},
+                {
+                    a: 'hi',
+                },
+                {
+                    a: 'hi',
+                },
             ],
             expect: [],
         },
         {
             it: 'diffs different value types',
             inputs: [
-                {a: 'hi'},
-                {a: 321},
+                {
+                    a: 'hi',
+                },
+                {
+                    a: 321,
+                },
             ],
             expect: [
-                {a: 'hi'},
-                {a: 321},
+                {
+                    a: 'hi',
+                },
+                {
+                    a: 321,
+                },
             ],
         },
         {
             it: 'diffs same values as different types',
             inputs: [
-                {a: '321'},
-                {a: 321},
+                {
+                    a: '321',
+                },
+                {
+                    a: 321,
+                },
             ],
             expect: [
-                {a: '321'},
-                {a: 321},
+                {
+                    a: '321',
+                },
+                {
+                    a: 321,
+                },
             ],
         },
         {

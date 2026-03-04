@@ -14,7 +14,9 @@ export async function logCountdown(
 ): Promise<void> {
     logCallback(String(start));
 
-    await wait({seconds: 1.5});
+    await wait({
+        seconds: 1.5,
+    });
     if (start) {
         return await logCountdown(start - 1, logCallback);
     } else {

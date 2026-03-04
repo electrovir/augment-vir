@@ -42,13 +42,18 @@ describe(runShellCommand.name, () => {
     });
 
     it('uses custom dir correctly', async () => {
-        assert.deepEquals(await runShellCommand('pwd', {cwd: import.meta.dirname}), {
-            error: undefined,
-            stderr: '',
-            stdout: `${toPosixPath(import.meta.dirname)}\n`,
-            exitCode: 0,
-            exitSignal: undefined,
-        });
+        assert.deepEquals(
+            await runShellCommand('pwd', {
+                cwd: import.meta.dirname,
+            }),
+            {
+                error: undefined,
+                stderr: '',
+                stdout: `${toPosixPath(import.meta.dirname)}\n`,
+                exitCode: 0,
+                exitSignal: undefined,
+            },
+        );
     });
 
     it('grabs error', async () => {
@@ -56,9 +61,14 @@ describe(runShellCommand.name, () => {
     });
 
     it('promise is rejected when requested to do so', async () => {
-        await assert.throws(runShellCommand(`exit 2`, {rejectOnError: true}), {
-            matchConstructor: Error,
-        });
+        await assert.throws(
+            runShellCommand(`exit 2`, {
+                rejectOnError: true,
+            }),
+            {
+                matchConstructor: Error,
+            },
+        );
     });
 
     it('shell stdoutCallback should get fired when stdout is written', async () => {
@@ -134,7 +144,9 @@ describe(logShellOutput.name, () => {
         options: Omit<LogShellOutputOptions, 'logger'>,
         shellOutputOverride: PartialWithUndefined<Omit<ShellOutput, 'exitSignal'>> = {},
     ) {
-        const {log, logs} = createArrayLogger({omitColors: true});
+        const {log, logs} = createArrayLogger({
+            omitColors: true,
+        });
 
         logShellOutput(
             {

@@ -43,7 +43,12 @@ describe(createArray.name, () => {
             inputs: [
                 3,
                 async (index) => {
-                    return waitValue({milliseconds: 1}, `hi ${index}`);
+                    return waitValue(
+                        {
+                            milliseconds: 1,
+                        },
+                        `hi ${index}`,
+                    );
                 },
             ],
             expect: [

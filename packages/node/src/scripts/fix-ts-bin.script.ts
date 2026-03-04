@@ -71,7 +71,9 @@ function createBinFileContents({scriptPath}: Readonly<Pick<PackageToFix, 'script
 
 async function fixTsBin(packageToFix: Readonly<PackageToFix>) {
     const binFilePath = join(process.cwd(), 'node_modules', '.bin', packageToFix.binName);
-    await rm(binFilePath, {force: true});
+    await rm(binFilePath, {
+        force: true,
+    });
     await writeFile(binFilePath, createBinFileContents(packageToFix));
     await runShellCommand(`chmod +x ${interpolationSafeWindowsPath(binFilePath)}`);
     await fixPackageJson(packageToFix);

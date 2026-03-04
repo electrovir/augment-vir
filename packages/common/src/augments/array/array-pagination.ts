@@ -41,7 +41,9 @@ export function getArrayPage<ArrayEntry>(
     originalArray: ReadonlyArray<ArrayEntry>,
     options: Readonly<ArrayPaginationOptions>,
 ): ArrayEntry[] | undefined {
-    const chunks = chunkArray(originalArray, {chunkSize: options.countPerPage});
+    const chunks = chunkArray(originalArray, {
+        chunkSize: options.countPerPage,
+    });
 
     return chunks[options.getPage];
 }

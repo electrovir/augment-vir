@@ -12,13 +12,19 @@ describe(awaitedBlockingMap.name, () => {
         const duration = await measureExecutionDuration(async () => {
             const results = await awaitedBlockingMap(originalArray, async (element, index) => {
                 if (index === 1) {
-                    await wait({milliseconds: 1000});
+                    await wait({
+                        milliseconds: 1000,
+                    });
                     totalWait += 1000;
                 } else {
-                    await wait({milliseconds: 50});
+                    await wait({
+                        milliseconds: 50,
+                    });
                     totalWait += 50;
                 }
-                return {element};
+                return {
+                    element,
+                };
             });
 
             // ensure the order is the same despite a long wait time in the middle

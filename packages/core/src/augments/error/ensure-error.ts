@@ -32,7 +32,9 @@ export function ensureErrorAndPrependMessage(maybeError: unknown, prependMessage
         error.message = combinedMessage;
         return error;
     } catch {
-        return new Error(combinedMessage, {cause: maybeError});
+        return new Error(combinedMessage, {
+            cause: maybeError,
+        });
     }
 }
 

@@ -30,7 +30,9 @@ export function splitIncludeSplit(
         includeLength: true,
     });
 
-    const splitter = setRegExpCaseSensitivity(splitDelimiter, {caseSensitive});
+    const splitter = setRegExpCaseSensitivity(splitDelimiter, {
+        caseSensitive,
+    });
 
     const splits = original.split(splitter);
 

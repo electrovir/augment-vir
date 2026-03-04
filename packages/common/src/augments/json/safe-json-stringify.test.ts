@@ -5,17 +5,28 @@ import {safeJsonStringify} from './safe-json-stringify.js';
 
 describe('safeJsonStringify', () => {
     it('stringifies a simple object', () => {
-        assert.strictEquals(safeJsonStringify({a: 1, b: 'two'}), '{"a":1,"b":"two"}');
+        assert.strictEquals(
+            safeJsonStringify({
+                a: 1,
+                b: 'two',
+            }),
+            '{"a":1,"b":"two"}',
+        );
     });
 
     it('handles a direct self-referencing circular object', () => {
-        const circular: Record<string, unknown> = {a: 'hello'};
+        const circular: Record<string, unknown> = {
+            a: 'hello',
+        };
         circular['self'] = circular;
 
         const result = safeJsonStringify(circular);
         const parsed = JSON.parse(result);
 
-        assert.deepEquals(parsed, {a: 'hello', self: '[Circular]'});
+        assert.deepEquals(parsed, {
+            a: 'hello',
+            self: '[Circular]',
+        });
     });
 
     it('handles a deeply nested circular reference', () => {
@@ -43,8 +54,12 @@ describe('safeJsonStringify', () => {
     });
 
     it('handles mutual circular references between two objects', () => {
-        const objA: Record<string, unknown> = {name: 'a'};
-        const objB: Record<string, unknown> = {name: 'b'};
+        const objA: Record<string, unknown> = {
+            name: 'a',
+        };
+        const objB: Record<string, unknown> = {
+            name: 'b',
+        };
         objA['ref'] = objB;
         objB['ref'] = objA;
 
@@ -61,7 +76,9 @@ describe('safeJsonStringify', () => {
     });
 
     it('handles circular references inside arrays', () => {
-        const obj: Record<string, unknown> = {value: 42};
+        const obj: Record<string, unknown> = {
+            value: 42,
+        };
         const arr = [
             1,
             obj,
@@ -84,9 +101,14 @@ describe('safeJsonStringify', () => {
 
     it('does not crash on an explosive deeply nested object', () => {
         /** Build a very deeply nested structure that would be expensive to stringify fully. */
-        let current: Record<string, unknown> = {leaf: true};
+        let current: Record<string, unknown> = {
+            leaf: true,
+        };
         for (let i = 0; i < 10_000; i++) {
-            current = {child: current, index: i};
+            current = {
+                child: current,
+                index: i,
+            };
         }
 
         /** Should not throw or run out of memory. */
@@ -102,7 +124,10 @@ describe('safeJsonStringify', () => {
             document.body.append(div);
 
             try {
-                const wrapper = {element: div, extra: 'keep me'};
+                const wrapper = {
+                    element: div,
+                    extra: 'keep me',
+                };
 
                 /** HTMLElements have massive circular DOM trees; this must not crash. */
                 const result = safeJsonStringify(wrapper);

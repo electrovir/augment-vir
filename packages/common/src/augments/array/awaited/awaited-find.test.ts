@@ -14,10 +14,14 @@ describe(awaitedFind.name, () => {
         const duration = await measureExecutionDuration(async () => {
             await awaitedFind(originalArray, async (element, index) => {
                 if (index === 1) {
-                    await wait({milliseconds: 1000});
+                    await wait({
+                        milliseconds: 1000,
+                    });
                     totalWait += 1000;
                 } else {
-                    await wait({milliseconds: 50});
+                    await wait({
+                        milliseconds: 50,
+                    });
                     totalWait += 50;
                 }
                 results.push(element);
@@ -40,7 +44,9 @@ describe(awaitedFind.name, () => {
                     assert.tsType(array).equals<ReadonlyArray<string>>();
                     assert.strictEquals(array, originalArray);
 
-                    await wait({seconds: 0});
+                    await wait({
+                        seconds: 0,
+                    });
 
                     return true;
                 }),
@@ -73,7 +79,9 @@ describe(awaitedFind.name, () => {
                     'c',
                 ],
                 async (value) => {
-                    await wait({seconds: 0});
+                    await wait({
+                        seconds: 0,
+                    });
                     return check.isNumber(value);
                 },
             ],
@@ -102,7 +110,9 @@ describe(awaitedFind.name, () => {
                     'c',
                 ],
                 async (value) => {
-                    await wait({seconds: 0});
+                    await wait({
+                        seconds: 0,
+                    });
                     return value === 'b';
                 },
             ],

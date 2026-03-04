@@ -10,7 +10,9 @@ describe(extractErrorMessage.name, () => {
         },
         {
             it: 'extracts from an object with a message',
-            input: {message: 'message a'},
+            input: {
+                message: 'message a',
+            },
             expect: 'message a',
         },
         {

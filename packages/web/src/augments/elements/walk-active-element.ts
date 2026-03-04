@@ -27,7 +27,12 @@ export function walkActiveElement(callback: WalkActiveElementCallback): number {
 
     let activeElement: Element | undefined = document.activeElement || undefined;
     while (activeElement) {
-        if (callback({depth, element: activeElement})) {
+        if (
+            callback({
+                depth,
+                element: activeElement,
+            })
+        ) {
             return depth;
         }
         activeElement = activeElement.shadowRoot?.activeElement || undefined;

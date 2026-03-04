@@ -22,7 +22,9 @@ export function mergeDefinedProperties<const T extends AnyObject>(
     original: T,
     ...overrides: ReadonlyArray<PartialWithNullable<NoInfer<T>> | undefined>
 ): T {
-    const finalObject = {...original};
+    const finalObject = {
+        ...original,
+    };
 
     overrides.forEach((entry) => {
         if (!entry) {

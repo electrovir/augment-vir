@@ -128,7 +128,9 @@ describe(checkCustomDeepQuality.name, () => {
                     'a',
                 ],
                 async () => {
-                    await wait({milliseconds: 0});
+                    await wait({
+                        milliseconds: 0,
+                    });
                     throw new Error('fake failure');
                 },
             ],
@@ -302,9 +304,15 @@ describe(checkCustomDeepQuality.name, () => {
     ]);
 
     it('handles equal circular references', () => {
-        const circular1 = {hi: 'bye', nested: {}};
+        const circular1 = {
+            hi: 'bye',
+            nested: {},
+        };
         circular1.nested = circular1;
-        const circular2 = {hi: 'bye', nested: {}};
+        const circular2 = {
+            hi: 'bye',
+            nested: {},
+        };
         circular2.nested = circular2;
 
         assert.isTrue(checkCustomDeepQuality(circular1, circular2, check.strictEquals));
@@ -317,9 +325,15 @@ describe(checkCustomDeepQuality.name, () => {
     });
 
     it('handles unequal circular references', () => {
-        const circular1 = {hi: 'bye', nested: {}};
+        const circular1 = {
+            hi: 'bye',
+            nested: {},
+        };
         circular1.nested = circular1;
-        const circular2 = {hi: 'different', nested: {}};
+        const circular2 = {
+            hi: 'different',
+            nested: {},
+        };
         circular2.nested = circular2;
 
         assert.isFalse(checkCustomDeepQuality(circular1, circular2, check.strictEquals));

@@ -106,6 +106,9 @@ export class Debounce {
             }, this.debounceDuration.milliseconds);
         }
         this.nextCallTimestamp =
-            now + convertDuration(this.debounceDuration, {milliseconds: true}).milliseconds;
+            now +
+            convertDuration(this.debounceDuration, {
+                milliseconds: true,
+            }).milliseconds;
     }
 }

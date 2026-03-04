@@ -35,31 +35,41 @@ describe(getOrSet.name, () => {
             ],
             expect: {
                 got: 'new value',
-                object: {hi: 'new value'},
+                object: {
+                    hi: 'new value',
+                },
             },
         },
         {
             it: 'does not modify a value that already exists',
             inputs: [
-                {myKey: 'hello'},
+                {
+                    myKey: 'hello',
+                },
                 'myKey',
                 randomString(),
             ],
             expect: {
                 got: 'hello',
-                object: {myKey: 'hello'},
+                object: {
+                    myKey: 'hello',
+                },
             },
         },
         {
             it: 'keeps undefined values',
             inputs: [
-                {myKey: undefined},
+                {
+                    myKey: undefined,
+                },
                 'myKey',
                 randomString(),
             ],
             expect: {
                 got: undefined,
-                object: {myKey: undefined},
+                object: {
+                    myKey: undefined,
+                },
             },
         },
     ]);
@@ -99,7 +109,9 @@ describe(getOrSet.name, () => {
         assert.strictEquals(await result, newValue);
     });
     it('requires proper types', () => {
-        const myObject: {a: string; b?: number} = {a: 'hello'};
+        const myObject: {a: string; b?: number} = {
+            a: 'hello',
+        };
         assert.tsType(getOrSet(myObject, 'b', () => 5)).equals<number>();
         // @ts-expect-error the "a" key requires a string type
         getOrSet(myObject, 'a', () => 5);
@@ -114,14 +126,21 @@ describe(getOrSet.name, () => {
                     return Promise.reject(new Error('test error'));
                 });
             },
-            {matchMessage: 'test error'},
+            {
+                matchMessage: 'test error',
+            },
         );
     });
     it('works with an indexed key type', () => {
-        const myObject: Record<string, number> = {a: 4};
+        const myObject: Record<string, number> = {
+            a: 4,
+        };
         assert.tsType(getOrSet(myObject, 'a', () => 5)).equals<number>();
         assert.tsType(getOrSet(myObject, 'b', () => 2)).equals<number>();
-        assert.deepEquals(myObject, {a: 4, b: 2});
+        assert.deepEquals(myObject, {
+            a: 4,
+            b: 2,
+        });
     });
 });
 
@@ -171,7 +190,9 @@ describe(getOrSetFromMap.name, () => {
         const exampleMap = new Map<any, string>();
 
         const result = getOrSetFromMap(exampleMap, exampleKey, async () => {
-            await wait({milliseconds: 0});
+            await wait({
+                milliseconds: 0,
+            });
             const test = true as boolean;
             if (test) {
                 throw new Error('fail');

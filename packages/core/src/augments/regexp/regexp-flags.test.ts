@@ -98,7 +98,9 @@ describe(setRegExpCaseSensitivity.name, () => {
             it: 'sets case insensitive',
             inputs: [
                 /nothing to see here/,
-                {caseSensitive: false},
+                {
+                    caseSensitive: false,
+                },
             ],
             expect: 'i',
         },
@@ -106,7 +108,9 @@ describe(setRegExpCaseSensitivity.name, () => {
             it: 'removes case insensitive flag',
             inputs: [
                 /nothing to see here/gi,
-                {caseSensitive: true},
+                {
+                    caseSensitive: true,
+                },
             ],
             expect: 'g',
         },
@@ -114,7 +118,9 @@ describe(setRegExpCaseSensitivity.name, () => {
             it: 'does not duplicate i flag',
             inputs: [
                 /nothing to see here/i,
-                {caseSensitive: false},
+                {
+                    caseSensitive: false,
+                },
             ],
             expect: 'i',
         },
@@ -122,7 +128,9 @@ describe(setRegExpCaseSensitivity.name, () => {
             it: 'preserves existing flags',
             inputs: [
                 /nothing to see here/g,
-                {caseSensitive: false},
+                {
+                    caseSensitive: false,
+                },
             ],
             expect: 'gi',
         },
@@ -130,7 +138,9 @@ describe(setRegExpCaseSensitivity.name, () => {
             it: 'works with a string',
             inputs: [
                 'nothing to see here',
-                {caseSensitive: false},
+                {
+                    caseSensitive: false,
+                },
             ],
             expect: 'i',
         },

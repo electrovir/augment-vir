@@ -8,23 +8,35 @@ describe(retry.name, () => {
         const result = retry(2, () => true);
         assert.tsType(result).equals<boolean>();
 
-        const syncResultWithInterval = retry(2, () => true, {interval: {milliseconds: 1}});
+        const syncResultWithInterval = retry(2, () => true, {
+            interval: {
+                milliseconds: 1,
+            },
+        });
         assert.tsType(syncResultWithInterval).equals<Promise<boolean>>();
         await syncResultWithInterval;
 
         const asyncResultWithInterval = retry(
             2,
             async () => {
-                await wait({milliseconds: 0});
+                await wait({
+                    milliseconds: 0,
+                });
                 return true;
             },
-            {interval: {milliseconds: 1}},
+            {
+                interval: {
+                    milliseconds: 1,
+                },
+            },
         );
         assert.tsType(asyncResultWithInterval).equals<Promise<boolean>>();
         await asyncResultWithInterval;
 
         const promiseResult = retry(2, async () => {
-            await wait({milliseconds: 0});
+            await wait({
+                milliseconds: 0,
+            });
             return true;
         });
         assert.tsType(promiseResult).equals<Promise<boolean>>();
@@ -59,14 +71,20 @@ describe(retry.name, () => {
                 }
                 return 'hi';
             },
-            {interval: {milliseconds: 1}},
+            {
+                interval: {
+                    milliseconds: 1,
+                },
+            },
         );
         assert.strictEquals(result, 'hi');
     });
     it('retries with async callback', async () => {
         let counter = 0;
         const result = await retry(2, async () => {
-            await wait({milliseconds: 0});
+            await wait({
+                milliseconds: 0,
+            });
             ++counter;
             if (counter < 2) {
                 throw new Error('fail');
@@ -80,7 +98,9 @@ describe(retry.name, () => {
         const result = await retry(
             2,
             async () => {
-                await wait({milliseconds: 0});
+                await wait({
+                    milliseconds: 0,
+                });
                 ++counter;
                 if (counter < 2) {
                     throw new Error('fail');
@@ -134,7 +154,9 @@ describe(retry.name, () => {
         await assert.throws(
             () =>
                 retry(2, async (): Promise<string> => {
-                    await wait({milliseconds: 0});
+                    await wait({
+                        milliseconds: 0,
+                    });
                     throw new Error('fail');
                 }),
             {

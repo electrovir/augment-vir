@@ -15,10 +15,16 @@ describe(fromAsyncIterable.name, () => {
         const bareAsyncIterator: AsyncIterator<number> = {
             next(): Promise<IteratorResult<number>> {
                 if (bareIndex >= 3) {
-                    return Promise.resolve({done: true, value: undefined});
+                    return Promise.resolve({
+                        done: true,
+                        value: undefined,
+                    });
                 }
                 const current = bareIndex++;
-                return Promise.resolve({done: false, value: current});
+                return Promise.resolve({
+                    done: false,
+                    value: current,
+                });
             },
         };
 

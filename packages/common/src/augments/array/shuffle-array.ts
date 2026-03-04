@@ -13,7 +13,10 @@ export function shuffleArray<ArrayElementType>(
 ): Array<ArrayElementType> {
     return input
         .map((value) => {
-            return {value, sort: randomString()};
+            return {
+                value,
+                sort: randomString(),
+            };
         })
         .sort((a, b) => a.sort.localeCompare(b.sort))
         .map(({value}) => value);

@@ -425,8 +425,12 @@ export async function waitUntilOutput(
         ? emptyOrFailureMessage
         : (emptyOrFailureMessageOrOptions as string | undefined);
 
-    const timeout = convertDuration(options.timeout, {milliseconds: true}).milliseconds;
-    const interval = convertDuration(options.interval, {milliseconds: true});
+    const timeout = convertDuration(options.timeout, {
+        milliseconds: true,
+    }).milliseconds;
+    const interval = convertDuration(options.interval, {
+        milliseconds: true,
+    });
 
     let lastCallbackOutput: unknown = notSetSymbol;
     let lastError: Error | undefined = undefined;

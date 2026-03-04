@@ -9,17 +9,32 @@ import {mapObjectValues, mapObjectValuesSync} from './map-values.js';
 describe(mapObjectValuesSync.name, () => {
     it('should have proper types', () => {
         assert.notInstanceOf(
-            mapObjectValuesSync({thing: 5}, async () => {
-                return await waitValue({milliseconds: 40}, 0);
-            }),
+            mapObjectValuesSync(
+                {
+                    thing: 5,
+                },
+                async () => {
+                    return await waitValue(
+                        {
+                            milliseconds: 40,
+                        },
+                        0,
+                    );
+                },
+            ),
             Promise,
         );
 
         assert
             .tsType(
-                mapObjectValuesSync({thing: 2}, (key, value) => {
-                    return 5;
-                }),
+                mapObjectValuesSync(
+                    {
+                        thing: 2,
+                    },
+                    (key, value) => {
+                        return 5;
+                    },
+                ),
             )
             .equals<{thing: number}>();
     });
@@ -45,7 +60,11 @@ describe(mapObjectValuesSync.name, () => {
             return String(value).length;
         });
 
-        assert.deepEquals(mappedObject, {a: 1, b: 2, c: 13});
+        assert.deepEquals(mappedObject, {
+            a: 1,
+            b: 2,
+            c: 13,
+        });
     });
 });
 
@@ -170,7 +189,9 @@ describe(mapObjectValues.name, () => {
     it('should preserve properties with complex value types', () => {
         const originalObject = {
             a: 1,
-            b: {what: 'two'},
+            b: {
+                what: 'two',
+            },
             c: '3',
             d: 4,
             e: 5,

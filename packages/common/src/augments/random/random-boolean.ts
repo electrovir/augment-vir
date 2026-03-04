@@ -26,7 +26,10 @@ import {randomInteger} from './random-integer.js';
  */
 export function randomBoolean(percentLikelyToBeTrue: number = 50): boolean {
     return (
-        randomInteger({min: 0, max: 99}) <
+        randomInteger({
+            min: 0,
+            max: 99,
+        }) <
         clamp(Math.floor(percentLikelyToBeTrue), {
             min: 0,
             max: 100,

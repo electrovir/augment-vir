@@ -59,7 +59,11 @@ export async function getWorkspacePackageJsonFilePaths(rootDirPath: string): Pro
         (
             await Promise.all(
                 patterns.map(async (pattern) => {
-                    return await fromAsyncIterable(glob(pattern, {cwd: rootDirPath}));
+                    return await fromAsyncIterable(
+                        glob(pattern, {
+                            cwd: rootDirPath,
+                        }),
+                    );
                 }),
             )
         ).flat(),

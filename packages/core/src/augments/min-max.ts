@@ -18,8 +18,14 @@ export type MinMax = {
  */
 export function ensureMinMax({min, max}: MinMax): MinMax {
     if (min > max) {
-        return {min: max, max: min};
+        return {
+            min: max,
+            max: min,
+        };
     } else {
-        return {min, max};
+        return {
+            min,
+            max,
+        };
     }
 }

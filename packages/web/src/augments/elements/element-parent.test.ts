@@ -65,7 +65,9 @@ describe(findMatchingAncestor.name, () => {
             </div>
         `);
 
-        const deepChild = queryThroughShadow(parent, '.deep-child', {all: true})[0];
+        const deepChild = queryThroughShadow(parent, '.deep-child', {
+            all: true,
+        })[0];
 
         assert.instanceOf(deepChild, HTMLDivElement);
 

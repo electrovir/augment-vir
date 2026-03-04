@@ -36,7 +36,9 @@ describe(getDeepValue.name, () => {
         {
             it: 'handles a single key',
             inputs: [
-                {a: 'hi'},
+                {
+                    a: 'hi',
+                },
                 ['a'],
             ],
             expect: 'hi',
@@ -44,7 +46,9 @@ describe(getDeepValue.name, () => {
         {
             it: 'falls back to undefined',
             inputs: [
-                {a: 'hi'},
+                {
+                    a: 'hi',
+                },
                 [
                     'a',
                     'b',
@@ -56,7 +60,13 @@ describe(getDeepValue.name, () => {
         {
             it: 'accesses a nested key',
             inputs: [
-                {a: {b: {c: 'bye'}}},
+                {
+                    a: {
+                        b: {
+                            c: 'bye',
+                        },
+                    },
+                },
                 [
                     'a',
                     'b',
@@ -70,11 +80,20 @@ describe(getDeepValue.name, () => {
     it('has proper types', () => {
         assert
             .tsType(
-                getDeepValue({a: {b: {c: 'hi'}}}, [
-                    'a',
-                    'b',
-                    'c',
-                ]),
+                getDeepValue(
+                    {
+                        a: {
+                            b: {
+                                c: 'hi',
+                            },
+                        },
+                    },
+                    [
+                        'a',
+                        'b',
+                        'c',
+                    ],
+                ),
             )
             .equals<'hi'>();
     });

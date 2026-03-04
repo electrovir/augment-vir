@@ -322,7 +322,9 @@ describe(PromiseQueue.name, () => {
     it("fails to handle an item if there isn't currently one waiting", () => {
         class TestPromiseQueue extends PromiseQueue {
             public test() {
-                super.handleItemSettle({resolution: 'b'});
+                super.handleItemSettle({
+                    resolution: 'b',
+                });
             }
         }
 

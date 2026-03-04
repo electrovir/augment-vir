@@ -33,10 +33,17 @@ describe(omitObjectKeys.name, () => {
             {
                 it: 'should remove basic keys',
                 inputs: [
-                    {a: 1, b: 2, c: 3},
+                    {
+                        a: 1,
+                        b: 2,
+                        c: 3,
+                    },
                     ['b'],
                 ],
-                expect: {a: 1, c: 3},
+                expect: {
+                    a: 1,
+                    c: 3,
+                },
             },
         ],
     );
@@ -70,10 +77,16 @@ describe(pickObjectKeys.name, () => {
             {
                 it: 'should keep basic keys',
                 inputs: [
-                    {a: 1, b: 2, c: 3},
+                    {
+                        a: 1,
+                        b: 2,
+                        c: 3,
+                    },
                     ['b'],
                 ],
-                expect: {b: 2},
+                expect: {
+                    b: 2,
+                },
             },
         ],
     );

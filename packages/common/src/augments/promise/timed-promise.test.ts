@@ -5,7 +5,9 @@ import {randomString} from '../random/random-string.js';
 import {PromiseTimeoutError, wrapPromiseInTimeout} from './timed-promise.js';
 
 // increase if tests are flaky in other environments, like GitHub Actions (which is typically slow)
-const promiseDelay = {milliseconds: 500};
+const promiseDelay = {
+    milliseconds: 500,
+};
 
 describe(wrapPromiseInTimeout.name, () => {
     it('should not reject a promise when it is resolved in time', async () => {
@@ -62,7 +64,9 @@ describe(wrapPromiseInTimeout.name, () => {
 
         await assert.throws(
             wrapPromiseInTimeout(
-                {milliseconds: Infinity},
+                {
+                    milliseconds: Infinity,
+                },
                 Promise.reject(new Error(testErrorMessage)),
             ),
             {

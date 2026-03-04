@@ -24,7 +24,9 @@ const TestWithoutInputs = defineElement()({
 
 describe(testWeb.renderElement.name, () => {
     it('works on an element with inputs', async () => {
-        const instance = await testWeb.renderElement(TestWithInputs, {input: 'hi'});
+        const instance = await testWeb.renderElement(TestWithInputs, {
+            input: 'hi',
+        });
         assert.tsType(instance).equals<(typeof TestWithInputs)['InstanceType']>();
         assert.instanceOf(instance, TestWithInputs);
     });

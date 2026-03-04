@@ -35,7 +35,12 @@ describe(queryNpmWorkspace.name, () => {
             );
         }
 
-        await rm(tempWorkspaceQueryFile, {force: true});
-        await rm(join(dirname(tempWorkspaceQueryFile), 'dist'), {force: true, recursive: true});
+        await rm(tempWorkspaceQueryFile, {
+            force: true,
+        });
+        await rm(join(dirname(tempWorkspaceQueryFile), 'dist'), {
+            force: true,
+            recursive: true,
+        });
     });
 });

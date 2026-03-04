@@ -4,7 +4,12 @@ import {type AnyObject} from './generic-object-type.js';
 import {sortObject} from './object-sort.js';
 
 describe(sortObject.name, () => {
-    const outOfOrder = {z: 4, c: 3, a: 1, b: 2};
+    const outOfOrder = {
+        z: 4,
+        c: 3,
+        a: 1,
+        b: 2,
+    };
 
     it('does not mutate the original object', () => {
         assert.deepEquals(
@@ -79,7 +84,11 @@ describe(sortObject.name, () => {
                     {
                         c: 5,
                         b: 4,
-                        a: {s: 3, q: 1, r: 2},
+                        a: {
+                            s: 3,
+                            q: 1,
+                            r: 2,
+                        },
                     },
                 ],
                 expect: {

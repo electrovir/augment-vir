@@ -13,6 +13,8 @@ export async function writeFileAndDir(
     path: string,
     contents: string | NodeJS.ArrayBufferView,
 ): Promise<void> {
-    await mkdir(dirname(path), {recursive: true});
+    await mkdir(dirname(path), {
+        recursive: true,
+    });
     await writeFile(path, contents);
 }

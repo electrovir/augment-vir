@@ -95,7 +95,12 @@ export function streamShellCommand(
 ): ShellTarget {
     const stdio = hookUpToConsole ? [process.stdin] : undefined;
 
-    const childProcess = spawn(command, {shell, cwd, env, stdio});
+    const childProcess = spawn(command, {
+        shell,
+        cwd,
+        env,
+        stdio,
+    });
     const shellTarget = new ShellTarget(childProcess);
 
     /** Type guards. */
@@ -107,16 +112,28 @@ export function streamShellCommand(
     }
 
     childProcess.stdout.on('data', (chunk) => {
-        shellTarget.dispatch(new ShellStdoutEvent({detail: chunk}));
+        shellTarget.dispatch(
+            new ShellStdoutEvent({
+                detail: chunk,
+            }),
+        );
     });
     childProcess.stderr.on('data', (chunk) => {
-        shellTarget.dispatch(new ShellStderrEvent({detail: chunk}));
+        shellTarget.dispatch(
+            new ShellStderrEvent({
+                detail: chunk,
+            }),
+        );
     });
 
     /** Idk how to trigger the 'error' event. */
     /* node:coverage ignore next 3 */
     childProcess.on('error', (error) => {
-        shellTarget.dispatch(new ShellErrorEvent({detail: error}));
+        shellTarget.dispatch(
+            new ShellErrorEvent({
+                detail: error,
+            }),
+        );
     });
     /**
      * Based on the Node.js documentation, we should listen to "close" instead of "exit" because the
@@ -143,7 +160,11 @@ export function streamShellCommand(
             execException.cmd = command;
             execException.killed = childProcess.killed;
             execException.cwd = cwd;
-            shellTarget.dispatch(new ShellErrorEvent({detail: execException}));
+            shellTarget.dispatch(
+                new ShellErrorEvent({
+                    detail: execException,
+                }),
+            );
         }
         shellTarget.dispatch(
             new ShellDoneEvent({

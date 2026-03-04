@@ -90,7 +90,17 @@ describe('jsonEquals', () => {
         });
         it('rejects', () => {
             assert.throws(() => assert.jsonEquals(actualReject, expected));
-            assert.throws(() => assert.jsonEquals({a: '1'}, {a: '1', b: '2'}));
+            assert.throws(() =>
+                assert.jsonEquals(
+                    {
+                        a: '1',
+                    },
+                    {
+                        a: '1',
+                        b: '2',
+                    },
+                ),
+            );
         });
     });
     describe('check', () => {
@@ -113,14 +123,18 @@ describe('jsonEquals', () => {
                 it: 'handles empty first arg',
                 inputs: [
                     {},
-                    {a: 'b'},
+                    {
+                        a: 'b',
+                    },
                 ],
                 expect: false,
             },
             {
                 it: 'handles empty last arg',
                 inputs: [
-                    {a: 'b'},
+                    {
+                        a: 'b',
+                    },
                     {},
                 ],
                 expect: false,
@@ -183,7 +197,10 @@ describe('notJsonEquals', () => {
         a: 'first',
         c: 'second',
     };
-    const expected = {a: 'first', c: 'second'};
+    const expected = {
+        a: 'first',
+        c: 'second',
+    };
 
     describe('assert', () => {
         it('accepts', () => {

@@ -54,7 +54,10 @@ export async function readAllDirContents(
             const contents = isFile
                 ? (await readFile(filePath)).toString()
                 : recursive
-                  ? await readAllDirContents(filePath, {recursive, excludeList})
+                  ? await readAllDirContents(filePath, {
+                        recursive,
+                        excludeList,
+                    })
                   : undefined;
 
             if (check.isObject(contents) && !Object.keys(contents).length) {

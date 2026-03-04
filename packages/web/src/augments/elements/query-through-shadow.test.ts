@@ -32,7 +32,11 @@ describe(queryThroughShadow.name, () => {
     it('has correct typings', () => {
         // all = false should not return an array
         assert
-            .tsType(queryThroughShadow({} as any, '', {all: false}))
+            .tsType(
+                queryThroughShadow({} as any, '', {
+                    all: false,
+                }),
+            )
             .equals<Element | undefined>();
         // all = true should return an array
         assert
@@ -59,7 +63,9 @@ describe(queryThroughShadow.name, () => {
                     <div class=${classNames.notNestedDiv}></div>
                 </div>
             `);
-            const result = queryThroughShadow(rendered, query, {all});
+            const result = queryThroughShadow(rendered, query, {
+                all,
+            });
 
             if (all) {
                 assert.isArray(result);

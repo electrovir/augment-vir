@@ -27,11 +27,23 @@ export const defaultLogWriters: LogWriters =
         : /* node:coverage enable  */
           {
               [LogOutputType.Error]({text, css}) {
-                  console.error(addPrefix({value: text, prefix: '%c'}), css);
+                  console.error(
+                      addPrefix({
+                          value: text,
+                          prefix: '%c',
+                      }),
+                      css,
+                  );
               },
               [LogOutputType.Standard]({text, css}) {
                   // eslint-disable-next-line no-console
-                  console.log(addPrefix({value: text, prefix: '%c'}), css);
+                  console.log(
+                      addPrefix({
+                          value: text,
+                          prefix: '%c',
+                      }),
+                      css,
+                  );
               },
           };
 
@@ -90,5 +102,8 @@ export function createArrayLogger(options?: PartialWithUndefined<LoggerOptions> 
         options,
     );
 
-    return {log, logs};
+    return {
+        log,
+        logs,
+    };
 }

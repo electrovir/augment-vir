@@ -66,7 +66,10 @@ async function createToLogString(): Promise<ToLogString> {
                         : options.colorConfig[LogColorKey.Reset].colors.join(''),
                 ].join('');
 
-                return {text, css: undefined};
+                return {
+                    text,
+                    css: undefined,
+                };
             };
         },
         /**
@@ -104,7 +107,10 @@ async function createToLogString(): Promise<ToLogString> {
                         : options.colorConfig[LogColorKey.Reset].colors.join(''),
                 ].join('');
 
-                return {text, css};
+                return {
+                    text,
+                    css,
+                };
             };
         },
         /* node:coverage enable  */

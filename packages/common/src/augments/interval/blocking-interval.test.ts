@@ -17,17 +17,23 @@ describe(createBlockingInterval.name, () => {
 
         await waitUntil.isAbove(5, () => callCount);
         clearInterval();
-        await wait({seconds: 1});
+        await wait({
+            seconds: 1,
+        });
         const savedCallCount = callCount;
 
-        await wait({seconds: 2});
+        await wait({
+            seconds: 2,
+        });
         assert.strictEquals(savedCallCount, callCount);
     });
     it('prevents overlapping executions', async () => {
         let callCount = 0;
         const {clearInterval} = createBlockingInterval(
             async () => {
-                await wait({seconds: 1});
+                await wait({
+                    seconds: 1,
+                });
                 ++callCount;
             },
             {

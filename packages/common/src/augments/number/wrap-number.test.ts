@@ -8,7 +8,10 @@ describe(wrapNumber.name, () => {
             it: 'wraps above max',
             inputs: [
                 10,
-                {min: 0, max: 5},
+                {
+                    min: 0,
+                    max: 5,
+                },
             ],
             expect: 0,
         },
@@ -16,7 +19,10 @@ describe(wrapNumber.name, () => {
             it: 'wraps below min',
             inputs: [
                 1,
-                {min: 5, max: 10},
+                {
+                    min: 5,
+                    max: 10,
+                },
             ],
             expect: 10,
         },
@@ -24,7 +30,10 @@ describe(wrapNumber.name, () => {
             it: 'ignores in-between values',
             inputs: [
                 5,
-                {min: 0, max: 10},
+                {
+                    min: 0,
+                    max: 10,
+                },
             ],
             expect: 5,
         },
@@ -32,7 +41,11 @@ describe(wrapNumber.name, () => {
             it: 'allows overflowing positive with min = 0',
             inputs: [
                 13,
-                {min: 0, max: 3, takeOverflow: true},
+                {
+                    min: 0,
+                    max: 3,
+                    takeOverflow: true,
+                },
             ],
             expect: 1,
         },
@@ -40,7 +53,11 @@ describe(wrapNumber.name, () => {
             it: 'allows overflowing negative with min = 0',
             inputs: [
                 -7,
-                {min: 0, max: 3, takeOverflow: true},
+                {
+                    min: 0,
+                    max: 3,
+                    takeOverflow: true,
+                },
             ],
             expect: 1,
         },
@@ -48,7 +65,11 @@ describe(wrapNumber.name, () => {
             it: 'allows overflowing positive with min > 0',
             inputs: [
                 7,
-                {min: 2, max: 5, takeOverflow: true},
+                {
+                    min: 2,
+                    max: 5,
+                    takeOverflow: true,
+                },
             ],
             expect: 3,
         },
@@ -56,7 +77,11 @@ describe(wrapNumber.name, () => {
             it: 'allows overflowing negative with min > 0',
             inputs: [
                 -7,
-                {min: 2, max: 5, takeOverflow: true},
+                {
+                    min: 2,
+                    max: 5,
+                    takeOverflow: true,
+                },
             ],
             expect: 5,
         },
@@ -64,7 +89,11 @@ describe(wrapNumber.name, () => {
             it: 'allows overflowing positive with min < 0',
             inputs: [
                 7,
-                {min: -2, max: 5, takeOverflow: true},
+                {
+                    min: -2,
+                    max: 5,
+                    takeOverflow: true,
+                },
             ],
             expect: -1,
         },
@@ -72,7 +101,11 @@ describe(wrapNumber.name, () => {
             it: 'allows overflowing negative with min < 0',
             inputs: [
                 -10,
-                {min: -2, max: 5, takeOverflow: true},
+                {
+                    min: -2,
+                    max: 5,
+                    takeOverflow: true,
+                },
             ],
             expect: -2,
         },
@@ -80,7 +113,11 @@ describe(wrapNumber.name, () => {
             it: 'ignores non wrapping value with overflow',
             inputs: [
                 7,
-                {min: 0, max: 10, takeOverflow: true},
+                {
+                    min: 0,
+                    max: 10,
+                    takeOverflow: true,
+                },
             ],
             expect: 7,
         },
@@ -92,12 +129,34 @@ describe(wrapNumber.name, () => {
         const negativeWrapNoOverflow: number[] = [];
 
         for (let i = 0; i < 12; i++) {
-            positiveWrapping.push(wrapNumber(i, {min: 0, max: 4, takeOverflow: true}));
-            positiveWrapNoOverflow.push(wrapNumber(i, {min: 0, max: 4}));
+            positiveWrapping.push(
+                wrapNumber(i, {
+                    min: 0,
+                    max: 4,
+                    takeOverflow: true,
+                }),
+            );
+            positiveWrapNoOverflow.push(
+                wrapNumber(i, {
+                    min: 0,
+                    max: 4,
+                }),
+            );
         }
         for (let i = 0; i > -12; i--) {
-            negativeWrapping.push(wrapNumber(i, {min: 0, max: 4, takeOverflow: true}));
-            negativeWrapNoOverflow.push(wrapNumber(i, {min: 0, max: 4}));
+            negativeWrapping.push(
+                wrapNumber(i, {
+                    min: 0,
+                    max: 4,
+                    takeOverflow: true,
+                }),
+            );
+            negativeWrapNoOverflow.push(
+                wrapNumber(i, {
+                    min: 0,
+                    max: 4,
+                }),
+            );
         }
 
         assert.deepEquals(

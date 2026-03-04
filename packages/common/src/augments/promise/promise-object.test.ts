@@ -8,7 +8,12 @@ describe(awaitAllPromisesInObject.name, () => {
         const promiseObject = {
             notPromise: 'hi',
             promise: Promise.resolve('hi 2'),
-            waitedPromise: waitValue({milliseconds: 10}, 'hi 3'),
+            waitedPromise: waitValue(
+                {
+                    milliseconds: 10,
+                },
+                'hi 3',
+            ),
         };
 
         const result = awaitAllPromisesInObject(promiseObject);

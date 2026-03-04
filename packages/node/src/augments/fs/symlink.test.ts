@@ -11,12 +11,17 @@ describe(createSymlink.name, () => {
 
     it('creates symlink to a directory', async () => {
         try {
-            await createSymlink({linkTo: import.meta.dirname, symlinkPath: testSymlinkFilePath});
+            await createSymlink({
+                linkTo: import.meta.dirname,
+                symlinkPath: testSymlinkFilePath,
+            });
 
             assert.isTrue(existsSync(testSymlinkFilePath));
             assert.isTrue((await lstat(testSymlinkFilePath)).isSymbolicLink());
         } finally {
-            await rm(testSymlinkFilePath, {force: true});
+            await rm(testSymlinkFilePath, {
+                force: true,
+            });
         }
     });
     it('creates symlink to a file', async () => {
@@ -29,12 +34,17 @@ describe(createSymlink.name, () => {
             assert.isTrue(existsSync(testSymlinkFilePath));
             assert.isTrue((await lstat(testSymlinkFilePath)).isSymbolicLink());
         } finally {
-            await rm(testSymlinkFilePath, {force: true});
+            await rm(testSymlinkFilePath, {
+                force: true,
+            });
         }
     });
     it('errors if there is already a symlink', async () => {
         try {
-            await createSymlink({linkTo: import.meta.dirname, symlinkPath: testSymlinkFilePath});
+            await createSymlink({
+                linkTo: import.meta.dirname,
+                symlinkPath: testSymlinkFilePath,
+            });
             await assert.throws(
                 createSymlink({
                     linkTo: join(import.meta.dirname, 'something-else'),
@@ -45,20 +55,27 @@ describe(createSymlink.name, () => {
                 },
             );
         } finally {
-            await rm(testSymlinkFilePath, {force: true});
+            await rm(testSymlinkFilePath, {
+                force: true,
+            });
         }
     });
     it('errors if there is already a file at the given location', async () => {
         try {
             await writeFile(testSymlinkFilePath, 'test');
             await assert.throws(
-                createSymlink({linkTo: import.meta.dirname, symlinkPath: testSymlinkFilePath}),
+                createSymlink({
+                    linkTo: import.meta.dirname,
+                    symlinkPath: testSymlinkFilePath,
+                }),
                 {
                     matchMessage: 'but a non-symlink file already exists in that location',
                 },
             );
         } finally {
-            await rm(testSymlinkFilePath, {force: true});
+            await rm(testSymlinkFilePath, {
+                force: true,
+            });
         }
     });
 });

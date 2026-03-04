@@ -18,7 +18,9 @@ export function wait(duration: Readonly<AnyDuration>): Promise<void> {
 
     const milliseconds = isInfinity
         ? Infinity
-        : convertDuration(duration, {milliseconds: true}).milliseconds;
+        : convertDuration(duration, {
+              milliseconds: true,
+          }).milliseconds;
 
     if (milliseconds !== Infinity && milliseconds !== -Infinity) {
         setTimeout(

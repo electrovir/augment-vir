@@ -57,7 +57,9 @@ export async function writeJsonFile(
     data: JsonCompatibleValue,
     options: WriteJsonOptions = {},
 ): Promise<void> {
-    await mkdir(dirname(path), {recursive: true});
+    await mkdir(dirname(path), {
+        recursive: true,
+    });
 
     const trailingNewLine = options.includeTrailingNewLine ? '\n' : '';
 

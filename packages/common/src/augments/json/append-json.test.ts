@@ -34,17 +34,23 @@ describe(appendJson.name, () => {
             it: 'appends an object into an array',
             inputs: [
                 'a',
-                {a: 'b'},
+                {
+                    a: 'b',
+                },
             ],
             expect: [
                 'a',
-                {a: 'b'},
+                {
+                    a: 'b',
+                },
             ],
         },
         {
             it: 'appends a string into an object',
             inputs: [
-                {a: 'b'},
+                {
+                    a: 'b',
+                },
                 'a',
             ],
             expect: {

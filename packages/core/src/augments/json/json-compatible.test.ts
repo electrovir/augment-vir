@@ -22,17 +22,31 @@ describe('JsonCompatibleValue', () => {
         function acceptObject(input: JsonCompatibleObject) {}
 
         const readonlyEmptyObject = {} as const;
-        const readonlyFilledObject = {stuff: 'value', nested: ['hi'], what: undefined} as const;
+        const readonlyFilledObject = {
+            stuff: 'value',
+            nested: ['hi'],
+            what: undefined,
+        } as const;
 
-        acceptObject({derp: 'derp'});
-        acceptObject({derp: undefined});
-        acceptObject({derp: 'derp'} as Readonly<Record<string, string>>);
+        acceptObject({
+            derp: 'derp',
+        });
+        acceptObject({
+            derp: undefined,
+        });
+        acceptObject({
+            derp: 'derp',
+        } as Readonly<Record<string, string>>);
         acceptObject({} as {derp?: string; foo?: string});
         acceptObject({} as {derp?: string | undefined; foo?: string | undefined});
-        acceptObject({derp: 'hi'} as {readonly derp: string | undefined; foo?: string | undefined});
+        acceptObject({
+            derp: 'hi',
+        } as {readonly derp: string | undefined; foo?: string | undefined});
         acceptObject(readonlyEmptyObject);
         acceptObject(readonlyFilledObject);
-        acceptObject({0: 'hello'});
+        acceptObject({
+            0: 'hello',
+        });
         // @ts-expect-error: string is not an object
         acceptObject('derp');
         // @ts-expect-error: array is not an object
@@ -51,10 +65,14 @@ describe('JsonCompatibleValue', () => {
         acceptArray([] as Array<JsonCompatibleObject>);
         acceptArray([] as Array<JsonCompatibleArray>);
         // @ts-expect-error: object with number key is not an array
-        acceptArray({0: 'hello'});
+        acceptArray({
+            0: 'hello',
+        });
         // @ts-expect-error: string is not an array
         acceptArray('derp');
         // @ts-expect-error: object is not an array
-        acceptArray({derp: 'derp'});
+        acceptArray({
+            derp: 'derp',
+        });
     });
 });

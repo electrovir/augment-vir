@@ -9,7 +9,9 @@ describe(executeCount.name, () => {
         assert.tsType(syncResult).equals<Tuple<string, 3>>();
 
         const asyncResult = executeCount(3, async () => {
-            await wait({milliseconds: 0});
+            await wait({
+                milliseconds: 0,
+            });
             return 'hello';
         });
         assert.tsType(asyncResult).equals<Promise<Tuple<string, 3>>>();
@@ -23,7 +25,9 @@ describe(executeCount.name, () => {
         assert.tsType(voidResult).notEquals<Promise<Tuple<void | undefined, 2>>>();
 
         const asyncVoidResult = executeCount(2, async () => {
-            await wait({milliseconds: 0});
+            await wait({
+                milliseconds: 0,
+            });
         });
         assert.tsType(asyncVoidResult).equals<Promise<Tuple<void, 2>>>();
         await asyncVoidResult;
@@ -76,7 +80,9 @@ describe(executeCount.name, () => {
 
     it('collects return values', async () => {
         const result = await executeCount(4, async (currentCount) => {
-            await wait({milliseconds: 0});
+            await wait({
+                milliseconds: 0,
+            });
             return currentCount * 10;
         });
         assert.deepEquals(
@@ -95,7 +101,9 @@ describe(executeCount.name, () => {
 
         const result = await executeCount(4, async (currentCount) => {
             /** Earlier calls wait longer; if parallel, order would be reversed. */
-            await wait({milliseconds: 5 - currentCount});
+            await wait({
+                milliseconds: 5 - currentCount,
+            });
             executionOrder.push(currentCount);
             return currentCount;
         });
@@ -131,7 +139,9 @@ describe(executeCount.name, () => {
             } else {
                 /** Even counts return a promise. */
                 const deferredPromise = new DeferredPromise<number>();
-                wait({milliseconds: 1})
+                wait({
+                    milliseconds: 1,
+                })
                     .then(() => deferredPromise.resolve(currentCount))
                     .catch(() => deferredPromise.reject());
 
@@ -192,7 +202,9 @@ describe(executeCount.name, () => {
 
     it('executes a single iteration', async () => {
         const result = await executeCount(1, async (currentCount, totalCount) => {
-            await wait({milliseconds: 0});
+            await wait({
+                milliseconds: 0,
+            });
             assert.strictEquals(currentCount, 1);
             assert.strictEquals(totalCount, 1);
             return 'only';

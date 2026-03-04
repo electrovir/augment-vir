@@ -1,5 +1,5 @@
 /* eslint-disable unicorn/prefer-code-point */
-/* eslint-disable sonarjs/no-control-regex */
+
 /* eslint-disable no-control-regex */
 
 import {getByteLength} from '../string/length.js';
@@ -115,7 +115,6 @@ function truncate(string: string, byteLength: number) {
         segment = string[i]!;
 
         if (isHighSurrogate(codePoint) && isLowSurrogate(string.charCodeAt(i + 1))) {
-            // eslint-disable-next-line sonarjs/updated-loop-counter
             i += 1;
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             segment += string[i]!;

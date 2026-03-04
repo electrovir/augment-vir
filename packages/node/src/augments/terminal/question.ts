@@ -18,7 +18,9 @@ export type AskQuestionOptions = {
 };
 
 const defaultAskQuestionOptions: AskQuestionOptions = {
-    timeout: {seconds: 60},
+    timeout: {
+        seconds: 60,
+    },
     hideUserInput: false,
 };
 
@@ -67,7 +69,9 @@ export async function askQuestion(
     });
 
     return new Promise((resolve, reject) => {
-        const timeoutMs = convertDuration(timeout, {milliseconds: true}).milliseconds;
+        const timeoutMs = convertDuration(timeout, {
+            milliseconds: true,
+        }).milliseconds;
 
         const timeoutId = timeoutMs
             ? setTimeout(() => {

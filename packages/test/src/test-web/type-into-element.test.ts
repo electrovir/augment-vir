@@ -18,7 +18,12 @@ describe(testWeb.typeText.name, () => {
 
         await testWeb.typeText('h');
 
-        const keyboardEvent = await wrapPromiseInTimeout({seconds: 5}, deferredEvent.promise);
+        const keyboardEvent = await wrapPromiseInTimeout(
+            {
+                seconds: 5,
+            },
+            deferredEvent.promise,
+        );
 
         assert.strictEquals(keyboardEvent.key, 'h');
     });

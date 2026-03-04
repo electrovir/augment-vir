@@ -201,7 +201,9 @@ describe(arrayToObject.name, () => {
                     });
                 },
             ],
-            expect: {five: 'value'},
+            expect: {
+                five: 'value',
+            },
         },
         {
             it: 'filters out undefined async values',
@@ -221,7 +223,9 @@ describe(arrayToObject.name, () => {
                     });
                 },
             ],
-            expect: {five: true},
+            expect: {
+                five: true,
+            },
         },
         {
             it: 'handles a mix of sync and async values',
@@ -267,7 +271,9 @@ describe(arrayToObject.name, () => {
                     };
                 },
             ],
-            expect: {five: true},
+            expect: {
+                five: true,
+            },
         },
         {
             it: 'handles an async callback error',

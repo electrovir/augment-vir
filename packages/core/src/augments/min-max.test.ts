@@ -9,7 +9,10 @@ describe(ensureMinMax.name, () => {
                 min: 0,
                 max: 10,
             },
-            expect: {min: 0, max: 10},
+            expect: {
+                min: 0,
+                max: 10,
+            },
         },
         {
             it: 'fixes out of order min and max',
@@ -17,7 +20,10 @@ describe(ensureMinMax.name, () => {
                 min: 12,
                 max: 2,
             },
-            expect: {min: 2, max: 12},
+            expect: {
+                min: 2,
+                max: 12,
+            },
         },
         {
             it: 'leaves correctly ordered negative values alone',
@@ -25,7 +31,10 @@ describe(ensureMinMax.name, () => {
                 min: -16,
                 max: -1,
             },
-            expect: {min: -16, max: -1},
+            expect: {
+                min: -16,
+                max: -1,
+            },
         },
         {
             it: 'fixes out of order negative values',
@@ -33,7 +42,10 @@ describe(ensureMinMax.name, () => {
                 min: -3,
                 max: -21,
             },
-            expect: {min: -21, max: -3},
+            expect: {
+                min: -21,
+                max: -3,
+            },
         },
         {
             it: 'leaves correctly ordered values across the negative boundary',
@@ -41,7 +53,10 @@ describe(ensureMinMax.name, () => {
                 min: -33,
                 max: 7,
             },
-            expect: {min: -33, max: 7},
+            expect: {
+                min: -33,
+                max: 7,
+            },
         },
         {
             it: 'fixes out of order values across the negative boundary',
@@ -49,7 +64,10 @@ describe(ensureMinMax.name, () => {
                 min: 17,
                 max: -42,
             },
-            expect: {min: -42, max: 17},
+            expect: {
+                min: -42,
+                max: 17,
+            },
         },
         {
             it: 'fixes values with a zero',
@@ -57,7 +75,10 @@ describe(ensureMinMax.name, () => {
                 min: 0,
                 max: -9,
             },
-            expect: {min: -9, max: 0},
+            expect: {
+                min: -9,
+                max: 0,
+            },
         },
         {
             it: 'fixes values with decimals',
@@ -65,7 +86,10 @@ describe(ensureMinMax.name, () => {
                 min: 1.5,
                 max: 1.3,
             },
-            expect: {min: 1.3, max: 1.5},
+            expect: {
+                min: 1.3,
+                max: 1.5,
+            },
         },
     ]);
 });

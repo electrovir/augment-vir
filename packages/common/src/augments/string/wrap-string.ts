@@ -17,5 +17,11 @@ import {addSuffix} from './suffix.js';
  * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function wrapString({value, wrapper}: {value: string; wrapper: string}): string {
-    return addPrefix({value: addSuffix({value, suffix: wrapper}), prefix: wrapper});
+    return addPrefix({
+        value: addSuffix({
+            value,
+            suffix: wrapper,
+        }),
+        prefix: wrapper,
+    });
 }

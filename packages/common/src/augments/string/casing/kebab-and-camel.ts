@@ -56,8 +56,12 @@ export function camelCaseToKebabCase(rawCamelCase: string) {
             const nextLetter: string =
                 index < originalString.length - 1 ? originalString[index + 1] || '' : '';
             const possibleWordBoundary =
-                isCase(previousLetter, StringCase.Lower, {rejectNoCaseCharacters: true}) ||
-                isCase(nextLetter, StringCase.Lower, {rejectNoCaseCharacters: true});
+                isCase(previousLetter, StringCase.Lower, {
+                    rejectNoCaseCharacters: true,
+                }) ||
+                isCase(nextLetter, StringCase.Lower, {
+                    rejectNoCaseCharacters: true,
+                });
 
             if (
                 currentLetter === currentLetter.toLowerCase() ||

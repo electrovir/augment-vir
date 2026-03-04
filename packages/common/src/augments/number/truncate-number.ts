@@ -222,7 +222,10 @@ export function truncateNumber(
 
     // handle too big or too small edge cases
     if (requiresScientificNotation(inputNumber)) {
-        return truncateScientificNotation({input: inputNumber, maxLength});
+        return truncateScientificNotation({
+            input: inputNumber,
+            maxLength,
+        });
     }
 
     const numberAsString = String(inputNumber);

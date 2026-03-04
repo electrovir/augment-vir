@@ -53,7 +53,16 @@ function recursivelySortObject(
         Object.entries(original)
             .sort((a, b) => {
                 if (comparison) {
-                    return comparison({key: a[0], value: a[1]}, {key: b[0], value: b[1]});
+                    return comparison(
+                        {
+                            key: a[0],
+                            value: a[1],
+                        },
+                        {
+                            key: b[0],
+                            value: b[1],
+                        },
+                    );
                 } else {
                     return a[0].localeCompare(b[0]);
                 }

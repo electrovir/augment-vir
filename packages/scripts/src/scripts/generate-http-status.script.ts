@@ -81,7 +81,10 @@ function parseStatusEntries(htmlString: string) {
             assert.isDefined(hyperlinkChild);
             const url = [
                 'https://developer.mozilla.org',
-                removePrefix({value: hyperlinkChild.href, prefix: '/'}),
+                removePrefix({
+                    value: hyperlinkChild.href,
+                    prefix: '/',
+                }),
             ].join('/');
 
             const [

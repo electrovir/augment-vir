@@ -40,7 +40,9 @@ describe('isKeyOf', () => {
                 it: 'passes with a string prop on an object',
                 inputs: [
                     stringKey,
-                    {[stringKey]: 0},
+                    {
+                        [stringKey]: 0,
+                    },
                 ],
                 expect: true,
             },
@@ -48,7 +50,9 @@ describe('isKeyOf', () => {
                 it: 'passes with a symbol prop on an object',
                 inputs: [
                     symbolKey,
-                    {[symbolKey]: 0},
+                    {
+                        [symbolKey]: 0,
+                    },
                 ],
                 expect: true,
             },
@@ -56,7 +60,9 @@ describe('isKeyOf', () => {
                 it: 'passes with a numeric prop on an object',
                 inputs: [
                     numberKey,
-                    {[numberKey]: 0},
+                    {
+                        [numberKey]: 0,
+                    },
                 ],
                 expect: true,
             },
@@ -195,7 +201,9 @@ describe('isNotKeyOf', () => {
                 it: 'rejects with a string prop on an object',
                 inputs: [
                     stringKey,
-                    {[stringKey]: 0},
+                    {
+                        [stringKey]: 0,
+                    },
                 ],
                 expect: false,
             },
@@ -203,7 +211,9 @@ describe('isNotKeyOf', () => {
                 it: 'rejects with a symbol prop on an object',
                 inputs: [
                     symbolKey,
-                    {[symbolKey]: 0},
+                    {
+                        [symbolKey]: 0,
+                    },
                 ],
                 expect: false,
             },
@@ -211,7 +221,9 @@ describe('isNotKeyOf', () => {
                 it: 'rejects with a numeric prop on an object',
                 inputs: [
                     numberKey,
-                    {[numberKey]: 0},
+                    {
+                        [numberKey]: 0,
+                    },
                 ],
                 expect: false,
             },

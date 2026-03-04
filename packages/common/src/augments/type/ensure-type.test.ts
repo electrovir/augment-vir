@@ -23,8 +23,12 @@ describe(ensureType.name, () => {
         ensureType<string>(5);
         ensureType<string>('5');
         // @ts-expect-error
-        ensureType<{who: number}>({what: 5});
-        ensureType<{who: number}>({who: 5});
+        ensureType<{who: number}>({
+            what: 5,
+        });
+        ensureType<{who: number}>({
+            who: 5,
+        });
         ensureType<{who?: number}>({});
         // @ts-expect-error
         const wrongAssignment: number = ensureType<string>('actually a string');

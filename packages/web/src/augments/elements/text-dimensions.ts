@@ -58,8 +58,12 @@ export async function calculateTextDimensions(
         await waitUntil.isTruthy(
             () => !!latestSize,
             {
-                interval: {milliseconds: 0},
-                timeout: customOptions?.timeout || {seconds: 10},
+                interval: {
+                    milliseconds: 0,
+                },
+                timeout: customOptions?.timeout || {
+                    seconds: 10,
+                },
             },
             customOptions?.errorMessage ||
                 `Failed to calculate text size in '${parentElement.tagName}'.`,

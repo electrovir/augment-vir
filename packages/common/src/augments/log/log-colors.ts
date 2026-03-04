@@ -140,7 +140,10 @@ export const defaultLogColorConfig: LogColorConfig = {
         colors: [logColors.normalWeight],
         logType: LogOutputType.Standard,
     },
-    [LogColorKey.Plain]: {colors: [], logType: LogOutputType.Standard},
+    [LogColorKey.Plain]: {
+        colors: [],
+        logType: LogOutputType.Standard,
+    },
     [LogColorKey.Reset]: {
         colors: [logColors.reset],
         logType: LogOutputType.Standard,

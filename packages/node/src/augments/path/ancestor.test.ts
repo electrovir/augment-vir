@@ -61,7 +61,9 @@ describe(findAncestor.name, () => {
         {
             it: 'works with async callback',
             input: async (dir) => {
-                await wait({milliseconds: 1});
+                await wait({
+                    milliseconds: 1,
+                });
                 return basename(dir) === 'node';
             },
             expect: join('packages', 'node'),
@@ -76,7 +78,9 @@ describe(findAncestor.name, () => {
         {
             it: 'fails with async callback',
             input: async () => {
-                await wait({milliseconds: 1});
+                await wait({
+                    milliseconds: 1,
+                });
                 return false;
             },
             expect: undefined,

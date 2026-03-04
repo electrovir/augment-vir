@@ -33,10 +33,14 @@ export async function handleNewPageOrDownload(
             .context()
             .waitForEvent('page')
             .then((result) => {
-                return {newPage: result};
+                return {
+                    newPage: result,
+                };
             }),
         testContext.page.waitForEvent('download').then((result) => {
-            return {download: result};
+            return {
+                download: result,
+            };
         }),
     ]);
 

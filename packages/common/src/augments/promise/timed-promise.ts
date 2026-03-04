@@ -19,7 +19,11 @@ export class PromiseTimeoutError extends Error {
         super(
             [
                 failureMessage,
-                `Promised timed out after ${convertDuration(duration, {milliseconds: true}).milliseconds} ms.`,
+                `Promised timed out after ${
+                    convertDuration(duration, {
+                        milliseconds: true,
+                    }).milliseconds
+                } ms.`,
             ]
                 .filter(check.isTruthy)
                 .join(': '),
@@ -44,7 +48,9 @@ export function wrapPromiseInTimeout<T>(
 
     const milliseconds = isInfinity
         ? Infinity
-        : convertDuration(duration, {milliseconds: true}).milliseconds;
+        : convertDuration(duration, {
+              milliseconds: true,
+          }).milliseconds;
 
     return new Promise<T>(async (resolve, reject) => {
         const timeoutId =

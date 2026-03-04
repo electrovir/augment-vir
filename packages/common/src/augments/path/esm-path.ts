@@ -24,7 +24,10 @@ import {removeSuffix} from '../string/suffix.js';
  */
 export function getEsmPath(importMeta: ImportMeta): {filePath: string; dirPath: string} {
     const filePath = new URL('', importMeta.url).pathname;
-    const dirPath = removeSuffix({value: new URL('.', importMeta.url).pathname, suffix: '/'});
+    const dirPath = removeSuffix({
+        value: new URL('.', importMeta.url).pathname,
+        suffix: '/',
+    });
 
     return {
         filePath,

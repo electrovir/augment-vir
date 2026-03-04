@@ -65,10 +65,14 @@ describe(wrapInTry.name, () => {
             it: 'works with async callbacks and a fallback',
             inputs: [
                 async () => {
-                    await wait({milliseconds: 1});
+                    await wait({
+                        milliseconds: 1,
+                    });
                     throw new Error('yikes');
                 },
-                {fallbackValue: 'got the fallbackValue'},
+                {
+                    fallbackValue: 'got the fallbackValue',
+                },
             ],
             expect: 'got the fallbackValue',
         },
@@ -76,7 +80,9 @@ describe(wrapInTry.name, () => {
             it: 'works with async callback and handle error',
             inputs: [
                 async () => {
-                    await wait({milliseconds: 1});
+                    await wait({
+                        milliseconds: 1,
+                    });
                     throw new Error('yikes');
                 },
                 {
@@ -91,7 +97,9 @@ describe(wrapInTry.name, () => {
             it: 'works with async callback',
             inputs: [
                 async () => {
-                    await wait({milliseconds: 1});
+                    await wait({
+                        milliseconds: 1,
+                    });
                     throw new Error('yikes');
                 },
             ],
@@ -101,7 +109,11 @@ describe(wrapInTry.name, () => {
 
     it('allows an undefined fallback value type', () => {
         assert
-            .tsType(wrapInTry(() => 'yo', {fallbackValue: undefined}))
+            .tsType(
+                wrapInTry(() => 'yo', {
+                    fallbackValue: undefined,
+                }),
+            )
             .equals<string | undefined>();
     });
 
@@ -111,7 +123,9 @@ describe(wrapInTry.name, () => {
         assert
             .tsType(
                 wrapInTry(async () => {
-                    await wait({milliseconds: 0});
+                    await wait({
+                        milliseconds: 0,
+                    });
                     return 'hello';
                 }, {}),
             )
@@ -119,7 +133,9 @@ describe(wrapInTry.name, () => {
         assert
             .tsType(
                 wrapInTry(async () => {
-                    await wait({milliseconds: 0});
+                    await wait({
+                        milliseconds: 0,
+                    });
                     return 'hello';
                 }),
             )

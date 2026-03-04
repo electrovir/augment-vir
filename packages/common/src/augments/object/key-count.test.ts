@@ -6,7 +6,10 @@ import {type KeyCount} from './key-count.js';
 describe('KeyCount', () => {
     it('counts keys', () => {
         assert.tsType<KeyCount<Record<'a' | 'b' | 'c' | 'd', any>>>().equals<4>();
-        const value = {a: 'hi', b: 'c'};
+        const value = {
+            a: 'hi',
+            b: 'c',
+        };
         assert.tsType<KeyCount<typeof value>>().equals<2>();
         assert.tsType<KeyCount<Record<string, any>>>().equals<1>();
         assert.tsType<KeyCount<AnyObject>>().equals<3>();

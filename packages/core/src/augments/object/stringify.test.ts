@@ -13,7 +13,9 @@ describe(stringify.name, () => {
         {
             it: 'handles a standard object',
             inputs: [
-                {a: 'b'},
+                {
+                    a: 'b',
+                },
             ],
             expect: "{a:'b'}",
         },
@@ -34,14 +36,18 @@ describe(stringify.name, () => {
         {
             it: 'logs undefined',
             inputs: [
-                {a: undefined},
+                {
+                    a: undefined,
+                },
             ],
             expect: '{a:undefined}',
         },
         {
             it: 'logs with spaces',
             inputs: [
-                {a: undefined},
+                {
+                    a: undefined,
+                },
                 4,
             ],
             expect: '{\n    a: undefined,\n}',

@@ -66,7 +66,12 @@ export async function walkFiles({
         const childPath = join(startDirPath, file.name);
         const isDir = file.isDirectory();
 
-        const willRead = shouldRead ? await shouldRead({path: childPath, isDir}) : true;
+        const willRead = shouldRead
+            ? await shouldRead({
+                  path: childPath,
+                  isDir,
+              })
+            : true;
 
         if (!willRead) {
             return;

@@ -1481,7 +1481,9 @@ describe('isEmpty', () => {
             },
             {
                 it: 'rejects a non-empty object',
-                input: {hi: 'hi'},
+                input: {
+                    hi: 'hi',
+                },
                 expect: false,
             },
             {
@@ -1598,7 +1600,9 @@ describe('isNotEmpty', () => {
     type UnexpectedType = [];
 
     type ExpectedUnionNarrowedType = {a: 'hi'};
-    const actualPassUnion: EmptyObject | ExpectedUnionNarrowedType = {a: 'hi'} as any;
+    const actualPassUnion: EmptyObject | ExpectedUnionNarrowedType = {
+        a: 'hi',
+    } as any;
 
     describe('assert', () => {
         it('guards', () => {

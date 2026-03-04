@@ -12,7 +12,9 @@ describe(copyThroughJson.name, () => {
         const testObjectA = {
             a: 5,
             b: 'five',
-            c: {d: 5},
+            c: {
+                d: 5,
+            },
             e: [6],
         };
 
@@ -22,7 +24,9 @@ describe(copyThroughJson.name, () => {
         const testObjectA = {
             a: 5,
             b: 'five',
-            c: {d: 5},
+            c: {
+                d: 5,
+            },
             e: [6],
         };
 
@@ -61,7 +65,9 @@ describe(copyThroughJson.name, () => {
             wideObject[`key${i}`] = i;
         }
 
-        const unsafeResult = copyThroughJson(wideObject, {enableUnsafeCopyAll: true});
+        const unsafeResult = copyThroughJson(wideObject, {
+            enableUnsafeCopyAll: true,
+        });
         assert.deepEquals(unsafeResult, wideObject);
         assert.strictEquals(Object.keys(unsafeResult as Record<string, number>).length, 60);
 
@@ -73,12 +79,18 @@ describe(copyThroughJson.name, () => {
     });
 
     it('preserves depth beyond safe limit', () => {
-        let deepObject: Record<string, any> = {value: 'leaf'};
+        let deepObject: Record<string, any> = {
+            value: 'leaf',
+        };
         for (let i = 0; i < 20; i++) {
-            deepObject = {nested: deepObject};
+            deepObject = {
+                nested: deepObject,
+            };
         }
 
-        const unsafeResult = copyThroughJson(deepObject, {enableUnsafeCopyAll: true});
+        const unsafeResult = copyThroughJson(deepObject, {
+            enableUnsafeCopyAll: true,
+        });
         assert.deepEquals(unsafeResult, deepObject);
 
         const safeResult = copyThroughJson(deepObject) as Record<string, any>;
@@ -86,9 +98,15 @@ describe(copyThroughJson.name, () => {
     });
 
     it('throws on circular references', () => {
-        const circular: Record<string, any> = {a: 1};
+        const circular: Record<string, any> = {
+            a: 1,
+        };
         circular['self'] = circular;
 
-        assert.throws(() => copyThroughJson(circular, {enableUnsafeCopyAll: true}));
+        assert.throws(() =>
+            copyThroughJson(circular, {
+                enableUnsafeCopyAll: true,
+            }),
+        );
     });
 });

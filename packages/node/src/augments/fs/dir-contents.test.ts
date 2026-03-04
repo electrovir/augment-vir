@@ -33,7 +33,12 @@ describe(readAllDirContents.name, () => {
     it('excludes files', async () => {
         const output = await readAllDirContents(dirContentsTestDir, {
             recursive: true,
-            excludeList: [wrapString({value: 'b', wrapper: sep})],
+            excludeList: [
+                wrapString({
+                    value: 'b',
+                    wrapper: sep,
+                }),
+            ],
         });
 
         assert.deepEquals(output, {
@@ -57,10 +62,14 @@ describe(readAllDirContents.name, () => {
 
 describe(resetDirContents.name, () => {
     it('resets a dir', async () => {
-        const originalContents = await readAllDirContents(dirContentsTestDir, {recursive: true});
+        const originalContents = await readAllDirContents(dirContentsTestDir, {
+            recursive: true,
+        });
 
         const extraFilePath = join(dirContentsTestDir, 'more', 'another.txt');
-        await mkdir(dirname(extraFilePath), {recursive: true});
+        await mkdir(dirname(extraFilePath), {
+            recursive: true,
+        });
 
         await writeFile(extraFilePath, 'test');
         assert.strictEquals(existsSync(extraFilePath), true);

@@ -12,7 +12,9 @@ import {
 
 describe(assertTestContext.name, () => {
     it('guards test context', () => {
-        const fakeContext: UniversalTestContext = {diagnostic: ''} as any;
+        const fakeContext: UniversalTestContext = {
+            diagnostic: '',
+        } as any;
 
         assertTestContext(fakeContext, TestEnv.Node);
 

@@ -15,7 +15,10 @@ describe('entriesEqual', () => {
         a: 'last',
         b: 'second',
     } as any;
-    const expected = {a: 'first', b: 'second'};
+    const expected = {
+        a: 'first',
+        b: 'second',
+    };
     type ExpectedType = {a: string; b: string};
 
     describe('assert', () => {
@@ -34,7 +37,9 @@ describe('entriesEqual', () => {
                 it: 'handles a non-object first arg',
                 inputs: [
                     'hi' as any,
-                    {a: 'hi'},
+                    {
+                        a: 'hi',
+                    },
                 ],
                 throws: {
                     matchMessage: 'is not an object',
@@ -43,7 +48,9 @@ describe('entriesEqual', () => {
             {
                 it: 'handles a non-object second arg',
                 inputs: [
-                    {a: 'hi'},
+                    {
+                        a: 'hi',
+                    },
                     'hi' as any,
                 ],
                 throws: {
@@ -146,7 +153,10 @@ describe('notEntriesEqual', () => {
         a: 'first',
         c: 'second',
     } as any;
-    const expected = {a: 'first', c: 'second'};
+    const expected = {
+        a: 'first',
+        c: 'second',
+    };
 
     describe('assert', () => {
         it('accepts', () => {

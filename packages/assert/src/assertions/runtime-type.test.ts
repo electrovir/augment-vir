@@ -153,7 +153,9 @@ describe('isArray', () => {
     });
 });
 describe('isNotArray', () => {
-    const actualPass: Record<string, string> | string[] = {hi: 'bye'} as any;
+    const actualPass: Record<string, string> | string[] = {
+        hi: 'bye',
+    } as any;
     const actualReject: Record<string, string> | string[] = ['two'] as any;
     type ExpectedType = Record<string, string>;
     type UnexpectedType = string[];
@@ -1367,7 +1369,9 @@ describe('isObject', () => {
     type UnexpectedType = unknown[];
 
     type ExpectedUnionNarrowedType = {hi: string};
-    const actualPassUnion: string[] | ExpectedUnionNarrowedType = {hi: 'hello'} as any;
+    const actualPassUnion: string[] | ExpectedUnionNarrowedType = {
+        hi: 'hello',
+    } as any;
 
     describe('assert', () => {
         it('guards', () => {
@@ -1588,7 +1592,9 @@ describe('isPlainObject', () => {
     type UnexpectedType = unknown[];
 
     type ExpectedUnionNarrowedType = {hi: string};
-    const actualPassUnion: string[] | ExpectedUnionNarrowedType = {hi: 'hello'} as any;
+    const actualPassUnion: string[] | ExpectedUnionNarrowedType = {
+        hi: 'hello',
+    } as any;
 
     describe('assert', () => {
         it('guards', () => {

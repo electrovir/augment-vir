@@ -21,7 +21,9 @@ async function runToTagOrDefinitionTest(query: string | {tagName: string}) {
             <span class="my-span"></span>
         </section>
     `);
-    const foundChild = queryThroughShadow(rendered, query, {all: true})[0];
+    const foundChild = queryThroughShadow(rendered, query, {
+        all: true,
+    })[0];
 
     if (!foundChild) {
         throw new Error(`Found no children by query: ${stringify(query)}`);

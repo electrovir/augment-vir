@@ -22,6 +22,12 @@ describe(parseWithJson5.name, () => {
 
 describe(stringifyWithJson5.name, () => {
     it('it stringifies objects', () => {
-        assert.strictEquals(stringifyWithJson5({a: 'b', c: 'd'}), "{a:'b',c:'d'}");
+        assert.strictEquals(
+            stringifyWithJson5({
+                a: 'b',
+                c: 'd',
+            }),
+            "{a:'b',c:'d'}",
+        );
     });
 });

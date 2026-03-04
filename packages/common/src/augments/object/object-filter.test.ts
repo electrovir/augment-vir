@@ -22,7 +22,9 @@ describe(filterObject.name, () => {
 
     it('should not modify input object', () => {
         const referenceCopy = testObject;
-        const originalObject = {...testObject};
+        const originalObject = {
+            ...testObject,
+        };
         const originalKeys = Object.keys(testObject);
         filterObject(originalKeys, () => false);
 
@@ -105,7 +107,11 @@ describe(removeUndefinedValues.name, () => {
             c: null;
             d?: never;
         }>();
-        assert.deepEquals(output, {a: 1, b: 'value', c: null});
+        assert.deepEquals(output, {
+            a: 1,
+            b: 'value',
+            c: null,
+        });
     });
     it('works with generic keys', () => {
         const values: Record<string, string | undefined> = {
@@ -147,7 +153,10 @@ describe(removeNullishValues.name, () => {
             c?: never;
             d?: never;
         }>();
-        assert.deepEquals(output, {a: 1, b: 'value'});
+        assert.deepEquals(output, {
+            a: 1,
+            b: 'value',
+        });
     });
     it('works with generic keys', () => {
         const values: Record<string, string | undefined | null> = {
@@ -188,7 +197,12 @@ describe(replaceUndefinedValuesWithNull.name, () => {
             c: null;
             d: null;
         }>();
-        assert.deepEquals(output, {a: 1, b: 'value', c: null, d: null});
+        assert.deepEquals(output, {
+            a: 1,
+            b: 'value',
+            c: null,
+            d: null,
+        });
 
         const output2 = replaceUndefinedValuesWithNull({
             a: 1,
@@ -236,7 +250,12 @@ describe(replaceNullValuesWithUndefined.name, () => {
             c: undefined;
             d: undefined;
         }>();
-        assert.deepEquals(output, {a: 1, b: 'value', c: undefined, d: undefined});
+        assert.deepEquals(output, {
+            a: 1,
+            b: 'value',
+            c: undefined,
+            d: undefined,
+        });
 
         const output2 = replaceNullValuesWithUndefined({
             a: 1,

@@ -5,10 +5,22 @@ import {mergeDefinedProperties} from './merge-defined-properties.js';
 
 describe(mergeDefinedProperties.name, () => {
     it('merges objects', () => {
-        const original = {a: 'b', c: 'd', e: 'f'};
+        const original = {
+            a: 'b',
+            c: 'd',
+            e: 'f',
+        };
         const originalCopy = copyThroughJson(original);
 
-        const result = mergeDefinedProperties(original, {a: undefined}, {c: 'q'});
+        const result = mergeDefinedProperties(
+            original,
+            {
+                a: undefined,
+            },
+            {
+                c: 'q',
+            },
+        );
         assert.deepEquals(result, {
             a: 'b',
             c: 'q',
@@ -21,10 +33,14 @@ describe(mergeDefinedProperties.name, () => {
         {
             it: 'handles undefined',
             inputs: [
-                {a: 'b'},
+                {
+                    a: 'b',
+                },
                 undefined,
             ],
-            expect: {a: 'b'},
+            expect: {
+                a: 'b',
+            },
         },
     ]);
 });

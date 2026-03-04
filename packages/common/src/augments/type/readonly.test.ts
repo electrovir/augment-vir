@@ -4,7 +4,9 @@ import {makeReadonly} from './readonly.js';
 import {makeWritable} from './writable.js';
 
 function getExampleReadonlyObject() {
-    return {a: 'five'} as const;
+    return {
+        a: 'five',
+    } as const;
 }
 
 function runWriteAccessTests(writeAccessModifier: (input: any) => any) {

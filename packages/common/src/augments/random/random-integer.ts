@@ -11,7 +11,10 @@ import {ensureMinMax} from '@augment-vir/core';
  * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function randomInteger({min: rawMin, max: rawMax}: {min: number; max: number}): number {
-    const {min, max} = ensureMinMax({min: Math.floor(rawMin), max: Math.floor(rawMax)});
+    const {min, max} = ensureMinMax({
+        min: Math.floor(rawMin),
+        max: Math.floor(rawMax),
+    });
     const range = max - min + 1;
     const bitsNeeded = Math.ceil(Math.log2(range));
 

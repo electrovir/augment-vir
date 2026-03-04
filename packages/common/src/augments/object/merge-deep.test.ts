@@ -10,8 +10,14 @@ describe(mergeDeep.name, () => {
         },
         {
             it: 'returns the first object if only one is given',
-            inputs: [{first: 'hello'}],
-            expect: {first: 'hello'},
+            inputs: [
+                {
+                    first: 'hello',
+                },
+            ],
+            expect: {
+                first: 'hello',
+            },
         },
         {
             it: 'removes keys overridden with undefined',
@@ -59,35 +65,71 @@ describe(mergeDeep.name, () => {
             it: 'overwrites array entries',
             inputs: [
                 [
-                    {a: 'b', c: 'd'},
-                    {q: 'r', s: 't'},
+                    {
+                        a: 'b',
+                        c: 'd',
+                    },
+                    {
+                        q: 'r',
+                        s: 't',
+                    },
                 ],
                 [
-                    {e: 'f', g: 'h'},
-                    {q: 'rZr', s: 'tZt', u: 'v'},
+                    {
+                        e: 'f',
+                        g: 'h',
+                    },
+                    {
+                        q: 'rZr',
+                        s: 'tZt',
+                        u: 'v',
+                    },
                 ],
             ],
             expect: [
-                {e: 'f', g: 'h'},
-                {q: 'rZr', s: 'tZt', u: 'v'},
+                {
+                    e: 'f',
+                    g: 'h',
+                },
+                {
+                    q: 'rZr',
+                    s: 'tZt',
+                    u: 'v',
+                },
             ],
         },
         {
             it: 'does a shallow merge',
             inputs: [
-                {first: 'hello'},
-                {second: 'hi'},
+                {
+                    first: 'hello',
+                },
+                {
+                    second: 'hi',
+                },
             ],
-            expect: {first: 'hello', second: 'hi'},
+            expect: {
+                first: 'hello',
+                second: 'hi',
+            },
         },
         {
             it: 'overwrite previous properties',
             inputs: [
-                {first: 'hello'},
-                {second: 'hi'},
-                {first: 'goodbye'},
+                {
+                    first: 'hello',
+                },
+                {
+                    second: 'hi',
+                },
+                {
+                    first: 'goodbye',
+                },
             ],
-            expect: {first: 'goodbye', second: 'hi'},
+            expect: {
+                first: 'goodbye',
+                second: 'hi',
+            },
         },
         {
             it: 'merges properties recursively',
@@ -105,7 +147,9 @@ describe(mergeDeep.name, () => {
                         nestedSecond: 'overridden',
                     },
                 },
-                {first: 'goodbye'},
+                {
+                    first: 'goodbye',
+                },
             ],
             expect: {
                 first: 'goodbye',

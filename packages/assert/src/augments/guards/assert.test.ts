@@ -19,6 +19,8 @@ describe(assert.name, () => {
 
 describe('assert.fail', () => {
     it('throws an error', () => {
-        assert.throws(() => assert.fail(), {matchConstructor: AssertionError});
+        assert.throws(() => assert.fail(), {
+            matchConstructor: AssertionError,
+        });
     });
 });

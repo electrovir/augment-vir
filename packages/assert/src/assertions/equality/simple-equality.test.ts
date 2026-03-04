@@ -440,7 +440,14 @@ describe('deepEquals', () => {
                 () => {},
                 () => {},
             );
-            assert.deepEquals({a: () => {}}, {a: () => {}});
+            assert.deepEquals(
+                {
+                    a: () => {},
+                },
+                {
+                    a: () => {},
+                },
+            );
             assert.notDeepEquals(() => {}, 'a');
             assert.notDeepEquals(() => {}, 'a');
         });
@@ -517,7 +524,10 @@ describe('notDeepEquals', () => {
         a: 'first',
         c: 'second',
     };
-    const expected = {a: 'first', c: 'second'};
+    const expected = {
+        a: 'first',
+        c: 'second',
+    };
 
     describe('assert', () => {
         it('accepts', () => {

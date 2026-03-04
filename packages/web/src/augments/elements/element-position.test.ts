@@ -28,7 +28,9 @@ describe(checkIfEntirelyInScrollView.name, () => {
         await assert.output(checkIfEntirelyInScrollView, [firstElement], true);
         await assert.output(checkIfEntirelyInScrollView, [lastElement], false);
 
-        lastElement.scrollIntoView({behavior: 'instant'});
+        lastElement.scrollIntoView({
+            behavior: 'instant',
+        });
 
         await waitUntil.isTrue(async () => {
             return await checkIfEntirelyInScrollView(lastElement);
@@ -42,7 +44,10 @@ describe(getCenterOfElement.name, () => {
             <div style="height: 100px; width: 100px;"></div>
         `);
 
-        assert.output(getCenterOfElement, [element], {x: 58, y: 58});
+        assert.output(getCenterOfElement, [element], {
+            x: 58,
+            y: 58,
+        });
     });
 });
 

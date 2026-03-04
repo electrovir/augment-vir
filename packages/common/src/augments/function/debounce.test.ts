@@ -22,7 +22,9 @@ describe(Debounce.name, () => {
                 debounce.execute(() => {
                     callCount++;
                 });
-                await wait({milliseconds: 100});
+                await wait({
+                    milliseconds: 100,
+                });
             }
         });
     });
@@ -44,7 +46,9 @@ describe(Debounce.name, () => {
                 debounce.execute(() => {
                     callCount++;
                 });
-                await wait({milliseconds: 100});
+                await wait({
+                    milliseconds: 100,
+                });
             }
         });
     });
@@ -68,7 +72,9 @@ describe(Debounce.name, () => {
                 debounce.execute(() => {
                     callCount++;
                 });
-                await wait({milliseconds: 100});
+                await wait({
+                    milliseconds: 100,
+                });
             }
         });
     });

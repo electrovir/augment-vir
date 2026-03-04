@@ -48,10 +48,14 @@ describe(extractEventTarget.name, () => {
                     assert.tsType(target).equals<HTMLButtonElement>();
 
                     assert.throws(() => {
-                        extractEventTarget(event, HTMLButtonElement, {useOriginalTarget: false});
+                        extractEventTarget(event, HTMLButtonElement, {
+                            useOriginalTarget: false,
+                        });
                     });
                     assert.throws(() => {
-                        extractEventTarget(event, HTMLDivElement, {useOriginalTarget: true});
+                        extractEventTarget(event, HTMLDivElement, {
+                            useOriginalTarget: true,
+                        });
                     });
 
                     clickCount++;

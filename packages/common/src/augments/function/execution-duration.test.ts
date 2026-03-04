@@ -7,7 +7,9 @@ describe(measureExecutionDuration.name, () => {
     it('measures the time', async () => {
         const waitDuration = 100;
         const measuredTime = await measureExecutionDuration(async () => {
-            await wait({milliseconds: waitDuration});
+            await wait({
+                milliseconds: waitDuration,
+            });
         });
 
         assert.isAbove(measuredTime.milliseconds, waitDuration - 20);
@@ -16,7 +18,9 @@ describe(measureExecutionDuration.name, () => {
     it('passes through a promise rejects', async () => {
         await assert.throws(
             measureExecutionDuration(async () => {
-                await wait({milliseconds: 0});
+                await wait({
+                    milliseconds: 0,
+                });
                 throw new Error('hi');
             }),
         );

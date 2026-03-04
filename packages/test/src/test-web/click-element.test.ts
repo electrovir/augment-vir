@@ -14,7 +14,12 @@ describe(testWeb.click.name, () => {
 
         await testWeb.click(element);
 
-        await wrapPromiseInTimeout({seconds: 5}, deferredClick.promise);
+        await wrapPromiseInTimeout(
+            {
+                seconds: 5,
+            },
+            deferredClick.promise,
+        );
     });
 });
 
@@ -32,6 +37,11 @@ describe(testWeb.moveMouseTo.name, () => {
 
         await testWeb.moveMouseTo(element);
 
-        await wrapPromiseInTimeout({seconds: 5}, deferredMove.promise);
+        await wrapPromiseInTimeout(
+            {
+                seconds: 5,
+            },
+            deferredMove.promise,
+        );
     });
 });

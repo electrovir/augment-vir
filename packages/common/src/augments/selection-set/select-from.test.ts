@@ -62,7 +62,9 @@ describe(selectFrom.name, () => {
                 },
             },
             // @ts-expect-error: q is not a valid key
-            {q: true},
+            {
+                q: true,
+            },
         );
 
         const entry = {

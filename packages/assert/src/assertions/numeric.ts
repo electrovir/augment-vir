@@ -32,7 +32,10 @@ const assertions = {
     ) {
         if (actual < min || max < actual) {
             throw new AssertionError(
-                `${actual} is not within the bounds ${stringify({min, max})}`,
+                `${actual} is not within the bounds ${stringify({
+                    min,
+                    max,
+                })}`,
                 failureMessage,
             );
         }
@@ -65,7 +68,10 @@ const assertions = {
     ) {
         if (min <= actual && actual <= max) {
             throw new AssertionError(
-                `${actual} is not outside the bounds ${stringify({min, max})}`,
+                `${actual} is not outside the bounds ${stringify({
+                    min,
+                    max,
+                })}`,
                 failureMessage,
             );
         }
@@ -696,7 +702,10 @@ export const numericGuards = {
         ): Actual {
             if (actual < min || max < actual) {
                 throw new AssertionError(
-                    `${actual} is not within the bounds ${stringify({min, max})}`,
+                    `${actual} is not within the bounds ${stringify({
+                        min,
+                        max,
+                    })}`,
                     failureMessage,
                 );
             }
@@ -732,7 +741,10 @@ export const numericGuards = {
         ): Actual {
             if (min <= actual && actual <= max) {
                 throw new AssertionError(
-                    `${actual} is not outside the bounds ${stringify({min, max})}`,
+                    `${actual} is not outside the bounds ${stringify({
+                        min,
+                        max,
+                    })}`,
                     failureMessage,
                 );
             }

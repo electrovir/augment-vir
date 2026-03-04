@@ -34,12 +34,18 @@ describe(getObjectTypedKeys.name, () => {
     it('includes symbols', () => {
         const mySymbol = Symbol('derp');
 
-        assert.deepEquals(getObjectTypedKeys({[mySymbol]: 'nothing', ...greekNames}), [
-            Planet.Mercury,
-            Planet.Venus,
-            Planet.Earth,
-            mySymbol,
-        ]);
+        assert.deepEquals(
+            getObjectTypedKeys({
+                [mySymbol]: 'nothing',
+                ...greekNames,
+            }),
+            [
+                Planet.Mercury,
+                Planet.Venus,
+                Planet.Earth,
+                mySymbol,
+            ],
+        );
     });
 });
 

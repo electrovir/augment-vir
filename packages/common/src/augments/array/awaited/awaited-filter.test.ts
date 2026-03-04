@@ -50,7 +50,9 @@ describe(awaitedFilter.name, () => {
                     0,
                 ],
                 async (entry) => {
-                    await wait({milliseconds: 1});
+                    await wait({
+                        milliseconds: 1,
+                    });
                     return entry;
                 },
             ],
@@ -64,11 +66,15 @@ describe(awaitedFilter.name, () => {
         await awaitedFilter(
             arrayToFilter,
             async (entry) => {
-                await wait({milliseconds: entry});
+                await wait({
+                    milliseconds: entry,
+                });
                 executionOrder.push(entry);
                 return true;
             },
-            {blocking: true},
+            {
+                blocking: true,
+            },
         );
 
         assert.deepEquals(executionOrder, arrayToFilter);

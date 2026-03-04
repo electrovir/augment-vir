@@ -14,10 +14,14 @@ describe(awaitedForEach.name, () => {
         const duration = await measureExecutionDuration(async () => {
             await awaitedForEach(originalArray, async (element, index) => {
                 if (index === 1) {
-                    await wait({milliseconds: 1000});
+                    await wait({
+                        milliseconds: 1000,
+                    });
                     totalWait += 1000;
                 } else {
-                    await wait({milliseconds: 50});
+                    await wait({
+                        milliseconds: 50,
+                    });
                     totalWait += 50;
                 }
                 results.push(element);

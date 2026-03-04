@@ -25,7 +25,10 @@ describe(readDirFilesByExtension.name, () => {
         [
             {
                 it: 'filters to dir files with a single extension',
-                input: {dirPath: nodePackageDir, extension: '.json'},
+                input: {
+                    dirPath: nodePackageDir,
+                    extension: '.json',
+                },
                 expect: [
                     'package.json',
                     'tsconfig.json',

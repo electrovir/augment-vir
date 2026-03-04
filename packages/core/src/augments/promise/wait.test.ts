@@ -10,7 +10,9 @@ describe(wait.name, () => {
     it('should create a promise which takes time to resolve.', async () => {
         const startTime = Date.now();
 
-        await wait({milliseconds: promiseDelayMs});
+        await wait({
+            milliseconds: promiseDelayMs,
+        });
 
         const endTime = Date.now();
 
@@ -20,7 +22,9 @@ describe(wait.name, () => {
     it('should resolve instantly when given a negative timeout', async () => {
         const startTime = Date.now();
 
-        await wait({milliseconds: -500});
+        await wait({
+            milliseconds: -500,
+        });
 
         const endTime = Date.now();
 
@@ -34,8 +38,12 @@ describe(wait.name, () => {
 
         try {
             await wrapPromiseInTimeout(
-                {milliseconds: timeoutSoTestActuallyFinishes},
-                wait({milliseconds: Infinity}),
+                {
+                    milliseconds: timeoutSoTestActuallyFinishes,
+                },
+                wait({
+                    milliseconds: Infinity,
+                }),
             );
         } catch {
             // ignore
@@ -51,6 +59,14 @@ describe(wait.name, () => {
 describe(waitValue.name, () => {
     it('returns a value', async () => {
         const value = {};
-        assert.strictEquals(await waitValue({milliseconds: 1}, value), value);
+        assert.strictEquals(
+            await waitValue(
+                {
+                    milliseconds: 1,
+                },
+                value,
+            ),
+            value,
+        );
     });
 });

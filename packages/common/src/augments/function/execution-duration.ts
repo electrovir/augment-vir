@@ -33,7 +33,9 @@ export function measureExecutionDuration<T>(
             try {
                 await result;
                 const endTime = Date.now();
-                resolve({milliseconds: endTime - startTime});
+                resolve({
+                    milliseconds: endTime - startTime,
+                });
             } catch (caught) {
                 reject(ensureError(caught));
             }

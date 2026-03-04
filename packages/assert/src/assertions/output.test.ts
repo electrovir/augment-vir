@@ -199,7 +199,9 @@ describe('output', () => {
                         };
                     },
                     [],
-                    {value: 'four'},
+                    {
+                        value: 'four',
+                    },
                 ],
                 throws: undefined,
             },
@@ -218,7 +220,9 @@ describe('output', () => {
                         'other',
                         46,
                     ],
-                    {value: `other,46`},
+                    {
+                        value: `other,46`,
+                    },
                 ],
                 throws: undefined,
             },
@@ -231,7 +235,9 @@ describe('output', () => {
                         };
                     },
                     [],
-                    {value: 'thirty-three'},
+                    {
+                        value: 'thirty-three',
+                    },
                 ],
                 throws: {
                     matchConstructor: AssertionError,
@@ -428,7 +434,9 @@ describe('output', () => {
                         };
                     },
                     [],
-                    {value: 'four'},
+                    {
+                        value: 'four',
+                    },
                 ],
                 expect: true,
             },
@@ -447,7 +455,9 @@ describe('output', () => {
                         'other',
                         46,
                     ],
-                    {value: `other,46`},
+                    {
+                        value: `other,46`,
+                    },
                 ],
                 expect: true,
             },
@@ -460,7 +470,9 @@ describe('output', () => {
                         };
                     },
                     [],
-                    {value: 'thirty-three'},
+                    {
+                        value: 'thirty-three',
+                    },
                 ],
                 expect: false,
             },
@@ -676,9 +688,13 @@ describe('output', () => {
                         };
                     },
                     [],
-                    {value: 'four'},
+                    {
+                        value: 'four',
+                    },
                 ],
-                expect: {value: 'four'},
+                expect: {
+                    value: 'four',
+                },
             },
             {
                 it: 'passes for deep equality with inputs',
@@ -695,9 +711,13 @@ describe('output', () => {
                         'other',
                         46,
                     ],
-                    {value: `other,46`},
+                    {
+                        value: `other,46`,
+                    },
                 ],
-                expect: {value: `other,46`},
+                expect: {
+                    value: `other,46`,
+                },
             },
             {
                 it: 'fails for deep inequality',
@@ -708,7 +728,9 @@ describe('output', () => {
                         };
                     },
                     [],
-                    {value: 'thirty-three'},
+                    {
+                        value: 'thirty-three',
+                    },
                 ],
                 throws: {
                     matchConstructor: AssertionError,
@@ -915,9 +937,13 @@ describe('output', () => {
                         };
                     },
                     [],
-                    {value: 'four'},
+                    {
+                        value: 'four',
+                    },
                 ],
-                expect: {value: 'four'},
+                expect: {
+                    value: 'four',
+                },
             },
             {
                 it: 'passes for deep equality with inputs',
@@ -934,9 +960,13 @@ describe('output', () => {
                         'other',
                         46,
                     ],
-                    {value: `other,46`},
+                    {
+                        value: `other,46`,
+                    },
                 ],
-                expect: {value: `other,46`},
+                expect: {
+                    value: `other,46`,
+                },
             },
             {
                 it: 'fails for deep inequality',
@@ -947,7 +977,9 @@ describe('output', () => {
                         };
                     },
                     [],
-                    {value: 'thirty-three'},
+                    {
+                        value: 'thirty-three',
+                    },
                 ],
                 expect: undefined,
             },
@@ -1107,9 +1139,13 @@ describe('output', () => {
                         };
                     },
                     [],
-                    {value: 'four'},
+                    {
+                        value: 'four',
+                    },
                 ],
-                expect: {value: 'four'},
+                expect: {
+                    value: 'four',
+                },
             },
             {
                 it: 'passes for deep equality with inputs',
@@ -1126,9 +1162,13 @@ describe('output', () => {
                         'other',
                         46,
                     ],
-                    {value: `other,46`},
+                    {
+                        value: `other,46`,
+                    },
                 ],
-                expect: {value: `other,46`},
+                expect: {
+                    value: `other,46`,
+                },
             },
             {
                 it: 'fails for deep inequality',
@@ -1139,7 +1179,9 @@ describe('output', () => {
                         };
                     },
                     [],
-                    {value: 'thirty-three'},
+                    {
+                        value: 'thirty-three',
+                    },
                     waitUntilTestOptions,
                 ],
                 throws: {

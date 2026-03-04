@@ -23,23 +23,31 @@ describe(writeJsonFile.name, () => {
             const contents = (await readFile(tempOutFilePath)).toString();
             assert.strictEquals(contents, '{\n    "a": "b",\n    "c": "d"\n}');
         } finally {
-            await rm(tempOutFilePath, {force: true});
+            await rm(tempOutFilePath, {
+                force: true,
+            });
         }
     });
     it('adds a trailing new line', async () => {
         try {
-            await writeJsonFile(tempOutFilePath, originalData, {includeTrailingNewLine: true});
+            await writeJsonFile(tempOutFilePath, originalData, {
+                includeTrailingNewLine: true,
+            });
             const contents = (await readFile(tempOutFilePath)).toString();
             assert.strictEquals(contents, '{\n    "a": "b",\n    "c": "d"\n}\n');
         } finally {
-            await rm(tempOutFilePath, {force: true});
+            await rm(tempOutFilePath, {
+                force: true,
+            });
         }
     });
 });
 
 describe(readJsonFile.name, () => {
     it('reads valid json', async () => {
-        assert.deepEquals(await readJsonFile(workspaceQueryPackageJsonPath), {type: 'module'});
+        assert.deepEquals(await readJsonFile(workspaceQueryPackageJsonPath), {
+            type: 'module',
+        });
     });
     it('handles invalid json', async () => {
         assert.isUndefined(await readJsonFile(join(workspaceQueryDir, 'does-not-exist.json')));
@@ -49,12 +57,21 @@ describe(readJsonFile.name, () => {
 describe(appendJsonFile.name, () => {
     it('appends to an object', async () => {
         try {
-            await writeJsonFile(tempOutFilePath, {a: 'b'});
-            await appendJsonFile(tempOutFilePath, {c: 'd'});
+            await writeJsonFile(tempOutFilePath, {
+                a: 'b',
+            });
+            await appendJsonFile(tempOutFilePath, {
+                c: 'd',
+            });
 
-            assert.deepEquals(await readJsonFile(tempOutFilePath), {a: 'b', c: 'd'});
+            assert.deepEquals(await readJsonFile(tempOutFilePath), {
+                a: 'b',
+                c: 'd',
+            });
         } finally {
-            await rm(tempOutFilePath, {force: true});
+            await rm(tempOutFilePath, {
+                force: true,
+            });
         }
     });
     it('appends to an array', async () => {
@@ -67,7 +84,9 @@ describe(appendJsonFile.name, () => {
                 'b',
             ]);
         } finally {
-            await rm(tempOutFilePath, {force: true});
+            await rm(tempOutFilePath, {
+                force: true,
+            });
         }
     });
     it('appends to an empty file', async () => {
@@ -76,7 +95,9 @@ describe(appendJsonFile.name, () => {
 
             assert.deepEquals(await readJsonFile(tempOutFilePath), ['b']);
         } finally {
-            await rm(tempOutFilePath, {force: true});
+            await rm(tempOutFilePath, {
+                force: true,
+            });
         }
     });
     it('appends to non object data', async () => {
@@ -89,7 +110,9 @@ describe(appendJsonFile.name, () => {
                 'b',
             ]);
         } finally {
-            await rm(tempOutFilePath, {force: true});
+            await rm(tempOutFilePath, {
+                force: true,
+            });
         }
     });
 });

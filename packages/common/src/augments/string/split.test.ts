@@ -10,7 +10,9 @@ describe(splitIncludeSplit.name, () => {
             inputs: [
                 'hello YoAaAaAu do you have some time for yoZzZu?',
                 /yo.*?u/i,
-                {caseSensitive: false},
+                {
+                    caseSensitive: false,
+                },
             ],
             expect: [
                 'hello ',
@@ -28,7 +30,9 @@ describe(splitIncludeSplit.name, () => {
             inputs: [
                 'hello You do you have some time for you?',
                 'you',
-                {caseSensitive: false},
+                {
+                    caseSensitive: false,
+                },
             ],
             expect: [
                 'hello ',

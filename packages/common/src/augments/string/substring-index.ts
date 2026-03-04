@@ -22,7 +22,9 @@ export function findSubstringIndexes<IncludeLength extends boolean | undefined>(
     includeLength?: IncludeLength;
 }): IncludeLength extends true ? {index: number; length: number}[] : number[] {
     const searchRegExp: RegExp = addRegExpFlags(
-        setRegExpCaseSensitivity(searchFor, {caseSensitive}),
+        setRegExpCaseSensitivity(searchFor, {
+            caseSensitive,
+        }),
         'g',
     );
 
@@ -59,7 +61,10 @@ export function findSubstringIndexes<IncludeLength extends boolean | undefined>(
                 );
             }
 
-            indexesAndLengths.push({index: matchIndex, length: regExpMatch.length});
+            indexesAndLengths.push({
+                index: matchIndex,
+                length: regExpMatch.length,
+            });
             indexes.push(matchIndex);
 
             const originalMatch = matchResults[0];
