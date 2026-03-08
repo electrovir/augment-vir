@@ -46,7 +46,7 @@
         "terminate": "^2.8.0",
         "tsx": "^4.21.0",
         "type-fest": "^5.4.4",
-        "typed-event-target": "^4.2.0"
+        "typed-event-target": "^4.3.0"
     },
     "devDependencies": {
         "@augment-vir/test": "^31.68.1",
