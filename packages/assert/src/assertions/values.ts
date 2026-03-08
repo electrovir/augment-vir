@@ -661,9 +661,7 @@ export const valueGuards = {
         ): actual is NarrowToActual<Actual, Empty> {
             if (typeof actual !== 'string' && typeof actual !== 'object') {
                 return false;
-            }
-
-            if (typeof actual === 'string') {
+            } else if (typeof actual === 'string') {
                 return !actual;
             } else if (Array.isArray(actual)) {
                 return !actual.length;
@@ -702,9 +700,7 @@ export const valueGuards = {
         ): actual is Exclude<Actual, Empty> {
             if (typeof actual !== 'string' && typeof actual !== 'object') {
                 return true;
-            }
-
-            if (typeof actual === 'string') {
+            } else if (typeof actual === 'string') {
                 return !!actual;
             } else if (Array.isArray(actual)) {
                 return !!actual.length;

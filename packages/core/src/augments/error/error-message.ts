@@ -17,9 +17,7 @@ export function extractErrorMessage(maybeError: unknown): string {
         maybeError === 'null'
     ) {
         return '';
-    }
-
-    if (typeof maybeError === 'string') {
+    } else if (typeof maybeError === 'string') {
         return maybeError;
     } else if (maybeError instanceof Error) {
         return maybeError.message;

@@ -17,11 +17,9 @@ export async function downloadFile({url, writePath}: {url: string; writePath: st
 
     if (!response.ok) {
         throw new Error(`${response.status}: ${response.statusText}`);
-    }
-
-    /** Idk how to actually trigger a response with no body. */
-    /* node:coverage ignore next 3 */
-    if (!response.body) {
+        /** Idk how to actually trigger a response with no body. */
+        /* node:coverage ignore next 3 */
+    } else if (!response.body) {
         throw new Error(`Response body is missing from '${url}'.`);
     }
 

@@ -18,9 +18,7 @@ export async function readPackageJson(dirPath: string): Promise<PackageJson> {
 
     if (!packageJson) {
         throw new TypeError(`package.json file does not exist in '${dirPath}'`);
-    }
-
-    if (!check.isObject(packageJson)) {
+    } else if (!check.isObject(packageJson)) {
         throw new TypeError(`Parsing package.json file did not return an object in '${dirPath}'`);
     }
 

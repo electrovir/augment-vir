@@ -21,8 +21,7 @@ export function mergeDeep<const T extends object>(
     if (!check.isLengthAtLeast(inputs, 1)) {
         // nothing to merge if no inputs
         return {} as T;
-    }
-    if (inputs.length === 1) {
+    } else if (inputs.length === 1) {
         // nothing to merge if only one input
         return inputs[0] as T;
     }

@@ -53,9 +53,7 @@ function recursiveAssertJsonEquals(actual: any, expected: any) {
 function recursiveCheckJsonEquals(actual: any, expected: any): boolean {
     if (actual === expected || baseJsonEquals(actual, expected)) {
         return true;
-    }
-
-    if (
+    } else if (
         actual != null &&
         expected != null &&
         typeof actual === 'object' &&

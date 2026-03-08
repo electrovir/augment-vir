@@ -31,8 +31,7 @@ export async function deleteAllTextInInput(
         });
         if (inputElement.value === lastValue) {
             throw new Error(`Input value was not changed at all`);
-        }
-        if (inputElement.value.length >= lastValue.length) {
+        } else if (inputElement.value.length >= lastValue.length) {
             throw new Error(`Input value length was not decreased.`);
         }
 

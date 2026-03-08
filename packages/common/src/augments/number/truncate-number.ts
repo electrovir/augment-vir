@@ -218,10 +218,8 @@ export function truncateNumber(
     // handle edge cases
     if (isNaN(inputNumber) || inputNumber === Infinity) {
         return String(inputNumber);
-    }
-
-    // handle too big or too small edge cases
-    if (requiresScientificNotation(inputNumber)) {
+        // handle too big or too small edge cases
+    } else if (requiresScientificNotation(inputNumber)) {
         return truncateScientificNotation({
             input: inputNumber,
             maxLength,

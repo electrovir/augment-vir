@@ -122,9 +122,7 @@ function handleNestedQueries(
 
     if (queries.length <= 1) {
         return results;
-    }
-
-    if (check.isArray(results)) {
+    } else if (check.isArray(results)) {
         return results
             .flatMap((result) => {
                 return handleNestedQueries(result, originalQuery, options, queries.slice(1));
