@@ -1,7 +1,7 @@
 import {assert} from '@augment-vir/assert';
 import {type JsonCompatibleValue} from '@augment-vir/core';
 import {describe, it} from '@augment-vir/test';
-import {copyThroughJson} from './copy-through-json.js';
+import {copyThroughJson, safeCopyThroughJson} from './copy-through-json.js';
 
 describe(copyThroughJson.name, () => {
     it('handles unknown typed input', () => {
@@ -65,17 +65,9 @@ describe(copyThroughJson.name, () => {
             wideObject[`key${i}`] = i;
         }
 
-        const unsafeResult = copyThroughJson(wideObject, {
-            enableUnsafeCopyAll: true,
-        });
+        const unsafeResult = copyThroughJson(wideObject);
         assert.deepEquals(unsafeResult, wideObject);
         assert.strictEquals(Object.keys(unsafeResult as Record<string, number>).length, 60);
-
-        const safeResult = copyThroughJson(wideObject);
-        assert.isBelow(
-            Object.keys(safeResult as Record<string, number>).length,
-            Object.keys(wideObject).length,
-        );
     });
 
     it('preserves depth beyond safe limit', () => {
@@ -88,13 +80,8 @@ describe(copyThroughJson.name, () => {
             };
         }
 
-        const unsafeResult = copyThroughJson(deepObject, {
-            enableUnsafeCopyAll: true,
-        });
+        const unsafeResult = copyThroughJson(deepObject);
         assert.deepEquals(unsafeResult, deepObject);
-
-        const safeResult = copyThroughJson(deepObject) as Record<string, any>;
-        assert.notDeepEquals(safeResult, deepObject);
     });
 
     it('throws on circular references', () => {
@@ -103,10 +90,77 @@ describe(copyThroughJson.name, () => {
         };
         circular['self'] = circular;
 
-        assert.throws(() =>
-            copyThroughJson(circular, {
-                enableUnsafeCopyAll: true,
-            }),
+        assert.throws(() => copyThroughJson(circular));
+    });
+});
+
+describe(safeCopyThroughJson.name, () => {
+    it('creates an identical copy for simple objects', () => {
+        const testObject = {
+            a: 5,
+            b: 'five',
+            c: {
+                d: 5,
+            },
+            e: [6],
+        };
+
+        assert.deepEquals(safeCopyThroughJson(testObject), testObject);
+    });
+
+    it('truncates breadth beyond safe limit', () => {
+        const wideObject: Record<string, number> = {};
+        for (let index = 0; index < 60; index++) {
+            wideObject[`key${index}`] = index;
+        }
+
+        const result = safeCopyThroughJson(wideObject);
+        assert.isBelow(
+            Object.keys(result as Record<string, number>).length,
+            Object.keys(wideObject).length,
         );
+    });
+
+    it('truncates depth beyond safe limit', () => {
+        let deepObject: Record<string, any> = {
+            value: 'leaf',
+        };
+        for (let index = 0; index < 20; index++) {
+            deepObject = {
+                nested: deepObject,
+            };
+        }
+
+        const result = safeCopyThroughJson(deepObject) as Record<string, any>;
+        assert.notDeepEquals(result, deepObject);
+    });
+
+    it('handles circular references without throwing', () => {
+        const circular: Record<string, any> = {
+            a: 1,
+        };
+        circular['self'] = circular;
+
+        const result = safeCopyThroughJson(circular);
+        assert.deepEquals(result, {
+            a: 1,
+            self: '[Circular]',
+        });
+    });
+
+    it('handles nested circular references without throwing', () => {
+        const objectA: Record<string, any> = {
+            name: 'a',
+        };
+        const objectB: Record<string, any> = {
+            name: 'b',
+            ref: objectA,
+        };
+        objectA['ref'] = objectB;
+
+        const result = safeCopyThroughJson(objectA) as Record<string, any>;
+        assert.strictEquals(result['name'], 'a');
+        assert.strictEquals(result['ref']['name'], 'b');
+        assert.strictEquals(result['ref']['ref'], '[Circular]');
     });
 });

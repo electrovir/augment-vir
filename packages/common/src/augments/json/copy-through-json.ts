@@ -1,12 +1,10 @@
-import {type JsonCompatibleValue, type PartialWithUndefined} from '@augment-vir/core';
+import {ensureErrorAndPrependMessage, type JsonCompatibleValue} from '@augment-vir/core';
 import {type IsUnknown, type Jsonify, type Writable} from 'type-fest';
 import {safeJsonStringify} from './safe-json-stringify.js';
 
 /**
  * Deeply copy an object through JSON. This is the fastest deep copy, but the input must already be
  * JSON serializable otherwise the copy will not match the original.
- *
- * Note that this will truncate inputs if they are not safe to serialize.
  *
  * @category JSON : Common
  * @category Copy
@@ -38,22 +36,32 @@ import {safeJsonStringify} from './safe-json-stringify.js';
  */
 export function copyThroughJson<const T>(
     input: T,
-    {
-        enableUnsafeCopyAll,
-    }:
-        | Readonly<
-              PartialWithUndefined<{
-                  enableUnsafeCopyAll: boolean;
-              }>
-          >
-        | undefined = {},
 ): IsUnknown<T> extends true ? JsonCompatibleValue : Writable<Jsonify<T>> {
     try {
-        const stringified = enableUnsafeCopyAll ? JSON.stringify(input) : safeJsonStringify(input);
-        return JSON.parse(stringified);
+        return JSON.parse(JSON.stringify(input));
         /* node:coverage ignore next 4 */
     } catch (error) {
-        console.error(`Failed to JSON copy for`, input);
-        throw error;
+        console.error(`Failed to JSON copy for:`, input);
+        throw ensureErrorAndPrependMessage(error, 'Failed JSON copy');
+    }
+}
+
+/**
+ * Same as {@link copyThroughJson} but this uses safe serialization from {@link safeJsonStringify}.
+ *
+ * @category JSON : Common
+ * @category Copy
+ * @category Package : @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
+ */
+export function safeCopyThroughJson<const T>(
+    input: T,
+): IsUnknown<T> extends true ? JsonCompatibleValue : Writable<Jsonify<T>> {
+    try {
+        return JSON.parse(safeJsonStringify(input));
+        /* node:coverage ignore next 4 */
+    } catch (error) {
+        console.error(`Failed to JSON copy for:`, input);
+        throw ensureErrorAndPrependMessage(error, 'Failed JSON copy');
     }
 }
