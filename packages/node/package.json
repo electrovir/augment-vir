@@ -46,11 +46,11 @@
         "terminate": "^2.8.0",
         "tsx": "^4.21.0",
         "type-fest": "^5.4.4",
-        "typed-event-target": "^4.1.0"
+        "typed-event-target": "^4.2.0"
     },
     "devDependencies": {
         "@augment-vir/test": "^31.67.1",
-        "@types/node": "^25.3.3",
+        "@types/node": "^25.3.5",
         "@web/dev-server-esbuild": "^1.0.5",
         "@web/test-runner": "^0.20.2",
         "@web/test-runner-playwright": "^0.11.1",

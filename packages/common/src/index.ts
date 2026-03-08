@@ -45,6 +45,7 @@ export * from './augments/number/round.js';
 export * from './augments/number/scientific.js';
 export * from './augments/number/truncate-number.js';
 export * from './augments/number/wrap-number.js';
+export * from './augments/object/constructor-instance-map.js';
 export * from './augments/object/deep-copy.js';
 export * from './augments/object/deep-value.js';
 export * from './augments/object/diff.js';
