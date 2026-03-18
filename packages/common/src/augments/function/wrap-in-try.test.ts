@@ -117,6 +117,31 @@ describe(wrapInTry.name, () => {
             .equals<string | undefined>();
     });
 
+    it('is a type error to provide both fallbackValue and handleError', async () => {
+        await wrapInTry(() => 'hello', {
+            fallbackValue: 'fallback',
+            // @ts-expect-error: cannot provide both fallbackValue and handleError
+            handleError() {
+                return 'handled';
+            },
+        });
+        await wrapInTry(() => 'hello', {
+            handleError() {
+                return 'handled';
+            },
+            // @ts-expect-error: cannot provide both fallbackValue and handleError
+            fallbackValue: 'fallback',
+        });
+        wrapInTry(() => 'hello', {
+            handleError() {
+                return 'handled';
+            },
+        });
+        wrapInTry(() => 'hello', {
+            fallbackValue: 'fallback',
+        });
+    });
+
     it('types no options', () => {
         assert.tsType(wrapInTry(() => 'hello', {})).equals<Error | string>();
         assert.tsType(wrapInTry(() => 'hello')).equals<Error | string>();

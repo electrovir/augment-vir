@@ -1,10 +1,6 @@
 import {check} from '@augment-vir/assert';
-import {
-    ensureError,
-    type MaybePromise,
-    type NoInputsFunction,
-    type PartialWithUndefined,
-} from '@augment-vir/core';
+import {ensureError, type MaybePromise, type NoInputsFunction} from '@augment-vir/core';
+import {type RequireOneOrNone} from 'type-fest';
 
 /**
  * Options for {@link wrapInTry}.
@@ -13,7 +9,7 @@ import {
  * @category Package : @augment-vir/common
  * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
-export type WrapInTryOptions<FallbackValue> = PartialWithUndefined<{
+export type WrapInTryOptions<FallbackValue> = RequireOneOrNone<{
     /**
      * Call this function if the callback passed to {@link wrapInTry} throws an error. The thrown
      * error is passed to this function. If a `fallbackValue` option is also provided, it will be
@@ -50,27 +46,27 @@ export function wrapInTry<Value extends Promise<any>, FallbackValue = undefined>
     callback: NoInputsFunction<Value>,
     options: {
         handleError: (error: unknown) => FallbackValue;
-        fallbackValue?: FallbackValue;
+        fallbackValue?: never;
     },
 ): Promise<Awaited<FallbackValue> | Awaited<Value>>;
 export function wrapInTry<Value, FallbackValue = undefined>(
     callback: NoInputsFunction<Value>,
     options: {
         handleError: (error: unknown) => FallbackValue;
-        fallbackValue?: FallbackValue;
+        fallbackValue?: never;
     },
 ): FallbackValue | Value;
 export function wrapInTry<Value extends Promise<any>, FallbackValue = undefined>(
     callback: NoInputsFunction<Value>,
     options: {
-        handleError?: ((error: unknown) => FallbackValue) | undefined;
+        handleError?: never;
         fallbackValue: FallbackValue;
     },
 ): Promise<Awaited<FallbackValue> | Awaited<Value>>;
 export function wrapInTry<Value, FallbackValue = undefined>(
     callback: NoInputsFunction<Value>,
     options: {
-        handleError?: ((error: unknown) => FallbackValue) | undefined;
+        handleError?: never;
         fallbackValue: FallbackValue;
     },
 ): FallbackValue | Value;
@@ -172,7 +168,7 @@ export function wrapInTry<Value, FallbackValue = undefined>(
         if (options.handleError) {
             return options.handleError(error);
         } else if (check.hasKey(options, 'fallbackValue')) {
-            return options.fallbackValue as FallbackValue;
+            return options.fallbackValue;
         } else {
             return ensureError(error);
         }
