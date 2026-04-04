@@ -184,6 +184,35 @@ describe(mapObject.name, () => {
         });
     });
 
+    it('does not include undefined in the value type for partial inputs', () => {
+        const result = mapObject({} as Partial<Record<'a' | 'b', string>>, (key, value) => {
+            assert.tsType(value).equals<string>();
+
+            return {
+                key,
+                value: value.length,
+            };
+        });
+
+        assert.tsType(result).equals<Record<'a' | 'b', number>>();
+    });
+
+    it('preserves undefined in value type when explicitly part of the value union', () => {
+        const result = mapObject(
+            {} as Partial<Record<'a' | 'b', string | undefined>>,
+            (key, value) => {
+                assert.tsType(value).equals<string | undefined>();
+
+                return {
+                    key,
+                    value: 1,
+                };
+            },
+        );
+
+        assert.tsType(result).equals<Record<'a' | 'b', number>>();
+    });
+
     it('correctly types a maybe async callback', () => {
         const result = mapObject(
             originalObject,

@@ -11,7 +11,11 @@ enum Planet {
 
 describe(mapEnumToObject.name, () => {
     it('maps an enum', () => {
-        const output = mapEnumToObject(Planet, () => 5);
+        const output = mapEnumToObject(Planet, (enumValue) => {
+            assert.isEnumValue(enumValue, Planet);
+            assert.tsType(enumValue).equals<Planet>();
+            return 5;
+        });
         assert.tsType(output).equals<Record<Planet, number>>();
 
         getObjectTypedKeys(output).forEach((key) => {
@@ -23,7 +27,11 @@ describe(mapEnumToObject.name, () => {
     });
 
     it('types a promise', async () => {
-        const output = mapEnumToObject(Planet, () => Promise.resolve(5));
+        const output = mapEnumToObject(Planet, (enumValue) => {
+            assert.isEnumValue(enumValue, Planet);
+            assert.tsType(enumValue).equals<Planet>();
+            return Promise.resolve(5);
+        });
         assert.tsType(output).equals<Promise<Record<Values<typeof Planet>, number>>>();
         assert.instanceOf(output, Promise);
 
@@ -35,7 +43,11 @@ describe(mapEnumToObject.name, () => {
     });
 
     it('types a maybe promise', async () => {
-        const output = mapEnumToObject(Planet, (): MaybePromise<number> => Promise.resolve(5));
+        const output = mapEnumToObject(Planet, (enumValue): MaybePromise<number> => {
+            assert.isEnumValue(enumValue, Planet);
+            assert.tsType(enumValue).equals<Planet>();
+            return Promise.resolve(5);
+        });
         assert.tsType(output).equals<MaybePromise<Record<Values<typeof Planet>, number>>>();
         assert.instanceOf(output, Promise);
 
