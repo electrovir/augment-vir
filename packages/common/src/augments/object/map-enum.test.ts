@@ -67,20 +67,30 @@ describe(mapEnumToObject.name, () => {
     });
 
     it('handles a sync error', () => {
-        assert.throws(() => {
-            mapEnumToObject(Planet, () => {
-                throw new Error('fake error');
-            });
-        }, {matchMessage: 'fake error'});
+        assert.throws(
+            () => {
+                mapEnumToObject(Planet, () => {
+                    throw new Error('fake error');
+                    return 'hi';
+                });
+            },
+            {
+                matchMessage: 'fake error',
+            },
+        );
     });
 
     it('handles an async error', async () => {
         const output = mapEnumToObject(Planet, async () => {
-            await wait({milliseconds: 0});
+            await wait({
+                milliseconds: 0,
+            });
             throw new Error('fake error');
         });
 
-        await assert.throws(output, {matchMessage: 'fake error'});
+        await assert.throws(output, {
+            matchMessage: 'fake error',
+        });
     });
 
     it('handles a callback that is sometimes async', async () => {

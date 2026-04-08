@@ -3,7 +3,7 @@ import {baseTypedocConfig} from '@virmator/docs/configs/typedoc.config.base.js';
 import {join} from 'node:path';
 import {type PartialDeep} from 'type-fest';
 import {type GlobString, type NormalizedPath, type TypeDocOptionMap} from 'typedoc';
-import {eslintTsconfigPath, monoRepoDirPath, packagePaths} from '../file-paths.js';
+import {monoRepoDirPath, monoRepoTsconfigPath, packagePaths} from '../file-paths.js';
 
 async function main() {
     const typeDocConfig: PartialDeep<TypeDocOptionMap> = {
@@ -29,7 +29,7 @@ async function main() {
             'Package : @augment-vir/web',
             'Package : @augment-vir/node',
         ],
-        tsconfig: eslintTsconfigPath as NormalizedPath,
+        tsconfig: monoRepoTsconfigPath as NormalizedPath,
         blockTags: [
             /** The default tags we use. */
             '@category',

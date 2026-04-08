@@ -24,7 +24,7 @@ export const httpStatusOutputPath = join(
     'http',
     'http-status.ts',
 );
-export const eslintTsconfigPath = join(monoRepoDirPath, 'configs', 'tsconfig.eslint.json');
+export const monoRepoTsconfigPath = join(monoRepoDirPath, 'configs', 'tsconfig.mono-repo.json');
 
 export async function getAllPackageDirPaths(): Promise<string[]> {
     const packageNames = await readdir(packagesDirPath);

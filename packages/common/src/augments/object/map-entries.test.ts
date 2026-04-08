@@ -238,7 +238,9 @@ describe(mapObject.name, () => {
             },
         });
 
-        assert.deepEquals(result, {a: 'hello'});
+        assert.deepEquals(result, {
+            a: 'hello',
+        });
     });
 
     it('correctly types a maybe async callback', () => {
