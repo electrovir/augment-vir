@@ -1,4 +1,4 @@
-import {type CompleteValues, type EnumBaseType, type MaybePromise} from '@augment-vir/core';
+import {type EnumBaseType, type MaybePromise} from '@augment-vir/core';
 import {mapObject} from './map-entries.js';
 
 /**
@@ -9,17 +9,17 @@ import {mapObject} from './map-entries.js';
  * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type EnumMap<Enum extends EnumBaseType, Value> =
-    CompleteValues<Enum> extends PropertyKey
-        ? Record<CompleteValues<Enum>, Value>
+    Required<Enum>[keyof Enum] extends PropertyKey
+        ? Record<Required<Enum>[keyof Enum], Value>
         : 'ERROR: invalid enum';
 
 export function mapEnumToObject<const Enum extends EnumBaseType, const Value>(
     enumInput: Enum,
-    callback: (enumValue: CompleteValues<Enum>) => Promise<Value>,
+    callback: (enumValue: Required<Enum>[keyof Enum]) => Promise<Value>,
 ): Promise<EnumMap<Enum, Value>>;
 export function mapEnumToObject<const Enum extends EnumBaseType, const Value>(
     enumInput: Enum,
-    callback: (enumValue: CompleteValues<Enum>, wholeEnum: Enum) => Value,
+    callback: (enumValue: Required<Enum>[keyof Enum], wholeEnum: Enum) => Value,
 ): Value extends Promise<any>
     ? Promise<any> extends Value
         ? Promise<EnumMap<Enum, Awaited<Value>>>
@@ -51,7 +51,7 @@ export function mapEnumToObject<const Enum extends EnumBaseType, const Value>(
  */
 export function mapEnumToObject<const Enum extends EnumBaseType, const Value>(
     enumInput: Enum,
-    callback: (enumValue: CompleteValues<Enum>, wholeEnum: Enum) => MaybePromise<Value>,
+    callback: (enumValue: Required<Enum>[keyof Enum], wholeEnum: Enum) => MaybePromise<Value>,
 ): MaybePromise<EnumMap<Enum, Value>> {
     return mapObject(enumInput, (enumKey, enumValue) => {
         const key = enumValue as PropertyKey;

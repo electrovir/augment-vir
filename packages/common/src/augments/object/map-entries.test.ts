@@ -213,6 +213,34 @@ describe(mapObject.name, () => {
         assert.tsType(result).equals<Record<'a' | 'b', number>>();
     });
 
+    it('resolves value type through generics constrained to Record', () => {
+        type MyType = {
+            shape: string;
+            filter: string | undefined;
+        };
+
+        function genericCaller<const Init extends Record<string, MyType>>(init: Init) {
+            return mapObject(init, (key, value) => {
+                /** Verify that properties of the value type are accessible on a generic. */
+                const shape: string = value.shape;
+
+                return {
+                    key,
+                    value: shape,
+                };
+            });
+        }
+
+        const result = genericCaller({
+            a: {
+                shape: 'hello',
+                filter: undefined,
+            },
+        });
+
+        assert.deepEquals(result, {a: 'hello'});
+    });
+
     it('correctly types a maybe async callback', () => {
         const result = mapObject(
             originalObject,

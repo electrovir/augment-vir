@@ -1,5 +1,5 @@
 import {check} from '@augment-vir/assert';
-import {ensureError, type CompleteValues, type MaybePromise} from '@augment-vir/core';
+import {ensureError, type MaybePromise} from '@augment-vir/core';
 import {filterMap} from '../array/filter.js';
 import {getObjectTypedEntries, typedObjectFromEntries} from './object-entries.js';
 
@@ -10,7 +10,7 @@ export function mapObject<const OriginalObject, const NewKey extends PropertyKey
     inputObject: OriginalObject,
     mapCallback: (
         originalKey: keyof OriginalObject,
-        originalValue: CompleteValues<OriginalObject>,
+        originalValue: Required<OriginalObject>[keyof OriginalObject],
         originalObject: OriginalObject,
     ) => Promise<{key: NewKey; value: NewValue} | undefined>,
 ): Promise<Record<NewKey, NewValue>>;
@@ -18,7 +18,7 @@ export function mapObject<const OriginalObject, const NewKey extends PropertyKey
     inputObject: OriginalObject,
     mapCallback: (
         originalKey: keyof OriginalObject,
-        originalValue: CompleteValues<OriginalObject>,
+        originalValue: Required<OriginalObject>[keyof OriginalObject],
         originalObject: OriginalObject,
     ) => {key: NewKey; value: NewValue} | undefined,
 ): Record<NewKey, NewValue>;
@@ -26,7 +26,7 @@ export function mapObject<const OriginalObject, const NewKey extends PropertyKey
     inputObject: OriginalObject,
     mapCallback: (
         originalKey: keyof OriginalObject,
-        originalValue: CompleteValues<OriginalObject>,
+        originalValue: Required<OriginalObject>[keyof OriginalObject],
         originalObject: OriginalObject,
     ) => MaybePromise<{key: NewKey; value: NewValue} | undefined>,
 ): MaybePromise<Record<NewKey, NewValue>>;
@@ -61,7 +61,7 @@ export function mapObject<
     originalObject: OriginalObject,
     mapCallback: (
         originalKey: keyof OriginalObject,
-        originalValue: CompleteValues<OriginalObject>,
+        originalValue: Required<OriginalObject>[keyof OriginalObject],
         originalObject: OriginalObject,
     ) => MaybePromise<{key: NewKey; value: NewValue} | undefined>,
 ): MaybePromise<Record<NewKey, NewValue>> {
@@ -74,7 +74,11 @@ export function mapObject<
                     originalKey,
                     originalValue,
                 ]) => {
-                    const output = mapCallback(originalKey, originalValue, originalObject);
+                    const output = mapCallback(
+                        originalKey,
+                        originalValue as Required<OriginalObject>[keyof OriginalObject],
+                        originalObject,
+                    );
                     if (output instanceof Promise) {
                         gotAPromise = true;
                         return output;
