@@ -46,29 +46,56 @@ describe(getObjectTypedEntries.name, () => {
             somethingElse: /regexp/,
         };
 
-        assert
-            .tsType(getObjectTypedEntries(exampleObject))
-            .equals<['bye' | 'hi' | 'somethingElse', string | number | RegExp][]>();
+        assert.tsType(getObjectTypedEntries(exampleObject)).equals<
+            [
+                (
+                    | 'bye'
+                    | 'hi'
+                    | 'somethingElse'
+                ),
+                (
+                    | string
+                    | number
+                    | RegExp
+                ),
+            ][]
+        >();
     });
 
     it('handles optional properties', () => {
         const example = {} as Partial<Record<Planet, string>>;
 
-        assert.tsType(getObjectTypedEntries(example)).equals<[Planet, string][]>();
+        assert.tsType(getObjectTypedEntries(example)).equals<
+            [
+                Planet,
+                string,
+            ][]
+        >();
 
         const example2 = {} as Partial<{
             [x in string]: RegExp;
         }>;
 
-        assert.tsType(getObjectTypedEntries(example2)).equals<[string, RegExp][]>();
+        assert.tsType(getObjectTypedEntries(example2)).equals<
+            [
+                string,
+                RegExp,
+            ][]
+        >();
     });
 
     it('handles nullable properties', () => {
         const exampleObject = {} as Partial<Record<Planet, string | undefined>>;
 
-        assert
-            .tsType(getObjectTypedEntries(exampleObject))
-            .equals<[Planet, string | undefined][]>();
+        assert.tsType(getObjectTypedEntries(exampleObject)).equals<
+            [
+                Planet,
+                (
+                    | string
+                    | undefined
+                ),
+            ][]
+        >();
     });
 
     it('includes optional properties in object values', () => {
@@ -130,12 +157,19 @@ describe(typedObjectFromEntries.name, () => {
             bKey = 'b',
         }
 
-        const entries = getEnumValues(MyEnum).map((enumValue): [MyEnum, string] => {
-            return [
+        const entries = getEnumValues(MyEnum).map(
+            (
                 enumValue,
-                `${enumValue}-derp`,
-            ];
-        });
+            ): [
+                MyEnum,
+                string,
+            ] => {
+                return [
+                    enumValue,
+                    `${enumValue}-derp`,
+                ];
+            },
+        );
 
         const formedObject = typedObjectFromEntries(entries);
 

@@ -9,7 +9,10 @@
 export type RemoveSuffix<
     Original extends string,
     Suffixes extends readonly string[],
-> = Suffixes extends readonly [infer First extends string, ...infer Rest extends string[]]
+> = Suffixes extends readonly [
+    infer First extends string,
+    ...infer Rest extends string[],
+]
     ? Original extends `${infer Prefix}-${First}`
         ? Prefix
         : RemoveSuffix<Original, Rest>

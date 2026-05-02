@@ -36,6 +36,12 @@ describe(typedMap.name, () => {
                     },
                 ),
             )
-            .equals<[number, number, number]>();
+            .equals<
+                [
+                    number,
+                    number,
+                    number,
+                ]
+            >();
     });
 });

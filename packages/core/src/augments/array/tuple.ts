@@ -37,7 +37,12 @@ export type MaybeTuple<T> = T | AtLeastTuple<T, 1>;
  * @category Package : @augment-vir/common
  * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
-export type RemoveLastTupleEntry<T extends any[]> = T extends [...infer Head, any?] ? Head : any[];
+export type RemoveLastTupleEntry<T extends any[]> = T extends [
+    ...infer Head,
+    any?,
+]
+    ? Head
+    : any[];
 
 /**
  * Remove the first entry in a tuple.
@@ -46,7 +51,12 @@ export type RemoveLastTupleEntry<T extends any[]> = T extends [...infer Head, an
  * @category Package : @augment-vir/common
  * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
-export type RemoveFirstTupleEntry<T extends any[]> = T extends [any?, ...infer Tail] ? Tail : any[];
+export type RemoveFirstTupleEntry<T extends any[]> = T extends [
+    any?,
+    ...infer Tail,
+]
+    ? Tail
+    : any[];
 
 /**
  * A tuple with entries of type `Element` and length of `Length`.
@@ -67,7 +77,14 @@ type _TupleOf<
     FullArrayGeneric extends unknown[],
 > = FullArrayGeneric['length'] extends LengthGeneric
     ? FullArrayGeneric
-    : _TupleOf<ArrayElementGeneric, LengthGeneric, [ArrayElementGeneric, ...FullArrayGeneric]>;
+    : _TupleOf<
+          ArrayElementGeneric,
+          LengthGeneric,
+          [
+              ArrayElementGeneric,
+              ...FullArrayGeneric,
+          ]
+      >;
 
 /**
  * Helper type for {@link TupleIndexes}.
@@ -79,8 +96,19 @@ type _TupleOf<
 export type TupleIndexesRecursive<
     T extends readonly unknown[],
     Accumulated extends number[] = [],
-> = T extends readonly [any, ...infer Rest]
-    ? Accumulated['length'] | TupleIndexesRecursive<Rest, [...Accumulated, 1]>
+> = T extends readonly [
+    any,
+    ...infer Rest,
+]
+    ?
+          | Accumulated['length']
+          | TupleIndexesRecursive<
+                Rest,
+                [
+                    ...Accumulated,
+                    1,
+                ]
+            >
     : never;
 
 /**

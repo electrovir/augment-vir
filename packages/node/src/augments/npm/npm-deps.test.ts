@@ -200,6 +200,13 @@ describe(listAllDirectNpmDeps.name, () => {
                     isWorkspace: false,
                 },
             ],
+            '@paralleldrive/cuid2': [
+                {
+                    dependencyKey: PackageJsonDependencyKey.Dependencies,
+                    requiredBy: join(monoRepoDirPath, 'packages', 'common', 'package.json'),
+                    isWorkspace: false,
+                },
+            ],
             '@playwright/test': [
                 {
                     dependencyKey: PackageJsonDependencyKey.DevDependencies,

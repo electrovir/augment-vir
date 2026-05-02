@@ -11,31 +11,71 @@ describe('RemoveSuffix', () => {
 
     it('returns the original when no suffix matches', () => {
         assert
-            .tsType<RemoveSuffix<'vira-red-foreground', ['body', 'header']>>()
+            .tsType<
+                RemoveSuffix<
+                    'vira-red-foreground',
+                    [
+                        'body',
+                        'header',
+                    ]
+                >
+            >()
             .equals<'vira-red-foreground'>();
     });
 
     it('matches the first suffix in the array', () => {
         assert
-            .tsType<RemoveSuffix<'vira-red-foreground-body', ['body', 'header']>>()
+            .tsType<
+                RemoveSuffix<
+                    'vira-red-foreground-body',
+                    [
+                        'body',
+                        'header',
+                    ]
+                >
+            >()
             .equals<'vira-red-foreground'>();
     });
 
     it('matches a later suffix when earlier ones do not match', () => {
         assert
-            .tsType<RemoveSuffix<'vira-red-foreground-header', ['body', 'header']>>()
+            .tsType<
+                RemoveSuffix<
+                    'vira-red-foreground-header',
+                    [
+                        'body',
+                        'header',
+                    ]
+                >
+            >()
             .equals<'vira-red-foreground'>();
     });
 
     it('prefers compound suffix over simple suffix when listed first', () => {
         assert
-            .tsType<RemoveSuffix<'vira-red-foreground-small-body', ['small-body', 'body']>>()
+            .tsType<
+                RemoveSuffix<
+                    'vira-red-foreground-small-body',
+                    [
+                        'small-body',
+                        'body',
+                    ]
+                >
+            >()
             .equals<'vira-red-foreground'>();
     });
 
     it('matches simple suffix when compound suffix is listed later', () => {
         assert
-            .tsType<RemoveSuffix<'vira-red-foreground-small-body', ['body', 'small-body']>>()
+            .tsType<
+                RemoveSuffix<
+                    'vira-red-foreground-small-body',
+                    [
+                        'body',
+                        'small-body',
+                    ]
+                >
+            >()
             .equals<'vira-red-foreground-small'>();
     });
 
@@ -48,14 +88,23 @@ describe('RemoveSuffix', () => {
             .tsType<
                 RemoveSuffix<
                     'vira-red-foreground-body' | 'vira-red-foreground-header',
-                    ['body', 'header']
+                    [
+                        'body',
+                        'header',
+                    ]
                 >
             >()
             .equals<'vira-red-foreground'>();
     });
 
     it('can be applied twice like in real usage', () => {
-        type FirstPass = RemoveSuffix<'vira-red-foreground-small-body', ['small-body', 'body']>;
+        type FirstPass = RemoveSuffix<
+            'vira-red-foreground-small-body',
+            [
+                'small-body',
+                'body',
+            ]
+        >;
         type SecondPass = RemoveSuffix<FirstPass, ['-']>;
 
         assert.tsType<FirstPass>().equals<'vira-red-foreground'>();

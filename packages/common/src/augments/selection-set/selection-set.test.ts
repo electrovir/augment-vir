@@ -214,7 +214,10 @@ describe('SelectionSet', () => {
         assert
             .tsType<
                 SelectionSet<{
-                    child: [{grandChild: string}, {differentGrandChild: string}];
+                    child: [
+                        {grandChild: string},
+                        {differentGrandChild: string},
+                    ];
                 }>
             >()
             .equals<{

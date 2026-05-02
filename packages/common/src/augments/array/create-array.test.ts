@@ -60,14 +60,28 @@ describe(createArray.name, () => {
     ]);
 
     it('has correct return type', () => {
-        assert.tsType(createArray(3, () => 'hi')).equals<[string, string, string]>();
+        assert.tsType(createArray(3, () => 'hi')).equals<
+            [
+                string,
+                string,
+                string,
+            ]
+        >();
         assert
             .tsType(
                 createArray(3, () => {
                     return Promise.resolve('hi');
                 }),
             )
-            .equals<Promise<[string, string, string]>>();
+            .equals<
+                Promise<
+                    [
+                        string,
+                        string,
+                        string,
+                    ]
+                >
+            >();
         assert
             .tsType(
                 createArray(3, () => {
@@ -78,6 +92,14 @@ describe(createArray.name, () => {
                     }
                 }),
             )
-            .equals<Promise<[string, string, string]>>();
+            .equals<
+                Promise<
+                    [
+                        string,
+                        string,
+                        string,
+                    ]
+                >
+            >();
     });
 });

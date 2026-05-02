@@ -14,7 +14,10 @@ export type KeyCount<T> = UnionToTuple<keyof T>['length'];
  */
 type UnionToTuple<T> =
     UnionToIntersection<T extends any ? (t: T) => T : never> extends (args: any) => infer W
-        ? [...UnionToTuple<Exclude<T, W>>, W]
+        ? [
+              ...UnionToTuple<Exclude<T, W>>,
+              W,
+          ]
         : [];
 
 /**

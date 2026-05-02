@@ -9,7 +9,12 @@ import {type AnyObject} from '@augment-vir/core';
  * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type DeepValue<Parent extends AnyObject, Keys extends ReadonlyArray<PropertyKey>> =
-    Keys extends Readonly<[infer First, ...infer Rest]>
+    Keys extends Readonly<
+        [
+            infer First,
+            ...infer Rest,
+        ]
+    >
         ? First extends keyof Parent
             ? Rest extends ReadonlyArray<PropertyKey>
                 ? DeepValue<Parent[First], Rest>

@@ -107,8 +107,12 @@ export type WaitUntilFunction<Assert extends AssertFunction<any>> =
               this: void,
               ...params: [
                   ...WaitUntilFunctionParameters<Assert, Input>,
-                  options?: WaitUntilOptions | undefined,
-                  failureMessage?: string | undefined,
+                  options?:
+                      | WaitUntilOptions
+                      | undefined,
+                  failureMessage?:
+                      | string
+                      | undefined,
               ]
           ) => Promise<NarrowToExpected<Input, Guard>>
         : never;

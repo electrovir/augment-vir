@@ -116,7 +116,12 @@ describe('FunctionTestCase', () => {
     it('handles functions with multiple inputs', () => {
         const testAssignment: FunctionTestCase<(input1: string, input2: number) => string> =
             {} as any;
-        assert.tsType(testAssignment.inputs).equals<[string, number]>();
+        assert.tsType(testAssignment.inputs).equals<
+            [
+                string,
+                number,
+            ]
+        >();
 
         assert
             .tsType<FunctionTestCase<(input1: string, input2: number) => string>>()
@@ -142,7 +147,12 @@ describe('FunctionTestCase', () => {
         const testAssignment: FunctionTestCase<
             (input: number, ...allInputs: ReadonlyArray<string>) => string
         > = {} as any;
-        assert.tsType(testAssignment.inputs).equals<[number, ...string[]]>();
+        assert.tsType(testAssignment.inputs).equals<
+            [
+                number,
+                ...string[],
+            ]
+        >();
 
         assert
             .tsType<FunctionTestCase<(...allInputs: ReadonlyArray<string>) => string>>()

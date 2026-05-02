@@ -9,9 +9,10 @@ import {type CompleteRequire, getObjectTypedKeys} from '@augment-vir/core';
  * @category Package : @augment-vir/common
  * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
-export function getObjectTypedEntries<const ObjectGeneric>(
-    input: ObjectGeneric,
-): [keyof ObjectGeneric, CompleteRequire<ObjectGeneric>[keyof CompleteRequire<ObjectGeneric>]][] {
+export function getObjectTypedEntries<const ObjectGeneric>(input: ObjectGeneric): [
+    keyof ObjectGeneric,
+    CompleteRequire<ObjectGeneric>[keyof CompleteRequire<ObjectGeneric>],
+][] {
     return getObjectTypedKeys(input).map((key) => [
         key,
         input[key],
@@ -31,7 +32,14 @@ export function getObjectTypedEntries<const ObjectGeneric>(
  * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function typedObjectFromEntries<const KeyType extends PropertyKey, const ValueType>(
-    entries: ReadonlyArray<Readonly<[KeyType, ValueType]>>,
+    entries: ReadonlyArray<
+        Readonly<
+            [
+                KeyType,
+                ValueType,
+            ]
+        >
+    >,
 ): Record<KeyType, ValueType> {
     return Object.fromEntries(entries) as Record<KeyType, ValueType>;
 }
@@ -45,9 +53,10 @@ export function typedObjectFromEntries<const KeyType extends PropertyKey, const 
  * @category Package : @augment-vir/common
  * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
-export function getEntriesSortedByKey<const ObjectGeneric>(
-    input: ObjectGeneric,
-): [keyof ObjectGeneric, CompleteRequire<ObjectGeneric>[keyof CompleteRequire<ObjectGeneric>]][] {
+export function getEntriesSortedByKey<const ObjectGeneric>(input: ObjectGeneric): [
+    keyof ObjectGeneric,
+    CompleteRequire<ObjectGeneric>[keyof CompleteRequire<ObjectGeneric>],
+][] {
     return getObjectTypedEntries(input).sort((tupleA, tupleB) =>
         String(tupleA[0]).localeCompare(String(tupleB[0])),
     );

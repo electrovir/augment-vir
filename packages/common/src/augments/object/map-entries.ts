@@ -86,7 +86,10 @@ export function mapObject<
                         return [
                             output.key,
                             output.value,
-                        ] as [NewKey, NewValue];
+                        ] as [
+                            NewKey,
+                            NewValue,
+                        ];
                     } else {
                         return undefined;
                     }
@@ -97,7 +100,10 @@ export function mapObject<
         if (gotAPromise) {
             return new Promise<Record<NewKey, NewValue>>(async (resolve, reject) => {
                 try {
-                    const entries: [NewKey, NewValue][] = filterMap(
+                    const entries: [
+                        NewKey,
+                        NewValue,
+                    ][] = filterMap(
                         /** This does contain promises. */
                         // eslint-disable-next-line @typescript-eslint/await-thenable
                         await Promise.all(mappedEntries),
@@ -110,7 +116,10 @@ export function mapObject<
                                 return [
                                     entry.key,
                                     entry.value,
-                                ] as [NewKey, NewValue];
+                                ] as [
+                                    NewKey,
+                                    NewValue,
+                                ];
                             }
                         },
                         check.isTruthy,
@@ -122,7 +131,12 @@ export function mapObject<
                 }
             });
         } else {
-            return typedObjectFromEntries(mappedEntries as [NewKey, NewValue][]);
+            return typedObjectFromEntries(
+                mappedEntries as [
+                    NewKey,
+                    NewValue,
+                ][],
+            );
         }
     } catch (error) {
         throw ensureError(error);

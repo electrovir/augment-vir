@@ -14,17 +14,50 @@ describe('TypedFunction', () => {
     });
     it('properly assigns multiple arguments and a return type', () => {
         assert
-            .tsType<TypedFunction<[string, number], number>>()
+            .tsType<
+                TypedFunction<
+                    [
+                        string,
+                        number,
+                    ],
+                    number
+                >
+            >()
             .equals<(input: string, input2: number) => number>();
-        const testAssignment: TypedFunction<[string, number], number> = (
-            input1: string,
-            input2: number,
-        ) => 5;
+        const testAssignment: TypedFunction<
+            [
+                string,
+                number,
+            ],
+            number
+        > = (input1: string, input2: number) => 5;
         assert
-            .tsType<TypedFunction<[string | void, number], number>>()
+            .tsType<
+                TypedFunction<
+                    [
+                        (
+                            | string
+                            | void
+                        ),
+                        number,
+                    ],
+                    number
+                >
+            >()
             .equals<(input: string | void, input2: number) => number>();
         assert
-            .tsType<TypedFunction<[string | undefined, number], number>>()
+            .tsType<
+                TypedFunction<
+                    [
+                        (
+                            | string
+                            | undefined
+                        ),
+                        number,
+                    ],
+                    number
+                >
+            >()
             .equals<(input: string | undefined, input2: number) => number>();
         assert.tsType<TypedFunction<string[], number>>().equals<(...inputs: string[]) => number>();
         assert.tsType<TypedFunction<[string[]], number>>().equals<(inputs: string[]) => number>();

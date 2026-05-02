@@ -6,7 +6,12 @@
  * @category Package : @augment-vir/common
  * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
-export type SeededRandomState = [number, number, number, number];
+export type SeededRandomState = [
+    number,
+    number,
+    number,
+    number,
+];
 
 /**
  * A class that produces deterministic, pseudo random numbers based on a given seed. This uses the
@@ -98,7 +103,12 @@ export class SeededRandom {
 /** Alea v0.9 */
 class AleaRandom {
     private n = 0xef_c8_24_9d;
-    private s: [number, number, number, number] = [
+    private s: [
+        number,
+        number,
+        number,
+        number,
+    ] = [
         this.mash(' '),
         this.mash(' '),
         this.mash(' '),

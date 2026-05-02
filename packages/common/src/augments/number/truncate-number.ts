@@ -111,7 +111,10 @@ function truncateScientificNotation({
     const [
         beforeExponent,
         rawExponent,
-    ] = safeSplit(valueString, 'e') as [string, string];
+    ] = safeSplit(valueString, 'e') as [
+        string,
+        string,
+    ];
     const exponent = rawExponent.replace(/^[-+]/, '');
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const plusOrMinus = rawExponent[0]!;

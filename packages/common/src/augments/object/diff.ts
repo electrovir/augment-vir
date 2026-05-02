@@ -14,7 +14,15 @@ import {type PartialDeep} from 'type-fest';
 export function diffObjects<
     T0 extends Readonly<Record<PropertyKey, unknown>>,
     T1 extends Readonly<Record<PropertyKey, unknown>>,
->(object0: T0, object1: T1): [PartialDeep<T0>, PartialDeep<T1>] | [] {
+>(
+    object0: T0,
+    object1: T1,
+):
+    | [
+          PartialDeep<T0>,
+          PartialDeep<T1>,
+      ]
+    | [] {
     const allObjectKeys = Array.from(
         new Set([
             ...getObjectTypedKeys(object0),
@@ -47,13 +55,19 @@ export function diffObjects<
         [
             {},
             {},
-        ] as [Record<PropertyKey, unknown>, Record<PropertyKey, unknown>],
+        ] as [
+            Record<PropertyKey, unknown>,
+            Record<PropertyKey, unknown>,
+        ],
     );
 
     if (!Object.keys(diffOutput[0]).length && !Object.keys(diffOutput[1]).length) {
         return [];
     } else {
-        return diffOutput as [PartialDeep<T0>, PartialDeep<T1>];
+        return diffOutput as [
+            PartialDeep<T0>,
+            PartialDeep<T1>,
+        ];
     }
 }
 
@@ -69,7 +83,12 @@ export function diffObjects<
 export function diffArrays<T0, T1>(
     array0: ReadonlyArray<T0>,
     array1: ReadonlyArray<T1>,
-): [Array<T0>, Array<T1>] | [] {
+):
+    | [
+          Array<T0>,
+          Array<T1>,
+      ]
+    | [] {
     const allArrayIndexes: ReadonlyArray<number> = Array.from(
         new Set(
             [
@@ -102,7 +121,10 @@ export function diffArrays<T0, T1>(
         [
             [],
             [],
-        ] as [Array<T0>, Array<T1>],
+        ] as [
+            Array<T0>,
+            Array<T1>,
+        ],
     );
 
     if (!diffArrays[0].length && !diffArrays[1].length) {
@@ -136,7 +158,12 @@ export function diffBasic<T0, T1>(
     /** A custom equality checker. Defaults to a strict equality check (`===`). */
     areEqual: AreEqualCallback<T0, T1> = (value0, value1) =>
         (value0 as unknown) === (value1 as unknown),
-): [T0, T1] | [] {
+):
+    | [
+          T0,
+          T1,
+      ]
+    | [] {
     if (areEqual(value0, value1)) {
         return [];
     } else {
@@ -148,7 +175,16 @@ export function diffBasic<T0, T1>(
 }
 
 const orderedValueDiffs: ReadonlyArray<
-    (value0: unknown, value1: unknown) => undefined | [] | [unknown, unknown]
+    (
+        value0: unknown,
+        value1: unknown,
+    ) =>
+        | undefined
+        | []
+        | [
+              unknown,
+              unknown,
+          ]
 > = [
     (value0, value1) => {
         if (!check.isArray(value0) || !check.isArray(value1)) {
@@ -180,15 +216,34 @@ const orderedValueDiffs: ReadonlyArray<
  *   changes in the first value, second entry contains the changes in the second value.
  * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
-export function diffValues<T0, T1>(value0: T0, value1: T1): [T0, T1] | [] {
-    let diffOutput = undefined as [] | [unknown, unknown] | undefined;
+export function diffValues<T0, T1>(
+    value0: T0,
+    value1: T1,
+):
+    | [
+          T0,
+          T1,
+      ]
+    | [] {
+    let diffOutput = undefined as
+        | []
+        | [
+              unknown,
+              unknown,
+          ]
+        | undefined;
     orderedValueDiffs.some((differ) => {
         diffOutput = differ(value0, value1);
         return !!diffOutput;
     });
 
     if (diffOutput) {
-        return diffOutput as [T0, T1] | [];
+        return diffOutput as
+            | [
+                  T0,
+                  T1,
+              ]
+            | [];
     }
 
     /** Fallback to the basic diff. */

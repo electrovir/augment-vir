@@ -45,7 +45,13 @@ export type FunctionWithContextTestCaseMultipleInputs<
     FunctionToTest extends BaseFunctionWithContext,
 > = {
     inputs: Parameters<FunctionToTest>['length'] extends never
-        ? FunctionToTest extends TypedFunction<[UniversalTestContext, ...infer ArgumentsType], any>
+        ? FunctionToTest extends TypedFunction<
+              [
+                  UniversalTestContext,
+                  ...infer ArgumentsType,
+              ],
+              any
+          >
             ? // readonly rest params case
               ArgumentsType[]
             : // leftover case, haven't figured out how to trigger this yet

@@ -15,7 +15,10 @@ export function prettyDiff(actual: unknown, expected: unknown): string {
     const bothStrings = typeof expected === 'string' && typeof actual === 'string';
     const useLines: boolean = typeof expected !== 'string' || typeof actual !== 'string';
     const diffFunction = (useLines ? diffLines : diffWords) as TypedFunction<
-        [string, string],
+        [
+            string,
+            string,
+        ],
         ChangeObject<string>[]
     >;
     const expectedString = [

@@ -16,6 +16,15 @@ describe('KeyCount', () => {
     });
 
     it('does not work on arrays', () => {
-        assert.tsType<KeyCount<['hi', 'b']>>().notEquals<2>();
+        assert
+            .tsType<
+                KeyCount<
+                    [
+                        'hi',
+                        'b',
+                    ]
+                >
+            >()
+            .notEquals<2>();
     });
 });

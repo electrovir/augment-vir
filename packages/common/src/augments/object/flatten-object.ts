@@ -18,12 +18,18 @@ export function flattenObject(originalObject: Readonly<AnyObject>): UnknownObjec
     return Object.fromEntries(flattenObjectToEntries(originalObject));
 }
 
-function flattenObjectToEntries(originalObject: Readonly<AnyObject>): [PropertyKey, any][] {
+function flattenObjectToEntries(originalObject: Readonly<AnyObject>): [
+    PropertyKey,
+    any,
+][] {
     return Object.entries(originalObject).flatMap(
         ([
             key,
             value,
-        ]): [PropertyKey, any][] => {
+        ]): [
+            PropertyKey,
+            any,
+        ][] => {
             if (check.isObject(value)) {
                 return flattenObjectToEntries(value);
             } else {

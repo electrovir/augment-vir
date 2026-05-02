@@ -12,7 +12,13 @@
  * TypedFunction<string, number>; // (input: string) => number
  * TypedFunction<string[], number>; // (...inputs: string[]) => number
  * TypedFunction<[string[]], number>; // (input: string[]) => number
- * TypedFunction<[string, number], number>; // (input1: string, input2: number) => number
+ * TypedFunction<
+ *     [
+ *         string,
+ *         number,
+ *     ],
+ *     number
+ * >; // (input1: string, input2: number) => number
  * TypedFunction<[string | undefined], number>; // (input1: string|undefined) => number
  * ```
  *

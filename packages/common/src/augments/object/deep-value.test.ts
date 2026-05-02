@@ -7,14 +7,28 @@ describe('DeepValue', () => {
         assert.tsType<DeepValue<{a: string}, ['a']>>().equals<string>();
     });
     it('falls back to undefined', () => {
-        assert.tsType<DeepValue<{a: string}, ['a', 'b']>>().equals<undefined>();
+        assert
+            .tsType<
+                DeepValue<
+                    {a: string},
+                    [
+                        'a',
+                        'b',
+                    ]
+                >
+            >()
+            .equals<undefined>();
     });
     it('accesses a nested key', () => {
         assert
             .tsType<
                 DeepValue<
                     {a: {b: {c: number}; d: {e: string}; f: {g: {h: RegExp}}}},
-                    ['a', 'b', 'c']
+                    [
+                        'a',
+                        'b',
+                        'c',
+                    ]
                 >
             >()
             .equals<number>();
@@ -24,7 +38,17 @@ describe('DeepValue', () => {
             .tsType<
                 DeepValue<
                     {a: {b: {c: number}; d: {e: string}; f: {g: {h: RegExp}}}},
-                    ['a', 'b' | 'd', 'c' | 'e']
+                    [
+                        'a',
+                        (
+                            | 'b'
+                            | 'd'
+                        ),
+                        (
+                            | 'c'
+                            | 'e'
+                        ),
+                    ]
                 >
             >()
             .equals<string | number | undefined>();

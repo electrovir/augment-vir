@@ -15,6 +15,7 @@ module.exports = {
         'deepcopy',
         'domcontentloaded',
         'nocheck',
+        'paralleldrive',
         'prismock',
         'propstat',
         'resolv',
