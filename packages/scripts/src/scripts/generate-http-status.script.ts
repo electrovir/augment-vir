@@ -180,7 +180,7 @@ async function writeStatuses(statusesByCategory: StatusesByCategory) {
             statusByCategoryString += `HttpStatus.${status.name},`;
         });
 
-        statusByCategoryString += `],`;
+        statusByCategoryString += '],';
     });
 
     const finalString = [

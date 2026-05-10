@@ -179,7 +179,7 @@ describe(queryThroughShadow.name, () => {
             {
                 it: 'splits up a query with child queries that has no results',
                 input: {
-                    query: `.does-not-exist .does-not-exist`,
+                    query: '.does-not-exist .does-not-exist',
                     all: false,
                 },
                 expect: 0,
@@ -187,7 +187,7 @@ describe(queryThroughShadow.name, () => {
             {
                 it: 'handles a nested query with extra spaces',
                 input: {
-                    query: `.does-not-exist .does-not-exist`,
+                    query: '.does-not-exist .does-not-exist',
                     all: false,
                 },
                 expect: 0,

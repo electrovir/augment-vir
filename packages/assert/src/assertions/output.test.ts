@@ -221,7 +221,7 @@ describe('output', () => {
                         46,
                     ],
                     {
-                        value: `other,46`,
+                        value: 'other,46',
                     },
                 ],
                 throws: undefined,
@@ -456,7 +456,7 @@ describe('output', () => {
                         46,
                     ],
                     {
-                        value: `other,46`,
+                        value: 'other,46',
                     },
                 ],
                 expect: true,
@@ -712,11 +712,11 @@ describe('output', () => {
                         46,
                     ],
                     {
-                        value: `other,46`,
+                        value: 'other,46',
                     },
                 ],
                 expect: {
-                    value: `other,46`,
+                    value: 'other,46',
                 },
             },
             {
@@ -961,11 +961,11 @@ describe('output', () => {
                         46,
                     ],
                     {
-                        value: `other,46`,
+                        value: 'other,46',
                     },
                 ],
                 expect: {
-                    value: `other,46`,
+                    value: 'other,46',
                 },
             },
             {
@@ -1163,11 +1163,11 @@ describe('output', () => {
                         46,
                     ],
                     {
-                        value: `other,46`,
+                        value: 'other,46',
                     },
                 ],
                 expect: {
-                    value: `other,46`,
+                    value: 'other,46',
                 },
             },
             {

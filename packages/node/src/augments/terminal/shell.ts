@@ -106,9 +106,9 @@ export function streamShellCommand(
     /** Type guards. */
     /* node:coverage ignore next 5 */
     if (!childProcess.stdout) {
-        throw new Error(`stdout emitter was not created by exec for some reason.`);
+        throw new Error('stdout emitter was not created by exec for some reason.');
     } else if (!childProcess.stderr) {
-        throw new Error(`stderr emitter was not created by exec for some reason.`);
+        throw new Error('stderr emitter was not created by exec for some reason.');
     }
 
     childProcess.stdout.on('data', (chunk) => {

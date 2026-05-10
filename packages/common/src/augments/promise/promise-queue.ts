@@ -114,7 +114,7 @@ export class PromiseQueue extends ListenTarget<PromiseQueueUpdateEvent> {
         const item = this.currentlyAwaiting;
         if (!item) {
             throw new Error(
-                `Cannot handle queue item settle without a currently awaited queue item.`,
+                'Cannot handle queue item settle without a currently awaited queue item.',
             );
         }
 

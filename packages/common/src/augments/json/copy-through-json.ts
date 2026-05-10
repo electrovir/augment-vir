@@ -41,7 +41,7 @@ export function copyThroughJson<const T>(
         return JSON.parse(JSON.stringify(input));
         /* node:coverage ignore next 4 */
     } catch (error) {
-        console.error(`Failed to JSON copy for:`, input);
+        console.error('Failed to JSON copy for:', input);
         throw ensureErrorAndPrependMessage(error, 'Failed JSON copy');
     }
 }
@@ -61,7 +61,7 @@ export function safeCopyThroughJson<const T>(
         return JSON.parse(safeJsonStringify(input));
         /* node:coverage ignore next 4 */
     } catch (error) {
-        console.error(`Failed to JSON copy for:`, input);
+        console.error('Failed to JSON copy for:', input);
         throw ensureErrorAndPrependMessage(error, 'Failed JSON copy');
     }
 }

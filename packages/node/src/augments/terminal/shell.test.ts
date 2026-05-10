@@ -57,12 +57,12 @@ describe(runShellCommand.name, () => {
     });
 
     it('grabs error', async () => {
-        assert.isError((await runShellCommand(`exit 1`)).error);
+        assert.isError((await runShellCommand('exit 1')).error);
     });
 
     it('promise is rejected when requested to do so', async () => {
         await assert.throws(
-            runShellCommand(`exit 2`, {
+            runShellCommand('exit 2', {
                 rejectOnError: true,
             }),
             {
@@ -132,7 +132,7 @@ describe(runShellCommand.name, () => {
 
         if (!commandOutput.stdout.trim().endsWith(finalPhrase)) {
             console.error(commandOutput.stdout);
-            throw new Error(`didn't read all data`);
+            throw new Error("didn't read all data");
         }
 
         assert.isUndefined(commandOutput.error);

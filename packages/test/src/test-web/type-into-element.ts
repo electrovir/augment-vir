@@ -30,9 +30,9 @@ export async function deleteAllTextInInput(
             press: 'Backspace',
         });
         if (inputElement.value === lastValue) {
-            throw new Error(`Input value was not changed at all`);
+            throw new Error('Input value was not changed at all');
         } else if (inputElement.value.length >= lastValue.length) {
-            throw new Error(`Input value length was not decreased.`);
+            throw new Error('Input value length was not decreased.');
         }
 
         await deleteAllTextInInput(inputElement);

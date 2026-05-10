@@ -17,6 +17,7 @@ export * from './augments/array/string-array.js';
 export * from './augments/core-exports.js';
 export * from './augments/enum/enum-value-check.js';
 export * from './augments/error/combine-errors.js';
+export * from './augments/function/bivariant-function.js';
 export * from './augments/function/call-asynchronously.js';
 export * from './augments/function/debounce.js';
 export * from './augments/function/execute-count.js';
