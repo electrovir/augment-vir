@@ -29,26 +29,51 @@ describe('UnwrapBrand', () => {
 
 describe(applyBrand.name, () => {
     it('requires original type to match', () => {
-        assert.tsType(applyBrand<MyId>('value')).equals<MyId>();
+        const branded = applyBrand<MyId>('value');
+        const branded2: MyId = applyBrand<MyId>('value');
+
+        assert.tsType(applyBrand<MyId>('value')).equals<NoInfer<MyId>>();
 
         // @ts-expect-error: blocks non-string inputs
         applyBrand<MyId>(123);
     });
+    it('blocks output inference', () => {
+        // @ts-expect-error: blocks output inference
+        const branded: MyId = applyBrand('value');
+    });
     it('requires original type to match', () => {
-        assert.tsType(applyBrand<MyId>('value')).equals<MyId>();
+        assert.tsType(applyBrand<MyId>('value')).equals<NoInfer<MyId>>();
 
         // @ts-expect-error: blocks non-string inputs
         applyBrand<MyId>(123);
+    });
+    it('works with object brands', () => {
+        type MyObject = Branded<Record<string, number>, 'my-object-type'>;
+
+        assert
+            .tsType(
+                applyBrand<MyObject>({
+                    hi: 321,
+                }),
+            )
+            .equals<NoInfer<MyObject>>();
+
+        applyBrand<MyObject>({
+            // @ts-expect-error: blocks non-string inputs
+            hi: 'hi',
+        });
     });
     it('preserves nullish', () => {
         assert
             .tsType(applyBrand<MyId>('value' as string | null | undefined))
-            .equals<MyId | null | undefined>();
-        assert.tsType(applyBrand<MyId>('value' as string | null)).equals<MyId | null>();
-        assert.tsType(applyBrand<MyId>('value' as string | undefined)).equals<MyId | undefined>();
+            .equals<NoInfer<MyId> | null | undefined>();
+        assert.tsType(applyBrand<MyId>('value' as string | null)).equals<NoInfer<MyId> | null>();
+        assert
+            .tsType(applyBrand<MyId>('value' as string | undefined))
+            .equals<NoInfer<MyId> | undefined>();
     });
 
     it('does not insert nullish', () => {
-        assert.tsType(applyBrand<MyId>('value')).equals<MyId>();
+        assert.tsType(applyBrand<MyId>('value')).equals<NoInfer<MyId>>();
     });
 });

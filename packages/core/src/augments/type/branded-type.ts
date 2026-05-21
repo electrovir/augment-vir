@@ -71,20 +71,35 @@ export type RemoveAllBranding<T> =
  *
  * @category Type
  */
-export function applyBrand<const NewBrand extends Branded<any, any> = never>(
-    value: string,
-): NewBrand;
-export function applyBrand<const NewBrand extends Branded<any, any> = never>(
-    value: string | undefined,
-): NewBrand | undefined;
-export function applyBrand<const NewBrand extends Branded<any, any> = never>(
-    value: string | null,
-): NewBrand | null;
-export function applyBrand<const NewBrand extends Branded<any, any> = never>(
-    value: string | undefined | null,
-): NewBrand | undefined | null;
-export function applyBrand<const NewBrand extends Branded<any, any> = never>(
-    value: string | undefined | null,
-): NewBrand | undefined | null {
+export function applyBrand<
+    const NewBrand extends Branded<any, any> = Branded<
+        '__type_param_required__',
+        '__type_param_required__'
+    >,
+>(value: UnwrapBrand<NewBrand>): NoInfer<NewBrand>;
+export function applyBrand<
+    const NewBrand extends Branded<any, any> = Branded<
+        '__type_param_required__',
+        '__type_param_required__'
+    >,
+>(value: UnwrapBrand<NewBrand> | undefined): NoInfer<NewBrand> | undefined;
+export function applyBrand<
+    const NewBrand extends Branded<any, any> = Branded<
+        '__type_param_required__',
+        '__type_param_required__'
+    >,
+>(value: UnwrapBrand<NewBrand> | null): NoInfer<NewBrand> | null;
+export function applyBrand<
+    const NewBrand extends Branded<any, any> = Branded<
+        '__type_param_required__',
+        '__type_param_required__'
+    >,
+>(value: UnwrapBrand<NewBrand> | undefined | null): NoInfer<NewBrand> | undefined | null;
+export function applyBrand<
+    const NewBrand extends Branded<any, any> = Branded<
+        '__type_param_required__',
+        '__type_param_required__'
+    >,
+>(value: UnwrapBrand<NewBrand> | undefined | null): NoInfer<NewBrand> | undefined | null {
     return value as NewBrand;
 }
