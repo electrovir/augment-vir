@@ -5,7 +5,7 @@
  * @category Package : @augment-vir/common
  * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
-export type ArrayElement<ArrayType extends ReadonlyArray<any>> = ArrayType[number];
+export type ArrayElement<T extends ReadonlyArray<any>> = T[number];
 
 /**
  * Either an array of `T` or just `T` itself.

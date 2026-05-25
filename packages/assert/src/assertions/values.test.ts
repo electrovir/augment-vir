@@ -1170,6 +1170,21 @@ describe('isIn', () => {
                 assert.tsType(child).equals<string>();
             }
         });
+        it('narrows to tuple elements only without leaking length', () => {
+            const numericTuple = [
+                408,
+                429,
+                500,
+                502,
+                503,
+                504,
+            ] as const;
+            const status: number = 500 as number;
+
+            if (check.isIn(status, numericTuple)) {
+                assert.tsType(status).equals<408 | 429 | 500 | 502 | 503 | 504>();
+            }
+        });
     });
     describe('assertWrap', () => {
         it('guards an array', () => {
