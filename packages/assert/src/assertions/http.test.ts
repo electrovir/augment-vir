@@ -13,7 +13,7 @@ describe('isHttpStatus', () => {
     type ExpectedType = HttpStatus;
     type UnexpectedType = number;
 
-    type ExpectedUnionNarrowedType = HttpStatus.Accepted | HttpStatus.BadRequest;
+    type ExpectedUnionNarrowedType = typeof HttpStatus.Accepted | typeof HttpStatus.BadRequest;
     const actualPassUnion: string | ExpectedUnionNarrowedType = HttpStatus.Accepted as any;
 
     describe('assert', () => {
@@ -96,11 +96,13 @@ describe('isHttpStatus', () => {
     });
 });
 describe('isHttpStatusCategory', () => {
-    const actualPass: HttpStatus.Accepted | HttpStatus.BadGateway = HttpStatus.Accepted as any;
-    const actualReject: HttpStatus.Accepted | HttpStatus.BadGateway = HttpStatus.BadGateway as any;
+    const actualPass: typeof HttpStatus.Accepted | typeof HttpStatus.BadGateway =
+        HttpStatus.Accepted as any;
+    const actualReject: typeof HttpStatus.Accepted | typeof HttpStatus.BadGateway =
+        HttpStatus.BadGateway as any;
     const expected = HttpStatusCategory.Success;
-    type ExpectedType = HttpStatus.Accepted;
-    type UnexpectedType = HttpStatus.BadGateway;
+    type ExpectedType = typeof HttpStatus.Accepted;
+    type UnexpectedType = typeof HttpStatus.BadGateway;
 
     describe('assert', () => {
         it('guards', () => {

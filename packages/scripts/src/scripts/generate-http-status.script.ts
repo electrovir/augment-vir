@@ -176,29 +176,33 @@ async function writeStatuses(statusesByCategory: StatusesByCategory) {
         statusByCategoryString += `[HttpStatusCategory.${setFirstLetterCasing(category, StringCase.Upper)}]: [`;
 
         statuses.forEach((status) => {
-            statusesInternals += `/**\n* ${status.description}\n\n* See ${status.url}\n*/\n${status.name} = ${status.number},\n`;
+            statusesInternals += `/**\n* ${status.description}\n\n* See ${status.url}\n*/\n${status.name}: ${status.number},\n`;
             statusByCategoryString += `HttpStatus.${status.name},`;
         });
 
         statusByCategoryString += '],';
     });
 
-    const finalString = [
-        `import {type ArrayElement} from '../array/array.js';
-
-/**
+    const httpStatusJsDoc = `/**
  * All standardized HTTP status codes.
  *
  * These values are automatically parsed from https://developer.mozilla.org/docs/Web/HTTP/Status via
  * https://github.com/electrovir/augment-vir/blob/dev/packages/scripts/src/scripts/generate-http-status.script.ts
- * 
+ *
  * @category HTTP
- * @package [\`@augment-vir/common\`](https://www.npmjs.com/package/@augment-vir/common)
  * @category Package : @augment-vir/common
- */
-export enum HttpStatus {`,
+ * @package [\`@augment-vir/common\`](https://www.npmjs.com/package/@augment-vir/common)
+ */`;
+
+    const finalString = [
+        `import {type ArrayElement} from '../array/array.js';
+
+${httpStatusJsDoc}
+export const HttpStatus = {`,
         statusesInternals,
-        `}
+        `} as const;
+${httpStatusJsDoc}
+export type HttpStatus = (typeof HttpStatus)[keyof typeof HttpStatus];
 
 /**
  * All standardized HTTP status code categories. These are determined by the first number in the
