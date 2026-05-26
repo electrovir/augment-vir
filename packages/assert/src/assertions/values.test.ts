@@ -1137,6 +1137,20 @@ describe('isIn', () => {
             assert.isIn('a', 'abc');
             assert.throws(() => assert.isIn('a', 'z'));
         });
+        it('narrows to tuple elements only without leaking length', () => {
+            const numericTuple = [
+                408,
+                429,
+                500,
+                502,
+                503,
+                504,
+            ] as const;
+            const status: number = 500 as number;
+
+            assert.isIn(status, numericTuple);
+            assert.tsType(status).equals<408 | 429 | 500 | 502 | 503 | 504>();
+        });
     });
     describe('check', () => {
         it('guards an array', () => {
@@ -1210,6 +1224,20 @@ describe('isIn', () => {
 
             assert.tsType(newValue).equals<string>();
         });
+        it('narrows to tuple elements only without leaking length', () => {
+            const numericTuple = [
+                408,
+                429,
+                500,
+                502,
+                503,
+                504,
+            ] as const;
+            const child: 6 | 408 | 9999 = 408 as any;
+
+            const narrowed = assertWrap.isIn(child, numericTuple);
+            assert.tsType(narrowed).equals<408>();
+        });
     });
     describe('checkWrap', () => {
         it('guards an array', () => {
@@ -1236,6 +1264,20 @@ describe('isIn', () => {
             const newValue = checkWrap.isIn(child, 'abc');
 
             assert.tsType(newValue).equals<string | undefined>();
+        });
+        it('narrows to tuple elements only without leaking length', () => {
+            const numericTuple = [
+                408,
+                429,
+                500,
+                502,
+                503,
+                504,
+            ] as const;
+            const child: 6 | 408 | 9999 = 408 as any;
+
+            const narrowed = checkWrap.isIn(child, numericTuple);
+            assert.tsType(narrowed).equals<408 | undefined>();
         });
     });
     describe('waitUntil', () => {
@@ -1282,6 +1324,24 @@ describe('isIn', () => {
 
             assert.tsType(newValue).equals<string>();
         });
+        it('narrows to tuple elements only without leaking length', async () => {
+            const numericTuple = [
+                408,
+                429,
+                500,
+                502,
+                503,
+                504,
+            ] as const;
+
+            const narrowed = await waitUntil.isIn(
+                numericTuple,
+                () => 500 as number,
+                waitUntilTestOptions,
+                'failure',
+            );
+            assert.tsType(narrowed).equals<408 | 429 | 500 | 502 | 503 | 504>();
+        });
     });
 });
 describe('isNotIn', () => {
@@ -1320,6 +1380,20 @@ describe('isNotIn', () => {
         it('rejects', () => {
             assert.throws(() => assert.isNotIn(actualReject, expected));
         });
+        it('does not exclude a child literal matching the tuple length', () => {
+            const numericTuple = [
+                408,
+                429,
+                500,
+                502,
+                503,
+                504,
+            ] as const;
+            const child: 6 | 999 = 6 as any;
+
+            assert.isNotIn(child, numericTuple);
+            assert.tsType(child).equals<6 | 999>();
+        });
     });
     describe('check', () => {
         it('guards an array', () => {
@@ -1345,6 +1419,21 @@ describe('isNotIn', () => {
         it('rejects', () => {
             assert.isFalse(check.isNotIn(actualReject, expected));
         });
+        it('does not exclude a child literal matching the tuple length', () => {
+            const numericTuple = [
+                408,
+                429,
+                500,
+                502,
+                503,
+                504,
+            ] as const;
+            const child: 6 | 999 = 6 as any;
+
+            if (check.isNotIn(child, numericTuple)) {
+                assert.tsType(child).equals<6 | 999>();
+            }
+        });
     });
     describe('assertWrap', () => {
         it('guards an array', () => {
@@ -1363,6 +1452,20 @@ describe('isNotIn', () => {
         });
         it('rejects', () => {
             assert.throws(() => assertWrap.isNotIn(actualReject, expected));
+        });
+        it('does not exclude a child literal matching the tuple length', () => {
+            const numericTuple = [
+                408,
+                429,
+                500,
+                502,
+                503,
+                504,
+            ] as const;
+            const child: 6 | 999 = 6 as any;
+
+            const narrowed = assertWrap.isNotIn(child, numericTuple);
+            assert.tsType(narrowed).equals<6 | 999>();
         });
     });
     describe('checkWrap', () => {
@@ -1384,6 +1487,20 @@ describe('isNotIn', () => {
         });
         it('rejects', () => {
             assert.isUndefined(checkWrap.isNotIn(actualReject, expected));
+        });
+        it('does not exclude a child literal matching the tuple length', () => {
+            const numericTuple = [
+                408,
+                429,
+                500,
+                502,
+                503,
+                504,
+            ] as const;
+            const child: 6 | 999 = 6 as any;
+
+            const narrowed = checkWrap.isNotIn(child, numericTuple);
+            assert.tsType(narrowed).equals<6 | 999 | undefined>();
         });
     });
     describe('waitUntil', () => {
@@ -1419,6 +1536,24 @@ describe('isNotIn', () => {
             await assert.throws(
                 waitUntil.isNotIn(expected, () => actualReject, waitUntilTestOptions, 'failure'),
             );
+        });
+        it('does not exclude a child literal matching the tuple length', async () => {
+            const numericTuple = [
+                408,
+                429,
+                500,
+                502,
+                503,
+                504,
+            ] as const;
+
+            const narrowed = await waitUntil.isNotIn(
+                numericTuple,
+                () => 6 as 6 | 999,
+                waitUntilTestOptions,
+                'failure',
+            );
+            assert.tsType(narrowed).equals<6 | 999>();
         });
     });
 });

@@ -7,40 +7,17 @@ describe('Values', () => {
         assert.tsType<Values<{a: 1; b: 'x'}>>().equals<1 | 'x'>();
     });
 
-    it('extracts element types from a readonly tuple without leaking length', () => {
-        assert
-            .tsType<
-                Values<
-                    readonly [
-                        10,
-                        20,
-                        30,
-                    ]
-                >
-            >()
-            .equals<10 | 20 | 30>();
-    });
+    it('messes up arrays (use ArrayElement instead)', () => {
+        type Result = Values<
+            readonly [
+                10,
+                20,
+                30,
+            ]
+        >;
 
-    it('extracts element types from a mutable tuple without leaking length', () => {
-        assert
-            .tsType<
-                Values<
-                    [
-                        10,
-                        20,
-                        30,
-                    ]
-                >
-            >()
-            .equals<10 | 20 | 30>();
-    });
-
-    it('returns the element type for a regular array', () => {
-        assert.tsType<Values<number[]>>().equals<number>();
-        assert.tsType<Values<ReadonlyArray<string>>>().equals<string>();
-    });
-
-    it('does not include array method types for tuples', () => {
+        assert.tsType<Result>().notEquals<10 | 20 | 30>();
+        assert.tsType<Result>().notEquals<number>();
         assert
             .tsType<
                 Values<
@@ -50,7 +27,7 @@ describe('Values', () => {
                     ]
                 >
             >()
-            .equals<'a' | 'b'>();
+            .notEquals<'a' | 'b'>();
     });
 });
 

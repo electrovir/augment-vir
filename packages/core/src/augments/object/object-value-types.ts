@@ -1,4 +1,3 @@
-import {type ArrayElement} from '../array/array.js';
 import {type CompleteRequire} from './required-keys.js';
 
 /**
@@ -12,11 +11,13 @@ export type CompleteValues<T> = CompleteRequire<T>[keyof T];
 /**
  * Gets the value types of an object.
  *
+ * Do NOT use this on arrays, it will return incorrect values. Instead, use `ArrayElement`.
+ *
  * @category Object
  * @category Package : @augment-vir/common
  * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
-export type Values<T> = T extends ReadonlyArray<unknown> ? ArrayElement<T> : T[keyof T];
+export type Values<T> = T[keyof T];
 
 /**
  * Gets the value within an object when all its keys are required.

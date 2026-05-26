@@ -1,5 +1,6 @@
 import {
     type AnyObject,
+    type ArrayElement,
     type MaybePromise,
     type NarrowToActual,
     type NarrowToExpected,
@@ -11,29 +12,47 @@ import {AssertionError} from '../augments/assertion.error.js';
 import {type GuardGroup} from '../guard-types/guard-group.js';
 import {createWaitUntil, type WaitUntilOptions} from '../guard-types/wait-until-function.js';
 
+/**
+ * Extracts the child value type from a parent passed to `isIn`/`isNotIn` style guards. Uses
+ * `ArrayElement` for arrays and tuples so that array-only properties like `length` are not leaked
+ * as candidate values, and `Values` for everything else.
+ *
+ * @category Assert : Util
+ * @category Package : @augment-vir/assert
+ * @package [`@augment-vir/assert`](https://www.npmjs.com/package/@augment-vir/assert)
+ */
+export type ChildOf<Parent> =
+    Parent extends ReadonlyArray<unknown> ? ArrayElement<Parent> : Values<Parent>;
+
+/**
+ * Returns the own enumerable values of `parent`. For arrays, returns the elements directly so that
+ * array-only properties like `length` are not treated as values. Throws if `Reflect.ownKeys` fails
+ * on the input.
+ */
+function getOwnValues(this: void, parent: object): unknown[] {
+    if (Array.isArray(parent)) {
+        return parent;
+    }
+    return Reflect.ownKeys(parent).map((key) => parent[key as keyof typeof parent] as unknown);
+}
+
 function hasValue(this: void, parent: object | string, value: unknown): boolean {
     if (typeof parent === 'string') {
         return typeof value === 'string' && parent.includes(value);
     }
     /** Wrap this in a try/catch because `Reflect.ownKeys` can fail depending on what its input is. */
-    let hasValue: boolean = true;
-
     try {
-        hasValue = Reflect.ownKeys(parent)
-            .map((key) => parent[key as keyof typeof parent] as unknown)
-            .includes(value);
+        return getOwnValues(parent).includes(value);
     } catch {
         return false;
     }
-
-    return hasValue;
 }
 
 export function isIn<Parent extends object | string>(
     this: void,
     child: unknown,
     parent: Parent,
-): child is Values<Parent> {
+): child is ChildOf<Parent> {
     if (typeof parent === 'string') {
         return parent.includes(child as string);
     } else {
@@ -183,9 +202,7 @@ const assertions = {
             });
         } else {
             try {
-                const actualValues = Reflect.ownKeys(parent).map(
-                    (key) => parent[key as keyof typeof parent] as unknown,
-                );
+                const actualValues = getOwnValues(parent);
 
                 missingValues = values.filter((value) => {
                     return !actualValues.includes(value);
@@ -253,9 +270,7 @@ const assertions = {
             });
         } else {
             try {
-                const actualValues = Reflect.ownKeys(parent).map(
-                    (key) => parent[key as keyof typeof parent] as unknown,
-                );
+                const actualValues = getOwnValues(parent);
 
                 includedValues = values.filter((value) => {
                     return actualValues.includes(value);
@@ -302,7 +317,7 @@ const assertions = {
         child: unknown,
         parent: Parent,
         failureMessage?: string | undefined,
-    ): asserts child is Values<Parent> {
+    ): asserts child is ChildOf<Parent> {
         if (!isIn(child, parent)) {
             throw new AssertionError(
                 `'${stringify(child)}'\n\nis not in\n\n${stringify(parent)}.`,
@@ -340,7 +355,7 @@ const assertions = {
         child: Child,
         parent: Parent,
         failureMessage?: string | undefined,
-    ): asserts child is Exclude<Child, Values<Parent>> {
+    ): asserts child is Exclude<Child, ChildOf<Parent>> {
         if (isIn(child, parent)) {
             throw new AssertionError(
                 `'${stringify(child)}'\n\nis in\n\n${stringify(parent)}.`,
@@ -600,7 +615,7 @@ export const valueGuards = {
             this: void,
             child: unknown,
             parent: Parent,
-        ): child is Values<Parent> {
+        ): child is ChildOf<Parent> {
             return isIn(child, parent);
         },
         /**
@@ -631,7 +646,7 @@ export const valueGuards = {
             this: void,
             child: Child,
             parent: Parent,
-        ): child is Exclude<Child, Values<Parent>> {
+        ): child is Exclude<Child, ChildOf<Parent>> {
             return !isIn(child, parent);
         },
         /**
@@ -843,9 +858,7 @@ export const valueGuards = {
                 });
             } else {
                 try {
-                    const actualValues = Reflect.ownKeys(parent).map(
-                        (key) => parent[key as keyof typeof parent] as unknown,
-                    );
+                    const actualValues = getOwnValues(parent);
 
                     missingValues = values.filter((value) => {
                         return !actualValues.includes(value);
@@ -915,9 +928,7 @@ export const valueGuards = {
                 });
             } else {
                 try {
-                    const actualValues = Reflect.ownKeys(parent).map(
-                        (key) => parent[key as keyof typeof parent] as unknown,
-                    );
+                    const actualValues = getOwnValues(parent);
 
                     includedValues = values.filter((value) => {
                         return actualValues.includes(value);
@@ -967,7 +978,7 @@ export const valueGuards = {
             child: Child,
             parent: Parent,
             failureMessage?: string | undefined,
-        ): Extract<Child, Values<Parent>> {
+        ): Extract<Child, ChildOf<Parent>> {
             if (!isIn(child, parent)) {
                 throw new AssertionError(
                     `'${stringify(child)}'\n\nis not in\n\n${stringify(parent)}.`,
@@ -975,7 +986,7 @@ export const valueGuards = {
                 );
             }
 
-            return child as Extract<Child, Values<Parent>>;
+            return child as Extract<Child, ChildOf<Parent>>;
         },
         /**
          * Asserts that child value is _not_ contained within a parent object, array, or string
@@ -1008,7 +1019,7 @@ export const valueGuards = {
             child: Child,
             parent: Parent,
             failureMessage?: string | undefined,
-        ): Exclude<Child, Values<Parent>> {
+        ): Exclude<Child, ChildOf<Parent>> {
             if (isIn(child, parent)) {
                 throw new AssertionError(
                     `'${stringify(child)}'\n\nis in\n\n${stringify(parent)}.`,
@@ -1016,7 +1027,7 @@ export const valueGuards = {
                 );
             }
 
-            return child as Exclude<Child, Values<Parent>>;
+            return child as Exclude<Child, ChildOf<Parent>>;
         },
         /**
          * Asserts that a value is empty. Supports strings, Maps, Sets, objects, and arrays. Returns
@@ -1304,9 +1315,9 @@ export const valueGuards = {
             this: void,
             child: Child,
             parent: Parent,
-        ): Extract<Child, Values<Parent>> | undefined {
+        ): Extract<Child, ChildOf<Parent>> | undefined {
             if (isIn(child, parent)) {
-                return child as Extract<Child, Values<Parent>>;
+                return child as Extract<Child, ChildOf<Parent>>;
             } else {
                 return undefined;
             }
@@ -1339,11 +1350,11 @@ export const valueGuards = {
             this: void,
             child: Child,
             parent: Parent,
-        ): Exclude<Child, Values<Parent>> | undefined {
+        ): Exclude<Child, ChildOf<Parent>> | undefined {
             if (isIn(child, parent)) {
                 return undefined;
             } else {
-                return child as Exclude<Child, Values<Parent>>;
+                return child as Exclude<Child, ChildOf<Parent>>;
             }
         },
         /**
@@ -1659,7 +1670,7 @@ export const valueGuards = {
             callback: () => MaybePromise<Child>,
             options?: WaitUntilOptions | undefined,
             failureMessage?: string | undefined,
-        ) => Promise<NarrowToExpected<Child, Values<Parent>>>,
+        ) => Promise<NarrowToExpected<Child, ChildOf<Parent>>>,
         /**
          * Repeatedly calls a callback until its output is child value is _not_ contained within a
          * parent object, array, or string through reference equality. Once the callback output
@@ -1693,7 +1704,7 @@ export const valueGuards = {
             callback: () => MaybePromise<Child>,
             options?: WaitUntilOptions | undefined,
             failureMessage?: string | undefined,
-        ) => Promise<Exclude<Child, Values<Parent>>>,
+        ) => Promise<Exclude<Child, ChildOf<Parent>>>,
         /**
          * Repeatedly calls a callback until its output is a value is empty. Supports strings, Maps,
          * Sets, objects, and arrays. Once the callback output passes, it is returned. If the
