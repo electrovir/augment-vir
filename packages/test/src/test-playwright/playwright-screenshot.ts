@@ -50,6 +50,7 @@ export const defaultScreenshotOptions = {
     maxDiffPixelRatio: 0.08,
 } satisfies LocatorScreenshotOptions;
 
+/** @category Internal */
 export type TakeScreenshotOptions = PartialWithUndefined<{
     /** If no locator is provided then the whole page is use. */
     locator: Readonly<Locator>;

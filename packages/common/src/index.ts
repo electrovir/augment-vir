@@ -39,7 +39,6 @@ export * from './augments/log/log.js';
 export * from './augments/log/logger.js';
 export * from './augments/number/clamp.js';
 export * from './augments/number/coords.js';
-export * from './augments/number/digit.js';
 export * from './augments/number/dimensions.js';
 export * from './augments/number/number-conversion.js';
 export * from './augments/number/round.js';

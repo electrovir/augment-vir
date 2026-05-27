@@ -59,6 +59,25 @@ describe(createArray.name, () => {
         },
     ]);
 
+    it("doesn't explode TypeScript on huge numbers", () => {
+        assert.tsType(createArray(5000, () => 'hi')).equals<string[]>();
+    });
+
+    it('works with a generic', () => {
+        function wrapper<T extends number>(value: T) {
+            return createArray(value, () => 'hi');
+        }
+
+        assert.tsType(wrapper(5000)).equals<string[]>();
+        assert.tsType(wrapper(2)).equals<
+            [
+                string,
+                string,
+            ]
+        >();
+        assert.tsType(createArray(5000 as number, () => 'hi')).equals<string[]>();
+    });
+
     it('has correct return type', () => {
         assert.tsType(createArray(3, () => 'hi')).equals<
             [

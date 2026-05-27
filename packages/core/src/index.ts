@@ -13,6 +13,7 @@ export * from './augments/http/http-status.js';
 export * from './augments/json/json-compatible.js';
 export * from './augments/min-max.js';
 export * from './augments/narrow-type.js';
+export * from './augments/number/digit.js';
 export * from './augments/object/generic-object-type.js';
 export * from './augments/object/object-keys.js';
 export * from './augments/object/object-sort.js';

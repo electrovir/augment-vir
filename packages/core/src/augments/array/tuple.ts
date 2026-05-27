@@ -1,3 +1,5 @@
+import {type Digit} from '../number/digit.js';
+
 /**
  * Creates a tuple with length of `OriginalTuple` with values of `NewValueType`.
  *
@@ -59,16 +61,38 @@ export type RemoveFirstTupleEntry<T extends any[]> = T extends [
     : any[];
 
 /**
+ * Detects whether `Length` is a safe size to materialize as a tuple at the type level. Only matches
+ * non-negative integer literals 0–99, whose stringification is exactly one or two ASCII digits.
+ * Anything else — sizes ≥ 100, negatives, non-integers, scientific notation, or a non-literal
+ * `number` — fails to match, because `_TupleOf` either exceeds TS's recursion limit or never
+ * terminates for those inputs.
+ *
+ * @category Array
+ * @category Package : @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
+ */
+export type IsTupleSizeSafe<Length extends number> = `${Length}` extends
+    | `${Digit}`
+    | `${Digit}${Digit}`
+    ? true
+    : false;
+
+/**
  * A tuple with entries of type `Element` and length of `Length`.
+ *
+ * Only literal `Length` values from 0 to 99 produce a precise tuple; anything else (≥ 100,
+ * negatives, non-integers, scientific notation, or a non-literal `number`) falls back to
+ * `Element[]`, because the recursive helper either exceeds TS's recursion limit or never terminates
+ * for those inputs.
  *
  * @category Array
  * @category Package : @augment-vir/common
  * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export type Tuple<Element, Length extends number> = Length extends Length
-    ? number extends Length
-        ? Element[]
-        : _TupleOf<Element, Length, []>
+    ? IsTupleSizeSafe<Length> extends true
+        ? _TupleOf<Element, Length, []>
+        : Element[]
     : never;
 
 type _TupleOf<

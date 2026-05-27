@@ -1,18 +1,14 @@
 import {assert, waitUntil} from '@augment-vir/assert';
-import {DeferredPromise, type Tuple} from '@augment-vir/core';
+import {DeferredPromise} from '@augment-vir/core';
 import {describe, it} from '@augment-vir/test';
 import {typedMap} from '../array/array-map.js';
+import {createArray} from '../array/create-array.js';
 import {PromiseQueue, PromiseQueueUpdateEvent} from './promise-queue.js';
 
 describe(PromiseQueue.name, () => {
     it('waits for resolution', async () => {
         const startSize = 6;
-        const deferredPromises = new Array(startSize).fill(0).map((index) => {
-            if (index === 4) {
-                return undefined;
-            }
-            return new DeferredPromise();
-        }) as Tuple<DeferredPromise, typeof startSize>;
+        const deferredPromises = createArray(startSize, () => new DeferredPromise());
         const addResults: ('resolved' | 'rejected')[] = [];
 
         const queueEvents: PromiseQueueUpdateEvent[] = [];

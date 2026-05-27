@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/core",
-    "version": "31.71.2",
+    "version": "31.71.3",
     "description": "Core augment-vir augments. Use @augment-vir/common instead.",
     "homepage": "https://github.com/electrovir/augment-vir",
     "bugs": {
