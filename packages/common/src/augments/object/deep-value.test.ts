@@ -40,14 +40,8 @@ describe('DeepValue', () => {
                     {a: {b: {c: number}; d: {e: string}; f: {g: {h: RegExp}}}},
                     [
                         'a',
-                        (
-                            | 'b'
-                            | 'd'
-                        ),
-                        (
-                            | 'c'
-                            | 'e'
-                        ),
+                        'b' | 'd',
+                        'c' | 'e',
                     ]
                 >
             >()

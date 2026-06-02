@@ -279,11 +279,7 @@ export async function grep<const CountOnly extends boolean = false>(
                   (excludePattern) => `--exclude="${escape(excludePattern)}"`,
               )
             : []),
-        options.recursive
-            ? options.followSymLinks
-                ? '-RS'
-                : '--recursive'
-            : '',
+        options.recursive ? (options.followSymLinks ? '-RS' : '--recursive') : '',
         ...(options.excludeDirs?.length
             ? options.excludeDirs.map((excludeDir) => `--exclude-dir="${escape(excludeDir)}"`)
             : []),

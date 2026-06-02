@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/web",
-    "version": "31.71.3",
+    "version": "31.71.4",
     "description": "A collection of augments, helpers types, functions, and classes only for web (frontend) JavaScript environments.",
     "keywords": [
         "augment",
@@ -19,7 +19,7 @@
         "type": "git",
         "url": "git+https://github.com/electrovir/augment-vir.git"
     },
-    "license": "(MIT or CC0 1.0)",
+    "license": "(MIT OR CC0-1.0)",
     "author": {
         "name": "electrovir",
         "url": "https://github.com/electrovir"
@@ -36,14 +36,14 @@
         "test:update": "npm test"
     },
     "dependencies": {
-        "@augment-vir/assert": "^31.71.3",
-        "@augment-vir/common": "^31.71.3",
+        "@augment-vir/assert": "^31.71.4",
+        "@augment-vir/common": "^31.71.4",
         "@date-vir/duration": "^8.3.2",
         "html-spec-tags": "^2.2.3",
         "type-fest": "^5.6.0"
     },
     "devDependencies": {
-        "@augment-vir/test": "^31.71.3",
+        "@augment-vir/test": "^31.71.4",
         "bowser": "^2.14.1",
         "typescript": "^5.9.3"
     },

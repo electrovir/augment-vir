@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/common",
-    "version": "31.71.3",
+    "version": "31.71.4",
     "description": "A collection of augments, helpers types, functions, and classes for any JavaScript environment.",
     "keywords": [
         "augment",
@@ -21,7 +21,7 @@
         "type": "git",
         "url": "git+https://github.com/electrovir/augment-vir.git"
     },
-    "license": "(MIT or CC0 1.0)",
+    "license": "(MIT OR CC0-1.0)",
     "author": {
         "name": "electrovir",
         "url": "https://github.com/electrovir"
@@ -40,8 +40,8 @@
         "test:web": "virmator --no-deps test web"
     },
     "dependencies": {
-        "@augment-vir/assert": "^31.71.3",
-        "@augment-vir/core": "^31.71.3",
+        "@augment-vir/assert": "^31.71.4",
+        "@augment-vir/core": "^31.71.4",
         "@date-vir/duration": "^8.3.2",
         "@paralleldrive/cuid2": "^3.3.0",
         "ansi-styles": "^6.2.3",
@@ -56,7 +56,7 @@
         "@web/test-runner-playwright": "^0.11.1",
         "execute-in-browser": "^1.0.9",
         "istanbul-smart-text-reporter": "^1.1.5",
-        "runstorm": "^1.0.0",
+        "runstorm": "^1.0.2",
         "typescript": "^5.9.3"
     },
     "engines": {

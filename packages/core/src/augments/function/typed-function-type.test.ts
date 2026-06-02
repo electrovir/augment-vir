@@ -35,10 +35,7 @@ describe('TypedFunction', () => {
             .tsType<
                 TypedFunction<
                     [
-                        (
-                            | string
-                            | void
-                        ),
+                        string | void,
                         number,
                     ],
                     number
@@ -49,10 +46,7 @@ describe('TypedFunction', () => {
             .tsType<
                 TypedFunction<
                     [
-                        (
-                            | string
-                            | undefined
-                        ),
+                        string | undefined,
                         number,
                     ],
                     number

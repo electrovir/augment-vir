@@ -48,16 +48,8 @@ describe(getObjectTypedEntries.name, () => {
 
         assert.tsType(getObjectTypedEntries(exampleObject)).equals<
             [
-                (
-                    | 'bye'
-                    | 'hi'
-                    | 'somethingElse'
-                ),
-                (
-                    | string
-                    | number
-                    | RegExp
-                ),
+                'bye' | 'hi' | 'somethingElse',
+                string | number | RegExp,
             ][]
         >();
     });
@@ -90,10 +82,7 @@ describe(getObjectTypedEntries.name, () => {
         assert.tsType(getObjectTypedEntries(exampleObject)).equals<
             [
                 Planet,
-                (
-                    | string
-                    | undefined
-                ),
+                string | undefined,
             ][]
         >();
     });

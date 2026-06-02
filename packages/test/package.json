@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/test",
-    "version": "31.71.3",
+    "version": "31.71.4",
     "description": "A universal testing suite that works with Mocha style test runners _and_ Node.js's built-in test runner.",
     "keywords": [
         "test",
@@ -23,7 +23,7 @@
         "type": "git",
         "url": "git+https://github.com/electrovir/augment-vir.git"
     },
-    "license": "(MIT or CC0 1.0)",
+    "license": "(MIT OR CC0-1.0)",
     "author": {
         "name": "electrovir",
         "url": "https://github.com/electrovir"
@@ -44,28 +44,28 @@
         "test:web": "virmator test --no-deps web 'src/test-web/**/*.test.ts' 'src/augments/universal-testing-suite/**/*.test.ts'"
     },
     "dependencies": {
-        "@augment-vir/assert": "^31.71.3",
-        "@augment-vir/common": "^31.71.3",
+        "@augment-vir/assert": "^31.71.4",
+        "@augment-vir/common": "^31.71.4",
         "@date-vir/duration": "^8.3.2",
-        "@virmator/test": "^14.12.2",
+        "@virmator/test": "^14.19.0",
         "type-fest": "^5.6.0"
     },
     "devDependencies": {
         "@open-wc/testing-helpers": "^3.0.1",
-        "@playwright/test": "^1.59.1",
-        "@types/node": "^25.6.0",
+        "@playwright/test": "^1.60.0",
+        "@types/node": "^25.9.1",
         "@web/dev-server-esbuild": "^1.0.5",
         "@web/test-runner": "^0.20.2",
         "@web/test-runner-commands": "^0.9.0",
         "@web/test-runner-playwright": "^0.11.1",
         "@web/test-runner-visual-regression": "^0.10.0",
-        "element-vir": "^26.15.1",
+        "element-vir": "^26.17.0",
         "istanbul-smart-text-reporter": "^1.1.5",
         "pixelmatch": "^7.2.0",
         "pngjs": "^7.0.0",
-        "runstorm": "^1.0.0",
+        "runstorm": "^1.0.2",
         "sharp": "^0.34.5",
-        "spa-router-vir": "^6.4.1",
+        "spa-router-vir": "^6.6.0",
         "typescript": "^5.9.3",
         "url-vir": "^2.1.9"
     },
