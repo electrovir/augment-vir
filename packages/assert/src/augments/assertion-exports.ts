@@ -1,4 +1,10 @@
 export type {Falsy, FalsyValue, Truthy} from '../assertions/boolean.js';
+export type {
+    CombinedParentValue,
+    CombineTypeWithKey,
+    ExtractValue,
+    WithDefinedProperties,
+} from '../assertions/keys.js';
 export type {CustomOutputAsserter} from '../assertions/output.js';
 export type {ErrorMatchOptions} from '../assertions/throws.js';
 export type {CanBeEmpty, Empty} from '../assertions/values.js';

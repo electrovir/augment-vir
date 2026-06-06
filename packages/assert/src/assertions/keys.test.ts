@@ -941,3 +941,239 @@ describe('lacksKeys', () => {
         });
     });
 });
+describe('hasDefinedProperty', () => {
+    const actualPass: {a: number | undefined; b: number | undefined} = {
+        a: 1,
+        b: 2,
+    };
+    const actualReject: {a: number | undefined; b: number | undefined} = {
+        a: undefined,
+        b: 2,
+    };
+    type ExpectedType = {a: number; b: number | undefined};
+
+    describe('assert', () => {
+        it('guards', () => {
+            assert.tsType(actualPass).notMatches<ExpectedType>();
+
+            assert.hasDefinedProperty(actualPass, 'a');
+
+            assert.tsType(actualPass).matches<ExpectedType>();
+            assert.tsType(actualPass.a).equals<number>();
+        });
+        it('rejects a missing value', () => {
+            assert.throws(() => assert.hasDefinedProperty(actualReject, 'a'));
+        });
+    });
+    describe('check', () => {
+        itCases(check.hasDefinedProperty, [
+            {
+                it: 'passes with a defined property',
+                inputs: [
+                    {
+                        a: 0,
+                    },
+                    'a',
+                ],
+                expect: true,
+            },
+            {
+                it: 'fails with an undefined property',
+                inputs: [
+                    {
+                        a: undefined,
+                    },
+                    'a',
+                ],
+                expect: false,
+            },
+            {
+                it: 'fails with a null property',
+                inputs: [
+                    {
+                        a: null,
+                    },
+                    'a',
+                ],
+                expect: false,
+            },
+        ]);
+        it('guards', () => {
+            assert.isTrue(check.hasDefinedProperty(actualPass, 'a'));
+
+            if (check.hasDefinedProperty(actualPass, 'a')) {
+                assert.tsType(actualPass).matches<ExpectedType>();
+                assert.tsType(actualPass.a).equals<number>();
+            }
+        });
+        it('rejects', () => {
+            assert.isFalse(check.hasDefinedProperty(actualReject, 'a'));
+        });
+    });
+    describe('assertWrap', () => {
+        it('guards', () => {
+            const newValue = assertWrap.hasDefinedProperty(actualPass, 'a');
+
+            assert.tsType(newValue).matches<ExpectedType>();
+            assert.tsType(newValue.a).equals<number>();
+            assert.deepEquals(actualPass, newValue);
+        });
+        it('rejects', () => {
+            assert.throws(() => assertWrap.hasDefinedProperty(actualReject, 'a'));
+        });
+    });
+    describe('checkWrap', () => {
+        it('guards', () => {
+            const newValue = checkWrap.hasDefinedProperty(actualPass, 'a');
+
+            assert.tsType(newValue).matches<ExpectedType | undefined>();
+            assert.tsType(newValue).notMatches<ExpectedType>();
+        });
+        it('rejects', () => {
+            assert.isUndefined(checkWrap.hasDefinedProperty(actualReject, 'a'));
+        });
+    });
+    describe('waitUntil', () => {
+        it('guards', async () => {
+            const newValue = await waitUntil.hasDefinedProperty(
+                'a',
+                () => actualPass,
+                waitUntilTestOptions,
+                'failure',
+            );
+
+            assert.tsType(newValue).matches<ExpectedType>();
+            assert.tsType(newValue.a).equals<number>();
+            assert.deepEquals(actualPass, newValue);
+        });
+        it('rejects', async () => {
+            await assert.throws(
+                waitUntil.hasDefinedProperty(
+                    'a',
+                    () => actualReject,
+                    waitUntilTestOptions,
+                    'failure',
+                ),
+            );
+        });
+    });
+});
+describe('hasDefinedProperties', () => {
+    const actualPass: {a: number | undefined; b: number | undefined} = {
+        a: 1,
+        b: 2,
+    };
+    const actualReject: {a: number | undefined; b: number | undefined} = {
+        a: 1,
+        b: undefined,
+    };
+    const expected = [
+        'a',
+        'b',
+    ] as const;
+    type ExpectedType = {a: number; b: number};
+
+    describe('assert', () => {
+        it('guards', () => {
+            assert.tsType(actualPass).notMatches<ExpectedType>();
+
+            assert.hasDefinedProperties(actualPass, expected);
+
+            assert.tsType(actualPass).matches<ExpectedType>();
+            assert.tsType(actualPass.a).equals<number>();
+            assert.tsType(actualPass.b).equals<number>();
+        });
+        it('rejects a missing value', () => {
+            assert.throws(() => assert.hasDefinedProperties(actualReject, expected));
+        });
+    });
+    describe('check', () => {
+        itCases(check.hasDefinedProperties, [
+            {
+                it: 'passes when all properties are defined',
+                inputs: [
+                    {
+                        a: 0,
+                        b: 1,
+                    },
+                    [
+                        'a',
+                        'b',
+                    ],
+                ],
+                expect: true,
+            },
+            {
+                it: 'fails when a property is undefined',
+                inputs: [
+                    {
+                        a: 0,
+                        b: undefined,
+                    },
+                    [
+                        'a',
+                        'b',
+                    ],
+                ],
+                expect: false,
+            },
+        ]);
+        it('guards', () => {
+            assert.isTrue(check.hasDefinedProperties(actualPass, expected));
+
+            if (check.hasDefinedProperties(actualPass, expected)) {
+                assert.tsType(actualPass).matches<ExpectedType>();
+                assert.tsType(actualPass.a).equals<number>();
+                assert.tsType(actualPass.b).equals<number>();
+            }
+        });
+        it('rejects', () => {
+            assert.isFalse(check.hasDefinedProperties(actualReject, expected));
+        });
+    });
+    describe('assertWrap', () => {
+        it('guards', () => {
+            const newValue = assertWrap.hasDefinedProperties(actualPass, expected);
+
+            assert.tsType(newValue).matches<ExpectedType>();
+            assert.deepEquals(actualPass, newValue);
+        });
+        it('rejects', () => {
+            assert.throws(() => assertWrap.hasDefinedProperties(actualReject, expected));
+        });
+    });
+    describe('checkWrap', () => {
+        it('guards', () => {
+            const newValue = checkWrap.hasDefinedProperties(actualPass, expected);
+
+            assert.tsType(newValue).matches<ExpectedType | undefined>();
+            assert.tsType(newValue).notMatches<ExpectedType>();
+        });
+        it('rejects', () => {
+            assert.isUndefined(checkWrap.hasDefinedProperties(actualReject, expected));
+        });
+    });
+    describe('waitUntil', () => {
+        it('guards', async () => {
+            const newValue = await waitUntil.hasDefinedProperties(
+                expected,
+                () => actualPass,
+                waitUntilTestOptions,
+                'failure',
+            );
+
+            assert.tsType(newValue).matches<ExpectedType>();
+            assert.deepEquals(actualPass, newValue);
+        });
+        it('rejects', async () => {
+            await assert.throws(
+                waitUntil.hasDefinedProperties(
+                    expected,
+                    () => actualReject,
+                    waitUntilTestOptions,
+                    'failure',
+                ),
+            );
+        });
+    });
+});

@@ -1,16 +1,24 @@
 import {
     stringify,
+    type AnyObject,
     type MaybePromise,
     type NarrowToExpected,
     type RequiredKeysOf,
+    type SetRequiredAndNotNull,
 } from '@augment-vir/core';
 import {type SetRequired} from 'type-fest';
 import {AssertionError} from '../augments/assertion.error.js';
 import {type GuardGroup} from '../guard-types/guard-group.js';
 import {createWaitUntil, type WaitUntilOptions} from '../guard-types/wait-until-function.js';
 
-/** Helper type for `hasKey`. */
-type ExtractValue<Key extends PropertyKey, Parent> = Key extends keyof Parent
+/**
+ * Helper type for `hasKey`.
+ *
+ * @category Assert : Util
+ * @category Package : @augment-vir/assert
+ * @package [`@augment-vir/assert`](https://www.npmjs.com/package/@augment-vir/assert)
+ */
+export type ExtractValue<Key extends PropertyKey, Parent> = Key extends keyof Parent
     ? Key extends keyof SetRequired<Parent, Key>
         ? SetRequired<Parent, Key>[Key]
         : never
@@ -20,13 +28,35 @@ type ExtractValue<Key extends PropertyKey, Parent> = Key extends keyof Parent
           : never
       : never;
 
-/** Helper type for `hasKey`. */
-type CombinedParentValue<Key extends PropertyKey, Parent> =
+/**
+ * Helper type for `hasKey`.
+ *
+ * @category Assert : Util
+ * @category Package : @augment-vir/assert
+ * @package [`@augment-vir/assert`](https://www.npmjs.com/package/@augment-vir/assert)
+ */
+export type CombinedParentValue<Key extends PropertyKey, Parent> =
     ExtractValue<Key, Parent> extends never ? unknown : ExtractValue<Key, Parent>;
 
-/** Helper type for `hasKey`. */
-type CombineTypeWithKey<Key extends PropertyKey, Parent> = Parent &
+/**
+ * Helper type for `hasKey`.
+ *
+ * @category Assert : Util
+ * @category Package : @augment-vir/assert
+ * @package [`@augment-vir/assert`](https://www.npmjs.com/package/@augment-vir/assert)
+ */
+export type CombineTypeWithKey<Key extends PropertyKey, Parent> = Parent &
     Record<Key, CombinedParentValue<Key, Parent>>;
+
+/**
+ * Helper type for `hasDefinedProperty` and `hasDefinedProperties`.
+ *
+ * @category Assert : Util
+ * @category Package : @augment-vir/assert
+ * @package [`@augment-vir/assert`](https://www.npmjs.com/package/@augment-vir/assert)
+ */
+export type WithDefinedProperties<Parent extends AnyObject, Keys extends keyof Parent> = Parent &
+    SetRequiredAndNotNull<Parent, Keys>;
 
 const hasKeyAttempts: ReadonlyArray<(object: object, key: PropertyKey) => boolean> = [
     (object, key) => {
@@ -259,6 +289,79 @@ const assertions = {
             );
         }
     },
+    /**
+     * Asserts that a parent object has the given property and that its value is defined (not `null`
+     * and not `undefined`).
+     *
+     * Type guards the parent value.
+     *
+     * @example
+     *
+     * ```ts
+     * import {assert} from '@augment-vir/assert';
+     *
+     * assert.hasDefinedProperty({a: 0, b: 1}, 'a'); // passes
+     * assert.hasDefinedProperty({a: undefined, b: 1}, 'a'); // fails
+     * assert.hasDefinedProperty({a: 0, b: 1}, 'c'); // fails
+     * ```
+     *
+     * @throws {@link AssertionError} If the property is missing or not defined.
+     * @see
+     * - {@link assert.hasDefinedProperties} : the multi-property assertion.
+     */
+    hasDefinedProperty<const Parent extends AnyObject, const Key extends keyof Parent>(
+        this: void,
+        parent: Parent,
+        key: Key,
+        failureMessage?: string | undefined,
+    ): asserts parent is WithDefinedProperties<Parent, Key> {
+        if (parent[key] == undefined) {
+            throw new AssertionError(
+                `'${stringify(parent)}' does not have a defined property '${String(key)}'.`,
+                failureMessage,
+            );
+        }
+    },
+    /**
+     * Asserts that a parent object has all the given properties and that each of their values is
+     * defined (not `null` and not `undefined`).
+     *
+     * Type guards the parent value.
+     *
+     * @example
+     *
+     * ```ts
+     * import {assert} from '@augment-vir/assert';
+     *
+     * assert.hasDefinedProperties({a: 0, b: 1}, [
+     *     'a',
+     *     'b',
+     * ]); // passes
+     * assert.hasDefinedProperties({a: 0, b: undefined}, [
+     *     'a',
+     *     'b',
+     * ]); // fails
+     * ```
+     *
+     * @throws {@link AssertionError} If any of the properties are missing or not defined.
+     * @see
+     * - {@link assert.hasDefinedProperty} : the single-property assertion.
+     */
+    hasDefinedProperties<const Parent extends AnyObject, const Keys extends keyof Parent>(
+        this: void,
+        parent: Parent,
+        keys: ReadonlyArray<Keys>,
+        failureMessage?: string | undefined,
+    ): asserts parent is WithDefinedProperties<Parent, Keys> {
+        const undefinedKeys = keys.filter((key) => parent[key] == undefined);
+
+        if (undefinedKeys.length) {
+            throw new AssertionError(
+                `'${stringify(parent)}' does not have defined properties '${undefinedKeys.join(',')}'.`,
+                failureMessage,
+            );
+        }
+    },
 };
 
 export const keyGuards = {
@@ -413,6 +516,63 @@ export const keyGuards = {
             keys: ReadonlyArray<Key>,
         ): parent is Exclude<Parent, Partial<Record<Key, any>>> {
             return keys.every((key) => !hasKey(parent, key));
+        },
+        /**
+         * Checks that a parent object has the given property and that its value is defined (not
+         * `null` and not `undefined`).
+         *
+         * Type guards the parent value.
+         *
+         * @example
+         *
+         * ```ts
+         * import {check} from '@augment-vir/assert';
+         *
+         * check.hasDefinedProperty({a: 0, b: 1}, 'a'); // returns `true`
+         * check.hasDefinedProperty({a: undefined, b: 1}, 'a'); // returns `false`
+         * check.hasDefinedProperty({a: 0, b: 1}, 'c'); // returns `false`
+         * ```
+         *
+         * @see
+         * - {@link check.hasDefinedProperties} : the multi-property check.
+         */
+        hasDefinedProperty<const Parent extends AnyObject, const Key extends keyof Parent>(
+            this: void,
+            parent: Parent,
+            key: Key,
+        ): parent is WithDefinedProperties<Parent, Key> {
+            return parent[key] != undefined;
+        },
+        /**
+         * Checks that a parent object has all the given properties and that each of their values is
+         * defined (not `null` and not `undefined`).
+         *
+         * Type guards the parent value.
+         *
+         * @example
+         *
+         * ```ts
+         * import {check} from '@augment-vir/assert';
+         *
+         * check.hasDefinedProperties({a: 0, b: 1}, [
+         *     'a',
+         *     'b',
+         * ]); // returns `true`
+         * check.hasDefinedProperties({a: 0, b: undefined}, [
+         *     'a',
+         *     'b',
+         * ]); // returns `false`
+         * ```
+         *
+         * @see
+         * - {@link check.hasDefinedProperty} : the single-property check.
+         */
+        hasDefinedProperties<const Parent extends AnyObject, const Keys extends keyof Parent>(
+            this: void,
+            parent: Parent,
+            keys: ReadonlyArray<Keys>,
+        ): parent is WithDefinedProperties<Parent, Keys> {
+            return keys.every((key) => parent[key] != undefined);
         },
     },
     assertWrap: {
@@ -643,6 +803,84 @@ export const keyGuards = {
 
             return parent as Exclude<Parent, Partial<Record<Key, any>>>;
         },
+        /**
+         * Asserts that a parent object has the given property and that its value is defined (not
+         * `null` and not `undefined`). Returns the parent if the assertion passes.
+         *
+         * Type guards the parent value.
+         *
+         * @example
+         *
+         * ```ts
+         * import {assertWrap} from '@augment-vir/assert';
+         *
+         * assertWrap.hasDefinedProperty({a: 0, b: 1}, 'a'); // returns `{a: 0, b: 1}`
+         * assertWrap.hasDefinedProperty({a: undefined, b: 1}, 'a'); // throws an error
+         * ```
+         *
+         * @returns The parent if the assertion passes.
+         * @throws {@link AssertionError} If the property is missing or not defined.
+         * @see
+         * - {@link assertWrap.hasDefinedProperties} : the multi-property assertion.
+         */
+        hasDefinedProperty<const Parent extends AnyObject, const Key extends keyof Parent>(
+            this: void,
+            parent: Parent,
+            key: Key,
+            failureMessage?: string | undefined,
+        ): WithDefinedProperties<Parent, Key> {
+            if (parent[key] == undefined) {
+                throw new AssertionError(
+                    `'${stringify(parent)}' does not have a defined property '${String(key)}'.`,
+                    failureMessage,
+                );
+            }
+
+            return parent as WithDefinedProperties<Parent, Key>;
+        },
+        /**
+         * Asserts that a parent object has all the given properties and that each of their values
+         * is defined (not `null` and not `undefined`). Returns the parent if the assertion passes.
+         *
+         * Type guards the parent value.
+         *
+         * @example
+         *
+         * ```ts
+         * import {assertWrap} from '@augment-vir/assert';
+         *
+         * assertWrap.hasDefinedProperties({a: 0, b: 1}, [
+         *     'a',
+         *     'b',
+         * ]); // returns `{a: 0, b: 1}`
+         * assertWrap.hasDefinedProperties({a: 0, b: undefined}, [
+         *     'a',
+         *     'b',
+         * ]); // throws an error
+         * ```
+         *
+         * @returns The parent if the assertion passes.
+         * @throws {@link AssertionError} If any of the properties are missing or not defined.
+         * @see
+         * - {@link assertWrap.hasDefinedProperty} : the single-property assertion.
+         */
+        hasDefinedProperties<const Parent extends AnyObject, const Keys extends keyof Parent>(
+            this: void,
+            parent: Parent,
+            keys: ReadonlyArray<Keys>,
+            failureMessage?: string | undefined,
+        ): WithDefinedProperties<Parent, Keys> {
+            const undefinedKeys = keys.filter((key) => parent[key] == undefined);
+
+            if (undefinedKeys.length) {
+                throw new AssertionError(
+                    `'${stringify(parent)}' does not have defined properties '${undefinedKeys.join(',')}'.`,
+                    failureMessage,
+                );
+            }
+
+            return parent as WithDefinedProperties<Parent, Keys>;
+        },
     },
     checkWrap: {
         /**
@@ -837,6 +1075,74 @@ export const keyGuards = {
         ): Exclude<Parent, Partial<Record<Key, any>>> | undefined {
             if (keys.every((key) => !hasKey(parent, key))) {
                 return parent as Exclude<Parent, Partial<Record<Key, any>>>;
+            } else {
+                return undefined;
+            }
+        },
+        /**
+         * Checks that a parent object has the given property and that its value is defined (not
+         * `null` and not `undefined`). Returns the parent value if the check passes, otherwise
+         * `undefined`.
+         *
+         * Type guards the parent value.
+         *
+         * @example
+         *
+         * ```ts
+         * import {checkWrap} from '@augment-vir/assert';
+         *
+         * checkWrap.hasDefinedProperty({a: 0, b: 1}, 'a'); // returns `{a: 0, b: 1}`
+         * checkWrap.hasDefinedProperty({a: undefined, b: 1}, 'a'); // returns `undefined`
+         * ```
+         *
+         * @returns The parent value if the check passes, otherwise `undefined`.
+         * @see
+         * - {@link checkWrap.hasDefinedProperties} : the multi-property check.
+         */
+        hasDefinedProperty<const Parent extends AnyObject, const Key extends keyof Parent>(
+            this: void,
+            parent: Parent,
+            key: Key,
+        ): WithDefinedProperties<Parent, Key> | undefined {
+            if (parent[key] == undefined) {
+                return undefined;
+            } else {
+                return parent as WithDefinedProperties<Parent, Key>;
+            }
+        },
+        /**
+         * Checks that a parent object has all the given properties and that each of their values is
+         * defined (not `null` and not `undefined`). Returns the parent value if the check passes,
+         * otherwise `undefined`.
+         *
+         * Type guards the parent value.
+         *
+         * @example
+         *
+         * ```ts
+         * import {checkWrap} from '@augment-vir/assert';
+         *
+         * checkWrap.hasDefinedProperties({a: 0, b: 1}, [
+         *     'a',
+         *     'b',
+         * ]); // returns `{a: 0, b: 1}`
+         * checkWrap.hasDefinedProperties({a: 0, b: undefined}, [
+         *     'a',
+         *     'b',
+         * ]); // returns `undefined`
+         * ```
+         *
+         * @returns The parent value if the check passes, otherwise `undefined`.
+         * @see
+         * - {@link checkWrap.hasDefinedProperty} : the single-property check.
+         */
+        hasDefinedProperties<const Parent extends AnyObject, const Keys extends keyof Parent>(
+            this: void,
+            parent: Parent,
+            keys: ReadonlyArray<Keys>,
+        ): WithDefinedProperties<Parent, Keys> | undefined {
+            if (keys.every((key) => parent[key] != undefined)) {
+                return parent as WithDefinedProperties<Parent, Keys>;
             } else {
                 return undefined;
             }
@@ -1070,5 +1376,87 @@ export const keyGuards = {
             options?: WaitUntilOptions | undefined,
             failureMessage?: string | undefined,
         ) => Promise<Exclude<Parent, Partial<Record<Keys, any>>>>,
+        /**
+         * Repeatedly calls a callback until its output is a parent object that has the first, key
+         * input defined (not `null` and not `undefined`). Once the callback output passes, it is
+         * returned. If the attempts time out, an error is thrown.
+         *
+         * Type guards the parent value.
+         *
+         * @example
+         *
+         * ```ts
+         * import {waitUntil} from '@augment-vir/assert';
+         *
+         * await waitUntil.hasDefinedProperty('a', () => {
+         *     return {a: 0, b: 1};
+         * }); // returns `{a: 0, b: 1}`
+         * await waitUntil.hasDefinedProperty('a', () => {
+         *     return {a: undefined, b: 1};
+         * }); // throws an error
+         * ```
+         *
+         * @returns The callback output once it passes.
+         * @throws {@link AssertionError} On timeout.
+         * @see
+         * - {@link waitUntil.hasDefinedProperties} : the multi-property assertion.
+         */
+        hasDefinedProperty: createWaitUntil(assertions.hasDefinedProperty) as <
+            const Parent extends AnyObject,
+            const Key extends keyof Parent,
+        >(
+            this: void,
+            key: Key,
+            callback: () => MaybePromise<Parent>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<WithDefinedProperties<Parent, Key>>,
+        /**
+         * Repeatedly calls a callback until its output is a parent object that has all of the
+         * first, keys input defined (not `null` and not `undefined`). Once the callback output
+         * passes, it is returned. If the attempts time out, an error is thrown.
+         *
+         * Type guards the parent value.
+         *
+         * @example
+         *
+         * ```ts
+         * import {waitUntil} from '@augment-vir/assert';
+         *
+         * await waitUntil.hasDefinedProperties(
+         *     [
+         *         'a',
+         *         'b',
+         *     ],
+         *     () => {
+         *         return {a: 0, b: 1};
+         *     },
+         * ); // returns `{a: 0, b: 1}`
+         * await waitUntil.hasDefinedProperties(
+         *     [
+         *         'a',
+         *         'b',
+         *     ],
+         *     () => {
+         *         return {a: 0, b: undefined};
+         *     },
+         * ); // throws an error
+         * ```
+         *
+         * @returns The callback output once it passes.
+         * @throws {@link AssertionError} On timeout.
+         * @see
+         * - {@link waitUntil.hasDefinedProperty} : the single-property assertion.
+         */
+        hasDefinedProperties: createWaitUntil(assertions.hasDefinedProperties) as <
+            const Parent extends AnyObject,
+            const Keys extends keyof Parent,
+        >(
+            this: void,
+            keys: ReadonlyArray<Keys>,
+            callback: () => MaybePromise<Parent>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<WithDefinedProperties<Parent, Keys>>,
     },
 } satisfies GuardGroup<typeof assertions>;
