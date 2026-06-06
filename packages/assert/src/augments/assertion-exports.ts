@@ -1,7 +1,7 @@
 export type {Falsy, FalsyValue, Truthy} from '../assertions/boolean.js';
 export type {
-    CombinedParentValue,
     CombineTypeWithKey,
+    CombinedParentValue,
     ExtractValue,
     WithDefinedProperties,
 } from '../assertions/keys.js';

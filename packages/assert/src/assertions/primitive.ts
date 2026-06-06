@@ -1,4 +1,4 @@
-import {stringify, type MaybePromise} from '@augment-vir/core';
+import {isPrimitive, stringify, type MaybePromise} from '@augment-vir/core';
 import {type Primitive} from 'type-fest';
 import {AssertionError} from '../augments/assertion.error.js';
 import {type GuardGroup} from '../guard-types/guard-group.js';
@@ -102,11 +102,7 @@ const assertions = {
         actual: unknown,
         failureMessage?: string | undefined,
     ): asserts actual is Primitive {
-        /**
-         * `null` is a primitive but `typeof null` gives `'object'` so we have to special case
-         * `null` here.
-         */
-        if (actual !== null && (typeof actual === 'object' || typeof actual === 'function')) {
+        if (!isPrimitive(actual)) {
             throw new AssertionError(`'${stringify(actual)}' is not a Primitive.`, failureMessage);
         }
     },
@@ -135,11 +131,7 @@ const assertions = {
         actual: Actual,
         failureMessage?: string | undefined,
     ): asserts actual is Exclude<Actual, Primitive> {
-        /**
-         * `null` is a primitive but `typeof null` gives `'object'` so we have to special case
-         * `null` here.
-         */
-        if (actual === null || (typeof actual !== 'object' && typeof actual !== 'function')) {
+        if (isPrimitive(actual)) {
             throw new AssertionError(`'${stringify(actual)}' is not a Primitive.`, failureMessage);
         }
     },
@@ -168,11 +160,7 @@ export const primitiveGuards = {
          * - {@link check.isPrimitive} : the opposite check.
          */
         isNotPrimitive<Actual>(this: void, actual: Actual): actual is Exclude<Actual, Primitive> {
-            /**
-             * `null` is a primitive but `typeof null` gives `'object'` so we have to special case
-             * `null` here.
-             */
-            return actual !== null && (typeof actual === 'object' || typeof actual === 'function');
+            return !isPrimitive(actual);
         },
         /**
          * Checks that a value is _not_ a valid `PropertyKey`. `PropertyKey` is a built-in
@@ -223,11 +211,7 @@ export const primitiveGuards = {
          * - {@link check.isNotPrimitive} : the opposite check.
          */
         isPrimitive(this: void, actual: unknown): actual is Primitive {
-            /**
-             * `null` is a primitive but `typeof null` gives `'object'` so we have to special case
-             * `null` here.
-             */
-            return actual === null || (typeof actual !== 'object' && typeof actual !== 'function');
+            return isPrimitive(actual);
         },
 
         /**
@@ -285,11 +269,7 @@ export const primitiveGuards = {
             actual: Actual,
             failureMessage?: string | undefined,
         ): Exclude<Actual, Primitive> {
-            /**
-             * `null` is a primitive but `typeof null` gives `'object'` so we have to special case
-             * `null` here.
-             */
-            if (actual === null || (typeof actual !== 'object' && typeof actual !== 'function')) {
+            if (isPrimitive(actual)) {
                 throw new AssertionError(
                     `'${stringify(actual)}' is not a Primitive.`,
                     failureMessage,
@@ -365,11 +345,7 @@ export const primitiveGuards = {
             actual: Actual,
             failureMessage?: string | undefined,
         ): Extract<Actual, Primitive> {
-            /**
-             * `null` is a primitive but `typeof null` gives `'object'` so we have to special case
-             * `null` here.
-             */
-            if (actual !== null && (typeof actual === 'object' || typeof actual === 'function')) {
+            if (!isPrimitive(actual)) {
                 throw new AssertionError(
                     `'${stringify(actual)}' is not a Primitive.`,
                     failureMessage,
@@ -442,11 +418,7 @@ export const primitiveGuards = {
          * - {@link checkWrap.isPrimitive} : the opposite check.
          */
         isNotPrimitive<Actual>(this: void, actual: Actual): Exclude<Actual, Primitive> | undefined {
-            /**
-             * `null` is a primitive but `typeof null` gives `'object'` so we have to special case
-             * `null` here.
-             */
-            if (actual !== null && (typeof actual === 'object' || typeof actual === 'function')) {
+            if (!isPrimitive(actual)) {
                 return actual as Exclude<Actual, Primitive>;
             } else {
                 return undefined;
@@ -509,11 +481,7 @@ export const primitiveGuards = {
          * - {@link checkWrap.isNotPrimitive} : the opposite check.
          */
         isPrimitive<Actual>(this: void, actual: Actual): Extract<Actual, Primitive> | undefined {
-            /**
-             * `null` is a primitive but `typeof null` gives `'object'` so we have to special case
-             * `null` here.
-             */
-            if (actual === null || (typeof actual !== 'object' && typeof actual !== 'function')) {
+            if (isPrimitive(actual)) {
                 return actual as Extract<Actual, Primitive>;
             } else {
                 return undefined;

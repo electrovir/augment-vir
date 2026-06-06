@@ -22,6 +22,7 @@ export * from './augments/object/required-keys.js';
 export * from './augments/object/stringify.js';
 export * from './augments/overwrite-type.js';
 export * from './augments/partial-type.js';
+export * from './augments/primitive.js';
 export * from './augments/promise/deferred-promise.js';
 export * from './augments/promise/maybe-promise.js';
 export * from './augments/promise/wait.js';
