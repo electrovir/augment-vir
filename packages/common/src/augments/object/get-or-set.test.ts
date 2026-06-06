@@ -1,5 +1,5 @@
 import {assert} from '@augment-vir/assert';
-import {wait, type AnyObject} from '@augment-vir/core';
+import {wait, type AnyObject, type MaybePromise} from '@augment-vir/core';
 import {describe, it, itCases} from '@augment-vir/test';
 import {randomString} from '../random/random-string.js';
 import {getOrSet, getOrSetFromMap} from './get-or-set.js';
@@ -24,6 +24,49 @@ describe(getOrSet.name, () => {
             object: originalObject,
         };
     }
+
+    it('does not infer from callback type', () => {
+        const registry: Record<PropertyKey, string[]> = {};
+
+        const result = getOrSet(registry, 'hi', () => {
+            return [];
+        });
+
+        assert.tsType(result).equals<string[]>();
+    });
+
+    it('does not infer the object type from the callback return', () => {
+        const result = getOrSet(
+            {
+                a: 'hello',
+            },
+            'a',
+            () => 'world',
+        );
+        assert.tsType(result).equals<string>();
+
+        getOrSet(
+            {
+                a: 'hello',
+            },
+            'a',
+            // @ts-expect-error: intentionally incorrect, should be a string
+            () => 5,
+        );
+    });
+
+    it('works with fully generic record value types', () => {
+        function genericGroupBy<ElementType, NewKey extends PropertyKey>(
+            accum: Record<NewKey, ElementType[]>,
+            key: NewKey,
+        ) {
+            const entryArray: ElementType[] = getOrSet(accum, key, () => []);
+
+            return entryArray;
+        }
+
+        assert.tsType(genericGroupBy).notEquals<never>();
+    });
 
     itCases(testGetOrSet, [
         {
@@ -159,6 +202,19 @@ describe(getOrSetFromMap.name, () => {
             getOrSetFromMap(exampleMap, exampleKey, () => ''),
             exampleValue,
         );
+    });
+
+    it('does not infer from callback type', () => {
+        const registry = new WeakMap<
+            AnyObject,
+            Record<PropertyKey, ((value: any) => MaybePromise<void>)[]>
+        >();
+
+        const result = getOrSetFromMap(registry, {}, () => {
+            return {};
+        });
+
+        assert.tsType(result).equals<Record<PropertyKey, ((value: any) => MaybePromise<void>)[]>>();
     });
 
     it('sets a new item if it did not exist', () => {

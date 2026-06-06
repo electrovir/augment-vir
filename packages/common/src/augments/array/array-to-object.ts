@@ -47,7 +47,7 @@ export function groupArrayBy<
     return inputArray.reduce(
         (accum, entry, index, originalArray) => {
             const key = callback(entry, index, originalArray);
-            const entryArray: ElementType[] = getOrSet(accum, key, () => [] as ElementType[]);
+            const entryArray: ElementType[] = getOrSet(accum, key, () => []);
 
             entryArray.push(entry);
 

@@ -4,34 +4,34 @@ import {ensureError, type AnyObject, type MaybePromise} from '@augment-vir/core'
 export function getOrSetFromMap<MapKey extends object, MapValue>(
     map: WeakMap<MapKey, MapValue>,
     key: MapKey,
-    createCallback: () => MapValue,
+    createCallback: () => NoInfer<MapValue>,
 ): MapValue;
 export function getOrSetFromMap<MapKey, MapValue>(
     map: Map<MapKey, MapValue>,
     key: MapKey,
-    createCallback: () => MapValue,
+    createCallback: () => NoInfer<MapValue>,
 ): MapValue;
 
 export function getOrSetFromMap<MapKey extends object, MapValue>(
     map: WeakMap<MapKey, MapValue>,
     key: MapKey,
-    createCallback: () => Promise<MapValue>,
+    createCallback: () => Promise<NoInfer<MapValue>>,
 ): Promise<MapValue>;
 export function getOrSetFromMap<MapKey, MapValue>(
     map: Map<MapKey, MapValue>,
     key: MapKey,
-    createCallback: () => Promise<MapValue>,
+    createCallback: () => Promise<NoInfer<MapValue>>,
 ): Promise<MapValue>;
 
 export function getOrSetFromMap<MapKey extends object, MapValue>(
     map: WeakMap<MapKey, MapValue>,
     key: MapKey,
-    createCallback: () => MaybePromise<MapValue>,
+    createCallback: () => MaybePromise<NoInfer<MapValue>>,
 ): MaybePromise<MapValue>;
 export function getOrSetFromMap<MapKey, MapValue>(
     map: Map<MapKey, MapValue>,
     key: MapKey,
-    createCallback: () => MaybePromise<MapValue>,
+    createCallback: () => MaybePromise<NoInfer<MapValue>>,
 ): MaybePromise<MapValue>;
 
 /**
@@ -61,7 +61,7 @@ export function getOrSetFromMap<MapKey, MapValue>(
 export function getOrSetFromMap<MapKey, MapValue>(
     map: Map<MapKey, MapValue> | WeakMap<MapKey & object, MapValue>,
     key: MapKey,
-    createCallback: () => MaybePromise<MapValue>,
+    createCallback: () => MaybePromise<NoInfer<MapValue>>,
 ): MaybePromise<MapValue> {
     const mapKey = key as any;
 
@@ -91,17 +91,17 @@ export function getOrSetFromMap<MapKey, MapValue>(
 export function getOrSet<OriginalObject extends AnyObject, Key extends keyof OriginalObject>(
     originalObject: OriginalObject,
     key: Key,
-    createCallback: () => OriginalObject[Key],
+    createCallback: () => NoInfer<OriginalObject[Key]>,
 ): Required<OriginalObject>[Key];
 export function getOrSet<OriginalObject extends AnyObject, Key extends keyof OriginalObject>(
     originalObject: OriginalObject,
     key: Key,
-    createCallback: () => Promise<OriginalObject[Key]>,
+    createCallback: () => Promise<NoInfer<OriginalObject[Key]>>,
 ): Promise<Required<OriginalObject>[Key]>;
 export function getOrSet<OriginalObject extends AnyObject, Key extends keyof OriginalObject>(
     originalObject: OriginalObject,
     key: Key,
-    createCallback: () => MaybePromise<OriginalObject[Key]>,
+    createCallback: () => MaybePromise<NoInfer<OriginalObject[Key]>>,
 ): MaybePromise<Required<OriginalObject>[Key]>;
 /**
  * Given an object, tries to get the given key in that object. If the key is not in that object,
@@ -130,7 +130,7 @@ export function getOrSet<OriginalObject extends AnyObject, Key extends keyof Ori
 export function getOrSet<OriginalObject extends AnyObject, Key extends keyof OriginalObject>(
     originalObject: OriginalObject,
     key: Key,
-    createCallback: () => MaybePromise<OriginalObject[Key]>,
+    createCallback: () => MaybePromise<NoInfer<OriginalObject[Key]>>,
 ): MaybePromise<Required<OriginalObject>[Key]> {
     if (key in originalObject) {
         return originalObject[key];
