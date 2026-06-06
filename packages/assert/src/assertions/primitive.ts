@@ -418,10 +418,10 @@ export const primitiveGuards = {
          * - {@link checkWrap.isPrimitive} : the opposite check.
          */
         isNotPrimitive<Actual>(this: void, actual: Actual): Exclude<Actual, Primitive> | undefined {
-            if (!isPrimitive(actual)) {
-                return actual as Exclude<Actual, Primitive>;
-            } else {
+            if (isPrimitive(actual)) {
                 return undefined;
+            } else {
+                return actual as Exclude<Actual, Primitive>;
             }
         },
         /**

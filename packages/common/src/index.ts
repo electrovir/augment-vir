@@ -14,6 +14,7 @@ export * from './augments/array/from-async-iterable.js';
 export * from './augments/array/repeat-array.js';
 export * from './augments/array/shuffle-array.js';
 export * from './augments/array/string-array.js';
+export * from './augments/convert/convert-to.js';
 export * from './augments/core-exports.js';
 export * from './augments/enum/enum-value-check.js';
 export * from './augments/error/combine-errors.js';
