@@ -6,6 +6,7 @@ export * from './augments/elements/element-position.js';
 export * from './augments/elements/element-text.js';
 export * from './augments/elements/element-visibility.js';
 export * from './augments/elements/event-target.js';
+export * from './augments/elements/listen-to-disconnect.js';
 export * from './augments/elements/overflow.js';
 export * from './augments/elements/query-through-shadow.js';
 export * from './augments/elements/tag-or-definition.js';
