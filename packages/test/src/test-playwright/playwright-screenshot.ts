@@ -190,8 +190,6 @@ export async function expectPlaywrightScreenshot(
 
     if (!result.passed) {
         if (process.env.CI) {
-            await writeNewScreenshot();
-        } else {
             await writeExpectationScreenshot(encodePng(result.basePng), 'expected');
             await writeExpectationScreenshot(encodePng(result.currentPng), 'actual');
             await writeExpectationScreenshot(encodePng(result.diffPng), 'diff');
@@ -199,6 +197,8 @@ export async function expectPlaywrightScreenshot(
             throw new Error(
                 `Screenshot mismatch: ${screenshotFilePath}\n diff=${result.diffPixelCount}px (${(result.diffRatio * 100).toFixed(3)}%) (limit: ${(defaultImageComparisonOptions.maxDiffPixelRatio * 100).toFixed(3)}%). Run with --update-snapshots to update screenshot.`,
             );
+        } else {
+            await writeNewScreenshot();
         }
     }
 }
