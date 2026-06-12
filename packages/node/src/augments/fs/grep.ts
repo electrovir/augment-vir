@@ -9,6 +9,7 @@ import {
 } from '@augment-vir/common';
 import {join} from 'node:path';
 import {type IsEqual, type RequireExactlyOne} from 'type-fest';
+import {isOperatingSystem, OperatingSystem} from '../os/operating-system.js';
 import {runShellCommand} from '../terminal/shell.js';
 
 /**
@@ -279,7 +280,17 @@ export async function grep<const CountOnly extends boolean = false>(
                   (excludePattern) => `--exclude="${escape(excludePattern)}"`,
               )
             : []),
-        options.recursive ? (options.followSymLinks ? '-RS' : '--recursive') : '',
+        options.recursive
+            ? options.followSymLinks
+                ? /**
+                   * BSD `grep` (macOS) requires `-S` to follow symlinks while recursing, but GNU `grep` (Linux) has
+                   * no `-S` flag and instead follows all symlinks with `-R`.
+                   */
+                  isOperatingSystem(OperatingSystem.Mac)
+                    ? '-RS'
+                    : '-R'
+                : '--recursive'
+            : '',
         ...(options.excludeDirs?.length
             ? options.excludeDirs.map((excludeDir) => `--exclude-dir="${escape(excludeDir)}"`)
             : []),
@@ -308,7 +319,7 @@ export async function grep<const CountOnly extends boolean = false>(
         return {};
     } else if (options.output?.countOnly) {
         return arrayToObject(
-            trimmedOutput.split(/[\0\n]/),
+            trimmedOutput.split('\n'),
             (entry) => {
                 /** Ignore empty strings. */
                 /* node:coverage ignore next 3 */
@@ -316,11 +327,15 @@ export async function grep<const CountOnly extends boolean = false>(
                     return undefined;
                 }
 
+                /**
+                 * GNU `grep` (Linux) separates the file name from its count with a null byte when
+                 * `--null` is set, while BSD `grep` (macOS) uses a colon. Accept either.
+                 */
                 const [
                     ,
                     fileName,
                     countString,
-                ] = safeMatch(entry, /(^.+):(\d+)$/);
+                ] = safeMatch(entry, /^(.+)[\0:](\d+)$/);
 
                 assert.isDefined(fileName, `Failed parse grep file name from: '${entry}'`);
 
