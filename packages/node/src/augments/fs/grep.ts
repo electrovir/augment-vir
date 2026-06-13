@@ -179,6 +179,25 @@ function escape(input: string) {
     return input.replaceAll('"', String.raw`\"`).replaceAll('\n', '');
 }
 
+function recursiveFlag({
+    recursive,
+    followSymLinks,
+}: Readonly<Pick<GrepOptions, 'recursive' | 'followSymLinks'>>): string {
+    if (!recursive) {
+        return '';
+    } else if (!followSymLinks) {
+        return '--recursive';
+    }
+
+    /**
+     * BSD `grep` (macOS) requires `-S` to follow symlinks while recursing, but GNU `grep` (Linux)
+     * has no `-S` flag and instead follows all symlinks with `-R`. Only one of these branches can
+     * run on a given operating system.
+     */
+    /* node:coverage ignore next */
+    return isOperatingSystem(OperatingSystem.Mac) ? '-RS' : '-R';
+}
+
 /**
  * Output of {@link grep}. Each key is an absolute file path. Values are array of matches lines for
  * that file.
@@ -280,17 +299,7 @@ export async function grep<const CountOnly extends boolean = false>(
                   (excludePattern) => `--exclude="${escape(excludePattern)}"`,
               )
             : []),
-        options.recursive
-            ? options.followSymLinks
-                ? /**
-                   * BSD `grep` (macOS) requires `-S` to follow symlinks while recursing, but GNU `grep` (Linux) has
-                   * no `-S` flag and instead follows all symlinks with `-R`.
-                   */
-                  isOperatingSystem(OperatingSystem.Mac)
-                    ? '-RS'
-                    : '-R'
-                : '--recursive'
-            : '',
+        recursiveFlag(options),
         ...(options.excludeDirs?.length
             ? options.excludeDirs.map((excludeDir) => `--exclude-dir="${escape(excludeDir)}"`)
             : []),
