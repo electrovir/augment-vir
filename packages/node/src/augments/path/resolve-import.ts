@@ -115,5 +115,6 @@ function mapImportPath(
         return importPath;
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     return resolve(tsconfig.options.baseUrl || dirname(tsconfigPath), mappedPaths[0]);
 }

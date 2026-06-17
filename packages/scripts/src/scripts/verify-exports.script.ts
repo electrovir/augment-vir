@@ -59,7 +59,7 @@ async function verifyPackage(packageDirPath: string): Promise<boolean> {
     const indexExports = await readIndexFileExports(indexFilePath);
 
     const missingInExports = relativeAugmentFilePaths.filter((relativeAugmentFilePath) => {
-        const matchedIndexExport = indexExports.find((indexExport) => {
+        return !indexExports.some((indexExport) => {
             const indexExportFullPath = join(packageDirPath, 'src', indexExport).replace(
                 /\.js/,
                 '.ts',
@@ -73,8 +73,6 @@ async function verifyPackage(packageDirPath: string): Promise<boolean> {
 
             return indexExportFullPath === augmentFileFullPath;
         });
-
-        return !matchedIndexExport;
     });
 
     const exportsNotInAugments = indexExports.filter(

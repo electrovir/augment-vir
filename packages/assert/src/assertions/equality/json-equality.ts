@@ -1,4 +1,5 @@
 import {
+    ensureErrorAndPrependMessage,
     extractErrorMessage,
     type AnyObject,
     type MaybePromise,
@@ -40,8 +41,9 @@ function recursiveAssertJsonEquals(actual: any, expected: any) {
             try {
                 recursiveAssertJsonEquals((actual as AnyObject)[key], (expected as AnyObject)[key]);
             } catch (error) {
-                throw new Error(
-                    `JSON objects are not equal at key '${key}': ${extractErrorMessage(error)}`,
+                throw ensureErrorAndPrependMessage(
+                    error,
+                    `JSON objects are not equal at key '${key}'.`,
                 );
             }
         });

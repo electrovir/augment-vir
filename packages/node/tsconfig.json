@@ -4,7 +4,8 @@
         "paths": {
             "something-crazy/*": ["./src/*"]
         },
-        "rootDir": "./src/"
+        "rootDir": "./src/",
+        "types": ["node"]
     },
     "exclude": [
         "./configs/",

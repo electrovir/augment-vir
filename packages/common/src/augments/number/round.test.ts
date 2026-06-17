@@ -6,7 +6,7 @@ describe(round.name, () => {
         {
             it: 'rounds down with 2 decimals',
             inputs: [
-                1.123_456,
+                1.123456,
                 {
                     digits: 2,
                 },
@@ -16,7 +16,7 @@ describe(round.name, () => {
         {
             it: 'rounds up with 2 decimals',
             inputs: [
-                1.125_456,
+                1.125456,
                 {
                     digits: 2,
                 },
@@ -26,7 +26,7 @@ describe(round.name, () => {
         {
             it: 'rounds up with 3 decimals and a carry',
             inputs: [
-                1.129_556,
+                1.129556,
                 {
                     digits: 3,
                 },
@@ -36,17 +36,17 @@ describe(round.name, () => {
         {
             it: 'ignores rounding for undefined digits',
             inputs: [
-                1.129_556,
+                1.129556,
                 {
                     digits: undefined,
                 },
             ],
-            expect: 1.129_556,
+            expect: 1.129556,
         },
         {
             it: 'rounds up with 0 decimals',
             inputs: [
-                1.564_123,
+                1.564123,
                 {
                     digits: 0,
                 },

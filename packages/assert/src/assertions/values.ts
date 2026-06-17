@@ -194,7 +194,7 @@ const assertions = {
         values: unknown[],
         failureMessage?: string | undefined,
     ) {
-        let missingValues: unknown[] = [];
+        let missingValues: unknown[];
 
         if (typeof parent === 'string') {
             missingValues = values.filter((value) => {
@@ -850,7 +850,7 @@ export const valueGuards = {
             values: unknown[],
             failureMessage?: string | undefined,
         ): Parent {
-            let missingValues = [];
+            let missingValues: unknown[];
 
             if (typeof parent === 'string') {
                 missingValues = values.filter((value) => {

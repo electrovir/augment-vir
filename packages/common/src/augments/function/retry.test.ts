@@ -6,14 +6,14 @@ import {retry, type RetryCallbackParams} from './retry.js';
 describe(retry.name, () => {
     it('has proper types', async () => {
         const result = retry(2, () => true);
-        assert.tsType(result).equals<boolean>();
+        assert.tsType(result).equals<true>();
 
         const syncResultWithInterval = retry(2, () => true, {
             interval: {
                 milliseconds: 1,
             },
         });
-        assert.tsType(syncResultWithInterval).equals<Promise<boolean>>();
+        assert.tsType(syncResultWithInterval).equals<Promise<true>>();
         await syncResultWithInterval;
 
         const asyncResultWithInterval = retry(
@@ -30,7 +30,7 @@ describe(retry.name, () => {
                 },
             },
         );
-        assert.tsType(asyncResultWithInterval).equals<Promise<boolean>>();
+        assert.tsType(asyncResultWithInterval).equals<Promise<true>>();
         await asyncResultWithInterval;
 
         const promiseResult = retry(2, async () => {
@@ -39,7 +39,7 @@ describe(retry.name, () => {
             });
             return true;
         });
-        assert.tsType(promiseResult).equals<Promise<boolean>>();
+        assert.tsType(promiseResult).equals<Promise<true>>();
         await promiseResult;
 
         const maybePromiseResult = retry(2, (): MaybePromise<boolean> => {

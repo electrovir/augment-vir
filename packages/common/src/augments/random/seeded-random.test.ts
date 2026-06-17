@@ -16,11 +16,11 @@ describe(SeededRandom.name, () => {
         assert.deepEquals(
             values,
             [
-                0.528_125_726_850_703_4,
-                0.209_604_358_766_227_96,
-                0.670_417_020_795_866_8,
-                0.367_366_831_982_508_3,
-                0.651_622_630_190_104_2,
+                0.5281257268507034,
+                0.20960435876622796,
+                0.6704170207958668,
+                0.3673668319825083,
+                0.6516226301901042,
             ],
             'random values are not deterministic',
         );
@@ -38,9 +38,9 @@ describe(SeededRandom.name, () => {
         assert.deepEquals(
             seeded.exportState(),
             [
-                0.367_366_831_982_508_3,
-                0.651_622_630_190_104_2,
-                0.387_062_522_815_540_43,
+                0.3673668319825083,
+                0.6516226301901042,
+                0.38706252281554043,
                 1_402_270,
             ],
             'exported state is not deterministic',
@@ -56,15 +56,15 @@ describe(SeededRandom.name, () => {
     });
     it('works on the code example', () => {
         const random = SeededRandom.fromSeed('hello there');
-        assert.strictEquals(random.next(), 0.528_125_726_850_703_4);
+        assert.strictEquals(random.next(), 0.5281257268507034);
 
         const random2 = SeededRandom.fromState(random.exportState());
-        assert.strictEquals(random.next(), 0.209_604_358_766_227_96);
-        assert.strictEquals(random2.next(), 0.209_604_358_766_227_96);
+        assert.strictEquals(random.next(), 0.20960435876622796);
+        assert.strictEquals(random2.next(), 0.20960435876622796);
 
         const random3 = random2.clone();
-        assert.strictEquals(random.next(), 0.670_417_020_795_866_8);
-        assert.strictEquals(random2.next(), 0.670_417_020_795_866_8);
-        assert.strictEquals(random3.next(), 0.670_417_020_795_866_8);
+        assert.strictEquals(random.next(), 0.6704170207958668);
+        assert.strictEquals(random2.next(), 0.6704170207958668);
+        assert.strictEquals(random3.next(), 0.6704170207958668);
     });
 });

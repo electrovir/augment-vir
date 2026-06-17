@@ -121,7 +121,7 @@ class AleaRandom {
         for (let i = 0; i < data.length; i++) {
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             this.n += data.codePointAt(i)!;
-            let h = 0.025_196_032_824_169_38 * this.n;
+            let h = 0.02519603282416938 * this.n;
             this.n = h >>> 0;
             h -= this.n;
             h *= this.n;
@@ -129,7 +129,7 @@ class AleaRandom {
             h -= this.n;
             this.n += h * 0x1_00_00_00_00; // 2^32
         }
-        return (this.n >>> 0) * 2.328_306_436_538_696_3e-10; // 2^-32
+        return (this.n >>> 0) * 2.3283064365386963e-10; // 2^-32
     }
 
     constructor(seed: string | number) {
@@ -149,7 +149,7 @@ class AleaRandom {
     }
 
     public next() {
-        const t = 2_091_639 * this.s[0] + this.s[3] * 2.328_306_436_538_696_3e-10; // 2^-32
+        const t = 2_091_639 * this.s[0] + this.s[3] * 2.3283064365386963e-10; // 2^-32
         this.s[0] = this.s[1];
         this.s[1] = this.s[2];
         // eslint-disable-next-line sonarjs/no-nested-assignment
