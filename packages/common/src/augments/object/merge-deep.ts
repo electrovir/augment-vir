@@ -14,8 +14,8 @@ import {type PartialDeep} from 'type-fest';
 export function mergeDeep<const T extends object>(
     ...inputs: (
         | Readonly<T>
-        | Readonly<PartialDeep<T, {recurseIntoArrays: true}>>
-        | Readonly<Partial<T>>
+        | Readonly<PartialDeep<NoInfer<T>, {recurseIntoArrays: true}>>
+        | Readonly<Partial<NoInfer<T>>>
     )[]
 ): T {
     if (!check.isLengthAtLeast(inputs, 1)) {
