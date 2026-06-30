@@ -147,8 +147,11 @@ export function streamShellCommand(
         const exitSignal: NodeJS.Signals | undefined = inputExitSignal ?? undefined;
 
         if ((exitCode !== undefined && exitCode !== 0) || exitSignal !== undefined) {
-            const execException: ExecException & {cwd?: string | undefined} = new Error(
-                `Command failed: ${command}`,
+            const execException: ExecException & {cwd?: string | undefined} = Object.assign(
+                new Error(`Command failed: ${command}`),
+                {
+cmd: command
+},
             );
             if (exitCode != undefined) {
                 execException.code = exitCode;
@@ -157,7 +160,6 @@ export function streamShellCommand(
             if (exitSignal != undefined) {
                 execException.signal = exitSignal;
             }
-            execException.cmd = command;
             execException.killed = childProcess.killed;
             execException.cwd = cwd;
             shellTarget.dispatch(

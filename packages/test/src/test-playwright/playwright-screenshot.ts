@@ -183,9 +183,13 @@ export async function expectPlaywrightScreenshot(
     }
 
     const baseScreenshotBuffer: Buffer = await readFile(screenshotFilePath);
-    const result = await compareImages(baseScreenshotBuffer, currentScreenshotBuffer, {
-        threshold: defaultScreenshotOptions.threshold,
-        maxDiffPixelRatio: defaultScreenshotOptions.maxDiffPixelRatio,
+    const result = await compareImages({
+        baseImageBuffer: baseScreenshotBuffer,
+        currentImageBuffer: currentScreenshotBuffer,
+        userOptions: {
+            threshold: defaultScreenshotOptions.threshold,
+            maxDiffPixelRatio: defaultScreenshotOptions.maxDiffPixelRatio,
+        },
     });
 
     if (!result.passed) {
