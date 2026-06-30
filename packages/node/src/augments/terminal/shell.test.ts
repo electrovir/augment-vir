@@ -1,5 +1,5 @@
 import {assert} from '@augment-vir/assert';
-import {createArrayLogger} from '@augment-vir/common';
+import {createArrayLogger, omitObjectKeys} from '@augment-vir/common';
 import {type PartialWithUndefined} from '@augment-vir/core';
 import {describe, it, itCases} from '@augment-vir/test';
 import {join} from 'node:path';
@@ -15,6 +15,11 @@ import {
     runShellCommand,
     type ShellOutput,
 } from './shell.js';
+
+const longRunningTestEnv = omitObjectKeys(process.env, [
+    'FORCE_COLOR',
+    'NO_COLOR',
+]);
 
 describe(runShellCommand.name, () => {
     it('produces expected output', async () => {
@@ -80,6 +85,7 @@ describe(runShellCommand.name, () => {
         const finalResults = await runShellCommand(
             `tsx ${interpolationSafeWindowsPath(longRunningFilePath)}`,
             {
+                env: longRunningTestEnv,
                 rejectOnError: true,
                 stdoutCallback: (stdout) => {
                     output.push(stdout.trim());
@@ -104,6 +110,7 @@ describe(runShellCommand.name, () => {
         const finalResults = await runShellCommand(
             `tsx ${interpolationSafeWindowsPath(longRunningFileWithStderr)}`,
             {
+                env: longRunningTestEnv,
                 rejectOnError: true,
                 stderrCallback: (stdout) => {
                     output.push(stdout.trim());

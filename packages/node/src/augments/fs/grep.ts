@@ -1,16 +1,17 @@
 import {assert, check} from '@augment-vir/assert';
 import {
-    arrayToObject,
-    getOrSet,
+    awaitedBlockingMap,
+    getObjectTypedKeys,
     log,
-    safeMatch,
+    typedObjectFromEntries,
     type PartialWithUndefined,
     type SelectFrom,
 } from '@augment-vir/common';
-import {join} from 'node:path';
+import {spawn} from 'node:child_process';
+import {lstat, readdir, stat} from 'node:fs/promises';
+import {isAbsolute, join, resolve} from 'node:path';
 import {type IsEqual, type RequireExactlyOne} from 'type-fest';
 import {isOperatingSystem, OperatingSystem} from '../os/operating-system.js';
-import {runShellCommand} from '../terminal/shell.js';
 
 /**
  * Optional options for {@link grep}.
@@ -20,6 +21,7 @@ import {runShellCommand} from '../terminal/shell.js';
  * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
  */
 export type GrepOptions<CountOnly extends boolean = false> = PartialWithUndefined<{
+    /* node:coverage ignore next */
     patternSyntax: RequireExactlyOne<{
         /**
          * -E, --extended-regexp: Interpret PATTERNS as extended regular expressions (EREs, see
@@ -175,8 +177,14 @@ export type GrepSearchPattern = RequireExactlyOne<{
     patterns: string[];
 }>;
 
-function escape(input: string) {
-    return input.replaceAll('"', String.raw`\"`).replaceAll('\n', '');
+const grepBinPath = '/usr/bin/grep';
+
+function shellQuote(input: string) {
+    return [
+        "'",
+        input.replaceAll("'", String.raw`'\''`),
+        "'",
+    ].join('');
 }
 
 function recursiveFlag({
@@ -198,9 +206,721 @@ function recursiveFlag({
     return isOperatingSystem(OperatingSystem.Mac) ? '-RS' : '-R';
 }
 
+function isValidMaxCount(maxCount: unknown) {
+    return (
+        maxCount == undefined ||
+        (check.isNumber(maxCount) && Number.isInteger(maxCount) && maxCount >= -1)
+    );
+}
+
+function isOptionalBoolean(input: unknown) {
+    return input == undefined || check.isBoolean(input);
+}
+
+function isValidTrueOnlyOptionGroup({
+    input,
+    values,
+}: Readonly<{
+    input: unknown;
+    values: ReadonlyArray<unknown>;
+}>) {
+    return (
+        input == undefined ||
+        (check.isObject(input) &&
+            values.every((value) => value == undefined || value === true) &&
+            values.filter((value) => value === true).length === 1)
+    );
+}
+
+function isValidPatternSyntax(input: unknown) {
+    return isValidTrueOnlyOptionGroup({
+        input,
+        values: check.isObject(input)
+            ? [
+                  input.basicRegExp,
+                  input.extendedRegExp,
+                  input.fixedStrings,
+              ]
+            : [],
+    });
+}
+
+function isValidMatchType(input: unknown) {
+    return isValidTrueOnlyOptionGroup({
+        input,
+        values: check.isObject(input)
+            ? [
+                  input.lineRegExp,
+                  input.wordRegExp,
+              ]
+            : [],
+    });
+}
+
+function isValidOutput(input: unknown) {
+    return isValidTrueOnlyOptionGroup({
+        input,
+        values: check.isObject(input)
+            ? [
+                  input.countOnly,
+                  input.filesOnly,
+              ]
+            : [],
+    });
+}
+
+type GrepCommandOutput = {
+    exitCode: number | undefined;
+    stdout: string;
+};
+
+function didGrepFail({exitCode}: Readonly<GrepCommandOutput>) {
+    return exitCode == undefined || exitCode > 1;
+}
+
+function spawnGrepProcess({
+    args,
+    cwd,
+}: Readonly<{
+    args: string[];
+    cwd: string | undefined;
+}>) {
+    try {
+        return spawn(grepBinPath, args, {
+            cwd,
+            stdio: [
+                'ignore',
+                'pipe',
+                'pipe',
+            ],
+        });
+        /* node:coverage ignore next 3 */
+    } catch {
+        return undefined;
+    }
+}
+
+async function runGrepCommand({
+    args,
+    cwd,
+}: Readonly<{
+    args: string[];
+    cwd: string | undefined;
+}>): Promise<GrepCommandOutput> {
+    return new Promise<GrepCommandOutput>((resolveOutput) => {
+        const stdoutChunks: Buffer[] = [];
+        const grepProcess = spawnGrepProcess({
+            args,
+            cwd,
+        });
+
+        if (!grepProcess) {
+            resolveOutput({
+                exitCode: undefined,
+                stdout: '',
+            });
+            return;
+        }
+
+        assert.isDefined(grepProcess.stdout, 'stdout emitter was not created for grep.');
+        assert.isDefined(grepProcess.stderr, 'stderr emitter was not created for grep.');
+
+        grepProcess.stdout.on('data', (chunk) => {
+            stdoutChunks.push(Buffer.from(chunk));
+        });
+        grepProcess.stderr.on('data', () => {});
+        /* node:coverage ignore next 5 */
+        grepProcess.on('error', () => {
+            resolveOutput({
+                exitCode: undefined,
+                stdout: Buffer.concat(stdoutChunks).toString(),
+            });
+        });
+        grepProcess.on('close', (rawExitCode) => {
+            resolveOutput({
+                /* node:coverage ignore next */
+                exitCode: rawExitCode ?? undefined,
+                stdout: Buffer.concat(stdoutChunks).toString(),
+            });
+        });
+    });
+}
+
+function redactGrepArgForLogging({
+    arg,
+    index,
+    operandDelimiterIndex,
+    previousArg,
+}: Readonly<{
+    arg: string;
+    index: number;
+    operandDelimiterIndex: number;
+    previousArg: string | undefined;
+}>) {
+    if (previousArg === '-e') {
+        return '<pattern>';
+    } else if (operandDelimiterIndex >= 0 && index > operandDelimiterIndex) {
+        return '<path>';
+    } else if (arg.startsWith('--exclude-dir=')) {
+        return '--exclude-dir=<glob>';
+    } else if (arg.startsWith('--exclude=')) {
+        return '--exclude=<glob>';
+    } else if (arg.startsWith('--include=')) {
+        return '--include=<glob>';
+    } else if (arg.startsWith('--max-count=')) {
+        return '--max-count=<count>';
+    } else {
+        return arg;
+    }
+}
+
+function formatGrepCommand(args: ReadonlyArray<string>) {
+    const operandDelimiterIndex = args.indexOf('--');
+
+    return [
+        'grep',
+        ...args.map((arg, index) =>
+            shellQuote(
+                redactGrepArgForLogging({
+                    arg,
+                    index,
+                    operandDelimiterIndex,
+                    previousArg: args[index - 1],
+                }),
+            ),
+        ),
+    ].join(' ');
+}
+
+function replaceGrepCountOutputArg({
+    args,
+    replacement,
+}: Readonly<{
+    args: ReadonlyArray<string>;
+    replacement: string;
+}>) {
+    const countArgIndex = args.indexOf('--count');
+
+    /* node:coverage ignore next */
+    return countArgIndex < 0 ? [...args] : args.toSpliced(countArgIndex, 1, replacement);
+}
+
+function replaceGrepSearchOperands({
+    args,
+    searchParts,
+}: Readonly<{
+    args: ReadonlyArray<string>;
+    searchParts: ReadonlyArray<string>;
+}>) {
+    const operandDelimiterIndex = args.indexOf('--');
+
+    return [
+        ...args.slice(0, operandDelimiterIndex + 1),
+        ...searchParts,
+    ];
+}
+
+function extractStringArray(input: unknown) {
+    return check.isArray(input) ? input.filter(check.isString).filter(check.isTruthy) : [];
+}
+
+function extractOptionalStringArray(input: unknown) {
+    if (input == undefined) {
+        return [];
+    } else if (!check.isArray(input) || !input.every(check.isString)) {
+        return undefined;
+    }
+
+    return input.filter(check.isTruthy);
+}
+
+function extractString(input: unknown) {
+    return check.isString(input) && input ? input : undefined;
+}
+
+function extractGrepOptionArrays({
+    excludeDirs,
+    excludePatterns,
+    includeFiles,
+}: Readonly<
+    PartialWithUndefined<{
+        excludeDirs: unknown;
+        excludePatterns: unknown;
+        includeFiles: unknown;
+    }>
+>) {
+    const extractedExcludeDirs = extractOptionalStringArray(excludeDirs);
+    const extractedExcludePatterns = extractOptionalStringArray(excludePatterns);
+    const extractedIncludeFiles = extractOptionalStringArray(includeFiles);
+
+    return extractedExcludeDirs && extractedExcludePatterns && extractedIncludeFiles
+        ? {
+              excludeDirs: extractedExcludeDirs,
+              excludePatterns: extractedExcludePatterns,
+              includeFiles: extractedIncludeFiles,
+          }
+        : undefined;
+}
+
+function areGrepOptionsValid<const CountOnly extends boolean>({
+    grepOptions,
+}: Readonly<{
+    grepOptions: Readonly<Partial<GrepOptions<CountOnly>>>;
+}>) {
+    return (
+        isValidMaxCount(grepOptions.maxCount) &&
+        (grepOptions.cwd == undefined || !!extractString(grepOptions.cwd)) &&
+        [
+            grepOptions.binary,
+            grepOptions.followSymLinks,
+            grepOptions.ignoreCase,
+            grepOptions.invertMatch,
+            grepOptions.printCommand,
+            grepOptions.recursive,
+        ].every(isOptionalBoolean) &&
+        isValidPatternSyntax(grepOptions.patternSyntax) &&
+        isValidMatchType(grepOptions.matchType) &&
+        isValidOutput(grepOptions.output)
+    );
+}
+
+function createSearchPatterns(grepSearchPattern: Readonly<GrepSearchPattern> | undefined) {
+    if (!check.isObject(grepSearchPattern)) {
+        return [];
+    }
+
+    const rawPatterns: unknown[] = check.isArray(grepSearchPattern.patterns)
+        ? grepSearchPattern.patterns
+        : [
+              grepSearchPattern.pattern,
+          ];
+
+    return extractStringArray(rawPatterns);
+}
+
+function createSearchLocation(
+    grepSearchLocation: Readonly<GrepSearchLocation> | undefined,
+): SelectFrom<GrepSearchLocation, {files: true; dirs: true}> | undefined {
+    if (!check.isObject(grepSearchLocation)) {
+        return undefined;
+    }
+
+    const file = extractString(grepSearchLocation.file);
+    const dir = extractString(grepSearchLocation.dir);
+
+    if (grepSearchLocation.files != undefined) {
+        return {
+            files: extractStringArray(grepSearchLocation.files),
+        };
+    } else if (file) {
+        return {
+            files: [
+                file,
+            ],
+        };
+    } else if (grepSearchLocation.dirs != undefined) {
+        return {
+            dirs: extractStringArray(grepSearchLocation.dirs),
+        };
+    }
+
+    return dir
+        ? {
+              dirs: [
+                  dir,
+              ],
+          }
+        : undefined;
+}
+
+function resolveSearchPart({
+    cwd,
+    searchPart,
+}: Readonly<{
+    cwd: string | undefined;
+    searchPart: string;
+}>) {
+    return cwd && !isAbsolute(searchPart) ? resolve(cwd, searchPart) : searchPart;
+}
+
+async function shouldSearchPart({
+    cwd,
+    followSymLinks,
+    includeDirectories,
+    searchPart,
+}: Readonly<{
+    cwd: string | undefined;
+    followSymLinks: boolean | undefined;
+    includeDirectories: boolean;
+    searchPart: string;
+}>) {
+    try {
+        const fileStats = await (followSymLinks ? stat : lstat)(
+            resolveSearchPart({
+                cwd,
+                searchPart,
+            }),
+        );
+
+        return fileStats.isFile() || (includeDirectories && fileStats.isDirectory());
+    } catch {
+        return false;
+    }
+}
+
+async function filterSearchParts({
+    cwd,
+    followSymLinks,
+    includeDirectories,
+    searchParts,
+}: Readonly<{
+    cwd: string | undefined;
+    followSymLinks: boolean | undefined;
+    includeDirectories: boolean;
+    searchParts: ReadonlyArray<string>;
+}>) {
+    return (
+        await awaitedBlockingMap(searchParts, async (searchPart) => {
+            return (await shouldSearchPart({
+                cwd,
+                followSymLinks,
+                includeDirectories,
+                searchPart,
+            }))
+                ? searchPart
+                : undefined;
+        })
+    ).filter(check.isTruthy);
+}
+
+async function readDirectDirSearchParts({
+    cwd,
+    dir,
+    followSymLinks,
+}: Readonly<{
+    cwd: string | undefined;
+    dir: string;
+    followSymLinks: boolean | undefined;
+}>) {
+    try {
+        const readDirPath = resolveSearchPart({
+            cwd,
+            searchPart: dir,
+        });
+
+        return (
+            await awaitedBlockingMap(
+                (await readdir(readDirPath)).toSorted().filter((entry) => !entry.startsWith('.')),
+                async (entry) => {
+                    const searchPart = join(dir, entry);
+
+                    return (await shouldSearchPart({
+                        cwd: readDirPath,
+                        followSymLinks,
+                        includeDirectories: false,
+                        searchPart: entry,
+                    }))
+                        ? searchPart
+                        : undefined;
+                },
+            )
+        ).filter(check.isTruthy);
+        /* node:coverage ignore next 3 */
+    } catch {
+        return [];
+    }
+}
+
+async function createSearchParts({
+    cwd,
+    followSymLinks,
+    recursive,
+    searchLocation,
+}: Readonly<{
+    cwd: string | undefined;
+    followSymLinks: boolean | undefined;
+    recursive: boolean | undefined;
+    searchLocation: SelectFrom<GrepSearchLocation, {files: true; dirs: true}>;
+}>) {
+    const searchParts = searchLocation.dirs || searchLocation.files;
+    assert.isDefined(searchParts, 'Grep search location was not resolved.');
+
+    const filteredSearchParts = await filterSearchParts({
+        cwd,
+        followSymLinks,
+        includeDirectories: !!searchLocation.dirs,
+        searchParts,
+    });
+
+    return searchLocation.dirs
+        ? recursive
+            ? filteredSearchParts
+            : (
+                  await awaitedBlockingMap(filteredSearchParts, (dir) =>
+                      readDirectDirSearchParts({
+                          cwd,
+                          dir,
+                          followSymLinks,
+                      }),
+                  )
+              ).flat()
+        : filteredSearchParts;
+}
+
+type GrepCountEntryParams = {
+    countString: string | undefined;
+    fileName: string | undefined;
+};
+
+type NullDelimitedGrepRecord = {
+    fileName: string;
+    value: string;
+};
+
+function createGrepCountEntry({countString, fileName}: Readonly<GrepCountEntryParams>) {
+    assert.isDefined(fileName, 'Failed parse grep file name.');
+
+    const count = Number(countString);
+
+    assert.isNumber(count, `Failed to parse grep number from: '${countString}'`);
+    /* node:coverage ignore next 3 */
+    if (!count) {
+        return undefined;
+    }
+
+    return {
+        key: fileName,
+        value: count,
+    };
+}
+
+function parseNullDelimitedGrepRecords({stdout}: Readonly<{stdout: string}>) {
+    const records: NullDelimitedGrepRecord[] = [];
+    let recordStartIndex = 0;
+
+    while (recordStartIndex < stdout.length) {
+        const delimiterIndex = stdout.indexOf('\0', recordStartIndex);
+
+        /* node:coverage ignore next 3 */
+        if (delimiterIndex < 0) {
+            break;
+        }
+
+        const valueStartIndex = delimiterIndex + 1;
+        const newlineIndex = stdout.indexOf('\n', valueStartIndex);
+        /* node:coverage ignore next */
+        const valueEndIndex = newlineIndex < 0 ? stdout.length : newlineIndex;
+
+        records.push({
+            fileName: stdout.slice(recordStartIndex, delimiterIndex),
+            value: stdout.slice(valueStartIndex, valueEndIndex),
+        });
+
+        /* node:coverage ignore next */
+        recordStartIndex = newlineIndex < 0 ? stdout.length : newlineIndex + 1;
+    }
+
+    return records;
+}
+
+/* node:coverage ignore next 26 */
+function parseColonDelimitedGrepCountOutput(stdout: string) {
+    return typedObjectFromEntries(
+        stdout
+            .trimEnd()
+            .split('\n')
+            .map((entry) => {
+                if (!entry) {
+                    return undefined;
+                }
+
+                const countDelimiterIndex = entry.lastIndexOf(':');
+
+                return createGrepCountEntry({
+                    countString:
+                        countDelimiterIndex < 0 ? undefined : entry.slice(countDelimiterIndex + 1),
+                    fileName:
+                        countDelimiterIndex < 0 ? undefined : entry.slice(0, countDelimiterIndex),
+                });
+            })
+            .filter(check.isTruthy)
+            .map((entry) => [
+                entry.key,
+                entry.value,
+            ]),
+    );
+}
+
+/* node:coverage ignore next 20 */
+function parseGrepCountOutput(stdout: string) {
+    return stdout.includes('\0')
+        ? typedObjectFromEntries(
+              parseNullDelimitedGrepRecords({
+                  stdout,
+              })
+                  .map((record) => {
+                      return createGrepCountEntry({
+                          countString: record.value,
+                          fileName: record.fileName,
+                      });
+                  })
+                  .filter(check.isTruthy)
+                  .map((entry) => [
+                      entry.key,
+                      entry.value,
+                  ]),
+          )
+        : parseColonDelimitedGrepCountOutput(stdout);
+}
+
+/* node:coverage ignore next 7 */
+function tryParseGrepCountOutput(stdout: string) {
+    try {
+        return parseGrepCountOutput(stdout);
+    } catch {
+        return undefined;
+    }
+}
+
+function parseKnownFileCountOutput({
+    filePath,
+    stdout,
+}: Readonly<{
+    filePath: string;
+    stdout: string;
+}>) {
+    /* node:coverage ignore next 3 */
+    if (stdout.includes('\0')) {
+        return parseGrepCountOutput(stdout)[filePath];
+    }
+
+    const countPrefix = `${filePath}:`;
+    /* node:coverage ignore next */
+    const outputLine = stdout.endsWith('\n') ? stdout.slice(0, -1) : stdout;
+
+    /* node:coverage ignore next 3 */
+    if (!outputLine.startsWith(countPrefix)) {
+        return undefined;
+    }
+
+    /* node:coverage ignore next */
+    return createGrepCountEntry({
+        countString: outputLine.slice(countPrefix.length),
+        fileName: filePath,
+    })?.value;
+}
+
+async function runKnownFileGrepCount({
+    cwd,
+    filePath,
+    grepArgs,
+}: Readonly<{
+    cwd: string | undefined;
+    filePath: string;
+    grepArgs: ReadonlyArray<string>;
+}>) {
+    const result = await runGrepCommand({
+        args: replaceGrepSearchOperands({
+            args: grepArgs,
+            searchParts: [
+                filePath,
+            ],
+        }),
+        cwd,
+    });
+
+    /* node:coverage ignore next 3 */
+    if (didGrepFail(result)) {
+        return undefined;
+    }
+
+    const count = parseKnownFileCountOutput({
+        filePath,
+        stdout: result.stdout,
+    });
+
+    /* node:coverage ignore next 3 */
+    if (!count) {
+        return undefined;
+    }
+
+    return {
+        key: filePath,
+        value: count,
+    };
+}
+
+async function runGrepCountFallback({
+    cwd,
+    grepArgs,
+}: Readonly<{
+    cwd: string | undefined;
+    grepArgs: ReadonlyArray<string>;
+}>) {
+    const filesOnlyResult = await runGrepCommand({
+        args: replaceGrepCountOutputArg({
+            args: grepArgs,
+            replacement: '--files-with-matches',
+        }),
+        cwd,
+    });
+
+    /* node:coverage ignore next 3 */
+    if (didGrepFail(filesOnlyResult) || filesOnlyResult.exitCode === 1 || !filesOnlyResult.stdout) {
+        return {};
+    }
+
+    return typedObjectFromEntries(
+        (
+            await awaitedBlockingMap(
+                getObjectTypedKeys(parseGrepFilesOnlyOutput(filesOnlyResult.stdout)),
+                (filePath) => {
+                    return runKnownFileGrepCount({
+                        cwd,
+                        filePath,
+                        grepArgs,
+                    });
+                },
+            )
+        )
+            .filter(check.isTruthy)
+            .map((entry) => [
+                entry.key,
+                entry.value,
+            ]),
+    );
+}
+
+function parseGrepFilesOnlyOutput(stdout: string) {
+    return typedObjectFromEntries(
+        /* node:coverage ignore next */
+        (stdout.includes('\0') ? stdout.split('\0') : stdout.trimEnd().split('\n'))
+            .filter(check.isTruthy)
+            .map((entry) => [
+                entry,
+                [],
+            ]),
+    );
+}
+
+function parseGrepNormalOutput(stdout: string) {
+    const fileMatches = new Map<string, string[]>();
+
+    parseNullDelimitedGrepRecords({
+        stdout,
+    }).forEach((record) => {
+        fileMatches.set(record.fileName, [
+            ...(fileMatches.get(record.fileName) || []),
+            record.value,
+        ]);
+    });
+
+    return typedObjectFromEntries([...fileMatches.entries()]);
+}
+
 /**
- * Output of {@link grep}. Each key is an absolute file path. Values are array of matches lines for
- * that file.
+ * Output of {@link grep}. Each key is a file path returned by `grep`. Values are arrays of matched
+ * lines for that file.
  *
  * @category Internal
  * @category Package : @augment-vir/node
@@ -225,32 +945,24 @@ export async function grep<const CountOnly extends boolean = false>(
     grepSearchLocation: Readonly<GrepSearchLocation>,
     options: Readonly<GrepOptions<CountOnly>> = {},
 ): Promise<GrepMatches<CountOnly>> {
-    const searchPatterns: string[] = (
-        grepSearchPattern.patterns || [grepSearchPattern.pattern]
-    ).filter(check.isTruthy);
+    const grepOptions: Readonly<Partial<GrepOptions<CountOnly>>> = check.isObject(options)
+        ? options
+        : {};
+    const searchPatterns = createSearchPatterns(grepSearchPattern);
+    const grepOptionArrays = extractGrepOptionArrays(grepOptions);
+    const cwd = extractString(grepOptions.cwd);
 
-    if (!searchPatterns.length) {
+    if (
+        !searchPatterns.length ||
+        !grepOptionArrays ||
+        !areGrepOptionsValid({
+            grepOptions,
+        })
+    ) {
         return {};
     }
 
-    const searchLocation: SelectFrom<GrepSearchLocation, {files: true; dirs: true}> | undefined =
-        grepSearchLocation.files
-            ? {
-                  files: grepSearchLocation.files,
-              }
-            : grepSearchLocation.file
-              ? {
-                    files: [grepSearchLocation.file],
-                }
-              : grepSearchLocation.dirs
-                ? {
-                      dirs: grepSearchLocation.dirs,
-                  }
-                : grepSearchLocation.dir
-                  ? {
-                        dirs: [grepSearchLocation.dir],
-                    }
-                  : undefined;
+    const searchLocation = createSearchLocation(grepSearchLocation);
 
     if (
         !searchLocation ||
@@ -260,140 +972,103 @@ export async function grep<const CountOnly extends boolean = false>(
         return {};
     }
 
-    const searchParts = searchLocation.dirs
-        ? options.recursive
-            ? searchLocation.dirs
-            : searchLocation.dirs.map((dir) => join(dir, '*'))
-        : searchLocation.files;
+    const searchParts = await createSearchParts({
+        cwd,
+        followSymLinks: grepOptions.followSymLinks,
+        recursive: grepOptions.recursive,
+        searchLocation,
+    });
 
-    const fullCommand = [
-        'grep',
-        options.patternSyntax?.basicRegExp
+    if (!searchParts.length) {
+        return {};
+    }
+
+    const grepArgs = [
+        grepOptions.patternSyntax?.basicRegExp
             ? '--basic-regexp'
-            : options.patternSyntax?.extendedRegExp
+            : grepOptions.patternSyntax?.extendedRegExp
               ? '--extended-regexp'
-              : options.patternSyntax?.fixedStrings
+              : grepOptions.patternSyntax?.fixedStrings
                 ? '--fixed-strings'
                 : '',
-        options.ignoreCase ? '--ignore-case' : '',
-        options.invertMatch && !options.output?.filesOnly ? '--invert-match' : '',
-        options.matchType?.wordRegExp
+        grepOptions.ignoreCase ? '--ignore-case' : '',
+        grepOptions.invertMatch && !grepOptions.output?.filesOnly ? '--invert-match' : '',
+        grepOptions.matchType?.wordRegExp
             ? '--word-regexp'
-            : options.matchType?.lineRegExp
+            : grepOptions.matchType?.lineRegExp
               ? '--line-regexp'
               : '',
-        options.output?.countOnly
+        grepOptions.output?.countOnly
             ? '--count'
-            : options.output?.filesOnly
-              ? options.invertMatch
+            : grepOptions.output?.filesOnly
+              ? grepOptions.invertMatch
                   ? '--files-without-match'
                   : '--files-with-matches'
               : '',
         '--color=never',
-        options.maxCount ? `--max-count=${options.maxCount}` : '',
+        grepOptions.maxCount == undefined ? '' : `--max-count=${grepOptions.maxCount}`,
         '--no-messages',
+        '--devices=skip',
         '--with-filename',
         '--null',
-        ...(options.excludePatterns?.length
-            ? options.excludePatterns.map(
-                  (excludePattern) => `--exclude="${escape(excludePattern)}"`,
+        ...(grepOptionArrays.excludePatterns.length
+            ? grepOptionArrays.excludePatterns.map(
+                  (excludePattern) => `--exclude=${excludePattern}`,
               )
             : []),
-        recursiveFlag(options),
-        ...(options.excludeDirs?.length
-            ? options.excludeDirs.map((excludeDir) => `--exclude-dir="${escape(excludeDir)}"`)
+        recursiveFlag(grepOptions),
+        ...(grepOptionArrays.excludeDirs.length
+            ? grepOptionArrays.excludeDirs.map((excludeDir) => `--exclude-dir=${excludeDir}`)
             : []),
-        ...(options.includeFiles?.length
-            ? options.includeFiles.map((includeFile) => `--include="${escape(includeFile)}"`)
+        ...(grepOptionArrays.includeFiles.length
+            ? grepOptionArrays.includeFiles.map((includeFile) => `--include=${includeFile}`)
             : []),
-        options.binary ? '--binary' : '',
-        ...searchPatterns.map((searchPattern) => `-e "${searchPattern}"`),
+        grepOptions.binary ? '--binary' : '',
+        ...searchPatterns.flatMap((searchPattern) => [
+            '-e',
+            searchPattern,
+        ]),
+        '--',
         ...searchParts,
-    ]
-        .filter(check.isTruthy)
-        .join(' ');
+    ].filter(check.isTruthy);
 
-    if (options.printCommand) {
-        log.faint(`> ${fullCommand}`);
+    if (grepOptions.printCommand) {
+        log.faint(`> ${formatGrepCommand(grepArgs)}`);
     }
 
-    const result = await runShellCommand(fullCommand, {
-        cwd: options.cwd,
+    const result = await runGrepCommand({
+        args: grepArgs,
+        cwd,
     });
 
-    const trimmedOutput = result.stdout.trim();
-
-    if (result.exitCode === 1 || !trimmedOutput) {
+    if (didGrepFail(result) || result.exitCode === 1 || !result.stdout) {
         /** No matches. */
         return {};
-    } else if (options.output?.countOnly) {
-        return arrayToObject(
-            trimmedOutput.split('\n'),
-            (entry) => {
-                /** Ignore empty strings. */
-                /* node:coverage ignore next 3 */
-                if (!entry) {
-                    return undefined;
-                }
+    } else if (grepOptions.output?.countOnly) {
+        /* node:coverage ignore next 4 */
+        const parsedCountOutput =
+            isOperatingSystem(OperatingSystem.Mac) && !result.stdout.includes('\0')
+                ? undefined
+                : tryParseGrepCountOutput(result.stdout);
 
-                /**
-                 * GNU `grep` (Linux) separates the file name from its count with a null byte when
-                 * `--null` is set, while BSD `grep` (macOS) uses a colon. Accept either.
-                 */
-                const [
-                    ,
-                    fileName,
-                    countString,
-                ] = safeMatch(entry, /^(.+)[\0:](\d+)$/);
+        /* node:coverage ignore next 3 */
+        if (parsedCountOutput) {
+            return parsedCountOutput satisfies Record<string, number> as GrepMatches<CountOnly>;
+        }
 
-                assert.isDefined(fileName, `Failed parse grep file name from: '${entry}'`);
-
-                const count = Number(countString);
-
-                assert.isNumber(count, `Failed to parse grep number from: '${entry}'`);
-                if (!count) {
-                    return undefined;
-                }
-
-                return {
-                    key: fileName,
-                    value: count,
-                };
-            },
-            {
-                useRequired: true,
-            },
-        ) satisfies Record<string, number> as GrepMatches<CountOnly>;
-    } else if (options.output?.filesOnly) {
-        return arrayToObject(
-            trimmedOutput.split(/[\0\n]/),
-            (entry) => {
-                /** Ignore empty strings. */
-                if (!entry) {
-                    return undefined;
-                }
-
-                return {
-                    key: entry,
-                    value: [],
-                };
-            },
-            {
-                useRequired: true,
-            },
-        ) satisfies Record<string, string[]> as GrepMatches as GrepMatches<CountOnly>;
+        return (await runGrepCountFallback({
+            cwd,
+            grepArgs,
+        })) satisfies Record<string, number> as GrepMatches<CountOnly>;
+    } else if (grepOptions.output?.filesOnly) {
+        return parseGrepFilesOnlyOutput(result.stdout) satisfies Record<
+            string,
+            string[]
+        > as GrepMatches as GrepMatches<CountOnly>;
     } else {
-        const outputLines = trimmedOutput.split(/[\0\n]/);
-
-        const fileMatches: Record<string, string[]> = {};
-
-        outputLines.forEach((line, index) => {
-            if (!(index % 2)) {
-                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                getOrSet(fileMatches, line, () => []).push(outputLines[index + 1]!);
-            }
-        });
-
-        return fileMatches as GrepMatches<CountOnly>;
+        return parseGrepNormalOutput(result.stdout) satisfies Record<
+            string,
+            string[]
+        > as GrepMatches<CountOnly>;
     }
 }
