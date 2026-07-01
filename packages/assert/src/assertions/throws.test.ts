@@ -639,6 +639,234 @@ describe('throws', () => {
         });
     });
 });
+describe('doesNotThrow', () => {
+    const actualPass = () => {
+        return 'success';
+    };
+    const actualPassAsync = async () => {
+        return new Promise<string>((resolve) => {
+            setTimeout(() => resolve('success'), 0);
+        });
+    };
+    const actualThrow = () => {
+        throw new Error('fake error');
+    };
+    const actualThrowAsync = async () => {
+        await Promise.resolve();
+        throw new Error('fake error');
+    };
+
+    describe('assert', () => {
+        it('works', () => {
+            assert.doesNotThrow(actualPass);
+        });
+        it('rejects', () => {
+            assert.throws(() => assert.doesNotThrow(actualThrow));
+        });
+
+        it('is synchronous if callback is synchronous', () => {
+            assert.tsType(assert.doesNotThrow(actualPass)).equals<void>();
+            assert.tsType(assert.doesNotThrow(actualPass, 'yo')).equals<void>();
+        });
+
+        it('is asynchronous if callback is asynchronous', () => {
+            assert.tsType(assert.doesNotThrow(actualPassAsync)).equals<Promise<void>>();
+            assert.tsType(assert.doesNotThrow(actualPassAsync, 'yo')).equals<Promise<void>>();
+        });
+
+        it('passes if no error is thrown', () => {
+            assert.doesNotThrow(() => {});
+        });
+
+        it('passes if no error is thrown from an async callback', async () => {
+            await assert.doesNotThrow(async () => {});
+        });
+
+        it('errors if an error is thrown', () => {
+            let caughtError: unknown = undefined;
+            try {
+                assert.doesNotThrow(actualThrow);
+            } catch (error) {
+                caughtError = error;
+            }
+
+            assert.isDefined(caughtError);
+            assert.strictEquals(
+                extractErrorMessage(caughtError),
+                "Expected no error but got 'fake error'.",
+            );
+        });
+
+        it('errors with a failure message', () => {
+            let caughtError: unknown = undefined;
+            try {
+                assert.doesNotThrow(actualThrow, 'with a message');
+            } catch (error) {
+                caughtError = error;
+            }
+
+            assert.isDefined(caughtError);
+            assert.strictEquals(
+                extractErrorMessage(caughtError),
+                "with a message: Expected no error but got 'fake error'.",
+            );
+        });
+
+        it('errors if an async callback rejects', async () => {
+            let caughtError: unknown = undefined;
+            try {
+                await assert.doesNotThrow(actualThrowAsync);
+            } catch (error) {
+                caughtError = error;
+            }
+
+            assert.isDefined(caughtError);
+            assert.strictEquals(
+                extractErrorMessage(caughtError),
+                "Expected no error but got 'fake error'.",
+            );
+        });
+
+        it('passes a promise that resolves', async () => {
+            await assert.doesNotThrow(Promise.resolve('success'));
+        });
+
+        it('errors on a promise that rejects', async () => {
+            await assert.throws(assert.doesNotThrow(Promise.reject(new Error('failure'))), {
+                matchMessage: 'failure',
+            });
+        });
+    });
+    describe('check', () => {
+        it('works', () => {
+            assert.isTrue(check.doesNotThrow(actualPass));
+        });
+        it('rejects', () => {
+            assert.isFalse(check.doesNotThrow(actualThrow));
+        });
+        it('is synchronous if callback is synchronous', () => {
+            assert.tsType(check.doesNotThrow(actualPass)).equals<boolean>();
+        });
+        it('is asynchronous if callback is asynchronous', () => {
+            assert.tsType(check.doesNotThrow(actualPassAsync)).equals<Promise<boolean>>();
+        });
+        it('passes if no error is thrown', () => {
+            assert.isTrue(check.doesNotThrow(() => {}));
+        });
+        it('passes if no error is thrown from an async callback', async () => {
+            assert.isTrue(await check.doesNotThrow(async () => {}));
+        });
+        it('fails if an error is thrown', () => {
+            assert.isFalse(check.doesNotThrow(actualThrow));
+        });
+        it('fails if an async callback rejects', async () => {
+            assert.isFalse(await check.doesNotThrow(actualThrowAsync));
+        });
+        it('passes a promise that resolves', async () => {
+            assert.isTrue(await check.doesNotThrow(Promise.resolve('success')));
+        });
+        it('fails on a promise that rejects', async () => {
+            assert.isFalse(await check.doesNotThrow(Promise.reject(new Error('failure'))));
+        });
+    });
+    describe('assertWrap', () => {
+        it('returns the callback value', () => {
+            const newValue = assertWrap.doesNotThrow(actualPass);
+
+            assert.tsType(newValue).equals<string>();
+            assert.strictEquals(newValue, 'success');
+        });
+        it('rejects', () => {
+            assert.throws(() => assertWrap.doesNotThrow(actualThrow), {
+                matchMessage: "Expected no error but got 'fake error'.",
+            });
+        });
+        it('returns an async callback value', async () => {
+            const newValue = await assertWrap.doesNotThrow(actualPassAsync);
+
+            assert.tsType(newValue).equals<string>();
+            assert.strictEquals(newValue, 'success');
+        });
+        it('rejects an async callback error', async () => {
+            await assert.throws(() => assertWrap.doesNotThrow(actualThrowAsync), {
+                matchMessage: "Expected no error but got 'fake error'.",
+            });
+        });
+        it('returns a resolved promise value', async () => {
+            const newValue = await assertWrap.doesNotThrow(Promise.resolve('success'));
+
+            assert.tsType(newValue).equals<string>();
+            assert.strictEquals(newValue, 'success');
+        });
+        it('rejects a rejecting promise', async () => {
+            await assert.throws(() => assertWrap.doesNotThrow(Promise.reject(new Error('hi'))), {
+                matchMessage: "Expected no error but got 'hi'.",
+            });
+        });
+    });
+    describe('checkWrap', () => {
+        it('returns the callback value', () => {
+            const newValue = checkWrap.doesNotThrow(actualPass);
+
+            assert.tsType(newValue).equals<string | undefined>();
+            assert.strictEquals(newValue, 'success');
+        });
+        it('rejects', () => {
+            assert.isUndefined(checkWrap.doesNotThrow(actualThrow));
+        });
+        it('returns an async callback value', async () => {
+            const newValue = await checkWrap.doesNotThrow(actualPassAsync);
+
+            assert.tsType(newValue).equals<string | undefined>();
+            assert.strictEquals(newValue, 'success');
+        });
+        it('rejects an async callback error', async () => {
+            assert.isUndefined(await checkWrap.doesNotThrow(actualThrowAsync));
+        });
+        it('returns a resolved promise value', async () => {
+            assert.strictEquals(
+                await checkWrap.doesNotThrow(Promise.resolve('success')),
+                'success',
+            );
+        });
+        it('rejects a rejecting promise', async () => {
+            assert.isUndefined(await checkWrap.doesNotThrow(Promise.reject(new Error('hi'))));
+        });
+    });
+    describe('waitUntil', () => {
+        it('returns the callback value', async () => {
+            const newValue = await waitUntil.doesNotThrow(
+                actualPass,
+                waitUntilTestOptions,
+                'failure',
+            );
+
+            assert.tsType(newValue).equals<string>();
+            assert.strictEquals(newValue, 'success');
+        });
+        it('waits until the callback stops throwing', async () => {
+            let attempts = 0;
+            const newValue = await waitUntil.doesNotThrow(
+                () => {
+                    attempts++;
+                    if (attempts < 3) {
+                        throw new Error('not yet');
+                    }
+                    return 'success';
+                },
+                waitUntilTestOptions,
+                'failure',
+            );
+
+            assert.strictEquals(newValue, 'success');
+        });
+        it('rejects on timeout', async () => {
+            await assert.throws(
+                waitUntil.doesNotThrow(actualThrow, waitUntilTestOptions, 'failure'),
+            );
+        });
+    });
+});
 describe('isError', () => {
     const actualPass: unknown = new TypeError('hi');
     const actualReject: unknown = 'hi' as any;

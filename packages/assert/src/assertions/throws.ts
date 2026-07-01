@@ -190,6 +190,64 @@ function internalThrowsCheck(
     }
 }
 
+function internalDoesNotThrowCheck(
+    this: void,
+    checkType: ThrowsCheckType,
+    callbackOrPromise: TypedFunction<void, any> | Promise<any>,
+    failureMessage?: string | undefined,
+) {
+    try {
+        const result =
+            callbackOrPromise instanceof Promise ? callbackOrPromise : callbackOrPromise();
+
+        if (result instanceof Promise) {
+            return new Promise<any>(async (resolve, reject) => {
+                try {
+                    const awaited = await result;
+                    if (checkType === ThrowsCheckType.Check) {
+                        resolve(true);
+                    } else if (checkType === ThrowsCheckType.Assert) {
+                        (resolve as AnyFunction)();
+                    } else {
+                        resolve(awaited);
+                    }
+                } catch (error) {
+                    const caughtError = ensureError(error);
+                    if (checkType === ThrowsCheckType.CheckWrap) {
+                        resolve(undefined);
+                    } else if (checkType === ThrowsCheckType.Check) {
+                        resolve(false);
+                    } else {
+                        reject(
+                            new AssertionError(
+                                `Expected no error but got '${extractErrorMessage(caughtError)}'.`,
+                                failureMessage,
+                            ),
+                        );
+                    }
+                }
+            });
+        } else if (checkType === ThrowsCheckType.Check) {
+            return true;
+        } else if (checkType !== ThrowsCheckType.Assert) {
+            return result;
+        }
+        return;
+    } catch (error) {
+        const caughtError = ensureError(error);
+        if (checkType === ThrowsCheckType.CheckWrap) {
+            return undefined;
+        } else if (checkType === ThrowsCheckType.Check) {
+            return false;
+        } else {
+            throw new AssertionError(
+                `Expected no error but got '${extractErrorMessage(caughtError)}'.`,
+                failureMessage,
+            );
+        }
+    }
+}
+
 /**
  * A type that represents possible error matching patterns. This is used by the `.throws` and
  * `isError`, guards in `@augment-vir/assert` as well as `itCases` in `@augment-vir/test`. Each
@@ -441,6 +499,122 @@ function throwsWaitUntil(
     );
 }
 
+function doesNotThrow(
+    this: void,
+    callbackOrPromise: TypedFunction<void, never>,
+    failureMessage?: string | undefined,
+): void;
+function doesNotThrow(
+    this: void,
+    callbackOrPromise: TypedFunction<void, Promise<any>> | Promise<any>,
+    failureMessage?: string | undefined,
+): Promise<void>;
+function doesNotThrow(
+    this: void,
+    callback: TypedFunction<void, any>,
+    failureMessage?: string | undefined,
+): void;
+function doesNotThrow(
+    this: void,
+    callback: TypedFunction<void, MaybePromise<any>> | Promise<any>,
+    failureMessage?: string | undefined,
+): MaybePromise<void>;
+function doesNotThrow(
+    this: void,
+    callbackOrPromise: TypedFunction<void, any> | Promise<any>,
+    failureMessage?: string | undefined,
+): MaybePromise<void> {
+    return internalDoesNotThrowCheck(
+        ThrowsCheckType.Assert,
+        callbackOrPromise,
+        failureMessage,
+    ) as MaybePromise<void>;
+}
+
+function doesNotThrowCheck(this: void, callbackOrPromise: TypedFunction<void, never>): boolean;
+function doesNotThrowCheck(
+    this: void,
+    callbackOrPromise: TypedFunction<void, Promise<any>> | Promise<any>,
+): Promise<boolean>;
+function doesNotThrowCheck(this: void, callback: TypedFunction<void, any>): boolean;
+function doesNotThrowCheck(
+    this: void,
+    callback: TypedFunction<void, MaybePromise<any>> | Promise<any>,
+): MaybePromise<boolean>;
+function doesNotThrowCheck(
+    this: void,
+    callbackOrPromise: TypedFunction<void, any> | Promise<any>,
+): MaybePromise<boolean> {
+    return internalDoesNotThrowCheck(
+        ThrowsCheckType.Check,
+        callbackOrPromise,
+    ) as MaybePromise<boolean>;
+}
+
+function doesNotThrowAssertWrap(
+    this: void,
+    callback: TypedFunction<void, never>,
+    failureMessage?: string | undefined,
+): never;
+function doesNotThrowAssertWrap<Value>(
+    this: void,
+    callbackOrPromise: TypedFunction<void, Promise<Value>> | Promise<Value>,
+    failureMessage?: string | undefined,
+): Promise<Value>;
+function doesNotThrowAssertWrap<Value>(
+    this: void,
+    callback: TypedFunction<void, Value>,
+    failureMessage?: string | undefined,
+): Value;
+function doesNotThrowAssertWrap<Value>(
+    this: void,
+    callbackOrPromise: TypedFunction<void, MaybePromise<Value>> | Promise<Value>,
+    failureMessage?: string | undefined,
+): MaybePromise<Value> {
+    return internalDoesNotThrowCheck(
+        ThrowsCheckType.AssertWrap,
+        callbackOrPromise,
+        failureMessage,
+    ) as MaybePromise<Value>;
+}
+
+function doesNotThrowCheckWrap(
+    this: void,
+    callback: TypedFunction<void, never>,
+    failureMessage?: string | undefined,
+): undefined;
+function doesNotThrowCheckWrap<Value>(
+    this: void,
+    callbackOrPromise: TypedFunction<void, Promise<Value>> | Promise<Value>,
+    failureMessage?: string | undefined,
+): Promise<Value | undefined>;
+function doesNotThrowCheckWrap<Value>(
+    this: void,
+    callback: TypedFunction<void, Value>,
+    failureMessage?: string | undefined,
+): Value | undefined;
+function doesNotThrowCheckWrap<Value>(
+    this: void,
+    callbackOrPromise: TypedFunction<void, MaybePromise<Value>> | Promise<Value>,
+    failureMessage?: string | undefined,
+): MaybePromise<Value | undefined> {
+    return internalDoesNotThrowCheck(
+        ThrowsCheckType.CheckWrap,
+        callbackOrPromise,
+        failureMessage,
+    ) as MaybePromise<Value | undefined>;
+}
+
+function doesNotThrowAssertion(
+    this: void,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    actual: unknown,
+): asserts actual is unknown {
+    /** Any non-throwing callback output passes `doesNotThrow`. */
+}
+
+const internalWaitUntilDoesNotThrow = createWaitUntil(doesNotThrowAssertion);
+
 const assertions: {
     /**
      * If a function input is provided:
@@ -480,6 +654,36 @@ const assertions: {
      */
     throws: typeof throws;
     /**
+     * If a function input is provided:
+     *
+     * Calls that function and asserts that the function does not throw an error.
+     *
+     * If a promise is provided:
+     *
+     * Awaits the promise and asserts that the promise does not reject.
+     *
+     * This assertion will automatically type itself as async vs sync based on the input. (A promise
+     * or async function inputs results in async. Otherwise, sync.)
+     *
+     * Performs no type guarding.
+     *
+     * @example
+     *
+     * ```ts
+     * import {assert} from '@augment-vir/assert';
+     *
+     * assert.doesNotThrow(() => {}); // passes
+     * assert.doesNotThrow(() => {
+     *     throw new Error();
+     * }); // fails
+     * await assert.doesNotThrow(Promise.resolve()); // passes
+     * await assert.doesNotThrow(Promise.reject()); // fails
+     * ```
+     *
+     * @throws {@link AssertionError} If the assertion fails.
+     */
+    doesNotThrow: typeof doesNotThrow;
+    /**
      * Asserts that a value is an instance of the built-in `Error` class and compares it to the
      * given {@link ErrorMatchOptions}, if provided.
      *
@@ -500,6 +704,7 @@ const assertions: {
     isError: typeof isError;
 } = {
     throws,
+    doesNotThrow,
     isError,
 };
 
@@ -541,6 +746,34 @@ export const throwGuards = {
          * ```
          */
         throws: throwsCheck,
+        /**
+         * If a function input is provided:
+         *
+         * Calls that function and checks that the function does not throw an error.
+         *
+         * If a promise is provided:
+         *
+         * Awaits the promise and checks that the promise does not reject.
+         *
+         * This assertion will automatically type itself as async vs sync based on the input. (A
+         * promise or async function inputs results in async. Otherwise, sync.)
+         *
+         * Performs no type guarding.
+         *
+         * @example
+         *
+         * ```ts
+         * import {check} from '@augment-vir/assert';
+         *
+         * check.doesNotThrow(() => {}); // returns `true`
+         * check.doesNotThrow(() => {
+         *     throw new Error();
+         * }); // returns `false`
+         * await check.doesNotThrow(Promise.resolve()); // returns `true`
+         * await check.doesNotThrow(Promise.reject()); // returns `false`
+         * ```
+         */
+        doesNotThrow: doesNotThrowCheck,
         /**
          * Checks that a value is an instance of the built-in `Error` class and compares it to the
          * given {@link ErrorMatchOptions}, if provided.
@@ -606,6 +839,39 @@ export const throwGuards = {
          * @throws {@link AssertionError} If the assertion fails.
          */
         throws: throwsAssertWrap,
+        /**
+         * If a function input is provided:
+         *
+         * Calls that function and asserts that the function does not throw an error. Returns the
+         * function's return value if the assertion passes.
+         *
+         * If a promise is provided:
+         *
+         * Awaits the promise and asserts that the promise does not reject. Returns the resolved
+         * value if the assertion passes.
+         *
+         * This assertion will automatically type itself as async vs sync based on the input. (A
+         * promise or async function inputs results in async. Otherwise, sync.)
+         *
+         * Performs no type guarding.
+         *
+         * @example
+         *
+         * ```ts
+         * import {assertWrap} from '@augment-vir/assert';
+         *
+         * assertWrap.doesNotThrow(() => 'value'); // returns `'value'`
+         * assertWrap.doesNotThrow(() => {
+         *     throw new Error();
+         * }); // throws an error
+         * await assertWrap.doesNotThrow(Promise.resolve('value')); // returns `'value'`
+         * await assertWrap.doesNotThrow(Promise.reject()); // throws an error
+         * ```
+         *
+         * @returns The callback's return value (or the resolved value) if the assertion passes.
+         * @throws {@link AssertionError} If the assertion fails.
+         */
+        doesNotThrow: doesNotThrowAssertWrap,
         /**
          * Asserts that a value is an instance of the built-in `Error` class and compares it to the
          * given {@link ErrorMatchOptions}, if provided.
@@ -679,6 +945,39 @@ export const throwGuards = {
          */
         throws: throwsCheckWrap,
         /**
+         * If a function input is provided:
+         *
+         * Calls that function and checks that the function does not throw an error. Returns the
+         * function's return value if the check passes, otherwise `undefined`.
+         *
+         * If a promise is provided:
+         *
+         * Awaits the promise and checks that the promise does not reject. Returns the resolved
+         * value if the check passes, otherwise `undefined`.
+         *
+         * This assertion will automatically type itself as async vs sync based on the input. (A
+         * promise or async function inputs results in async. Otherwise, sync.)
+         *
+         * Performs no type guarding.
+         *
+         * @example
+         *
+         * ```ts
+         * import {checkWrap} from '@augment-vir/assert';
+         *
+         * checkWrap.doesNotThrow(() => 'value'); // returns `'value'`
+         * checkWrap.doesNotThrow(() => {
+         *     throw new Error();
+         * }); // returns `undefined`
+         * await checkWrap.doesNotThrow(Promise.resolve('value')); // returns `'value'`
+         * await checkWrap.doesNotThrow(Promise.reject()); // returns `undefined`
+         * ```
+         *
+         * @returns The callback's return value (or the resolved value) if the check passes,
+         *   otherwise `undefined`.
+         */
+        doesNotThrow: doesNotThrowCheckWrap,
+        /**
          * Checks that a value is an instance of the built-in `Error` class and compares it to the
          * given {@link ErrorMatchOptions}, if provided. Returns the error if the check passes,
          * otherwise `undefined`.
@@ -742,6 +1041,35 @@ export const throwGuards = {
          * @throws {@link AssertionError} On timeout.
          */
         throws: throwsWaitUntil,
+        /**
+         * Repeatedly calls a callback until it does not throw an error. Once the callback does not
+         * throw, its return value is returned. If the attempts time out, an error is thrown.
+         *
+         * Unlike the other `.doesNotThrow` guards, `waitUntil.doesNotThrow` does not allow a
+         * Promise input, only a callback input.
+         *
+         * Performs no type guarding.
+         *
+         * @example
+         *
+         * ```ts
+         * import {waitUntil} from '@augment-vir/assert';
+         *
+         * await waitUntil.doesNotThrow(() => 'value'); // returns `'value'`
+         * await waitUntil.doesNotThrow(() => {
+         *     throw new Error();
+         * }); // throws an error on timeout
+         * ```
+         *
+         * @returns The callback's return value once it passes.
+         * @throws {@link AssertionError} On timeout.
+         */
+        doesNotThrow: internalWaitUntilDoesNotThrow as <Value>(
+            this: void,
+            callback: TypedFunction<void, MaybePromise<Value>>,
+            options?: WaitUntilOptions | undefined,
+            failureMessage?: string | undefined,
+        ) => Promise<Value>,
         /**
          * Repeatedly calls a callback until is output is an instance of the built-in `Error` class
          * and compares it to the given {@link ErrorMatchOptions}, if provided. Once the callback
