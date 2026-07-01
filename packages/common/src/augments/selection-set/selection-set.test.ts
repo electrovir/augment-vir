@@ -189,6 +189,14 @@ describe('SelectionSet', () => {
                 },
             },
         };
+
+        assert.deepEquals(test, {
+            top: {
+                mid: {
+                    low: true,
+                },
+            },
+        });
     });
 
     it('combines unions', () => {

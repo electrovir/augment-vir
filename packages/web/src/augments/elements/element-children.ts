@@ -16,13 +16,21 @@ export function getNestedChildren(
     startingElement: Readonly<Element>,
     depth?: number | undefined,
 ): Element[] {
-    return recursivelyGetNestedChildren(startingElement, depth ?? 0, 0);
+    return recursivelyGetNestedChildren({
+        startingElement,
+        maxDepth: depth ?? 0,
+        currentDepth: 0,
+    });
 }
-function recursivelyGetNestedChildren(
-    startingElement: Readonly<Element>,
-    maxDepth: number,
-    currentDepth: number,
-): Element[] {
+function recursivelyGetNestedChildren({
+    startingElement,
+    maxDepth,
+    currentDepth,
+}: Readonly<{
+    startingElement: Readonly<Element>;
+    maxDepth: number;
+    currentDepth: number;
+}>): Element[] {
     const children = getDirectChildren(startingElement);
 
     return children.flatMap((child) => {
@@ -30,7 +38,11 @@ function recursivelyGetNestedChildren(
         const nested =
             maxDepth && nextDepth >= maxDepth
                 ? []
-                : recursivelyGetNestedChildren(child, maxDepth, nextDepth);
+                : recursivelyGetNestedChildren({
+                      startingElement: child,
+                      maxDepth,
+                      currentDepth: nextDepth,
+                  });
         return [
             child,
             nested,
@@ -70,20 +82,32 @@ export function getNestedChildrenTree(
 ): ElementTree {
     return {
         element: startingElement,
-        children: recursivelyGetNestedChildrenTree(startingElement, depth ?? 0, 0),
+        children: recursivelyGetNestedChildrenTree({
+            startingElement,
+            maxDepth: depth ?? 0,
+            currentDepth: 0,
+        }),
     };
 }
-function recursivelyGetNestedChildrenTree(
-    startingElement: Readonly<Element>,
-    maxDepth: number,
-    currentDepth: number,
-): ElementTree[] {
+function recursivelyGetNestedChildrenTree({
+    startingElement,
+    maxDepth,
+    currentDepth,
+}: Readonly<{
+    startingElement: Readonly<Element>;
+    maxDepth: number;
+    currentDepth: number;
+}>): ElementTree[] {
     return getDirectChildren(startingElement).map((child) => {
         const nextDepth = currentDepth + 1;
         const nested =
             maxDepth && nextDepth >= Math.abs(maxDepth)
                 ? []
-                : recursivelyGetNestedChildrenTree(child, maxDepth, nextDepth);
+                : recursivelyGetNestedChildrenTree({
+                      startingElement: child,
+                      maxDepth,
+                      currentDepth: nextDepth,
+                  });
 
         return {
             element: child,

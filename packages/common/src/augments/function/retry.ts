@@ -56,22 +56,32 @@ export function retry<const T, const Duration extends AtLeastOneDuration | undef
         interval: Duration;
     }> = {},
 ): IsEqual<Duration, undefined> extends true ? T : Promise<Awaited<T>> {
-    return internalRetry(0, maxRetries, callback, options);
+    return internalRetry({
+        currentRetry: 0,
+        maxRetries,
+        callback,
+        options,
+    });
 }
 
-function internalRetry<const T, const Duration extends AtLeastOneDuration | undefined = undefined>(
-    currentRetry: number,
-    maxRetries: number,
-    callback: (params: RetryCallbackParams) => T,
-    options: PartialWithUndefined<{
+function internalRetry<const T, const Duration extends AtLeastOneDuration | undefined = undefined>({
+    currentRetry,
+    maxRetries,
+    callback,
+    options = {},
+}: Readonly<{
+    currentRetry: number;
+    maxRetries: number;
+    callback: (params: RetryCallbackParams) => T;
+    options?: PartialWithUndefined<{
         /**
          * Wait this duration between each retry.
          *
          * @default {seconds: 1}
          */
         interval: Duration;
-    }> = {},
-): IsEqual<Duration, undefined> extends true ? T : Promise<Awaited<T>> {
+    }>;
+}>): IsEqual<Duration, undefined> extends true ? T : Promise<Awaited<T>> {
     try {
         const result = callback({
             retryCount: currentRetry,
@@ -88,7 +98,12 @@ function internalRetry<const T, const Duration extends AtLeastOneDuration | unde
                     if (options.interval) {
                         await wait(options.interval);
                     }
-                    return internalRetry(currentRetry + 1, maxRetries, callback, options);
+                    return internalRetry({
+                        currentRetry: currentRetry + 1,
+                        maxRetries,
+                        callback,
+                        options,
+                    });
                 }
             }) as IsEqual<Duration, undefined> extends true ? T : Promise<Awaited<T>>;
         } else {
@@ -99,10 +114,20 @@ function internalRetry<const T, const Duration extends AtLeastOneDuration | unde
             throw ensureErrorAndPrependMessage(error, 'Retry max reached');
         } else if (options.interval) {
             return wait(options.interval).then(() =>
-                internalRetry(currentRetry + 1, maxRetries, callback, options),
+                internalRetry({
+                    currentRetry: currentRetry + 1,
+                    maxRetries,
+                    callback,
+                    options,
+                }),
             ) as IsEqual<Duration, undefined> extends true ? T : Promise<Awaited<T>>;
         } else {
-            return internalRetry(currentRetry + 1, maxRetries, callback, options);
+            return internalRetry({
+                currentRetry: currentRetry + 1,
+                maxRetries,
+                callback,
+                options,
+            });
         }
     }
 }

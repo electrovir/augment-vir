@@ -17,12 +17,12 @@ function runWriteAccessTests(writeAccessModifier: (input: any) => any) {
 }
 
 describe(makeWritable.name, () => {
-    it('should make a type writeable', () => {
+    it('makes a type writeable', () => {
         assert.tsType(getExampleReadonlyObject()).notEquals<{a: 'five'}>();
         assert.tsType(makeWritable(getExampleReadonlyObject())).equals<{a: 'five'}>();
     });
 
-    it('should not modify the object reference that was made writable', () => {
+    it('does not modify the object reference that was made writable', () => {
         runWriteAccessTests(makeWritable);
     });
 });

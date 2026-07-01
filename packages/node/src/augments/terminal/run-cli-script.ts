@@ -30,16 +30,11 @@ export const ExtensionToRunner: Record<string, string | {npx: string}> = {
  * @category Package : @augment-vir/node
  * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
  */
-export async function runCliScript(
-    scriptPath: string,
-    /** This should just be `__filename` (for CJS) or `import.meta.filename` (for ESM). */
-    cliScriptFilePath: string,
-    /**
-     * This should be the bin name of the package that is calling this function. Set to `undefined`
-     * if there isn't one.
-     */
-    binName: string | undefined,
-) {
+export async function runCliScript({
+    scriptPath,
+    cliScriptFilePath,
+    binName,
+}: Readonly<{scriptPath: string; cliScriptFilePath: string; binName: string | undefined}>) {
     const args = extractRelevantArgs({
         rawArgs: process.argv,
         binName,

@@ -26,7 +26,7 @@
  * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function filterOutIndexes<T>(array: ReadonlyArray<T>, indexes: ReadonlyArray<number>): T[] {
-    return array.filter((_, index) => !indexes.includes(index));
+    return array.filter((entry, index) => !indexes.includes(index));
 }
 
 /** Performs `filterMap` with a type guard filter. */

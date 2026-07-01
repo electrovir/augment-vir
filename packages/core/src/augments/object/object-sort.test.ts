@@ -56,7 +56,11 @@ describe(sortObject.name, () => {
 
         recursiveObject.b = recursiveObject;
 
-        sortObject(recursiveObject);
+        assert.deepEquals(Object.keys(sortObject(recursiveObject)), [
+            'a',
+            'b',
+            'c',
+        ]);
     });
 
     itCases(

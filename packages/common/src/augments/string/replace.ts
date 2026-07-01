@@ -9,20 +9,25 @@
  * ```ts
  * import {replaceStringAtIndex} from '@augment-vir/common';
  *
- * replaceStringAtIndex('eat the waffles', 4, 'his'); // outputs `'eat his waffles'`
- * replaceStringAtIndex('eat the waffles', 4, 'my', 3); // outputs `'eat my waffles'`
+ * replaceStringAtIndex({original: 'eat the waffles', start: 4, replacement: 'his'}); // outputs `'eat his waffles'`
+ * replaceStringAtIndex({original: 'eat the waffles', start: 4, replacement: 'my', length: 3}); // outputs `'eat my waffles'`
  * ```
  *
  * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
-export function replaceStringAtIndex(
-    originalString: string,
-    start: number,
-    newString: string,
-    length = newString.length,
-): string {
-    const before = originalString.slice(0, Math.max(0, start));
-    const after = originalString.slice(Math.max(0, start + length));
+export function replaceStringAtIndex({
+    original,
+    start,
+    replacement,
+    length = replacement.length,
+}: Readonly<{
+    original: string;
+    start: number;
+    replacement: string;
+    length?: number | undefined;
+}>): string {
+    const before = original.slice(0, Math.max(0, start));
+    const after = original.slice(Math.max(0, start + length));
 
-    return `${before}${newString}${after}`;
+    return `${before}${replacement}${after}`;
 }

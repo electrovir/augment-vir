@@ -354,7 +354,7 @@ describe('isLengthExactly', () => {
 });
 
 describe('AtLeastTuple', () => {
-    it('should be assignable to from a Tuple', () => {
+    it('is assignable to from a Tuple', () => {
         const atLeastTuple: AtLeastTuple<any, 5> = [
             1,
             2,
@@ -362,8 +362,10 @@ describe('AtLeastTuple', () => {
             4,
             5,
         ] as Tuple<any, 5>;
+
+        assert.tsType(atLeastTuple).matches<AtLeastTuple<any, 5>>();
     });
-    it('should not be assignable to a Tuple', () => {
+    it('is not assignable to a Tuple', () => {
         // @ts-expect-error: `AtLeastTuple` can be bigger than `Tuple`
         const strictTuple: Tuple<any, 5> = [
             1,
@@ -374,7 +376,7 @@ describe('AtLeastTuple', () => {
         ] as AtLeastTuple<any, 5>;
     });
 
-    it('should match arrays with more than the expected length', () => {
+    it('matches arrays with more than the expected length', () => {
         assert
             .tsType([
                 1,

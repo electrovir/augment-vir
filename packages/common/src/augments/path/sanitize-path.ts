@@ -37,7 +37,10 @@ export function sanitizeFileName(original: string | null | undefined): string | 
 
     if (extension) {
         return [
-            safeSplit(sanitized, extension)[0],
+            safeSplit({
+                value: sanitized,
+                splitter: extension,
+            })[0],
             extension.replaceAll('_', ''),
         ].join('');
     } else {

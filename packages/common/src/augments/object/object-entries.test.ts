@@ -140,7 +140,7 @@ describe(getObjectTypedEntries.name, () => {
 });
 
 describe(typedObjectFromEntries.name, () => {
-    it('should maintain types', () => {
+    it('maintains types', () => {
         enum MyEnum {
             aKey = 'a',
             bKey = 'b',

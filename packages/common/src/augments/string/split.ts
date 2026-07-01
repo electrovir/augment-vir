@@ -64,6 +64,9 @@ export function splitIncludeSplit(
  * @category Package : @augment-vir/common
  * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
-export function safeSplit(input: string, splitString: string): AtLeastTuple<string, 1> {
-    return input.split(splitString) as unknown as AtLeastTuple<string, 1>;
+export function safeSplit({
+    value,
+    splitter,
+}: Readonly<{value: string; splitter: string}>): AtLeastTuple<string, 1> {
+    return value.split(splitter) as unknown as AtLeastTuple<string, 1>;
 }

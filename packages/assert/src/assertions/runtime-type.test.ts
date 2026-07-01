@@ -1587,6 +1587,7 @@ describe('isNotObject', () => {
 
 describe('isPlainObject', () => {
     const actualPass: unknown = {} as any;
+    // eslint-disable-next-line @virmator/no-raw-date -- a raw Date is used as a non-plain-object fixture
     const actualReject: unknown = new Date() as any;
     type ExpectedType = UnknownObject;
     type UnexpectedType = unknown[];
@@ -1702,6 +1703,7 @@ describe('isPlainObject', () => {
     });
 });
 describe('isNotPlainObject', () => {
+    // eslint-disable-next-line @virmator/no-raw-date -- a raw Date is used as a non-plain-object fixture
     const actualPass: UnknownObject | unknown[] = new Date() as any;
     const actualReject: UnknownObject | unknown[] = {} as any;
     type ExpectedType = unknown[];

@@ -11,14 +11,14 @@ describe(ensureType.name, () => {
         inFact: 'the object reference should remain as well',
     } as const;
 
-    it('should not actually mutate or change its input', () => {
+    it('does not actually mutate or change its input', () => {
         const output = ensureType<typeof placeholder>(placeholder);
 
         assert.strictEquals(output, placeholder, 'object references should not have changed');
         assert.deepEquals(output, placeholder, 'object internals should not have changed');
     });
 
-    it('should enforce type safety', () => {
+    it('enforces type safety', () => {
         // @ts-expect-error
         ensureType<string>(5);
         ensureType<string>('5');

@@ -3,7 +3,7 @@ import {describe, it, itCases} from '@augment-vir/test';
 import {omitObjectKeys, pickObjectKeys} from './object-keys.js';
 
 describe(omitObjectKeys.name, () => {
-    it('should create proper types', () => {
+    it('creates proper types', () => {
         const exampleObject = {
             five: 'four',
             4: 3,
@@ -31,7 +31,7 @@ describe(omitObjectKeys.name, () => {
         (...inputs: Parameters<typeof omitObjectKeys<any, any>>) => omitObjectKeys(...inputs),
         [
             {
-                it: 'should remove basic keys',
+                it: 'removes basic keys',
                 inputs: [
                     {
                         a: 1,
@@ -50,7 +50,7 @@ describe(omitObjectKeys.name, () => {
 });
 
 describe(pickObjectKeys.name, () => {
-    it('should pick object types', () => {
+    it('picks object types', () => {
         const exampleObject = {
             five: 'four',
             another: 'hi',
@@ -75,7 +75,7 @@ describe(pickObjectKeys.name, () => {
         (...inputs: Parameters<typeof pickObjectKeys<any, any>>) => pickObjectKeys(...inputs),
         [
             {
-                it: 'should keep basic keys',
+                it: 'keeps basic keys',
                 inputs: [
                     {
                         a: 1,

@@ -60,7 +60,7 @@ export class SeededRandom {
      * This constructor is private. Use {@link SeededRandom.fromSeed} or
      * {@link SeededRandom.fromState} instead.
      */
-    private constructor(private readonly alea: AleaRandom) {}
+    protected constructor(protected readonly alea: AleaRandom) {}
 
     /** Generates the next deterministic pseudo random number. */
     public next(): number {
@@ -102,8 +102,8 @@ export class SeededRandom {
 
 /** Alea v0.9 */
 class AleaRandom {
-    private n = 0xef_c8_24_9d;
-    private s: [
+    protected n = 0xef_c8_24_9d;
+    protected s: [
         number,
         number,
         number,
@@ -116,7 +116,7 @@ class AleaRandom {
     ];
 
     /** Mash v0.9. */
-    private mash(input: any) {
+    protected mash(input: any) {
         const data: string = input.toString();
         for (let i = 0; i < data.length; i++) {
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

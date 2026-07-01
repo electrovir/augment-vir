@@ -22,13 +22,13 @@ describe(makeReadonly.name, () => {
         return makeWritable(getExampleReadonlyObject());
     }
 
-    it('should make a type readonly', () => {
+    it('makes a type readonly', () => {
         assert.tsType(getExampleWritableObject()).equals<{a: 'five'}>();
         assert.tsType(makeReadonly(getExampleWritableObject())).notEquals<{a: 'five'}>();
         assert.tsType(makeReadonly(getExampleWritableObject())).equals<Readonly<{a: 'five'}>>();
     });
 
-    it('should not modify the object reference that was made readonly', () => {
+    it('does not modify the object reference that was made readonly', () => {
         runWriteAccessTests(makeReadonly);
     });
 });

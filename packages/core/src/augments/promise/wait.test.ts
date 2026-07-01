@@ -7,7 +7,7 @@ import {wait, waitValue} from './wait.js';
 const promiseDelayMs = 500;
 
 describe(wait.name, () => {
-    it('should create a promise which takes time to resolve.', async () => {
+    it('creates a promise which takes time to resolve.', async () => {
         const startTime = Date.now();
 
         await wait({
@@ -19,7 +19,7 @@ describe(wait.name, () => {
         assert.isAbove(endTime - startTime, promiseDelayMs - 10 /* small buffer */);
     });
 
-    it('should resolve instantly when given a negative timeout', async () => {
+    it('resolves instantly when given a negative timeout', async () => {
         const startTime = Date.now();
 
         await wait({
@@ -32,7 +32,7 @@ describe(wait.name, () => {
         assert.isBelow(endTime - startTime, 100);
     });
 
-    it('should never resolve when given a timeout of Infinity', async () => {
+    it('never resolves when given a timeout of Infinity', async () => {
         const startTime = Date.now();
         const timeoutSoTestActuallyFinishes = 1000;
 

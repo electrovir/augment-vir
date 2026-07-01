@@ -8,5 +8,5 @@ import {mockPrettyDiffTestCases} from './pretty-diff.mock.js';
 mockPrettyDiffTestCases.forEach((testCase) => {
     console.info('================================');
     console.info(testCase.it);
-    console.info(prettyDiff(...testCase.inputs));
+    console.info(prettyDiff(testCase.input));
 });

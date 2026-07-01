@@ -4,7 +4,7 @@ import {safeMatch} from './match.js';
 describe(safeMatch.name, () => {
     itCases(safeMatch, [
         {
-            it: 'should match a regexp',
+            it: 'matches a regexp',
             inputs: [
                 'derp derp',
                 /erp/g,
@@ -15,7 +15,7 @@ describe(safeMatch.name, () => {
             ],
         },
         {
-            it: 'should return empty array when there is no match',
+            it: 'returns empty array when there is no match',
             inputs: [
                 'derp derp',
                 /la la la/,

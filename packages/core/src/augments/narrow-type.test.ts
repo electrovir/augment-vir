@@ -12,6 +12,10 @@ describe('narrow-type', () => {
         function isFunction<Actual>(
             input: Actual,
         ): asserts input is NarrowToExpected<Actual, AnyFunction> {}
+
+        const value = (() => 'hi') as (() => string) | string;
+        isFunction(value);
+        assert.tsType(value).equals<() => string>();
     });
     it('narrows a function', () => {
         assert

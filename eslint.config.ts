@@ -20,4 +20,17 @@ export default [
             '@jsdoc/no-undefined-types': 'off',
         },
     },
+    {
+        files: [
+            'packages/assert/**/*.ts',
+        ],
+        rules: {
+            /**
+             * The assert package intentionally exposes assertion functions with positional
+             * `(actual, expected, failureMessage)` style params (matching the conventions of
+             * established assertion libraries), which inherently use multiple same-typed params.
+             */
+            '@virmator/prefer-params-object': 'off',
+        },
+    },
 ];

@@ -50,11 +50,11 @@ describe(splitIncludeSplit.name, () => {
 describe(safeSplit.name, () => {
     itCases(safeSplit, [
         {
-            it: 'should still split like normal',
-            inputs: [
-                '1.2',
-                '.',
-            ],
+            it: 'still splits like normal',
+            input: {
+                value: '1.2',
+                splitter: '.',
+            },
             expect: [
                 '1',
                 '2',
@@ -62,11 +62,14 @@ describe(safeSplit.name, () => {
         },
     ]);
 
-    it('should have the correct types', () => {
+    it('has the correct types', () => {
         const [
             first,
             second,
-        ] = safeSplit('1.2', '.');
+        ] = safeSplit({
+            value: '1.2',
+            splitter: '.',
+        });
         assert.tsType(first).equals<string>();
         assert.tsType(second).equals<string | undefined>();
     });

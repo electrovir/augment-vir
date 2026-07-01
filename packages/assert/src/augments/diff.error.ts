@@ -9,7 +9,10 @@ export class DiffError extends AssertionError {
         expected: unknown,
         userCustomizedMessage: string | undefined,
     ) {
-        const diffString = prettyDiff(actual, expected);
+        const diffString = prettyDiff({
+            actual,
+            expected,
+        });
 
         super(
             [

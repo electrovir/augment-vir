@@ -11,7 +11,10 @@ import {isRuntimeEnv, RuntimeEnv} from '../runtime-env.js';
  * @category Package : @augment-vir/common
  * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
-export function prettyDiff(actual: unknown, expected: unknown): string {
+export function prettyDiff({
+    actual,
+    expected,
+}: Readonly<{actual: unknown; expected: unknown}>): string {
     const bothStrings = typeof expected === 'string' && typeof actual === 'string';
     const useLines: boolean = typeof expected !== 'string' || typeof actual !== 'string';
     const diffFunction = (useLines ? diffLines : diffWords) as TypedFunction<

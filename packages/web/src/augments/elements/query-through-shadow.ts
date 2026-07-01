@@ -57,7 +57,12 @@ export function queryThroughShadow(
     const splitQuery: string[] = query.split(' ').filter(check.isTruthy);
 
     if (splitQuery.length > 1) {
-        return handleNestedQueries(element, query, options, splitQuery);
+        return handleNestedQueries({
+            element,
+            originalQuery: query,
+            options,
+            queries: splitQuery,
+        });
     } else if ('shadowRoot' in element && element.shadowRoot) {
         return queryThroughShadow(element.shadowRoot, query, options);
     }
@@ -100,12 +105,17 @@ function getShadowRootChildren(element: Element | ShadowRoot) {
         .map((child) => child.shadowRoot);
 }
 
-function handleNestedQueries(
-    element: Element | ShadowRoot,
-    originalQuery: string | {tagName: string},
-    options: QueryThroughShadowOptions,
-    queries: string[],
-): Element | Element[] | undefined {
+function handleNestedQueries({
+    element,
+    originalQuery,
+    options,
+    queries,
+}: Readonly<{
+    element: Element | ShadowRoot;
+    originalQuery: string | {tagName: string};
+    options: QueryThroughShadowOptions;
+    queries: string[];
+}>): Element | Element[] | undefined {
     const firstQuery = queries[0];
 
     /**
@@ -125,11 +135,21 @@ function handleNestedQueries(
     } else if (check.isArray(results)) {
         return results
             .flatMap((result) => {
-                return handleNestedQueries(result, originalQuery, options, queries.slice(1));
+                return handleNestedQueries({
+                    element: result,
+                    originalQuery,
+                    options,
+                    queries: queries.slice(1),
+                });
             })
             .filter(check.isTruthy);
     } else if (results) {
-        return handleNestedQueries(results, originalQuery, options, queries.slice(1));
+        return handleNestedQueries({
+            element: results,
+            originalQuery,
+            options,
+            queries: queries.slice(1),
+        });
     } else {
         return undefined;
     }

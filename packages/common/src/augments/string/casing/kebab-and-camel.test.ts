@@ -5,12 +5,12 @@ import {camelCaseToKebabCase, kebabCaseToCamelCase} from './kebab-and-camel.js';
 describe(kebabCaseToCamelCase.name, () => {
     itCases(kebabCaseToCamelCase, [
         {
-            it: 'should work on long string',
+            it: 'works on long string',
             inputs: ['hello-there-what-have-we-here'],
             expect: 'helloThereWhatHaveWeHere',
         },
         {
-            it: 'should work on long string with undefined options',
+            it: 'works on long string with undefined options',
             inputs: [
                 'hello-there-what-have-we-here',
                 undefined,
@@ -18,7 +18,7 @@ describe(kebabCaseToCamelCase.name, () => {
             expect: 'helloThereWhatHaveWeHere',
         },
         {
-            it: 'should work on long string with empty options',
+            it: 'works on long string with empty options',
             inputs: [
                 'hello-there-what-have-we-here',
                 {},
@@ -26,7 +26,7 @@ describe(kebabCaseToCamelCase.name, () => {
             expect: 'helloThereWhatHaveWeHere',
         },
         {
-            it: 'should work on long string with capital first letter',
+            it: 'works on long string with capital first letter',
             inputs: [
                 'hello-there-what-have-we-here',
                 {
@@ -36,32 +36,32 @@ describe(kebabCaseToCamelCase.name, () => {
             expect: 'HelloThereWhatHaveWeHere',
         },
         {
-            it: 'should work with uppercase word',
+            it: 'works with uppercase word',
             inputs: ['hello-THERE-what-have-we-here'],
             expect: 'helloThereWhatHaveWeHere',
         },
         {
-            it: 'should work with uppercase word and leading dash',
+            it: 'works with uppercase word and leading dash',
             inputs: ['-hello-THERE-what-have-we-here-'],
             expect: 'helloThereWhatHaveWeHere',
         },
         {
-            it: 'should return empty string for empty input',
+            it: 'returns empty string for empty input',
             inputs: [''],
             expect: '',
         },
         {
-            it: 'should work with uppercase word and leading dash and lots of dashes',
+            it: 'works with uppercase word and leading dash and lots of dashes',
             inputs: ['-hello----THERE-what-have-we-here-'],
             expect: 'helloThereWhatHaveWeHere',
         },
         {
-            it: 'should work with lots of dashes',
+            it: 'works with lots of dashes',
             inputs: ['-hello----THERE-what-HAVE---we-here-----'],
             expect: 'helloThereWhatHaveWeHere',
         },
         {
-            it: 'should work with lots of dashes and capital first letter',
+            it: 'works with lots of dashes and capital first letter',
             inputs: [
                 '----hello-there---what-have-we-here--',
                 {
@@ -71,7 +71,7 @@ describe(kebabCaseToCamelCase.name, () => {
             expect: 'HelloThereWhatHaveWeHere',
         },
         {
-            it: 'should work on all uppercaseString',
+            it: 'works on all uppercaseString',
             // cspell: disable
             inputs: ['HELLOTHEREWHATHAVEWEHERE'],
             expect: 'hellotherewhathavewehere',
@@ -83,32 +83,32 @@ describe(kebabCaseToCamelCase.name, () => {
 describe(camelCaseToKebabCase.name, () => {
     itCases(camelCaseToKebabCase, [
         {
-            it: 'should work with simple capitalized case',
+            it: 'works with simple capitalized case',
             input: 'MyVarItHasManyWordsInIt',
             expect: 'my-var-it-has-many-words-in-it',
         },
         {
-            it: 'should work with simple case',
+            it: 'works with simple case',
             input: 'myVarItHasManyWordsInIt',
             expect: 'my-var-it-has-many-words-in-it',
         },
         {
-            it: 'should persist dashes',
+            it: 'persists dashes',
             input: 'MyVar--It-HasMany--WordsInIt',
             expect: 'my-var---it--has-many---words-in-it',
         },
         {
-            it: 'should handle consecutive uppercase letters',
+            it: 'handles consecutive uppercase letters',
             input: 'MyCSSVar',
             expect: 'my-css-var',
         },
         {
-            it: 'should handle capitalized words',
+            it: 'handles capitalized words',
             input: 'whatIsGoingOnHERE',
             expect: 'what-is-going-on-here',
         },
         {
-            it: 'should handle uppercase single letters',
+            it: 'handles uppercase single letters',
             input: 'whatIfIHaveAnI',
             expect: 'what-if-i-have-an-i',
         },

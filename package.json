@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/mono-repo-root",
-    "version": "31.73.2",
+    "version": "31.73.3",
     "private": true,
     "homepage": "https://github.com/electrovir/augment-vir",
     "bugs": {
@@ -39,10 +39,10 @@
         "test:update": "mono-vir for-each-async npm run test:update"
     },
     "overrides": {
+        "esbuild": "^0.28.1",
         "is-generator-function": "1.1.0",
         "playwright": "^1.61.1",
-        "type-fest": "^5.2.0",
-        "esbuild": "^0.28.1"
+        "type-fest": "^5.2.0"
     },
     "devDependencies": {
         "@eslint/eslintrc": "^3.3.5",
@@ -75,7 +75,7 @@
         "prettier-plugin-toml": "^2.0.6",
         "runstorm": "^1.0.4",
         "typescript-eslint": "8.62.0",
-        "virmator": "^14.27.1"
+        "virmator": "^14.27.2"
     },
     "engines": {
         "node": ">=22"

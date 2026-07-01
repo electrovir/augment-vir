@@ -770,7 +770,7 @@ describe(grep.name, () => {
         assert.tsType(output).equals<Record<string, number>>();
     });
     it('prints the grep command', async () => {
-        await grep(
+        const output = await grep(
             {
                 pattern: 'export',
             },
@@ -781,6 +781,8 @@ describe(grep.name, () => {
                 printCommand: true,
             },
         );
+
+        assert.isDefined(output);
     });
 
     it('uses normal output type', async () => {

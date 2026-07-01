@@ -10,7 +10,7 @@ const promiseDelay = {
 };
 
 describe(wrapPromiseInTimeout.name, () => {
-    it('should not reject a promise when it is resolved in time', async () => {
+    it('does not reject a promise when it is resolved in time', async () => {
         const startTime = Date.now();
         const deferredPromiseWrapper = new DeferredPromise<number>();
         const promiseWithTimeout = wrapPromiseInTimeout(
@@ -27,7 +27,7 @@ describe(wrapPromiseInTimeout.name, () => {
         assert.isBelow(endTime - startTime, promiseDelay.milliseconds);
     });
 
-    it('should reject when the promise is not resolved in time', async () => {
+    it('rejects when the promise is not resolved in time', async () => {
         const startTime = Date.now();
         const deferredPromiseWrapper = new DeferredPromise<number>();
         const promiseWithTimeout = wrapPromiseInTimeout(
@@ -59,7 +59,7 @@ describe(wrapPromiseInTimeout.name, () => {
         );
     });
 
-    it('should reject if the given promise rejects', async () => {
+    it('rejects if the given promise rejects', async () => {
         const testErrorMessage = randomString();
 
         await assert.throws(

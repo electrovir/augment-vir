@@ -9,18 +9,22 @@ import {isOperatingSystem, OperatingSystem} from '../os/operating-system.js';
  * @category Package : @augment-vir/node
  * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
  */
-export function doesPathContain(
-    potentialParentPath: string,
-    potentialChildPath: string,
-    options: PartialWithUndefined<{
+export function doesPathContain({
+    potentialParentPath,
+    potentialChildPath,
+    options = {},
+}: Readonly<{
+    potentialParentPath: string;
+    potentialChildPath: string;
+    options?: PartialWithUndefined<{
         /**
          * Set this to `true` to return `true` if the paths are exactly equal.
          *
          * @default false
          */
         allowSelf: boolean;
-    }> = {},
-): boolean {
+    }>;
+}>): boolean {
     if (!potentialParentPath || !potentialChildPath) {
         return false;
     }

@@ -1,69 +1,69 @@
 import {type prettyDiff} from './pretty-diff.js';
 
-export const mockPrettyDiffTestCases: {it: string; inputs: Parameters<typeof prettyDiff>}[] = [
+export const mockPrettyDiffTestCases: {it: string; input: Parameters<typeof prettyDiff>[0]}[] = [
     {
         it: 'handles strings',
-        inputs: [
-            'hello there why',
-            'hello what why',
-        ],
+        input: {
+            actual: 'hello there why',
+            expected: 'hello what why',
+        },
     },
     {
         it: 'handles objects',
-        inputs: [
-            {
+        input: {
+            actual: {
                 a: 'hello there',
                 b: 'goodbye now',
             },
-            {
+            expected: {
                 a: 'hello there',
             },
-        ],
+        },
     },
     {
         it: 'handles numbers',
-        inputs: [
-            52,
-            40,
-        ],
+        input: {
+            actual: 52,
+            expected: 40,
+        },
     },
     {
         it: 'expected object but got string',
-        inputs: [
-            'hello there',
-            {
+        input: {
+            actual: 'hello there',
+            expected: {
                 a: 'hello there',
             },
-        ],
+        },
     },
     {
         it: 'expected string but got object',
-        inputs: [
-            {
+        input: {
+            actual: {
                 a: 'hello there',
             },
-            'hello there',
-        ],
+            expected: 'hello there',
+        },
     },
     {
         it: 'expected number but got string',
-        inputs: [
-            'hello there',
-            42,
-        ],
+        input: {
+            actual: 'hello there',
+            expected: 42,
+        },
     },
     {
         it: 'expected string but got number',
-        inputs: [
-            42,
-            'hello there',
-        ],
+        input: {
+            actual: 42,
+            expected: 'hello there',
+        },
     },
     {
         it: 'got completely different strings',
-        inputs: [
-            'nothing here',
-            'hello there',
-        ],
+        input: {
+            actual: 'nothing here',
+            expected: 'hello there',
+        },
     },
 ];

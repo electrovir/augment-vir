@@ -7,7 +7,10 @@ import {resolveImportPath} from './resolve-import.js';
 
 describe(resolveImportPath.name, () => {
     function testResolveImportPath(importPath: string): string | undefined {
-        const resolvedImportPath = resolveImportPath(import.meta.filename, importPath);
+        const resolvedImportPath = resolveImportPath({
+            importerFilePath: import.meta.filename,
+            importPath,
+        });
 
         if (resolvedImportPath) {
             return relative(monoRepoDirPath, resolvedImportPath);
@@ -53,7 +56,13 @@ describe(resolveImportPath.name, () => {
         const outsideOfPackage = join(dirname(monoRepoDirPath), 'a.js');
 
         assert.strictEquals(
-            relative(monoRepoDirPath, resolveImportPath(outsideOfPackage, './b.js') || ''),
+            relative(
+                monoRepoDirPath,
+                resolveImportPath({
+                    importerFilePath: outsideOfPackage,
+                    importPath: './b.js',
+                }) || '',
+            ),
             join('..', 'b.js'),
         );
     });
@@ -61,7 +70,13 @@ describe(resolveImportPath.name, () => {
         const commonFile = join(monoRepoDirPath, 'packages', 'common', 'src', 'index.ts');
 
         assert.strictEquals(
-            relative(monoRepoDirPath, resolveImportPath(commonFile, './b.js') || ''),
+            relative(
+                monoRepoDirPath,
+                resolveImportPath({
+                    importerFilePath: commonFile,
+                    importPath: './b.js',
+                }) || '',
+            ),
             join('packages', 'common', 'src', 'b.js'),
         );
     });

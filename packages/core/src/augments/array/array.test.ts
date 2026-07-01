@@ -21,6 +21,10 @@ describe('MaybeArray', () => {
     it('can be either an entry or an array', () => {
         const test1: MaybeArray<string> = 'hi';
         const test2: MaybeArray<string> = ['hi'];
+
+        assert.tsType(test1).matches<MaybeArray<string>>();
+        assert.tsType(test2).matches<MaybeArray<string>>();
+        assert.tsType<MaybeArray<string>>().equals<string | string[]>();
     });
 });
 
@@ -28,5 +32,9 @@ describe('MaybeReadonlyArray', () => {
     it('can be either an entry or an array', () => {
         const test1: MaybeReadonlyArray<string> = 'hi';
         const test2: MaybeReadonlyArray<string> = ['hi'];
+
+        assert.tsType(test1).matches<MaybeReadonlyArray<string>>();
+        assert.tsType(test2).matches<MaybeReadonlyArray<string>>();
+        assert.tsType<MaybeReadonlyArray<string>>().equals<string | ReadonlyArray<string>>();
     });
 });

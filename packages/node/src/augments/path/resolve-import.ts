@@ -17,14 +17,18 @@ import {replaceWithWindowsPathIfNeeded} from './os-path.js';
  * @returns `undefined` if no matches are found.
  * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
  */
-export function resolveImportPath(
-    importerFilePath: string,
-    importPath: string,
-): string | undefined {
+export function resolveImportPath({
+    importerFilePath,
+    importPath,
+}: Readonly<{importerFilePath: string; importPath: string}>): string | undefined {
     const foundTsconfig = readTsconfig(importerFilePath);
 
     const mappedImportPath = foundTsconfig
-        ? mapImportPath(importPath, foundTsconfig.tsconfig, foundTsconfig.path)
+        ? mapImportPath({
+              importPath,
+              tsconfig: foundTsconfig.tsconfig,
+              tsconfigPath: foundTsconfig.path,
+          })
         : importPath;
 
     if (mappedImportPath.startsWith(sep) || mappedImportPath.startsWith('/')) {
@@ -81,11 +85,11 @@ function mapFilePath(path: string): string {
     return path;
 }
 
-function mapImportPath(
-    importPath: string,
-    tsconfig: ParsedCommandLine,
-    tsconfigPath: string,
-): string {
+function mapImportPath({
+    importPath,
+    tsconfig,
+    tsconfigPath,
+}: Readonly<{importPath: string; tsconfig: ParsedCommandLine; tsconfigPath: string}>): string {
     const paths = tsconfig.options.paths;
     if (!paths) {
         return importPath;

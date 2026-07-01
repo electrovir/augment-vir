@@ -7,7 +7,7 @@ import {randomString} from '../random/random-string.js';
 import {mapObjectValues, mapObjectValuesSync} from './map-values.js';
 
 describe(mapObjectValuesSync.name, () => {
-    it('should have proper types', () => {
+    it('has proper types', () => {
         assert.notInstanceOf(
             mapObjectValuesSync(
                 {
@@ -47,7 +47,7 @@ describe(mapObjectValuesSync.name, () => {
         });
     });
 
-    it('should properly map', () => {
+    it('properly maps', () => {
         const startingObject = {
             a: '4',
             b: 52,
@@ -72,7 +72,7 @@ describe(mapObjectValues.name, () => {
     function onlyAcceptNumbers(input: number): void {}
     function onlyAcceptStrings(input: string): void {}
 
-    it("should map an object's values", () => {
+    it("maps an object's values", () => {
         const originalObject = {
             a: 1,
             b: 2,
@@ -108,7 +108,7 @@ describe(mapObjectValues.name, () => {
         });
     });
 
-    it('should handle async errors thrown in the callback', async () => {
+    it('handles async errors thrown in the callback', async () => {
         const originalObject = {
             a: 1,
             b: 2,
@@ -129,7 +129,7 @@ describe(mapObjectValues.name, () => {
         );
     });
 
-    it('should work with promises', async () => {
+    it('works with promises', async () => {
         const originalObject = {
             a: 1,
             b: 2,
@@ -186,7 +186,7 @@ describe(mapObjectValues.name, () => {
         assert.tsType(result).equals<Partial<Record<1 | 2 | 3 | 4, number>>>();
     });
 
-    it('should preserve properties with complex value types', () => {
+    it('preserves properties with complex value types', () => {
         const originalObject = {
             a: 1,
             b: {

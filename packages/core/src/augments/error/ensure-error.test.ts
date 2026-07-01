@@ -31,6 +31,7 @@ describe(ensureErrorAndPrependMessage.name, () => {
     });
     it('handles readonly message', () => {
         class ReadonlyMessageError extends Error {
+            public override readonly name = 'ReadonlyMessageError';
             public override get message() {
                 return 'message here';
             }

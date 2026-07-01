@@ -2,14 +2,20 @@ import {readdir, stat} from 'node:fs/promises';
 import {join, relative} from 'node:path';
 import {type RequireExactlyOne} from 'type-fest';
 
-async function internalReadDirPathsRecursive(dirPath: string, basePath: string): Promise<string[]> {
+async function internalReadDirPathsRecursive({
+    dirPath,
+    basePath,
+}: Readonly<{dirPath: string; basePath: string}>): Promise<string[]> {
     const dirContents = await readdir(dirPath);
     const recursiveContents: string[] = (
         await Promise.all(
             dirContents.map(async (fileName): Promise<string | ReadonlyArray<string>> => {
                 const filePath = join(dirPath, fileName);
                 if ((await stat(filePath)).isDirectory()) {
-                    return internalReadDirPathsRecursive(filePath, basePath);
+                    return internalReadDirPathsRecursive({
+                        dirPath: filePath,
+                        basePath,
+                    });
                 } else {
                     return relative(basePath, filePath);
                 }
@@ -29,7 +35,10 @@ async function internalReadDirPathsRecursive(dirPath: string, basePath: string):
  * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
  */
 export async function readDirRecursive(dirPath: string): Promise<string[]> {
-    return await internalReadDirPathsRecursive(dirPath, dirPath);
+    return await internalReadDirPathsRecursive({
+        dirPath,
+        basePath: dirPath,
+    });
 }
 
 /**

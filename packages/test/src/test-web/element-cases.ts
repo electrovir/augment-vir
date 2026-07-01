@@ -100,6 +100,7 @@ export function elementCases<const Definition extends Readonly<DeclarativeElemen
     );
 }
 
+/* eslint-disable-next-line @virmator/prefer-params-object -- this is a context test function that the testing suite calls with positional `(testContext, ...inputs)` args, so its params cannot be a single object */
 async function testRenderElement(
     this: void,
     testContext: Readonly<UniversalTestContext>,

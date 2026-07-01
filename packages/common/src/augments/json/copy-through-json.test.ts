@@ -8,7 +8,7 @@ describe(copyThroughJson.name, () => {
         assert.tsType(copyThroughJson({} as any as unknown)).equals<JsonCompatibleValue>();
     });
 
-    it('should create an identical copy', () => {
+    it('creates an identical copy', () => {
         const testObjectA = {
             a: 5,
             b: 'five',
@@ -33,6 +33,8 @@ describe(copyThroughJson.name, () => {
         const result = copyThroughJson(testObjectA);
 
         result.a = 10;
+
+        assert.strictEquals(result.a, 10);
     });
     it('ignores non-JSON data', () => {
         const testObjectA = {

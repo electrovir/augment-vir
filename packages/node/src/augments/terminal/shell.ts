@@ -76,6 +76,21 @@ export class ShellTarget extends ListenTarget<
 }
 
 /**
+ * Options for {@link streamShellCommand}.
+ *
+ * @category Node : Terminal : Util
+ * @category Package : @augment-vir/node
+ * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
+ */
+export type StreamShellCommandOptions = PartialWithUndefined<{
+    cwd: string;
+    env: NodeJS.ProcessEnv;
+    shell: string;
+    /** Automatically hook up stdout and stderr printing to the caller's console methods. */
+    hookUpToConsole: boolean;
+}>;
+
+/**
  * Runs a shell command and returns a {@link ShellTarget} instance for directly hooking into shell
  * events. This allows instant reactions to shell events but in a less convenient API compared to
  * {@link runShellCommand}.
@@ -88,10 +103,12 @@ export class ShellTarget extends ListenTarget<
  */
 export function streamShellCommand(
     command: string,
-    cwd?: string,
-    shell = 'bash',
-    env: NodeJS.ProcessEnv = process.env,
-    hookUpToConsole = false,
+    {
+        cwd,
+        env = process.env,
+        shell = 'bash',
+        hookUpToConsole = false,
+    }: StreamShellCommandOptions = {},
 ): ShellTarget {
     const stdio = hookUpToConsole ? [process.stdin] : undefined;
 
@@ -150,8 +167,8 @@ export function streamShellCommand(
             const execException: ExecException & {cwd?: string | undefined} = Object.assign(
                 new Error(`Command failed: ${command}`),
                 {
-cmd: command
-},
+                    cmd: command,
+                },
             );
             if (exitCode != undefined) {
                 execException.code = exitCode;
@@ -188,19 +205,21 @@ cmd: command
  * @category Package : @augment-vir/node
  * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
  */
-export type RunShellCommandOptions = {
-    cwd?: string | undefined;
-    env?: NodeJS.ProcessEnv | undefined;
-    shell?: string | undefined;
-    /** Automatically hook up stdout and stderr printing to the caller's console methods. */
-    hookUpToConsole?: boolean | undefined;
-    /** @default false */
-    rejectOnError?: boolean | undefined;
-    /** Callback to call whenever the shell logs to stdout. */
-    stdoutCallback?: (stdout: string, childProcess: ChildProcess) => MaybePromise<void> | undefined;
-    /** Callback to call whenever the shell logs to stderr. */
-    stderrCallback?: (stderr: string, childProcess: ChildProcess) => MaybePromise<void> | undefined;
-};
+export type RunShellCommandOptions = StreamShellCommandOptions &
+    PartialWithUndefined<{
+        /** @default false */
+        rejectOnError: boolean;
+        /** Callback to call whenever the shell logs to stdout. */
+        stdoutCallback: (
+            stdout: string,
+            childProcess: ChildProcess,
+        ) => MaybePromise<void> | undefined;
+        /** Callback to call whenever the shell logs to stderr. */
+        stderrCallback: (
+            stderr: string,
+            childProcess: ChildProcess,
+        ) => MaybePromise<void> | undefined;
+    }>;
 
 /**
  * Runs a shell command and returns its output.
@@ -220,13 +239,12 @@ export async function runShellCommand(
         let stderr = '';
         const errors: Error[] = [];
 
-        const shellTarget = streamShellCommand(
-            command,
-            options.cwd,
-            options.shell,
-            options.env,
-            options.hookUpToConsole,
-        );
+        const shellTarget = streamShellCommand(command, {
+            cwd: options.cwd,
+            shell: options.shell,
+            env: options.env,
+            hookUpToConsole: options.hookUpToConsole,
+        });
 
         shellTarget.listen(ShellStdoutEvent, ({detail: chunk}) => {
             if (options.stdoutCallback) {

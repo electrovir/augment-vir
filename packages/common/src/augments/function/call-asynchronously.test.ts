@@ -29,11 +29,24 @@ describe(callAsynchronously.name, () => {
     });
 
     it('logs in the correct order', async () => {
+        const order: number[] = [];
         console.info('1');
+        order.push(1);
         const later = callAsynchronously(() => {
             console.info('3');
+            order.push(3);
         });
         console.info('2');
+        order.push(2);
         await later;
+
+        assert.deepEquals(
+            order,
+            [
+                1,
+                2,
+                3,
+            ],
+        );
     });
 });

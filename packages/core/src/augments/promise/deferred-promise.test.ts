@@ -6,7 +6,7 @@ import {DeferredPromise} from './deferred-promise.js';
 const promiseDelayMs = 500;
 
 describe(DeferredPromise.name, () => {
-    it('should create a promise which can be resolved externally.', async () => {
+    it('creates a promise which can be resolved externally.', async () => {
         const resolveValue = Math.random();
 
         const deferredPromise = new DeferredPromise<number>();
@@ -17,7 +17,7 @@ describe(DeferredPromise.name, () => {
         assert.strictEquals(await deferredPromise.promise, resolveValue);
     });
 
-    it('should create a promise that can be rejected externally.', async () => {
+    it('creates a promise that can be rejected externally.', async () => {
         const message = 'this was rejected internally';
         const deferredPromise = new DeferredPromise<number>();
         setTimeout(() => {
@@ -29,7 +29,7 @@ describe(DeferredPromise.name, () => {
         });
     });
 
-    it('should settle after rejection', async () => {
+    it('settles after rejection', async () => {
         const examplePromise = new DeferredPromise<number>();
 
         assert.isFalse(examplePromise.isSettled);
@@ -41,7 +41,7 @@ describe(DeferredPromise.name, () => {
         await assert.throws(() => examplePromise.promise);
     });
 
-    it('should settle after resolution', async () => {
+    it('settles after resolution', async () => {
         const examplePromise = new DeferredPromise<number>();
 
         assert.isFalse(examplePromise.isSettled);

@@ -3,7 +3,7 @@ import {describe, it} from '@augment-vir/test';
 import {escapeStringForRegExp} from './regexp-string.js';
 
 describe(escapeStringForRegExp.name, () => {
-    it('should escape regexp characters', () => {
+    it('escapes regexp characters', () => {
         assert.strictEquals(escapeStringForRegExp('[*.*]'), String.raw`\[\*\.\*\]`);
     });
 

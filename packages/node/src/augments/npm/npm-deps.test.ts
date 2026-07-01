@@ -481,6 +481,11 @@ describe(listAllDirectNpmDeps.name, () => {
                     requiredBy: join(monoRepoDirPath, 'package.json'),
                     isWorkspace: false,
                 },
+                {
+                    dependencyKey: PackageJsonDependencyKey.Overrides,
+                    requiredBy: join(monoRepoDirPath, 'package.json'),
+                    isWorkspace: false,
+                },
             ],
             eslint: [
                 {

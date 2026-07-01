@@ -20,7 +20,7 @@ describe(filterObject.name, () => {
         numeric: Math.random(),
     } as const;
 
-    it('should not modify input object', () => {
+    it('does not modify input object', () => {
         const referenceCopy = testObject;
         const originalObject = {
             ...testObject,
@@ -35,7 +35,7 @@ describe(filterObject.name, () => {
 
     itCases(filterObject, [
         {
-            it: 'should not remove keys when filter is always true',
+            it: 'does not remove keys when filter is always true',
             expect: {
                 simple: testObject.simple,
                 [symbolKey]: testObject[symbolKey],
@@ -49,7 +49,7 @@ describe(filterObject.name, () => {
             ],
         },
         {
-            it: 'should be able to remove symbol keys',
+            it: 'is able to remove symbol keys',
             expect: {
                 simple: testObject.simple,
                 anotherKey: testObject.anotherKey,
@@ -64,7 +64,7 @@ describe(filterObject.name, () => {
             ],
         },
         {
-            it: 'should be able to filter to ONLY symbol keys',
+            it: 'is able to filter to ONLY symbol keys',
             expect: {
                 [symbolKey]: testObject[symbolKey],
             },
@@ -76,7 +76,7 @@ describe(filterObject.name, () => {
             ],
         },
         {
-            it: 'should be able to remove by value',
+            it: 'is able to remove by value',
             expect: {
                 simple: testObject.simple,
                 anotherKey: testObject.anotherKey,

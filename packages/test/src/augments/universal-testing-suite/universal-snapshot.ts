@@ -23,6 +23,7 @@ import {
  * @package [`@augment-vir/test`](https://www.npmjs.com/package/@augment-vir/test)
  */
 export class SnapshotFileMissingError extends Error {
+    public override readonly name = 'SnapshotFileMissingError';
     constructor(testName: string) {
         super(
             `Missing snapshot file for test '${testName}'.\n\nRun tests in update mode to create the snapshot file.`,

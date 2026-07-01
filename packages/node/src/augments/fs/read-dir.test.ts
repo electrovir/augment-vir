@@ -5,7 +5,7 @@ import {nodePackageDir, recursiveFileReadDir} from '../../file-paths.mock.js';
 import {readDirFilesByExtension, readDirRecursive} from './read-dir.js';
 
 describe(readDirRecursive.name, () => {
-    it('should read files in a directory recursively', async () => {
+    it('reads files in a directory recursively', async () => {
         const allFiles = (await readDirRecursive(recursiveFileReadDir)).sort();
         assert.deepEquals(allFiles, [
             'a-file.txt',

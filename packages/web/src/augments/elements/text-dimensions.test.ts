@@ -106,12 +106,14 @@ describe(calculateTextDimensions.name, () => {
             <div></div>
         `);
 
-        await calculateTextDimensions(parentElement, 'hi', {
+        const dimensions = await calculateTextDimensions(parentElement, 'hi', {
             errorMessage: 'oops',
             timeout: {
                 milliseconds: 9_000_000,
             },
             debug: true,
         });
+
+        assert.isAbove(dimensions.width, 0);
     });
 });

@@ -4,7 +4,7 @@ import {findSubstringIndexes} from './substring-index.js';
 describe(findSubstringIndexes.name, () => {
     itCases(findSubstringIndexes, [
         {
-            it: 'should find all substring instances in a string',
+            it: 'finds all substring instances in a string',
             input: {
                 searchIn: 'who would hocked your thought now?',
                 searchFor: 'o',
@@ -20,7 +20,7 @@ describe(findSubstringIndexes.name, () => {
             ],
         },
         {
-            it: 'should return nothing if no instances were found',
+            it: 'returns nothing if no instances were found',
             input: {
                 searchIn: 'hello what have we here',
                 searchFor: /super long not found thing/,
@@ -29,7 +29,7 @@ describe(findSubstringIndexes.name, () => {
             expect: [],
         },
         {
-            it: 'should find all regex instances in a string',
+            it: 'finds all regex instances in a string',
             input: {
                 searchIn: 'who would hocked your thought now?',
                 searchFor: /o/,
@@ -45,7 +45,7 @@ describe(findSubstringIndexes.name, () => {
             ],
         },
         {
-            it: 'should find all RegExp matches with a capture group',
+            it: 'finds all RegExp matches with a capture group',
             input: {
                 searchIn: 'who would hocked your thought now?',
                 searchFor: /(o)/,
@@ -61,7 +61,7 @@ describe(findSubstringIndexes.name, () => {
             ],
         },
         {
-            it: 'should handle substring at the beginning of the string correctly',
+            it: 'handles substring at the beginning of the string correctly',
             input: {
                 searchIn: 'a fan is here',
                 searchFor: 'a',
@@ -73,7 +73,7 @@ describe(findSubstringIndexes.name, () => {
             ],
         },
         {
-            it: 'should handle the substring at the end of the string only',
+            it: 'handles the substring at the end of the string only',
             input: {
                 searchIn: 'boiled eggs',
                 searchFor: 's',
@@ -82,7 +82,7 @@ describe(findSubstringIndexes.name, () => {
             expect: [10],
         },
         {
-            it: 'should handle the substring at the end and beginning of the string',
+            it: 'handles the substring at the end and beginning of the string',
             input: {
                 searchIn: 'some eggs',
                 searchFor: 's',
@@ -94,7 +94,7 @@ describe(findSubstringIndexes.name, () => {
             ],
         },
         {
-            it: 'should handle longer words',
+            it: 'handles longer words',
             input: {
                 searchIn: 'when you go to you to have a you because you like you',
                 searchFor: 'you',
@@ -109,7 +109,7 @@ describe(findSubstringIndexes.name, () => {
             ],
         },
         {
-            it: 'should match multiple in a row',
+            it: 'matches multiple in a row',
             input: {
                 searchIn: 'YouYouYouYouYouYou',
                 searchFor: 'You',
@@ -125,7 +125,7 @@ describe(findSubstringIndexes.name, () => {
             ],
         },
         {
-            it: 'should not match case mismatch',
+            it: 'does not match case mismatch',
             input: {
                 searchIn: 'You are not you but You',
                 searchFor: 'You',
@@ -137,7 +137,7 @@ describe(findSubstringIndexes.name, () => {
             ],
         },
         {
-            it: 'should honor case insensitive set to true',
+            it: 'honors case insensitive set to true',
             input: {
                 searchIn: 'You are not you but You',
                 searchFor: 'You',

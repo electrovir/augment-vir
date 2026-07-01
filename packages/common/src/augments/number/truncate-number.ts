@@ -61,7 +61,10 @@ function truncateBigNumber(
     const [
         beforeDot,
         afterDot,
-    ] = safeSplit(numberAsString, '.');
+    ] = safeSplit({
+        value: numberAsString,
+        splitter: '.',
+    });
 
     const withCommas = addCommasToNumber(beforeDot);
 
@@ -72,7 +75,10 @@ function truncateBigNumber(
     const [
         beforeComma,
         afterComma,
-    ] = safeSplit(withCommas, ',');
+    ] = safeSplit({
+        value: withCommas,
+        splitter: ',',
+    });
     const trailing = [
         afterComma,
         afterDot,
@@ -111,7 +117,10 @@ function truncateScientificNotation({
     const [
         beforeExponent,
         rawExponent,
-    ] = safeSplit(valueString, 'e') as [
+    ] = safeSplit({
+        value: valueString,
+        splitter: 'e',
+    }) as [
         string,
         string,
     ];
@@ -128,7 +137,10 @@ function truncateScientificNotation({
     const [
         beforeDot,
         afterDot,
-    ] = safeSplit(beforeExponent, '.');
+    ] = safeSplit({
+        value: beforeExponent,
+        splitter: '.',
+    });
 
     const minLength = exponent.length + minScientificNotationLength;
 
@@ -164,7 +176,10 @@ function handleSmallNumbers(numberAsString: string, maxLength: number): string |
     const [
         beforeDot,
         afterDot,
-    ] = safeSplit(addCommasToNumber(numberAsString), '.');
+    ] = safeSplit({
+        value: addCommasToNumber(numberAsString),
+        splitter: '.',
+    });
 
     if (beforeDot.length <= maxLength) {
         return combineBeforeAndAfterDot({
