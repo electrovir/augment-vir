@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-empty-object-type -- faithful copy of type-fest, which intentionally uses the `{}` identity type. */
+import {type ApplyDefaultOptions} from './apply-default-options.js';
 import {type IsEqual} from './type-checks.js';
 
 type Filter<KeyType, ExcludeType> =
@@ -27,6 +28,18 @@ export type ExceptOptions = {
     requireExactProps?: boolean;
 };
 
+type DefaultExceptOptions = {
+    requireExactProps: false;
+};
+
+type ExceptHelper<
+    ObjectType,
+    KeysType extends keyof ObjectType,
+    Options extends Required<ExceptOptions>,
+> = {
+    [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType];
+} & (Options['requireExactProps'] extends true ? Partial<Record<KeysType, never>> : {});
+
 /**
  * Create a type from an object type without certain keys. This is a stricter version of the
  * built-in `Omit` type: it restricts the omitted keys to keys present on the given type.
@@ -42,6 +55,8 @@ export type Except<
     ObjectType,
     KeysType extends keyof ObjectType,
     Options extends ExceptOptions = {},
-> = {
-    [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType];
-} & (Options extends {requireExactProps: true} ? Partial<Record<KeysType, never>> : {});
+> = ExceptHelper<
+    ObjectType,
+    KeysType,
+    ApplyDefaultOptions<ExceptOptions, DefaultExceptOptions, Options>
+>;

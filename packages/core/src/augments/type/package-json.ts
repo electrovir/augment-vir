@@ -100,6 +100,7 @@ type TypeScriptConfiguration = {
 };
 
 type WorkspaceConfig = {
+    /** Glob patterns relative to the `package.json` that defines them, such as `packages/*`. */
     packages?: string[];
     nohoist?: string[];
 };

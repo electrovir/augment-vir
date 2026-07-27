@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/scripts",
-    "version": "32.2.0",
+    "version": "32.2.1",
     "private": true,
     "homepage": "https://github.com/electrovir/augment-vir",
     "bugs": {
@@ -25,15 +25,15 @@
         "test:update": "npm test"
     },
     "dependencies": {
-        "@augment-vir/assert": "^32.2.0",
-        "@augment-vir/common": "^32.2.0",
-        "@augment-vir/node": "^32.2.0",
+        "@augment-vir/assert": "^32.2.1",
+        "@augment-vir/common": "^32.2.1",
+        "@augment-vir/node": "^32.2.1",
         "@virmator/docs": "^14.27.1",
         "jsdom": "^29.1.1",
         "typedoc": "^0.28.19"
     },
     "devDependencies": {
-        "@augment-vir/test": "^32.2.0",
+        "@augment-vir/test": "^32.2.1",
         "@types/jsdom": "^28.0.3",
         "@types/node": "^26.0.1",
         "typescript": "^6.0.3"

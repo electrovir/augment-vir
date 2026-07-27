@@ -1,50 +1,76 @@
 import {type RequiredKeysOf} from '../object/required-keys.js';
+import {type If, type IfNotAnyOrNever} from './conditional-type.js';
+import {type Except} from './except.js';
+import {type IsAny, type IsNever} from './type-checks.js';
 
 /**
  * Returns `true` if the given object type has at least one required key, otherwise `false`.
  *
- * Copied from the `HasRequiredKeys` type in the `type-fest` package (built on
- * {@link RequiredKeysOf}) so that this package's public types do not depend on `type-fest` (see the
- * note in `type-checks.ts`).
+ * Copied from the `HasRequiredKeys` type in `type-fest` v5.6 (built on {@link RequiredKeysOf}) so
+ * that this package's public types do not depend on `type-fest` (see the note in
+ * `type-checks.ts`).
  *
  * @category Object
  * @category Package : @augment-vir/common
  * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
-export type HasRequiredKeys<BaseType> = [RequiredKeysOf<BaseType>] extends [never] ? false : true;
+export type HasRequiredKeys<BaseType extends object> =
+    RequiredKeysOf<BaseType> extends never ? false : true;
 
-/**
- * Create a type that requires exactly one of the given keys and disallows the rest, while keeping
- * the remaining (non-listed) keys as is.
- *
- * Copied from the classic `RequireExactlyOne` implementation in the `type-fest` package (before
- * `type-fest` v5 wrapped it in an `IfNotAnyOrNever` conditional that breaks structural
- * assignability). See the note in `type-checks.ts`.
- *
- * @category Object
- * @category Package : @augment-vir/common
- * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
- */
-export type RequireExactlyOne<ObjectType, KeysType extends keyof ObjectType = keyof ObjectType> = {
+type RequireExactlyOneHelper<ObjectType, KeysType extends keyof ObjectType> = {
     [Key in KeysType]: Required<Pick<ObjectType, Key>> &
         Partial<Record<Exclude<KeysType, Key>, never>>;
 }[KeysType] &
     Omit<ObjectType, KeysType>;
 
 /**
- * Create a type that requires at least one of the given keys, while keeping the remaining
- * (non-listed) keys as is.
+ * Create a type that requires exactly one of the given keys and disallows the rest, while keeping
+ * the remaining (non-listed) keys as is.
  *
- * Copied from the classic `RequireAtLeastOne` implementation in the `type-fest` package (before
- * `type-fest` v5 wrapped it in an `IfNotAnyOrNever` conditional). See the note in
- * `type-checks.ts`.
+ * Copied from the `RequireExactlyOne` type in `type-fest` v5.6 so that this package's public types
+ * do not depend on `type-fest` (see the note in `type-checks.ts`).
  *
  * @category Object
  * @category Package : @augment-vir/common
  * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
-export type RequireAtLeastOne<ObjectType, KeysType extends keyof ObjectType = keyof ObjectType> = {
+export type RequireExactlyOne<
+    ObjectType,
+    KeysType extends keyof ObjectType = keyof ObjectType,
+> = IfNotAnyOrNever<
+    ObjectType,
+    If<
+        IsNever<KeysType>,
+        never,
+        RequireExactlyOneHelper<ObjectType, If<IsAny<KeysType>, keyof ObjectType, KeysType>>
+    >
+>;
+
+type RequireAtLeastOneHelper<ObjectType, KeysType extends keyof ObjectType> = {
     [Key in KeysType]-?: Required<Pick<ObjectType, Key>> &
         Partial<Pick<ObjectType, Exclude<KeysType, Key>>>;
 }[KeysType] &
-    Omit<ObjectType, KeysType>;
+    Except<ObjectType, KeysType>;
+
+/**
+ * Create a type that requires at least one of the given keys, while keeping the remaining
+ * (non-listed) keys as is.
+ *
+ * Copied from the `RequireAtLeastOne` type in `type-fest` v5.6 so that this package's public types
+ * do not depend on `type-fest` (see the note in `type-checks.ts`).
+ *
+ * @category Object
+ * @category Package : @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
+ */
+export type RequireAtLeastOne<
+    ObjectType,
+    KeysType extends keyof ObjectType = keyof ObjectType,
+> = IfNotAnyOrNever<
+    ObjectType,
+    If<
+        IsNever<KeysType>,
+        never,
+        RequireAtLeastOneHelper<ObjectType, If<IsAny<KeysType>, keyof ObjectType, KeysType>>
+    >
+>;

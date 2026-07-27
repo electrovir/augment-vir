@@ -1,4 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unsafe-function-type, no-loss-of-precision, @typescript-eslint/no-unused-vars -- faithful copy of type-fest's OmitDeep and its vendored numeric helpers, which use the global `Function` type, literal infinity types, and positional `infer` placeholders. */
+/* eslint-disable @typescript-eslint/no-unsafe-function-type, no-loss-of-precision, @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-object-type -- faithful copy of type-fest's OmitDeep, Paths, and their vendored numeric helpers, which use the global `Function` type, literal infinity types, positional `infer` placeholders, and the `{}` default for options objects. */
+import {type ApplyDefaultOptions} from './apply-default-options.js';
 import {type BuiltIns} from './built-in-type.js';
 import {type If} from './conditional-type.js';
 import {type LiteralUnion} from './literal-union.js';
@@ -125,9 +126,9 @@ type PositiveNumericStringGt<A extends string, B extends string> = A extends B
       : never;
 
 /**
- * Simplified 2-input logical `and`. `type-fest` routes `And` through `AndAll`/`AllExtend`, but the
- * only consumer here (`GreaterThan`) always passes concrete `true`/`false` values, for which this
- * definition is behaviorally identical.
+ * Simplified 2-input logical `and`. `type-fest` routes `And` through `AndAll`/`AllExtend`, but
+ * every consumer here (`GreaterThan` and `InternalPaths`) always passes concrete `true`/`false`
+ * values, for which this definition is behaviorally identical.
  */
 type And<A extends boolean, B extends boolean> = A extends true
     ? B extends true
@@ -373,6 +374,82 @@ type Subtract<A extends number, B extends number> = number extends A | B
                     ? A
                     : SubtractPostChecks<A, B>;
 
+type TupleMax<
+    A extends number[],
+    Result extends number = NegativeInfinity,
+> = number extends A[number]
+    ? never
+    : A extends [
+            infer First extends number,
+            ...infer Rest extends number[],
+        ]
+      ? GreaterThan<First, Result> extends true
+          ? TupleMax<Rest, First>
+          : TupleMax<Rest, Result>
+      : Result;
+
+type SumPositives<A extends number, B extends number> = [
+    ...TupleOf<A>,
+    ...TupleOf<B>,
+]['length'] extends infer Result extends number
+    ? Result
+    : never;
+
+type SumPostChecks<
+    A extends number,
+    B extends number,
+    AreNegative = [
+        IsNegative<A>,
+        IsNegative<B>,
+    ],
+> = AreNegative extends [
+    false,
+    false,
+]
+    ? SumPositives<A, B>
+    : AreNegative extends [
+            true,
+            true,
+        ]
+      ? ReverseSign<SumPositives<Absolute<A>, Absolute<B>>>
+      : Absolute<Subtract<Absolute<A>, Absolute<B>>> extends infer Result extends number
+        ? TupleMax<
+              [
+                  Absolute<A>,
+                  Absolute<B>,
+              ]
+          > extends infer LargestMagnitude extends number
+            ? LargestMagnitude extends A | B
+                ? Result
+                : ReverseSign<Result>
+            : never
+        : never;
+
+type Sum<A extends number, B extends number> = number extends A | B
+    ? number
+    : A extends B & (PositiveInfinity | NegativeInfinity)
+      ? A
+      : A | B extends PositiveInfinity | NegativeInfinity
+        ? number
+        : A extends PositiveInfinity | NegativeInfinity
+          ? A
+          : B extends PositiveInfinity | NegativeInfinity
+            ? B
+            : A extends 0
+              ? B
+              : B extends 0
+                ? A
+                : A extends ReverseSign<B>
+                  ? 0
+                  : SumPostChecks<A, B>;
+
+type IsNumberLike<N> = IfNotAnyOrNever<
+    N,
+    N extends number | `${number}` ? true : false,
+    boolean,
+    false
+>;
+
 type StaticPartOfArray<T extends UnknownArray, Result extends UnknownArray = []> = T extends unknown
     ? number extends T['length']
         ? T extends readonly [
@@ -579,6 +656,130 @@ type SimplifyDeep<Type, ExcludeType = never> = ConditionalSimplifyDeep<
     object
 >;
 
+/**
+ * Options for {@link Paths}.
+ *
+ * Copied from the `PathsOptions` type in `type-fest` v5.6 so that this package's public types do
+ * not depend on `type-fest` (see the note in `type-checks.ts`).
+ *
+ * @category Object
+ * @category Package : @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
+ */
+export type PathsOptions = {
+    /**
+     * The maximum depth to recurse when searching for paths. Range: 0 ~ 10.
+     *
+     * @default 5
+     */
+    maxRecursionDepth?: number;
+    /**
+     * Use bracket notation for array indices and numeric object keys.
+     *
+     * @default false
+     */
+    bracketNotation?: boolean;
+    /**
+     * Only include leaf paths in the output.
+     *
+     * @default false
+     */
+    leavesOnly?: boolean;
+    /**
+     * Only include paths at the specified depth. By default all paths up to
+     * {@link PathsOptions.maxRecursionDepth} are included. Depth starts at `0` for root properties.
+     *
+     * @default number
+     */
+    depth?: number;
+};
+
+type DefaultPathsOptions = {
+    maxRecursionDepth: 5;
+    bracketNotation: false;
+    leavesOnly: false;
+    depth: number;
+};
+
+type InternalPaths<T, Options extends Required<PathsOptions>, CurrentDepth extends number> = {
+    [Key in keyof T]: Key extends string | number
+        ? (
+              And<Options['bracketNotation'], IsNumberLike<Key>> extends true
+                  ? `[${Key}]`
+                  : CurrentDepth extends 0
+                    ? /**
+                       * Return both `Key` and `ToString<Key>` because for number keys, like `1`, both `1` and `'1'` are
+                       * valid keys.
+                       */
+                      Key | ToString<Key>
+                    : `.${Key | ToString<Key>}`
+          ) extends infer TransformedKey extends string | number
+            ?
+                  | ((
+                        Options['leavesOnly'] extends true
+                            ? Options['maxRecursionDepth'] extends CurrentDepth
+                                ? TransformedKey
+                                : IsNever<T[Key]> extends true
+                                  ? TransformedKey
+                                  : T[Key] extends infer Value
+                                    ? Value extends
+                                          | readonly []
+                                          | NonRecursiveType
+                                          | Exclude<MapsSetsOrArrays, UnknownArray>
+                                        ? TransformedKey
+                                        : /** Check for empty object and `unknown`, because `keyof unknown` is `never`. */
+                                          IsNever<keyof Value> extends true
+                                          ? TransformedKey
+                                          : never
+                                    : never
+                            : TransformedKey
+                    ) extends infer LeafFilteredKey
+                        ? /**
+                           * If `depth` is provided, the condition becomes truthy only when it matches `CurrentDepth`.
+                           * Otherwise, since `depth` defaults to `number`, the condition is always truthy, returning paths
+                           * at all depths.
+                           */
+                          CurrentDepth extends Options['depth']
+                            ? LeafFilteredKey
+                            : never
+                        : never)
+                  /** Recursively generate paths for the current key. */
+                  | (GreaterThan<Options['maxRecursionDepth'], CurrentDepth> extends true
+                        ? `${TransformedKey}${PathsHelper<T[Key], Options, Sum<CurrentDepth, 1>> &
+                              (string | number)}`
+                        : never)
+            : never
+        : never;
+}[keyof T & (T extends UnknownArray ? number : unknown)];
+
+type PathsHelper<
+    T,
+    Options extends Required<PathsOptions>,
+    CurrentDepth extends number = 0,
+> = T extends NonRecursiveType | Exclude<MapsSetsOrArrays, UnknownArray>
+    ? never
+    : IsAny<T> extends true
+      ? never
+      : T extends object
+        ? InternalPaths<Required<T>, Options, CurrentDepth>
+        : never;
+
+/**
+ * Generate a union of all possible paths to properties in the given object. Also works with arrays.
+ *
+ * Copied from the `Paths` type in `type-fest` v5.6 so that this package's public types do not
+ * depend on `type-fest` (see the note in `type-checks.ts`).
+ *
+ * @category Object
+ * @category Array
+ * @category Package : @augment-vir/common
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
+ */
+export type Paths<T, Options extends PathsOptions = {}> = PathsHelper<
+    T,
+    ApplyDefaultOptions<PathsOptions, DefaultPathsOptions, Options>
+>;
+
 type OmitDeepArrayWithOnePath<
     ArrayType extends UnknownArray,
     P extends string | number,
@@ -637,19 +838,14 @@ type OmitDeepHelper<T, PathTuple extends UnknownArray> = PathTuple extends [
  * Omit properties from a deeply-nested object, supporting recursion into arrays (each removed array
  * item is replaced with `unknown` at its index).
  *
- * Copied from the `OmitDeep` type in the `type-fest` package so that this package's public types do
- * not depend on `type-fest` (see the note in `type-checks.ts`).
- *
- * Note: `type-fest` constrains `PathUnion` to `LiteralUnion<Paths<T>, string>`. That `Paths<T>`
- * portion is only an autocomplete/validation aid on the path argument and is not used by the
- * omission logic, so it is relaxed here to `LiteralUnion<string, string>` (effectively `string`) to
- * avoid vendoring type-fest's enormous `Paths` type.
+ * Copied from the `OmitDeep` type in `type-fest` v5.6 so that this package's public types do not
+ * depend on `type-fest` (see the note in `type-checks.ts`).
  *
  * @category Object
  * @category Package : @augment-vir/common
  * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
-export type OmitDeep<T, PathUnion extends LiteralUnion<string, string>> = SimplifyDeep<
+export type OmitDeep<T, PathUnion extends LiteralUnion<Paths<T>, string>> = SimplifyDeep<
     OmitDeepHelper<T, UnionToTuple<PathUnion>>,
     UnknownArray
 >;

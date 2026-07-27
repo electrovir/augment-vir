@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-empty-object-type -- faithful copy of type-fest, which intentionally uses the `{}` identity type. */
+import {type ApplyDefaultOptions} from './apply-default-options.js';
 import {type BuiltIns, type HasMultipleCallSignatures} from './built-in-type.js';
 import {type IsNever} from './type-checks.js';
 
@@ -28,25 +29,32 @@ export type PartialDeepOptions = {
     readonly allowUndefinedInNonTupleArrays?: boolean;
 };
 
-type PartialMapDeep<KeyType, ValueType, Options extends PartialDeepOptions> = {} & Map<
-    PartialDeep<KeyType, Options>,
-    PartialDeep<ValueType, Options>
+type DefaultPartialDeepOptions = {
+    recurseIntoArrays: false;
+    allowUndefinedInNonTupleArrays: false;
+};
+
+type PartialMapDeep<KeyType, ValueType, Options extends Required<PartialDeepOptions>> = {} & Map<
+    PartialDeepHelper<KeyType, Options>,
+    PartialDeepHelper<ValueType, Options>
 >;
 
-type PartialSetDeep<T, Options extends PartialDeepOptions> = {} & Set<PartialDeep<T, Options>>;
+type PartialSetDeep<T, Options extends Required<PartialDeepOptions>> = {} & Set<
+    PartialDeepHelper<T, Options>
+>;
 
 type PartialReadonlyMapDeep<
     KeyType,
     ValueType,
-    Options extends PartialDeepOptions,
-> = {} & ReadonlyMap<PartialDeep<KeyType, Options>, PartialDeep<ValueType, Options>>;
+    Options extends Required<PartialDeepOptions>,
+> = {} & ReadonlyMap<PartialDeepHelper<KeyType, Options>, PartialDeepHelper<ValueType, Options>>;
 
-type PartialReadonlySetDeep<T, Options extends PartialDeepOptions> = {} & ReadonlySet<
-    PartialDeep<T, Options>
+type PartialReadonlySetDeep<T, Options extends Required<PartialDeepOptions>> = {} & ReadonlySet<
+    PartialDeepHelper<T, Options>
 >;
 
-type PartialObjectDeep<ObjectType extends object, Options extends PartialDeepOptions> = {
-    [KeyType in keyof ObjectType]?: PartialDeep<ObjectType[KeyType], Options>;
+type PartialObjectDeep<ObjectType extends object, Options extends Required<PartialDeepOptions>> = {
+    [KeyType in keyof ObjectType]?: PartialDeepHelper<ObjectType[KeyType], Options>;
 };
 
 /**
@@ -60,7 +68,12 @@ type PartialObjectDeep<ObjectType extends object, Options extends PartialDeepOpt
  * @category Package : @augment-vir/common
  * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
-export type PartialDeep<T, Options extends PartialDeepOptions = {}> = T extends
+export type PartialDeep<T, Options extends PartialDeepOptions = {}> = PartialDeepHelper<
+    T,
+    ApplyDefaultOptions<PartialDeepOptions, DefaultPartialDeepOptions, Options>
+>;
+
+type PartialDeepHelper<T, Options extends Required<PartialDeepOptions>> = T extends
     | BuiltIns
     | (new (...arguments_: any[]) => unknown)
     ? T
@@ -81,22 +94,22 @@ export type PartialDeep<T, Options extends PartialDeepOptions = {}> = T extends
                           PartialObjectDeep<T, Options>
               : T extends object
                 ? T extends ReadonlyArray<infer ItemType>
-                    ? Options extends {recurseIntoArrays: true}
+                    ? Options['recurseIntoArrays'] extends true
                         ? ItemType[] extends T
                             ? readonly ItemType[] extends T
                                 ? ReadonlyArray<
-                                      PartialDeep<
-                                          Options extends {allowUndefinedInNonTupleArrays: true}
-                                              ? ItemType | undefined
-                                              : ItemType,
+                                      PartialDeepHelper<
+                                          Options['allowUndefinedInNonTupleArrays'] extends false
+                                              ? ItemType
+                                              : ItemType | undefined,
                                           Options
                                       >
                                   >
                                 : Array<
-                                      PartialDeep<
-                                          Options extends {allowUndefinedInNonTupleArrays: true}
-                                              ? ItemType | undefined
-                                              : ItemType,
+                                      PartialDeepHelper<
+                                          Options['allowUndefinedInNonTupleArrays'] extends false
+                                              ? ItemType
+                                              : ItemType | undefined,
                                           Options
                                       >
                                   >
