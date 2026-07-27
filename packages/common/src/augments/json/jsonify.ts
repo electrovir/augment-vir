@@ -1,5 +1,5 @@
+import {type Jsonify} from '@augment-vir/core';
 import JSON5 from 'json5';
-import {type Jsonify} from 'type-fest';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import {copyThroughJson} from './copy-through-json.js';
 

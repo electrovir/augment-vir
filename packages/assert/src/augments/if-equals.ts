@@ -1,4 +1,4 @@
-import {type IsEqual} from 'type-fest';
+import {type IsEqual} from '@augment-vir/core';
 
 /**
  * A helper type that resolves to the given `Yes` type parameter if `Actual` === `Expected`.

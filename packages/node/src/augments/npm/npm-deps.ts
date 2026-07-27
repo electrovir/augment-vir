@@ -1,6 +1,11 @@
 import {check} from '@augment-vir/assert';
-import {filterMap, getEnumValues, getObjectTypedEntries, getOrSet} from '@augment-vir/common';
-import {type PackageJson} from 'type-fest';
+import {
+    filterMap,
+    getEnumValues,
+    getObjectTypedEntries,
+    getOrSet,
+    type PackageJson,
+} from '@augment-vir/common';
 import {readJsonFile} from '../fs/json.js';
 import {findAllPackageJsonFilePaths} from './package-json.js';
 

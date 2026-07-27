@@ -1,6 +1,6 @@
+import {type RequireExactlyOne} from '@augment-vir/common';
 import {readdir, stat} from 'node:fs/promises';
 import {join, relative} from 'node:path';
-import {type RequireExactlyOne} from 'type-fest';
 
 async function internalReadDirPathsRecursive({
     dirPath,

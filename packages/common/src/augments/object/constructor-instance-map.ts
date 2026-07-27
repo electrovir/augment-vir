@@ -1,7 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unsafe-function-type */
 
-import {type AnyObject} from '@augment-vir/core';
-import {type AbstractConstructor, type Constructor, type Writable} from 'type-fest';
+import {
+    type AbstractConstructor,
+    type AnyObject,
+    type Constructor,
+    type Writable,
+} from '@augment-vir/core';
 import {makeWritable} from '../type/writable.js';
 import {getOrSetFromMap} from './get-or-set.js';
 

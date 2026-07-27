@@ -1,4 +1,4 @@
-import {type RequireExactlyOne} from 'type-fest';
+import {type RequireExactlyOne} from '@augment-vir/core';
 
 /**
  * Options for {@link getArrayPage}.

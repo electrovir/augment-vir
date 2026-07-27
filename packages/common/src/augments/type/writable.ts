@@ -1,6 +1,4 @@
-import {type Writable} from 'type-fest';
-
-export type {Writable, WritableDeep} from 'type-fest';
+import {type Writable} from '@augment-vir/core';
 
 /**
  * This function does nothing but return the input as a writable typed version of itself.

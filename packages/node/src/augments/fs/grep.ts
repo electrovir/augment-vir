@@ -4,13 +4,14 @@ import {
     getObjectTypedKeys,
     log,
     typedObjectFromEntries,
+    type IsEqual,
     type PartialWithUndefined,
+    type RequireExactlyOne,
     type SelectFrom,
 } from '@augment-vir/common';
 import {spawn} from 'node:child_process';
 import {lstat, readdir, stat} from 'node:fs/promises';
 import {isAbsolute, join, resolve} from 'node:path';
-import {type IsEqual, type RequireExactlyOne} from 'type-fest';
 import {isOperatingSystem, OperatingSystem} from '../os/operating-system.js';
 
 /**

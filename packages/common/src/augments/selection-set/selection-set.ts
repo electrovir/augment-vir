@@ -1,11 +1,12 @@
-import {type AnyObject, type RequiredKeysOf} from '@augment-vir/core';
 import {
+    type AnyObject,
     type IsAny,
     type IsNever,
     type OptionalKeysOf,
     type Primitive,
+    type RequiredKeysOf,
     type UnionToIntersection,
-} from 'type-fest';
+} from '@augment-vir/core';
 import {
     type TsRecurse,
     type TsRecursionStart,

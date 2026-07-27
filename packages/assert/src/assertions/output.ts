@@ -4,11 +4,11 @@ import {
     ensureError,
     ensureErrorAndPrependMessage,
     extractErrorMessage,
+    type IsAny,
     type MaybePromise,
     wait,
 } from '@augment-vir/core';
 import {convertDuration} from '@date-vir/duration';
-import {type IsAny} from 'type-fest';
 import {AssertionError} from '../augments/assertion.error.js';
 import {type GuardGroup} from '../guard-types/guard-group.js';
 import {parseWaitUntilOptions, type WaitUntilOptions} from '../guard-types/wait-until-function.js';

@@ -1,5 +1,8 @@
-import {type PartialWithUndefined} from '@augment-vir/common';
-import {type AbstractConstructor, type Constructor} from 'type-fest';
+import {
+    type AbstractConstructor,
+    type Constructor,
+    type PartialWithUndefined,
+} from '@augment-vir/common';
 
 /**
  * Extract the event target element from an Event.

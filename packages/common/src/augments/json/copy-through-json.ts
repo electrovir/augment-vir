@@ -1,5 +1,10 @@
-import {ensureErrorAndPrependMessage, type JsonCompatibleValue} from '@augment-vir/core';
-import {type IsUnknown, type Jsonify, type Writable} from 'type-fest';
+import {
+    ensureErrorAndPrependMessage,
+    type IsUnknown,
+    type JsonCompatibleValue,
+    type Jsonify,
+    type Writable,
+} from '@augment-vir/core';
 import {safeJsonStringify} from './safe-json-stringify.js';
 
 /**

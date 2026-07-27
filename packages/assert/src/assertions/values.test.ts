@@ -1,5 +1,5 @@
+import {type EmptyObject} from '@augment-vir/core';
 import {describe, it, itCases} from '@augment-vir/test';
-import {type EmptyObject} from 'type-fest';
 import {AssertionError} from '../augments/assertion.error.js';
 import {assertWrap} from '../augments/guards/assert-wrap.js';
 import {assert} from '../augments/guards/assert.js';

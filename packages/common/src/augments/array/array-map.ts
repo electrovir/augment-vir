@@ -1,5 +1,4 @@
-import {type ArrayElement, type TupleIndexesRecursive} from '@augment-vir/core';
-import {type Writable} from '../type/writable.js';
+import {type ArrayElement, type TupleIndexesRecursive, type Writable} from '@augment-vir/core';
 
 /**
  * This type should not be used outside of this file. This is used to match the

@@ -1,5 +1,11 @@
 import {assertWrap} from '@augment-vir/assert';
-import {camelCaseToKebabCase, sanitizeFileName, type SelectFrom} from '@augment-vir/common';
+import {
+    camelCaseToKebabCase,
+    sanitizeFileName,
+    type OmitIndexSignature,
+    type SelectFrom,
+    type Simplify,
+} from '@augment-vir/common';
 import {
     type PlaywrightTestArgs,
     type PlaywrightTestOptions,
@@ -8,7 +14,6 @@ import {
     type TestInfo,
 } from '@playwright/test';
 import {type TestContext as NodeTestContextImport} from 'node:test';
-import {type OmitIndexSignature, type Simplify} from 'type-fest';
 import {type MochaNode, type MochaTestContext} from './mocha-types.js';
 
 /**

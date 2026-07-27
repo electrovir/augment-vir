@@ -1,5 +1,5 @@
-import {type Writable} from 'type-fest';
 import {ensureError} from '../error/ensure-error.js';
+import {type Writable} from '../type/writable.js';
 
 /**
  * Creates a promise that can be resolved or rejected at any later time. It also includes indication

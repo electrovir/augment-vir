@@ -1,13 +1,13 @@
 import {
     type AnyObject,
     type ArrayElement,
+    type EmptyObject,
     type MaybePromise,
     type NarrowToActual,
     type NarrowToExpected,
     stringify,
     type Values,
 } from '@augment-vir/core';
-import {type EmptyObject} from 'type-fest';
 import {AssertionError} from '../augments/assertion.error.js';
 import {type GuardGroup} from '../guard-types/guard-group.js';
 import {createWaitUntil, type WaitUntilOptions} from '../guard-types/wait-until-function.js';

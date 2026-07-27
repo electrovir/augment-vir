@@ -1,5 +1,5 @@
+import {type EmptyObject} from '@augment-vir/common';
 import {html, type DeclarativeElementDefinition} from 'element-vir';
-import {type EmptyObject} from 'type-fest';
 
 export async function renderElement<
     const Definition extends Readonly<DeclarativeElementDefinition>,

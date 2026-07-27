@@ -1,10 +1,9 @@
-import {isPrimitive, stringify, type MaybePromise} from '@augment-vir/core';
-import {type Primitive} from 'type-fest';
+import {isPrimitive, stringify, type MaybePromise, type Primitive} from '@augment-vir/core';
 import {AssertionError} from '../augments/assertion.error.js';
 import {type GuardGroup} from '../guard-types/guard-group.js';
 import {createWaitUntil, type WaitUntilOptions} from '../guard-types/wait-until-function.js';
 
-export {type Primitive} from 'type-fest';
+export {type Primitive} from '@augment-vir/core';
 
 const assertions = {
     /**

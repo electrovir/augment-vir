@@ -1,12 +1,16 @@
 import {assert, check, waitUntil} from '@augment-vir/assert';
-import {type MaybePromise, type PartialWithUndefined} from '@augment-vir/common';
+import {
+    type EmptyObject,
+    type IsAny,
+    type MaybePromise,
+    type PartialWithUndefined,
+} from '@augment-vir/common';
 import {type AnyDuration} from '@date-vir/duration';
 import {
     type DeclarativeElementDefinition,
     type DefinedTypedEvent,
     type TypedEvent,
 } from 'element-vir';
-import {type EmptyObject, type IsAny} from 'type-fest';
 import {
     itCasesWithContext,
     type FunctionWithContextTestCase,

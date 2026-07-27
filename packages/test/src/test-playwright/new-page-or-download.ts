@@ -1,6 +1,5 @@
-import {type MaybePromise} from '@augment-vir/common';
+import {type MaybePromise, type RequireExactlyOne} from '@augment-vir/common';
 import {type Download, type Page} from '@playwright/test';
-import {type RequireExactlyOne} from 'type-fest';
 import {
     type UniversalTestContext,
     assertTestContext,

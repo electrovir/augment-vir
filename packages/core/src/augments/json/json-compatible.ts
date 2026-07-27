@@ -1,4 +1,5 @@
-import {type Jsonify, type Primitive} from 'type-fest';
+import {type Primitive} from '../type/primitive-type.js';
+import {type Jsonify} from './jsonify.js';
 
 /**
  * These are similar in purpose, name, and structure to type-fest's JsonValue types but these are

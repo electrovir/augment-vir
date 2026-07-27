@@ -1,6 +1,10 @@
 import {check} from '@augment-vir/assert';
-import {ensureError, type MaybePromise, type NoInputsFunction} from '@augment-vir/core';
-import {type RequireOneOrNone} from 'type-fest';
+import {
+    ensureError,
+    type MaybePromise,
+    type NoInputsFunction,
+    type RequireOneOrNone,
+} from '@augment-vir/core';
 
 /**
  * Options for {@link wrapInTry}.

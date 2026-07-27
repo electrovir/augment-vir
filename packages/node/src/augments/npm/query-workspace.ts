@@ -1,5 +1,5 @@
+import {type PackageJson} from '@augment-vir/common';
 import {type UnknownObject} from '@augment-vir/core';
-import {type PackageJson} from 'type-fest';
 import {runShellCommand} from '../terminal/shell.js';
 
 /**

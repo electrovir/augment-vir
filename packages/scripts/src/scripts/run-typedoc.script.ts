@@ -1,7 +1,7 @@
+import {type PartialDeep} from '@augment-vir/common';
 import {runTypedoc} from '@virmator/docs';
 import {baseTypedocConfig} from '@virmator/docs/configs/typedoc.config.base.js';
 import {join} from 'node:path';
-import {type PartialDeep} from 'type-fest';
 import {type GlobString, type NormalizedPath, type TypeDocOptionMap} from 'typedoc';
 import {monoRepoDirPath, monoRepoTsconfigPath, packagePaths} from '../file-paths.js';
 

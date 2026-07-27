@@ -3,6 +3,7 @@ import {describe, it} from '@augment-vir/test';
 import {
     type CompleteRequire,
     type RequiredAndNotNull,
+    type RequiredKeysOf,
     type SetRequiredAndNotNull,
 } from './required-keys.js';
 
@@ -49,5 +50,31 @@ describe('RequiredAndNotNull', () => {
             // @ts-expect-error: missing defined 'yes' key
             yes: undefined,
         };
+    });
+});
+
+describe('RequiredKeysOf', () => {
+    it('extracts required keys', () => {
+        assert.tsType<RequiredKeysOf<{a: string; b?: boolean}>>().equals<'a'>();
+        assert.tsType<RequiredKeysOf<{a?: string; b?: boolean}>>().equals<never>();
+        assert.tsType<RequiredKeysOf<{a: string; b: boolean}>>().equals<'a' | 'b'>();
+    });
+
+    it('handles readonly and mixed keys', () => {
+        assert
+            .tsType<
+                RequiredKeysOf<{readonly a: string; readonly b?: number; c: boolean; d?: string}>
+            >()
+            .equals<'a' | 'c'>();
+    });
+
+    it('is assignable to keyof but not vice versa', () => {
+        assert
+            .tsType<RequiredKeysOf<{a?: string; b: number}>>()
+            .matches<keyof {a?: string; b: number}>();
+        assert.tsType<RequiredKeysOf<{a?: string; b: number}>>().matches<PropertyKey>();
+        assert
+            .tsType<keyof {a?: string; b: number}>()
+            .notMatches<RequiredKeysOf<{a?: string; b: number}>>();
     });
 });

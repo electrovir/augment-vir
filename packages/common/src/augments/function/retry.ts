@@ -1,7 +1,6 @@
 import {type PartialWithUndefined} from '@augment-vir/common';
-import {ensureErrorAndPrependMessage, wait} from '@augment-vir/core';
+import {ensureErrorAndPrependMessage, wait, type IsEqual} from '@augment-vir/core';
 import {type AtLeastOneDuration} from '@date-vir/duration';
-import {type IsEqual} from 'type-fest';
 
 /**
  * Params for the callback passed to {@link retry}.

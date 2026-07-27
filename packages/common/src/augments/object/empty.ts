@@ -1,4 +1,4 @@
-import {type IsEmptyObject} from 'type-fest';
+import {type IsEmptyObject} from '@augment-vir/core';
 
 /**
  * Excludes empty objects from a union.

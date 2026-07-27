@@ -631,13 +631,6 @@ describe(listAllDirectNpmDeps.name, () => {
                     isWorkspace: false,
                 },
             ],
-            'patch-package': [
-                {
-                    dependencyKey: PackageJsonDependencyKey.DevDependencies,
-                    requiredBy: join(monoRepoDirPath, 'package.json'),
-                    isWorkspace: false,
-                },
-            ],
             prettier: [
                 {
                     dependencyKey: PackageJsonDependencyKey.DevDependencies,
@@ -753,48 +746,6 @@ describe(listAllDirectNpmDeps.name, () => {
                 {
                     dependencyKey: PackageJsonDependencyKey.Dependencies,
                     requiredBy: join(monoRepoDirPath, 'packages', 'node', 'package.json'),
-                    isWorkspace: false,
-                },
-            ],
-            'type-fest': [
-                {
-                    dependencyKey: PackageJsonDependencyKey.Overrides,
-                    requiredBy: join(monoRepoDirPath, 'package.json'),
-                    isWorkspace: false,
-                },
-                {
-                    dependencyKey: PackageJsonDependencyKey.Dependencies,
-                    requiredBy: join(monoRepoDirPath, 'packages', 'assert', 'package.json'),
-                    isWorkspace: false,
-                },
-                {
-                    dependencyKey: PackageJsonDependencyKey.Dependencies,
-                    requiredBy: join(monoRepoDirPath, 'packages', 'common', 'package.json'),
-                    isWorkspace: false,
-                },
-                {
-                    dependencyKey: PackageJsonDependencyKey.Dependencies,
-                    requiredBy: join(monoRepoDirPath, 'packages', 'core', 'package.json'),
-                    isWorkspace: false,
-                },
-                {
-                    dependencyKey: PackageJsonDependencyKey.Dependencies,
-                    requiredBy: join(monoRepoDirPath, 'packages', 'node', 'package.json'),
-                    isWorkspace: false,
-                },
-                {
-                    dependencyKey: PackageJsonDependencyKey.DevDependencies,
-                    requiredBy: join(monoRepoDirPath, 'packages', 'scripts', 'package.json'),
-                    isWorkspace: false,
-                },
-                {
-                    dependencyKey: PackageJsonDependencyKey.Dependencies,
-                    requiredBy: join(monoRepoDirPath, 'packages', 'test', 'package.json'),
-                    isWorkspace: false,
-                },
-                {
-                    dependencyKey: PackageJsonDependencyKey.Dependencies,
-                    requiredBy: join(monoRepoDirPath, 'packages', 'web', 'package.json'),
                     isWorkspace: false,
                 },
             ],

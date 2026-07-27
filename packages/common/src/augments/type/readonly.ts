@@ -1,5 +1,3 @@
-export type {ReadonlyDeep} from 'type-fest';
-
 /**
  * This function does nothing but return the input as a readonly typed version of itself.
  *

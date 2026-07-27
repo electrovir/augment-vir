@@ -3,8 +3,9 @@ import {
     type CompleteValues,
     type ExcludeKeysWithMatchingValues,
     type ExtractKeysWithMatchingValues,
+    type OptionalKeysOf,
+    type RequiredKeysOf,
 } from '@augment-vir/core';
-import {type OptionalKeysOf, type RequiredKeysOf} from 'type-fest';
 import {mapObject} from './map-entries.js';
 import {mapObjectValues} from './map-values.js';
 import {getObjectTypedEntries, typedObjectFromEntries} from './object-entries.js';

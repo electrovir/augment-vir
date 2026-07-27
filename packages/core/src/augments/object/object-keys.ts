@@ -1,4 +1,4 @@
-import {type IsNever} from 'type-fest';
+import {type IsNever} from '../type/type-checks.js';
 
 /**
  * Gets all keys of an object. This is similar to

@@ -1,6 +1,5 @@
 import {check} from '@augment-vir/assert';
-import {DeferredPromise, type MaybePromise} from '@augment-vir/core';
-import {type RequireExactlyOne} from 'type-fest';
+import {DeferredPromise, type MaybePromise, type RequireExactlyOne} from '@augment-vir/core';
 import {defineTypedCustomEvent, ListenTarget} from 'typed-event-target';
 
 /**

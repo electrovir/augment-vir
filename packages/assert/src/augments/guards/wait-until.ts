@@ -1,5 +1,4 @@
-import {type AnyFunction, type ArrayElement} from '@augment-vir/core';
-import {type UnionToIntersection} from 'type-fest';
+import {type AnyFunction, type ArrayElement, type UnionToIntersection} from '@augment-vir/core';
 import {guardOverrides} from '../../assertions/extendable-assertions.js';
 import {executeWaitUntil, type WaitUntilOptions} from '../../guard-types/wait-until-function.js';
 import {AssertionError} from '../assertion.error.js';

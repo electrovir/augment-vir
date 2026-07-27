@@ -1,6 +1,5 @@
-import {type Except, type Simplify} from 'type-fest';
-
-export type {SetRequired} from 'type-fest';
+import {type Except} from '../type/except.js';
+import {type Simplify} from '../type/simplify.js';
 
 /**
  * Same as the Required<> built-in type helper but this requires that each property be present and
@@ -65,12 +64,10 @@ export type SetOptionalWithUndefined<
  * @category Package : @augment-vir/common
  * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
-export type RequiredKeysOf<BaseType> = Exclude<
-    {
-        [Key in keyof BaseType]: BaseType extends Record<Key, BaseType[Key]> ? Key : never;
-    }[keyof BaseType],
-    undefined
->;
+export type RequiredKeysOf<BaseType> = keyof {
+    [Key in keyof BaseType as BaseType extends Record<Key, BaseType[Key]> ? Key : never]: never;
+} &
+    keyof BaseType;
 
 /**
  * Requires every part of an object, even the indexed keys. This is needed because

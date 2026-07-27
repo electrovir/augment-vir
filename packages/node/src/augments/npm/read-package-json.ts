@@ -1,6 +1,6 @@
 import {check} from '@augment-vir/assert';
+import {type PackageJson} from '@augment-vir/common';
 import {join} from 'node:path';
-import {type PackageJson} from 'type-fest';
 import {readJsonFile} from '../fs/json.js';
 
 /**

@@ -1,7 +1,6 @@
 import {assert} from '@augment-vir/assert';
-import {type AnyObject} from '@augment-vir/core';
+import {type AnyObject, type EmptyObject} from '@augment-vir/core';
 import {describe, it} from '@augment-vir/test';
-import {type EmptyObject} from 'type-fest';
 import {
     type JsonCompatibleArray,
     type JsonCompatibleObject,

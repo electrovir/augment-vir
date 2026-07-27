@@ -1,9 +1,8 @@
 import {check} from '@augment-vir/assert';
-import {filterMap, fromAsyncIterable} from '@augment-vir/common';
+import {filterMap, fromAsyncIterable, type PackageJson} from '@augment-vir/common';
 import {existsSync} from 'node:fs';
 import {glob, readFile} from 'node:fs/promises';
 import {join} from 'node:path';
-import {type PackageJson} from 'type-fest';
 import {findAncestor, joinFilesToDir} from '../path/ancestor.js';
 
 /**

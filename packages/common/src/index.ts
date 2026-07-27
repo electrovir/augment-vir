@@ -105,7 +105,6 @@ export * from './augments/type/readonly.js';
 export * from './augments/type/remove-prefix.js';
 export * from './augments/type/remove-suffix.js';
 export * from './augments/type/type-recursion.js';
-export * from './augments/type/union.js';
 export * from './augments/type/void-type.js';
 export * from './augments/type/writable.js';
 

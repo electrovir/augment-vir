@@ -1,5 +1,5 @@
 import {check} from '@augment-vir/assert';
-import {type PartialDeep} from 'type-fest';
+import {type PartialDeep} from '@augment-vir/core';
 
 /**
  * Accepts multiple objects and merges their key-value pairs recursively. Any values set to

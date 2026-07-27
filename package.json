@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/mono-repo-root",
-    "version": "32.1.0",
+    "version": "32.2.0",
     "private": true,
     "homepage": "https://github.com/electrovir/augment-vir",
     "bugs": {
@@ -24,7 +24,7 @@
         "compile": "npm run init && bash compile.sh",
         "docs": "npm run exec --workspace @augment-vir/scripts src/scripts/run-typedoc.script.ts",
         "format": "virmator format",
-        "init": "patch-package && cd packages/common && tsc -b -f --pretty && cd ../.. && tsx packages/node/src/scripts/fix-ts-bin.script.ts",
+        "init": "cd packages/common && tsc -b -f --pretty && cd ../.. && tsx packages/node/src/scripts/fix-ts-bin.script.ts",
         "lint": "virmator lint fix",
         "publish": "virmator publish \"npm run test:all\"",
         "test": "mono-vir for-each npm run test",
@@ -41,8 +41,7 @@
     "overrides": {
         "esbuild": "^0.28.1",
         "is-generator-function": "1.1.0",
-        "playwright": "^1.61.1",
-        "type-fest": "^5.2.0"
+        "playwright": "^1.61.1"
     },
     "devDependencies": {
         "@eslint/eslintrc": "^3.3.5",
@@ -64,7 +63,6 @@
         "eslint-plugin-unicorn": "~69.0.0",
         "mono-vir": "^2.5.0",
         "npm-check-updates": "^22.2.7",
-        "patch-package": "^8.0.1",
         "prettier": "~3.3.3",
         "prettier-plugin-interpolated-html-tags": "^2.0.1",
         "prettier-plugin-jsdoc": "^1.8.1",

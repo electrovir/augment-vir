@@ -1,6 +1,5 @@
 import {check} from '@augment-vir/assert';
-import {getObjectTypedKeys} from '@augment-vir/core';
-import {type PartialDeep} from 'type-fest';
+import {getObjectTypedKeys, type PartialDeep} from '@augment-vir/core';
 
 /**
  * Extract all nested object keys and values that are different between the two given objects.
