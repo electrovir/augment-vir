@@ -41,10 +41,10 @@ export function doesPathContain({
     } else if (isAbsolute(relativePath)) {
         /** On Windows, paths on different drives yield an absolute relative path. */
         return false;
+    } else {
+        /** Contained if it does not traverse up out of parent. */
+        return relativePath !== '..' && !relativePath.startsWith('..' + sep);
     }
-
-    /** Contained if it does not traverse up out of parent. */
-    return relativePath !== '..' && !relativePath.startsWith('..' + sep);
 }
 
 function normalizePath(inputPath: string): string {

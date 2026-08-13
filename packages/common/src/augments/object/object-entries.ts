@@ -13,10 +13,12 @@ export function getObjectTypedEntries<const ObjectGeneric>(input: ObjectGeneric)
     keyof ObjectGeneric,
     CompleteRequire<ObjectGeneric>[keyof CompleteRequire<ObjectGeneric>],
 ][] {
-    return getObjectTypedKeys(input).map((key) => [
-        key,
-        input[key],
-    ]) as [
+    return getObjectTypedKeys(input).map((key) => {
+        return [
+            key,
+            input[key],
+        ];
+    }) as [
         keyof ObjectGeneric,
         CompleteRequire<ObjectGeneric>[keyof CompleteRequire<ObjectGeneric>],
     ][];
@@ -57,7 +59,7 @@ export function getEntriesSortedByKey<const ObjectGeneric>(input: ObjectGeneric)
     keyof ObjectGeneric,
     CompleteRequire<ObjectGeneric>[keyof CompleteRequire<ObjectGeneric>],
 ][] {
-    return getObjectTypedEntries(input).sort((tupleA, tupleB) =>
-        String(tupleA[0]).localeCompare(String(tupleB[0])),
-    );
+    return getObjectTypedEntries(input).sort((tupleA, tupleB) => {
+        return String(tupleA[0]).localeCompare(String(tupleB[0]));
+    });
 }

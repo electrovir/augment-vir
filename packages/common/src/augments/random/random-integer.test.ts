@@ -13,11 +13,12 @@ describe(randomInteger.name, () => {
     });
     it('errors instead of crashing on too high of a number', () => {
         assert.throws(
-            () =>
-                randomInteger({
+            () => {
+                return randomInteger({
                     min: -999e305,
                     max: 999e305,
-                }),
+                });
+            },
             {
                 matchMessage: 'Cannot create a random integer so large',
             },

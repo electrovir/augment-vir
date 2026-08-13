@@ -53,7 +53,7 @@ export async function readAllDirContents(
 
             const isFile = (await stat(filePath)).isFile();
             const contents = isFile
-                ? (await readFile(filePath)).toString()
+                ? await readFile(filePath, 'utf8')
                 : recursive
                   ? await readAllDirContents(filePath, {
                         recursive,

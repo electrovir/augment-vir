@@ -85,11 +85,12 @@ export function createLogger(
         );
     }
     const loggerLogs: LoggerLogs = mapEnumToObject(LogColorKey, (colorKey) => {
-        return (...args: unknown[]) =>
-            writeLog({
+        return (...args: unknown[]) => {
+            return writeLog({
                 args,
                 colorKey,
             });
+        };
     });
 
     return {

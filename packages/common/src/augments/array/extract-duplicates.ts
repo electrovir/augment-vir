@@ -32,9 +32,9 @@ export function extractDuplicates<T>(
     const uniques = [] as T[];
 
     items.forEach((item) => {
-        const duplicatesIndex = duplicates.findIndex((duplicateEntry) =>
-            comparator(duplicateEntry, item),
-        );
+        const duplicatesIndex = duplicates.findIndex((duplicateEntry) => {
+            return comparator(duplicateEntry, item);
+        });
 
         if (duplicatesIndex < 0) {
             const uniquesIndex = uniques.findIndex((uniqueEntry) => comparator(uniqueEntry, item));

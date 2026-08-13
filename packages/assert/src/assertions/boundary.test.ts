@@ -303,16 +303,20 @@ describe('endsWith', () => {
         });
         it('has proper types', async () => {
             // @ts-expect-error: number cannot be the child of string[]
-            await waitUntil.endsWith('b' as any as number, () => [
-                'a',
-                'b',
-            ]);
+            await waitUntil.endsWith('b' as any as number, () => {
+                return [
+                    'a',
+                    'b',
+                ];
+            });
 
-            await waitUntil.endsWith(3, () => [
-                'a',
-                'b',
-                3,
-            ]);
+            await waitUntil.endsWith(3, () => {
+                return [
+                    'a',
+                    'b',
+                    3,
+                ];
+            });
 
             // @ts-expect-error: string parent must have a string child
             await waitUntil.endsWith('e' as any as number, () => 'one');
@@ -629,16 +633,20 @@ describe('endsWithout', () => {
         });
         it('has proper types', async () => {
             // @ts-expect-error: number cannot be the child of string[]
-            await waitUntil.endsWithout('b' as any as number, () => [
-                'b',
-                'a',
-            ]);
+            await waitUntil.endsWithout('b' as any as number, () => {
+                return [
+                    'b',
+                    'a',
+                ];
+            });
 
-            await waitUntil.endsWithout(3, () => [
-                3,
-                'a',
-                'b',
-            ]);
+            await waitUntil.endsWithout(3, () => {
+                return [
+                    3,
+                    'a',
+                    'b',
+                ];
+            });
 
             // @ts-expect-error: string parent must have a string child
             await waitUntil.endsWithout('o' as any as number, () => 'one');
@@ -956,16 +964,20 @@ describe('startsWith', () => {
         });
         it('has proper types', async () => {
             // @ts-expect-error: number cannot be the child of string[]
-            await waitUntil.startsWith('a' as any as number, () => [
-                'a',
-                'b',
-            ]);
+            await waitUntil.startsWith('a' as any as number, () => {
+                return [
+                    'a',
+                    'b',
+                ];
+            });
 
-            await waitUntil.startsWith(3, () => [
-                3,
-                'a',
-                'b',
-            ]);
+            await waitUntil.startsWith(3, () => {
+                return [
+                    3,
+                    'a',
+                    'b',
+                ];
+            });
 
             // @ts-expect-error: string parent must have a string child
             await waitUntil.startsWith('o' as any as number, () => 'one');
@@ -1282,16 +1294,20 @@ describe('startsWithout', () => {
         });
         it('has proper types', async () => {
             // @ts-expect-error: number cannot be the child of string[]
-            await waitUntil.startsWithout('b' as any as number, () => [
-                'a',
-                'b',
-            ]);
+            await waitUntil.startsWithout('b' as any as number, () => {
+                return [
+                    'a',
+                    'b',
+                ];
+            });
 
-            await waitUntil.startsWithout(3, () => [
-                'a',
-                'b',
-                3,
-            ]);
+            await waitUntil.startsWithout(3, () => {
+                return [
+                    'a',
+                    'b',
+                    3,
+                ];
+            });
 
             // @ts-expect-error: string parent must have a string child
             await waitUntil.startsWithout('e' as any as number, () => 'one');

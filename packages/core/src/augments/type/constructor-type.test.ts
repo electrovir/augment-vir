@@ -30,7 +30,6 @@ class Position {
     public top: number;
     public left: number;
 
-    // eslint-disable-next-line @virmator/prefer-params-object -- exercising a multi-argument constructor signature
     constructor(parameterTop: number, parameterLeft: number) {
         this.top = parameterTop;
         this.left = parameterLeft;
@@ -54,7 +53,6 @@ abstract class AbstractBar {
 class ConcreteBar extends AbstractBar {
     public total: number;
 
-    // eslint-disable-next-line @virmator/prefer-params-object -- exercising a multi-argument constructor signature
     constructor(first: number, second: number) {
         super();
         this.total = first + second;

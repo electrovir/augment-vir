@@ -63,7 +63,7 @@ export async function readDirFilesByExtension({
 
     const fileNames = await readdir(dirPath);
 
-    return fileNames.filter((fileName) =>
-        extensionsToCheck.some((extensionToCheck) => fileName.endsWith(extensionToCheck)),
-    );
+    return fileNames.filter((fileName) => {
+        return extensionsToCheck.some((extensionToCheck) => fileName.endsWith(extensionToCheck));
+    });
 }

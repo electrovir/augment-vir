@@ -4,12 +4,12 @@ import {randomInteger} from '../random/random-integer.js';
 import {shuffleArray} from './shuffle-array.js';
 
 describe(shuffleArray.name, () => {
-    const exampleArray: ReadonlyArray<number> = new Array(100).fill(0).map(() =>
-        randomInteger({
+    const exampleArray: ReadonlyArray<number> = new Array(100).fill(0).map(() => {
+        return randomInteger({
             min: 0,
             max: 999,
-        }),
-    );
+        });
+    });
 
     it('shuffles an array', () => {
         try {

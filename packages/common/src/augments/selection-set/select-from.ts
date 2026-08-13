@@ -57,9 +57,9 @@ export function selectFrom<
     const Selection extends SelectionSet<NoInfer<Full>>,
 >(originalObject: Readonly<Full>, selectionSet: Readonly<Selection>): SelectFrom<Full, Selection> {
     if (Array.isArray(originalObject)) {
-        return originalObject.map((originalEntry) =>
-            selectFrom(originalEntry, selectionSet),
-        ) as SelectFrom<Full, Selection>;
+        return originalObject.map((originalEntry) => {
+            return selectFrom(originalEntry, selectionSet);
+        }) as SelectFrom<Full, Selection>;
     }
 
     const keysToRemove: PropertyKey[] = [];

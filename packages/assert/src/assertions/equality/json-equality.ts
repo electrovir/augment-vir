@@ -80,9 +80,9 @@ function recursiveCheckJsonEquals(actual: any, expected: any): boolean {
                 (expected as AnyObject)[key],
             );
         });
+    } else {
+        return false;
     }
-
-    return false;
 }
 
 const assertions = {

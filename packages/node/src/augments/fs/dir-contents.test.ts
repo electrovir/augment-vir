@@ -111,10 +111,11 @@ describe(writeDirContents.name, () => {
         const escapedPath = join(dirContentsTestDir, 'escaped.txt');
 
         await assert.throws(
-            () =>
-                writeDirContents(join(dirContentsTestDir, 'contained'), {
+            () => {
+                return writeDirContents(join(dirContentsTestDir, 'contained'), {
                     [join('..', 'escaped.txt')]: 'should not be written',
-                }),
+                });
+            },
             {
                 matchMessage: 'resolves outside of',
             },
@@ -127,12 +128,13 @@ describe(writeDirContents.name, () => {
         const escapedPath = join(dirContentsTestDir, 'escaped-nested.txt');
 
         await assert.throws(
-            () =>
-                writeDirContents(join(dirContentsTestDir, 'contained'), {
+            () => {
+                return writeDirContents(join(dirContentsTestDir, 'contained'), {
                     inner: {
                         [join('..', '..', 'escaped-nested.txt')]: 'should not be written',
                     },
-                }),
+                });
+            },
             {
                 matchMessage: 'resolves outside of',
             },

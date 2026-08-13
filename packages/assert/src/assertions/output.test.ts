@@ -17,24 +17,24 @@ import {
 describe('output', () => {
     describe('assert', () => {
         it('requires correct output type without custom asserter', () => {
-            assert.throws(() =>
-                assert.output(
+            assert.throws(() => {
+                return assert.output(
                     (input: number) => String(input),
                     [5],
                     // @ts-expect-error: this should be a string
                     42,
-                ),
-            );
+                );
+            });
         });
         it('requires correct input type without custom asserter', () => {
-            assert.throws(() =>
-                assert.output(
+            assert.throws(() => {
+                return assert.output(
                     (input: number) => String(input),
                     // @ts-expect-error: this should be a number
                     ['wrong type'],
                     '5',
-                ),
-            );
+                );
+            });
         });
         it('works with multiple function inputs without custom asserter', () => {
             assert.output(
@@ -150,11 +150,12 @@ describe('output', () => {
             {
                 it: 'passes when the values match with inputs',
                 inputs: [
-                    (a: string, b: number) =>
-                        [
+                    (a: string, b: number) => {
+                        return [
                             a,
                             b,
-                        ].join(','),
+                        ].join(',');
+                    },
                     [
                         'first',
                         45,
@@ -177,11 +178,12 @@ describe('output', () => {
             {
                 it: 'fails when the values do not match with inputs',
                 inputs: [
-                    (a: string, b: number) =>
-                        [
+                    (a: string, b: number) => {
+                        return [
                             a,
                             b,
-                        ].join(','),
+                        ].join(',');
+                    },
                     [
                         'second',
                         67,
@@ -387,11 +389,12 @@ describe('output', () => {
             {
                 it: 'passes when the values match with inputs',
                 inputs: [
-                    (a: string, b: number) =>
-                        [
+                    (a: string, b: number) => {
+                        return [
                             a,
                             b,
-                        ].join(','),
+                        ].join(',');
+                    },
                     [
                         'first',
                         45,
@@ -412,11 +415,12 @@ describe('output', () => {
             {
                 it: 'fails when the values do not match with inputs',
                 inputs: [
-                    (a: string, b: number) =>
-                        [
+                    (a: string, b: number) => {
+                        return [
                             a,
                             b,
-                        ].join(','),
+                        ].join(',');
+                    },
                     [
                         'second',
                         67,
@@ -481,24 +485,24 @@ describe('output', () => {
 
     describe('assertWrap', () => {
         it('requires correct output type without custom asserter', () => {
-            assert.throws(() =>
-                assertWrap.output(
+            assert.throws(() => {
+                return assertWrap.output(
                     (input: number) => String(input),
                     [5],
                     // @ts-expect-error: this should be a string
                     42,
-                ),
-            );
+                );
+            });
         });
         it('requires correct input type without custom asserter', () => {
-            assert.throws(() =>
-                assertWrap.output(
+            assert.throws(() => {
+                return assertWrap.output(
                     (input: number) => String(input),
                     // @ts-expect-error: this should be a number
                     ['wrong type'],
                     '5',
-                ),
-            );
+                );
+            });
         });
         it('works with multiple function inputs without custom asserter', () => {
             assert.strictEquals(
@@ -639,11 +643,12 @@ describe('output', () => {
             {
                 it: 'passes when the values match with inputs',
                 inputs: [
-                    (a: string, b: number) =>
-                        [
+                    (a: string, b: number) => {
+                        return [
                             a,
                             b,
-                        ].join(','),
+                        ].join(',');
+                    },
                     [
                         'first',
                         45,
@@ -666,11 +671,12 @@ describe('output', () => {
             {
                 it: 'fails when the values do not match with inputs',
                 inputs: [
-                    (a: string, b: number) =>
-                        [
+                    (a: string, b: number) => {
+                        return [
                             a,
                             b,
-                        ].join(','),
+                        ].join(',');
+                    },
                     [
                         'second',
                         67,
@@ -890,11 +896,12 @@ describe('output', () => {
             {
                 it: 'passes when the values match with inputs',
                 inputs: [
-                    (a: string, b: number) =>
-                        [
+                    (a: string, b: number) => {
+                        return [
                             a,
                             b,
-                        ].join(','),
+                        ].join(',');
+                    },
                     [
                         'first',
                         45,
@@ -915,11 +922,12 @@ describe('output', () => {
             {
                 it: 'fails when the values do not match with inputs',
                 inputs: [
-                    (a: string, b: number) =>
-                        [
+                    (a: string, b: number) => {
+                        return [
                             a,
                             b,
-                        ].join(','),
+                        ].join(',');
+                    },
                     [
                         'second',
                         67,
@@ -988,21 +996,26 @@ describe('output', () => {
 
     describe('waitUntil', () => {
         it('requires correct output type without custom asserter', async () => {
-            await assert.throws(() =>
+            await assert.throws(() => {
                 // @ts-expect-error: expected output be a string
-                waitUntil.output((input: number) => String(input), [5], 42, waitUntilTestOptions),
-            );
+                return waitUntil.output(
+                    (input: number) => String(input),
+                    [5],
+                    42,
+                    waitUntilTestOptions,
+                );
+            });
         });
         it('requires correct input type without custom asserter', async () => {
-            await assert.throws(() =>
+            await assert.throws(() => {
                 // @ts-expect-error: expected output should be a number
-                waitUntil.output(
+                return waitUntil.output(
                     (input: number) => String(input),
                     ['wrong type'],
                     '5',
                     waitUntilTestOptions,
-                ),
-            );
+                );
+            });
         });
         it('works with multiple function inputs without custom asserter', async () => {
             assert.strictEquals(
@@ -1089,11 +1102,12 @@ describe('output', () => {
             {
                 it: 'passes when the values match with inputs',
                 inputs: [
-                    (a: string, b: number) =>
-                        [
+                    (a: string, b: number) => {
+                        return [
                             a,
                             b,
-                        ].join(','),
+                        ].join(',');
+                    },
                     [
                         'first',
                         45,
@@ -1117,11 +1131,12 @@ describe('output', () => {
             {
                 it: 'fails when the values do not match with inputs',
                 inputs: [
-                    (a: string, b: number) =>
-                        [
+                    (a: string, b: number) => {
+                        return [
                             a,
                             b,
-                        ].join(','),
+                        ].join(',');
+                    },
                     [
                         'second',
                         67,

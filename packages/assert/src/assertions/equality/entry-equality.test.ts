@@ -132,14 +132,14 @@ describe('entriesEqual', () => {
             assert.tsType(actualPass).notEquals<ExpectedType>();
         });
         it('rejects', async () => {
-            await assert.throws(() =>
-                waitUntil.entriesEqual(
+            await assert.throws(() => {
+                return waitUntil.entriesEqual(
                     expected,
                     () => actualReject,
                     waitUntilTestOptions,
                     'failure',
-                ),
-            );
+                );
+            });
         });
     });
 });
@@ -243,14 +243,14 @@ describe('notEntriesEqual', () => {
             assert.tsType(newValue).equals(actualPass);
         });
         it('rejects', async () => {
-            await assert.throws(() =>
-                waitUntil.notEntriesEqual(
+            await assert.throws(() => {
+                return waitUntil.notEntriesEqual(
                     expected,
                     () => actualReject,
                     waitUntilTestOptions,
                     'failure',
-                ),
-            );
+                );
+            });
         });
     });
 });

@@ -11,7 +11,7 @@ import {readFile} from 'node:fs/promises';
  */
 export async function readFileIfExists(path: string): Promise<string | undefined> {
     if (existsSync(path)) {
-        return (await readFile(path)).toString();
+        return await readFile(path, 'utf8');
     } else {
         return undefined;
     }

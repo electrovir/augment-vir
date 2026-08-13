@@ -340,9 +340,9 @@ describe(checkCustomDeepQuality.name, () => {
     });
 
     it('handles return types', async () => {
-        const asyncResult = checkCustomDeepQuality('a', 'a', (a, b) =>
-            Promise.resolve(check.strictEquals(a, b)),
-        );
+        const asyncResult = checkCustomDeepQuality('a', 'a', (a, b) => {
+            return Promise.resolve(check.strictEquals(a, b));
+        });
         assert.tsType(asyncResult).equals<Promise<boolean>>();
         await asyncResult;
 

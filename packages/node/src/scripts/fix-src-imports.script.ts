@@ -76,7 +76,7 @@ async function fixAllSrcImports(monoRepoPath: string) {
 
     await Promise.all(
         filePaths.map(async (filePath) => {
-            const contents = String(await readFile(filePath));
+            const contents = await readFile(filePath, 'utf8');
             const fixedContents = contents.replaceAll(
                 /(from ["'][^'"]+?)\/src\/([^'"]+)['"];/g,
                 "$1/dist/$2';",

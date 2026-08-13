@@ -289,12 +289,12 @@ describe('isNotPrimitive', () => {
         );
         it('rejects all primitive types', () => {
             primitives.forEach((primitive, index) => {
-                assert.throws(() =>
-                    assert.isNotPrimitive(
+                assert.throws(() => {
+                    return assert.isNotPrimitive(
                         primitive,
                         `'${String(primitive)}' (index '${index}') should be a primitive`,
-                    ),
-                );
+                    );
+                });
             });
         });
         it('guards', () => {

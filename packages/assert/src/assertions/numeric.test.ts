@@ -146,27 +146,27 @@ describe('isAbove', () => {
         });
         it('rejects identical', async () => {
             const value = 3;
-            await assert.throws(() =>
-                waitUntil.isAbove(
+            await assert.throws(() => {
+                return waitUntil.isAbove(
                     3,
                     () => {
                         return value;
                     },
                     waitUntilTestOptions,
-                ),
-            );
+                );
+            });
         });
         it('rejects', async () => {
             const value = 0;
-            await assert.throws(() =>
-                waitUntil.isAbove(
+            await assert.throws(() => {
+                return waitUntil.isAbove(
                     3,
                     () => {
                         return value;
                     },
                     waitUntilTestOptions,
-                ),
-            );
+                );
+            });
         });
     });
 });
@@ -393,8 +393,8 @@ describe('isInBounds', () => {
         });
         it('rejects', async () => {
             const value = 0;
-            await assert.throws(() =>
-                waitUntil.isInBounds(
+            await assert.throws(() => {
+                return waitUntil.isInBounds(
                     {
                         min: 50,
                         max: 60,
@@ -403,8 +403,8 @@ describe('isInBounds', () => {
                         return value;
                     },
                     waitUntilTestOptions,
-                ),
-            );
+                );
+            });
         });
     });
 });
@@ -631,8 +631,8 @@ describe('isOutBounds', () => {
         });
         it('rejects', async () => {
             const value = 55;
-            await assert.throws(() =>
-                waitUntil.isOutBounds(
+            await assert.throws(() => {
+                return waitUntil.isOutBounds(
                     {
                         min: 50,
                         max: 60,
@@ -641,8 +641,8 @@ describe('isOutBounds', () => {
                         return value;
                     },
                     waitUntilTestOptions,
-                ),
-            );
+                );
+            });
         });
     });
 });
@@ -722,11 +722,11 @@ describe('isInteger', () => {
         });
         it('rejects', async () => {
             const value = 5.1;
-            await assert.throws(() =>
-                waitUntil.isInteger(() => {
+            await assert.throws(() => {
+                return waitUntil.isInteger(() => {
                     return value;
-                }, waitUntilTestOptions),
-            );
+                }, waitUntilTestOptions);
+            });
         });
     });
 });
@@ -805,11 +805,11 @@ describe('isNotInteger', () => {
         });
         it('rejects', async () => {
             const value = 5;
-            await assert.throws(() =>
-                waitUntil.isNotInteger(() => {
+            await assert.throws(() => {
+                return waitUntil.isNotInteger(() => {
                     return value;
-                }, waitUntilTestOptions),
-            );
+                }, waitUntilTestOptions);
+            });
         });
     });
 });
@@ -958,15 +958,15 @@ describe('isAtLeast', () => {
         });
         it('rejects', async () => {
             const value = 0;
-            await assert.throws(() =>
-                waitUntil.isAtLeast(
+            await assert.throws(() => {
+                return waitUntil.isAtLeast(
                     3,
                     () => {
                         return value;
                     },
                     waitUntilTestOptions,
-                ),
-            );
+                );
+            });
         });
     });
 });
@@ -1110,27 +1110,27 @@ describe('isBelow', () => {
         });
         it('rejects identical', async () => {
             const value = 3;
-            await assert.throws(() =>
-                waitUntil.isBelow(
+            await assert.throws(() => {
+                return waitUntil.isBelow(
                     3,
                     () => {
                         return value;
                     },
                     waitUntilTestOptions,
-                ),
-            );
+                );
+            });
         });
         it('rejects', async () => {
             const value = 6;
-            await assert.throws(() =>
-                waitUntil.isBelow(
+            await assert.throws(() => {
+                return waitUntil.isBelow(
                     3,
                     () => {
                         return value;
                     },
                     waitUntilTestOptions,
-                ),
-            );
+                );
+            });
         });
     });
 });
@@ -1279,15 +1279,15 @@ describe('isAtMost', () => {
         });
         it('rejects', async () => {
             const value = 6;
-            await assert.throws(() =>
-                waitUntil.isAtMost(
+            await assert.throws(() => {
+                return waitUntil.isAtMost(
                     3,
                     () => {
                         return value;
                     },
                     waitUntilTestOptions,
-                ),
-            );
+                );
+            });
         });
     });
 });
@@ -1367,11 +1367,11 @@ describe('isNaN', () => {
         });
         it('rejects', async () => {
             const value = 0;
-            await assert.throws(() =>
-                waitUntil.isNaN(() => {
+            await assert.throws(() => {
+                return waitUntil.isNaN(() => {
                     return value;
-                }, waitUntilTestOptions),
-            );
+                }, waitUntilTestOptions);
+            });
         });
     });
 });
@@ -1797,16 +1797,16 @@ describe('isApproximately', () => {
         });
         it('rejects', async () => {
             const value = 0;
-            await assert.throws(() =>
-                waitUntil.isApproximately(
+            await assert.throws(() => {
+                return waitUntil.isApproximately(
                     5,
                     1,
                     () => {
                         return value;
                     },
                     waitUntilTestOptions,
-                ),
-            );
+                );
+            });
         });
     });
 });
@@ -1956,16 +1956,16 @@ describe('isNotApproximately', () => {
         });
         it('rejects', async () => {
             const value = 5;
-            await assert.throws(() =>
-                waitUntil.isNotApproximately(
+            await assert.throws(() => {
+                return waitUntil.isNotApproximately(
                     5,
                     1,
                     () => {
                         return value;
                     },
                     waitUntilTestOptions,
-                ),
-            );
+                );
+            });
         });
     });
 });

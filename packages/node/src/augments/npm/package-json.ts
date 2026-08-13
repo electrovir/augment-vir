@@ -16,9 +16,9 @@ import {findAncestor, joinFilesToDir} from '../path/ancestor.js';
  * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
  */
 export async function findAllPackageJsonFilePaths(startDirPath: string) {
-    const packageRootDir = findAncestor(startDirPath, (dir) =>
-        existsSync(join(dir, 'package-lock.json')),
-    );
+    const packageRootDir = findAncestor(startDirPath, (dir) => {
+        return existsSync(join(dir, 'package-lock.json'));
+    });
 
     if (!packageRootDir) {
         throw new Error(

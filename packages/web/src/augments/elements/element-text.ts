@@ -24,9 +24,9 @@ function recursivelyExtractElementText(node: Readonly<Node>): string[] {
                 (assignedNode) => recursivelyExtractElementText(assignedNode),
             );
         } else {
-            return Array.from((element.shadowRoot || element).childNodes).flatMap((childNode) =>
-                recursivelyExtractElementText(childNode),
-            );
+            return Array.from((element.shadowRoot || element).childNodes).flatMap((childNode) => {
+                return recursivelyExtractElementText(childNode);
+            });
         }
     }
 

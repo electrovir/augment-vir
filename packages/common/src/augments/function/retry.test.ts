@@ -119,11 +119,12 @@ describe(retry.name, () => {
         const allParams: RetryCallbackParams[] = [];
 
         assert.throws(
-            () =>
-                retry(2, (params): string => {
+            () => {
+                return retry(2, (params): string => {
                     allParams.push(params);
                     throw new Error('fail');
-                }),
+                });
+            },
             {
                 matchMessage: 'Retry max reached: fail',
             },
@@ -152,13 +153,14 @@ describe(retry.name, () => {
     });
     it('fails with async callback', async () => {
         await assert.throws(
-            () =>
-                retry(2, async (): Promise<string> => {
+            () => {
+                return retry(2, async (): Promise<string> => {
                     await wait({
                         milliseconds: 0,
                     });
                     throw new Error('fail');
-                }),
+                });
+            },
             {
                 matchMessage: 'Retry max reached: fail',
             },

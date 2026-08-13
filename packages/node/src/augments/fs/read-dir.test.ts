@@ -20,8 +20,9 @@ describe(readDirRecursive.name, () => {
 
 describe(readDirFilesByExtension.name, () => {
     itCases(
-        async (...inputs: Parameters<typeof readDirFilesByExtension>) =>
-            (await readDirFilesByExtension(...inputs)).sort(),
+        async (...inputs: Parameters<typeof readDirFilesByExtension>) => {
+            return (await readDirFilesByExtension(...inputs)).sort();
+        },
         [
             {
                 it: 'filters to dir files with a single extension',

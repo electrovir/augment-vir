@@ -214,14 +214,14 @@ export const httpGuards = {
                     `${stringify(actual)} is not a valid HTTP status.`,
                     failureMessage,
                 );
-            } else if (!isIn(actual, httpStatusByCategory[category])) {
+            } else if (isIn(actual, httpStatusByCategory[category])) {
+                return actual as NarrowToExpected<Actual, HttpStatusByCategory<Category>>;
+            } else {
                 throw new AssertionError(
                     `${stringify(actual)} is not a '${category}' HTTP status.`,
                     failureMessage,
                 );
             }
-
-            return actual as NarrowToExpected<Actual, HttpStatusByCategory<Category>>;
         },
     },
     checkWrap: {

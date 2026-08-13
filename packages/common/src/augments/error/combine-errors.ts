@@ -29,7 +29,7 @@ export function combineErrors(errors: ReadonlyArray<Error>): Error {
         return new Error();
     } else if (errors.length === 1) {
         return errors[0];
+    } else {
+        return new Error(errors.map((error) => extractErrorMessage(error).trim()).join('\n'));
     }
-
-    return new Error(errors.map((error) => extractErrorMessage(error).trim()).join('\n'));
 }

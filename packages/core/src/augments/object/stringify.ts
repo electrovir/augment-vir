@@ -35,8 +35,9 @@ export function stringify(
                     return undefinedSentinel;
                 } else if (typeof value === 'bigint') {
                     return Number(value);
+                } else {
+                    return value;
                 }
-                return value;
             },
             space || undefined,
         );

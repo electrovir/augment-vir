@@ -22,7 +22,7 @@ import {writeFileAndDir} from './write.js';
  */
 export async function readJsonFile(path: string): Promise<JsonCompatibleValue | undefined> {
     try {
-        const contents = (await readFile(path)).toString();
+        const contents = await readFile(path, 'utf8');
         return JSON.parse(contents);
     } catch {
         return undefined;

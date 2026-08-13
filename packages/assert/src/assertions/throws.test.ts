@@ -491,10 +491,11 @@ describe('throws', () => {
         });
         it('rejects a non-throwing async callback error', async () => {
             await assert.throws(
-                () =>
-                    assertWrap.throws(() => {
+                () => {
+                    return assertWrap.throws(() => {
                         return Promise.resolve('hi');
-                    }),
+                    });
+                },
                 {
                     matchMessage: 'No Error was thrown.',
                 },

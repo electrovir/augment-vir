@@ -155,8 +155,9 @@ export function diffBasic<T0, T1>(
     value0: T0,
     value1: T1,
     /** A custom equality checker. Defaults to a strict equality check (`===`). */
-    areEqual: AreEqualCallback<T0, T1> = (value0, value1) =>
-        (value0 as unknown) === (value1 as unknown),
+    areEqual: AreEqualCallback<T0, T1> = (value0, value1) => {
+        return (value0 as unknown) === (value1 as unknown);
+    },
 ):
     | [
           T0,

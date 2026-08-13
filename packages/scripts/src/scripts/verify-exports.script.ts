@@ -45,13 +45,16 @@ async function verifyPackage(packageDirPath: string): Promise<boolean> {
     }
 
     const relativeAugmentFilePaths = (await readDirRecursive(augmentsDirPath)).filter(
-        (filePath) =>
-            filePath.endsWith('.ts') &&
-            !filePath.endsWith('.test.ts') &&
-            !filePath.endsWith('.mock.ts') &&
-            !filePath.endsWith('.example.ts') &&
-            !filePath.endsWith('.script.ts') &&
-            !filePath.endsWith('.test.e2e.ts'),
+        (filePath) => {
+            return (
+                filePath.endsWith('.ts') &&
+                !filePath.endsWith('.test.ts') &&
+                !filePath.endsWith('.mock.ts') &&
+                !filePath.endsWith('.example.ts') &&
+                !filePath.endsWith('.script.ts') &&
+                !filePath.endsWith('.test.e2e.ts')
+            );
+        },
     );
 
     log.faint(`Checking ${relativeAugmentFilePaths.length} augment files...`);

@@ -98,10 +98,9 @@ export function queryThroughShadow(
 
 function getShadowRootChildren(element: Element | ShadowRoot) {
     return Array.from(element.querySelectorAll('*'))
-        .filter(
-            (child): child is Element & {shadowRoot: NonNullable<Element['shadowRoot']>} =>
-                !!child.shadowRoot,
-        )
+        .filter((child): child is Element & {shadowRoot: NonNullable<Element['shadowRoot']>} => {
+            return !!child.shadowRoot;
+        })
         .map((child) => child.shadowRoot);
 }
 

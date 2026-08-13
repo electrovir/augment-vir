@@ -366,16 +366,16 @@ describe('hasKey', () => {
                 ],
                 0,
             );
-            assert.throws(() =>
-                assert.hasKey(
+            assert.throws(() => {
+                return assert.hasKey(
                     [
                         1,
                         2,
                         3,
                     ],
                     10,
-                ),
-            );
+                );
+            });
         });
     });
     describe('check', () => {
@@ -607,16 +607,16 @@ describe('lacksKey', () => {
                 ],
                 10,
             );
-            assert.throws(() =>
-                assert.lacksKey(
+            assert.throws(() => {
+                return assert.lacksKey(
                     [
                         1,
                         2,
                         3,
                     ],
                     0,
-                ),
-            );
+                );
+            });
         });
     });
     describe('check', () => {

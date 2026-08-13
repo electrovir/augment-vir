@@ -90,8 +90,8 @@ describe('jsonEquals', () => {
         });
         it('rejects', () => {
             assert.throws(() => assert.jsonEquals(actualReject, expected));
-            assert.throws(() =>
-                assert.jsonEquals(
+            assert.throws(() => {
+                return assert.jsonEquals(
                     {
                         a: '1',
                     },
@@ -99,8 +99,8 @@ describe('jsonEquals', () => {
                         a: '1',
                         b: '2',
                     },
-                ),
-            );
+                );
+            });
         });
     });
     describe('check', () => {
@@ -251,14 +251,14 @@ describe('notJsonEquals', () => {
             assert.tsType(newValue).equals(actualPass);
         });
         it('rejects', async () => {
-            await assert.throws(() =>
-                waitUntil.notJsonEquals(
+            await assert.throws(() => {
+                return waitUntil.notJsonEquals(
                     expected,
                     () => actualReject,
                     waitUntilTestOptions,
                     'failure',
-                ),
-            );
+                );
+            });
         });
     });
 });

@@ -64,9 +64,9 @@ export function findMajorCommitsAfterBaseline({
     gitLogOutput: string;
     baselineHash: string;
 }>): GitCommit[] {
-    return selectCommitsAfterBaseline(parseGitLog(gitLogOutput), baselineHash).filter((commit) =>
-        commit.subject.startsWith(majorCommitPrefix),
-    );
+    return selectCommitsAfterBaseline(parseGitLog(gitLogOutput), baselineHash).filter((commit) => {
+        return commit.subject.startsWith(majorCommitPrefix);
+    });
 }
 
 /**

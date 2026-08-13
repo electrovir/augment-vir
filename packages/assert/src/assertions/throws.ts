@@ -175,10 +175,11 @@ function internalThrowsCheck(
         assertThrownError(caughtError, matchOptions, failureMessage);
         if (checkType === ThrowsCheckType.Check) {
             return true;
-        } else if (checkType !== ThrowsCheckType.Assert) {
+        } else if (checkType === ThrowsCheckType.Assert) {
+            return;
+        } else {
             return caughtError;
         }
-        return;
     } catch (error) {
         if (checkType === ThrowsCheckType.CheckWrap) {
             return undefined;
@@ -229,10 +230,11 @@ function internalDoesNotThrowCheck(
             });
         } else if (checkType === ThrowsCheckType.Check) {
             return true;
-        } else if (checkType !== ThrowsCheckType.Assert) {
+        } else if (checkType === ThrowsCheckType.Assert) {
+            return;
+        } else {
             return result;
         }
-        return;
     } catch (error) {
         const caughtError = ensureError(error);
         if (checkType === ThrowsCheckType.CheckWrap) {

@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/common",
-    "version": "32.2.1",
+    "version": "32.2.2",
     "description": "A collection of augments, helpers types, functions, and classes for any JavaScript environment.",
     "keywords": [
         "augment",
@@ -40,22 +40,22 @@
         "test:web": "virmator --no-deps test web"
     },
     "dependencies": {
-        "@augment-vir/assert": "^32.2.1",
-        "@augment-vir/core": "^32.2.1",
-        "@date-vir/duration": "^8.6.1",
+        "@augment-vir/assert": "^32.2.2",
+        "@augment-vir/core": "^32.2.2",
+        "@date-vir/duration": "^9.0.0",
         "@paralleldrive/cuid2": "^3.3.0",
-        "ansi-styles": "^6.2.3",
+        "ansi-styles": "^7.0.0",
         "deepcopy-esm": "^2.1.2",
         "json5": "^2.2.3",
-        "typed-event-target": "^4.3.1"
+        "typed-event-target": "^4.3.3"
     },
     "devDependencies": {
-        "@web/dev-server-esbuild": "^1.0.5",
-        "@web/test-runner": "^0.20.2",
-        "@web/test-runner-playwright": "^0.11.1",
-        "execute-in-browser": "^1.0.9",
+        "@web/dev-server-esbuild": "^2.0.0",
+        "@web/test-runner": "^1.0.0",
+        "@web/test-runner-playwright": "^1.0.0",
+        "execute-in-browser": "^1.0.10",
         "istanbul-smart-text-reporter": "^1.1.5",
-        "runstorm": "^1.0.4",
+        "runstorm": "^1.0.6",
         "typescript": "^6.0.3"
     },
     "engines": {

@@ -125,9 +125,9 @@ function parseStatusEntries(htmlString: string) {
         statusesByCategory[category].push(status);
     });
 
-    return mapObjectValues(statusesByCategory, (key, values) =>
-        values.toSorted((a, b) => a.number - b.number),
-    );
+    return mapObjectValues(statusesByCategory, (key, values) => {
+        return values.toSorted((a, b) => a.number - b.number);
+    });
 }
 
 function parseDescription(children: Element[]): string {

@@ -1591,11 +1591,12 @@ describe('isEmpty', () => {
         });
         it('fails on invalid inputs', () => {
             assert.throws(
-                () =>
-                    assert.isEmpty(
+                () => {
+                    return assert.isEmpty(
                         // @ts-expect-error: intentionally incorrect input
                         4,
-                    ),
+                    );
+                },
                 {
                     matchMessage: 'is not empty',
                 },

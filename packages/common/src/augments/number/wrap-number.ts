@@ -46,13 +46,11 @@ export function wrapNumber(
         } else {
             return min + offset;
         }
+    } else if (value > max) {
+        return min;
+    } else if (value < min) {
+        return max;
     } else {
-        if (value > max) {
-            return min;
-        } else if (value < min) {
-            return max;
-        }
-
         return value;
     }
 }

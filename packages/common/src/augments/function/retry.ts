@@ -112,14 +112,14 @@ function internalRetry<const T, const Duration extends AtLeastOneDuration | unde
         if (currentRetry >= maxRetries) {
             throw ensureErrorAndPrependMessage(error, 'Retry max reached');
         } else if (options.interval) {
-            return wait(options.interval).then(() =>
-                internalRetry({
+            return wait(options.interval).then(() => {
+                return internalRetry({
                     currentRetry: currentRetry + 1,
                     maxRetries,
                     callback,
                     options,
-                }),
-            ) as IsEqual<Duration, undefined> extends true ? T : Promise<Awaited<T>>;
+                });
+            }) as IsEqual<Duration, undefined> extends true ? T : Promise<Awaited<T>>;
         } else {
             return internalRetry({
                 currentRetry: currentRetry + 1,

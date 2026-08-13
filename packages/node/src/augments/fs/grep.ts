@@ -187,17 +187,17 @@ function recursiveFlag({
 }: Readonly<Pick<GrepOptions, 'recursive' | 'followSymLinks'>>): string {
     if (!recursive) {
         return '';
-    } else if (!followSymLinks) {
+    } else if (followSymLinks) {
+        /**
+         * BSD `grep` (macOS) requires `-S` to follow symlinks while recursing, but GNU `grep`
+         * (Linux) has no `-S` flag and instead follows all symlinks with `-R`. Only one of these
+         * branches can run on a given operating system.
+         */
+        /* node:coverage ignore next */
+        return isOperatingSystem(OperatingSystem.Mac) ? '-RS' : '-R';
+    } else {
         return '--recursive';
     }
-
-    /**
-     * BSD `grep` (macOS) requires `-S` to follow symlinks while recursing, but GNU `grep` (Linux)
-     * has no `-S` flag and instead follows all symlinks with `-R`. Only one of these branches can
-     * run on a given operating system.
-     */
-    /* node:coverage ignore next */
-    return isOperatingSystem(OperatingSystem.Mac) ? '-RS' : '-R';
 }
 
 function isValidMaxCount(maxCount: unknown) {
@@ -373,16 +373,16 @@ function formatGrepCommand(args: ReadonlyArray<string>) {
 
     return [
         'grep',
-        ...args.map((arg, index) =>
-            shellQuote(
+        ...args.map((arg, index) => {
+            return shellQuote(
                 redactGrepArgForLogging({
                     arg,
                     index,
                     operandDelimiterIndex,
                     previousArg: args[index - 1],
                 }),
-            ),
-        ),
+            );
+        }),
     ].join(' ');
 }
 
@@ -423,9 +423,9 @@ function extractOptionalStringArray(input: unknown) {
         return [];
     } else if (!check.isArray(input) || !input.every(check.isString)) {
         return undefined;
+    } else {
+        return input.filter(check.isTruthy);
     }
-
-    return input.filter(check.isTruthy);
 }
 
 function extractString(input: unknown) {
@@ -512,19 +512,19 @@ function createSearchLocation(
                 file,
             ],
         };
-    } else if (grepSearchLocation.dirs != undefined) {
+    } else if (grepSearchLocation.dirs == undefined) {
+        return dir
+            ? {
+                  dirs: [
+                      dir,
+                  ],
+              }
+            : undefined;
+    } else {
         return {
             dirs: extractStringArray(grepSearchLocation.dirs),
         };
     }
-
-    return dir
-        ? {
-              dirs: [
-                  dir,
-              ],
-          }
-        : undefined;
 }
 
 function resolveSearchPart({
@@ -650,13 +650,13 @@ async function createSearchParts({
         ? recursive
             ? filteredSearchParts
             : (
-                  await awaitedBlockingMap(filteredSearchParts, (dir) =>
-                      readDirectDirSearchParts({
+                  await awaitedBlockingMap(filteredSearchParts, (dir) => {
+                      return readDirectDirSearchParts({
                           cwd,
                           dir,
                           followSymLinks,
-                      }),
-                  )
+                      });
+                  })
               ).flat()
         : filteredSearchParts;
 }
@@ -717,7 +717,7 @@ function parseNullDelimitedGrepRecords({stdout}: Readonly<{stdout: string}>) {
     return records;
 }
 
-/* node:coverage ignore next 26 */
+/* node:coverage ignore next 28 */
 function parseColonDelimitedGrepCountOutput(stdout: string) {
     return typedObjectFromEntries(
         stdout
@@ -738,14 +738,16 @@ function parseColonDelimitedGrepCountOutput(stdout: string) {
                 });
             })
             .filter(check.isTruthy)
-            .map((entry) => [
-                entry.key,
-                entry.value,
-            ]),
+            .map((entry) => {
+                return [
+                    entry.key,
+                    entry.value,
+                ];
+            }),
     );
 }
 
-/* node:coverage ignore next 20 */
+/* node:coverage ignore next 22 */
 function parseGrepCountOutput(stdout: string) {
     return stdout.includes('\0')
         ? typedObjectFromEntries(
@@ -759,10 +761,12 @@ function parseGrepCountOutput(stdout: string) {
                       });
                   })
                   .filter(check.isTruthy)
-                  .map((entry) => [
-                      entry.key,
-                      entry.value,
-                  ]),
+                  .map((entry) => {
+                      return [
+                          entry.key,
+                          entry.value,
+                      ];
+                  }),
           )
         : parseColonDelimitedGrepCountOutput(stdout);
 }
@@ -878,10 +882,12 @@ async function runGrepCountFallback({
             )
         )
             .filter(check.isTruthy)
-            .map((entry) => [
-                entry.key,
-                entry.value,
-            ]),
+            .map((entry) => {
+                return [
+                    entry.key,
+                    entry.value,
+                ];
+            }),
     );
 }
 
@@ -890,10 +896,12 @@ function parseGrepFilesOnlyOutput(stdout: string) {
         /* node:coverage ignore next */
         (stdout.includes('\0') ? stdout.split('\0') : stdout.trimEnd().split('\n'))
             .filter(check.isTruthy)
-            .map((entry) => [
-                entry,
-                [],
-            ]),
+            .map((entry) => {
+                return [
+                    entry,
+                    [],
+                ];
+            }),
     );
 }
 
@@ -1018,10 +1026,12 @@ export async function grep<const CountOnly extends boolean = false>(
             ? grepOptionArrays.includeFiles.map((includeFile) => `--include=${includeFile}`)
             : []),
         grepOptions.binary ? '--binary' : '',
-        ...searchPatterns.flatMap((searchPattern) => [
-            '-e',
-            searchPattern,
-        ]),
+        ...searchPatterns.flatMap((searchPattern) => {
+            return [
+                '-e',
+                searchPattern,
+            ];
+        }),
         '--',
         ...searchParts,
     ].filter(check.isTruthy);

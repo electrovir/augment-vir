@@ -8,11 +8,11 @@
 export function indent(value: string, count: number = 1): string {
     return value
         .split('\n')
-        .map((line) =>
-            [
+        .map((line) => {
+            return [
                 '    '.repeat(Math.round(count)),
                 line,
-            ].join(''),
-        )
+            ].join('');
+        })
         .join('\n');
 }

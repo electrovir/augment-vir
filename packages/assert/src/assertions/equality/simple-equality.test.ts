@@ -162,14 +162,14 @@ describe('notStrictEquals', () => {
             assert.tsType(newValue).equals(actualPass);
         });
         it('rejects', async () => {
-            await assert.throws(() =>
-                waitUntil.notStrictEquals(
+            await assert.throws(() => {
+                return waitUntil.notStrictEquals(
                     expected,
                     () => actualReject,
                     waitUntilTestOptions,
                     'failure',
-                ),
-            );
+                );
+            });
         });
     });
 });
@@ -331,14 +331,14 @@ describe('notLooseEquals', () => {
             assert.tsType(newValue).equals(actualPass);
         });
         it('rejects', async () => {
-            await assert.throws(() =>
-                waitUntil.notLooseEquals(
+            await assert.throws(() => {
+                return waitUntil.notLooseEquals(
                     expected,
                     () => actualReject,
                     waitUntilTestOptions,
                     'failure',
-                ),
-            );
+                );
+            });
         });
     });
 });
@@ -578,14 +578,14 @@ describe('notDeepEquals', () => {
             assert.tsType(newValue).equals(actualPass);
         });
         it('rejects', async () => {
-            await assert.throws(() =>
-                waitUntil.notDeepEquals(
+            await assert.throws(() => {
+                return waitUntil.notDeepEquals(
                     expected,
                     () => actualReject,
                     waitUntilTestOptions,
                     'failure',
-                ),
-            );
+                );
+            });
         });
     });
 });

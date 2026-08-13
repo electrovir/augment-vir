@@ -82,11 +82,12 @@ async function createToLogString(): Promise<ToLogString> {
                     ? undefined
                     : filterMap(
                           options.colorConfig[colorKey].colors,
-                          (cssString) =>
-                              removeSuffix({
+                          (cssString) => {
+                              return removeSuffix({
                                   value: cssString,
                                   suffix: ';',
-                              }),
+                              });
+                          },
                           check.isTruthy,
                       ).join('; ');
 

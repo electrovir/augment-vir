@@ -90,7 +90,7 @@ async function fixPackageJson(packageToFix: Readonly<PackageToFix>) {
         packageToFix.packageName,
         'package.json',
     );
-    const original = String(await readFile(packageJsonPath));
+    const original = await readFile(packageJsonPath, 'utf8');
     await writeFile(
         packageJsonPath,
         original

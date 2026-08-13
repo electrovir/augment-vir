@@ -180,9 +180,9 @@ export function removeNullishValues<ObjectGeneric>(
 export function replaceUndefinedValuesWithNull<ObjectGeneric>(
     input: Readonly<ObjectGeneric>,
 ): ReplaceUndefinedValuesWithNull<ObjectGeneric> {
-    return mapObjectValues(input, (key, value) =>
-        value === undefined ? null : value,
-    ) as ReplaceUndefinedValuesWithNull<ObjectGeneric>;
+    return mapObjectValues(input, (key, value) => {
+        return value === undefined ? null : value;
+    }) as ReplaceUndefinedValuesWithNull<ObjectGeneric>;
 }
 
 /**
@@ -195,7 +195,7 @@ export function replaceUndefinedValuesWithNull<ObjectGeneric>(
 export function replaceNullValuesWithUndefined<ObjectGeneric>(
     input: Readonly<ObjectGeneric>,
 ): ReplaceNullValuesWithUndefined<ObjectGeneric> {
-    return mapObjectValues(input, (key, value) =>
-        value === null ? undefined : value,
-    ) as ReplaceNullValuesWithUndefined<ObjectGeneric>;
+    return mapObjectValues(input, (key, value) => {
+        return value === null ? undefined : value;
+    }) as ReplaceNullValuesWithUndefined<ObjectGeneric>;
 }

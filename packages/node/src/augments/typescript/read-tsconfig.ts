@@ -12,9 +12,9 @@ import {findAncestor} from '../path/ancestor.js';
  * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
  */
 export function readTsconfig(startingPath: string) {
-    const tsconfigDirPath = findAncestor(startingPath, (ancestorPath) =>
-        existsSync(join(ancestorPath, 'tsconfig.json')),
-    );
+    const tsconfigDirPath = findAncestor(startingPath, (ancestorPath) => {
+        return existsSync(join(ancestorPath, 'tsconfig.json'));
+    });
     const tsconfigPath = tsconfigDirPath ? join(tsconfigDirPath, 'tsconfig.json') : undefined;
 
     if (!tsconfigPath) {
