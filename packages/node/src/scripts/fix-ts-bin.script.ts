@@ -17,8 +17,7 @@
  */
 
 import {log} from '@augment-vir/common';
-import {interpolationSafeWindowsPath, runShellCommand} from '@augment-vir/node';
-import {readFile, rm, writeFile} from 'node:fs/promises';
+import {chmod, readFile, rm, writeFile} from 'node:fs/promises';
 import {join, sep} from 'node:path/posix';
 
 type PackageToFix = {
@@ -75,7 +74,7 @@ async function fixTsBin(packageToFix: Readonly<PackageToFix>) {
         force: true,
     });
     await writeFile(binFilePath, createBinFileContents(packageToFix));
-    await runShellCommand(`chmod +x ${interpolationSafeWindowsPath(binFilePath)}`);
+    await chmod(binFilePath, 0o755);
     await fixPackageJson(packageToFix);
     log.success(`Fixed ${packageToFix.packageName} bin.`);
 }

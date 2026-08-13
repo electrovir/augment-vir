@@ -36,6 +36,12 @@ export function toPosixPath(maybeWindowsPath: string): string {
  * Use this to interpolate paths into bash commands. If the given path is not a Windows path, the
  * path structure will not be modified.
  *
+ * Each round of bash parsing halves the backslashes, so the count here assumes _two_ rounds: a
+ * command string that bash parses and then hands to something which parses it again. Four
+ * backslashes arrive as one. For a command that bash parses only once, this over-escapes; use
+ * `shellQuote` from `@augment-vir/common` instead, which needs no multiplication because bash does
+ * no escape processing inside single quotes.
+ *
  * @category Path : Node
  * @category Package : @augment-vir/node
  * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)

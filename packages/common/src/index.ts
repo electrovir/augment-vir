@@ -93,6 +93,7 @@ export * from './augments/string/length.js';
 export * from './augments/string/lines.js';
 export * from './augments/string/prefix.js';
 export * from './augments/string/replace.js';
+export * from './augments/string/shell-quote.js';
 export * from './augments/string/split.js';
 export * from './augments/string/substring-index.js';
 export * from './augments/string/suffix.js';

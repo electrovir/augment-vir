@@ -2,6 +2,7 @@ import {check} from '@augment-vir/assert';
 import {getObjectTypedEntries} from '@augment-vir/common';
 import {readdir, readFile, rm, stat} from 'node:fs/promises';
 import {join} from 'node:path';
+import {doesPathContain} from '../path/contains.js';
 import {writeFileAndDir} from './write.js';
 
 /**
@@ -98,6 +99,10 @@ export async function resetDirContents(
 /**
  * Write {@link DirContents} to a directory.
  *
+ * Keys are always relative to `rootDir`. A key that traverses above it (such as `'../escaped.txt'`)
+ * throws instead of writing, so contents built from an untrusted source cannot reach outside the
+ * directory they were meant for.
+ *
  * @category Node : File
  * @category Package : @augment-vir/node
  * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
@@ -113,6 +118,18 @@ export async function writeDirContents(
                 content,
             ]) => {
                 const fullPath = join(rootDir, relativePath);
+
+                if (
+                    !doesPathContain({
+                        potentialParentPath: rootDir,
+                        potentialChildPath: fullPath,
+                    })
+                ) {
+                    throw new Error(
+                        `Cannot write '${relativePath}': it resolves outside of '${rootDir}'.`,
+                    );
+                }
+
                 if (check.isString(content)) {
                     await writeFileAndDir(fullPath, content);
                 } else {

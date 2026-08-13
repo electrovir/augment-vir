@@ -1,5 +1,5 @@
 import {assert} from '@augment-vir/assert';
-import {createArrayLogger, omitObjectKeys} from '@augment-vir/common';
+import {createArrayLogger, omitObjectKeys, shellQuote} from '@augment-vir/common';
 import {type PartialWithUndefined} from '@augment-vir/core';
 import {describe, it, itCases} from '@augment-vir/test';
 import {join} from 'node:path';
@@ -143,6 +143,29 @@ describe(runShellCommand.name, () => {
         }
 
         assert.isUndefined(commandOutput.error);
+    });
+
+    it('passes shellQuote values through as single unmodified arguments', async () => {
+        const values = [
+            'hello world',
+            "it's",
+            '; echo injected',
+            '$(echo substituted)',
+            '`echo substituted`',
+            'glob*',
+            String.raw`C:\dir\file`,
+            '',
+        ];
+
+        const commandOutput = await runShellCommand(
+            [
+                'printf',
+                String.raw`'%s\n'`,
+                ...values.map(shellQuote),
+            ].join(' '),
+        );
+
+        assert.strictEquals(commandOutput.stdout, values.map((value) => `${value}\n`).join(''));
     });
 });
 

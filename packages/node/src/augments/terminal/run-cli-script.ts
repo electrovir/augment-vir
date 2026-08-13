@@ -2,9 +2,9 @@
 /** This file cannot be tested because it calls `process.exit`. */
 
 import {check} from '@augment-vir/assert';
+import {shellQuote} from '@augment-vir/common';
 import {dirname, extname} from 'node:path';
 import {findNpmBinPath} from '../npm/find-bin-path.js';
-import {interpolationSafeWindowsPath} from '../path/os-path.js';
 import {extractRelevantArgs} from './relevant-args.js';
 import {runShellCommand} from './shell.js';
 
@@ -57,13 +57,13 @@ export async function runCliScript({
           }) || runner.npx;
 
     const results = await runShellCommand(
-        interpolationSafeWindowsPath(
-            [
-                runnerPath,
-                scriptPath,
-                ...args,
-            ].join(' '),
-        ),
+        [
+            runnerPath,
+            scriptPath,
+            ...args,
+        ]
+            .map(shellQuote)
+            .join(' '),
         {
             hookUpToConsole: true,
         },

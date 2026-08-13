@@ -3,6 +3,7 @@ import {
     awaitedBlockingMap,
     getObjectTypedKeys,
     log,
+    shellQuote,
     typedObjectFromEntries,
     type IsEqual,
     type PartialWithUndefined,
@@ -179,14 +180,6 @@ export type GrepSearchPattern = RequireExactlyOne<{
 }>;
 
 const grepBinPath = '/usr/bin/grep';
-
-function shellQuote(input: string) {
-    return [
-        "'",
-        input.replaceAll("'", String.raw`'\''`),
-        "'",
-    ].join('');
-}
 
 function recursiveFlag({
     recursive,
