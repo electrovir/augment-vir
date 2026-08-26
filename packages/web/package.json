@@ -47,7 +47,7 @@
         "typescript": "^6.0.3"
     },
     "peerDependencies": {
-        "element-vir": ">=22.0.0"
+        "element-vir": "^26"
     },
     "engines": {
         "node": ">=22"
