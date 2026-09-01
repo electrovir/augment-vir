@@ -9,7 +9,12 @@ export function removeAnsiEscapeCodes(input: string): string {
     return input.replace(ansiRegExp, '');
 }
 
-/** {@inheritDoc removeAnsiEscapeCodes} */
+/**
+ * {@inheritDoc removeAnsiEscapeCodes}
+ *
+ * @category String
+ * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
+ */
 export const removeColor = removeAnsiEscapeCodes;
 
 // cspell:disable

@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/test",
-    "version": "32.2.3",
+    "version": "32.2.4",
     "description": "A universal testing suite that works with Mocha style test runners _and_ Node.js's built-in test runner.",
     "keywords": [
         "test",
@@ -44,15 +44,15 @@
         "test:web": "virmator test --no-deps web 'src/test-web/**/*.test.ts' 'src/augments/universal-testing-suite/**/*.test.ts'"
     },
     "dependencies": {
-        "@augment-vir/assert": "^32.2.3",
-        "@augment-vir/common": "^32.2.3",
-        "@date-vir/duration": "^9.0.0",
-        "@virmator/test": "^14.30.6"
+        "@augment-vir/assert": "^32.2.4",
+        "@augment-vir/common": "^32.2.4",
+        "@date-vir/duration": "^9.1.1",
+        "@virmator/test": "^14.33.0"
     },
     "devDependencies": {
         "@open-wc/testing-helpers": "^3.0.1",
         "@playwright/test": "^1.62.1",
-        "@types/node": "^26.2.0",
+        "@types/node": "^26.4.0",
         "@web/dev-server-esbuild": "^2.0.0",
         "@web/test-runner": "^1.0.0",
         "@web/test-runner-commands": "^1.0.1",
@@ -63,10 +63,10 @@
         "pixelmatch": "^7.2.0",
         "pngjs": "^7.0.0",
         "runstorm": "^1.0.6",
-        "sharp": "^0.35.3",
-        "spa-router-vir": "^6.6.1",
+        "sharp": "^0.35.4",
+        "spa-router-vir": "^6.8.0",
         "typescript": "^6.0.3",
-        "url-vir": "^2.2.1"
+        "url-vir": "^2.2.2"
     },
     "peerDependencies": {
         "@open-wc/testing-helpers": "*",
