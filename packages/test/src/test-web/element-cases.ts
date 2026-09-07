@@ -6,11 +6,7 @@ import {
     type PartialWithUndefined,
 } from '@augment-vir/common';
 import {type AnyDuration} from '@date-vir/duration';
-import {
-    type DeclarativeElementDefinition,
-    type DefinedTypedEvent,
-    type TypedEvent,
-} from 'element-vir';
+import {type DeclarativeElementDefinition, type DefinedElementEvent} from 'element-vir';
 import {
     itCasesWithContext,
     type FunctionWithContextTestCase,
@@ -28,7 +24,7 @@ import {extractElementText} from './symlinked/element-text.js';
  */
 export type ElementTestCaseExpect = {
     text: string | string[];
-    events: Map<TypedEvent | DefinedTypedEvent<any, any>, unknown[]>;
+    events: Map<DefinedElementEvent<any, any>, unknown[]>;
 };
 
 /**
@@ -114,7 +110,7 @@ async function testRenderElement(
 ) {
     const eventKeys = Array.from(testCase.expect?.events?.keys() || []);
 
-    const events: Map<TypedEvent | DefinedTypedEvent<any, any>, unknown[]> = new Map(
+    const events: Map<DefinedElementEvent<any, any>, unknown[]> = new Map(
         eventKeys.map((key) => {
             return [
                 key,
@@ -128,7 +124,7 @@ async function testRenderElement(
     const instance = await renderElement<any>(elementDefinition, inputs);
     eventKeys.forEach((eventKey) => {
         instance.addEventListener(eventKey.type, (event: unknown) => {
-            events.get(eventKey)?.push((event as TypedEvent).detail);
+            events.get(eventKey)?.push((event as CustomEvent<unknown>).detail);
         });
     });
 
