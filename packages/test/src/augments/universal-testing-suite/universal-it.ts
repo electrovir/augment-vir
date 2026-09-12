@@ -57,7 +57,7 @@ function createWebIt(): UniversalIt {
             });
         },
         {
-            skip: (doesThis: string, callback: UniversalItCallback) => {
+            skip(doesThis: string, callback: UniversalItCallback) {
                 return (globalThis as unknown as {it: UniversalIt}).it.skip(
                     doesThis,
                     async function () {
@@ -66,7 +66,7 @@ function createWebIt(): UniversalIt {
                     },
                 );
             },
-            only: (doesThis: string, callback: UniversalItCallback) => {
+            only(doesThis: string, callback: UniversalItCallback) {
                 return (globalThis as unknown as {it: UniversalIt}).it.only(
                     doesThis,
                     async function () {
@@ -141,7 +141,7 @@ async function createPlaywrightIt(): Promise<UniversalIt> {
             );
         },
         {
-            skip: (doesThis: string, callback: UniversalItCallback) => {
+            skip(doesThis: string, callback: UniversalItCallback) {
                 return originalPlaywrightIt.skip(
                     doesThis,
                     async (
@@ -191,7 +191,7 @@ async function createPlaywrightIt(): Promise<UniversalIt> {
                     },
                 );
             },
-            only: (doesThis: string, callback: UniversalItCallback) => {
+            only(doesThis: string, callback: UniversalItCallback) {
                 return originalPlaywrightIt.only(
                     doesThis,
                     async (

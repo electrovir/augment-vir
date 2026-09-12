@@ -9,10 +9,10 @@ describe(testWeb.typeText.name, () => {
     it('types into the window', async () => {
         const deferredEvent = new DeferredPromise<KeyboardEvent>();
 
-        const windowListener = (event: KeyboardEvent) => {
+        function windowListener(event: KeyboardEvent) {
             deferredEvent.resolve(event);
             window.removeEventListener('keydown', windowListener);
-        };
+        }
 
         window.addEventListener('keydown', windowListener);
 

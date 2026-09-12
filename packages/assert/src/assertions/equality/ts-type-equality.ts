@@ -25,11 +25,11 @@ function tsType<Actual>(
     input?: Actual,
 ): AssertTypeOf<Actual> {
     return {
-        equals: () => {},
-        notEquals: () => {},
-        matches: () => {},
-        notMatches: () => {},
-        slowEquals: () => {},
+        equals(this: void) {},
+        notEquals(this: void) {},
+        matches(this: void) {},
+        notMatches(this: void) {},
+        slowEquals(this: void) {},
     } satisfies Record<keyof AssertTypeOf<any>, () => void> as AssertTypeOf<Actual>;
 }
 

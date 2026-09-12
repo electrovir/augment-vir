@@ -222,7 +222,7 @@ function handleSmallNumbers(numberAsString: string, maxLength: number): string |
  * @package [`@augment-vir/common`](https://www.npmjs.com/package/@augment-vir/common)
  */
 export function truncateNumber(
-    originalValue: Readonly<unknown>,
+    originalValue: unknown,
     {
         customSuffixes = defaultTruncationSuffixes,
         maxLength = 6,

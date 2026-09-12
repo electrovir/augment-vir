@@ -7,5 +7,5 @@
  */
 export function isElementVisible(element: HTMLElement): boolean {
     // https://stackoverflow.com/a/21696585
-    return element.offsetParent !== null;
+    return element.offsetParent != null;
 }

@@ -6,7 +6,7 @@ import {deepCopy, type CustomCopy, type DeepCopyOptions} from 'deepcopy-esm';
 describe(deepCopy.name, () => {
     it('copies', () => {
         const value = {
-            a: () => {},
+            a() {},
         };
         assert.deepEquals(value, deepCopy(value));
     });

@@ -163,7 +163,7 @@ export function streamShellCommand(
         const exitCode: number | undefined = inputExitCode ?? undefined;
         const exitSignal: NodeJS.Signals | undefined = inputExitSignal ?? undefined;
 
-        if ((exitCode !== undefined && exitCode !== 0) || exitSignal !== undefined) {
+        if ((exitCode != undefined && exitCode !== 0) || exitSignal != undefined) {
             const execException: ExecException & {cwd?: string | undefined} = Object.assign(
                 new Error(`Command failed: ${command}`),
                 {

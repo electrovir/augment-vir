@@ -55,6 +55,7 @@ describe('PickIndexSignature', () => {
     });
 
     it('is an empty object when there are no index signatures', () => {
+        // eslint-disable-next-line @typescript-eslint/no-generated-empty-object-type
         assert.tsType<PickIndexSignature<{foo: 'bar'; qux?: 'baz'}>>().equals<{}>();
     });
 

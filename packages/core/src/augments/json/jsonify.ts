@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-wrapper-object-types, sonarjs/no-primitive-wrappers -- faithful copy of type-fest's Jsonify, which intentionally matches boxed primitive wrapper objects to convert them to primitives. */
-// cspell:words Jsonable
+// cspell:words jsonable
 import {type NegativeInfinity, type PositiveInfinity} from '../number/infinity.js';
 import {type EmptyObject} from '../type/empty-object.js';
 import {type IsUnknown} from '../type/is-unknown.js';

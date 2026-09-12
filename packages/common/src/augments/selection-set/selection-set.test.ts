@@ -121,6 +121,7 @@ describe('PickSelection', () => {
     it('fails on an invalid selection set', () => {
         assert
             .tsType<
+                // eslint-disable-next-line @typescript-eslint/no-generated-empty-object-type
                 SelectFrom<
                     {
                         child: {a: string} | {b: number};
@@ -141,6 +142,7 @@ describe('PickSelection', () => {
 
 describe('SelectionSet', () => {
     it('preserves an empty object', () => {
+        // eslint-disable-next-line @typescript-eslint/no-generated-empty-object-type
         assert.tsType<SelectionSet<{}>>().equals<{}>();
     });
     it('defines a selection set', () => {

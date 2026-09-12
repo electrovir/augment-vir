@@ -53,7 +53,7 @@ describe(copyThroughJson.name, () => {
                 'b',
                 'c',
             ]),
-            c: () => {},
+            c() {},
         };
         assert.deepEquals(copyThroughJson(testObjectA), {
             a: {},

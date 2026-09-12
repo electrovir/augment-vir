@@ -9,14 +9,14 @@ import {waitUntil} from '../augments/guards/wait-until.js';
 import {waitUntilTestOptions} from '../test-timeout.mock.js';
 
 describe('throws', () => {
-    const actualPass = () => {
+    function actualPass() {
         throw new Error('fake error');
-    };
-    const actualPassAsync = async () => {
+    }
+    async function actualPassAsync() {
         return new Promise<void>((resolve, reject) => {
             setTimeout(() => reject(new Error('fake error')), 0);
         });
-    };
+    }
     const actualReject = (() => {
         return true;
     }) as any;
@@ -641,21 +641,21 @@ describe('throws', () => {
     });
 });
 describe('doesNotThrow', () => {
-    const actualPass = () => {
+    function actualPass() {
         return 'success';
-    };
-    const actualPassAsync = async () => {
+    }
+    async function actualPassAsync() {
         return new Promise<string>((resolve) => {
             setTimeout(() => resolve('success'), 0);
         });
-    };
-    const actualThrow = () => {
+    }
+    function actualThrow() {
         throw new Error('fake error');
-    };
-    const actualThrowAsync = async () => {
+    }
+    async function actualThrowAsync() {
         await Promise.resolve();
         throw new Error('fake error');
-    };
+    }
 
     describe('assert', () => {
         it('works', () => {

@@ -3,9 +3,9 @@ import {waitUntilTestOptions} from '../test-timeout.mock.js';
 import {parseWaitUntilArgs, type WaitUntilOptions} from './wait-until-function.js';
 
 describe(parseWaitUntilArgs.name, () => {
-    const callback1 = () => {
+    function callback1() {
         return 'hi';
-    };
+    }
 
     itCases(parseWaitUntilArgs, [
         {

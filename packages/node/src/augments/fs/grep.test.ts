@@ -2708,7 +2708,7 @@ describe(grep.name, () => {
 
     it('does not execute shell substitutions in search patterns', async () => {
         await assertGrepDoesNotCreateSentinel({
-            createParams: ({sentinelFilePath, sourceFilePath}) => {
+            createParams({sentinelFilePath, sourceFilePath}) {
                 return {
                     grepSearchLocation: {
                         file: sourceFilePath,
@@ -2728,7 +2728,7 @@ describe(grep.name, () => {
 
     it('does not execute shell substitutions in search locations', async () => {
         await assertGrepDoesNotCreateSentinel({
-            createParams: ({sentinelFilePath, testDir}) => {
+            createParams({sentinelFilePath, testDir}) {
                 return {
                     grepSearchLocation: {
                         file: join(testDir, `$(touch ${sentinelFilePath})missing.txt`),
@@ -2743,7 +2743,7 @@ describe(grep.name, () => {
 
     it('does not execute shell substitutions in option globs', async () => {
         await assertGrepDoesNotCreateSentinel({
-            createParams: ({sentinelFilePath, testDir}) => {
+            createParams({sentinelFilePath, testDir}) {
                 return {
                     grepSearchLocation: {
                         dir: testDir,
@@ -2770,7 +2770,7 @@ describe(grep.name, () => {
 
     it('does not execute shell substitutions in maxCount', async () => {
         await assertGrepDoesNotCreateSentinel({
-            createParams: ({sentinelFilePath, sourceFilePath}) => {
+            createParams({sentinelFilePath, sourceFilePath}) {
                 return {
                     grepSearchLocation: {
                         file: sourceFilePath,

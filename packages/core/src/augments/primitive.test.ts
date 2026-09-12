@@ -71,7 +71,7 @@ describe(isPrimitive.name, () => {
         },
         {
             it: 'is false for a function',
-            input: () => {},
+            input() {},
             expect: false,
         },
         {

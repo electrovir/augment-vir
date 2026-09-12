@@ -53,14 +53,14 @@ describe(findAncestor.name, () => {
     itCases(testFindAncestor, [
         {
             it: 'works',
-            input: (dir) => {
+            input(dir) {
                 return basename(dir) === 'node';
             },
             expect: join('packages', 'node'),
         },
         {
             it: 'works with async callback',
-            input: async (dir) => {
+            async input(dir) {
                 await wait({
                     milliseconds: 1,
                 });
@@ -70,14 +70,14 @@ describe(findAncestor.name, () => {
         },
         {
             it: 'fails',
-            input: () => {
+            input() {
                 return false;
             },
             expect: undefined,
         },
         {
             it: 'fails with async callback',
-            input: async () => {
+            async input() {
                 await wait({
                     milliseconds: 1,
                 });

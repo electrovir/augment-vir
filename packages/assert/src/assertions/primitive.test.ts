@@ -43,7 +43,7 @@ describe('isPrimitive', () => {
         },
         {
             it: 'rejects a function',
-            input: () => {},
+            input(this: void) {},
             expect: false,
         },
         {
@@ -228,7 +228,7 @@ describe('isNotPrimitive', () => {
         },
         {
             it: 'accepts a function',
-            input: () => {},
+            input(this: void) {},
             expect: true,
         },
         {
@@ -404,7 +404,7 @@ describe('isPropertyKey', () => {
         },
         {
             it: 'rejects a function',
-            input: () => {},
+            input(this: void) {},
             expect: false,
         },
         {
@@ -554,7 +554,7 @@ describe('isNotPropertyKey', () => {
         },
         {
             it: 'accepts a function',
-            input: () => {},
+            input(this: void) {},
             expect: true,
         },
         {

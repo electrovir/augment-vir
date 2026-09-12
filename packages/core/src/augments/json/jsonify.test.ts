@@ -316,6 +316,7 @@ describe('Jsonify', () => {
 
     it('keeps optional members optional', () => {
         assert.tsType<Jsonify<OptionalPrimitive>>().equals<{a?: string}>();
+        // eslint-disable-next-line @typescript-eslint/no-generated-empty-object-type
         assert.tsType<Jsonify<OptionalTypeUnion>>().equals<{}>();
         assert.tsType<Jsonify<NonOptionalTypeUnion>>().equals<{a?: string}>();
         assert.tsType<Jsonify<AppData>>().equals<ExpectedAppDataJson>();

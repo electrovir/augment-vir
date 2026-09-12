@@ -442,10 +442,10 @@ describe('deepEquals', () => {
             );
             assert.deepEquals(
                 {
-                    a: () => {},
+                    a() {},
                 },
                 {
-                    a: () => {},
+                    a() {},
                 },
             );
             assert.notDeepEquals(() => {}, 'a');

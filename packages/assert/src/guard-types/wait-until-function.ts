@@ -143,6 +143,7 @@ export function parseWaitUntilArgs(rawArgs: unknown[]) {
             args.failureMessage = arg;
         } else if (typeof arg === 'object') {
             args.options = arg as AnyObject;
+            // eslint-disable-next-line @virmator/prefer-loose-nullish-equality
         } else if (arg === undefined) {
             /** Skip an undefined arg. */
             return;

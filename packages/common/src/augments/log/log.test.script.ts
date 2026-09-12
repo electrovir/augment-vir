@@ -1,3 +1,5 @@
+/* eslint-disable @virmator/allowed-file-extensions */
+
 import {getEnumValues} from '@augment-vir/core';
 import {LogColorKey} from './log-colors.js';
 import {log} from './log.js';

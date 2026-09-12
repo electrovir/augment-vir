@@ -87,7 +87,7 @@ describe(runShellCommand.name, () => {
             {
                 env: longRunningTestEnv,
                 rejectOnError: true,
-                stdoutCallback: (stdout) => {
+                stdoutCallback(stdout) {
                     output.push(stdout.trim());
                 },
             },
@@ -112,7 +112,7 @@ describe(runShellCommand.name, () => {
             {
                 env: longRunningTestEnv,
                 rejectOnError: true,
-                stderrCallback: (stdout) => {
+                stderrCallback(stdout) {
                     output.push(stdout.trim());
                 },
             },

@@ -16,7 +16,7 @@ const extraAssertions = {
      *
      * @throws {@link AssertionError}
      */
-    fail: (failureMessage?: string | undefined) => {
+    fail(this: void, failureMessage?: string | undefined) {
         throw new AssertionError('Failure triggered.', failureMessage);
     },
 };

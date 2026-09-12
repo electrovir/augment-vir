@@ -284,11 +284,11 @@ export function itCases(
                 } catch (thrownError) {
                     caughtError = thrownError;
                 }
-                const errorThrower = () => {
+                function errorThrower() {
                     if (caughtError !== unsetError) {
                         throw caughtError;
                     }
-                };
+                }
                 // give a better name if possible
                 Object.defineProperty(errorThrower, 'name', {
                     value: functionToTest.name,
