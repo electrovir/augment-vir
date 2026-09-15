@@ -14,6 +14,43 @@ import {
 } from './playwright-screenshot.js';
 
 describe(expectPlaywrightScreenshot.name, () => {
+    it('uses a caller-provided maximum diff pixel ratio', async (testContext) => {
+        assertTestContext(testContext, TestEnv.Playwright);
+
+        const screenshotBaseName = 'expect-playwright-screenshot-custom-diff-ratio';
+        const screenshotPath = getScreenshotPath(testContext, screenshotBaseName);
+
+        await testContext.page.setContent(
+            '<body style="margin: 0;"><div style="width: 100vw; height: 100vh; background: red;"></div></body>',
+        );
+        await takeScreenshot(testContext, {
+            screenshotBaseName,
+        });
+        assert.isTrue(existsSync(screenshotPath));
+
+        await testContext.page.setContent(
+            '<body style="margin: 0;"><div style="width: 100vw; height: 100vh; background: blue;"></div></body>',
+        );
+
+        const originalCi = process.env.CI;
+        process.env.CI = 'true';
+        try {
+            await expectPlaywrightScreenshot(testContext, {
+                maxDiffPixelRatio: 1,
+                screenshotBaseName,
+            });
+        } finally {
+            if (originalCi == undefined) {
+                delete process.env.CI;
+            } else {
+                process.env.CI = originalCi;
+            }
+            await rm(screenshotPath, {
+                force: true,
+            });
+        }
+    });
+
     it('throws on a mismatch even when CI is set', async (testContext) => {
         assertTestContext(testContext, TestEnv.Playwright);
 

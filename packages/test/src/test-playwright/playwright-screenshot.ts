@@ -4,7 +4,6 @@ import {writeFileAndDir} from '@augment-vir/node';
 import {expect, type Locator} from '@playwright/test';
 import {
     compareImages,
-    defaultImageComparisonOptions,
     encodePng,
 } from '@virmator/test/dist/web-screenshot-plugin/compare-images.js';
 import {existsSync} from 'node:fs';
@@ -182,13 +181,16 @@ export async function expectPlaywrightScreenshot(
         );
     }
 
+    const maxDiffPixelRatio =
+        options.maxDiffPixelRatio ?? defaultScreenshotOptions.maxDiffPixelRatio;
+
     const baseScreenshotBuffer: Buffer = await readFile(screenshotFilePath);
     const result = await compareImages({
         baseImageBuffer: baseScreenshotBuffer,
         currentImageBuffer: currentScreenshotBuffer,
-        userOptions: {
-            threshold: defaultScreenshotOptions.threshold,
-            maxDiffPixelRatio: defaultScreenshotOptions.maxDiffPixelRatio,
+        options: {
+            threshold: options.threshold ?? defaultScreenshotOptions.threshold,
+            maxDiffPixelRatio,
         },
     });
 
@@ -199,7 +201,7 @@ export async function expectPlaywrightScreenshot(
             await writeExpectationScreenshot(encodePng(result.diffPng), 'diff');
 
             throw new Error(
-                `Screenshot mismatch: ${screenshotFilePath}\n diff=${result.diffPixelCount}px (${(result.diffRatio * 100).toFixed(3)}%) (limit: ${(defaultImageComparisonOptions.maxDiffPixelRatio * 100).toFixed(3)}%). Run with --update-snapshots to update screenshot.`,
+                `Screenshot mismatch: ${screenshotFilePath}\n diff=${result.diffPixelCount}px (${(result.diffRatio * 100).toFixed(3)}%) (limit: ${(maxDiffPixelRatio * 100).toFixed(3)}%). Run with --update-snapshots to update screenshot.`,
             );
         } else {
             await writeNewScreenshot();
