@@ -33,6 +33,20 @@ export enum DebounceStyle {
      * |                  |                  |                  | fired! |                  | fired! |
      */
     AfterWait = 'after-wait',
+    /**
+     * Fires on the first call, then fires at most once per the given amount of milliseconds with
+     * the latest assigned callback. Calls that land inside a wait are not dropped: the last one
+     * fires when the wait ends. Useful for resize handlers that need both an instant response and
+     * the final value.
+     *
+     * `.execute()` calls with a 25ms debounce time looks like this:
+     *
+     * | 1st `.execute()` | 2nd `.execute()` | 3rd `.execute()` | -      | 4th `.execute()` | ...    |
+     * | ---------------- | ---------------- | ---------------- | ------ | ---------------- | ------ |
+     * | 0ms              | 10ms             | 20ms             | 25ms   | 30ms             | 50ms   |
+     * | fired!           |                  |                  | fired! |                  | fired! |
+     */
+    FirstThenLatest = 'first-then-latest',
 }
 
 /**
@@ -84,6 +98,46 @@ export class Debounce {
         }
     }
 
+    /** The scheduled trailing call for {@link DebounceStyle.FirstThenLatest}. */
+    protected pendingTimeout: ReturnType<typeof setTimeout> | undefined;
+
+    protected readonly styleExecutors: Readonly<
+        Record<DebounceStyle, (params: Readonly<{now: number; durationMs: number}>) => void>
+    > = {
+        [DebounceStyle.FirstThenWait]: ({now, durationMs}) => {
+            if (this.nextCallTimestamp > now) {
+                return;
+            }
+            void this.callback?.();
+            this.nextCallTimestamp = now + durationMs;
+        },
+        [DebounceStyle.AfterWait]: ({now, durationMs}) => {
+            if (this.nextCallTimestamp > now) {
+                return;
+            }
+            setTimeout(() => {
+                /** Use whatever the latest latestCallback is. */
+                void this.callback?.();
+            }, this.debounceDuration.milliseconds);
+            this.nextCallTimestamp = now + durationMs;
+        },
+        [DebounceStyle.FirstThenLatest]: ({now, durationMs}) => {
+            if (this.pendingTimeout) {
+                /** `execute` already stored the latest callback for the pending call to use. */
+                return;
+            } else if (this.nextCallTimestamp <= now) {
+                void this.callback?.();
+                this.nextCallTimestamp = now + durationMs;
+            } else {
+                this.pendingTimeout = setTimeout(() => {
+                    this.pendingTimeout = undefined;
+                    this.nextCallTimestamp = Date.now() + durationMs;
+                    void this.callback?.();
+                }, this.nextCallTimestamp - now);
+            }
+        },
+    };
+
     /** Call the callback, if one has been set yet, if the current debounce timer is up. */
     public execute(callback?: typeof this.callback | undefined) {
         if (callback) {
@@ -91,24 +145,12 @@ export class Debounce {
         } else if (!this.callback) {
             return;
         }
-        const now = Date.now();
 
-        if (this.nextCallTimestamp > now) {
-            return;
-        }
-
-        if (this.debounceStyle === DebounceStyle.FirstThenWait) {
-            void this.callback();
-        } else {
-            setTimeout(() => {
-                /** Use whatever the latest latestCallback is. */
-                void this.callback?.();
-            }, this.debounceDuration.milliseconds);
-        }
-        this.nextCallTimestamp =
-            now +
-            convertDuration(this.debounceDuration, {
+        this.styleExecutors[this.debounceStyle]({
+            now: Date.now(),
+            durationMs: convertDuration(this.debounceDuration, {
                 milliseconds: true,
-            }).milliseconds;
+            }).milliseconds,
+        });
     }
 }
