@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/test",
-    "version": "32.3.1",
+    "version": "32.4.0",
     "description": "A universal testing suite that works with Mocha style test runners _and_ Node.js's built-in test runner.",
     "keywords": [
         "test",
@@ -44,21 +44,21 @@
         "test:web": "virmator test --no-deps web 'src/test-web/**/*.test.ts' 'src/augments/universal-testing-suite/**/*.test.ts'"
     },
     "dependencies": {
-        "@augment-vir/assert": "^32.3.1",
-        "@augment-vir/common": "^32.3.1",
-        "@date-vir/duration": "^9.1.1",
-        "@virmator/test": "^14.36.2"
+        "@augment-vir/assert": "^32.4.0",
+        "@augment-vir/common": "^32.4.0",
+        "@date-vir/duration": "^9.2.0",
+        "@virmator/test": "^14.36.3"
     },
     "devDependencies": {
         "@open-wc/testing-helpers": "^3.0.1",
         "@playwright/test": "^1.63.0",
-        "@types/node": "^26.5.0",
+        "@types/node": "^26.6.2",
         "@web/dev-server-esbuild": "^2.0.0",
         "@web/test-runner": "^1.0.0",
         "@web/test-runner-commands": "^1.0.1",
         "@web/test-runner-playwright": "^1.0.0",
         "@web/test-runner-visual-regression": "^1.0.1",
-        "element-vir": "27.0.0",
+        "element-vir": "27.0.2",
         "istanbul-smart-text-reporter": "^1.1.5",
         "pixelmatch": "^7.2.0",
         "pngjs": "^7.0.0",
