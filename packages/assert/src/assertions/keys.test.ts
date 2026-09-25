@@ -377,6 +377,9 @@ describe('hasKey', () => {
                 );
             });
         });
+        it('rejects a missing key on an object without a prototype', () => {
+            assert.throws(() => assert.hasKey(Object.create(null), 'missing'));
+        });
     });
     describe('check', () => {
         itCases(check.hasKey, [
@@ -408,6 +411,30 @@ describe('hasKey', () => {
                 it: 'rejects missing string object keys',
                 inputs: [
                     'hello there',
+                    'name',
+                ],
+                expect: false,
+            },
+            {
+                it: 'accepts number prototype keys',
+                inputs: [
+                    5,
+                    'toFixed',
+                ],
+                expect: true,
+            },
+            {
+                it: 'rejects undefined',
+                inputs: [
+                    undefined,
+                    'name',
+                ],
+                expect: false,
+            },
+            {
+                it: 'rejects null',
+                inputs: [
+                    null,
                     'name',
                 ],
                 expect: false,

@@ -73,7 +73,21 @@ function hasKey<const Key extends PropertyKey, const Parent>(
     parent: Parent,
     key: Key,
 ): parent is CombineTypeWithKey<Key, Parent> {
-    return hasKeyAttempts.some((attemptCallback) => {
+    /**
+     * Inputs that make `in` throw are filtered out before the try/catch below: every caught throw
+     * captures a stack trace, which is slow enough to dominate hot callers like
+     * object-shape-tester's `defineShape`.
+     */
+    if (parent == undefined) {
+        return false;
+    }
+
+    const attempts =
+        typeof parent === 'object' || typeof parent === 'function'
+            ? hasKeyAttempts
+            : hasKeyAttempts.slice(1);
+
+    return attempts.some((attemptCallback) => {
         try {
             return attemptCallback(parent as object, key);
         } catch {
