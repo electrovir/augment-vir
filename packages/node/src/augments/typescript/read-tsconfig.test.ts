@@ -5,8 +5,8 @@ import {nodePackageDir, testFilesDir} from '../../file-paths.mock.js';
 import {readTsconfig} from './read-tsconfig.js';
 
 describe(readTsconfig.name, () => {
-    it('parses a valid tsconfig with the installed typescript version', () => {
-        const found = readTsconfig(import.meta.filename);
+    it('parses a valid tsconfig with the installed typescript version', async () => {
+        const found = await readTsconfig(import.meta.filename);
 
         assert.isDefined(found);
         assert.strictEquals(found.path, join(nodePackageDir, 'tsconfig.json'));

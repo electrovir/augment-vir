@@ -1,6 +1,5 @@
 import {existsSync} from 'node:fs';
 import {dirname, join} from 'node:path';
-import {parseJsonConfigFileContent, readConfigFile, sys} from 'typescript';
 import {findAncestor} from '../path/ancestor.js';
 
 /**
@@ -11,7 +10,7 @@ import {findAncestor} from '../path/ancestor.js';
  * @returns `undefined` if no tsconfig was found or if a found tsconfig fails to parse.
  * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
  */
-export function readTsconfig(startingPath: string) {
+export async function readTsconfig(startingPath: string) {
     const tsconfigDirPath = findAncestor(startingPath, (ancestorPath) => {
         return existsSync(join(ancestorPath, 'tsconfig.json'));
     });
@@ -20,6 +19,14 @@ export function readTsconfig(startingPath: string) {
     if (!tsconfigPath) {
         return undefined;
     }
+
+    /**
+     * Imported lazily because `typescript` is large and slow to load, and this module is
+     * re-exported from the package entry point, so a static import would charge every consumer for
+     * it.
+     */
+    /* node:coverage ignore next: dynamic imports are not branches. */
+    const {parseJsonConfigFileContent, readConfigFile, sys} = await import('typescript');
 
     // eslint-disable-next-line @typescript-eslint/unbound-method
     const {config, error} = readConfigFile(tsconfigPath, sys.readFile);

@@ -17,11 +17,11 @@ import {replaceWithWindowsPathIfNeeded} from './os-path.js';
  * @returns `undefined` if no matches are found.
  * @package [`@augment-vir/node`](https://www.npmjs.com/package/@augment-vir/node)
  */
-export function resolveImportPath({
+export async function resolveImportPath({
     importerFilePath,
     importPath,
-}: Readonly<{importerFilePath: string; importPath: string}>): string | undefined {
-    const foundTsconfig = readTsconfig(importerFilePath);
+}: Readonly<{importerFilePath: string; importPath: string}>): Promise<string | undefined> {
+    const foundTsconfig = await readTsconfig(importerFilePath);
 
     const mappedImportPath = foundTsconfig
         ? mapImportPath({

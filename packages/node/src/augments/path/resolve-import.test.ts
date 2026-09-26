@@ -6,8 +6,8 @@ import {monoRepoDirPath} from '../../file-paths.mock.js';
 import {resolveImportPath} from './resolve-import.js';
 
 describe(resolveImportPath.name, () => {
-    function testResolveImportPath(importPath: string): string | undefined {
-        const resolvedImportPath = resolveImportPath({
+    async function testResolveImportPath(importPath: string): Promise<string | undefined> {
+        const resolvedImportPath = await resolveImportPath({
             importerFilePath: import.meta.filename,
             importPath,
         });
@@ -52,30 +52,30 @@ describe(resolveImportPath.name, () => {
         },
     ]);
 
-    it('handles a missing tsconfig', () => {
+    it('handles a missing tsconfig', async () => {
         const outsideOfPackage = join(dirname(monoRepoDirPath), 'a.js');
 
         assert.strictEquals(
             relative(
                 monoRepoDirPath,
-                resolveImportPath({
+                (await resolveImportPath({
                     importerFilePath: outsideOfPackage,
                     importPath: './b.js',
-                }) || '',
+                })) || '',
             ),
             join('..', 'b.js'),
         );
     });
-    it('handles a tsconfig without path aliases', () => {
+    it('handles a tsconfig without path aliases', async () => {
         const commonFile = join(monoRepoDirPath, 'packages', 'common', 'src', 'index.ts');
 
         assert.strictEquals(
             relative(
                 monoRepoDirPath,
-                resolveImportPath({
+                (await resolveImportPath({
                     importerFilePath: commonFile,
                     importPath: './b.js',
-                }) || '',
+                })) || '',
             ),
             join('packages', 'common', 'src', 'b.js'),
         );
