@@ -421,10 +421,10 @@ function extractStringArray(input: unknown) {
 function extractOptionalStringArray(input: unknown) {
     if (input == undefined) {
         return [];
-    } else if (!check.isArray(input) || !input.every(check.isString)) {
-        return undefined;
-    } else {
+    } else if (check.isArray(input) && input.every(check.isString)) {
         return input.filter(check.isTruthy);
+    } else {
+        return undefined;
     }
 }
 

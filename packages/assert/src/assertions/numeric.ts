@@ -1431,10 +1431,10 @@ export const numericGuards = {
          * - {@link checkWrap.isInfinite} : an opposite check.
          */
         isFinite<Actual extends number>(this: void, actual: Actual): Actual | undefined {
-            if (!isNaN(actual) && actual !== Infinity && actual !== -Infinity) {
-                return actual;
-            } else {
+            if (isNaN(actual) || actual === Infinity || actual === -Infinity) {
                 return undefined;
+            } else {
+                return actual;
             }
         },
         /**

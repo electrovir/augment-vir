@@ -60,13 +60,13 @@ export function diffObjects<
         ],
     );
 
-    if (!Object.keys(diffOutput[0]).length && !Object.keys(diffOutput[1]).length) {
-        return [];
-    } else {
+    if (Object.keys(diffOutput[0]).length || Object.keys(diffOutput[1]).length) {
         return diffOutput as [
             PartialDeep<T0>,
             PartialDeep<T1>,
         ];
+    } else {
+        return [];
     }
 }
 
@@ -126,10 +126,10 @@ export function diffArrays<T0, T1>(
         ],
     );
 
-    if (!diffArrays[0].length && !diffArrays[1].length) {
-        return [];
-    } else {
+    if (diffArrays[0].length || diffArrays[1].length) {
         return diffArrays;
+    } else {
+        return [];
     }
 }
 

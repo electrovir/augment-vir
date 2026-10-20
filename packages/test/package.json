@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/test",
-    "version": "32.5.0",
+    "version": "32.6.0",
     "description": "A universal testing suite that works with Mocha style test runners _and_ Node.js's built-in test runner.",
     "keywords": [
         "test",
@@ -44,15 +44,15 @@
         "test:web": "virmator test --no-deps web 'src/test-web/**/*.test.ts' 'src/augments/universal-testing-suite/**/*.test.ts'"
     },
     "dependencies": {
-        "@augment-vir/assert": "^32.5.0",
-        "@augment-vir/common": "^32.5.0",
-        "@date-vir/duration": "^9.2.0",
-        "@virmator/test": "^14.36.3"
+        "@augment-vir/assert": "^32.6.0",
+        "@augment-vir/common": "^32.6.0",
+        "@date-vir/duration": "^9.4.0",
+        "@virmator/test": "^14.38.0"
     },
     "devDependencies": {
         "@open-wc/testing-helpers": "^3.0.1",
-        "@playwright/test": "^1.63.0",
-        "@types/node": "^26.6.2",
+        "@playwright/test": "^1.64.1",
+        "@types/node": "^26.6.5",
         "@web/dev-server-esbuild": "^2.0.0",
         "@web/test-runner": "^1.0.0",
         "@web/test-runner-commands": "^1.0.1",
@@ -60,11 +60,11 @@
         "@web/test-runner-visual-regression": "^1.0.1",
         "element-vir": "27.0.2",
         "istanbul-smart-text-reporter": "^1.1.5",
-        "pixelmatch": "^7.2.0",
+        "pixelmatch": "^8.0.0",
         "pngjs": "^7.0.0",
         "runstorm": "^1.1.0",
-        "sharp": "^0.35.4",
-        "spa-router-vir": "^6.8.0",
+        "sharp": "^0.35.5",
+        "spa-router-vir": "^6.9.0",
         "typescript": "^6.0.3",
         "url-vir": "^2.2.2"
     },

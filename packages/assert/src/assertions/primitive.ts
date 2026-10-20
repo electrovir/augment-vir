@@ -449,13 +449,13 @@ export const primitiveGuards = {
             actual: Actual,
         ): Exclude<Actual, PropertyKey> | undefined {
             if (
-                typeof actual !== 'string' &&
-                typeof actual !== 'number' &&
-                typeof actual !== 'symbol'
+                typeof actual === 'string' ||
+                typeof actual === 'number' ||
+                typeof actual === 'symbol'
             ) {
-                return actual as Exclude<Actual, PropertyKey>;
-            } else {
                 return undefined;
+            } else {
+                return actual as Exclude<Actual, PropertyKey>;
             }
         },
         /**

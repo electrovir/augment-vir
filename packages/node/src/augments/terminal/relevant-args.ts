@@ -72,7 +72,7 @@ export function extractRelevantArgs({
     const lastIrrelevantArgIndex = rawArgs.findIndex((arg) => {
         const baseArgName = basename(arg);
         const matchesFileName = baseArgName === baseFileName;
-        const matchesBinName = binName ? baseArgName === binName : false;
+        const matchesBinName = !!binName && baseArgName === binName;
         return matchesFileName || matchesBinName;
     });
     if (lastIrrelevantArgIndex === -1) {
