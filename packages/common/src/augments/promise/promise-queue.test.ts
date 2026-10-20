@@ -331,6 +331,41 @@ describe(PromiseQueue.name, () => {
         });
     });
 
+    it('waits until empty, including items added while waiting and rejected items', async () => {
+        const queue = new PromiseQueue();
+        const settled: string[] = [];
+
+        await queue.waitUntilEmpty();
+
+        queue
+            .add(async () => {
+                await Promise.resolve();
+                settled.push('first');
+                void queue.add(async () => {
+                    await Promise.resolve();
+                    settled.push('added while waiting');
+                });
+                throw new Error('first failed');
+            })
+            .catch(() => {});
+
+        await queue.waitUntilEmpty();
+
+        assert.deepEquals(
+            {
+                size: queue.size,
+                settled,
+            },
+            {
+                size: 0,
+                settled: [
+                    'first',
+                    'added while waiting',
+                ],
+            },
+        );
+    });
+
     it('detects when a queue id is present', async () => {
         const innerPromise = new DeferredPromise();
 

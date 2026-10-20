@@ -105,6 +105,16 @@ export class PromiseQueue extends ListenTarget<PromiseQueueUpdateEvent> {
         return this.queueItemIds.has(id);
     }
 
+    /**
+     * Waits until every queued item has settled, including items added while waiting. Never
+     * rejects: a rejected item still reaches whoever awaited its {@link PromiseQueue.add} result.
+     */
+    public async waitUntilEmpty() {
+        while (this.queue.length) {
+            await Promise.allSettled(this.queue.map((item) => item.wrapper.promise));
+        }
+    }
+
     /** Handles a queue item finishing, whether it be a rejection or a resolution. */
     protected handleItemSettle({
         rejection,
