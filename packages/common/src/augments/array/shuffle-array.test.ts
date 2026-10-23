@@ -1,6 +1,7 @@
 import {assert} from '@augment-vir/assert';
 import {describe, it} from '@augment-vir/test';
 import {randomInteger} from '../random/random-integer.js';
+import {SeededRandom} from '../random/seeded-random.js';
 import {shuffleArray} from './shuffle-array.js';
 
 describe(shuffleArray.name, () => {
@@ -29,5 +30,23 @@ describe(shuffleArray.name, () => {
 
         assert.strictEquals(exampleArray, originalExampleArrayReference);
         assert.deepEquals(exampleArray, originalExampleArrayEntries);
+    });
+
+    it('keeps every entry', () => {
+        assert.deepEquals(
+            shuffleArray(exampleArray).toSorted((a, b) => a - b),
+            exampleArray.toSorted((a, b) => a - b),
+        );
+    });
+
+    it('shuffles the same way for the same seed', () => {
+        assert.deepEquals(
+            shuffleArray(exampleArray, SeededRandom.fromSeed('shuffle')),
+            shuffleArray(exampleArray, SeededRandom.fromSeed('shuffle')),
+        );
+        assert.notDeepEquals(
+            shuffleArray(exampleArray, SeededRandom.fromSeed('shuffle')),
+            shuffleArray(exampleArray, SeededRandom.fromSeed('a different seed')),
+        );
     });
 });
