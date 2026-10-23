@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/core",
-    "version": "32.6.0",
+    "version": "32.6.1",
     "description": "Core augment-vir augments. Use @augment-vir/common instead.",
     "homepage": "https://github.com/electrovir/augment-vir",
     "bugs": {
@@ -28,7 +28,7 @@
         "test:update": "npm test update"
     },
     "dependencies": {
-        "@date-vir/duration": "^9.4.0",
+        "@date-vir/duration": "^9.4.1",
         "browser-or-node": "^3.0.0",
         "diff": "^9.0.0",
         "json5": "^2.2.3"

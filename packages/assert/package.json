@@ -1,6 +1,6 @@
 {
     "name": "@augment-vir/assert",
-    "version": "32.6.0",
+    "version": "32.6.1",
     "description": "A collection of assertions for test and production code alike.",
     "keywords": [
         "augment",
@@ -42,8 +42,8 @@
         "test:update": "npm test"
     },
     "dependencies": {
-        "@augment-vir/core": "^32.6.0",
-        "@date-vir/duration": "^9.4.0",
+        "@augment-vir/core": "^32.6.1",
+        "@date-vir/duration": "^9.4.1",
         "deep-eql": "^5.0.2",
         "expect-type": "^1.4.0"
     },
