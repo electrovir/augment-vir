@@ -38,6 +38,7 @@ export * from './augments/log/log-string.js';
 export * from './augments/log/log-writer.js';
 export * from './augments/log/log.js';
 export * from './augments/log/logger.js';
+export * from './augments/number/byte-size.js';
 export * from './augments/number/clamp.js';
 export * from './augments/number/coords.js';
 export * from './augments/number/dimensions.js';
