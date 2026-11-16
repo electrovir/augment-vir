@@ -54,30 +54,47 @@ export function checkCustomDeepQuality(
     b: unknown,
     customChecker: (a: unknown, b: unknown) => MaybePromise<boolean>,
 ): MaybePromise<boolean> {
-    return recursiveCheckCustomDeepQuality(a, b, customChecker, new Set());
+    return recursiveCheckCustomDeepQuality(a, b, customChecker, new Map());
+}
+
+/**
+ * Records the pair as checked. Keyed by pair rather than by object, so an object shared between
+ * both inputs at different positions still gets compared at each position.
+ *
+ * @returns `true` if the pair was already checked, which only treats a circular reference as equal.
+ */
+function markCheckedPair(
+    a: AnyObject,
+    b: AnyObject,
+    checkedPairs: Map<AnyObject, Set<AnyObject>>,
+): boolean {
+    const checkedWithA = checkedPairs.get(a) || new Set<AnyObject>();
+    if (checkedWithA.has(b)) {
+        return true;
+    }
+    checkedWithA.add(b);
+    checkedPairs.set(a, checkedWithA);
+    return false;
 }
 
 function recursiveCheckCustomDeepQuality(
     a: unknown,
     b: unknown,
     customChecker: (a: unknown, b: unknown) => MaybePromise<boolean>,
-    checkedObjects: Set<AnyObject>,
+    checkedPairs: Map<AnyObject, Set<AnyObject>>,
 ): MaybePromise<boolean> {
     a = flattenComplexObject(a);
     b = flattenComplexObject(b);
 
     if (check.isObject(a) && check.isObject(b)) {
-        if (checkedObjects.has(a) || checkedObjects.has(b)) {
+        if (markCheckedPair(a, b, checkedPairs)) {
             return true;
-        }
-        checkedObjects.add(a);
-        checkedObjects.add(b);
-        if (
+        } else if (
             !recursiveCheckCustomDeepQuality(
                 getObjectTypedKeys(a).sort(),
                 getObjectTypedKeys(b).sort(),
                 customChecker,
-                checkedObjects,
+                checkedPairs,
             )
         ) {
             return false;
@@ -90,7 +107,7 @@ function recursiveCheckCustomDeepQuality(
                 (a as AnyObject)[key],
                 (b as AnyObject)[key],
                 customChecker,
-                checkedObjects,
+                checkedPairs,
             );
             if (check.isPromise(result)) {
                 receivedPromise = true;
@@ -100,12 +117,9 @@ function recursiveCheckCustomDeepQuality(
 
         return handleMaybePromise(receivedPromise, results);
     } else if (check.isArray(a) && check.isArray(b)) {
-        if (checkedObjects.has(a) || checkedObjects.has(b)) {
+        if (markCheckedPair(a, b, checkedPairs)) {
             return true;
-        }
-        checkedObjects.add(a);
-        checkedObjects.add(b);
-        if (a.length !== b.length) {
+        } else if (a.length !== b.length) {
             return false;
         }
 
@@ -115,7 +129,7 @@ function recursiveCheckCustomDeepQuality(
                 entry,
                 b[index],
                 customChecker,
-                checkedObjects,
+                checkedPairs,
             );
             if (check.isPromise(result)) {
                 receivedPromise = true;

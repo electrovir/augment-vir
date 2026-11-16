@@ -339,6 +339,30 @@ describe(checkCustomDeepQuality.name, () => {
         assert.isFalse(checkCustomDeepQuality(circular1, circular2, check.strictEquals));
     });
 
+    it('compares an object shared between both inputs at each position', () => {
+        const shared = {
+            tab: 'diff',
+        };
+
+        assert.isFalse(
+            checkCustomDeepQuality(
+                {
+                    server: {
+                        tab: 'diff',
+                    },
+                    window: {
+                        tab: 'ai',
+                    },
+                },
+                {
+                    server: shared,
+                    window: shared,
+                },
+                check.strictEquals,
+            ),
+        );
+    });
+
     it('handles return types', async () => {
         const asyncResult = checkCustomDeepQuality('a', 'a', (a, b) => {
             return Promise.resolve(check.strictEquals(a, b));
